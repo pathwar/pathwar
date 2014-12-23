@@ -9,7 +9,8 @@ RUN apt-get update \
  && apt-get clean
 
 # Add Pathwar tools
-RUN curl -Lk http://j.mp/pathwar-scripts-install | DL=curl bash
+COPY skeleton /pathwar
+#RUN curl -Lk http://j.mp/pathwar-scripts-install | DL=curl bash
 
 # Override pathwar scripts
 RUN echo nginx -g daemon off > /pathwar/scripts/run
