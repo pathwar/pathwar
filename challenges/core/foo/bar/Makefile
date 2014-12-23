@@ -1,10 +1,12 @@
+NAME =	hello
+
 all:	run
 
 build:
 	fig build
 
 shell:	build
-	fig run level /bin/bash
+	fig run $(NAME) /bin/bash
 
-run:	build
+up:	build
 	fig up

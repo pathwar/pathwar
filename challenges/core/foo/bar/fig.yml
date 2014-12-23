@@ -1,4 +1,4 @@
-level:
+hello:
   build: .
   ports:
     - 80
