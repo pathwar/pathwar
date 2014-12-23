@@ -1,0 +1,6 @@
+level:
+  name: nginx-example
+  version: 1.0
+  author: Pathwar team
+  passphrases: 1
+  description: Nginx example level
