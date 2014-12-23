@@ -2,8 +2,14 @@
 FROM php:5.6-apache
 MAINTAINER Pathwar Team <team@pathwar.net> (@pathwar_net)
 
+# Install dependencies
+RUN apt-get update \
+ && apt-get -y -q upgrade \
+ && apt-get -y -q install curl \
+ && apt-get clean
+
 # Add Pathwar tools
-RUN wget -qO - http://j.mp/pathwar-scripts-install | bash
+RUN curl -Lk http://j.mp/pathwar-scripts-install | DL=curl bash
 
 # Override pathwar scripts
 RUN apache2 -DFOREGROUND > /pathwar/scripts/run
