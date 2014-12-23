@@ -4,6 +4,8 @@ BRANCH=${BRANCH:-master}
 SCRIPTSDIR=${SCRIPTSDIR:-/pathwar/scripts}
 DL=${DL:-wget}
 
+mkdir -p $SCRIPTSDIR
+
 dl_wget() {
     wget -O - --no-check-certificate $@
 }
