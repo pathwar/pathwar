@@ -3,7 +3,7 @@ FROM nginx:1.7.8
 MAINTAINER Pathwar Team <team@pathwar.net> (@pathwar_net)
 
 # Add Pathwar tools
-RUN curl bit.ly/pathwar-scripts-install | bash
+RUN wget -qO - http://j.mp/pathwar-scripts-install | bash
 
 # Update pathwar scripts
 RUN echo nginx -g daemon off > /pathwar/scripts/run

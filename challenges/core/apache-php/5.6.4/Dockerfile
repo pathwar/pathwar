@@ -3,7 +3,7 @@ FROM php:5.6-apache
 MAINTAINER Pathwar Team <team@pathwar.net> (@pathwar_net)
 
 # Add Pathwar tools
-RUN curl bit.ly/pathwar-scripts-install | VERSION=1.0 bash
+RUN wget -qO - http://j.mp/pathwar-scripts-install | bash
 
 # Override pathwar scripts
 RUN apache2 -DFOREGROUND > /pathwar/scripts/run
