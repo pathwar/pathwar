@@ -2,7 +2,9 @@ FROM php:5.6-apache
 MAINTAINER Pathwar Team <team@pathwar.net> (@pathwar_net)
 
 # RUN wget | bash ...
-COPY scripts /pathwar/
-COPY level.json /pathwar/
+CMD /pathwar/scripts/init
 
-COPY www var/www/html/
+COPY scripts /pathwar/scripts/
+COPY level.yml /pathwar/
+
+COPY www /var/www/html/
