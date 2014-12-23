@@ -3,7 +3,10 @@ FROM nginx:1.7.8
 MAINTAINER Pathwar Team <team@pathwar.net> (@pathwar_net)
 
 # Add Pathwar tools
-#RUN curl bit.ly/pathwar-scripts-install | VERSION=1.0 bash
+RUN curl bit.ly/pathwar-scripts-install | bash
+
+# Override pathwar scripts
+RUN echo nginx -g daemon off > /pathwar/scripts/run
 
 # -onbuild specific
 ONBUILD CMD /pathwar/scripts/init
