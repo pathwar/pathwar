@@ -1,0 +1,6 @@
+#!/bin/sh
+
+. /pathwar/scripts/functions.sh
+
+run_script patch_level
+run_script run
