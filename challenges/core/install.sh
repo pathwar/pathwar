@@ -2,10 +2,23 @@
 
 BRANCH=${BRANCH:-master}
 SCRIPTSDIR=${SCRIPTSDIR:-/pathwar/scripts}
+DL=${DL:-wget}
+
+dl_wget() {
+    wget -O - --no-check-certificate $@
+}
+
+dl_curl() {
+    curl -Lk $@
+}
+
+dl() {
+    dl_$DL $@
+}
 
 apply_flavor() {
     flavor="${1}"
-    tar --strip=2 -C ${SCRIPTSDIR} -xzvf <(wget --no-check-certificate -qO - https://github.com/pathwar/level-scripts/archive/${BRANCH}.tar.gz) level-scripts-${BRANCH}/scripts${flavor}
+    tar --strip=2 -C ${SCRIPTSDIR} -xzvf <(dl https://github.com/pathwar/level-scripts/archive/${BRANCH}.tar.gz) level-scripts-${BRANCH}/scripts${flavor}
 }
 
 # scripts
