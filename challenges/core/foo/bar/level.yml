@@ -1,0 +1,6 @@
+level:
+  name: helloworld-apache-php
+  version: 1.0
+  author: Pathwar team
+  passphrases: 3
+  description: An example level with all hooks implemented and inheriting from the official php's docker image
