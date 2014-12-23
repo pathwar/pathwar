@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "[-] 'patch_level' scripts need to be overriden"
+echo "[-] Usually it contains commands to place the passphrases"
+exit 42
