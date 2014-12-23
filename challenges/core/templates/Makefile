@@ -1,8 +1,4 @@
-build:
-	fig build
+CHILDREN = nginx apache-php
 
-shell:	build
-	fig run scripts /bin/bash
-
-run:	build
-	fig up
+build release:
+    for child in $(CHILDREN); do $(MAKE) -C $$child $@; done
