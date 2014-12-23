@@ -12,4 +12,4 @@ RUN apt-get update \
 RUN curl -Lk http://j.mp/pathwar-scripts-install | DL=curl bash
 
 # Override pathwar scripts
-RUN apache2 -DFOREGROUND > /pathwar/scripts/run
+RUN echo apache2 -DFOREGROUND > /pathwar/scripts/run
