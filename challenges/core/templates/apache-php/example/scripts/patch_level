@@ -1,3 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+
+. /pathwar/scripts/functions.sh
 
 date > /var/www/html/date.txt
+
+for passphrase in {0..4}; do
+    get_passphrase $passphrase > /var/www/html/passphrase_${passphrase}.txt
+done
+
+cat /pathwar/level.yml > /var/www/html/level.txt

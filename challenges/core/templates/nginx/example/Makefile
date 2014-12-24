@@ -1,8 +1,12 @@
+NAME =	example
+
+all:	run
+
 build:
 	fig build
 
-run:	build
-	fig run example
+shell:	build
+	fig run $(NAME) /bin/bash
 
 up:	build
 	fig up
