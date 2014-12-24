@@ -1,3 +1,6 @@
+SKELETONS =	$(addsuffix /skeleton, $(VERSIONS))
+BUILDS =	$(addsuffix /build, $(VERSIONS))
+
 all:	build
 
 example:	1.7.8-onbuild/build
@@ -5,12 +8,9 @@ example:	1.7.8-onbuild/build
 	#$(MAKE) -C example run
 	$(MAKE) -C example up
 
-build:	$(addsuffix /build, $(VERSIONS))
+build:	$(BUILDS)
 
-$(addsuffix /skeleton, $(VERSIONS)):	../../skeleton ../../skeleton/* ../../skeleton/*/*
-	../../skeleton/install_local.sh $@
-
-$(addsuffix /build, $(VERSIONS)):	$(@:/build=/skeleton)
+$(BUILDS):	$(SKELETONS)
 	$(eval VERSION := $(shell dirname $@))
 	$(eval TAGS := $(shell cat $(VERSION)/tags))
 	docker build -t $(NAME):$(VERSION) $(VERSION)
@@ -18,5 +18,11 @@ $(addsuffix /build, $(VERSIONS)):	$(@:/build=/skeleton)
 		docker tag $(NAME):$(VERSION) $(NAME):$$tag; \
 	done
 
+$(SKELETONS):	../../skeleton ../../skeleton/* ../../skeleton/*/*
+	../../skeleton/install_local.sh $@
+
 release:
 	docker push $(NAME)
+
+clean:
+	rm -rf $(SKELETONS)
