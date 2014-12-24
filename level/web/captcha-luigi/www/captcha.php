@@ -21,7 +21,7 @@ function make_password($length=10) {
   return $str;
 }
 
-$_SESSION['password'] = make_password(3);
+$_SESSION['password'] = make_password();
 
 // Image creation
 $img = imagecreate(300, 150);
