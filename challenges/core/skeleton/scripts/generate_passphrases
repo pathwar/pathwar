@@ -16,4 +16,4 @@ info "Generated ${i} passphrases"
 
 chmod -R 700 /pathwar/passphrases
 
-[ "$PATHWAR_DEBUG" = True ] && ls -la /pathwar/passphrases
+[ "$PATHWAR_DEBUG" = True ] && ls -la /pathwar/passphrases || true
