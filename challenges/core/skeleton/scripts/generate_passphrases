@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+. /pathwar/scripts/functions.sh
+
+mkdir -p /pathwar/passphrases
+
+for i in {0..2}; do
+    # FIXME: get the amount of passphrases from the level.yml file
+    passphrase=$(echo $RANDOM | md5sum | awk '{print $1}')
+    echo $passphrase > /pathwar/passphrases/${i}
+done
+
+info "Generated ${i} passphrases"
+
+chmod -R 700 /pathwar/passphrases
+
+[ "$PATHWAR_DEBUG" = True ] && ls -la /pathwar/passphrases

@@ -1,3 +1,22 @@
 #!/bin/sh
 
-date > /usr/share/nginx/html/date.txt
+. /pathwar/scripts/functions.sh
+
+cat <<EOF >> /usr/share/nginx/html/index.html
+
+Infos
+<pre>
+  run date: $(date)
+  passphrase_0: "$(get_passphrase 0)"
+  passphrase_1: "$(get_passphrase 1)"
+  passphrase_2: "$(get_passphrase 2)"
+  passphrase_3: "$(get_passphrase 3)"
+</pre>
+
+<hr />
+
+Level.yml
+<pre>
+$(cat /pathwar/level.yml)
+</pre>
+EOF

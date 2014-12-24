@@ -1,6 +1,9 @@
 #!/bin/sh
 
+set -e
+
 . /pathwar/scripts/functions.sh
 
+run_script generate_passphrases
 run_script patch_level
 run_script run
