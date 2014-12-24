@@ -1,3 +1,5 @@
 #!/bin/sh
 
-echo FIXME
+. /pathwar/scripts/functions.sh
+
+sed -i "s/{passphrase}/$(get_passphrase 0)/" /usr/share/nginx/html/index.html
