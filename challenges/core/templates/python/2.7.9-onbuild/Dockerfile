@@ -1,4 +1,4 @@
-# pathwar/python:2.7.9 pathwar/python:2.7 pathwar/python:2
+# pathwar/python:2.7.9-onbuild pathwar/python:2.7-onbuild pathwar/python:2-onbuild
 FROM python:2.7.9
 MAINTAINER Pathwar Team <team@pathwar.net> (@pathwar_net)
 
@@ -6,7 +6,7 @@ MAINTAINER Pathwar Team <team@pathwar.net> (@pathwar_net)
 COPY skeleton /pathwar
 
 # Override pathwar scripts
-RUN echo python main.py > /pathwar/scripts/run
+RUN echo python2 main.py > /pathwar/scripts/run
 
 # Onbuild
 ONBUILD COPY scripts /pathwar/scripts/
