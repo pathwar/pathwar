@@ -1,0 +1,5 @@
+level:
+  name: helloworld-php-sqlite
+  version: 1.0
+  author: Pathwar team
+  description: A php/sqlite level example

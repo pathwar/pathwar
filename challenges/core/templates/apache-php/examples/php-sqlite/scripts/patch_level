@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. /pathwar/scripts/functions.sh
+
+# FIXME: Create DB and add passphrases
