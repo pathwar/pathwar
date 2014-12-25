@@ -10,7 +10,8 @@ RUN apt-get update \
 
 # PHP dependencies
 RUN docker-php-ext-install gd \
- && docker-php-ext-install mysqli
+ && docker-php-ext-install mysqli \
+ && docker-php-ext-install mysql
 
 # Add Pathwar tools
 COPY skeleton /pathwar

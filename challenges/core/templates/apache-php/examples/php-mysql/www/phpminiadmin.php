@@ -14,11 +14,11 @@
  #DEFAULT db connection settings
  # --- WARNING! --- if you set defaults - it's recommended to set $ACCESS_PWD to protect your db!
  $DBDEF=array(
- 'user'=>"",#required
+ 'user'=>"root",#required
  'pwd'=>"", #required
  'db'=>"",  #optional, default DB
- 'host'=>"",#optional
- 'port'=>"",#optional
+ 'host'=>$_ENV["MYSQL_PORT_3306_TCP_ADDR"],
+ 'port'=>$_ENV["MYSQL_PORT_3306_TCP_PORT"],
  'chset'=>"utf8",#optional, default charset
  );
 if (function_exists('date_default_timezone_set')) date_default_timezone_set('UTC');#required by PHP 5.1+
