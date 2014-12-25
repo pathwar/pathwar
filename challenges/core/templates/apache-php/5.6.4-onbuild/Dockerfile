@@ -24,3 +24,4 @@ ONBUILD COPY scripts /pathwar/scripts/
 ONBUILD COPY level.yml /pathwar/
 ONBUILD COPY www /var/www/html/
 ONBUILD COPY php.ini /usr/local/etc/php/conf.d/
+#ONBUILD RUN chown -R www-data:www-data /var/www/html/; chmod -R 777 /var/www/html/
