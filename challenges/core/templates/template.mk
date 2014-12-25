@@ -1,12 +1,14 @@
 SKELETONS =	$(addsuffix /skeleton, $(VERSIONS))
 BUILDS =	$(addsuffix /build, $(VERSIONS))
+EXAMPLEBUILDS =	$(addprefix examples/, $(addsuffix /build, $(EXAMPLES)))
 
 all:	build
 
-example:	1.7.8-onbuild/build
-	#$(MAKE) -C example build
-	#$(MAKE) -C example run
-	$(MAKE) -C example up
+examples:	$(EXAMPLEBUILDS)
+
+$(EXAMPLEBUILDS):	$(BUILDS)
+	$(eval EXAMPLE := $(shell dirname $@))
+	cd $(EXAMPLE) && fig build
 
 build:	$(BUILDS)
 
