@@ -1,0 +1,5 @@
+level:
+  name: helloworld-php-mysql
+  version: 1.0
+  author: Pathwar team
+  description: A php/mysql level example
