@@ -5,8 +5,12 @@ MAINTAINER Pathwar Team <team@pathwar.net> (@pathwar_net)
 # Install dependencies
 RUN apt-get update \
  && apt-get -y -q upgrade \
- && apt-get -y -q install curl \
+ && apt-get -y -q install curl mysql-client libpng12-dev \
  && apt-get clean
+
+# PHP dependencies
+RUN docker-php-ext-install gd mysql mysqli \
+ && rm -f /usr/local/etc/php/conf.d/*
 
 # Add Pathwar tools
 COPY skeleton /pathwar
