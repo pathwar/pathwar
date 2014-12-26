@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. /pathwar/scripts/functions.sh
+
+# FIXME: hide passphrase in the level

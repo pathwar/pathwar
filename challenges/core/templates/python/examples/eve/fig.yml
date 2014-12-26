@@ -1,0 +1,15 @@
+example:
+  build: .
+  ports:
+    - 8080
+  links:
+    - mongo
+#    - redis
+  environment:
+    PATHWAR_DEBUG: true
+
+mongo:
+  image: mongo:latest
+
+#redis:
+#  image: redis
