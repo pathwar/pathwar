@@ -1,4 +1,4 @@
-CHILDREN = nginx apache-php
+CHILDREN = nginx apache-php ruby python nodejs
 
 all:	build
 
