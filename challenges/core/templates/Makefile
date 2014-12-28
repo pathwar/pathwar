@@ -1,4 +1,4 @@
-CHILDREN = nginx apache-php ruby python nodejs
+CHILDREN = nginx apache-php ruby python nodejs golang
 
 all:	build
 
