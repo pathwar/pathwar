@@ -1,5 +1,5 @@
 NAME ?=		pathwar/golang
 VERSIONS ?=	1.4.0 1.4.0-onbuild
-#EXAMPLES ?=	revel
+EXAMPLES ?=	revel-chat
 
 -include ../template.mk

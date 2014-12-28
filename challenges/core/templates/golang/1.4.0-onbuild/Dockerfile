@@ -21,6 +21,6 @@ ONBUILD COPY level.yml /pathwar/
 
 RUN mkdir -p /go/src/app
 WORKDIR /go/src/app
-ONBUILD COPY . /go/src/app
+ONBUILD COPY app /go/src/app
 ONBUILD RUN go-wrapper download
 ONBUILD RUN go-wrapper install
