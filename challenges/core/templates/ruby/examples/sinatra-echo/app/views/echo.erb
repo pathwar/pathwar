@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Echo</title>
+  </head>
+  <body>
+    <ul>
+      <% data.each do |group,map| %>
+      <li><strong><%= group.capitalize %></strong>:
+        <ul>
+        <% map.each do |k,v| %>
+          <li><%= k %>: <%= v %></li>
+        <% end %>
+        </ul>
+      </li>
+      <% end %>
+    </ul>
+  </body>
+</html>
+

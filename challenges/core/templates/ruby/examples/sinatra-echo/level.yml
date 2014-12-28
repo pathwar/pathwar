@@ -1,0 +1,5 @@
+level:
+  name: sinatra-echo
+  version: 1.0
+  author: Pathwar team
+  description: A Sinatra echo demo

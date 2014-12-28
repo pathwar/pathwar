@@ -1,0 +1,31 @@
+GIT
+  remote: https://github.com/md5/rack-conneg.git
+  revision: a337a4fa22240ef0529a6f459d53f3354feaeba9
+  branch: nil-fallback
+  specs:
+    rack-conneg (0.2.0)
+      rack (>= 1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    erubis (2.7.0)
+    puma (2.9.0)
+      rack (>= 1.1, < 2.0)
+    rack (1.5.2)
+    rack-protection (1.5.3)
+      rack
+    sinatra (1.4.5)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
+    tilt (1.4.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  erubis
+  puma
+  rack-conneg!
+  sinatra

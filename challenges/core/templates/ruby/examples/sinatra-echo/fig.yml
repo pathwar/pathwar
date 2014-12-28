@@ -1,0 +1,6 @@
+example:
+  build: .
+  ports:
+    - 9292
+  environment:
+    PATHWAR_DEBUG: true
