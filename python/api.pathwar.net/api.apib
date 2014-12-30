@@ -23,13 +23,20 @@ This section describes about the People
 ## User [/user/{id}]
 This resource represents one particular user identified by its *id*.
 
-+ Model (application/json)
++ Parameters
+    + id (string, `1`) ... The id of the User.
 
-    {
-      "name": "m1ch3l",
-      "birthdate": "04-02-1942",
-      "organization_id": "xxxx-xxxxxx-xxxxxx-xxxx"
-    }
++ Model (application/json)
+    JSON representation of User resource.
+    + Body
+
+        ```js
+        {
+          "name": "m1ch3l",
+          "birthdate": "04-02-1942",
+          "organization_id": "xxxx-xxxxxx-xxxxxx-xxxx"
+        }
+        ```
 
 
 ### Retrieve User [GET]
@@ -46,14 +53,18 @@ Return the information for the User
 This resource represents one particular organization identified by its *id*.
 
 + Model (application/json)
+    JSON representation of Organization resource.
+    + Body
 
-    {
-      "name": "ulteam",
-      "members": [
-        "xxxx-xxxxxx-xxxxxx-xxxx",
-        "xxxx-xxxxxx-xxxxxx-xxxx",
-      ]
-    }
+        ```js
+        {
+          "name": "ulteam",
+          "members": [
+            "xxxx-xxxxxx-xxxxxx-xxxx",
+            "xxxx-xxxxxx-xxxxxx-xxxx",
+          ]
+        }
+        ```
 
 
 ### Retrieve Organization [GET]
@@ -74,12 +85,16 @@ This section describes about the Level
 This resource represents one particular level identified by its *id*.
 
 + Model (application/json)
+    JSON representation of a Level resource.
+    + Body
 
-    {
-      "name": "pwnland",
-      "description": "pwnland is cool",
-      "author": "Pathwar Team (@pathwar_net)"
-    }
+        ```js
+        {
+          "name": "pwnland",
+          "description": "pwnland is cool",
+          "author": "Pathwar Team (@pathwar_net)"
+        }
+        ```
 
 
 ### Retrieve Level [GET]
