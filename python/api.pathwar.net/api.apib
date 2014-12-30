@@ -5,6 +5,36 @@ HOST: https://api.pathwar.net/v1
 
 Official Pathwar REST Api
 
-# Group Organization
+# Group People
 
-This section describes about the Organizations
+This section describes about the People
+
+## Person [/people/{id}]
+
+Represent particular Person
+
++ Parameters
+
++ id (required, string, `123`) ... The id of the Person.
+
++ Model (application/json)
+
+```
+{"name":"Gesang","birthdate":"01-09-1917"}
+```
+
+### Retrieve Person [GET]
+
+Return the information for the Person
+
++ Request (application/json)
+
++ Headers
+
+```
+Authorization: Basic AbcdeFg=
+```
+
++ Response 200 (application/json)
+
+[Person][]
