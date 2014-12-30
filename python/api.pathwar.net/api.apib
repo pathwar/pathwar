@@ -1,8 +1,10 @@
 # Pathwar API
 Official Pathwar REST Api
 
+
 # Group People
 This section describes about the People
+
 
 ## Person [/people/{id}]
 This resource represents one particular person identified by its *id*.
@@ -14,8 +16,8 @@ This resource represents one particular person identified by its *id*.
       "birthdate": "04-02-1942"
     }
 
-### Retrieve Person [GET]
 
+### Retrieve Person [GET]
 Return the information for the Person
 
 + Request (application/json)
@@ -23,3 +25,22 @@ Return the information for the Person
 + Response 200 (application/json)
 
     [Person][]
+
+
+## Organization [/organization/{id}]
+This resource represents one particular organization identified by its *id*.
+
++ Model (application/json)
+
+    {
+      "name": "ulteam"
+    }
+
+### Retrieve Organization [GET]
+Return the information for the Organization
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    [Organization][]
