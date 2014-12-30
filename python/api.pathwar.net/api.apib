@@ -105,3 +105,31 @@ Return the information for the Level
 + Response 200 (application/json)
 
     [Level][]
+
+
+# Group Coupon
+This section describes about the Coupon
+
+
+## Coupon [/coupon/{id}]
+This resource represents one particular coupon identified by its *id*.
+
++ Model (application/json)
+    JSON representation of a Coupon resource.
+    + Body
+
+        ```js
+        {
+          "name": "magic coupon"
+        }
+        ```
+
+
+### Retrieve Coupon [GET]
+Return the information for the Coupon
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    [Coupon][]
