@@ -41,6 +41,7 @@ This resource represents one particular organization identified by its *id*.
       ]
     }
 
+
 ### Retrieve Organization [GET]
 Return the information for the Organization
 
@@ -49,3 +50,29 @@ Return the information for the Organization
 + Response 200 (application/json)
 
     [Organization][]
+
+
+# Group Level
+This section describes about the Level
+
+
+## Level [/level/{id}]
+This resource represents one particular level identified by its *id*.
+
++ Model (application/json)
+
+    {
+      "name": "pwnland",
+      "description": "pwnland is cool",
+      "author": "Pathwar Team (@pathwar_net)"
+    }
+
+
+### Retrieve Level [GET]
+Return the information for the Level
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    [Level][]
