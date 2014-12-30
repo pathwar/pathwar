@@ -13,7 +13,8 @@ This resource represents one particular person identified by its *id*.
 
     {
       "name": "m1ch3l",
-      "birthdate": "04-02-1942"
+      "birthdate": "04-02-1942",
+      "organization_id": "xxxx-xxxxxx-xxxxxx-xxxx"
     }
 
 
@@ -33,7 +34,11 @@ This resource represents one particular organization identified by its *id*.
 + Model (application/json)
 
     {
-      "name": "ulteam"
+      "name": "ulteam",
+      "members": [
+        "xxxx-xxxxxx-xxxxxx-xxxx",
+        "xxxx-xxxxxx-xxxxxx-xxxx",
+      ]
     }
 
 ### Retrieve Organization [GET]
