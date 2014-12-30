@@ -1,27 +1,18 @@
-FORMAT: 1A
-HOST: https://api.pathwar.net/v1
-
 # Pathwar API
-
 Official Pathwar REST Api
 
 # Group People
-
 This section describes about the People
 
 ## Person [/people/{id}]
-
-Represent particular Person
-
-+ Parameters
-
-+ id (required, string, `123`) ... The id of the Person.
+This resource represents one particular person identified by its *id*.
 
 + Model (application/json)
 
-```
-{"name":"Gesang","birthdate":"01-09-1917"}
-```
+    {
+      "name": "m1ch3l",
+      "birthdate": "04-02-1942"
+    }
 
 ### Retrieve Person [GET]
 
@@ -29,12 +20,6 @@ Return the information for the Person
 
 + Request (application/json)
 
-+ Headers
-
-```
-Authorization: Basic AbcdeFg=
-```
-
 + Response 200 (application/json)
 
-[Person][]
+    [Person][]
