@@ -125,11 +125,39 @@ This resource represents one particular coupon identified by its *id*.
         ```
 
 
-### Retrieve Coupon [GET]
-Return the information for the Coupon
+### Retrieve Achievement [GET]
+Return the information for the Achievement
 
 + Request (application/json)
 
 + Response 200 (application/json)
 
-    [Coupon][]
+    [Achievement][]
+
+# Group Achievement
+This section describes about the Achievement
+
+
+## Achievement [/achievement/{id}]
+This resource represents one particular achievement identified by its *id*.
+
++ Model (application/json)
+    JSON representation of a Achievement resource.
+    + Body
+
+        ```js
+        {
+          "name": "hack the planet",
+          "description": "Finish all the levels"
+        }
+        ```
+
+
+### Retrieve Achievement [GET]
+Return the information for the Achievement
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    [Achievement][]
