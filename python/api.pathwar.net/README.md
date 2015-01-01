@@ -24,6 +24,7 @@ Path                  | Resource                | Methods
 /levels/{id}          | Level                   | GET
 /organizations        | Organization collection | GET
 /organizations/{id}   | Organization            | GET
+/users                | User collection         | GET
 /users/{id}           | User                    | GET
 
 ---
@@ -41,4 +42,5 @@ Path                  | Method | Action
 /levels/{id}          | GET    | Retrieve a level
 /organizations        | GET    | List organizations
 /organizations/{id}   | GET    | Retrieve an organization
+/users                | GET    | List users
 /users/{id}           | GET    | Retrieve a user

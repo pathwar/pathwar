@@ -47,6 +47,37 @@ Return the information for the User
     [User][]
 
 
+## User Collection [/users]
+Collection of users.
+
++ Model (application/json)
+
+        ```js
+        {
+          "count": 2,
+          "_embedded": [
+            {
+              "name": "m1ch3l",
+              "birthdate": "04-02-1942",
+              "organization_id": "xxxx-xxxxxx-xxxxxx-xxxx"
+            },
+            {
+              "name": "harry potter",
+              "birthdate": "01-01-1990",
+              "organization_id": "xxxx-xxxxxx-xxxxxx-xxxx"
+            }
+          ]
+        }
+        ```
+
+
+### List all users [GET]
+
++ Response 200 (application/json)
+
+    [User Collection][]
+
+
 ## Organization [/organizations/{id}]
 This resource represents one particular organization identified by its *id*.
 
