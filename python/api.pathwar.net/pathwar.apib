@@ -107,6 +107,39 @@ Return the information for the Level
     [Level][]
 
 
+## Level Collection [/level]
+Collection of levels.
+
++ Model (application/json)
+    JSON representation of a Level resource.
+    + Body
+
+        ```js
+        {
+          "count": 2,
+          "_embedded": [
+            {
+              "name": "pwnland",
+              "description": "pwnland is cool",
+              "author": "Pathwar Team (@pathwar_net)"
+            },
+            {
+              "name": "megapwnland",
+              "description": "megapwnland is megacool",
+              "author": "Pathwar Team (@pathwar_net)"
+            }
+          ]
+        }
+        ```
+
+
+### List all levels [GET]
+
++ Response 200 (application/json)
+
+    [Level Collection][]
+
+
 # Group Coupon
 This section describes about the Coupon
 
