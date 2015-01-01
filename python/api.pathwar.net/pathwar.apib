@@ -73,6 +73,41 @@ Return the information for the Organization
     [Organization][]
 
 
+## Organization Collection [/organizations]
+Collection of organizations.
+
++ Model (application/json)
+
+        ```js
+        {
+          "count": 2,
+          "_embedded": [
+            {
+              "name": "ulteam",
+              "members": [
+                "xxxx-xxxxxx-xxxxxx-xxx1",
+                "xxxx-xxxxxx-xxxxxx-xxx2",
+              ]
+            },
+            {
+              "name": "ultreme",
+              "members": [
+                "xxxx-xxxxxx-xxxxxx-xxx3",
+                "xxxx-xxxxxx-xxxxxx-xxx4",
+              ]
+            },
+          ]
+        }
+        ```
+
+
+### List all organizations [GET]
+
++ Response 200 (application/json)
+
+    [Organization Collection][]
+
+
 # Group Level
 This section describes about the Level
 
@@ -105,8 +140,6 @@ Return the information for the Level
 Collection of levels.
 
 + Model (application/json)
-    JSON representation of a Level resource.
-    + Body
 
         ```js
         {
