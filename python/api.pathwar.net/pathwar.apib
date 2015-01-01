@@ -217,3 +217,32 @@ Return the information for the Achievement
 + Response 200 (application/json)
 
     [Achievement][]
+
+
+## Achievement Collection [/achievements]
+Collection of achievements.
+
++ Model (application/json)
+
+        ```js
+        {
+          "count": 2,
+          "_embedded": [
+            {
+              "name": "hack the planet",
+              "description": "Finish all the levels"
+            },
+            {
+              "name": "hack the universe",
+              "description": "Finish all the levels and more"
+            }
+          ]
+        }
+        ```
+
+
+### List all achievements [GET]
+
++ Response 200 (application/json)
+
+    [Achievement Collection][]
