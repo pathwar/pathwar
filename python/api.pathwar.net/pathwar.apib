@@ -189,7 +189,10 @@ This resource represents one particular coupon identified by its *id*.
 
         ```js
         {
-          "name": "magic coupon"
+          "name": "magic coupon",
+          "token": "*hidden*",
+          "unique": true,
+          "state": "available"
         }
         ```
 
@@ -200,6 +203,40 @@ Return the information for the Coupon
 + Response 200 (application/json)
 
     [Coupon][]
+
+
+## Coupon Collection [/coupons]
+Collection of coupons.
+
++ Model (application/json)
+
+        ```js
+        {
+          "count": 2,
+          "_embedded": [
+            {
+              "name": "magic coupon",
+              "token": "*hidden*",
+              "unique": true,
+              "state": "available"
+            },
+            {
+              "name": "mega magic coupon",
+              "token": "*hidden*",
+              "unique": true,
+              "state": "available"
+            }
+          ]
+        }
+        ```
+
+
+### List all coupons [GET]
+
++ Response 200 (application/json)
+
+    [Coupon Collection][]
+
 
 # Group Achievement
 This section describes about the Achievement

@@ -18,6 +18,7 @@ Path                  | Resource                | Methods
 ----------------------|-------------------------|---------
 /achievements         | Achievement collection  | GET
 /achievements/{id}    | Achievement             | GET
+/coupons              | Coupon collection       | GET
 /coupons/{id}         | Coupon                  | GET
 /levels               | Level collection        | GET
 /levels/{id}          | Level                   | GET
@@ -34,6 +35,7 @@ Path                  | Method | Action
 ----------------------|--------|--------------------------
 /achievements         | GET    | List achievements
 /achievements/{id}    | GET    | Retrieve an achievement
+/coupons              | GET    | List coupons
 /coupons/{id}         | GET    | Retrieve a coupon
 /levels               | GET    | List levels
 /levels/{id}          | GET    | Retrieve a level
