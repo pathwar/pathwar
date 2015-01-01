@@ -1,12 +1,14 @@
+APIFILE =	pathwar.apib
+
 dev:
-	aglio -i api.apib -s
+	aglio -i $(APIFILE) -s
 
 
 release:
 	git branch -D gh-pages || true
 	git checkout -b gh-pages
-	aglio -i api.apib -t default -o api.html
-	git add api.html
-	git commit api.html -m "Rebuild assets"
-	git push -u origin gh-pages
+	aglio -i $(APIFILE) -t default -o index.html
+	git add index.html
+	git commit index.html -m "Rebuild assets"
+	git push -u origin gh-pages -f
 	git checkout master
