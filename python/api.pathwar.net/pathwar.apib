@@ -326,3 +326,62 @@ Collection of achievements.
 + Response 200 (application/json)
 
     [Achievement Collection][]
+
+
+# Group Session
+This section describes about the Session
+
+
+## Session [/sessions/{id}]
+This resource represents one particular session identified by its *id*.
+
++ Parameters
+    + id (required, string, `123e4567-e89b-12d3-a456-426655440000`) ... Id of a session.
+
++ Model (application/json)
+    JSON representation of a Session resource.
+    + Body
+
+        ```js
+        {
+          "name": "Paris Final",
+          "description": "Best teams of Paris"
+        }
+        ```
+
+
+### Retrieve Session [GET]
+Return the information for the Session
+
++ Response 200 (application/json)
+
+    [Session][]
+
+
+## Session Collection [/sessions]
+Collection of sessions.
+
++ Model (application/json)
+
+        ```js
+        {
+          "count": 2,
+          "_embedded": [
+            {
+              "name": "Paris Final",
+              "description": "Best teams of Paris"
+            },
+            {
+              "name": "SF Final",
+              "description": "Best teams of San Francisco"
+            }
+          ]
+        }
+        ```
+
+
+### List all sessions [GET]
+
++ Response 200 (application/json)
+
+    [Session Collection][]
