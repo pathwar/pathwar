@@ -24,14 +24,47 @@ users = {
             'type': 'list',
             'allowed': ['participant', 'guest', 'admin']
         },
-    }
+    },
 }
 
 
-organizations = {}
+coupons = {
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'schema': {
+        'hash': {
+            'type': 'string',
+            'minlength': 3,
+            'maxlength': 32,
+            'unique': True,
+        },
+    },
+}
+
+
+organizations = {
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'additional_lookup': {
+        'url': 'regex("[\w]+")',
+        'field': 'name',
+    },
+    'schema': {
+        'name': {
+            'type': 'string',
+            'minlength': 3,
+            'maxlength': 16,
+            'unique': True,
+        },
+        'points': {
+            'type': 'integer',
+        },
+    },
+}
 
 
 DOMAIN = {
     'users': users,
     'organizations': organizations,
+    'coupons': coupons,
 }
