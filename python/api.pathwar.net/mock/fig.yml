@@ -5,7 +5,7 @@ server:
   ports:
   - "5000:5000"
   volumes:
-  - .:/server
+  - .:/usr/src/app
   links:
   - mongo
 
