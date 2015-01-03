@@ -23,6 +23,9 @@ coupons = {
 }
 
 
+items = {}
+
+
 levels = {}
 
 
@@ -75,6 +78,7 @@ users = {
 DOMAIN = {
     'achievements': achievements,
     'coupons': coupons,
+    'items': items,
     'levels': levels,
     'organizations': organizations,
     'sessions': sessions,
