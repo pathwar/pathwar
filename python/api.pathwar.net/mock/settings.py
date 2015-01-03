@@ -54,10 +54,22 @@ level_hints = {
     'item_title': 'hint',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'url': 'levels/<regex(".*"):level_id>/hints',
+    'url': 'levels/<level>/hints',
+    'additional_lookup': {
+        'url': 'string',
+        'field': 'name',
+    },
     'schema': {
-        'level_id': {
+        'name': {
             'type': 'string',
+        },
+        'level': {
+            'type': 'objectid',
+            'data_relation': {
+                'resource': 'levels',
+                'field': 'name',
+                'embeddable': True,
+            },
         },
     },
 }

@@ -18,8 +18,11 @@ if __name__ == '__main__':
         level_id = app.data.driver.db['levels'].insert({
             'name': 'example-level',
         })
-        hint_id = app.data.driver.db['hints'].insert({
-            'level_id': level_id,
+        hint_id = app.data.driver.db['level_hints'].insert({
+            #'level': level_id,
+            'level': 'example-level',
+            'name': 'example-level-hint',
         })
+
 
     app.run(debug=True, host='0.0.0.0')
