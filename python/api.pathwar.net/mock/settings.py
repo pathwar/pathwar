@@ -98,6 +98,35 @@ levels = {
 }
 
 
+organization_levels = {
+    'item_title': 'organization level',
+    'resource_title': 'organization levels',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'url': 'organizations/<organization>/levels',
+    'schema': {
+        'organization': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'level': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'levels',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+    },
+}
+
+
 organizations = {
     'item_title': 'organization',
     'resource_methods': ['GET', 'POST', 'DELETE'],
@@ -149,6 +178,7 @@ user_notifications = {
             'data_relation': {
                 'resource': 'users',
                 'field': '_id',
+                'embeddable': True,
             },
         },
     },
@@ -173,6 +203,7 @@ user_tokens = {
             'data_relation': {
                 'resource': 'users',
                 'field': '_id',
+                'embeddable': True,
             },
         },
     },
@@ -206,6 +237,7 @@ DOMAIN = {
     'items': items,
     'level_hints': level_hints,
     'levels': levels,
+    'organization_levels': organization_levels,
     'organizations': organizations,
     'sessions': sessions,
     'user_notifications': user_notifications,

@@ -35,6 +35,10 @@ if __name__ == '__main__':
             'level': level_id,
             'name': 'example-level-hint-2',
         })
+        organization_level = app.data.driver.db['organization_levels'].insert({
+            'level': level_id,
+            'organization': organization_id,
+        })
 
     # Run
     app.run(debug=True, host='0.0.0.0')
