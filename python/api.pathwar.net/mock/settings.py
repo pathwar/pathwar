@@ -100,8 +100,8 @@ levels = {
 
 
 organization_achievements = {
-    'item_title': 'organization achievement',
-    'resource_title': 'organization achievements',
+    'item_title': 'organization earned achievement',
+    'resource_title': 'organization earned achievements',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'organizations/<organization>/achievements',
@@ -130,8 +130,8 @@ organization_achievements = {
 
 
 organization_coupons = {
-    'item_title': 'organization coupon',
-    'resource_title': 'organization coupons',
+    'item_title': 'organization validated coupon',
+    'resource_title': 'organization validated coupons',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'organizations/<organization>/coupons',
@@ -160,8 +160,8 @@ organization_coupons = {
 
 
 organization_level_validations = {
-    'item_title': 'organization level validation',
-    'resource_title': 'organization level validations',
+    'item_title': 'organization level validation submission',
+    'resource_title': 'organization level validation submissions',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'organizations/<organization>/levels/<level>/validations',
@@ -190,8 +190,8 @@ organization_level_validations = {
 
 
 organization_levels = {
-    'item_title': 'organization level',
-    'resource_title': 'organization levels',
+    'item_title': 'organization bought level',
+    'resource_title': 'organization bought levels',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'organizations/<organization>/levels',
