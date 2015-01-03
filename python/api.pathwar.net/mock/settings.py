@@ -127,6 +127,35 @@ organization_levels = {
 }
 
 
+organization_achievements = {
+    'item_title': 'organization achievement',
+    'resource_title': 'organization achievements',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'url': 'organizations/<organization>/achievements',
+    'schema': {
+        'organization': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'achievement': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'achievements',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+    },
+}
+
+
 organizations = {
     'item_title': 'organization',
     'resource_methods': ['GET', 'POST', 'DELETE'],
@@ -237,6 +266,7 @@ DOMAIN = {
     'items': items,
     'level_hints': level_hints,
     'levels': levels,
+    'organization_achievements': organization_achievements,
     'organization_levels': organization_levels,
     'organizations': organizations,
     'sessions': sessions,

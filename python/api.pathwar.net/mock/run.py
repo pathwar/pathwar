@@ -17,6 +17,9 @@ if __name__ == '__main__':
             'login': 'example-user',
             'role': 'participant',
         })
+        achievement_id = app.data.driver.db['achievements'].insert({
+            'name': 'pwn da world',
+        })
         token_id = app.data.driver.db['user_tokens'].insert({
             'user': user_id,
         })
@@ -37,6 +40,10 @@ if __name__ == '__main__':
         })
         organization_level = app.data.driver.db['organization_levels'].insert({
             'level': level_id,
+            'organization': organization_id,
+        })
+        organization_achievement = app.data.driver.db['organization_achievements'].insert({
+            'achievement': achievement_id,
             'organization': organization_id,
         })
 
