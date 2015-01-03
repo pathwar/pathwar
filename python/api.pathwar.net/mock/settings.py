@@ -52,6 +52,7 @@ items = {
 
 level_hints = {
     'item_title': 'hint',
+    'resource_title': 'level hints',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'url': 'levels/<level>/hints',
@@ -62,12 +63,15 @@ level_hints = {
     'schema': {
         'name': {
             'type': 'string',
+            # 'unique': True,
         },
         'level': {
             'type': 'objectid',
+            'required': True,
             'data_relation': {
                 'resource': 'levels',
-                'field': 'name',
+                'field': '_id',
+                # 'field': 'name',
                 'embeddable': True,
             },
         },
