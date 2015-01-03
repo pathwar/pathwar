@@ -17,6 +17,9 @@ if __name__ == '__main__':
             'login': 'example-user',
             'role': 'participant',
         })
+        token_id = app.data.driver.db['user_tokens'].insert({
+            'user': user_id,
+        })
         level_id = app.data.driver.db['levels'].insert({
             'name': 'example-level',
         })

@@ -51,7 +51,7 @@ items = {
 
 
 level_hints = {
-    'item_title': 'hint',
+    'item_title': 'level hint',
     'resource_title': 'level hints',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
@@ -133,6 +133,30 @@ sessions = {
 }
 
 
+user_tokens = {
+    'item_title': 'user token',
+    'resource_title': 'user tokens',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'url': 'users/<user>/tokens',
+    'schema': {
+        'token': {
+            'type': 'string',
+            'default': 'random token',
+            'unique': True,
+        },
+        'user': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'users',
+                'field': '_id',
+            },
+        },
+    },
+}
+
+
 users = {
     'item_title': 'user',
     'resource_methods': ['GET', 'POST', 'DELETE'],
@@ -162,5 +186,6 @@ DOMAIN = {
     'levels': levels,
     'organizations': organizations,
     'sessions': sessions,
+    'user_tokens': user_tokens,
     'users': users,
 }
