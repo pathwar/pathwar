@@ -55,7 +55,8 @@ level_hints = {
     'resource_title': 'level hints',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'url': 'levels/<level>/hints',
+    #'url': 'levels/<level>/hints',
+    'url': 'level-hints',
     'additional_lookup': {
         'url': 'string',
         'field': 'name',
@@ -84,7 +85,7 @@ levels = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'additional_lookup': {
-        'url': 'regex(".*")',
+        'url': 'string',
         'field': 'name',
     },
     'schema': {
@@ -103,7 +104,8 @@ organization_achievements = {
     'resource_title': 'organization achievements',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'url': 'organizations/<organization>/achievements',
+    #'url': 'organizations/<organization>/achievements',
+    'url': 'organization-achievements',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -132,7 +134,8 @@ organization_coupons = {
     'resource_title': 'organization coupons',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'url': 'organizations/<organization>/coupons',
+    #'url': 'organizations/<organization>/coupons',
+    'url': 'organization-coupons',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -161,7 +164,8 @@ organization_level_validations = {
     'resource_title': 'organization level validations',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'url': 'organizations/<organization>/levels/<level>/validations',
+    #'url': 'organizations/<organization>/levels/<level>/validations',
+    'url': 'organization-level-validations',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -190,7 +194,8 @@ organization_levels = {
     'resource_title': 'organization levels',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'url': 'organizations/<organization>/levels',
+    #'url': 'organizations/<organization>/levels',
+    'url': 'organization-levels',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -219,7 +224,8 @@ organization_items = {
     'resource_title': 'organization items',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'url': 'organizations/<organization>/items',
+    #'url': 'organizations/<organization>/items',
+    'url': 'organization-items',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -248,7 +254,8 @@ organization_users = {
     'resource_title': 'organization items',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'url': 'organizations/<organization>/users',
+    #'url': 'organizations/<organization>/users',
+    'url': 'organization-users',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -277,7 +284,7 @@ organizations = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'additional_lookup': {
-        'url': 'regex(".*")',
+        'url': 'string',
         'field': 'name',
     },
     'schema': {
@@ -312,7 +319,8 @@ user_notifications = {
     'resource_title': 'user notifications',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'url': 'users/<user>/notifications',
+    #'url': 'users/<user>/notifications',
+    'url': 'user-notifications',
     'schema': {
         'title': {
             'type': 'string',
@@ -335,7 +343,8 @@ user_tokens = {
     'resource_title': 'user tokens',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'url': 'users/<user>/tokens',
+    #'url': 'users/<user>/tokens',
+    'url': 'user-tokens',
     'schema': {
         'token': {
             'type': 'string',
@@ -361,7 +370,7 @@ users = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'additional_lookup': {
-        'url': 'regex(".*")',
+        'url': 'string',
         'field': 'login',
     },
     'schema': {
