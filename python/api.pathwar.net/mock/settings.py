@@ -98,6 +98,93 @@ levels = {
 }
 
 
+organization_achievements = {
+    'item_title': 'organization achievement',
+    'resource_title': 'organization achievements',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'url': 'organizations/<organization>/achievements',
+    'schema': {
+        'organization': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'achievement': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'achievements',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+    },
+}
+
+
+organization_coupons = {
+    'item_title': 'organization coupon',
+    'resource_title': 'organization coupons',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'url': 'organizations/<organization>/coupons',
+    'schema': {
+        'organization': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'coupon': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'coupons',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+    },
+}
+
+
+organization_level_validations = {
+    'item_title': 'organization level validation',
+    'resource_title': 'organization level validations',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'url': 'organizations/<organization>/levels/<level>/validations',
+    'schema': {
+        'organization': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'level': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'levels',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+    },
+}
+
+
 organization_levels = {
     'item_title': 'organization level',
     'resource_title': 'organization levels',
@@ -127,12 +214,12 @@ organization_levels = {
 }
 
 
-organization_achievements = {
-    'item_title': 'organization achievement',
-    'resource_title': 'organization achievements',
+organization_items = {
+    'item_title': 'organization item',
+    'resource_title': 'organization items',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'url': 'organizations/<organization>/achievements',
+    'url': 'organizations/<organization>/items',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -143,11 +230,40 @@ organization_achievements = {
                 'embeddable': True,
             },
         },
-        'achievement': {
+        'item': {
             'type': 'objectid',
             'required': True,
             'data_relation': {
-                'resource': 'achievements',
+                'resource': 'items',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+    },
+}
+
+
+organization_users = {
+    'item_title': 'organization item',
+    'resource_title': 'organization items',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'url': 'organizations/<organization>/users',
+    'schema': {
+        'organization': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'item': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'items',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -226,6 +342,7 @@ user_tokens = {
             'default': 'random token',
             'unique': True,
         },
+        # FIXME: Add permissions, range, etc to enable user to create workflows
         'user': {
             'type': 'objectid',
             'required': True,
@@ -267,7 +384,11 @@ DOMAIN = {
     'level_hints': level_hints,
     'levels': levels,
     'organization_achievements': organization_achievements,
+    'organization_coupons': organization_coupons,
+    'organization_items': organization_items,
+    'organization_level_validations': organization_level_validations,
     'organization_levels': organization_levels,
+    'organization_users': organization_users,
     'organizations': organizations,
     'sessions': sessions,
     'user_notifications': user_notifications,

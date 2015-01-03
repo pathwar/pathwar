@@ -13,14 +13,18 @@ if __name__ == '__main__':
         organization_id = app.data.driver.db['organizations'].insert({
             'name': 'example-organization',
         })
+        coupon_id = app.data.driver.db['coupons'].insert({
+        })
         user_id = app.data.driver.db['users'].insert({
             'login': 'example-user',
             'role': 'participant',
         })
+        item_id = app.data.driver.db['items'].insert({
+        })
         achievement_id = app.data.driver.db['achievements'].insert({
             'name': 'pwn da world',
         })
-        token_id = app.data.driver.db['user_tokens'].insert({
+        user_token_id = app.data.driver.db['user_tokens'].insert({
             'user': user_id,
         })
         notification_id = app.data.driver.db['user_notifications'].insert({
@@ -44,6 +48,22 @@ if __name__ == '__main__':
         })
         organization_achievement = app.data.driver.db['organization_achievements'].insert({
             'achievement': achievement_id,
+            'organization': organization_id,
+        })
+        organization_coupon = app.data.driver.db['organization_coupons'].insert({
+            'coupon': coupon_id,
+            'organization': organization_id,
+        })
+        organization_item = app.data.driver.db['organization_items'].insert({
+            'item': item_id,
+            'organization': organization_id,
+        })
+        organization_user = app.data.driver.db['organization_users'].insert({
+            'user': user_id,
+            'organization': organization_id,
+        })
+        organization_level_validation = app.data.driver.db['organization_level_validations'].insert({
+            'level': level_id,
             'organization': organization_id,
         })
 
