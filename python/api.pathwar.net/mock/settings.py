@@ -133,6 +133,28 @@ sessions = {
 }
 
 
+user_notifications = {
+    'item_title': 'user notification',
+    'resource_title': 'user notifications',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'url': 'users/<user>/notifications',
+    'schema': {
+        'title': {
+            'type': 'string',
+        },
+        'user': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'users',
+                'field': '_id',
+            },
+        },
+    },
+}
+
+
 user_tokens = {
     'item_title': 'user token',
     'resource_title': 'user tokens',
@@ -186,6 +208,7 @@ DOMAIN = {
     'levels': levels,
     'organizations': organizations,
     'sessions': sessions,
+    'user_notifications': user_notifications,
     'user_tokens': user_tokens,
     'users': users,
 }

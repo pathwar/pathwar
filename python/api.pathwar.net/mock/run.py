@@ -20,6 +20,10 @@ if __name__ == '__main__':
         token_id = app.data.driver.db['user_tokens'].insert({
             'user': user_id,
         })
+        notification_id = app.data.driver.db['user_notifications'].insert({
+            'user': user_id,
+            'title': 'Welcome',
+        })
         level_id = app.data.driver.db['levels'].insert({
             'name': 'example-level',
         })
