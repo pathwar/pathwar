@@ -290,12 +290,22 @@ organizations = {
     'schema': {
         'name': {
             'type': 'string',
-            'minlength': 3,
-            'maxlength': 16,
             'unique': True,
         },
         'points': {
             'type': 'integer',
+            'default': 0,
+        },
+        'users': {
+            'type': 'list',
+            'schema': {
+                'type': 'objectid',
+                'data_relation': {
+                    'resource': 'users',
+                    'field': '_id',
+                    'embeddable': True,
+                },
+            },
         },
     },
 }
@@ -487,6 +497,7 @@ users = {
 
 
 DOMAIN = {
+    # Exposed
     'achievements': achievements,
     'coupons': coupons,
     'items': items,
