@@ -310,6 +310,83 @@ sessions = {
             'type': 'string',
             'unique': True,
         },
+        'active': {
+            'type': 'boolean',
+            'default': True,
+        },
+        'allow_new_organizations': {
+            'type': 'boolean',
+            'default': True,
+        },
+        'allow_update_organizations': {
+            'type': 'boolean',
+            'default': True,
+        }
+    },
+}
+
+
+user_activities = {
+    'item_title': 'user activitie',
+    'resource_title': 'user activities',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    #'url': 'users/<user>/activities',
+    'url': 'user-activities',
+    'schema': {
+        'user': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'users',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'action': {
+            'type': 'string',
+        },
+        'arguments': {
+            'type': 'list',
+        },
+        'organization': {
+            'type': 'objectid',
+            'required': False,
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+    },
+}
+
+
+user_organization_invites = {
+    'item_title': 'user organization invite',
+    'resource_title': 'user organization invites',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'url': 'user-organization-invites',
+    'schema': {
+        'user': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'users',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'organization': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
     },
 }
 
@@ -377,10 +454,33 @@ users = {
         'login': {
             'type': 'string',
             'unique': True,
+            'required': True,
+        },
+        'email': {
+            'type': 'string',
+            'unique': True,
+            'required': True,
+        },
+        'password_blowfish': {
+            'type': 'string',
+            # 'required': True,
+        },
+        'otp_secret': {
+            'type': 'string',
+            # 'required': False,
         },
         'role': {
-            'type': 'list',
-            'allowed': ['participant', 'guest', 'admin']
+            'type': 'string',
+            'allowed': ['user', 'superuser', 'admin'],
+            'default': 'user',
+            # 'required': True,
+        },
+        'location': {
+            'type': 'dict',
+            'schema': {
+                'city': {'type': 'string'},
+                'country': {'type': 'string'},
+            },
         },
     },
 }
@@ -400,6 +500,8 @@ DOMAIN = {
     'organization_users': organization_users,
     'organizations': organizations,
     'sessions': sessions,
+    'user_activities': user_activities,
+    'user_organization_invites': user_organization_invites,
     'user_notifications': user_notifications,
     'user_tokens': user_tokens,
     'users': users,
