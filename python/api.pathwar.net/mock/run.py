@@ -46,10 +46,7 @@ if __name__ == '__main__':
             'name': 'new year super challenge',
         })
 
-        print('@' * 80)
-        print(users[0]['_items'][0]['_id'])
-
-        post(client, '/organizations', {
+        organization = post(client, '/organizations', {
             'name': 'pwn-around-the-world',
             'users': [
                 users[0]['_items'][0]['_id'],
