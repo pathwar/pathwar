@@ -26,19 +26,41 @@ This section describes about the People
 This resource represents one particular user identified by its *id*.
 
 + Parameters
-    + id (required, string, `123e4567-e89b-12d3-a456-426655440000`) ... Id of a user.
+    + id (required, string, `54a28f5a8456bb0016a223da`) ... Id of a user.
 
 + Model (application/json)
-    JSON representation of User resource.
+    HATEOAS/JSON representation of User resource.
+
+    + Headers
+
+            ETag: c7caf5d5ad3f2ab4a2945a6b891cd874494027e5
+            Last-Modified: Tue, 30 Dec 2014 11:41:14 GMT
+
     + Body
 
-        ```js
-        {
-          "name": "m1ch3l",
-          "birthdate": "04-02-1942",
-          "organization_id": "xxxx-xxxxxx-xxxxxx-xxxx"
-        }
-        ```
+            {
+                "_created": "Tue, 30 Dec 2014 11:41:14 GMT",
+                "_etag": "c7caf5d5ad3f2ab4a2945a6b891cd874494027e5",
+                "_id": "54a28f5a8456bb0016a223da",
+                "_links": {
+                    "collection": {
+                        "href": "users",
+                        "title": "users"
+                    },
+                    "parent": {
+                        "href": "/",
+                        "title": "home"
+                    },
+                    "self": {
+                        "href": "users/54a28f5a8456bb0016a223da",
+                        "title": "user"
+                    }
+                },
+                "_updated": "Tue, 30 Dec 2014 11:41:14 GMT",
+                "email": "m1ch3l@pathwar.net",
+                "login": "m1ch3l",
+                "role": "superuser"
+            }
 
 
 ### Retrieve User [GET]
@@ -47,30 +69,95 @@ Return the information for the User
 + Response 200
 
     [User][]
+    
++ Response 404
+
+            {
+                "_error": {
+                    "code": 404,
+                    "message": "The requested URL was not found on the server.  If you entered the URL manually please check your spelling and try again."
+                },
+                "_status": "ERR"
+            }
 
 
 ## User Collection [/users]
 Collection of users.
 
 + Model (application/json)
+    HATEOAS/JSON representation of User collection.
 
-        ```js
-        {
-          "count": 2,
-          "_embedded": [
+
+    + Headers
+
+            Last-Modified: Tue, 30 Dec 2014 11:41:14 GMT
+
+    + Body
+
             {
-              "name": "m1ch3l",
-              "birthdate": "04-02-1942",
-              "organization_id": "xxxx-xxxxxx-xxxxxx-xxxx"
-            },
-            {
-              "name": "harry potter",
-              "birthdate": "01-01-1990",
-              "organization_id": "xxxx-xxxxxx-xxxxxx-xxxx"
+                "_items": [
+                    {
+                        "_created": "Tue, 30 Dec 2014 11:41:14 GMT",
+                        "_etag": "335d6508649e52f780155ebd9ff3cf3272f0971c",
+                        "_id": "54a28f5a8456bb0016a223d9",
+                        "_links": {
+                            "self": {
+                                "href": "users/54a28f5a8456bb0016a223d9",
+                                "title": "user"
+                            }
+                        },
+                        "_updated": "Tue, 30 Dec 2014 11:41:14 GMT",
+                        "email": "joe@pathwar.net",
+                        "login": "joe",
+                        "role": "user"
+                    },
+                    {
+                        "_created": "Tue, 30 Dec 2014 11:41:14 GMT",
+                        "_etag": "c7caf5d5ad3f2ab4a2945a6b891cd874494027e5",
+                        "_id": "54a28f5a8456bb0016a223da",
+                        "_links": {
+                            "self": {
+                                "href": "users/54a28f5a8456bb0016a223da",
+                                "title": "user"
+                            }
+                        },
+                        "_updated": "Tue, 30 Dec 2014 11:41:14 GMT",
+                        "email": "m1ch3l@pathwar.net",
+                        "login": "m1ch3l",
+                        "role": "superuser"
+                    },
+                    {
+                        "_created": "Tue, 30 Dec 2014 11:41:14 GMT",
+                        "_etag": "08e0699031b81268b6f1656f85ccd26e6cdfe394",
+                        "_id": "54a28f5a8456bb0016a223db",
+                        "_links": {
+                            "self": {
+                                "href": "users/54a28f5a8456bb0016a223db",
+                                "title": "user"
+                            }
+                        },
+                        "_updated": "Tue, 30 Dec 2014 11:41:14 GMT",
+                        "email": "root@pathwar.net",
+                        "login": "root",
+                        "role": "admin"
+                    }
+                ],
+                "_links": {
+                    "parent": {
+                        "href": "/",
+                        "title": "home"
+                    },
+                    "self": {
+                        "href": "users",
+                        "title": "users"
+                    }
+                },
+                "_meta": {
+                    "max_results": 25,
+                    "page": 1,
+                    "total": 3
+                }
             }
-          ]
-        }
-        ```
 
 
 ### List all users [GET]
