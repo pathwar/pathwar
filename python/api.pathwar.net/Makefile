@@ -1,4 +1,4 @@
-APIFILE =		pathwar.apib
+APIFILE =		apiary.apib
 AGLIO_TEMPLATE =	default
 
 dev:

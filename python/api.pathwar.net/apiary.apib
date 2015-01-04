@@ -1,46 +1,387 @@
-FORMAT: 1A
+# Pathwar API
+Official Pathwar REST Api
 
-# pathwar
-Notes API is a *short texts saving* service similar to its physical paper presence on your table.
 
-# Group Notes
-Notes related resources of the **Notes API**
+## Authentication
+To be defined
 
-## Notes Collection [/notes]
-### List all Notes [GET]
-+ Response 200 (application/json)
 
-        [{
-          "id": 1, "title": "Jogging in park"
-        }, {
-          "id": 2, "title": "Pick-up posters from post-office"
-        }]
+## Media Types
+This API uses the json media-type to represent resources states and affordances.
 
-### Create a Note [POST]
-+ Request (application/json)
+Requests with a message-body are using plain JSON to set or update resource states.
 
-        { "title": "Buy cheese and bread for breakfast." }
 
-+ Response 201 (application/json)
+## Error States
+The common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.
 
-        { "id": 3, "title": "Buy cheese and bread for breakfast." }
 
-## Note [/notes/{id}]
-A single Note object with all its details
+# Group People
+This section describes about the People
+
+
+## User [/users/{id}]
+This resource represents one particular user identified by its *id*.
 
 + Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+    + id (required, string, `123e4567-e89b-12d3-a456-426655440000`) ... Id of a user.
 
-### Retrieve a Note [GET]
-+ Response 200 (application/json)
-
-    + Header
-
-            X-My-Header: The Value
-
++ Model (application/json)
+    JSON representation of User resource.
     + Body
 
-            { "id": 2, "title": "Pick-up posters from post-office" }
+        ```js
+        {
+          "name": "m1ch3l",
+          "birthdate": "04-02-1942",
+          "organization_id": "xxxx-xxxxxx-xxxxxx-xxxx"
+        }
+        ```
 
-### Remove a Note [DELETE]
-+ Response 204
+
+### Retrieve User [GET]
+Return the information for the User
+
++ Response 200 (application/json)
+
+    [User][]
+
+
+## User Collection [/users]
+Collection of users.
+
++ Model (application/json)
+
+        ```js
+        {
+          "count": 2,
+          "_embedded": [
+            {
+              "name": "m1ch3l",
+              "birthdate": "04-02-1942",
+              "organization_id": "xxxx-xxxxxx-xxxxxx-xxxx"
+            },
+            {
+              "name": "harry potter",
+              "birthdate": "01-01-1990",
+              "organization_id": "xxxx-xxxxxx-xxxxxx-xxxx"
+            }
+          ]
+        }
+        ```
+
+
+### List all users [GET]
+
++ Response 200 (application/json)
+
+    [User Collection][]
+
+
+## Organization [/organizations/{id}]
+This resource represents one particular organization identified by its *id*.
+
++ Parameters
+    + id (required, string, `123e4567-e89b-12d3-a456-426655440000`) ... Id of an organization.
+
++ Model (application/json)
+    JSON representation of Organization resource.
+    + Body
+
+        ```js
+        {
+          "name": "ulteam",
+          "members": [
+            "xxxx-xxxxxx-xxxxxx-xxxx",
+            "xxxx-xxxxxx-xxxxxx-xxxx",
+          ]
+        }
+        ```
+
+
+### Retrieve Organization [GET]
+Return the information for the Organization
+
++ Response 200 (application/json)
+
+    [Organization][]
+
+
+## Organization Collection [/organizations]
+Collection of organizations.
+
++ Model (application/json)
+
+        ```js
+        {
+          "count": 2,
+          "_embedded": [
+            {
+              "name": "ulteam",
+              "members": [
+                "xxxx-xxxxxx-xxxxxx-xxx1",
+                "xxxx-xxxxxx-xxxxxx-xxx2",
+              ]
+            },
+            {
+              "name": "ultreme",
+              "members": [
+                "xxxx-xxxxxx-xxxxxx-xxx3",
+                "xxxx-xxxxxx-xxxxxx-xxx4",
+              ]
+            },
+          ]
+        }
+        ```
+
+
+### List all organizations [GET]
+
++ Response 200 (application/json)
+
+    [Organization Collection][]
+
+
+# Group Level
+This section describes about the Level
+
+
+## Level [/levels/{id}]
+This resource represents one particular level identified by its *id*.
+
++ Parameters
+    + id (required, string, `123e4567-e89b-12d3-a456-426655440000`) ... Id of a level.
+
++ Model (application/json)
+    JSON representation of a Level resource.
+    + Body
+
+        ```js
+        {
+          "name": "pwnland",
+          "description": "pwnland is cool",
+          "author": "Pathwar Team (@pathwar_net)"
+        }
+        ```
+
+
+### Retrieve Level [GET]
+Return the information for the Level
+
++ Response 200 (application/json)
+
+    [Level][]
+
+
+## Level Collection [/levels]
+Collection of levels.
+
++ Model (application/json)
+
+        ```js
+        {
+          "count": 2,
+          "_embedded": [
+            {
+              "name": "pwnland",
+              "description": "pwnland is cool",
+              "author": "Pathwar Team (@pathwar_net)"
+            },
+            {
+              "name": "megapwnland",
+              "description": "megapwnland is megacool",
+              "author": "Pathwar Team (@pathwar_net)"
+            }
+          ]
+        }
+        ```
+
+
+### List all levels [GET]
+
++ Response 200 (application/json)
+
+    [Level Collection][]
+
+
+# Group Coupon
+This section describes about the Coupon
+
+
+## Coupon [/coupons/{id}]
+This resource represents one particular coupon identified by its *id*.
+
++ Parameters
+    + id (required, string, `123e4567-e89b-12d3-a456-426655440000`) ... Id of a coupon.
+
++ Model (application/json)
+    JSON representation of a Coupon resource.
+    + Body
+
+        ```js
+        {
+          "name": "magic coupon",
+          "token": "*hidden*",
+          "unique": true,
+          "state": "available"
+        }
+        ```
+
+
+### Retrieve Coupon [GET]
+Return the information for the Coupon
+
++ Response 200 (application/json)
+
+    [Coupon][]
+
+
+## Coupon Collection [/coupons]
+Collection of coupons.
+
++ Model (application/json)
+
+        ```js
+        {
+          "count": 2,
+          "_embedded": [
+            {
+              "name": "magic coupon",
+              "token": "*hidden*",
+              "unique": true,
+              "state": "available"
+            },
+            {
+              "name": "mega magic coupon",
+              "token": "*hidden*",
+              "unique": true,
+              "state": "available"
+            }
+          ]
+        }
+        ```
+
+
+### List all coupons [GET]
+
++ Response 200 (application/json)
+
+    [Coupon Collection][]
+
+
+# Group Achievement
+This section describes about the Achievement
+
+
+## Achievement [/achievements/{id}]
+This resource represents one particular achievement identified by its *id*.
+
++ Parameters
+    + id (required, string, `123e4567-e89b-12d3-a456-426655440000`) ... Id of a achievement.
+
++ Model (application/json)
+    JSON representation of a Achievement resource.
+    + Body
+
+        ```js
+        {
+          "name": "hack the planet",
+          "description": "Finish all the levels"
+        }
+        ```
+
+
+### Retrieve Achievement [GET]
+Return the information for the Achievement
+
++ Response 200 (application/json)
+
+    [Achievement][]
+
+
+## Achievement Collection [/achievements]
+Collection of achievements.
+
++ Model (application/json)
+
+        ```js
+        {
+          "count": 2,
+          "_embedded": [
+            {
+              "name": "hack the planet",
+              "description": "Finish all the levels"
+            },
+            {
+              "name": "hack the universe",
+              "description": "Finish all the levels and more"
+            }
+          ]
+        }
+        ```
+
+
+### List all achievements [GET]
+
++ Response 200 (application/json)
+
+    [Achievement Collection][]
+
+
+# Group Session
+This section describes about the Session
+
+
+## Session [/sessions/{id}]
+This resource represents one particular session identified by its *id*.
+
++ Parameters
+    + id (required, string, `123e4567-e89b-12d3-a456-426655440000`) ... Id of a session.
+
++ Model (application/json)
+    JSON representation of a Session resource.
+    + Body
+
+        ```js
+        {
+          "name": "Paris Final",
+          "description": "Best teams of Paris"
+        }
+        ```
+
+
+### Retrieve Session [GET]
+Return the information for the Session
+
++ Response 200 (application/json)
+
+    [Session][]
+
+
+## Session Collection [/sessions]
+Collection of sessions.
+
++ Model (application/json)
+
+        ```js
+        {
+          "count": 2,
+          "_embedded": [
+            {
+              "name": "Paris Final",
+              "description": "Best teams of Paris"
+            },
+            {
+              "name": "SF Final",
+              "description": "Best teams of San Francisco"
+            }
+          ]
+        }
+        ```
+
+
+### List all sessions [GET]
+
++ Response 200 (application/json)
+
+    [Session Collection][]
