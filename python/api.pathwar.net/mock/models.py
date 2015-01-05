@@ -34,7 +34,7 @@ coupons = {
             'default': 1,
         },
         'session': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'sessions',
@@ -92,7 +92,7 @@ level_hints = {
         },
         # FIXME: Add hint data: blob ?
         'level': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'levels',
@@ -124,7 +124,7 @@ level_instances = {
         },
         # FIXME: Add instance data: blob ?
         'level': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'levels',
@@ -134,7 +134,7 @@ level_instances = {
             },
         },
         'server': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'servers',
@@ -236,7 +236,7 @@ organization_achievements = {
     # 'url': 'organizations/<organization>/achievements',
     'schema': {
         'organization': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'organizations',
@@ -245,7 +245,7 @@ organization_achievements = {
             },
         },
         'achievement': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'achievements',
@@ -267,7 +267,7 @@ organization_coupons = {
     # 'url': 'organizations/<organization>/coupons',
     'schema': {
         'organization': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'organizations',
@@ -276,7 +276,7 @@ organization_coupons = {
             },
         },
         'coupon': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'coupons',
@@ -303,7 +303,7 @@ organization_level_validations = {
             'default': 'pending',
         },
         'organization': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'organizations',
@@ -312,7 +312,7 @@ organization_level_validations = {
             },
         },
         'level': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'levels',
@@ -321,7 +321,7 @@ organization_level_validations = {
             },
         },
         'organization_level': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'organization-levels',
@@ -343,7 +343,7 @@ organization_levels = {
     # 'url': 'organizations/<organization>/levels',
     'schema': {
         'organization': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'organizations',
@@ -352,7 +352,7 @@ organization_levels = {
             },
         },
         'level': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'levels',
@@ -374,7 +374,7 @@ organization_items = {
     # 'url': 'organizations/<organization>/items',
     'schema': {
         'organization': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'organizations',
@@ -383,7 +383,7 @@ organization_items = {
             },
         },
         'item': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'items',
@@ -405,7 +405,7 @@ organization_users = {
     # 'url': 'organizations/<organization>/users',
     'schema': {
         'organization': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'organizations',
@@ -419,7 +419,7 @@ organization_users = {
             'default': 'owner',
         },
         'user': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'users',
@@ -520,7 +520,7 @@ user_activities = {
     # 'url': 'users/<user>/activities',
     'schema': {
         'user': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'users',
@@ -547,13 +547,13 @@ user_activities = {
                         'type': 'string',
                     },
                     'id': {
-                        'type': 'objectid',
+                        'type': 'uuid',
                     },
                 },
             },
         },
         'organization': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': False,
             'data_relation': {
                 'resource': 'organizations',
@@ -574,7 +574,7 @@ user_organization_invites = {
     'public_item_methods': [],
     'schema': {
         'user': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'users',
@@ -583,7 +583,7 @@ user_organization_invites = {
             },
         },
         'organization': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'organizations',
@@ -608,7 +608,7 @@ user_notifications = {
             'type': 'string',
         },
         'user': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'users',
@@ -638,7 +638,7 @@ user_tokens = {
             'type': 'string',
         },
         'user': {
-            'type': 'objectid',
+            'type': 'uuid',
             'required': True,
             'data_relation': {
                 'resource': 'users',
@@ -731,3 +731,17 @@ DOMAIN = {
     'user-tokens': user_tokens,
     'users': users,
 }
+
+
+# Use defaults
+defaults = {
+    'item_url': 'regex("[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}")',
+    'public_methods': [],
+    'public_item_methods': [],
+}
+
+for resource_name, resource_obj in DOMAIN.items():
+    DOMAIN[resource_name]['schema']['_id'] = {'type': 'uuid'}
+    for key, value in defaults.items():
+        if not key in resource_obj:
+            DOMAIN[resource_name][key] = value
