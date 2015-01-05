@@ -1,5 +1,3 @@
-
-
 achievements = {
     'item_title': 'achievement',
     'resource_methods': ['GET', 'POST', 'DELETE'],

@@ -31,13 +31,28 @@ def load_seeds(app):
         'role': 'admin',
     }])
 
-    session = post(client, '/sessions', {
+    sessions = post(client, '/sessions', [{
         'name': 'new year super challenge',
-    })
+    }, {
+        'name': 'world battle',
+    }])
 
-    organization = post(client, '/organizations', {
+    organizations = post(client, '/organizations', [{
         'name': 'pwn-around-the-world',
-        'users': [
-            users[0]['_items'][0]['_id'],
-        ],
-    })
+    }, {
+        'name': 'staff',
+    }])
+
+    organizations_users = post(client, '/organization-users', [{
+        'organization': organizations[0]['_items'][0]['_id'],
+        'role': 'owner',
+        'user': users[0]['_items'][0]['_id'],
+    }, {
+        'organization': organizations[0]['_items'][0]['_id'],
+        'role': 'pwner',
+        'user': users[0]['_items'][1]['_id'],
+    }, {
+        'organization': organizations[0]['_items'][1]['_id'],
+        'role': 'owner',
+        'user': users[0]['_items'][2]['_id'],
+    }])
