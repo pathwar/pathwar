@@ -108,6 +108,59 @@ level_hints = {
 }
 
 
+level_instances = {
+    'item_title': 'level instance',
+    'resource_title': 'level instances',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    # 'url': 'levels/<level>/instances',
+    'additional_lookup': {
+        'url': 'string',
+        'field': 'hash',
+    },
+    'schema': {
+        'hash': {
+            'type': 'string',
+            'unique': True,
+        },
+        # FIXME: Add instance data: blob ?
+        'level': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'levels',
+                'field': '_id',
+                # 'field': 'name',
+                'embeddable': True,
+            },
+        },
+        'server': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'servers',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'overrides': {
+            'type': 'list',
+            'schema': {
+                'key': {
+                    'type': 'string',
+                    'allowed': [
+                        'cpu_shares', 'memory_limit', 'redump', 'rootable'
+                    ],
+                },
+                'value': {
+                    'type': 'string',
+                },
+            },
+        },
+    },
+}
+
+
 levels = {
     'item_title': 'level',
     'resource_methods': ['GET', 'POST', 'DELETE'],
@@ -164,7 +217,7 @@ levels = {
             'type': 'integer',
             'default': 600,
         },
-        'rootable': {
+        'default_rootable': {
             'type': 'boolean',
             'default': True,
         },
@@ -411,6 +464,33 @@ sessions = {
 }
 
 
+servers = {
+    'item_title': 'server',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'schema': {
+        'name': {
+            'type': 'string',
+            'unique': True,
+        },
+        'ip_address': {
+            'type': 'string',
+        },
+        'active': {
+            'type': 'boolean',
+            'default': True,
+        },
+        'token': {
+            'type': 'string',
+        },
+        'tags': {
+            'type': 'list',
+            'default': ['linux', 'public'],
+        },
+    },
+}
+
+
 user_activities = {
     'item_title': 'user activitie',
     'resource_title': 'user activities',
@@ -605,6 +685,7 @@ DOMAIN = {
     'coupons': coupons,
     'items': items,
     'level-hints': level_hints,
+    'level-instances': level_instances,
     'levels': levels,
     'organization-achievements': organization_achievements,
     'organization-coupons': organization_coupons,
@@ -613,6 +694,7 @@ DOMAIN = {
     'organization-levels': organization_levels,
     'organization-users': organization_users,
     'organizations': organizations,
+    'servers': servers,
     'sessions': sessions,
     'user-activities': user_activities,
     'user-organization-invites': user_organization_invites,
