@@ -33,6 +33,19 @@ coupons = {
             'maxlength': 32,
             'unique': True,
         },
+        'value': {
+            'type': 'integer',
+            'default': 1,
+        },
+        'session': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'sessions',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
     },
 }
 
@@ -56,7 +69,6 @@ level_hints = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'levels/<level>/hints',
-    'url': 'level-hints',
     'additional_lookup': {
         'url': 'string',
         'field': 'name',
@@ -105,7 +117,6 @@ organization_achievements = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'organizations/<organization>/achievements',
-    'url': 'organization-achievements',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -135,7 +146,6 @@ organization_coupons = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'organizations/<organization>/coupons',
-    'url': 'organization-coupons',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -165,8 +175,12 @@ organization_level_validations = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'organizations/<organization>/levels/<level>/validations',
-    'url': 'organization-level-validations',
     'schema': {
+        'status': {
+            'type': 'string',
+            'allowed': ['pending', 'accepted', 'refused'],
+            'default': 'pending',
+        },
         'organization': {
             'type': 'objectid',
             'required': True,
@@ -185,6 +199,15 @@ organization_level_validations = {
                 'embeddable': True,
             },
         },
+        'organization-level': {
+            'type': 'objectid',
+            'required': True,
+            'data_relation': {
+                'resource': 'organization-levels',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
     },
 }
 
@@ -195,7 +218,6 @@ organization_levels = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'organizations/<organization>/levels',
-    'url': 'organization-levels',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -225,7 +247,6 @@ organization_items = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'organizations/<organization>/items',
-    'url': 'organization-items',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -255,7 +276,6 @@ organization_users = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'organizations/<organization>/users',
-    'url': 'organization-users',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -266,11 +286,16 @@ organization_users = {
                 'embeddable': True,
             },
         },
-        'item': {
+        'role': {
+            'type': 'string',
+            'allowed': ['pwner', 'owner'],
+            'default': 'owner',
+        },
+        'user': {
             'type': 'objectid',
             'required': True,
             'data_relation': {
-                'resource': 'items',
+                'resource': 'users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -296,17 +321,6 @@ organizations = {
             'type': 'integer',
             'default': 0,
         },
-        'users': {
-            'type': 'list',
-            'schema': {
-                'type': 'objectid',
-                'data_relation': {
-                    'resource': 'users',
-                    'field': '_id',
-                    'embeddable': True,
-                },
-            },
-        },
     },
 }
 
@@ -331,7 +345,7 @@ sessions = {
         'allow_update_organizations': {
             'type': 'boolean',
             'default': True,
-        }
+        },
     },
 }
 
@@ -342,7 +356,6 @@ user_activities = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'users/<user>/activities',
-    'url': 'user-activities',
     'schema': {
         'user': {
             'type': 'objectid',
@@ -377,7 +390,6 @@ user_organization_invites = {
     'resource_title': 'user organization invites',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'url': 'user-organization-invites',
     'schema': {
         'user': {
             'type': 'objectid',
@@ -407,7 +419,6 @@ user_notifications = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'users/<user>/notifications',
-    'url': 'user-notifications',
     'schema': {
         'title': {
             'type': 'string',
@@ -431,14 +442,15 @@ user_tokens = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     #'url': 'users/<user>/tokens',
-    'url': 'user-tokens',
     'schema': {
         'token': {
             'type': 'string',
             'default': 'random token',
             'unique': True,
         },
-        # FIXME: Add permissions, range, etc to enable user to create workflows
+        'description': {
+            'type': 'string',
+        },
         'user': {
             'type': 'objectid',
             'required': True,
@@ -448,6 +460,7 @@ user_tokens = {
                 'embeddable': True,
             },
         },
+        # FIXME: Add permissions, range, etc
     },
 }
 
@@ -501,19 +514,19 @@ DOMAIN = {
     'achievements': achievements,
     'coupons': coupons,
     'items': items,
-    'level_hints': level_hints,
+    'level-hints': level_hints,
     'levels': levels,
-    'organization_achievements': organization_achievements,
-    'organization_coupons': organization_coupons,
-    'organization_items': organization_items,
-    'organization_level_validations': organization_level_validations,
-    'organization_levels': organization_levels,
-    'organization_users': organization_users,
+    'organization-achievements': organization_achievements,
+    'organization-coupons': organization_coupons,
+    'organization-items': organization_items,
+    'organization-level-validations': organization_level_validations,
+    'organization-levels': organization_levels,
+    'organization-users': organization_users,
     'organizations': organizations,
     'sessions': sessions,
-    'user_activities': user_activities,
-    'user_organization_invites': user_organization_invites,
-    'user_notifications': user_notifications,
-    'user_tokens': user_tokens,
+    'user-activities': user_activities,
+    'user-organization-invites': user_organization_invites,
+    'user-notifications': user_notifications,
+    'user-tokens': user_tokens,
     'users': users,
 }
