@@ -18,6 +18,9 @@ achievements = {
             'type': 'string',
             'unique': True,
         },
+        'description': {
+            'type': 'string',
+        },
     },
 }
 
@@ -59,6 +62,15 @@ items = {
             'type': 'string',
             'unique': True,
         },
+        'description': {
+            'type': 'string',
+        },
+        'price': {
+            'type': 'integer',
+        },
+        'quantity': {
+            'type': 'integer',
+        },
     },
 }
 
@@ -68,7 +80,7 @@ level_hints = {
     'resource_title': 'level hints',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    #'url': 'levels/<level>/hints',
+    # 'url': 'levels/<level>/hints',
     'additional_lookup': {
         'url': 'string',
         'field': 'name',
@@ -78,6 +90,10 @@ level_hints = {
             'type': 'string',
             # 'unique': True,
         },
+        'price': {
+            'type': 'integer',
+        },
+        # FIXME: Add hint data: blob ?
         'level': {
             'type': 'objectid',
             'required': True,
@@ -107,6 +123,51 @@ levels = {
             'maxlength': 16,
             'unique': True,
         },
+        'description': {
+            'type': 'string',
+        },
+        'price': {
+            'type': 'integer',
+            'default': 4242,
+        },
+        'tags': {
+            'type': 'list',
+        },
+        'registry_url': {
+            'type': 'string',
+        },
+        'author': {
+            'type': 'string',
+            'default': 'Anonymous',
+        },
+        'passphrases_amount': {
+            'type': 'integer',
+            'default': 1,
+        },
+        'version': {
+            'type': 'string',
+            'default': 'dev',
+        },
+        'lang': {
+            'type': 'string',
+            'default': 'en',
+        },
+        'default_memory_limit': {
+            'type': 'string',
+            'default': '16M',
+        },
+        'default_cpu_shares': {
+            'type': 'string',
+            'default': '1/10',
+        },
+        'default_redump': {
+            'type': 'integer',
+            'default': 600,
+        },
+        'rootable': {
+            'type': 'boolean',
+            'default': True,
+        },
     },
 }
 
@@ -116,7 +177,7 @@ organization_achievements = {
     'resource_title': 'organization earned achievements',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    #'url': 'organizations/<organization>/achievements',
+    # 'url': 'organizations/<organization>/achievements',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -145,7 +206,7 @@ organization_coupons = {
     'resource_title': 'organization validated coupons',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    #'url': 'organizations/<organization>/coupons',
+    # 'url': 'organizations/<organization>/coupons',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -174,7 +235,7 @@ organization_level_validations = {
     'resource_title': 'organization level validation submissions',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    #'url': 'organizations/<organization>/levels/<level>/validations',
+    # 'url': 'organizations/<organization>/levels/<level>/validations',
     'schema': {
         'status': {
             'type': 'string',
@@ -199,7 +260,7 @@ organization_level_validations = {
                 'embeddable': True,
             },
         },
-        'organization-level': {
+        'organization_level': {
             'type': 'objectid',
             'required': True,
             'data_relation': {
@@ -217,7 +278,7 @@ organization_levels = {
     'resource_title': 'organization bought levels',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    #'url': 'organizations/<organization>/levels',
+    # 'url': 'organizations/<organization>/levels',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -246,7 +307,7 @@ organization_items = {
     'resource_title': 'organization items',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    #'url': 'organizations/<organization>/items',
+    # 'url': 'organizations/<organization>/items',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -275,7 +336,7 @@ organization_users = {
     'resource_title': 'organization items',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    #'url': 'organizations/<organization>/users',
+    # 'url': 'organizations/<organization>/users',
     'schema': {
         'organization': {
             'type': 'objectid',
@@ -355,7 +416,7 @@ user_activities = {
     'resource_title': 'user activities',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    #'url': 'users/<user>/activities',
+    # 'url': 'users/<user>/activities',
     'schema': {
         'user': {
             'type': 'objectid',
@@ -371,6 +432,24 @@ user_activities = {
         },
         'arguments': {
             'type': 'list',
+        },
+        'category': {
+            'type': 'string',
+            'default': 'common',
+        },
+        'linked_resources': {
+            'type': 'list',
+            'schema': {
+                'type': 'dict',
+                'schema': {
+                    'kind': {
+                        'type': 'string',
+                    },
+                    'id': {
+                        'type': 'objectid',
+                    },
+                },
+            },
         },
         'organization': {
             'type': 'objectid',
@@ -418,7 +497,7 @@ user_notifications = {
     'resource_title': 'user notifications',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    #'url': 'users/<user>/notifications',
+    # 'url': 'users/<user>/notifications',
     'schema': {
         'title': {
             'type': 'string',
@@ -441,7 +520,7 @@ user_tokens = {
     'resource_title': 'user tokens',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    #'url': 'users/<user>/tokens',
+    # 'url': 'users/<user>/tokens',
     'schema': {
         'token': {
             'type': 'string',
@@ -503,6 +582,17 @@ users = {
             'schema': {
                 'city': {'type': 'string'},
                 'country': {'type': 'string'},
+            },
+        },
+        'social_links': {
+            'type': 'list',
+            'schema': {
+                'kind': {
+                    'type': 'string',
+                },
+                'kind': {
+                    'path': 'string',
+                },
             },
         },
     },
