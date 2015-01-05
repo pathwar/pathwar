@@ -67,3 +67,31 @@ def load_seeds(app):
         'role': 'owner',
         'user': str(root_id),
     }])
+
+    levels = post(client, '/levels', [{
+        'name': 'welcome',
+        'description': 'An easy welcome level',
+        'price': 42,
+        'tags': ['easy', 'welcome', 'official'],
+        'author': 'Pathwar Team',
+    }, {
+        'name': 'pnu',
+        'description': 'Possible not upload',
+        'price': 420,
+        'tags': ['php', 'advanced'],
+        'author': 'Pathwar Team',
+    }])
+
+    level_hints = post(client, '/level-hints', [{
+        'name': 'welcome sources',
+        'price': 42,
+        'level': levels[0]['_items'][0]['_id'],
+    }, {
+        'name': 'welcome full solution',
+        'price': 420,
+        'level': levels[0]['_items'][0]['_id'],
+    }, {
+        'name': 'pnu sources',
+        'price': 42,
+        'level': levels[0]['_items'][1]['_id'],
+    }])

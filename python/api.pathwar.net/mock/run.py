@@ -5,15 +5,8 @@ from settings import DOMAIN
 from seeds import load_seeds
 
 
-class MockBasicAuth(BasicAuth):
-    def check_auth(self, username, password, allowed_roles, resource,
-                   method):
-        return username == 'admin' and password == 'secret'
-
-
 class MockTokenAuth(TokenAuth):
     def check_auth(self, token, allowed_roles, resource, method):
-        print('token', token)
         user_tokens = app.data.driver.db['user-tokens']
         return user_tokens.find_one({'token': token})
 
@@ -26,7 +19,6 @@ app = Eve(
 
 
 def main():
-
     # Initialize data
     with app.app_context():
         # Drop everything
