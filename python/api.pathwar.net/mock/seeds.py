@@ -1,22 +1,37 @@
+from base64 import b64encode
 import json
 
 
-def post(client, url, data, headers=None, content_type='application/json'):
+def post(client, url, data, headers=None, content_type='application/json',
+         auth_token='root-token'):
     if not headers:
         headers = []
     headers.append(('Content-Type', content_type))
+    if auth_token:
+        headers.append(('Authorization', 'Basic {}'
+                        .format(b64encode('{}:'.format(auth_token)))))
     request = client.post(url, data=json.dumps(data), headers=headers)
     try:
         value = json.loads(request.get_data())
     except json.JSONDecodeError:
         value = None
-    print("post({}): {}, {}".
-          format(data, value.get('_status'), value.get('_id')))
+    print("post({}, {}): {}, {}".
+          format(url, data, value.get('_status'), value.get('message'),
+                 value.get('_id')))
     return value, request.status_code
 
 
 def load_seeds(app):
     client = app.test_client()
+
+    root_id = app.data.driver.db['users'].insert({
+        'login': 'root',
+        'role': 'admin',
+    })
+    app.data.driver.db['user-tokens'].insert({
+        'user': root_id,
+        'token': 'root-token',
+    })
 
     users = post(client, '/users', [{
         'login': 'joe',
@@ -25,10 +40,6 @@ def load_seeds(app):
         'login': 'm1ch3l',
         'email': 'm1ch3l@pathwar.net',
         'role': 'superuser',
-    }, {
-        'login': 'root',
-        'email': 'root@pathwar.net',
-        'role': 'admin',
     }])
 
     sessions = post(client, '/sessions', [{
@@ -54,5 +65,5 @@ def load_seeds(app):
     }, {
         'organization': organizations[0]['_items'][1]['_id'],
         'role': 'owner',
-        'user': users[0]['_items'][2]['_id'],
+        'user': str(root_id),
     }])

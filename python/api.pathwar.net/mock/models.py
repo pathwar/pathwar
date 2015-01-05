@@ -2,6 +2,8 @@ achievements = {
     'item_title': 'achievement',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     'schema': {
         'name': {
             'type': 'string',
@@ -18,6 +20,8 @@ coupons = {
     'item_title': 'coupon',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     'schema': {
         'hash': {
             'type': 'string',
@@ -46,6 +50,8 @@ items = {
     'item_title': 'item',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     'schema': {
         'name': {
             'type': 'string',
@@ -69,6 +75,8 @@ level_hints = {
     'resource_title': 'level hints',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     # 'url': 'levels/<level>/hints',
     'additional_lookup': {
         'url': 'string',
@@ -102,6 +110,8 @@ level_instances = {
     'resource_title': 'level instances',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     # 'url': 'levels/<level>/instances',
     'additional_lookup': {
         'url': 'string',
@@ -154,6 +164,8 @@ levels = {
     'item_title': 'level',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     'additional_lookup': {
         'url': 'string',
         'field': 'name',
@@ -219,6 +231,8 @@ organization_achievements = {
     'resource_title': 'organization earned achievements',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     # 'url': 'organizations/<organization>/achievements',
     'schema': {
         'organization': {
@@ -248,6 +262,8 @@ organization_coupons = {
     'resource_title': 'organization validated coupons',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     # 'url': 'organizations/<organization>/coupons',
     'schema': {
         'organization': {
@@ -277,6 +293,8 @@ organization_level_validations = {
     'resource_title': 'organization level validation submissions',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     # 'url': 'organizations/<organization>/levels/<level>/validations',
     'schema': {
         'status': {
@@ -320,6 +338,8 @@ organization_levels = {
     'resource_title': 'organization bought levels',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     # 'url': 'organizations/<organization>/levels',
     'schema': {
         'organization': {
@@ -349,6 +369,8 @@ organization_items = {
     'resource_title': 'organization items',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     # 'url': 'organizations/<organization>/items',
     'schema': {
         'organization': {
@@ -378,6 +400,8 @@ organization_users = {
     'resource_title': 'organization items',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     # 'url': 'organizations/<organization>/users',
     'schema': {
         'organization': {
@@ -411,6 +435,8 @@ organizations = {
     'item_title': 'organization',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     'additional_lookup': {
         'url': 'string',
         'field': 'name',
@@ -432,6 +458,8 @@ sessions = {
     'item_title': 'session',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': ['GET'],
+    'public_item_methods': ['GET'],
     'schema': {
         'name': {
             'type': 'string',
@@ -457,6 +485,8 @@ servers = {
     'item_title': 'server',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     'schema': {
         'name': {
             'type': 'string',
@@ -485,6 +515,8 @@ user_activities = {
     'resource_title': 'user activities',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     # 'url': 'users/<user>/activities',
     'schema': {
         'user': {
@@ -538,6 +570,8 @@ user_organization_invites = {
     'resource_title': 'user organization invites',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     'schema': {
         'user': {
             'type': 'objectid',
@@ -566,6 +600,8 @@ user_notifications = {
     'resource_title': 'user notifications',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     # 'url': 'users/<user>/notifications',
     'schema': {
         'title': {
@@ -589,6 +625,8 @@ user_tokens = {
     'resource_title': 'user tokens',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     # 'url': 'users/<user>/tokens',
     'schema': {
         'token': {
@@ -617,6 +655,8 @@ users = {
     'item_title': 'user',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
     'additional_lookup': {
         'url': 'string',
         'field': 'login',
