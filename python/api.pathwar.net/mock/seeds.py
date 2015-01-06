@@ -23,7 +23,12 @@ def post(client, url, data, headers=None, content_type='application/json',
     return value, request.status_code
 
 
-def load_seeds(app):
+def load_seeds(app, reset=True):
+    if reset:
+        # Drop everything
+        for collection in DOMAIN.keys():
+            app.data.driver.db[collection].drop()
+
     client = app.test_client()
 
     root_id = app.data.driver.db['users'].insert({

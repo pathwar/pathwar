@@ -42,6 +42,27 @@ class UUIDEncoder(BaseJSONEncoder):
             return super(UUIDEncoder, self).default(obj)
 
 
+def request_get_user(request):
+    token = app.data.driver.db['user-tokens'].find_one({
+        'token': request.authorization.get('username'),
+    })
+    user = app.data.driver.db['users'].find_one({
+        '_id': token['user'],
+    })
+    return user
+
+
+def pre_get_callback(resource, request, lookup):
+    # Handle users/me
+    if resource == 'users' and 'login' in lookup:
+        user = request_get_user(request)
+        del lookup['login']
+        lookup['_id'] = user['_id']
+    elif resource in ('user-notifications', 'user-organization-invites',
+    'user-tokens'):
+        print(resource)
+
+
 # Initialize Eve
 app = Eve(
     # auth=MockBasicAuth,
@@ -52,14 +73,13 @@ app = Eve(
 
 
 def main():
+    # Attach hooks
+    app.on_pre_GET += pre_get_callback
+
     # Initialize data
     with app.app_context():
-        # Drop everything
-        for collection in DOMAIN.keys():
-            app.data.driver.db[collection].drop()
-
-        # Create basic content
-        load_seeds(app)
+        #load_seeds(app, reset=True)
+        pass
 
     # Run
     app.run(
