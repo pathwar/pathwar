@@ -1,4 +1,4 @@
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from eve import Eve
 from eve.io.mongo import Validator
@@ -65,6 +65,11 @@ def pre_get_callback(resource, request, lookup):
         app.logger.warn('FIXME: handle where user==me')
 
 
+def insert_callback(resource_name, items):
+    for item in items:
+        item['_id'] = str(uuid4())
+
+
 # Initialize Eve
 app = Eve(
     # auth=MockBasicAuth,
@@ -77,6 +82,7 @@ app = Eve(
 def main():
     # Attach hooks
     app.on_pre_GET += pre_get_callback
+    app.on_insert += insert_callback
 
     # Initialize data
     with app.app_context():
