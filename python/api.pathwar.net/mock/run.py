@@ -53,14 +53,16 @@ def request_get_user(request):
 
 
 def pre_get_callback(resource, request, lookup):
+    resources_with_me_filter = (
+        'user-notifications', 'user-organization-invites', 'user-tokens',
+        'organization-users',
+    )
     # Handle users/me
     if resource == 'users' and 'login' in lookup:
-        user = request_get_user(request)
         del lookup['login']
-        lookup['_id'] = user['_id']
-    elif resource in ('user-notifications', 'user-organization-invites',
-    'user-tokens'):
-        print(resource)
+        lookup['_id'] = request_get_user(request)['_id']
+    elif resource in resources_with_me_filter:
+        app.logger.warn('FIXME: handle where user==me')
 
 
 # Initialize Eve
