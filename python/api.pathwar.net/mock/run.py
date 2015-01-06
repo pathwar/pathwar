@@ -78,8 +78,7 @@ def main():
 
     # Initialize data
     with app.app_context():
-        #load_seeds(app, reset=True)
-        pass
+        load_seeds(app, reset=True)
 
     # Run
     app.run(

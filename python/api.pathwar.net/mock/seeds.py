@@ -2,6 +2,8 @@ from base64 import b64encode
 from uuid import uuid4
 import json
 
+from settings import DOMAIN
+
 
 def post(client, url, data, headers=None, content_type='application/json',
          auth_token='root-token'):
