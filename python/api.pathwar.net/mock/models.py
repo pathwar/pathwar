@@ -699,9 +699,6 @@ users = {
                 'kind': {
                     'type': 'string',
                 },
-                'kind': {
-                    'path': 'string',
-                },
             },
         },
     },
