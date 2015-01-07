@@ -71,15 +71,15 @@ This resource represents one particular user identified by its *id*.
 ### Retrieve User [GET]
 Return the information for the User
 
-+ Request with id: m1ch3l
-+ Request with id: a5595d9b-75a5-4a18-8cd9-2cff9907b7ac
++ Request JSON User
+    + Headers
+
+            Accept: application/json
 
 + Response 200
 
     [User][]
 
-+ Request with id: non-existing-name
-+ Request with id: bad-uuid
 
 + Response 404 (application/json)
 
@@ -89,7 +89,16 @@ Return the information for the User
                     "message": "The requested URL was not found on the server.  If you entered the URL manually please check your spelling and try again."
                 },
                 "_status": "ERR"
-            }
+                }
+
++ Request XML User
+    + Headers
+
+            Accept: text/xml
+
++ Response 200
+
+    TODO
 
 + Response 404 (text/xml)
 
