@@ -172,3 +172,18 @@ def load_seeds(app, reset=True):
         'organization': organizations[0]['_items'][1]['_id'],
         'user': users[0]['_items'][1]['_id'],
     }])
+
+    level_instances = post(client, '/level-instances', [{
+        'hash': '123456789',
+        'level': levels[0]['_items'][0]['_id'],
+        'server': servers[0]['_items'][0]['_id'],
+        # 'overrides': [{'key': 'cpu_shares', 'value': 42}],
+    }, {
+        'hash': '987654321',
+        'level': levels[0]['_items'][0]['_id'],
+        'server': servers[0]['_items'][1]['_id'],
+    }, {
+        'hash': '585185815',
+        'level': levels[0]['_items'][1]['_id'],
+        'server': servers[0]['_items'][1]['_id'],
+    }])

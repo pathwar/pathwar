@@ -145,14 +145,18 @@ level_instances = {
         'overrides': {
             'type': 'list',
             'schema': {
-                'key': {
-                    'type': 'string',
-                    'allowed': [
-                        'cpu_shares', 'memory_limit', 'redump', 'rootable'
-                    ],
-                },
-                'value': {
-                    'type': 'string',
+                'type': 'dict',
+                # FIXME: repair the list of dict
+                'schema': {
+                    'key': {
+                        'type': 'string',
+                        'allowed': [
+                            'cpu_shares', 'memory_limit', 'redump', 'rootable'
+                        ],
+                    },
+                    'value': {
+                        'type': 'string',
+                    },
                 },
             },
         },
