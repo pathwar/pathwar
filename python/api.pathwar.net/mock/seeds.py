@@ -198,3 +198,14 @@ def load_seeds(app, reset=True):
         'user': users[0]['_items'][1]['_id'],
         'title': 'hello !',
     }])
+
+    organization_coupons = post(client, '/organization-coupons', [{
+        'organization': organizations[0]['_items'][0]['_id'],
+        'coupon': coupons[0]['_items'][0]['_id'],
+    }, {
+        'organization': organizations[0]['_items'][0]['_id'],
+        'coupon': coupons[0]['_items'][1]['_id'],
+    }, {
+        'organization': organizations[0]['_items'][1]['_id'],
+        'coupon': coupons[0]['_items'][1]['_id'],
+    }])
