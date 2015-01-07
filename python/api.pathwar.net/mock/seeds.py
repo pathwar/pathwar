@@ -210,6 +210,23 @@ def load_seeds(app, reset=True):
         'coupon': coupons[0]['_items'][1]['_id'],
     }])
 
+    items = post(client, '/items', [{
+        'name': 'spiderpig-glasses',
+        'description': 'Unlock all level hints',
+        'price': 4242,
+        'quantity': 1000,
+    }, {
+        'name': 'whoswho shield',
+        'description': 'Cannot be attacked on whoswho',
+        'price': 200,
+        'quantity': 1000,
+    }, {
+        'name': 'for glory',
+        'description': 'Unlock the "for glory" achievement',
+        'price': 1000,
+        'quantity': 1,
+    }])
+
     user_activities = post(client, '/user-activities', [{
         'user': users[0]['_items'][0]['_id'],
         'category': 'level',
