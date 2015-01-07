@@ -31,6 +31,11 @@ This resource represents one particular user identified by its *id*.
 + Model (application/json)
     HATEOAS/JSON representation of User resource.
 
+    + login (required, string, `m1ch3l`)
+    + role (required, string, `user`)
+    + email (required, string, `m1ch3l@pathwar.net`)
+    + _id (required, uuid, `a5595d9b-75a5-4a18-8cd9-2cff9907b7ac`)
+
     + Headers
 
             ETag: 8f5d7df0210b75992b41834329c0abdea9a02bc2
@@ -66,9 +71,15 @@ This resource represents one particular user identified by its *id*.
 ### Retrieve User [GET]
 Return the information for the User
 
++ Request with id: m1ch3l
++ Request with id: a5595d9b-75a5-4a18-8cd9-2cff9907b7ac
+
 + Response 200
 
     [User][]
+
++ Request with id: non-existing-name
++ Request with id: bad-uuid
 
 + Response 404
 
