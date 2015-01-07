@@ -81,7 +81,7 @@ Return the information for the User
 + Request with id: non-existing-name
 + Request with id: bad-uuid
 
-+ Response 404
++ Response 404 (application/json)
 
             {
                 "_error": {
@@ -90,6 +90,17 @@ Return the information for the User
                 },
                 "_status": "ERR"
             }
+
++ Response 404 (text/xml)
+
+            <?xml version="1.0"?>
+            <resource>
+              <_error>
+                <code>404</code>
+                  <message>The requested URL was not found on the server.  If you entered the URL manually please check your spelling and try again.</message>
+              </_error>
+              <_status>ERR</_status>
+            </resource>
 
 
 ## User Collection [/users]
