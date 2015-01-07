@@ -69,6 +69,21 @@ def load_seeds(app, reset=True):
         'session': sessions[0]['_items'][1]['_id'],
     }])
 
+
+    servers = post(client, '/servers', [{
+        'name': 'c1-123',
+        'ip_address': '1.2.3.4',
+        'active': True,
+        'token': '123456789000987654321',
+        'tags': ['docker', 'armhf'],
+    }, {
+        'name': 'dedibox-152',
+        'ip_address': '4.3.2.1',
+        'active': True,
+        'token': 'asodijgasodigjasoidgjoisadgj',
+        'tags': ['docker', 'x86_64'],
+    }])
+
     organizations = post(client, '/organizations', [{
         'name': 'pwn-around-the-world',
     }, {
