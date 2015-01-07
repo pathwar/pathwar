@@ -112,6 +112,52 @@ Return the information for the User
             </resource>
 
 
+### Edit User [PATCH]
+Edit the information of the User
+
++ Request without If-Match header
+
++ Response 403 (application/json)
+
+    + Body
+
+            {
+                "_status": "ERR",
+                "_error": {
+                    "message": "An etag must be provided to edit a document",
+                    "code": 403
+                }
+            }
+
++ Request with If-Match header
+    + Headers
+        If-Match: 572c96529cb56a67c304eddf5a0af792caad2a5a
+
++ Response 200
+
+    [User][]
+
+
++ Response 412 (text/html)
+
+    + Body
+
+            <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+            <title>412 Precondition Failed</title>
+            <h1>Precondition Failed</h1>
+            <p>Client and server etags don't match</p>
+
++ Response 422 (application/json)
+
+    + Body
+
+            {
+                "_status": "ERR",
+                "_issues": {
+                    "login": "value 'm1ch3l' is not unique"
+                }
+            }
+
 ## User Collection [/users]
 Collection of users.
 
