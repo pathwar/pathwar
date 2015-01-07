@@ -263,3 +263,27 @@ def load_seeds(app, reset=True):
         'organization': organizations[0]['_items'][1]['_id'],
         'item': items[0]['_items'][1]['_id'],
     }])
+
+    organization_level_validations = post(
+        client, '/organization-level-validations', [{
+            'organization': organizations[0]['_items'][0]['_id'],
+            'level': levels[0]['_items'][0]['_id'],
+            'organization_level': organization_levels[0]['_items'][0]['_id'],
+            'status': 'pending',
+            'explanation': 'blah blah',
+            'screenshot': '/screenshots/1234567890',
+        }, {
+            'organization': organizations[0]['_items'][0]['_id'],
+            'level': levels[0]['_items'][0]['_id'],
+            'organization_level': organization_levels[0]['_items'][1]['_id'],
+            'status': 'accepted',
+            'explanation': 'blih blih',
+            'screenshot': '/screenshots/1234567891',
+        }, {
+            'organization': organizations[0]['_items'][1]['_id'],
+            'level': levels[0]['_items'][0]['_id'],
+            'organization_level': organization_levels[0]['_items'][1]['_id'],
+            'status': 'refused',
+            'explanation': 'bloh bloh',
+            'screenshot': '/screenshots/1234567892',
+        }])

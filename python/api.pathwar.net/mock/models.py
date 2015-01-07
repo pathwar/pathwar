@@ -333,6 +333,12 @@ organization_level_validations = {
                 'embeddable': True,
             },
         },
+        'explanation': {
+            'type': 'string',
+        },
+        'screenshot': {
+            'type': 'string',
+        },
     },
 }
 
