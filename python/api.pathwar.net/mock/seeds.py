@@ -252,3 +252,14 @@ def load_seeds(app, reset=True):
             'id': organizations[0]['_items'][0]['_id'],
         }]
     }])
+
+    organization_items = post(client, '/organization-items', [{
+        'organization': organizations[0]['_items'][0]['_id'],
+        'item': items[0]['_items'][0]['_id'],
+    }, {
+        'organization': organizations[0]['_items'][0]['_id'],
+        'item': items[0]['_items'][1]['_id'],
+    }, {
+        'organization': organizations[0]['_items'][1]['_id'],
+        'item': items[0]['_items'][1]['_id'],
+    }])
