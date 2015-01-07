@@ -18,6 +18,141 @@ Requests with a message-body are using plain JSON to set or update resource stat
 The common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.
 
 
+# Pathwar API Root [/]
+Pathwar API entry point.
+
+This resource does not have any attributes. Instead it offers the initial API affordances in the form of HATEOAS links.
+
+## Retrieve Entry Point [GET]
+
++ Request JSON User
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "_links": {
+                    "child": [
+                        {
+                            "href": "achievements",
+                            "title": "achievements"
+                        },
+                        {
+                            "href": "organization-level-validations",
+                            "title": "organization level validation submissions"
+                        },
+                        {
+                            "href": "organization-items",
+                            "title": "organization items"
+                        },
+                        {
+                            "href": "users",
+                            "title": "users"
+                        },
+                        {
+                            "href": "organizations",
+                            "title": "organizations"
+                        },
+                        {
+                            "href": "items",
+                            "title": "items"
+                        },
+                        {
+                            "href": "user-activities",
+                            "title": "user activities"
+                        },
+                        {
+                            "href": "sessions",
+                            "title": "sessions"
+                        },
+                        {
+                            "href": "level-hints",
+                            "title": "level hints"
+                        },
+                        {
+                            "href": "organization-coupons",
+                            "title": "organization validated coupons"
+                        },
+                        {
+                            "href": "user-notifications",
+                            "title": "user notifications"
+                        },
+                        {
+                            "href": "level-instances",
+                            "title": "level instances"
+                        },
+                        {
+                            "href": "levels",
+                            "title": "levels"
+                        },
+                        {
+                            "href": "user-organization-invites",
+                            "title": "user organization invites"
+                        },
+                        {
+                            "href": "organization-achievements",
+                            "title": "organization earned achievements"
+                        },
+                        {
+                            "href": "organization-users",
+                            "title": "organization items"
+                        },
+                        {
+                            "href": "organization-levels",
+                            "title": "organization bought levels"
+                        },
+                        {
+                            "href": "servers",
+                            "title": "servers"
+                        },
+                        {
+                            "href": "coupons",
+                            "title": "coupons"
+                        },
+                        {
+                            "href": "user-tokens",
+                            "title": "user tokens"
+                        }
+                    ]
+                }
+            }
+
++ Request XML User
+    + Headers
+
+            Accept: text/xml
+
++ Response 200 (text/xml)
+    + Body
+
+            <?xml version="1.0"?>
+            <resource>
+              <link rel="child" href="achievements" title="achievements"/>
+              <link rel="child" href="organization-level-validations" title="organization level validation submissions"/>
+              <link rel="child" href="organization-items" title="organization items"/>
+              <link rel="child" href="users" title="users"/>
+              <link rel="child" href="organizations" title="organizations"/>
+              <link rel="child" href="items" title="items"/>
+              <link rel="child" href="user-activities" title="user activities"/>
+              <link rel="child" href="sessions" title="sessions"/>
+              <link rel="child" href="level-hints" title="level hints"/>
+              <link rel="child" href="organization-coupons" title="organization validated coupons"/>
+              <link rel="child" href="user-notifications" title="user notifications"/>
+              <link rel="child" href="level-instances" title="level instances"/>
+              <link rel="child" href="levels" title="levels"/>
+              <link rel="child" href="user-organization-invites" title="user organization invites"/>
+              <link rel="child" href="organization-achievements" title="organization earned achievements"/>
+              <link rel="child" href="organization-users" title="organization items"/>
+              <link rel="child" href="organization-levels" title="organization bought levels"/>
+              <link rel="child" href="servers" title="servers"/>
+              <link rel="child" href="coupons" title="coupons"/>
+              <link rel="child" href="user-tokens" title="user tokens"/>
+            </resource>
+
+
 # Group People
 This section describes about the People
 
