@@ -26,22 +26,22 @@ This section describes about the People
 This resource represents one particular user identified by its *id*.
 
 + Parameters
-    + id (required, string, `54a28f5a8456bb0016a223da`) ... Id of a user.
+    + id (required, string, `53705c4b-7bf9-4672-a872-c84988e16db8`) ... Id of a user.
 
 + Model (application/json)
     HATEOAS/JSON representation of User resource.
 
     + Headers
 
-            ETag: c7caf5d5ad3f2ab4a2945a6b891cd874494027e5
-            Last-Modified: Tue, 30 Dec 2014 11:41:14 GMT
+            ETag: 6a169281df830752d6752b916f73d1976282c6c4
+            Last-Modified: Thu, 01 Jan 1970 00:00:00 GMT
 
     + Body
 
             {
-                "_created": "Tue, 30 Dec 2014 11:41:14 GMT",
-                "_etag": "c7caf5d5ad3f2ab4a2945a6b891cd874494027e5",
-                "_id": "54a28f5a8456bb0016a223da",
+                "_created": "Thu, 01 Jan 1970 00:00:00 GMT",
+                "_etag": "6a169281df830752d6752b916f73d1976282c6c4",
+                "_id": "53705c4b-7bf9-4672-a872-c84988e16db8",
                 "_links": {
                     "collection": {
                         "href": "users",
@@ -52,14 +52,13 @@ This resource represents one particular user identified by its *id*.
                         "title": "home"
                     },
                     "self": {
-                        "href": "users/54a28f5a8456bb0016a223da",
+                        "href": "users/53705c4b-7bf9-4672-a872-c84988e16db8",
                         "title": "user"
                     }
                 },
-                "_updated": "Tue, 30 Dec 2014 11:41:14 GMT",
-                "email": "m1ch3l@pathwar.net",
-                "login": "m1ch3l",
-                "role": "superuser"
+                "_updated": "Thu, 01 Jan 1970 00:00:00 GMT",
+                "login": "root",
+                "role": "admin"
             }
 
 
@@ -69,7 +68,7 @@ Return the information for the User
 + Response 200
 
     [User][]
-    
+
 + Response 404
 
             {
@@ -97,49 +96,48 @@ Collection of users.
             {
                 "_items": [
                     {
-                        "_created": "Tue, 30 Dec 2014 11:41:14 GMT",
-                        "_etag": "335d6508649e52f780155ebd9ff3cf3272f0971c",
-                        "_id": "54a28f5a8456bb0016a223d9",
+                        "_created": "Thu, 01 Jan 1970 00:00:00 GMT",
+                        "_etag": "6a169281df830752d6752b916f73d1976282c6c4",
+                        "_id": "53705c4b-7bf9-4672-a872-c84988e16db8",
                         "_links": {
                             "self": {
-                                "href": "users/54a28f5a8456bb0016a223d9",
+                                "href": "users/53705c4b-7bf9-4672-a872-c84988e16db8",
                                 "title": "user"
                             }
                         },
-                        "_updated": "Tue, 30 Dec 2014 11:41:14 GMT",
+                        "_updated": "Thu, 01 Jan 1970 00:00:00 GMT",
+                        "login": "root",
+                        "role": "admin"
+                    },
+                    {
+                        "_created": "Wed, 07 Jan 2015 16:43:17 GMT",
+                        "_etag": "ea3b5b1b3320749e8198d79243b829ca1439958b",
+                        "_id": "67e1c418-63eb-4dd3-b2f0-e5d8487b979b",
+                        "_links": {
+                            "self": {
+                                "href": "users/67e1c418-63eb-4dd3-b2f0-e5d8487b979b",
+                                "title": "user"
+                            }
+                        },
+                        "_updated": "Wed, 07 Jan 2015 16:43:17 GMT",
                         "email": "joe@pathwar.net",
                         "login": "joe",
                         "role": "user"
                     },
                     {
-                        "_created": "Tue, 30 Dec 2014 11:41:14 GMT",
-                        "_etag": "c7caf5d5ad3f2ab4a2945a6b891cd874494027e5",
-                        "_id": "54a28f5a8456bb0016a223da",
+                        "_created": "Wed, 07 Jan 2015 16:43:17 GMT",
+                        "_etag": "8f5d7df0210b75992b41834329c0abdea9a02bc2",
+                        "_id": "a5595d9b-75a5-4a18-8cd9-2cff9907b7ac",
                         "_links": {
                             "self": {
-                                "href": "users/54a28f5a8456bb0016a223da",
+                                "href": "users/a5595d9b-75a5-4a18-8cd9-2cff9907b7ac",
                                 "title": "user"
                             }
                         },
-                        "_updated": "Tue, 30 Dec 2014 11:41:14 GMT",
+                        "_updated": "Wed, 07 Jan 2015 16:43:17 GMT",
                         "email": "m1ch3l@pathwar.net",
                         "login": "m1ch3l",
                         "role": "superuser"
-                    },
-                    {
-                        "_created": "Tue, 30 Dec 2014 11:41:14 GMT",
-                        "_etag": "08e0699031b81268b6f1656f85ccd26e6cdfe394",
-                        "_id": "54a28f5a8456bb0016a223db",
-                        "_links": {
-                            "self": {
-                                "href": "users/54a28f5a8456bb0016a223db",
-                                "title": "user"
-                            }
-                        },
-                        "_updated": "Tue, 30 Dec 2014 11:41:14 GMT",
-                        "email": "root@pathwar.net",
-                        "login": "root",
-                        "role": "admin"
                     }
                 ],
                 "_links": {
