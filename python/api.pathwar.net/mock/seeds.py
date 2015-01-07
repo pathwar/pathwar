@@ -209,3 +209,29 @@ def load_seeds(app, reset=True):
         'organization': organizations[0]['_items'][1]['_id'],
         'coupon': coupons[0]['_items'][1]['_id'],
     }])
+
+    user_activities = post(client, '/user-activities', [{
+        'user': users[0]['_items'][0]['_id'],
+        'category': 'level',
+        'action': 'bought-level',
+        'arguments': ['pnu'],
+        'linked_resources': [{
+            'kind': 'levels',
+            'id': levels[0]['_items'][1]['_id'],
+        }],
+        'organization': organizations[0]['_items'][0]['_id'],
+    }, {
+        'user': users[0]['_items'][0]['_id'],
+        'action': 'created-token',
+        'category': 'account',
+    }, {
+        'user': users[0]['_items'][1]['_id'],
+        'organization': organizations[0]['_items'][1]['_id'],
+        'category': 'whoswho',
+        'action': 'whoswho-pwned',
+        'arguments': ['pwn-around-the-world'],
+        'linked_resources': [{
+            'kind': 'organizations',
+            'id': organizations[0]['_items'][0]['_id'],
+        }]
+    }])
