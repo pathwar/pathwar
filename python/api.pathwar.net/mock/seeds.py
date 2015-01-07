@@ -187,3 +187,14 @@ def load_seeds(app, reset=True):
         'level': levels[0]['_items'][1]['_id'],
         'server': servers[0]['_items'][1]['_id'],
     }])
+
+    user_notifications = post(client, '/user-notifications', [{
+        'user': users[0]['_items'][0]['_id'],
+        'title': 'hello !',
+    }, {
+        'user': users[0]['_items'][0]['_id'],
+        'title': 'what\s up?',
+    }, {
+        'user': users[0]['_items'][1]['_id'],
+        'title': 'hello !',
+    }])
