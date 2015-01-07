@@ -59,6 +59,16 @@ def load_seeds(app, reset=True):
         'name': 'world battle',
     }])
 
+    coupons = post(client, '/coupons', [{
+        'hash': '1234567890',
+        'value': 42,
+        'session': sessions[0]['_items'][0]['_id'],
+    }, {
+        'hash': '0987654321',
+        'value': 24,
+        'session': sessions[0]['_items'][1]['_id'],
+    }])
+
     organizations = post(client, '/organizations', [{
         'name': 'pwn-around-the-world',
     }, {
