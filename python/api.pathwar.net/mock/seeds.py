@@ -90,6 +90,14 @@ def load_seeds(app, reset=True):
         'name': 'staff',
     }])
 
+    achievements = post(client, '/achievements', [{
+        'name': 'flash-gordon',
+        'description': 'Validate a level in less than 1 minute',
+    }, {
+        'name': 'API',
+        'description': 'Hack the API',
+    }])
+
     organizations_users = post(client, '/organization-users', [{
         'organization': organizations[0]['_items'][0]['_id'],
         'role': 'owner',
@@ -141,4 +149,15 @@ def load_seeds(app, reset=True):
     }, {
         'organization': organizations[0]['_items'][1]['_id'],
         'level': levels[0]['_items'][1]['_id'],
+    }])
+
+    organization_achievements = post(client, '/organization-achievements', [{
+        'organization': organizations[0]['_items'][0]['_id'],
+        'achievement': achievements[0]['_items'][0]['_id'],
+    }, {
+        'organization': organizations[0]['_items'][0]['_id'],
+        'achievement': achievements[0]['_items'][1]['_id'],
+    }, {
+        'organization': organizations[0]['_items'][1]['_id'],
+        'achievement': achievements[0]['_items'][1]['_id'],
     }])
