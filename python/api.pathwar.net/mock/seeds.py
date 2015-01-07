@@ -161,3 +161,14 @@ def load_seeds(app, reset=True):
         'organization': organizations[0]['_items'][1]['_id'],
         'achievement': achievements[0]['_items'][1]['_id'],
     }])
+
+    user_organization_invites = post(client, '/user-organization-invites', [{
+        'organization': organizations[0]['_items'][0]['_id'],
+        'user': users[0]['_items'][0]['_id'],
+    }, {
+        'organization': organizations[0]['_items'][0]['_id'],
+        'user': users[0]['_items'][1]['_id'],
+    }, {
+        'organization': organizations[0]['_items'][1]['_id'],
+        'user': users[0]['_items'][1]['_id'],
+    }])
