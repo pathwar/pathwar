@@ -251,6 +251,9 @@ Return the information for the User
 Edit the information of the User
 
 + Request without If-Match header
+    + Headers
+    
+            If-Match: <unset>
 
 + Response 403 (application/json)
 
@@ -266,7 +269,8 @@ Edit the information of the User
 
 + Request with If-Match header
     + Headers
-        If-Match: 572c96529cb56a67c304eddf5a0af792caad2a5a
+
+            If-Match: 572c96529cb56a67c304eddf5a0af792caad2a5a
 
 + Response 200
 
@@ -293,7 +297,7 @@ Edit the information of the User
                 }
             }
 
-## User Collection [/users]
+## User Collection [/users{?max_results}{?page}{?where}]
 Collection of users.
 
 + Model (application/json)
@@ -384,14 +388,17 @@ Return all users.
     [User Collection][]
 
 ### Create User [POST]
+Create a new User
 
-+ Parameters
++ Request (application/json)
 
-    + name (required, string, `m1ch3l`)
-    + email (required, string, `m1ch3l@pathwar.net`)
-    + password_blowfish (optional, string)
-    + otp_secret (optional, string)
-    + role = `user` (optional, string, `superuser`)
+        {
+            "name": "m1ch3l",
+            "email": "m1ch3l@pathwar.net",
+            "password_blowfish": "xxxxxxxxxxxxx",
+            "otp_secret": "xxxxxxxxxxxxx",
+            "role": "user"
+        }
 
 + Response 201
 
