@@ -234,44 +234,46 @@ Return the information for the User
             Accept: text/xml
 
 + Response 200 (text/xml)
+    + Body
 
-        <?xml version="1.0"?>
-        <resource href="users" title="users">
-        <link rel="parent" href="/" title="home"/>
-          <_meta>
-            <max_results>25</max_results>
-            <page>1</page>
-            <total>3</total>
-          </_meta>
-          <resource href="users/ae8fe183-f463-4684-9146-1abc0adb52ed" title="user">
-            <_created>Thu, 01 Jan 1970 00:00:00 GMT</_created>
-            <_etag>158543ba73c23d7f61dce775a3913df808b63578</_etag>
-            <_id>ae8fe183-f463-4684-9146-1abc0adb52ed</_id>
-            <_updated>Thu, 01 Jan 1970 00:00:00 GMT</_updated>
-            <login>root</login>
-            <role>admin</role>
-          </resource>
-          <resource href="users/1b42f640-5b9e-48fb-954d-016087c14457" title="user">
-            <_created>Fri, 09 Jan 2015 08:43:11 GMT</_created>
-            <_etag>02216b1b49633800788a715438f2804da0ce47f6</_etag>
-            <_id>1b42f640-5b9e-48fb-954d-016087c14457</_id>
-            <_updated>Fri, 09 Jan 2015 08:43:11 GMT</_updated>
-            <email>joe@pathwar.net</email>
-            <login>joe</login>
-            <role>user</role>
-          </resource>
-          <resource href="users/cd0c5543-a1b7-4b3b-b4f9-f26dc951e6b6" title="user">
-            <_created>Fri, 09 Jan 2015 08:43:11 GMT</_created>
-            <_etag>d4055a1e6fdf54a2593731f32b7158235881f5f6</_etag>
-            <_id>cd0c5543-a1b7-4b3b-b4f9-f26dc951e6b6</_id>
-            <_updated>Fri, 09 Jan 2015 08:43:11 GMT</_updated>
-            <email>m1ch3l@pathwar.net</email>
-            <login>m1ch3l</login>
-            <role>superuser</role>
-          </resource>
-        </resource>
+            <?xml version="1.0"?>
+            <resource href="users" title="users">
+            <link rel="parent" href="/" title="home"/>
+              <_meta>
+                <max_results>25</max_results>
+                <page>1</page>
+                <total>3</total>
+              </_meta>
+              <resource href="users/ae8fe183-f463-4684-9146-1abc0adb52ed" title="user">
+                <_created>Thu, 01 Jan 1970 00:00:00 GMT</_created>
+                <_etag>158543ba73c23d7f61dce775a3913df808b63578</_etag>
+                <_id>ae8fe183-f463-4684-9146-1abc0adb52ed</_id>
+                <_updated>Thu, 01 Jan 1970 00:00:00 GMT</_updated>
+                <login>root</login>
+                <role>admin</role>
+              </resource>
+              <resource href="users/1b42f640-5b9e-48fb-954d-016087c14457" title="user">
+                <_created>Fri, 09 Jan 2015 08:43:11 GMT</_created>
+                <_etag>02216b1b49633800788a715438f2804da0ce47f6</_etag>
+                <_id>1b42f640-5b9e-48fb-954d-016087c14457</_id>
+                <_updated>Fri, 09 Jan 2015 08:43:11 GMT</_updated>
+                <email>joe@pathwar.net</email>
+                <login>joe</login>
+                <role>user</role>
+              </resource>
+              <resource href="users/cd0c5543-a1b7-4b3b-b4f9-f26dc951e6b6" title="user">
+                <_created>Fri, 09 Jan 2015 08:43:11 GMT</_created>
+                <_etag>d4055a1e6fdf54a2593731f32b7158235881f5f6</_etag>
+                <_id>cd0c5543-a1b7-4b3b-b4f9-f26dc951e6b6</_id>
+                <_updated>Fri, 09 Jan 2015 08:43:11 GMT</_updated>
+                <email>m1ch3l@pathwar.net</email>
+                <login>m1ch3l</login>
+                <role>superuser</role>
+              </resource>
+            </resource>
 
 + Response 404 (text/xml)
+    + Body
 
             <?xml version="1.0"?>
             <resource>
@@ -292,7 +294,6 @@ Edit the information of the User
             If-Match: <unset>
 
 + Response 403 (application/json)
-
     + Body
 
             {
@@ -314,7 +315,6 @@ Edit the information of the User
 
 
 + Response 412 (text/html)
-
     + Body
 
             <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
@@ -323,7 +323,6 @@ Edit the information of the User
             <p>Client and server etags don't match</p>
 
 + Response 422 (application/json)
-
     + Body
 
             {
@@ -427,31 +426,33 @@ Return all users.
 Create a new User
 
 + Request (application/json)
+    + Body
 
-        {
-            "name": "m1ch3l",
-            "email": "m1ch3l@pathwar.net",
-            "password_blowfish": "xxxxxxxxxxxxx",
-            "otp_secret": "xxxxxxxxxxxxx",
-            "role": "user"
-        }
+            {
+                "name": "m1ch3l",
+                "email": "m1ch3l@pathwar.net",
+                "password_blowfish": "xxxxxxxxxxxxx",
+                "otp_secret": "xxxxxxxxxxxxx",
+                "role": "user"
+            }
 
 + Response 201
 
     [User][]
 
 + Response 422 (application/json)
+    + Body
 
-        {
-            "_error": {
-                "code": 422,
-                "message": "Insertion failure: 1 document(s) contain(s) error(s)"
-            },
-            "_issues": {
-                "login": "value m1ch3l is not unique"
-            },
-            "_status": "ERR"
-        }
+            {
+                "_error": {
+                    "code": 422,
+                    "message": "Insertion failure: 1 document(s) contain(s) error(s)"
+                },
+                "_issues": {
+                    "login": "value m1ch3l is not unique"
+                },
+                "_status": "ERR"
+            }
 
 # Group Organization
 This section describes about the Organizations
@@ -464,17 +465,16 @@ This resource represents one particular organization identified by its *id*.
 
 + Model (application/json)
     JSON representation of Organization resource.
+
     + Body
 
-        ```js
-        {
-          "name": "ulteam",
-          "members": [
-            "xxxx-xxxxxx-xxxxxx-xxxx",
-            "xxxx-xxxxxx-xxxxxx-xxxx",
-          ]
-        }
-        ```
+            {
+              "name": "ulteam",
+              "members": [
+                "xxxx-xxxxxx-xxxxxx-xxxx",
+                "xxxx-xxxxxx-xxxxxx-xxxx",
+              ]
+            }
 
 
 ### Retrieve Organization [GET]
@@ -489,28 +489,29 @@ Return the information for the Organization
 Collection of organizations.
 
 + Model (application/json)
+    JSON representation of Organization collection.
 
-        ```js
-        {
-          "count": 2,
-          "_embedded": [
+    + Body
+
             {
-              "name": "ulteam",
-              "members": [
-                "xxxx-xxxxxx-xxxxxx-xxx1",
-                "xxxx-xxxxxx-xxxxxx-xxx2",
+              "count": 2,
+              "_embedded": [
+                {
+                  "name": "ulteam",
+                  "members": [
+                    "xxxx-xxxxxx-xxxxxx-xxx1",
+                    "xxxx-xxxxxx-xxxxxx-xxx2",
+                  ]
+                },
+                {
+                  "name": "ultreme",
+                  "members": [
+                    "xxxx-xxxxxx-xxxxxx-xxx3",
+                    "xxxx-xxxxxx-xxxxxx-xxx4",
+                  ]
+                },
               ]
-            },
-            {
-              "name": "ultreme",
-              "members": [
-                "xxxx-xxxxxx-xxxxxx-xxx3",
-                "xxxx-xxxxxx-xxxxxx-xxx4",
-              ]
-            },
-          ]
-        }
-        ```
+            }
 
 
 ### List all organizations [GET]
@@ -534,13 +535,11 @@ This resource represents one particular level identified by its *id*.
     JSON representation of a Level resource.
     + Body
 
-        ```js
-        {
-          "name": "pwnland",
-          "description": "pwnland is cool",
-          "author": "Pathwar Team (@pathwar_net)"
-        }
-        ```
+            {
+              "name": "pwnland",
+              "description": "pwnland is cool",
+              "author": "Pathwar Team (@pathwar_net)"
+            }
 
 
 ### Retrieve Level [GET]
@@ -555,24 +554,23 @@ Return the information for the Level
 Collection of levels.
 
 + Model (application/json)
+    + Body
 
-        ```js
-        {
-          "count": 2,
-          "_embedded": [
             {
-              "name": "pwnland",
-              "description": "pwnland is cool",
-              "author": "Pathwar Team (@pathwar_net)"
-            },
-            {
-              "name": "megapwnland",
-              "description": "megapwnland is megacool",
-              "author": "Pathwar Team (@pathwar_net)"
+              "count": 2,
+              "_embedded": [
+                {
+                  "name": "pwnland",
+                  "description": "pwnland is cool",
+                  "author": "Pathwar Team (@pathwar_net)"
+                },
+                {
+                  "name": "megapwnland",
+                  "description": "megapwnland is megacool",
+                  "author": "Pathwar Team (@pathwar_net)"
+                }
+              ]
             }
-          ]
-        }
-        ```
 
 
 ### List all levels [GET]
@@ -596,14 +594,12 @@ This resource represents one particular coupon identified by its *id*.
     JSON representation of a Coupon resource.
     + Body
 
-        ```js
-        {
-          "name": "magic coupon",
-          "token": "*hidden*",
-          "unique": true,
-          "state": "available"
-        }
-        ```
+            {
+              "name": "magic coupon",
+              "token": "*hidden*",
+              "unique": true,
+              "state": "available"
+            }
 
 
 ### Retrieve Coupon [GET]
@@ -618,26 +614,25 @@ Return the information for the Coupon
 Collection of coupons.
 
 + Model (application/json)
+    + Body
 
-        ```js
-        {
-          "count": 2,
-          "_embedded": [
             {
-              "name": "magic coupon",
-              "token": "*hidden*",
-              "unique": true,
-              "state": "available"
-            },
-            {
-              "name": "mega magic coupon",
-              "token": "*hidden*",
-              "unique": true,
-              "state": "available"
+              "count": 2,
+              "_embedded": [
+                {
+                  "name": "magic coupon",
+                  "token": "*hidden*",
+                  "unique": true,
+                  "state": "available"
+                },
+                {
+                  "name": "mega magic coupon",
+                  "token": "*hidden*",
+                  "unique": true,
+                  "state": "available"
+                }
+              ]
             }
-          ]
-        }
-        ```
 
 
 ### List all coupons [GET]
@@ -661,12 +656,10 @@ This resource represents one particular achievement identified by its *id*.
     JSON representation of a Achievement resource.
     + Body
 
-        ```js
-        {
-          "name": "hack the planet",
-          "description": "Finish all the levels"
-        }
-        ```
+            {
+              "name": "hack the planet",
+              "description": "Finish all the levels"
+            }
 
 
 ### Retrieve Achievement [GET]
@@ -681,22 +674,21 @@ Return the information for the Achievement
 Collection of achievements.
 
 + Model (application/json)
+    + Body
 
-        ```js
-        {
-          "count": 2,
-          "_embedded": [
             {
-              "name": "hack the planet",
-              "description": "Finish all the levels"
-            },
-            {
-              "name": "hack the universe",
-              "description": "Finish all the levels and more"
+              "count": 2,
+              "_embedded": [
+                {
+                  "name": "hack the planet",
+                  "description": "Finish all the levels"
+                },
+                {
+                  "name": "hack the universe",
+                  "description": "Finish all the levels and more"
+                }
+              ]
             }
-          ]
-        }
-        ```
 
 
 ### List all achievements [GET]
@@ -720,12 +712,10 @@ This resource represents one particular session identified by its *id*.
     JSON representation of a Session resource.
     + Body
 
-        ```js
-        {
-          "name": "Paris Final",
-          "description": "Best teams of Paris"
-        }
-        ```
+            {
+              "name": "Paris Final",
+              "description": "Best teams of Paris"
+            }
 
 
 ### Retrieve Session [GET]
@@ -741,21 +731,19 @@ Collection of sessions.
 
 + Model (application/json)
 
-        ```js
-        {
-          "count": 2,
-          "_embedded": [
             {
-              "name": "Paris Final",
-              "description": "Best teams of Paris"
-            },
-            {
-              "name": "SF Final",
-              "description": "Best teams of San Francisco"
+              "count": 2,
+              "_embedded": [
+                {
+                  "name": "Paris Final",
+                  "description": "Best teams of Paris"
+                },
+                {
+                  "name": "SF Final",
+                  "description": "Best teams of San Francisco"
+                }
+              ]
             }
-          ]
-        }
-        ```
 
 
 ### List all sessions [GET]
