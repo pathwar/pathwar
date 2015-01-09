@@ -721,3 +721,350 @@ Create a new Organization
                 },
                 "_status": "ERR"
             }
+
+# Group Level
+This section describes about the Levels
+
+## Level [/levels/{id}]
+This resource represents one particular level identified by its *id*.
+
++ Parameters
+    + id (required, string, `123e4567-e89b-12d3-a456-426655440000`) ... Id of a level.
+
++ Model (application/json)
+    HATEOAS/JSON representation of Level resource.
+
+    + _id (required, uuid, `63f5bf63-c1ae-4329-a0cc-fe3d0de788a9`)
+    + author = `Anonymous` (optional, string, `Pathwar team`)
+    + default_cpu_shares = `1/10` (optional, string, `1/10`)
+    + default_memory_limit = `16M` (optional, string, `16M`)
+    + default_redump = `600` (optional, integer, `600`)
+    + default_rootable = `true` (optional, boolean, `true`)
+    + description (optional, string, `An easy PHP level`)
+    + lang = `en` (optional, string, `en`)
+    + name (required, string, `staff`)
+    + passphrases_amount = `1` (optional, integer, `1`)
+    + price (required, integer, `42`)
+    + tags (optional, list, `["php","easy"]`)
+    + version = `dev` (optional, string, `dev`)
+
+    + Headers
+
+            ETag: 7ef97652d5750acd085e03d171faec4bcb92355a
+            Last-Modified: Fri, 09 Jan 2015 09:26:59 GMT
+
+    + Body
+
+            {
+                "_created": "Fri, 09 Jan 2015 09:26:59 GMT",
+                "_etag": "7ef97652d5750acd085e03d171faec4bcb92355a",
+                "_id": "47bac58a-a59f-462c-96b3-1c3e3b210d49",
+                "_links": {
+                    "collection": {
+                        "href": "levels",
+                        "title": "levels"
+                    },
+                    "parent": {
+                        "href": "/",
+                        "title": "home"
+                    },
+                    "self": {
+                        "href": "levels/47bac58a-a59f-462c-96b3-1c3e3b210d49",
+                        "title": "level"
+                    }
+                },
+                "_updated": "Fri, 09 Jan 2015 09:26:59 GMT",
+                "author": "Pathwar Team",
+                "default_cpu_shares": "1/10",
+                "default_memory_limit": "16M",
+                "default_redump": 600,
+                "default_rootable": true,
+                "description": "An easy welcome level",
+                "lang": "en",
+                "name": "welcome",
+                "passphrases_amount": 1,
+                "price": 42,
+                "tags": [
+                    "easy",
+                    "welcome",
+                    "official"
+                ],
+                "version": "dev"
+            }
+
+### Retrieve Level [GET]
+Return the information for the Level
+
++ Request JSON
+    + Headers
+
+            Accept: application/json
+
++ Response 200
+
+    [Level][]
+
++ Response 404 (application/json)
+    + Body
+
+            {
+                "_error": {
+                    "code": 404,
+                    "message": "The requested URL was not found on the server.  If you entered the URL manually please check your spelling and try again."
+                },
+                "_status": "ERR"
+            }
+
++ Request XML
+    + Headers
+
+            Accept: text/xml
+
++ Response 200 (text/xml)
+    + Headers
+
+            ETag: 7ef97652d5750acd085e03d171faec4bcb92355a
+            Last-Modified: Fri, 09 Jan 2015 09:26:59 GMT
+
+    + Body
+
+            <?xml version="1.0"?>
+            <resource href="levels/47bac58a-a59f-462c-96b3-1c3e3b210d49" title="level">
+              <link rel="collection" href="levels" title="levels"/>
+              <link rel="parent" href="/" title="home"/>
+              <_created>Fri, 09 Jan 2015 09:26:59 GMT</_created>
+              <_etag>7ef97652d5750acd085e03d171faec4bcb92355a</_etag>
+              <_id>47bac58a-a59f-462c-96b3-1c3e3b210d49</_id>
+              <_updated>Fri, 09 Jan 2015 09:26:59 GMT</_updated>
+              <author>Pathwar Team</author>
+              <default_cpu_shares>1/10</default_cpu_shares>
+              <default_memory_limit>16M</default_memory_limit>
+              <default_redump>600</default_redump>
+              <default_rootable>True</default_rootable>
+              <description>An easy welcome level</description>
+              <lang>en</lang>
+              <name>welcome</name>
+              <passphrases_amount>1</passphrases_amount>
+              <price>42</price>
+              <tags>easy</tags>
+              <tags>welcome</tags>
+              <tags>official</tags>
+              <version>dev</version>
+            </resource>
+
+### Edit Level [PATCH]
+Edit the information of the Level
+
++ Request (application/x-www-form-urlencoded)
+    + Headers
+
+            If-Match: 00c381c69d40a93aa2af1509c33d590c474b38e6
+
+    + Body
+
+            name=staff
+
++ Response 200
+
+    [Level][]
+
++ Request
+    + Headers
+
+            If-Match: <unset>
+
++ Response 403 (application/json)
+    + Body
+
+            {
+                "_status": "ERR",
+                "_error": {
+                    "message": "An etag must be provided to edit a document",
+                    "code": 403
+                }
+            }
+
++ Request
+    + Headers
+
+            If-Match: 00c381c69d40a93aa2af1509c33d590c474b38e6
+
++ Response 400 (application/json)
+    + Body
+
+            {
+                "_status": "ERR",
+                "_error": {
+                    "message": "Unknown or no Content-Type header supplied",
+                    "code": 400
+                }
+            }
+
++ Response 412 (text/html)
+    + Body
+
+            <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+            <title>412 Precondition Failed</title>
+            <h1>Precondition Failed</h1>
+            <p>Client and server etags don't match</p>
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "_status": "ERR",
+                "_issues": {
+                    "name": "value 'welcome' is not unique"
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "_status": "ERR",
+                "_issues": {
+                    "login": "unknown field"
+                }
+            }
+
+## Level Collection [/levels{?max_results}{?page}{?where}]
+Collection of levels.
+
++ Model (application/json)
+    HATEOAS/JSON representation of Level collection.
+
+    + Headers
+
+            Last-Modified: Fri, 09 Jan 2015 09:14:48 GMT
+
+    + Body
+
+            {
+                "_items": [
+                    {
+                        "_created": "Fri, 09 Jan 2015 09:26:59 GMT",
+                        "_etag": "7ef97652d5750acd085e03d171faec4bcb92355a",
+                        "_id": "47bac58a-a59f-462c-96b3-1c3e3b210d49",
+                        "_links": {
+                            "self": {
+                                "href": "levels/47bac58a-a59f-462c-96b3-1c3e3b210d49",
+                                "title": "level"
+                            }
+                        },
+                        "_updated": "Fri, 09 Jan 2015 09:26:59 GMT",
+                        "author": "Pathwar Team",
+                        "default_cpu_shares": "1/10",
+                        "default_memory_limit": "16M",
+                        "default_redump": 600,
+                        "default_rootable": true,
+                        "description": "An easy welcome level",
+                        "lang": "en",
+                        "name": "welcome",
+                        "passphrases_amount": 1,
+                        "price": 42,
+                        "tags": [
+                            "easy",
+                            "welcome",
+                            "official"
+                        ],
+                        "version": "dev"
+                    },
+                    {
+                        "_created": "Fri, 09 Jan 2015 09:26:59 GMT",
+                        "_etag": "fe238c1fcbf8d6a68e8cb01791efdcaaab73bccd",
+                        "_id": "69ad526a-914c-487b-8943-62daaf2dd9d2",
+                        "_links": {
+                            "self": {
+                                "href": "levels/69ad526a-914c-487b-8943-62daaf2dd9d2",
+                                "title": "level"
+                            }
+                        },
+                        "_updated": "Fri, 09 Jan 2015 09:26:59 GMT",
+                        "author": "Pathwar Team",
+                        "default_cpu_shares": "1/10",
+                        "default_memory_limit": "16M",
+                        "default_redump": 600,
+                        "default_rootable": true,
+                        "description": "Possible not upload",
+                        "lang": "en",
+                        "name": "pnu",
+                        "passphrases_amount": 1,
+                        "price": 420,
+                        "tags": [
+                            "php",
+                            "advanced"
+                        ],
+                        "version": "dev"
+                    }
+                ],
+                "_links": {
+                    "parent": {
+                        "href": "/",
+                        "title": "home"
+                    },
+                    "self": {
+                        "href": "levels",
+                        "title": "levels"
+                    }
+                },
+                "_meta": {
+                    "max_results": 25,
+                    "page": 1,
+                    "total": 2
+                }
+            }
+
+### List all levels [GET]
+Return all levels.
+
++ Parameters
+    + max_results (optional, integer, `25`) ... The maximum number of results to return
+    + page (optional, integer, `2`) ... The page number when using pagination
+    + where (optional, string, `where={"name":"staff"}`) ... Filters
+
++ Response 200
+
+    [Level Collection][]
+
+### Create Level [POST]
+Create a new Level
+
++ Request (application/json)
+    + Body
+
+            {
+                "author": "Pathwar Team",
+                "default_cpu_shares": "1/10",
+                "default_memory_limit": "16M",
+                "default_redump": 600,
+                "default_rootable": true,
+                "description": "Possible not upload",
+                "lang": "en",
+                "name": "pnu",
+                "passphrases_amount": 1,
+                "price": 420,
+                "tags": [
+                    "php",
+                    "advanced"
+                ],
+                "version": "dev"
+            }
+
++ Response 201
+
+    [Level][]
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "_error": {
+                    "code": 422,
+                    "message": "Insertion failure: 1 document(s) contain(s) error(s)"
+                },
+                "_issues": {
+                    "name": "value welcome is not unique"
+                },
+                "_status": "ERR"
+            }
