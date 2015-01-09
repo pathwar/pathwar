@@ -11,7 +11,8 @@ To be defined
 ## Media Types
 This API uses the json media-type to represent resources states and affordances.
 
-Requests with a message-body are using plain JSON to set or update resource states.
+Requests with a message-body are using plain JSON to set or update resource
+states.
 
 
 ## Error States
@@ -21,11 +22,12 @@ The common [HTTP Response Status Codes](https://github.com/for-GET/know-your-htt
 # Pathwar API Root [/]
 Pathwar API entry point.
 
-This resource does not have any attributes. Instead it offers the initial API affordances in the form of HATEOAS links.
+This resource does not have any attributes.
+Instead it offers the initial API affordances in the form of HATEOAS links.
 
 ## Retrieve Entry Point [GET]
 
-+ Request JSON User
++ Request JSON
     + Headers
 
             Accept: application/json
@@ -120,7 +122,7 @@ This resource does not have any attributes. Instead it offers the initial API af
                 }
             }
 
-+ Request XML User
++ Request XML
     + Headers
 
             Accept: text/xml
@@ -252,7 +254,7 @@ Edit the information of the User
 
 + Request without If-Match header
     + Headers
-    
+
             If-Match: <unset>
 
 + Response 403 (application/json)
