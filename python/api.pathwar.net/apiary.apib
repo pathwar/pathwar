@@ -155,9 +155,8 @@ Instead it offers the initial API affordances in the form of HATEOAS links.
             </resource>
 
 
-# Group People
-This section describes about the People
-
+# Group User
+This section describes about the Users
 
 ## User [/users/{id}]
 This resource represents one particular user identified by its *id*.
@@ -208,7 +207,7 @@ This resource represents one particular user identified by its *id*.
 ### Retrieve User [GET]
 Return the information for the User
 
-+ Request JSON User
++ Request JSON
     + Headers
 
             Accept: application/json
@@ -226,50 +225,32 @@ Return the information for the User
                     "message": "The requested URL was not found on the server.  If you entered the URL manually please check your spelling and try again."
                 },
                 "_status": "ERR"
-                }
+            }
 
-+ Request XML User
++ Request XML
     + Headers
 
             Accept: text/xml
 
 + Response 200 (text/xml)
+    + Headers
+
+            ETag: 02216b1b49633800788a715438f2804da0ce47f6
+            Last-Modified: Fri, 09 Jan 2015 08:43:11 GMT
+
     + Body
 
             <?xml version="1.0"?>
-            <resource href="users" title="users">
-            <link rel="parent" href="/" title="home"/>
-              <_meta>
-                <max_results>25</max_results>
-                <page>1</page>
-                <total>3</total>
-              </_meta>
-              <resource href="users/ae8fe183-f463-4684-9146-1abc0adb52ed" title="user">
-                <_created>Thu, 01 Jan 1970 00:00:00 GMT</_created>
-                <_etag>158543ba73c23d7f61dce775a3913df808b63578</_etag>
-                <_id>ae8fe183-f463-4684-9146-1abc0adb52ed</_id>
-                <_updated>Thu, 01 Jan 1970 00:00:00 GMT</_updated>
-                <login>root</login>
-                <role>admin</role>
-              </resource>
-              <resource href="users/1b42f640-5b9e-48fb-954d-016087c14457" title="user">
-                <_created>Fri, 09 Jan 2015 08:43:11 GMT</_created>
-                <_etag>02216b1b49633800788a715438f2804da0ce47f6</_etag>
-                <_id>1b42f640-5b9e-48fb-954d-016087c14457</_id>
-                <_updated>Fri, 09 Jan 2015 08:43:11 GMT</_updated>
-                <email>joe@pathwar.net</email>
-                <login>joe</login>
-                <role>user</role>
-              </resource>
-              <resource href="users/cd0c5543-a1b7-4b3b-b4f9-f26dc951e6b6" title="user">
-                <_created>Fri, 09 Jan 2015 08:43:11 GMT</_created>
-                <_etag>d4055a1e6fdf54a2593731f32b7158235881f5f6</_etag>
-                <_id>cd0c5543-a1b7-4b3b-b4f9-f26dc951e6b6</_id>
-                <_updated>Fri, 09 Jan 2015 08:43:11 GMT</_updated>
-                <email>m1ch3l@pathwar.net</email>
-                <login>m1ch3l</login>
-                <role>superuser</role>
-              </resource>
+            <resource href="users/1b42f640-5b9e-48fb-954d-016087c14457" title="user">
+              <link rel="collection" href="users" title="users"/>
+              <link rel="parent" href="/" title="home"/>
+              <_created>Fri, 09 Jan 2015 08:43:11 GMT</_created>
+              <_etag>02216b1b49633800788a715438f2804da0ce47f6</_etag>
+              <_id>1b42f640-5b9e-48fb-954d-016087c14457</_id>
+              <_updated>Fri, 09 Jan 2015 08:43:11 GMT</_updated>
+              <email>joe@pathwar.net</email>
+              <login>joe</login>
+              <role>user</role>
             </resource>
 
 + Response 404 (text/xml)
@@ -288,7 +269,36 @@ Return the information for the User
 ### Edit User [PATCH]
 Edit the information of the User
 
-+ Request without If-Match header
++ Request (application/x-www-form-urlencoded)
+    + Headers
+
+            If-Match: 572c96529cb56a67c304eddf5a0af792caad2a5a
+
+    + Body
+
+            login=m1ch3l
+
++ Response 200
+
+    [User][]
+
++ Request
+    + Headers
+
+            If-Match: 572c96529cb56a67c304eddf5a0af792caad2a5a
+
++ Response 400 (application/json)
+    + Body
+
+            {
+                "_status": "ERR",
+                "_error": {
+                    "message": "Unknown or no Content-Type header supplied",
+                    "code": 400
+                }
+            }
+
++ Request
     + Headers
 
             If-Match: <unset>
@@ -303,16 +313,6 @@ Edit the information of the User
                     "code": 403
                 }
             }
-
-+ Request with If-Match header
-    + Headers
-
-            If-Match: 572c96529cb56a67c304eddf5a0af792caad2a5a
-
-+ Response 200
-
-    [User][]
-
 
 + Response 412 (text/html)
     + Body
@@ -417,7 +417,6 @@ Return all users.
     + page (optional, integer, `2`) ... The page number when using pagination
     + where (optional, string, `where={"role":"superuser"}`) ... Filters
 
-
 + Response 200
 
     [User Collection][]
@@ -464,62 +463,264 @@ This resource represents one particular organization identified by its *id*.
     + id (required, string, `123e4567-e89b-12d3-a456-426655440000`) ... Id of an organization.
 
 + Model (application/json)
-    JSON representation of Organization resource.
+    HATEOAS/JSON representation of Organization resource.
+
+    + name (required, string, `staff`)
+    + _id (required, uuid, `63f5bf63-c1ae-4329-a0cc-fe3d0de788a9`)
+
+    + Headers
+
+            ETag: 00c381c69d40a93aa2af1509c33d590c474b38e6
+            Last-Modified: Fri, 09 Jan 2015 08:43:11 GMT
 
     + Body
 
             {
-              "name": "ulteam",
-              "members": [
-                "xxxx-xxxxxx-xxxxxx-xxxx",
-                "xxxx-xxxxxx-xxxxxx-xxxx",
-              ]
+                "_created": "Fri, 09 Jan 2015 08:43:11 GMT",
+                "_etag": "00c381c69d40a93aa2af1509c33d590c474b38e6",
+                "_id": "63f5bf63-c1ae-4329-a0cc-fe3d0de788a9",
+                "_links": {
+                    "collection": {
+                        "href": "organizations",
+                        "title": "organizations"
+                    },
+                    "parent": {
+                        "href": "/",
+                        "title": "home"
+                    },
+                    "self": {
+                        "href": "organizations/63f5bf63-c1ae-4329-a0cc-fe3d0de788a9",
+                        "title": "organization"
+                    }
+                },
+                "_updated": "Fri, 09 Jan 2015 08:43:11 GMT",
+                "name": "staff",
+                "points": 0
             }
-
 
 ### Retrieve Organization [GET]
 Return the information for the Organization
+
++ Request JSON
+    + Headers
+
+            Accept: application/json
 
 + Response 200
 
     [Organization][]
 
++ Response 404 (application/json)
+    + Body
 
-## Organization Collection [/organizations]
+            {
+                "_error": {
+                    "code": 404,
+                    "message": "The requested URL was not found on the server.  If you entered the URL manually please check your spelling and try again."
+                },
+                "_status": "ERR"
+            }
+
++ Request XML
+    + Headers
+
+            Accept: text/xml
+
++ Response 200 (text/xml)
+    + Headers
+
+            ETag: 00c381c69d40a93aa2af1509c33d590c474b38e6
+            Last-Modified: Fri, 09 Jan 2015 08:43:11 GMT
+
+    + Body
+
+            <?xml version="1.0"?>
+            <resource href="organizations/63f5bf63-c1ae-4329-a0cc-fe3d0de788a9" title="organization">
+              <link rel="collection" href="organizations" title="organizations"/>
+              <link rel="parent" href="/" title="home"/>
+              <_created>Fri, 09 Jan 2015 08:43:11 GMT</_created>
+              <_etag>00c381c69d40a93aa2af1509c33d590c474b38e6</_etag>
+              <_id>63f5bf63-c1ae-4329-a0cc-fe3d0de788a9</_id>
+              <_updated>Fri, 09 Jan 2015 08:43:11 GMT</_updated>
+              <name>staff</name>
+              <points>0</points>
+            </resource>
+
+### Edit Organization [PATCH]
+Edit the information of the Organization
+
++ Request (application/x-www-form-urlencoded)
+    + Headers
+
+            If-Match: 00c381c69d40a93aa2af1509c33d590c474b38e6
+
+    + Body
+
+            name=staff
+
++ Response 200
+
+    [Organization][]
+
++ Request
+    + Headers
+
+            If-Match: <unset>
+
++ Response 403 (application/json)
+    + Body
+
+            {
+                "_status": "ERR",
+                "_error": {
+                    "message": "An etag must be provided to edit a document",
+                    "code": 403
+                }
+            }
+
++ Request
+    + Headers
+
+            If-Match: 00c381c69d40a93aa2af1509c33d590c474b38e6
+
++ Response 400 (application/json)
+    + Body
+
+            {
+                "_status": "ERR",
+                "_error": {
+                    "message": "Unknown or no Content-Type header supplied",
+                    "code": 400
+                }
+            }
+
++ Response 412 (text/html)
+    + Body
+
+            <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+            <title>412 Precondition Failed</title>
+            <h1>Precondition Failed</h1>
+            <p>Client and server etags don't match</p>
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "_status": "ERR",
+                "_issues": {
+                    "name": "value 'staff' is not unique"
+                }
+            }
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "_status": "ERR",
+                "_issues": {
+                    "login": "unknown field"
+                }
+            }
+
+## Organization Collection [/organizations{?max_results}{?page}{?where}]
 Collection of organizations.
 
 + Model (application/json)
-    JSON representation of Organization collection.
+    HATEOAS/JSON representation of Organization collection.
+
+    + Headers
+
+            Last-Modified: Fri, 09 Jan 2015 09:14:48 GMT
 
     + Body
 
             {
-              "count": 2,
-              "_embedded": [
-                {
-                  "name": "ulteam",
-                  "members": [
-                    "xxxx-xxxxxx-xxxxxx-xxx1",
-                    "xxxx-xxxxxx-xxxxxx-xxx2",
-                  ]
-                },
-                {
-                  "name": "ultreme",
-                  "members": [
-                    "xxxx-xxxxxx-xxxxxx-xxx3",
-                    "xxxx-xxxxxx-xxxxxx-xxx4",
-                  ]
-                },
-              ]
+                "_items": [
+                    {
+                        "_created": "Fri, 09 Jan 2015 08:43:11 GMT",
+                        "_etag": "732fb7241fece98c1e6089a95139ef08216f3818",
+                        "_id": "7463919a-ce57-4b24-ad0a-20b74221cde7",
+                        "_links": {
+                        "self": {
+                        "href": "organizations/7463919a-ce57-4b24-ad0a-20b74221cde7",
+                        "title": "organization"
+                        }
+                        },
+                        "_updated": "Fri, 09 Jan 2015 08:43:11 GMT",
+                        "name": "pwn-around-the-world",
+                        "points": 0
+                    },
+                    {
+                        "_created": "Fri, 09 Jan 2015 08:43:11 GMT",
+                        "_etag": "7642aa048bb91729d076cd300bd482548398ef91",
+                        "_id": "63f5bf63-c1ae-4329-a0cc-fe3d0de788a9",
+                        "_links": {
+                        "self": {
+                        "href": "organizations/63f5bf63-c1ae-4329-a0cc-fe3d0de788a9",
+                        "title": "organization"
+                        }
+                        },
+                        "_updated": "Fri, 09 Jan 2015 09:14:48 GMT",
+                        "name": "staff3",
+                        "points": 0
+                     }
+                ],
+                "_links": {
+                    "parent": {
+                        "href": "/",
+                        "title": "home"
+                    },
+                    "self": {
+                        "href": "organizations",
+                        "title": "organizations"
+                        }
+                    },
+                "_meta": {
+                    "max_results": 25,
+                    "page": 1,
+                    "total": 2
+                }
             }
 
-
 ### List all organizations [GET]
+Return all organizations.
+
++ Parameters
+    + max_results (optional, integer, `25`) ... The maximum number of results to return
+    + page (optional, integer, `2`) ... The page number when using pagination
+    + where (optional, string, `where={"name":"staff"}`) ... Filters
 
 + Response 200
 
     [Organization Collection][]
 
+### Create Organization [POST]
+Create a new Organization
+
++ Request (application/json)
+    + Body
+
+            {
+                "name": "staff"
+            }
+
++ Response 201
+
+    [Organization][]
+
++ Response 422 (application/json)
+    + Body
+
+            {
+                "_error": {
+                    "code": 422,
+                    "message": "Insertion failure: 1 document(s) contain(s) error(s)"
+                },
+                "_issues": {
+                    "login": "value staff is not unique"
+                },
+                "_status": "ERR"
+            }
 
 # Group Level
 This section describes about the Level
