@@ -233,9 +233,43 @@ Return the information for the User
 
             Accept: text/xml
 
-+ Response 200
++ Response 200 (text/xml)
 
-        TODO
+        <?xml version="1.0"?>
+        <resource href="users" title="users">
+        <link rel="parent" href="/" title="home"/>
+          <_meta>
+            <max_results>25</max_results>
+            <page>1</page>
+            <total>3</total>
+          </_meta>
+          <resource href="users/ae8fe183-f463-4684-9146-1abc0adb52ed" title="user">
+            <_created>Thu, 01 Jan 1970 00:00:00 GMT</_created>
+            <_etag>158543ba73c23d7f61dce775a3913df808b63578</_etag>
+            <_id>ae8fe183-f463-4684-9146-1abc0adb52ed</_id>
+            <_updated>Thu, 01 Jan 1970 00:00:00 GMT</_updated>
+            <login>root</login>
+            <role>admin</role>
+          </resource>
+          <resource href="users/1b42f640-5b9e-48fb-954d-016087c14457" title="user">
+            <_created>Fri, 09 Jan 2015 08:43:11 GMT</_created>
+            <_etag>02216b1b49633800788a715438f2804da0ce47f6</_etag>
+            <_id>1b42f640-5b9e-48fb-954d-016087c14457</_id>
+            <_updated>Fri, 09 Jan 2015 08:43:11 GMT</_updated>
+            <email>joe@pathwar.net</email>
+            <login>joe</login>
+            <role>user</role>
+          </resource>
+          <resource href="users/cd0c5543-a1b7-4b3b-b4f9-f26dc951e6b6" title="user">
+            <_created>Fri, 09 Jan 2015 08:43:11 GMT</_created>
+            <_etag>d4055a1e6fdf54a2593731f32b7158235881f5f6</_etag>
+            <_id>cd0c5543-a1b7-4b3b-b4f9-f26dc951e6b6</_id>
+            <_updated>Fri, 09 Jan 2015 08:43:11 GMT</_updated>
+            <email>m1ch3l@pathwar.net</email>
+            <login>m1ch3l</login>
+            <role>superuser</role>
+          </resource>
+        </resource>
 
 + Response 404 (text/xml)
 
