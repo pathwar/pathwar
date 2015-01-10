@@ -134,6 +134,17 @@ level_instances = {
                 'embeddable': True,
             },
         },
+        'organizations': {
+            'type': 'list',
+            'schema': {
+                'type': 'uuid',
+                'data_relation': {
+                    'resource': 'organizations',
+                    'field': '_id',
+                    'embeddable': True,
+                },
+            },
+        },
         'overrides': {
             'type': 'list',
             'schema': {
