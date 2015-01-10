@@ -69,7 +69,6 @@ def load_seeds(app, reset=True):
         'session': sessions[0]['_items'][1]['_id'],
     }])
 
-
     servers = post(client, '/servers', [{
         'name': 'c1-123',
         'ip_address': '1.2.3.4',
@@ -86,8 +85,10 @@ def load_seeds(app, reset=True):
 
     organizations = post(client, '/organizations', [{
         'name': 'pwn-around-the-world',
+        'session': sessions[0]['_items'][0]['_id'],
     }, {
         'name': 'staff',
+        'session': sessions[0]['_items'][1]['_id'],
     }])
 
     achievements = post(client, '/achievements', [{

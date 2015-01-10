@@ -456,9 +456,14 @@ organizations = {
             'type': 'string',
             'unique': True,
         },
-        'points': {
-            'type': 'integer',
-            'default': 0,
+        'session': {
+            'type': 'uuid',
+            'required': True,
+            'data_relation': {
+                'resource': 'sessions',
+                'field': '_id',
+                'embeddable': True,
+            },
         },
     },
 }
