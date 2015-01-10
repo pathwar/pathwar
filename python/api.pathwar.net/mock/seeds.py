@@ -51,6 +51,7 @@ def load_seeds(app, reset=True):
         'login': 'm1ch3l',
         'email': 'm1ch3l@pathwar.net',
         'role': 'superuser',
+        'active': True,
     }])
 
     sessions = post(client, '/sessions', [{

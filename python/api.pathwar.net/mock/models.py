@@ -694,6 +694,15 @@ users = {
             'unique': True,
             'required': True,
         },
+        'active': {
+            'type': 'boolean',
+            'default': False,
+        },
+        'email_verification_token': {
+            # INTERNAL
+            'type': 'string',
+            'required': False,
+        },
         'password_blowfish': {
             'type': 'string',
             # 'required': True,
