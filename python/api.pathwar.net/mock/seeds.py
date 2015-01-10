@@ -69,6 +69,7 @@ def load_seeds(app, reset=True):
         'session': sessions[0]['_items'][1]['_id'],
     }])
 
+
     servers = post(client, '/servers', [{
         'name': 'c1-123',
         'ip_address': '1.2.3.4',
@@ -83,6 +84,7 @@ def load_seeds(app, reset=True):
         'tags': ['docker', 'x86_64'],
     }])
 
+
     organizations = post(client, '/organizations', [{
         'name': 'pwn-around-the-world',
         'session': sessions[0]['_items'][0]['_id'],
@@ -91,6 +93,26 @@ def load_seeds(app, reset=True):
         'session': sessions[0]['_items'][1]['_id'],
     }])
 
+
+    scorings = post(client, '/scorings', [{
+        'organization': organizations[0]['_items'][0]['_id'],
+        'cash': 42,
+        'score': 42,
+        'gold_medals': 3,
+        'silver_medals': 3,
+        'bronze_medals': 3,
+        'achievements': 23,
+    }, {
+        'organization': organizations[0]['_items'][1]['_id'],
+        'cash': 42,
+        'score': 42,
+        'gold_medals': 3,
+        'silver_medals': 3,
+        'bronze_medals': 3,
+        'achievements': 23,
+    }])
+
+
     achievements = post(client, '/achievements', [{
         'name': 'flash-gordon',
         'description': 'Validate a level in less than 1 minute',
@@ -98,6 +120,7 @@ def load_seeds(app, reset=True):
         'name': 'API',
         'description': 'Hack the API',
     }])
+
 
     organizations_users = post(client, '/organization-users', [{
         'organization': organizations[0]['_items'][0]['_id'],

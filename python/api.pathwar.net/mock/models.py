@@ -441,6 +441,32 @@ organization_users = {
 }
 
 
+scorings = {
+    'item_title': 'scoring',
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_methods': [],
+    'public_item_methods': [],
+    'schema': {
+        'organization': {
+            'type': 'uuid',
+            'required': True,
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'cash': {'type': 'integer', 'default': 0},
+        'score': {'type': 'integer', 'default': 0},
+        'gold_medals': {'type': 'integer', 'default': 0},
+        'silver_medals': {'type': 'integer', 'default': 0},
+        'bronze_medals': {'type': 'integer', 'default': 0},
+        'achievements': {'type': 'integer', 'default': 0},
+    },
+}
+
+
 organizations = {
     'item_title': 'organization',
     'resource_methods': ['GET', 'POST', 'DELETE'],
@@ -465,6 +491,7 @@ organizations = {
                 'embeddable': True,
             },
         },
+        # FIXME: add a link to the scoring ?
     },
 }
 
@@ -735,6 +762,7 @@ DOMAIN = {
     'organization-levels': organization_levels,
     'organization-users': organization_users,
     'organizations': organizations,
+    'scorings': scorings,
     'servers': servers,
     'sessions': sessions,
     'user-activities': user_activities,
