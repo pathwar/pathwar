@@ -78,10 +78,6 @@ level_hints = {
     'public_methods': [],
     'public_item_methods': [],
     # 'url': 'levels/<level>/hints',
-    'additional_lookup': {
-        'url': 'string',
-        'field': 'name',
-    },
     'schema': {
         'name': {
             'type': 'string',
@@ -113,10 +109,6 @@ level_instances = {
     'public_methods': [],
     'public_item_methods': [],
     # 'url': 'levels/<level>/instances',
-    'additional_lookup': {
-        'url': 'string',
-        'field': 'hash',
-    },
     'schema': {
         'hash': {
             'type': 'string',
@@ -170,10 +162,6 @@ levels = {
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_methods': [],
     'public_item_methods': [],
-    'additional_lookup': {
-        'url': 'string',
-        'field': 'name',
-    },
     'schema': {
         'name': {
             'type': 'string',
@@ -473,10 +461,6 @@ organizations = {
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_methods': [],
     'public_item_methods': [],
-    'additional_lookup': {
-        'url': 'string',
-        'field': 'name',
-    },
     'schema': {
         'name': {
             'type': 'string',
@@ -699,10 +683,6 @@ users = {
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_methods': [],
     'public_item_methods': [],
-    'additional_lookup': {
-        'url': 'string',
-        'field': 'login',
-    },
     'schema': {
         'login': {
             'type': 'string',
