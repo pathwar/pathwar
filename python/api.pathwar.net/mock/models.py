@@ -552,6 +552,7 @@ servers = {
 
 
 user_activities = {
+    # FIXME: INTERNAL
     'item_title': 'user activitie',
     'resource_title': 'user activities',
     'resource_methods': ['GET', 'POST', 'DELETE'],

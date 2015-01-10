@@ -33,6 +33,7 @@ def load_seeds(app, reset=True):
 
     client = app.test_client()
 
+    # Create first user manually, the next requets (`post()`) will use the token
     root_id = app.data.driver.db['users'].insert({
         'login': 'root',
         'role': 'admin',
