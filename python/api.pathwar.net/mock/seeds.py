@@ -2,13 +2,7 @@ from base64 import b64encode
 from uuid import uuid4
 import json
 
-import factory
-from faker import Faker
-
 from settings import DOMAIN
-
-
-fake = Faker()
 
 
 def post(client, url, data, headers=None, content_type='application/json',
@@ -31,15 +25,6 @@ def post(client, url, data, headers=None, content_type='application/json',
     return value, request.status_code
 
 
-class SessionFactory(factory.Factory):
-    class Meta:
-        model = None
-        abstract = True
-    name = factory.LazyAttribute(lambda x: fake.name())
-    description = factory.LazyAttribute(lambda x: fake.sentence(nb_words=20))
-    public = True
-
-
 def load_seeds(app, reset=True):
     if reset:
         # Drop everything
@@ -59,10 +44,6 @@ def load_seeds(app, reset=True):
         'token': 'root-token',
         '_id': str(uuid4()),
     })
-
-    sessions = SessionFactory.create_batch(20)
-
-    return
 
     sessions = post(client, '/sessions', [{
         'name': 'new year super challenge',
