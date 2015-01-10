@@ -502,6 +502,10 @@ sessions = {
             'type': 'string',
             'unique': True,
         },
+        'public': {
+            'type': 'boolean',
+            'default': False,
+        },
         'active': {
             'type': 'boolean',
             'default': True,
@@ -740,6 +744,17 @@ users = {
             'schema': {
                 'kind': {
                     'type': 'string',
+                },
+            },
+        },
+        'available_sessions': {
+            'type': 'list',
+            'schema': {
+                'type': 'uuid',
+                'data_relation': {
+                    'resource': 'sessions',
+                    'field': '_id',
+                    'embeddable': True,
                 },
             },
         },

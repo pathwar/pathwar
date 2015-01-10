@@ -44,6 +44,13 @@ def load_seeds(app, reset=True):
         '_id': str(uuid4()),
     })
 
+    sessions = post(client, '/sessions', [{
+        'name': 'new year super challenge',
+        'public': True,
+    }, {
+        'name': 'world battle',
+    }])
+
     users = post(client, '/users', [{
         'login': 'joe',
         'email': 'joe@pathwar.net',
@@ -52,12 +59,10 @@ def load_seeds(app, reset=True):
         'email': 'm1ch3l@pathwar.net',
         'role': 'superuser',
         'active': True,
-    }])
-
-    sessions = post(client, '/sessions', [{
-        'name': 'new year super challenge',
-    }, {
-        'name': 'world battle',
+        'available_sessions': [
+            sessions[0]['_items'][0]['_id'],
+            sessions[0]['_items'][1]['_id'],
+        ],
     }])
 
     coupons = post(client, '/coupons', [{
