@@ -422,7 +422,11 @@ Return all users.
     [User Collection][]
 
 ### Create User [POST]
-Create a new User
+Create a new User.
+
+TODO:
+- This action will generate a `email_verification_token` and set `active` to `false`
+- The use then need to `PATCH` his user with the token he received by email to set `active` to `true`
 
 + Request (application/json)
     + Body
@@ -697,11 +701,15 @@ Return all organizations.
 ### Create Organization [POST]
 Create a new Organization
 
+- If a user is already member of an organization of a session, it cannot create a new organization in this session
+- A user can only create an organization in a `public` session or in a session where it was explicitely approved to be by an admin.
+
 + Request (application/json)
     + Body
 
             {
-                "name": "staff"
+                "name": "staff",
+                "session": "7463919a-ce57-4b24-ad0a-20b74221cde7"
             }
 
 + Response 201
