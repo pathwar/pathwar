@@ -52,6 +52,8 @@ def load_seeds(app, reset=True):
         'name': 'world battle',
     }])
 
+    return
+
     users = post(client, '/users', [{
         'login': 'joe',
         'email': 'joe@pathwar.net',
