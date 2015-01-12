@@ -1,16 +1,12 @@
 from uuid import UUID, uuid4
 
-import mongoengine
-
 from eve import Eve
 from eve.io.mongo import Validator
 from eve.io.base import BaseJSONEncoder
 from eve.auth import BasicAuth, TokenAuth
-from eve_mongoengine import EveMongoengine
 
-from settings import my_settings
+from settings import DOMAIN
 from seeds import load_seeds
-from models import register_models
 
 
 class MockTokenAuth(TokenAuth):
@@ -75,9 +71,7 @@ def insert_callback(resource_name, items):
 
 
 # Initialize Eve
-ext = EveMongoengine()
 app = Eve(
-    settings=my_settings,
     # auth=MockBasicAuth,
     auth=MockTokenAuth,
     json_encoder=UUIDEncoder,
@@ -89,10 +83,6 @@ def main():
     # Attach hooks
     app.on_pre_GET += pre_get_callback
     app.on_insert += insert_callback
-
-    register_models(ext)
-
-    ext.init_app(app)
 
     # Initialize data
     with app.app_context():

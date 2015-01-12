@@ -1,17 +1,3 @@
-import mongoengine
-
-from run import ext
-
-
-class Toto(mongoengine.Document):
-    name = mongoengine.StringField()
-    age = mongoengine.IntField()
-
-
-def register_models(ext):
-    ext.add_model(Toto)
-
-
 achievements = {
     'item_title': 'achievement',
     'resource_methods': ['GET', 'POST', 'DELETE'],
