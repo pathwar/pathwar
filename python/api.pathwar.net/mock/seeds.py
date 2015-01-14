@@ -38,6 +38,7 @@ def load_seeds(app, reset=True):
         'login': 'root',
         'role': 'admin',
         '_id': str(uuid4()),
+        'active': True,
     })
     app.data.driver.db['user-tokens'].insert({
         'user': root_id,

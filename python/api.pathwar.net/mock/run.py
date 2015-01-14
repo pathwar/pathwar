@@ -9,6 +9,21 @@ from settings import DOMAIN
 from seeds import load_seeds
 
 
+class MockBasicAuth(BasicAuth):
+    def check_auth(self, username, password, allowed_roles, resource,
+                   method):
+        if not len(username):
+            return False
+        if len(password):  # Login+Password based
+            users = app.data.driver.db['users']
+            # FIXME: check password
+            return users.find_one({'login': username, 'active': True})
+        else:  # Token-based
+            user_tokens = app.data.driver.db['user-tokens']
+            # FIXME: check user.active
+            return user_tokens.find_one({'token': username})
+
+
 class MockTokenAuth(TokenAuth):
     def check_auth(self, token, allowed_roles, resource, method):
         user_tokens = app.data.driver.db['user-tokens']
@@ -72,8 +87,8 @@ def insert_callback(resource_name, items):
 
 # Initialize Eve
 app = Eve(
-    # auth=MockBasicAuth,
-    auth=MockTokenAuth,
+    auth=MockBasicAuth,
+    # auth=MockTokenAuth,
     json_encoder=UUIDEncoder,
     validator=UUIDValidator,
 )
