@@ -791,7 +791,8 @@ DOMAIN = {
 
 # Use defaults
 defaults = {
-    'item_url': 'regex("[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}")',
+    'item_url': 'regex("[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?' \
+       '[89ab][a-f0-9]{3}-?[a-f0-9]{12}")',
     'public_methods': [],
     'public_item_methods': [],
 }
@@ -799,5 +800,5 @@ defaults = {
 for resource_name, resource_obj in DOMAIN.items():
     DOMAIN[resource_name]['schema']['_id'] = {'type': 'uuid'}
     for key, value in defaults.items():
-        if not key in resource_obj:
+        if key not in resource_obj:
             DOMAIN[resource_name][key] = value
