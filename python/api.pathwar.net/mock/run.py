@@ -15,13 +15,18 @@ class MockBasicAuth(BasicAuth):
         if not len(username):
             return False
         if len(password):  # Login+Password based
-            users = app.data.driver.db['users']
-            # FIXME: check password
-            return users.find_one({'login': username, 'active': True})
+            app.logger.warn('FIXME: check password')
+            return app.data.driver.db['users'] \
+                                  .find_one({'login': username, 'active': True})
         else:  # Token-based
-            user_tokens = app.data.driver.db['user-tokens']
-            # FIXME: check user.active
-            return user_tokens.find_one({'token': username})
+            user_token = app.data.driver.db['user-tokens'] \
+                                        .find_one({'token': username})
+            if user_token:
+                user = app.data.driver.db['users'] \
+                                      .find_one({'_id': user_token['user']})
+                if user['active']:
+                    return True
+            return False
 
 
 class MockTokenAuth(TokenAuth):
