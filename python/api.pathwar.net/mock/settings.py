@@ -12,5 +12,7 @@ PUBLIC_METHODS = ['GET']
 PUBLIC_ITEM_METHODS = ['GET']
 
 X_DOMAINS = '*'
+X_HEADERS = ['Content-Type', 'If-Match', 'Authorization']
+X_EXPOSE_HEADERS = ['Content-Length', 'Content-Type']
 
 # FIXME: enable oplogs
