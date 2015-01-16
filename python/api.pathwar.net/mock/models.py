@@ -486,7 +486,15 @@ organizations = {
                 'embeddable': True,
             },
         },
-        # FIXME: add a link to the scoring ?
+        'scoring': {
+            'type': 'uuid',
+            'required': False,
+            'data_relation': {
+                'resource': 'scorings',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
     },
 }
 
