@@ -1,2 +1,0 @@
-#eve
-#-e git://github.com/nicolaiarocci/eve.git@develop#egg=eve

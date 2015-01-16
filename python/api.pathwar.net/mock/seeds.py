@@ -33,7 +33,8 @@ def load_seeds(app, reset=True):
 
     client = app.test_client()
 
-    # Create first user manually, the next requets (`post()`) will use the token
+    # Create first user manually, the next requets (`post()`) will use the
+    # token
     root_id = app.data.driver.db['users'].insert({
         'login': 'root',
         'role': 'admin',
@@ -77,7 +78,6 @@ def load_seeds(app, reset=True):
         'session': sessions[0]['_items'][1]['_id'],
     }])
 
-
     servers = post(client, '/servers', [{
         'name': 'c1-123',
         'ip_address': '1.2.3.4',
@@ -92,7 +92,6 @@ def load_seeds(app, reset=True):
         'tags': ['docker', 'x86_64'],
     }])
 
-
     organizations = post(client, '/organizations', [{
         'name': 'pwn-around-the-world',
         'session': sessions[0]['_items'][0]['_id'],
@@ -100,7 +99,6 @@ def load_seeds(app, reset=True):
         'name': 'staff',
         'session': sessions[0]['_items'][1]['_id'],
     }])
-
 
     scorings = post(client, '/scorings', [{
         'organization': organizations[0]['_items'][0]['_id'],
@@ -120,7 +118,6 @@ def load_seeds(app, reset=True):
         'achievements': 23,
     }])
 
-
     achievements = post(client, '/achievements', [{
         'name': 'flash-gordon',
         'description': 'Validate a level in less than 1 minute',
@@ -128,7 +125,6 @@ def load_seeds(app, reset=True):
         'name': 'API',
         'description': 'Hack the API',
     }])
-
 
     organizations_users = post(client, '/organization-users', [{
         'organization': organizations[0]['_items'][0]['_id'],
