@@ -9,6 +9,10 @@ release:
 	$(MAKE) release_do || $(MAKE) release_teardown
 
 
+travis:
+	find . -name Dockerfile | xargs cat | grep -vi ^maintainer | bash -n
+
+
 release_do:
 	git branch -D gh-pages || true
 	git checkout -b gh-pages
