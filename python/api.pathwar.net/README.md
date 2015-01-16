@@ -5,6 +5,15 @@ Pathwar official API
 
 ---
 
+Official portal
+---------------
+
+The official [portal](https://github.com/pathwar/portal.pathwar.net/) is a consumer of this api.
+
+There is a developement fig on [gist](https://gist.github.com/moul/fd478020ba24313359b3).
+
+---
+
 The official API is closed source, this repository contains resources to use the API
 
 - [Documentation on apiary.io](http://docs.pathwar.apiary.io)
