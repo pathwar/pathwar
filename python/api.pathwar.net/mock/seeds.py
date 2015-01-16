@@ -67,6 +67,13 @@ def load_seeds(app, reset=True):
             sessions[0]['_items'][1]['_id'],
         ],
     }])
+    lemming_users = post(client, '/users', [
+        {
+            'login': 'lemming-{}'.format(i),
+            'email': 'lemming-{}@lemming.net'.format(i),
+            'active': True,
+        } for i in xrange(50)
+    ])
 
     coupons = post(client, '/coupons', [{
         'hash': '1234567890',
@@ -99,6 +106,10 @@ def load_seeds(app, reset=True):
         'name': 'staff',
         'session': sessions[0]['_items'][1]['_id'],
     }])
+    lemming_organization = post(client, '/organizations', {
+        'name': 'the-lemmings',
+        'session': sessions[0]['_items'][1]['_id'],
+    })
 
     scorings = post(client, '/scorings', [{
         'organization': organizations[0]['_items'][0]['_id'],
@@ -139,6 +150,13 @@ def load_seeds(app, reset=True):
         'role': 'owner',
         'user': str(root_id),
     }])
+    lemmings_family = post(client, '/organization-users', [
+        {
+            'organization': lemming_organization[0]['_id'],
+            'role': 'pwner',
+            'user': lemming_user['_id']
+        } for lemming_user in lemming_users[0]['_items']
+    ])
 
     levels = post(client, '/levels', [{
         'name': 'welcome',
