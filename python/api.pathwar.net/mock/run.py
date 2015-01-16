@@ -4,6 +4,8 @@ from eve import Eve
 from eve.io.mongo import Validator
 from eve.io.base import BaseJSONEncoder
 from eve.auth import BasicAuth, TokenAuth
+from flask.ext.bootstrap import Bootstrap
+from eve_docs import eve_docs
 
 from settings import DOMAIN
 from seeds import load_seeds
@@ -100,6 +102,10 @@ app = Eve(
 
 
 def main():
+    # eve-docs
+    Bootstrap(app)
+    app.register_blueprint(eve_docs, url_prefix='/docs')
+
     # Attach hooks
     app.on_pre_GET += pre_get_callback
     app.on_insert += insert_callback
