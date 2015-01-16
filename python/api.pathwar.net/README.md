@@ -58,3 +58,8 @@ Path                  | Method | Action
 /sessions/{id}        | GET    | Retrieve a session
 /users                | GET    | List users
 /users/{id}           | GET    | Retrieve a user
+
+
+---
+
+© 2014-2015 Pathwar Team - [MIT License](https://github.com/pathwar/api.pathwar.net/blob/master/LICENSE.md).
