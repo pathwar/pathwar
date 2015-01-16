@@ -405,8 +405,8 @@ organization_items = {
 
 
 organization_users = {
-    'item_title': 'organization item',
-    'resource_title': 'organization items',
+    'item_title': 'organization user',
+    'resource_title': 'organization users',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_methods': [],
