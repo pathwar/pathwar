@@ -1,4 +1,4 @@
-Pathwar Core
+Pathwar Core [![Build Status](https://travis-ci.org/pathwar/core.svg?branch=master)](https://travis-ci.org/pathwar/core)
 ============
 
 Set of tools to create levels on Pathwar
