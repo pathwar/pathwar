@@ -31,3 +31,7 @@ Levels
   - [level-training-include](http://github.com/pathwar/level-training-include) - Official include training level
   - [level-training-brute](http://github.com/pathwar/level-training-brute) - Official brute force training level
   - [level-training-tools](http://github.com/pathwar/level-training-tools) - Official tools training level
+
+---
+
+© 2014-2015 Pathwar Team - [MIT License](https://github.com/pathwar/core/blob/master/LICENSE.md).
