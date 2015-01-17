@@ -1,4 +1,6 @@
 language: bash
-
 script:
-    - make travis
+- make travis
+notifications:
+  slack:
+    secure: qdmoRNQRjq3nsSBEd6VTG4/AjcavcSzu+COaiNfOLUTtTm3ZXL2NzIL5kxpGlIy0o+/dcNCU5IM0wMw5pQODTiusk1nvmUkky3gM168OcXeMuX0zrGsxXxH/l2dLALxyyXUOTOaHm/rAC8RcjtLAwoaTsAl3cEFOXRM9xtHZUYM=
