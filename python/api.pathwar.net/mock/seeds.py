@@ -1,3 +1,4 @@
+import datetime
 from base64 import b64encode
 from uuid import uuid4
 import json
@@ -74,6 +75,13 @@ def load_seeds(app, reset=True):
             'active': True,
         } for i in xrange(50)
     ])
+
+    user_tokens = post(client, '/user-tokens', [{
+        'user': users[0]['_items'][0]['_id'],
+    }, {
+        'user': users[0]['_items'][1]['_id'],
+        #'expiry_date': '',
+    }])
 
     coupons = post(client, '/coupons', [{
         'hash': '1234567890',

@@ -710,11 +710,15 @@ user_tokens = {
     'schema': {
         'token': {
             'type': 'string',
-            'default': 'random token',
+            'default': 'FIXME: generate a random token',
             'unique': True,
+            'required': False,
+            'readonly': True,
         },
         'description': {
             'type': 'string',
+            'required': False,
+            'nullable': True,
         },
         'user': {
             'type': 'uuid',
@@ -725,7 +729,19 @@ user_tokens = {
                 'embeddable': True,
             },
         },
-        # FIXME: Add permissions, range, etc
+        'scopes': {
+            'type': 'string',
+            'default': '*',
+            'required': False,
+            'empty': False,
+            'nullable': False,
+        },
+        'expiry_date': {
+            'type': 'datetime',
+            'default': None,  # for token without expory date
+            'required': False,
+            'nullable': True,
+        },
     },
 }
 
