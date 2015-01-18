@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ $# -eq 0 ]
+  then
+    echo "Must provide Skeleton Directory"
+    exit
+fi
+
 SKELETONDIR=${1}
 CURRENTDIR=$(dirname ${0})
 
