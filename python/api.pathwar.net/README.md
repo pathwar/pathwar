@@ -1,4 +1,4 @@
-api.pathwar.net
+api.pathwar.net [![Build Status](https://travis-ci.org/pathwar/api.pathwar.net.svg?branch=master)](https://travis-ci.org/pathwar/api.pathwar.net)
 ===============
 
 Pathwar official API
