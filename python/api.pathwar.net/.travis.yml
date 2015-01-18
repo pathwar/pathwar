@@ -1,4 +1,6 @@
 language: bash
+before_script:
+- npm install aglio
 script:
 - make travis
 notifications:

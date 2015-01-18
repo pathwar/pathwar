@@ -11,7 +11,7 @@ release:
 
 travis:
 	find . -name Dockerfile | xargs cat | grep -vi ^maintainer | bash -n
-
+	aglio -i apiary.apib -o apiary.html
 
 release_do:
 	git branch -D gh-pages || true
