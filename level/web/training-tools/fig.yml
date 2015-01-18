@@ -1,4 +1,4 @@
-level-training-tools:
+tools:
   build: .
   ports:
-    - 80
+    - 80:80
