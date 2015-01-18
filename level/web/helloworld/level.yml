@@ -3,7 +3,7 @@ level:
   version: 1.0
   author: Pathwar team
   passphrases: 1
-  description: Welcome ! this level is a warm up and will let
+  description: Welcome! This level is a warm up to get you started with pathwar, enjoy.
   rootable: false
   cpu_shares: 1/10
   memory_limit: 16M
