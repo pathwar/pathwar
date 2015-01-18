@@ -1,5 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 . /pathwar/scripts/functions.sh
 
-sed -i "s/{passphrase}/$(get_passphrase 0)/" /usr/share/nginx/html/index.html
+sed -i "s/{passphrase}/$(get_passphrase 0)/" /usr/share/nginx/html/you-win.html
