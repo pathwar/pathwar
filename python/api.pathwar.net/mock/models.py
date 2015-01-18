@@ -670,35 +670,6 @@ user_notifications = {
 }
 
 
-user_sessions = {
-    'item_title': 'user session',
-    'resource_title': 'user sessions',
-    'resource_methods': ['GET', 'POST', 'DELETE'],
-    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'public_methods': [],
-    'public_item_methods': [],
-    # 'url': 'users/<user>/sessions',
-    'schema': {
-        'token': {
-            'type': 'string',
-            'default': 'random token',
-            'unique': True,
-        },
-        # FIXME: date/expire
-        'user': {
-            'type': 'uuid',
-            'required': True,
-            'data_relation': {
-                'resource': 'users',
-                'field': '_id',
-                'embeddable': True,
-            },
-        },
-        # FIXME: Add permissions, range, etc
-    },
-}
-
-
 user_tokens = {
     'item_title': 'user token',
     'resource_title': 'user tokens',
@@ -837,7 +808,6 @@ DOMAIN = {
     'user-activities': user_activities,
     'user-organization-invites': user_organization_invites,
     'user-notifications': user_notifications,
-    'user-sessions': user_sessions,
     'user-tokens': user_tokens,
     'users': users,
 }
