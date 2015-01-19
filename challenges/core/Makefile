@@ -3,3 +3,5 @@ level-list:
 
 travis:
 	find . -name Dockerfile | xargs cat | grep -vi ^maintainer | bash -n
+	find . -name Makefile | xargs make -n
+	find . -name "*.mk" | xargs make -n
