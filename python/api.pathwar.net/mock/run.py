@@ -1,5 +1,6 @@
 import json
 from uuid import UUID, uuid4
+import bcrypt
 
 from eve import Eve
 from eve.auth import BasicAuth, TokenAuth
