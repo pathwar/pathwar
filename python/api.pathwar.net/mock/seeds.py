@@ -76,12 +76,12 @@ def load_seeds(app, reset=True):
         } for i in xrange(50)
     ])
 
-    user_tokens = post(client, '/user-tokens', [{
-        'user': users[0]['_items'][0]['_id'],
-    }, {
-        'user': users[0]['_items'][1]['_id'],
-        #'expiry_date': '',
-    }])
+    #user_tokens = post(client, '/user-tokens', [{
+    #    'user': users[0]['_items'][0]['_id'],
+    #}, {
+    #    'user': users[0]['_items'][1]['_id'],
+    #    #'expiry_date': ,
+    #}])
 
     coupons = post(client, '/coupons', [{
         'hash': '1234567890',

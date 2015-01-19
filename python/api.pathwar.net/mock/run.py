@@ -1,14 +1,36 @@
+import json
 from uuid import UUID, uuid4
 
 from eve import Eve
-from eve.io.mongo import Validator
-from eve.io.base import BaseJSONEncoder
 from eve.auth import BasicAuth, TokenAuth
-from flask.ext.bootstrap import Bootstrap
+from eve.io.base import BaseJSONEncoder
+from eve.io.mongo import Validator
+from eve.methods.post import post, post_internal
 from eve_docs import eve_docs
+from flask.ext.bootstrap import Bootstrap
 
 from settings import DOMAIN
 from seeds import load_seeds
+
+
+def request_get_user(request):
+    auth = request.authorization
+    if auth.get('username'):
+        if auth.get('password'):  # user:pass
+            app.logger.warn('FIXME: check password')
+            return app.data.driver.db['users'].find({
+                'login': auth.get('username'),
+                'active': True
+            })
+        else:  # token
+            user_token = app.data.driver.db['user-tokens'] \
+                                        .find_one({
+                                            'token': auth.get('username')
+                                        })
+            if user_token:
+                return app.data.driver.db['users'] \
+                                      .find_one({'_id': user_token['user']})
+    return None
 
 
 class MockBasicAuth(BasicAuth):
@@ -65,16 +87,6 @@ class UUIDEncoder(BaseJSONEncoder):
             return super(UUIDEncoder, self).default(obj)
 
 
-def request_get_user(request):
-    token = app.data.driver.db['user-tokens'].find_one({
-        'token': request.authorization.get('username'),
-    })
-    user = app.data.driver.db['users'].find_one({
-        '_id': token['user'],
-    })
-    return user
-
-
 def pre_get_callback(resource, request, lookup):
     resources_with_me_filter = (
         'user-notifications', 'user-organization-invites', 'user-tokens',
@@ -91,6 +103,18 @@ def pre_get_callback(resource, request, lookup):
 def insert_callback(resource_name, items):
     for item in items:
         item['_id'] = str(uuid4())
+
+
+def pre_post_callback(resource, request):
+    if resource == 'user-tokens':
+        # Handle login
+        user = request_get_user(request)
+        app.logger.warn('@@@ {}'.format(user))
+        payload = request.get_json()
+        payload['token'] = str(uuid4())
+        payload['user'] = user['_id']
+        app.logger.warn('### {}'.format(payload))
+        return post_internal(resource, payload, skip_validation=True)
 
 
 # Initialize Eve
@@ -110,6 +134,8 @@ def main():
     # Attach hooks
     app.on_pre_GET += pre_get_callback
     app.on_insert += insert_callback
+    app.on_pre_POST += pre_post_callback
+    #getattr(app, 'on_pre_POST_user-tokens') += pre_post_user_tokens_callback
 
     # Initialize data
     with app.app_context():

@@ -683,34 +683,37 @@ user_tokens = {
             'type': 'string',
             'default': 'FIXME: generate a random token',
             'unique': True,
-            'required': False,
             'readonly': True,
         },
-        'description': {
+        'description': {  # For the user
             'type': 'string',
-            'required': False,
-            'nullable': True,
+            'default': '',
         },
-        'user': {
+        'is_session': {  # If true, the token will have an expiry date
+            'type': 'boolean',
+            'default': False,
+        },
+        'user': {  # Will be computed using the credentials
             'type': 'uuid',
-            'required': True,
+            'required': False,
+            'readonly': True,
             'data_relation': {
                 'resource': 'users',
                 'field': '_id',
                 'embeddable': True,
             },
         },
-        'scopes': {
+        'scopes': {  # Access scope of the token
             'type': 'string',
-            'default': '*',
+            'default': '*',  # All access
             'required': False,
             'empty': False,
             'nullable': False,
         },
-        'expiry_date': {
+        'expiry_date': {  # Null expiry_date means no expiration
             'type': 'datetime',
-            'default': None,  # for token without expory date
-            'required': False,
+            'default': None,  # For tokens without expiry date
+            'readonly': True,
             'nullable': True,
         },
     },
