@@ -22,15 +22,19 @@ Tools
 Levels
 ------
 
-- [level-helloworld](http://github.com/pathwar/level-helloworld) - Official HelloWorld level
-- [level-pnu](http://github.com/pathwar/level-pnu) - Official PossibleNotUpload level
-- [level-captcha](http://github.com/pathwar/level-captcha) - Official Captcha level
-- Trainings
-  - [level-training-sqli](http://github.com/pathwar/level-training-sqli) - Official SQL injections training level
-  - [level-training-http](http://github.com/pathwar/level-training-http) - Official HTTP training level
-  - [level-training-include](http://github.com/pathwar/level-training-include) - Official include training level
-  - [level-training-brute](http://github.com/pathwar/level-training-brute) - Official brute force training level
-  - [level-training-tools](http://github.com/pathwar/level-training-tools) - Official tools training level
+Level            | Containers | Technos       | Open-Source | Repository
+-----------------|------------|---------------|-------------|------------
+helloworld       | 1          | nginx         | :o:         | http://github.com/pathwar/level-helloworld
+pnu              | 1          | php           | :o:         | http://github.com/pathwar/pnu
+captcha          | 1          | php           | :o:         | http://github.com/pathwar/captcha
+calc             | 2          | python, mysql | :o:         | http://github.com/pathwar/calc
+upload-hi        | 1          | php           | :o:         | http://github.com/pathwar/upload-hi
+upload-kthxbie   | 1          | php           | :x:         | http://github.com/pathwar/upload-kthxbie
+training-sqli    | 2          | php, mysql    | :o:         | http://github.com/pathwar/training-sqli
+training-http    | 1          | n/a           | :o:         | http://github.com/pathwar/training-http
+training-include | 1          | n/a           | :o:         | http://github.com/pathwar/training-include
+training-brute   | 1          | n/a           | :o:         | http://github.com/pathwar/training-brute
+training-tools   | 1          | n/a           | :o:         | http://github.com/pathwar/training-tools
 
 ---
 
