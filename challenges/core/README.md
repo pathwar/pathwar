@@ -1,7 +1,7 @@
 Pathwar Core [![Build Status](https://travis-ci.org/pathwar/core.svg?branch=master)](https://travis-ci.org/pathwar/core)
 ============
 
-Set of tools to create levels on Pathwar
+Set of tools to create levels on Pathwar.
 
 ---
 
@@ -27,6 +27,29 @@ golang     | 1.4.3               | [Code](templates/golang), [Examples](template
 python     | 2.7.9, 3.3.6, 3.4.2 | [Code](templates/python), [Examples](templates/python/examples)
 
 All templates support standard and [onbuild](https://docs.docker.com/reference/builder/#onbuild) modes.
+
+---
+
+Level requirements (see [level-helloworld](https://github.com/pathwar/level-helloworld))
+------------------
+
+- have a `fig.yml` defining the level, you can have multiple linked containers, multiple ports. [(example)](https://github.com/pathwar/level-helloworld/blob/master/fig.yml)
+- even if you can run levels without any `Dockerfile` using `fig`, you need to have at least one Dockerfile inheriting from a `core` template (this repository), so we can integrate your level with our system. [(example)](https://github.com/pathwar/level-helloworld/blob/master/level.yml)
+- a `level.yml` file (manifest) defining your level specs, except for our system. [(example)](https://github.com/pathwar/level-helloworld/blob/master/level.yml)
+- a `scripts` directory with overrides for the [skeleton](https://github.com/pathwar/core/tree/master/skeleton/scripts). [(example)](https://github.com/pathwar/level-helloworld/tree/master/scripts)
+
+Bonus:
+
+- a screenshot to make the repo fancy
+- make the level private or at least difficult to understand with the sources
+
+Limitations:
+
+- you cannot link host-volume on containers, but you can use volume link between containers
+- your level needs to be buildable without cloning any other repository, however you can use some `wget` hacks from some scripts
+
+
+---
 
 Levels
 ------
