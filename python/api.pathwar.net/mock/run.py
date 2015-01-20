@@ -1,6 +1,7 @@
-import json
 from uuid import UUID, uuid4
 import bcrypt
+import json
+import random
 
 from eve import Eve
 from eve.auth import BasicAuth, TokenAuth
@@ -101,9 +102,26 @@ def pre_get_callback(resource, request, lookup):
         app.logger.warn('FIXME: handle where user==me')
 
 
-def insert_callback(resource_name, items):
+def insert_callback(resource, items):
     for item in items:
         item['_id'] = str(uuid4())
+
+    if resource == 'users':
+        for item in items:
+            item['password_salt'] = bcrypt.gensalt().encode('utf-8')
+            #item['otp_secret'] = ...
+
+            # POST/PATCH/PUT
+            if item['password'] and \
+               len(item['password']) and \
+               not item['password'].startswith('$2a$'):
+                # FIXME: better check for bcrypt format
+                password = item['password'].encode('utf-8')
+                item['password'] = bcrypt.hashpw(
+                    password, item['password_salt']
+                )
+
+    app.logger.info('### insert_callback({}) {}'.format(resource, items))
 
 
 def pre_post_callback(resource, request):

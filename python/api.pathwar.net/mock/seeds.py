@@ -72,8 +72,9 @@ def load_seeds(app, reset=True):
         {
             'login': 'lemming-{}'.format(i),
             'email': 'lemming-{}@lemming.net'.format(i),
-            'active': True,
-        } for i in xrange(50)
+            #'password': 'secure',
+            #'active': True,
+        } for i in xrange(2)
     ])
 
     #user_tokens = post(client, '/user-tokens', [{
@@ -158,13 +159,14 @@ def load_seeds(app, reset=True):
         'role': 'owner',
         'user': str(root_id),
     }])
-    lemmings_family = post(client, '/organization-users', [
-        {
-            'organization': lemming_organization[0]['_id'],
-            'role': 'pwner',
-            'user': lemming_user['_id']
-        } for lemming_user in lemming_users[0]['_items']
-    ])
+    if lemming_users[0]:
+        lemmings_family = post(app, client, '/organization-users', [
+            {
+                'organization': lemming_organization[0]['_id'],
+                'role': 'pwner',
+                'user': lemming_user['_id']
+            } for lemming_user in lemming_users[0]['_items']
+        ])
 
     levels = post(client, '/levels', [{
         'name': 'welcome',

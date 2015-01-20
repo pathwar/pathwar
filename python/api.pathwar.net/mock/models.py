@@ -731,34 +731,48 @@ users = {
             'type': 'string',
             'unique': True,
             'required': True,
+            # chmod 646
         },
         'email': {
             'type': 'string',
             'unique': True,
             'required': True,
+            # chmod 606
         },
         'active': {
             'type': 'boolean',
             'default': False,
+            # chmod 644
         },
         'email_verification_token': {
-            # INTERNAL
             'type': 'string',
-            'required': False,
+            'readonly': True,
+            # chmod 002
         },
-        'password_blowfish': {
+        'password_salt': {  # Generated on subscription
             'type': 'string',
-            # 'required': True,
+            'readonly': True,
+            # chmod 000
+        },
+        'password': {  # In reality, this will become a hash
+            'type': 'string',
+            # chmod 202
         },
         'otp_secret': {
             'type': 'string',
-            # 'required': False,
+            'readonly': True,
+            # chmod 202
+        },
+        'otp_enabled': {
+            'type': 'boolean',
+            'default': False,
+            # chmod 646
         },
         'role': {
             'type': 'string',
             'allowed': ['user', 'superuser', 'admin'],
             'default': 'user',
-            # 'required': True,
+            # chmod 600
         },
         'location': {
             'type': 'dict',
@@ -766,6 +780,7 @@ users = {
                 'city': {'type': 'string'},
                 'country': {'type': 'string'},
             },
+            # chmod 646
         },
         'social_links': {
             'type': 'list',
@@ -774,6 +789,7 @@ users = {
                     'type': 'string',
                 },
             },
+            # chmod 446
         },
         'available_sessions': {
             'type': 'list',
@@ -785,6 +801,7 @@ users = {
                     'embeddable': True,
                 },
             },
+            # chmod 644
         },
     },
 }
