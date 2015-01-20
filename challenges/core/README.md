@@ -14,17 +14,17 @@ Tools
 
 ---
 
-Examples
---------
+Templates
+---------
 
-- [apache-php](https://github.com/pathwar/core/tree/master/templates/apache-php)
-- [nodejs](https://github.com/pathwar/core/tree/master/templates/nodejs)
-- [nginx](https://github.com/pathwar/core/tree/master/templates/nginx)
-- [ruby](https://github.com/pathwar/core/tree/master/templates/ruby)
-- [golang](https://github.com/pathwar/core/tree/master/templates/golang)
-- [python](https://github.com/pathwar/core/tree/master/templates/python)
-
----
+Name       | Versions            | Links
+-----------|---------------------|-----------------
+apache-php | 5.6.4               | [Code](templates/apache-php), [Examples](templates/apache-php/examples)
+nodejs     | 0.10.34             | [Code](templates/nodejs), [Examples](templates/nodejs/examples)
+nginx      | 1.7.8               | [Code](templates/nginx), [Examples](templates/nginx/examples)
+ruby       | 2.1.5               | [Code](templates/ruby), [Examples](templates/ruby/examples)
+golang     | 1.4.3               | [Code](templates/golang), [Examples](templates/golang/examples)
+python     | 2.7.9, 3.3.6, 3.4.2 | [Code](templates/python), [Examples](templates/python/examples)
 
 Levels
 ------
