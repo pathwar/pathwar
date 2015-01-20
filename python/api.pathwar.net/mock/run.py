@@ -9,6 +9,7 @@ from eve.io.base import BaseJSONEncoder
 from eve.io.mongo import Validator
 from eve.methods.post import post, post_internal
 from eve_docs import eve_docs
+from flask import abort
 from flask.ext.bootstrap import Bootstrap
 
 from settings import DOMAIN
@@ -20,7 +21,7 @@ def request_get_user(request):
     if auth.get('username'):
         if auth.get('password'):  # user:pass
             app.logger.warn('FIXME: check password')
-            return app.data.driver.db['users'].find({
+            return app.data.driver.db['users'].find_one({
                 'login': auth.get('username'),
                 'active': True
             })
@@ -131,6 +132,8 @@ def pre_post_callback(resource, request):
         # Handle login
         user = request_get_user(request)
         app.logger.warn('@@@ {}'.format(user))
+        if not user:
+            abort(401)
         payload = request.get_json()
         payload['token'] = str(uuid4())
         payload['user'] = user['_id']
