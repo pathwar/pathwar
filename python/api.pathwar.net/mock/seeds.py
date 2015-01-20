@@ -79,7 +79,7 @@ def load_seeds(app, reset=True):
             'email': 'lemming-{}@lemming.net'.format(i),
             #'password': 'secure',
             #'active': True,
-        } for i in xrange(2)
+        } for i in xrange(200)
     ])
 
     #user_tokens = post(app, client, '/user-tokens', [{

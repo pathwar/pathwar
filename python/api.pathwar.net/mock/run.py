@@ -112,7 +112,7 @@ def insert_callback(resource, items):
             #item['otp_secret'] = ...
 
             # POST/PATCH/PUT
-            if item['password'] and \
+            if 'password' in item and \
                len(item['password']) and \
                not item['password'].startswith('$2a$'):
                 # FIXME: better check for bcrypt format
