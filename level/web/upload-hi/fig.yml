@@ -1,4 +1,4 @@
-pnu:
+level:
   build: .
   ports:
     - 80
