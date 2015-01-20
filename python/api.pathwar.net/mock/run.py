@@ -102,7 +102,19 @@ def pre_get_callback(resource, request, lookup):
         app.logger.warn('FIXME: handle where user==me')
 
 
+def on_update_user(item):
+    if 'password' in item and \
+       len(item['password']) and \
+       not item['password'].startswith('$2a$'):
+        # FIXME: better check for bcrypt format
+        password = item['password'].encode('utf-8')
+        item['password'] = bcrypt.hashpw(
+            password, item['password_salt']
+        )
+
+
 def insert_callback(resource, items):
+    app.logger.info('### insert_callback({}) {}'.format(resource, items))
     for item in items:
         item['_id'] = str(uuid4())
 
@@ -110,18 +122,8 @@ def insert_callback(resource, items):
         for item in items:
             item['password_salt'] = bcrypt.gensalt().encode('utf-8')
             #item['otp_secret'] = ...
+            on_update_user(item)
 
-            # POST/PATCH/PUT
-            if 'password' in item and \
-               len(item['password']) and \
-               not item['password'].startswith('$2a$'):
-                # FIXME: better check for bcrypt format
-                password = item['password'].encode('utf-8')
-                item['password'] = bcrypt.hashpw(
-                    password, item['password_salt']
-                )
-
-    app.logger.info('### insert_callback({}) {}'.format(resource, items))
 
 
 def pre_post_callback(resource, request):
@@ -134,6 +136,15 @@ def pre_post_callback(resource, request):
         payload['user'] = user['_id']
         app.logger.warn('### {}'.format(payload))
         return post_internal(resource, payload, skip_validation=True)
+
+
+def post_post_callback(resource, request, response):
+    app.logger.info('### post_post({}) request: {}, response: {}'
+                .format(resource, request, response))
+    if resource == 'users':
+        print(response.get_data())
+        app.logger.warn(dir(response))
+
 
 
 # Initialize Eve
@@ -154,6 +165,7 @@ def main():
     app.on_pre_GET += pre_get_callback
     app.on_insert += insert_callback
     app.on_pre_POST += pre_post_callback
+    app.on_post_POST += post_post_callback
     #getattr(app, 'on_pre_POST_user-tokens') += pre_post_user_tokens_callback
 
     # Initialize data
