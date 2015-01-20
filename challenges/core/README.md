@@ -3,6 +3,11 @@ Pathwar Core [![Build Status](https://travis-ci.org/pathwar/core.svg?branch=mast
 
 Set of tools to create levels on Pathwar.
 
+We worked hard to make the levels runnable on any machine running docker
+and we are still working hard to make the publishing as easy as possible.
+
+This repository will help you to begin in the level-writing, don't hesitate to ask anything, or open an [issue](https://github.com/pathwar/core/issues).
+
 ---
 
 Tools
