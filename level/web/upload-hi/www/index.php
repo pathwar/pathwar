@@ -1,11 +1,6 @@
 <?php
 
-$target = "./";
-$max_size = 100000;
-
-$nom_file = $_FILES['file']['name'];
-$size = $_FILES['file']['size'];
-$tmp = $_FILES['file']['tmp_name'];
+$target = './';
 
 //----------------------
 // UPLOAD SCRIPT
@@ -13,48 +8,36 @@ $tmp = $_FILES['file']['tmp_name'];
 
 if($_POST['posted'])
 {
-  if($_FILES['file']['name'] &&
-  strpos($_FILES['file']['name'], '.') == strrpos($_FILES['file']['name'], '.'))
+  ob_start();
+  if(move_uploaded_file($_FILES['file']['tmp_name'],$target.$_FILES
+  ['file']['name']))
   {
-    if(move_uploaded_file($_FILES['file']['tmp_name'],$target.$_FILES
-    ['file']['name']))
-    {
-      chmod($target.$_FILES['file']['name'], 0644);
-      echo '<br>';
-      echo '<p align="center">';
-      echo '<b>Image uploaded !</b>';
-      echo '<hr>';
-      echo '<p align="center">';
-      echo '<b>File :</b> '.$_FILES['file']['name'].'</br>';
-      echo '<b>Size :</b> '.$_FILES['file']['size'].' Octets</br>';
-      echo '<hr>';
-      echo '<br>';
-    }
-    else
-    {
-      echo '<br>';
-      echo '<p align="center">';
-      echo '<b>Upload error ! </b><br><br><b>'.$_FILES['file']['error'].'</b>';
-      echo '<br>';
-    }
+    chmod($target.$_FILES['file']['name'], 0644);
+    echo '<br>';
+    echo '<p align="center">';
+    echo '<b>Image uploaded !</b>';
+    echo '<hr>';
+    echo '<p align="center">';
+    echo '<b>File :</b> <a href='.$target.$_FILES['file']['name'].'>'.$_FILES['file']['name'].'</a><br>';
+    echo '<b>Size :</b> '.$_FILES['file']['size'].' Octets<br><br>';
+    echo '<img src='.$target.$_FILES['file']['name'].' alt="Preview" style="max-height: 420px; max-width: 420px"">';
+    echo '<hr>';
+    echo '<br>';
+    echo "\r\n";
   }
   else
   {
     echo '<br>';
     echo '<p align="center">';
-    echo '<b>The file is not in the jpg file format !</b>';
+    echo '<b>Upload error !</b><br><br><b>Error : '.$_FILES['file']['error'].'</b>';
     echo '<br>';
+    echo "\r\n";
   }
+  $php_output = ob_get_contents();
+  ob_end_clean();
 }
-else
-{
-  echo '<br>';
-  echo '<p align="center">';
-  echo '<b>Form field is empty !</b>';
-  echo '</font><br>';
-}
-
 ?>
+
 <html>
 <head>
   <title>Image Upload</title>
@@ -62,6 +45,9 @@ else
 </head>
 <body>
   <div class="col-sm-4 col-sm-offset-4 text-center">
+    <div>
+      <?php echo($php_output);?>
+    </div>
     <form enctype="multipart/form-data" action="<?php echo $PHP_SELF; ?>" method="POST">
       <br>
       <input type="hidden" name="posted" value="1">
