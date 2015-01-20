@@ -9,13 +9,20 @@ Tools
 -----
 
 - [skeleton](https://github.com/pathwar/core/tree/master/skeleton): Contains the `/pathwar` directory
-- [templates](https://github.com/pathwar/core/tree/master/templates): Templates for common levels
-  - [apache-php](https://github.com/pathwar/core/tree/master/templates/apache-php)
-  - [nodejs](https://github.com/pathwar/core/tree/master/templates/nodejs)
-  - [nginx](https://github.com/pathwar/core/tree/master/templates/nginx)
-  - [ruby](https://github.com/pathwar/core/tree/master/templates/ruby)
-  - [golang](https://github.com/pathwar/core/tree/master/templates/golang)
-  - [python](https://github.com/pathwar/core/tree/master/templates/python)
+- [mk](https://github.com/pathwar/core/tree/master/mk): Contains the `.mk` files included by `Makefile` on levels and improve the confort of level development
+- [templates](https://github.com/pathwar/core/tree/master/templates): Templates for common levels in multiple languages with examples
+
+---
+
+Examples
+--------
+
+- [apache-php](https://github.com/pathwar/core/tree/master/templates/apache-php)
+- [nodejs](https://github.com/pathwar/core/tree/master/templates/nodejs)
+- [nginx](https://github.com/pathwar/core/tree/master/templates/nginx)
+- [ruby](https://github.com/pathwar/core/tree/master/templates/ruby)
+- [golang](https://github.com/pathwar/core/tree/master/templates/golang)
+- [python](https://github.com/pathwar/core/tree/master/templates/python)
 
 ---
 
@@ -23,7 +30,7 @@ Levels
 ------
 
 Level            | Containers | Technos       | Open-Source | Repository
------------------|------------|---------------|-------------|------------
+-----------------|------------|---------------|-------------|---------------------------------------------
 helloworld       | 1          | nginx         | :o:         | http://github.com/pathwar/level-helloworld
 pnu              | 1          | php           | :o:         | http://github.com/pathwar/pnu
 captcha          | 1          | php           | :o:         | http://github.com/pathwar/captcha
