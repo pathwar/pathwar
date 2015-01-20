@@ -6,7 +6,7 @@ import json
 from settings import DOMAIN
 
 
-def post(client, url, data, headers=None, content_type='application/json',
+def post(app, client, url, data, headers=None, content_type='application/json',
          auth_token='root-token'):
     if not headers:
         headers = []
@@ -15,14 +15,17 @@ def post(client, url, data, headers=None, content_type='application/json',
         headers.append(('Authorization', 'Basic {}'
                         .format(b64encode('{}:'.format(auth_token)))))
     request = client.post(url, data=json.dumps(data), headers=headers)
-    print(request.get_data())
     try:
         value = json.loads(request.get_data())
+        logger_method = app.logger.info
     except ValueError:
         value = {}
-    print("post({}, {}): {}, {}".
-          format(url, data, value.get('_status'), value.get('message'),
-                 value.get('_id')))
+        logger_method = app.logger.error
+    logger_method(request.get_data())
+    logger_method("post({}, {}): {}, {}".
+                  format(url, data, value.get('_status'),
+                         value.get('message'),
+                         value.get('_id')))
     return value, request.status_code
 
 
@@ -48,27 +51,29 @@ def load_seeds(app, reset=True):
         '_id': str(uuid4()),
     })
 
-    sessions = post(client, '/sessions', [{
+    sessions = post(app, client, '/sessions', [{
         'name': 'new year super challenge',
         'public': True,
     }, {
         'name': 'world battle',
     }])
 
-    users = post(client, '/users', [{
+    users = post(app, client, '/users', [{
         'login': 'joe',
         'email': 'joe@pathwar.net',
+        'password': 'secure',
     }, {
         'login': 'm1ch3l',
         'email': 'm1ch3l@pathwar.net',
         'role': 'superuser',
         'active': True,
+        'password': 'secure',
         'available_sessions': [
             sessions[0]['_items'][0]['_id'],
             sessions[0]['_items'][1]['_id'],
         ],
     }])
-    lemming_users = post(client, '/users', [
+    lemming_users = post(app, client, '/users', [
         {
             'login': 'lemming-{}'.format(i),
             'email': 'lemming-{}@lemming.net'.format(i),
@@ -77,14 +82,14 @@ def load_seeds(app, reset=True):
         } for i in xrange(2)
     ])
 
-    #user_tokens = post(client, '/user-tokens', [{
+    #user_tokens = post(app, client, '/user-tokens', [{
     #    'user': users[0]['_items'][0]['_id'],
     #}, {
     #    'user': users[0]['_items'][1]['_id'],
     #    #'expiry_date': ,
     #}])
 
-    coupons = post(client, '/coupons', [{
+    coupons = post(app, client, '/coupons', [{
         'hash': '1234567890',
         'value': 42,
         'session': sessions[0]['_items'][0]['_id'],
@@ -94,7 +99,7 @@ def load_seeds(app, reset=True):
         'session': sessions[0]['_items'][1]['_id'],
     }])
 
-    servers = post(client, '/servers', [{
+    servers = post(app, client, '/servers', [{
         'name': 'c1-123',
         'ip_address': '1.2.3.4',
         'active': True,
@@ -108,19 +113,19 @@ def load_seeds(app, reset=True):
         'tags': ['docker', 'x86_64'],
     }])
 
-    organizations = post(client, '/organizations', [{
+    organizations = post(app, client, '/organizations', [{
         'name': 'pwn-around-the-world',
         'session': sessions[0]['_items'][0]['_id'],
     }, {
         'name': 'staff',
         'session': sessions[0]['_items'][1]['_id'],
     }])
-    lemming_organization = post(client, '/organizations', {
+    lemming_organization = post(app, client, '/organizations', {
         'name': 'the-lemmings',
         'session': sessions[0]['_items'][1]['_id'],
     })
 
-    scorings = post(client, '/scorings', [{
+    scorings = post(app, client, '/scorings', [{
         'organization': organizations[0]['_items'][0]['_id'],
         'cash': 42,
         'score': 42,
@@ -138,7 +143,7 @@ def load_seeds(app, reset=True):
         'achievements': 23,
     }])
 
-    achievements = post(client, '/achievements', [{
+    achievements = post(app, client, '/achievements', [{
         'name': 'flash-gordon',
         'description': 'Validate a level in less than 1 minute',
     }, {
@@ -146,7 +151,7 @@ def load_seeds(app, reset=True):
         'description': 'Hack the API',
     }])
 
-    organizations_users = post(client, '/organization-users', [{
+    organizations_users = post(app, client, '/organization-users', [{
         'organization': organizations[0]['_items'][0]['_id'],
         'role': 'owner',
         'user': users[0]['_items'][0]['_id'],
@@ -168,7 +173,7 @@ def load_seeds(app, reset=True):
             } for lemming_user in lemming_users[0]['_items']
         ])
 
-    levels = post(client, '/levels', [{
+    levels = post(app, client, '/levels', [{
         'name': 'welcome',
         'description': 'An easy welcome level',
         'price': 42,
@@ -182,7 +187,7 @@ def load_seeds(app, reset=True):
         'author': 'Pathwar Team',
     }])
 
-    level_hints = post(client, '/level-hints', [{
+    level_hints = post(app, client, '/level-hints', [{
         'name': 'welcome sources',
         'price': 42,
         'level': levels[0]['_items'][0]['_id'],
@@ -196,7 +201,7 @@ def load_seeds(app, reset=True):
         'level': levels[0]['_items'][1]['_id'],
     }])
 
-    organization_levels = post(client, '/organization-levels', [{
+    organization_levels = post(app, client, '/organization-levels', [{
         'organization': organizations[0]['_items'][0]['_id'],
         'level': levels[0]['_items'][0]['_id'],
     }, {
@@ -207,7 +212,8 @@ def load_seeds(app, reset=True):
         'level': levels[0]['_items'][1]['_id'],
     }])
 
-    organization_achievements = post(client, '/organization-achievements', [{
+    organization_achievements = post(
+        app, client, '/organization-achievements', [{
         'organization': organizations[0]['_items'][0]['_id'],
         'achievement': achievements[0]['_items'][0]['_id'],
     }, {
@@ -218,7 +224,8 @@ def load_seeds(app, reset=True):
         'achievement': achievements[0]['_items'][1]['_id'],
     }])
 
-    user_organization_invites = post(client, '/user-organization-invites', [{
+    user_organization_invites = post(
+        app, client, '/user-organization-invites', [{
         'organization': organizations[0]['_items'][0]['_id'],
         'user': users[0]['_items'][0]['_id'],
     }, {
@@ -229,7 +236,7 @@ def load_seeds(app, reset=True):
         'user': users[0]['_items'][1]['_id'],
     }])
 
-    level_instances = post(client, '/level-instances', [{
+    level_instances = post(app, client, '/level-instances', [{
         'hash': '123456789',
         'level': levels[0]['_items'][0]['_id'],
         'server': servers[0]['_items'][0]['_id'],
@@ -248,7 +255,7 @@ def load_seeds(app, reset=True):
         'server': servers[0]['_items'][1]['_id'],
     }])
 
-    user_notifications = post(client, '/user-notifications', [{
+    user_notifications = post(app, client, '/user-notifications', [{
         'user': users[0]['_items'][0]['_id'],
         'title': 'hello !',
     }, {
@@ -259,7 +266,7 @@ def load_seeds(app, reset=True):
         'title': 'hello !',
     }])
 
-    organization_coupons = post(client, '/organization-coupons', [{
+    organization_coupons = post(app, client, '/organization-coupons', [{
         'organization': organizations[0]['_items'][0]['_id'],
         'coupon': coupons[0]['_items'][0]['_id'],
     }, {
@@ -270,7 +277,7 @@ def load_seeds(app, reset=True):
         'coupon': coupons[0]['_items'][1]['_id'],
     }])
 
-    items = post(client, '/items', [{
+    items = post(app, client, '/items', [{
         'name': 'spiderpig-glasses',
         'description': 'Unlock all level hints',
         'price': 4242,
@@ -287,7 +294,7 @@ def load_seeds(app, reset=True):
         'quantity': 1,
     }])
 
-    user_activities = post(client, '/user-activities', [{
+    user_activities = post(app, client, '/user-activities', [{
         'user': users[0]['_items'][0]['_id'],
         'category': 'level',
         'action': 'bought-level',
@@ -313,7 +320,7 @@ def load_seeds(app, reset=True):
         }]
     }])
 
-    organization_items = post(client, '/organization-items', [{
+    organization_items = post(app, client, '/organization-items', [{
         'organization': organizations[0]['_items'][0]['_id'],
         'item': items[0]['_items'][0]['_id'],
     }, {
@@ -325,7 +332,7 @@ def load_seeds(app, reset=True):
     }])
 
     organization_level_validations = post(
-        client, '/organization-level-validations', [{
+        app, client, '/organization-level-validations', [{
             'organization': organizations[0]['_items'][0]['_id'],
             'level': levels[0]['_items'][0]['_id'],
             'organization_level': organization_levels[0]['_items'][0]['_id'],
