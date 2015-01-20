@@ -683,7 +683,7 @@ user_tokens = {
             'type': 'string',
             'default': 'FIXME: generate a random token',
             'unique': True,
-            'readonly': True,
+            #'readonly': True,
         },
         'description': {  # For the user
             'type': 'string',
@@ -696,7 +696,7 @@ user_tokens = {
         'user': {  # Will be computed using the credentials
             'type': 'uuid',
             'required': False,
-            'readonly': True,
+            #'readonly': True,
             'data_relation': {
                 'resource': 'users',
                 'field': '_id',

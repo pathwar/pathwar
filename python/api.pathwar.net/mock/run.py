@@ -124,21 +124,21 @@ def insert_callback(resource, items):
             item['password_salt'] = bcrypt.gensalt().encode('utf-8')
             #item['otp_secret'] = ...
             on_update_user(item)
-
+    app.logger.info('### insert_callback({}) {}'.format(resource, items))
 
 
 def pre_post_callback(resource, request):
     if resource == 'user-tokens':
         # Handle login
         user = request_get_user(request)
-        app.logger.warn('@@@ {}'.format(user))
+        app.logger.warn('@@@ pre_post_callback: user={}'.format(user))
         if not user:
             abort(401)
+        # FIXME: try to not accept passing token/user (read-only)
         payload = request.get_json()
         payload['token'] = str(uuid4())
         payload['user'] = user['_id']
-        app.logger.warn('### {}'.format(payload))
-        return post_internal(resource, payload, skip_validation=True)
+        # FIXME: add expiry_date
 
 
 def post_post_callback(resource, request, response):
