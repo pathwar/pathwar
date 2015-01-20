@@ -26,6 +26,8 @@ ruby       | 2.1.5               | [Code](templates/ruby), [Examples](templates/
 golang     | 1.4.3               | [Code](templates/golang), [Examples](templates/golang/examples)
 python     | 2.7.9, 3.3.6, 3.4.2 | [Code](templates/python), [Examples](templates/python/examples)
 
+All templates support standard and [onbuild](https://docs.docker.com/reference/builder/#onbuild) modes.
+
 Levels
 ------
 
