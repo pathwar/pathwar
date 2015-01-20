@@ -4,6 +4,8 @@ EXAMPLEBUILDS =	$(addprefix examples/, $(addsuffix /build, $(EXAMPLES)))
 
 all:	build
 
+dependencies:	$(SKELETONS)
+
 examples:	$(EXAMPLEBUILDS)
 
 $(EXAMPLEBUILDS):	$(BUILDS)
