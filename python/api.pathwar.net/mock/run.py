@@ -91,6 +91,7 @@ class UUIDEncoder(BaseJSONEncoder):
 
 
 def pre_get_callback(resource, request, lookup):
+    """ Callback called before a GET request, we can alter the lookup. """
     resources_with_me_filter = (
         'user-notifications', 'user-organization-invites', 'user-tokens',
         'organization-users',
@@ -104,6 +105,7 @@ def pre_get_callback(resource, request, lookup):
 
 
 def on_update_user(item):
+    """ Must be called when saving a user POST/PATCH/PUT on /users. """
     if 'password' in item and \
        len(item['password']) and \
        not item['password'].startswith('$2a$'):
@@ -115,6 +117,7 @@ def on_update_user(item):
 
 
 def insert_callback(resource, items):
+    """ Callback called just before inserting a resource in mongo. """
     app.logger.info('### insert_callback({}) {}'.format(resource, items))
     for item in items:
         item['_id'] = str(uuid4())
@@ -128,6 +131,9 @@ def insert_callback(resource, items):
 
 
 def pre_post_callback(resource, request):
+    """ Callback called just before the normal processing behavior of a POST
+    request.
+    """
     if resource == 'user-tokens':
         # Handle login
         user = request_get_user(request)
@@ -142,6 +148,7 @@ def pre_post_callback(resource, request):
 
 
 def post_post_callback(resource, request, response):
+    """ Callback called just after a POST request ended. """
     app.logger.info('### post_post({}) request: {}, response: {}'
                 .format(resource, request, response))
     if resource == 'users':
