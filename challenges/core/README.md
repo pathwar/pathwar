@@ -29,7 +29,7 @@ nodejs     | 0.10.34             | [Code](templates/nodejs), [Examples](template
 nginx      | 1.7.8               | [Code](templates/nginx), [Examples](templates/nginx/examples)
 ruby       | 2.1.5               | [Code](templates/ruby), [Examples](templates/ruby/examples)
 golang     | 1.4.3               | [Code](templates/golang), [Examples](templates/golang/examples)
-python     | 2.7.9, 3.3.6, 3.4.2 | [Code](templates/python), [Examples](templates/python/examples)
+python     | 2.7.9, 3.3.6, 3.4.2 | [Code](templates/python), [Examples](templates/python/examples), [Docker](https://registry.hub.docker.com/u/pathwar/python/)
 
 All templates support standard and [onbuild](https://docs.docker.com/reference/builder/#onbuild) modes.
 
