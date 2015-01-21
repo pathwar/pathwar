@@ -18,9 +18,10 @@ def post(app, client, url, data, headers=None, content_type='application/json',
     try:
         value = json.loads(request.get_data())
         logger_method = app.logger.info
-    except ValueError:
+    except Exception, e:
         value = {}
         logger_method = app.logger.error
+        app.logger.error(e)
     logger_method(request.get_data())
     logger_method("post({}, {}): {}, {}".
                   format(url, data, value.get('_status'),

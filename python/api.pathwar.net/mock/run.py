@@ -9,14 +9,13 @@ from eve.io.base import BaseJSONEncoder
 from eve.io.mongo import Validator
 from eve.methods.post import post, post_internal
 from eve_docs import eve_docs
-from flask import abort
+from flask import abort, url_for
 from flask.ext.bootstrap import Bootstrap
 
 from settings import DOMAIN
 from seeds import load_seeds
 from tools import bp_tools
-from mail import send_mail
-
+from mail import mail, send_mail
 
 def request_get_user(request):
     auth = request.authorization
@@ -131,17 +130,20 @@ def insert_callback(resource, items):
             #item['otp_secret'] = ...
             on_update_user(item)
 
-            # FIXME: put after insert success
-            continue
-            # FIXME: do not send_mail for seeds
-            send_mail(item, url_for(
-                '/tools/email-verify/{}/{}'.format(
-                    item['_id'],
-                    'Verification link: {}'.format(
-                        item['email_verification_token'],
-                    ),
+            if not app.is_seed:
+                # FIXME: put after insert success
+                verification_url = url_for(
+                    'tools.email_verify',
+                    user_id=item['_id'],
+                    email_verification_token=item['email_verification_token'],
+                    _external=True,
                 )
-            ))
+                message = 'Verification link: {}'.format(verification_url)
+                send_mail(
+                    message=message,
+                    subject='Email verification',
+                    recipients=[item]
+                )
 
     app.logger.info('### insert_callback({}) {}'.format(resource, items))
 
@@ -189,7 +191,12 @@ def main():
     # eve-docs
     Bootstrap(app)
     app.register_blueprint(eve_docs, url_prefix='/docs')
+
+    # tools
     app.register_blueprint(bp_tools, url_prefix='/tools')
+
+    # mail
+    mail.init_app(app)
 
     # Attach hooks
     app.on_pre_GET += pre_get_callback
@@ -200,7 +207,9 @@ def main():
 
     # Initialize data
     with app.app_context():
+        app.is_seed = True
         load_seeds(app, reset=True)
+        app.is_seed = False
 
     # Run
     app.run(

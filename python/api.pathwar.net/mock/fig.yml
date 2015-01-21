@@ -6,7 +6,11 @@ server:
   - .:/usr/src/app
   links:
   - mongo
+  - smtp
 
 mongo:
   image: mongo
   command: --smallfiles
+
+smtp:
+  image: mredar/smtp-simple-debugging
