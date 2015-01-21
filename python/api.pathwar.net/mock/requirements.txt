@@ -1,4 +1,5 @@
 bcrypt >=1.1
+flask-mail >=0.9
 requests >=2.5
 eve >=0.5
 eve-docs >=0.1

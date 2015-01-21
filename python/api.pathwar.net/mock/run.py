@@ -15,6 +15,8 @@ from flask.ext.bootstrap import Bootstrap
 from settings import DOMAIN
 from seeds import load_seeds
 from tools import bp_tools
+from mail import send_mail
+
 
 def request_get_user(request):
     auth = request.authorization
@@ -128,6 +130,19 @@ def insert_callback(resource, items):
             item['email_verification_token'] = str(uuid4())
             #item['otp_secret'] = ...
             on_update_user(item)
+
+            # FIXME: put after insert success
+            continue
+            # FIXME: do not send_mail for seeds
+            send_mail(item, url_for(
+                '/tools/email-verify/{}/{}'.format(
+                    item['_id'],
+                    'Verification link: {}'.format(
+                        item['email_verification_token'],
+                    ),
+                )
+            ))
+
     app.logger.info('### insert_callback({}) {}'.format(resource, items))
 
 
