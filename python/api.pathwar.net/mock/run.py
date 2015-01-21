@@ -125,6 +125,7 @@ def insert_callback(resource, items):
     if resource == 'users':
         for item in items:
             item['password_salt'] = bcrypt.gensalt().encode('utf-8')
+            item['email_verification_token'] = str(uuid4())
             #item['otp_secret'] = ...
             on_update_user(item)
     app.logger.info('### insert_callback({}) {}'.format(resource, items))
@@ -145,6 +146,10 @@ def pre_post_callback(resource, request):
         payload['token'] = str(uuid4())
         payload['user'] = user['_id']
         # FIXME: add expiry_date
+    elif resource == 'users':
+        # FIXME: check for a password, users without password are built
+        #        internally
+        pass
 
 
 def post_post_callback(resource, request, response):
@@ -154,7 +159,6 @@ def post_post_callback(resource, request, response):
     if resource == 'users':
         print(response.get_data())
         app.logger.warn(dir(response))
-
 
 
 # Initialize Eve

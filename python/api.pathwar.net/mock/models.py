@@ -724,7 +724,7 @@ users = {
     'item_title': 'user',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'public_methods': [],
+    'public_methods': ['POST'],
     'public_item_methods': [],
     'schema': {
         'login': {
