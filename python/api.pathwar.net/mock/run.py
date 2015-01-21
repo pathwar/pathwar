@@ -14,7 +14,7 @@ from flask.ext.bootstrap import Bootstrap
 
 from settings import DOMAIN
 from seeds import load_seeds
-
+from tools import bp_tools
 
 def request_get_user(request):
     auth = request.authorization
@@ -174,6 +174,7 @@ def main():
     # eve-docs
     Bootstrap(app)
     app.register_blueprint(eve_docs, url_prefix='/docs')
+    app.register_blueprint(bp_tools, url_prefix='/tools')
 
     # Attach hooks
     app.on_pre_GET += pre_get_callback
