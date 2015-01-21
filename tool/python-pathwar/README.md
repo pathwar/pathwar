@@ -19,15 +19,16 @@ client.set_organization('abcdef-ghij-klmn-opqr-stuvwx')  # Switch to organizatio
 client.set_organization(session='super-final')  # switch to the organization where session is `super-final`
 
 ## Some actions
-client.level_buy(name='pnu')
-client.coupon_validate('cool-coupon')
+client.levels.get(name='pnu').buy()
+client.coupons.validate('cool-coupon')
 
 ## A level workflow
-for level in client.level_list(bought=True):
-    if not level.has_validated:
+for level in client.levels.all():
+    if not level.validated:
         print('You still need to validate the level {}'.format(level.name))
         # Try to use 'toto' as passphrase
         level.validate('toto')
     elif not level.bought:
+        # Try to buy the level
         level.buy()
 ```
