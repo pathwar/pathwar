@@ -1,2 +1,4 @@
-# eve packages installation are done from the Dockerfile
-bcrypt
+bcrypt >=1.1
+requests >=2.5
+eve >=0.5
+eve-docs >=0.1
