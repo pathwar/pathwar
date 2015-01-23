@@ -4,7 +4,7 @@ SERVICE ?=	$(shell echo $(SERVICES) | tr " " "\n" | head -1)
 
 
 ## Actions
-.PHONY: all build run
+.PHONY: all build run shell
 
 all:	build
 
@@ -16,6 +16,9 @@ run:
 	fig up -d
 	fig ps
 	fig logs
+
+shell:
+	fig run $(SERVICE) /bin/bash
 
 
 ## Travis
