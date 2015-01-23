@@ -3,6 +3,11 @@ BLUEPRINT_TEMPLATE ?=	default
 FIG_API_SERVICE ?=	api
 
 
+# FILES/DIRECTORIES
+portal.pathwar.net:
+	git clone https://github.com/pathwar/portal.pathwar.net
+
+
 # ACTIONS
 .PHONY:	all build release up shell
 
@@ -58,10 +63,10 @@ travis:
 # API
 .PHONY:	api_build api_up api_shell
 
-api_build:
+api_build:	portal.pathwar.net
 	fig build
 
-api_up:
+api_up:		portal.pathwar.net
 	fig up -d
 	fig logs
 

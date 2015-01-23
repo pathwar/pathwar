@@ -17,3 +17,16 @@ mongo:
 
 smtp:
   image: mredar/smtp-simple-debugging
+
+
+# PORTAL
+portal:
+  build: portal.pathwar.net
+  ports:
+  - 8090:8090
+  - 35729:35729
+  volumes:
+  - "portal.pathwar.net:/usr/src/app/"
+  environment:
+  - API_PORT_5000_TCP_PORT=5000
+  - BASE_PATH=/
