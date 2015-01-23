@@ -1,13 +1,16 @@
-server:
-  build: .
+# API
+api:
+  build: pathwar_api
   ports:
-  - "5000:5000"
+  - 5000:5000
   volumes:
-  - .:/usr/src/app
+  - pathwar_api:/usr/src/app
   links:
   - mongo
   - smtp
 
+
+# API dependencies
 mongo:
   image: mongo
   command: --smallfiles
