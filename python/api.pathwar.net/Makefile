@@ -17,7 +17,7 @@ build:	api_build blueprint_build
 
 release:	gh-pages
 
-up:	api_up
+up:	api_up portal_up
 
 shell:	api_shell
 
@@ -61,14 +61,23 @@ travis:
 
 
 # API
-.PHONY:	api_build api_up api_shell
+.PHONY:	api_build api_up api_shell portal_up mongo_up smtp_up
 
 api_build:	portal.pathwar.net
 	fig build
 
-api_up:		portal.pathwar.net
-	fig up -d
+api_up:		mongo_up smtp_up
+	fig up -d --no-deps api
 	fig logs
 
-api_shell:
+api_shell:	mongo_up
 	fig run --no-deps $(FIG_API_SERVICE) /bin/bash
+
+mongo_up:
+	fig up --no-recreate -d mongo
+
+smtp_up:
+	fig up --no-recreate -d smtp
+
+portal_up:
+	fig up --no-recreate -d portal
