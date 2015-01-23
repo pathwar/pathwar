@@ -1,5 +1,5 @@
 install:
-- curl -sLo - https://github.com/moul/travis-docker/raw/master/install.sh | sh -xe
+- make travis_install
 
 script:
-- ./run "fig run web /bin/bash -c 'echo OK'"
+- make travis_run
