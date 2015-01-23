@@ -30,7 +30,7 @@ travis_install:
 
 travis_run:
 	for service in $(SERVICES); do \
-	  $(MAKE) travis_run_service SERVICE=$$servie; \
+	  $(MAKE) travis_run_service SERVICE=$$service; \
 	done
 
 travis_run_service:
