@@ -129,7 +129,7 @@ def insert_callback(resource, items):
         for item in items:
             item['password_salt'] = bcrypt.gensalt().encode('utf-8')
             item['email_verification_token'] = str(uuid4())
-            #item['otp_secret'] = ...
+            # item['otp_secret'] = ...
             on_update_user(item)
 
             if not app.is_seed:
@@ -164,20 +164,30 @@ def pre_post_callback(resource, request):
         payload = request.get_json()
         payload['token'] = str(uuid4())
         payload['user'] = user['_id']
+
         # FIXME: add expiry_date
     elif resource == 'users':
         # FIXME: check for a password, users without password are built
         #        internally
         pass
 
-
 def post_post_callback(resource, request, response):
     """ Callback called just after a POST request ended. """
     app.logger.info('### post_post({}) request: {}, response: {}'
                     .format(resource, request, response))
     if resource == 'users':
-        #print(response.get_data())
+        # print(response.get_data())
         app.logger.warn(dir(response))
+
+    elif resource == 'organizations':
+        organization = json.loads(response.get_data())
+        user = request_get_user(request)
+        post_internal('organization-users', {
+            'organization': organization['_id'],
+            'role': 'owner',
+            'user': user['_id'],
+        })
+
 
 
 # Initialize Eve
