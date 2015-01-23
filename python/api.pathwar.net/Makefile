@@ -9,7 +9,7 @@ portal.pathwar.net:
 
 
 # ACTIONS
-.PHONY:	all build release up shell clean
+.PHONY:	all build release up shell clean kill stop
 
 all:	build
 
@@ -20,8 +20,11 @@ release:	gh-pages
 up:	api_up portal_up
 	fig logs
 
-down:
-	fig down
+kill:
+	fig kill
+
+stop:
+	fig stop
 
 shell:	api_shell
 
