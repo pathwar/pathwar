@@ -70,10 +70,17 @@ travis:
 
 
 # API
-.PHONY:	api_build api_up api_shell portal_up mongo_up smtp_up
+.PHONY:	api_build api_up api_shell portal_up mongo_up smtp_up flush-db seed-db
 
 api_build:	portal.pathwar.net
 	fig build
+
+
+flush-db:
+	fig run --no-deps $(FIG_API_SERVICE) python run.py flush-db
+
+seed-db:
+	fig run --no-deps $(FIG_API_SERVICE) python run.py seed-db
 
 api_up:
 	fig kill api

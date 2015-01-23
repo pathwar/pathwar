@@ -2,6 +2,7 @@ from uuid import UUID, uuid4
 import bcrypt
 import json
 import random
+import sys
 
 from eve import Eve
 from eve.auth import BasicAuth, TokenAuth
@@ -13,9 +14,10 @@ from flask import abort, url_for
 from flask.ext.bootstrap import Bootstrap
 
 from settings import DOMAIN
-from seeds import load_seeds
+from seeds import db_reset, db_init, db_seed
 from tools import bp_tools
 from mail import mail, send_mail
+
 
 def request_get_user(request):
     auth = request.authorization
@@ -172,9 +174,9 @@ def pre_post_callback(resource, request):
 def post_post_callback(resource, request, response):
     """ Callback called just after a POST request ended. """
     app.logger.info('### post_post({}) request: {}, response: {}'
-                .format(resource, request, response))
+                    .format(resource, request, response))
     if resource == 'users':
-        print(response.get_data())
+        #print(response.get_data())
         app.logger.warn(dir(response))
 
 
@@ -187,7 +189,7 @@ app = Eve(
 )
 
 
-def main():
+def eve_init():
     # eve-docs
     Bootstrap(app)
     app.register_blueprint(eve_docs, url_prefix='/docs')
@@ -203,20 +205,33 @@ def main():
     app.on_insert += insert_callback
     app.on_pre_POST += pre_post_callback
     app.on_post_POST += post_post_callback
-    #getattr(app, 'on_pre_POST_user-tokens') += pre_post_user_tokens_callback
+    # getattr(app, 'on_pre_POST_user-tokens') += pre_post_user_tokens_callback
 
-    # Initialize data
-    with app.app_context():
-        app.is_seed = True
-        load_seeds(app, reset=True)
-        app.is_seed = False
+    # Initialize db
+    db_init(app)
 
-    # Run
-    app.run(
-        debug=True,
-        host='0.0.0.0',
-    )
+
+def main(argv):
+    eve_init()
+
+    if len(argv) > 1:
+        if argv[1] == 'flush-db':
+            with app.app_context():
+                db_reset(app)
+        elif argv[1] == 'seed-db':
+            with app.app_context():
+                db_reset(app)
+                app.is_seed = True
+                db_seed(app)
+                app.is_seed = False
+
+    else:
+        # Run
+        app.run(
+            debug=True,
+            host='0.0.0.0',
+        )
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv)
