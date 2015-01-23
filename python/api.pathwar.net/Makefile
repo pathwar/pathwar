@@ -20,6 +20,9 @@ release:	gh-pages
 up:	api_up portal_up
 	fig logs
 
+down:
+	fig down
+
 shell:	api_shell
 
 clean:	blueprint_clean api_clean
@@ -72,8 +75,9 @@ travis:
 api_build:	portal.pathwar.net
 	fig build
 
-api_up:		mongo_up smtp_up
-	fig up --no-recreate --no-deps -d api
+api_up:
+	fig kill api
+	fig up --no-recreate -d api
 
 api_shell:	mongo_up
 	fig run --no-deps $(FIG_API_SERVICE) /bin/bash
