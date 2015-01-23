@@ -18,6 +18,7 @@ build:	api_build blueprint_build
 release:	gh-pages
 
 up:	api_up portal_up
+	fig logs
 
 shell:	api_shell
 
@@ -72,8 +73,7 @@ api_build:	portal.pathwar.net
 	fig build
 
 api_up:		mongo_up smtp_up
-	fig up -d --no-deps api
-	fig logs
+	fig up --no-recreate --no-deps -d api
 
 api_shell:	mongo_up
 	fig run --no-deps $(FIG_API_SERVICE) /bin/bash
