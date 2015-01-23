@@ -79,10 +79,10 @@ api_build:	portal.pathwar.net
 	fig build
 
 
-flush-db:
+flush-db:	mongo_up
 	fig run --no-deps $(FIG_API_SERVICE) python run.py flush-db
 
-seed-db:
+seed-db:	mongo_up
 	fig run --no-deps $(FIG_API_SERVICE) python run.py seed-db
 
 api_up:
