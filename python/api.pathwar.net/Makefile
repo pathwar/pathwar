@@ -9,7 +9,7 @@ portal.pathwar.net:
 
 
 # ACTIONS
-.PHONY:	all build release up shell
+.PHONY:	all build release up shell clean
 
 all:	build
 
@@ -21,15 +21,20 @@ up:	api_up portal_up
 
 shell:	api_shell
 
+clean:	blueprint_clean api_clean
+
 
 # BLUEPRINT
-.PHONY:	blueprint_watch blueprint_build
+.PHONY:	blueprint_watch blueprint_build blueprint_clean
 
 blueprint_watch:
 	aglio -i $(BLUEPRINT_FILE) -t $(BLUEPRINT_TEMPLATE) -s
 
 blueprint_build:
 	aglio -i $(BLUEPRINT_FILE) -t $(BLUEPRINT_TEMPLATE) -o apiary.html
+
+blueprint_clean:
+	-rm -f apiary.html index.html
 
 
 # GH-PAGES
@@ -81,3 +86,7 @@ smtp_up:
 
 portal_up:
 	fig up --no-recreate -d portal
+
+api_clean:
+	fig stop
+	fig rm --force
