@@ -163,6 +163,20 @@ level_instances = {
                 },
             },
         },
+        'passphrases': {
+            'type': 'list',
+            'schema': {
+                'type': 'dict',
+                'schema': {
+                    'key': {
+                        'type': 'string',
+                    },
+                    'value': {
+                        'type': 'string',
+                    },
+                },
+            },
+        },
     },
 }
 

@@ -30,3 +30,4 @@ portal:
   environment:
   - API_PORT_5000_TCP_PORT=5000
   - BASE_PATH=/
+  #- NO_PUSHSTATE=1
