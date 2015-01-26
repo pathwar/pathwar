@@ -1,0 +1,24 @@
+{
+  "name": "pathwar",
+  "version": "0.1.0",
+  "description": "Pathwar API client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:pathwar/node-pathwar"
+  },
+  "keywords": [
+    "Pathwar",
+    "API",
+    "client"
+  ],
+  "author": "Pathwar Team <team@pathwar.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pathwar/node-pathwar/issues"
+  },
+  "homepage": "https://github.com/pathwar/node-pathwar"
+}
