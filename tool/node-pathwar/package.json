@@ -2,9 +2,9 @@
   "name": "pathwar",
   "version": "0.1.0",
   "description": "Pathwar API client",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --reporter spec --bail --check-leaks ./test/all.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,8 @@
   "dependencies": {
     "axios": "^0.5.0",
     "rc": "^0.5.5"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0"
   }
 }
