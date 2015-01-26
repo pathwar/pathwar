@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/pathwar/node-pathwar/issues"
   },
-  "homepage": "https://github.com/pathwar/node-pathwar"
+  "homepage": "https://github.com/pathwar/node-pathwar",
+  "dependencies": {
+    "axios": "^0.5.0",
+    "rc": "^0.5.5"
+  }
 }
