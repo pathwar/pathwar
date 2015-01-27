@@ -191,10 +191,10 @@ def post_post_callback(resource, request, response):
         orga_statistics = post_internal('organization-statistics', {
             'organization': organization['_id'],
         })
-        app.data.driver.db['organizations'].update(
-            { '_id': organization['_id'] },
-            { 'statistics': orga_statistics[0]['_id'] },
-        )
+        #app.data.driver.db['organizations'].update(
+        #    { '_id': organization['_id'] },
+        #    { 'statistics': orga_statistics[0]['_id'] },
+        #)
 
 
 # Initialize Eve
