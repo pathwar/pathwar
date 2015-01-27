@@ -73,22 +73,23 @@ def db_seed(app):
             'name': 'world battle',
         }])
 
-    users, _, _ = post(
-        app, client, '/users', [{
-            'login': 'joe',
-            'email': 'joe@pathwar.net',
-            'password': 'secure',
-        }, {
-            'login': 'm1ch3l',
-            'email': 'm1ch3l@pathwar.net',
-            'role': 'superuser',
-            'active': True,
-            'password': 'secure',
-            'available_sessions': [
-                sessions[0]['_id'],
-                sessions[1]['_id'],
-            ],
-        }])
+    if sessions:
+        users, _, _ = post(
+            app, client, '/users', [{
+                'login': 'joe',
+                'email': 'joe@pathwar.net',
+                'password': 'secure',
+            }, {
+                'login': 'm1ch3l',
+                'email': 'm1ch3l@pathwar.net',
+                'role': 'superuser',
+                'active': True,
+                'password': 'secure',
+                'available_sessions': [
+                    sessions[0]['_id'],
+                    sessions[1]['_id'],
+                ],
+            }])
     lemming_users, _, _ = post(
         app, client, '/users', [{
             'login': 'lemming-{}'.format(i),
@@ -105,16 +106,17 @@ def db_seed(app):
     #     #'expiry_date': ,
     # }])
 
-    coupons, _, _ = post(
-        app, client, '/coupons', [{
-            'hash': '1234567890',
-            'value': 42,
-            'session': sessions[0]['_id'],
-        }, {
-            'hash': '0987654321',
-            'value': 24,
-            'session': sessions[1]['_id'],
-        }])
+    if sessions:
+        coupons, _, _ = post(
+            app, client, '/coupons', [{
+                'hash': '1234567890',
+                'value': 42,
+                'session': sessions[0]['_id'],
+            }, {
+                'hash': '0987654321',
+                'value': 24,
+                'session': sessions[1]['_id'],
+            }])
 
     servers, _, _ = post(
         app, client, '/servers', [{
@@ -131,38 +133,42 @@ def db_seed(app):
             'tags': ['docker', 'x86_64'],
         }])
 
-    organizations, _, _ = post(
-        app, client, '/organizations', [{
-            'name': 'pwn-around-the-world',
-            'session': sessions[0]['_id'],
-        }, {
-            'name': 'staff',
-            'session': sessions[1]['_id'],
-        }])
-    lemming_organization, _, _ = post(
-        app, client, '/organizations', [{
-            'name': 'the-lemmings',
-            'session': sessions[1]['_id'],
-        }])
+    if sessions:
+        organizations, _, _ = post(
+            app, client, '/organizations', [{
+                'name': 'pwn-around-the-world',
+                'session': sessions[0]['_id'],
+            }, {
+                'name': 'staff',
+                'session': sessions[1]['_id'],
+            }])
 
-    scorings, _, _ = post(
-        app, client, '/scorings', [{
-            'organization': organizations[0]['_id'],
-            'cash': 42,
-            'score': 42,
-            'gold_medals': 3,
-            'silver_medals': 3,
-            'bronze_medals': 3,
-            'achievements': 23,
-        }, {
-            'organization': organizations[1]['_id'],
-            'cash': 42,
-            'score': 42,
-            'gold_medals': 3,
-            'silver_medals': 3,
-            'bronze_medals': 3,
-            'achievements': 23,
-        }])
+    if sessions:
+        lemming_organization, _, _ = post(
+            app, client, '/organizations', [{
+                'name': 'the-lemmings',
+                'session': sessions[1]['_id'],
+            }])
+
+    if organizations:
+        organization_statistics, _, _ = post(
+            app, client, '/organization-statistics', [{
+                'organization': organizations[0]['_id'],
+                'cash': 42,
+                'score': 42,
+                'gold_medals': 3,
+                'silver_medals': 3,
+                'bronze_medals': 3,
+                'achievements': 23,
+            }, {
+                'organization': organizations[1]['_id'],
+                'cash': 42,
+                'score': 42,
+                'gold_medals': 3,
+                'silver_medals': 3,
+                'bronze_medals': 3,
+                'achievements': 23,
+            }])
 
     achievements, _, _ = post(
         app, client, '/achievements', [{
@@ -173,20 +179,21 @@ def db_seed(app):
             'description': 'Hack the API',
         }])
 
-    organizations_users, _, _ = post(
-        app, client, '/organization-users', [{
-            'organization': organizations[0]['_id'],
-            'role': 'owner',
-            'user': users[0]['_id'],
-        }, {
-            'organization': organizations[0]['_id'],
-            'role': 'pwner',
-            'user': users[1]['_id'],
-        }, {
-            'organization': organizations[1]['_id'],
-            'role': 'owner',
-            'user': users[1]['_id'],
-        }])
+    if organizations and users:
+        organizations_users, _, _ = post(
+            app, client, '/organization-users', [{
+                'organization': organizations[0]['_id'],
+                'role': 'owner',
+                'user': users[0]['_id'],
+            }, {
+                'organization': organizations[0]['_id'],
+                'role': 'pwner',
+                'user': users[1]['_id'],
+            }, {
+                'organization': organizations[1]['_id'],
+                'role': 'owner',
+                'user': users[1]['_id'],
+            }])
 
     if lemming_users[0] and lemming_organization:
         for lemming_user in lemming_users:
@@ -212,100 +219,107 @@ def db_seed(app):
             'author': 'Pathwar Team',
         }])
 
-    level_hints, _, _ = post(
-        app, client, '/level-hints', [{
-            'name': 'welcome sources',
-            'price': 42,
-            'level': levels[0]['_id'],
-        }, {
-            'name': 'welcome full solution',
-            'price': 420,
-            'level': levels[0]['_id'],
-        }, {
-            'name': 'pnu sources',
-            'price': 42,
-            'level': levels[1]['_id'],
-        }])
+    if levels:
+        level_hints, _, _ = post(
+            app, client, '/level-hints', [{
+                'name': 'welcome sources',
+                'price': 42,
+                'level': levels[0]['_id'],
+            }, {
+                'name': 'welcome full solution',
+                'price': 420,
+                'level': levels[0]['_id'],
+            }, {
+                'name': 'pnu sources',
+                'price': 42,
+                'level': levels[1]['_id'],
+            }])
 
-    organization_levels, _, _ = post(
-        app, client, '/organization-levels', [{
-            'organization': organizations[0]['_id'],
-            'level': levels[0]['_id'],
-        }, {
-            'organization': organizations[0]['_id'],
-            'level': levels[1]['_id'],
-        }, {
-            'organization': organizations[1]['_id'],
-            'level': levels[1]['_id'],
-        }])
+    if organizations and levels:
+        organization_levels, _, _ = post(
+            app, client, '/organization-levels', [{
+                'organization': organizations[0]['_id'],
+                'level': levels[0]['_id'],
+            }, {
+                'organization': organizations[0]['_id'],
+                'level': levels[1]['_id'],
+            }, {
+                'organization': organizations[1]['_id'],
+                'level': levels[1]['_id'],
+            }])
 
-    organization_achievements, _, _ = post(
-        app, client, '/organization-achievements', [{
-            'organization': organizations[0]['_id'],
-            'achievement': achievements[0]['_id'],
-        }, {
-            'organization': organizations[0]['_id'],
-            'achievement': achievements[1]['_id'],
-        }, {
-            'organization': organizations[1]['_id'],
-            'achievement': achievements[1]['_id'],
-        }])
+    if organizations and achievements:
+        organization_achievements, _, _ = post(
+            app, client, '/organization-achievements', [{
+                'organization': organizations[0]['_id'],
+                'achievement': achievements[0]['_id'],
+            }, {
+                'organization': organizations[0]['_id'],
+                'achievement': achievements[1]['_id'],
+            }, {
+                'organization': organizations[1]['_id'],
+                'achievement': achievements[1]['_id'],
+            }])
 
-    user_organization_invites, _, _ = post(
-        app, client, '/user-organization-invites', [{
-            'organization': organizations[0]['_id'],
-            'user': users[0]['_id'],
-        }, {
-            'organization': organizations[0]['_id'],
-            'user': users[1]['_id'],
-        }, {
-            'organization': organizations[1]['_id'],
-            'user': users[1]['_id'],
-        }])
+    if organizations and users:
+        user_organization_invites, _, _ = post(
+            app, client, '/user-organization-invites', [{
+                'organization': organizations[0]['_id'],
+                'user': users[0]['_id'],
+            }, {
+                'organization': organizations[0]['_id'],
+                'user': users[1]['_id'],
+            }, {
+                'organization': organizations[1]['_id'],
+                'user': users[1]['_id'],
+            }])
 
-    level_instances, _, _ = post(
-        app, client, '/level-instances', [{
-            'hash': '123456789',
-            'level': levels[0]['_id'],
-            'server': servers[0]['_id'],
-        # 'overrides': [{'key': 'cpu_shares', 'value': 42}],
-        }, {
-            'hash': '987654321',
-            'level': levels[0]['_id'],
-            'server': servers[1]['_id'],
-            'organizations': [
-                organizations[0]['_id'],
-                organizations[1]['_id'],
-            ],
-        }, {
-            'hash': '585185815',
-            'level': levels[1]['_id'],
-            'server': servers[1]['_id'],
-        }])
+    if organizations and levels and servers:
+        level_instances, _, _ = post(
+            app, client, '/level-instances', [{
+                'hash': '123456789',
+                'level': levels[0]['_id'],
+                'server': servers[0]['_id'],
+            # 'overrides': [{'key': 'cpu_shares', 'value': 42}],
+            }, {
+                'hash': '987654321',
+                'level': levels[0]['_id'],
+                'server': servers[1]['_id'],
+                'organizations': [
+                    organizations[0]['_id'],
+                    organizations[1]['_id'],
+                ],
+            }, {
+                'hash': '585185815',
+                'level': levels[1]['_id'],
+                'server': servers[1]['_id'],
+            }])
 
-    user_notifications, _, _ = post(
-        app, client, '/user-notifications', [{
-            'user': users[0]['_id'],
-            'title': 'hello !',
-        }, {
-            'user': users[0]['_id'],
-            'title': 'what\s up?',
-        }, {
-            'user': users[1]['_id'],
-            'title': 'hello !',
-        }])
+    if users:
+        user_notifications, _, _ = post(
+            app, client, '/user-notifications', [{
+                'user': users[0]['_id'],
+                'title': 'hello !',
+            }, {
+                'user': users[0]['_id'],
+                'title': 'what\s up?',
+            }, {
+                'user': users[1]['_id'],
+                'title': 'hello !',
+            }])
 
-    organization_coupons, _, _ = post(
-        app, client, '/organization-coupons', [{
-            'organization': organizations[0]['_id'],
-            'coupon': coupons[0]['_id'],
-        }, {
-            'organization': organizations[0]['_id'],
-            'coupon': coupons[1]['_id'],
-        }, {
-            'organization': organizations[1]['_id'],
-            'coupon': coupons[1]['_id'],
-        }])
+    if organizations and coupons:
+        organization_coupons, _, _ = post(
+            app, client, '/organization-coupons', [{
+                'organization': organizations[0]['_id'],
+                'coupon': coupons[0]['_id'],
+            }, {
+                'organization': organizations[0]['_id'],
+                'coupon': coupons[1]['_id'],
+            }, {
+                'organization': organizations[1]['_id'],
+                'coupon': coupons[1]['_id'],
+            }])
 
     items, _, _ = post(
         app, client, '/items', [{
@@ -325,65 +339,68 @@ def db_seed(app):
             'quantity': 1,
         }])
 
-    user_activities, _, _ = post(
-        app, client, '/user-activities', [{
-            'user': users[0]['_id'],
-            'category': 'level',
-            'action': 'bought-level',
-            'arguments': ['pnu'],
-            'linked_resources': [{
-                'kind': 'levels',
-                'id': levels[1]['_id'],
-            }],
-            'organization': organizations[0]['_id'],
-        }, {
-            'user': users[0]['_id'],
-            'action': 'created-token',
-            'category': 'account',
-        }, {
-            'user': users[1]['_id'],
-            'organization': organizations[1]['_id'],
-            'category': 'whoswho',
-            'action': 'whoswho-pwned',
-            'arguments': ['pwn-around-the-world'],
-            'linked_resources': [{
-                'kind': 'organizations',
-                'id': organizations[0]['_id'],
-            }]
-        }])
+    if organizations and users and levels:
+        user_activities, _, _ = post(
+            app, client, '/user-activities', [{
+                'user': users[0]['_id'],
+                'category': 'level',
+                'action': 'bought-level',
+                'arguments': ['pnu'],
+                'linked_resources': [{
+                    'kind': 'levels',
+                    'id': levels[1]['_id'],
+                }],
+                'organization': organizations[0]['_id'],
+            }, {
+                'user': users[0]['_id'],
+                'action': 'created-token',
+                'category': 'account',
+            }, {
+                'user': users[1]['_id'],
+                'organization': organizations[1]['_id'],
+                'category': 'whoswho',
+                'action': 'whoswho-pwned',
+                'arguments': ['pwn-around-the-world'],
+                'linked_resources': [{
+                    'kind': 'organizations',
+                    'id': organizations[0]['_id'],
+                }]
+            }])
 
-    organization_items, _, _ = post(
-        app, client, '/organization-items', [{
-            'organization': organizations[0]['_id'],
-            'item': items[0]['_id'],
-        }, {
-            'organization': organizations[0]['_id'],
-            'item': items[1]['_id'],
-        }, {
-            'organization': organizations[1]['_id'],
-            'item': items[1]['_id'],
-        }])
+    if organizations and items:
+        organization_items, _, _ = post(
+            app, client, '/organization-items', [{
+                'organization': organizations[0]['_id'],
+                'item': items[0]['_id'],
+            }, {
+                'organization': organizations[0]['_id'],
+                'item': items[1]['_id'],
+            }, {
+                'organization': organizations[1]['_id'],
+                'item': items[1]['_id'],
+            }])
 
-    organization_level_validations, _, _ = post(
-        app, client, '/organization-level-validations', [{
-            'organization': organizations[0]['_id'],
-            'level': levels[0]['_id'],
-            'organization_level': organization_levels[0]['_id'],
-            'status': 'pending',
-            'explanation': 'blah blah',
-            'screenshot': '/screenshots/1234567890',
-        }, {
-            'organization': organizations[0]['_id'],
-            'level': levels[0]['_id'],
-            'organization_level': organization_levels[1]['_id'],
-            'status': 'accepted',
-            'explanation': 'blih blih',
-            'screenshot': '/screenshots/1234567891',
-        }, {
-            'organization': organizations[1]['_id'],
-            'level': levels[0]['_id'],
-            'organization_level': organization_levels[1]['_id'],
-            'status': 'refused',
-            'explanation': 'bloh bloh',
-            'screenshot': '/screenshots/1234567892',
-        }])
+    if organizations and levels and organization_levels:
+        organization_level_validations, _, _ = post(
+            app, client, '/organization-level-validations', [{
+                'organization': organizations[0]['_id'],
+                'level': levels[0]['_id'],
+                'organization_level': organization_levels[0]['_id'],
+                'status': 'pending',
+                'explanation': 'blah blah',
+                'screenshot': '/screenshots/1234567890',
+            }, {
+                'organization': organizations[0]['_id'],
+                'level': levels[0]['_id'],
+                'organization_level': organization_levels[1]['_id'],
+                'status': 'accepted',
+                'explanation': 'blih blih',
+                'screenshot': '/screenshots/1234567891',
+            }, {
+                'organization': organizations[1]['_id'],
+                'level': levels[0]['_id'],
+                'organization_level': organization_levels[1]['_id'],
+                'status': 'refused',
+                'explanation': 'bloh bloh',
+                'screenshot': '/screenshots/1234567892',
+            }])
