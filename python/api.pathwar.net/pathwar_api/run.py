@@ -171,6 +171,7 @@ def pre_post_callback(resource, request):
         #        internally
         pass
 
+
 def post_post_callback(resource, request, response):
     """ Callback called just after a POST request ended. """
     app.logger.info('### post_post({}) request: {}, response: {}'
@@ -187,7 +188,13 @@ def post_post_callback(resource, request, response):
             'role': 'owner',
             'user': user['_id'],
         })
-
+        orga_statistics = post_internal('organization-statistics', {
+            'organization': organization['_id'],
+        })
+        app.data.driver.db['organizations'].update(
+            { '_id': organization['_id'] },
+            { 'statistics': orga_statistics[0]['_id'] },
+        )
 
 
 # Initialize Eve

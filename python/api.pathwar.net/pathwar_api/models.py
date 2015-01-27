@@ -454,8 +454,8 @@ organization_users = {
 }
 
 
-scorings = {
-    'item_title': 'scoring',
+organization_statistics = {
+    'item_title': 'organization statistics',
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_methods': [],
@@ -500,11 +500,11 @@ organizations = {
                 'embeddable': True,
             },
         },
-        'scoring': {
+        'statistics': {
             'type': 'uuid',
             'required': False,
             'data_relation': {
-                'resource': 'scorings',
+                'resource': 'organization-statistics',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -836,7 +836,7 @@ DOMAIN = {
     'organization-levels': organization_levels,
     'organization-users': organization_users,
     'organizations': organizations,
-    'scorings': scorings,
+    'organization-statistics': organization_statistics,
     'servers': servers,
     'sessions': sessions,
     'user-activities': user_activities,
