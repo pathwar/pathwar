@@ -9,11 +9,27 @@ var Client = module.exports = function(config) {
 };
 
 
+httpinvoke = httpinvoke.hook('finished', function(err, output, statusCode, headers) {
+  if(err) {
+    return arguments;
+  }
+  if(typeof statusCode === 'undefined') {
+    return [new Error('Server or client error - undefined HTTP status'), output, statusCode, headers];
+  }
+  if(statusCode >= 400 && statusCode <= 599) {
+    return [new Error(output._error.message + ' - HTTP status ' + statusCode), output, statusCode, headers];
+  }
+  return arguments;
+});
+
+
+
 (function() {
   this.request = function(path, method, options, cb) {
     var url = config.api_endpoint + path.replace(/^\//, '');
     options = options || {};
     _.defaults(options, {
+      partialOutputMode: 'joined',
       converters: {
         'text json': JSON.parse,
         'json text': JSON.stringify

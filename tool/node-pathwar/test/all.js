@@ -1,10 +1,13 @@
 "use strict";
 
 
-var assert = require("assert"),
+var chai = require("chai"),
     debug = require("debug")("tests"),
     Client = require(".."),
-    util = require('util');
+    util = require("util");
+
+
+chai.should();
 
 
 var inspect = function(name, obj) {
@@ -20,49 +23,57 @@ suite("[client]", function() {
   });
 
   suite('#http-requests', function() {
-    test("should successfully execute GET /", function(next) {
+    test("should successfully execute GET /", function(done) {
       client.get("/").then(
         function(res) {
           inspect('res', res);
-          assert.equal(200, res.statusCode);
-          next();
+          try {
+            (res.statusCode).should.equal(200);
+            done();
+          } catch (e) {
+            done(e);
+          }
         },
         function(err) {
           inspect('err', err);
-          assert();
+          done(err);
         });
     });
 
-    test("should successfully execute GET /levels", function(next) {
+    test("should successfully execute GET /levels", function(done) {
       client.get("/levels").then(
         function(res) {
           inspect('res', res);
-          assert.equal(200, res.statusCode);
-          assert.equal(true, res.body._items[0].price > 0);
-          next();
+          try {
+            (res.statusCode).should.equal(200);
+            res.body._items[0].should.have.property('price');
+            done();
+          } catch (e) {
+            done(e);
+          }
         },
         function(err) {
           inspect('err', err);
-          assert();
+          done(err);
         });
     });
 
-    test("should successfully execute POST /user-tokens", function(next) {
+    test("should successfully execute POST /user-tokens", function(done) {
       client.post("/user-tokens", {
         is_session: true
       }).then(
         function(res) {
           inspect('res', res);
-          next();
+          done();
         },
         function(err) {
           inspect('err', err);
-          assert();
+          done(err);
         }
       );
     });
 
-    test("should chain a POST /user-tokens and a GET of the created resource using promise chaining", function(next) {
+    test("should chain a POST /user-tokens and a GET of the created resource using promise chaining", function(done) {
       client.post("/user-tokens", {
         is_session: true
       }).then(
@@ -72,21 +83,21 @@ suite("[client]", function() {
         },
         function(err) {
           inspect('err', err);
-          assert();
+          done(err);
         }
       ).then(
         function(res) {
           inspect('res', res);
-          next();
+          done();
         },
         function(err) {
           inspect('err', err);
-          assert();
+          done(err);
         }
       );
     });
 
-    test("should chain a POST /user-tokens and a GET of the created resource using promise callback", function(next) {
+    test("should chain a POST /user-tokens and a GET of the created resource using promise callback", function(done) {
       client.post("/user-tokens", {
         is_session: true
       }).then(
@@ -95,17 +106,30 @@ suite("[client]", function() {
           client.get(res.body._links.self.href).then(
             function(res) {
               inspect('res', res);
-              next();
+              done();
             },
             function(err) {
               inspect('err', err);
-              assert();
+              done(err);
             });
         },
         function(err) {
           inspect('err', err);
-          assert();
+          done(err);
         });
     });
+
+    test("should trigger the error callback on 404", function(done) {
+      client.get("/do-not-exists").then(
+        function(res) {
+          inspect('res', res);
+          done(true);
+        },
+        function(err) {
+          inspect('err', err);
+          done();
+        });
+      });
+
   });
 });
