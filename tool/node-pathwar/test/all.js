@@ -1,28 +1,44 @@
 "use strict";
 
-var Assert = require("assert");
-var Client = require("..");
+var assert = require("assert"),
+    debug = require("debug")("tests"),
+    Client = require(".."),
+    util = require('util');
+
+var inspect = function(name, obj) {
+  debug(name, util.inspect(obj, {showHidden: false, depth: null}));
+};
 
 describe("[client]", function() {
   var client;
-  var token = "root-token";
 
   beforeEach(function() {
     client = new Client();
-    // client.authenticate({
-    //   type: "oauth",
-    //   token: token
-    // });
   });
 
-  it("should successfully execute GET / (list resources)", function(next) {
+  it("should successfully execute GET /", function(next) {
     client.get("/")
-      .then(function(response) {
+      .then(function(res) {
+        inspect('res', res);
+        assert.equal(200, res.statusCode);
         next();
-      })
-      .catch(function(response) {
-        Assert.equal(0, 1);
-        next();
+      }, function(err) {
+        inspect('err', err);
+        assert();
       });
   });
+
+  it("should successfully execute GET /levels", function(next) {
+    client.get("/levels")
+      .then(function(res) {
+        inspect('res', res);
+        assert.equal(200, res.statusCode);
+        assert.equal(true, res.body._items[0].price > 0);
+        next();
+      }, function(err) {
+        inspect('err', err);
+        assert();
+      });
+  });
+
 });
