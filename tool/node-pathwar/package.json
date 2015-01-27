@@ -4,7 +4,7 @@
   "description": "Pathwar API client",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha --reporter spec --bail --check-leaks ./test/all.js"
+    "test": "mocha --reporter spec --ui tdd --bail --check-leaks ./test/all.js"
   },
   "repository": {
     "type": "git",
