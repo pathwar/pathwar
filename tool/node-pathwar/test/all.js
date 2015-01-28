@@ -1,7 +1,8 @@
 "use strict";
 
 
-var chai = require("chai"),
+var _ = require('lodash'),
+    chai = require("chai"),
     debug = require("debug")("tests"),
     Client = require(".."),
     util = require("util"),
@@ -303,6 +304,26 @@ suite("[client]", function() {
           function(err) {
             inspect('err', err);
             done(err);
+          });
+      });
+
+      test("should fetch members of the current organization", function(done) {
+        client.organizations_select(first_organization).then(
+          function(res) {
+            client.my_organization_users().then(
+              function(res) {
+                try {
+                  (res.statusCode).should.equal(200);
+                  _.findIndex(res.body._items, {'user': client.user_id}).should.not.equal(-1);
+                  done();
+                } catch (e) {
+                  done(e);
+                }
+              },
+              function(err) {
+                done(err);
+              }
+            );
           });
       });
     });

@@ -148,12 +148,20 @@ var Client = module.exports = function(options) {
   this.organizations_select = function(organization_id, cb) {
     return client.require_auth().then(
       function(res) {
-        return client.get('/organizations/' + organization_id).then(
+        return client.get('/organizations/' + organization_id, {}, cb).then(
           function(res) {
             client.organization_id = res.body._id;
             debug('Selected organization ' + client.organization_id);
             return res;
           });
+      }
+    );
+  };
+
+  this.my_organization_users = function(cb) {
+    return client.require_auth().then(
+      function(res) {
+        return client.get('/organization-users?where{"organization":"' + client.organization_id + '"}');
       }
     );
   };
