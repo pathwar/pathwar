@@ -245,6 +245,8 @@ suite("[client]", function() {
   });
 
   suite('#authenticated', function() {
+    var first_organization;
+
     setup(function(done) {
       var options = {
         token: null
@@ -262,9 +264,7 @@ suite("[client]", function() {
       client = null;
     });
 
-    suite("#organizations", function() {
-      var first_organization;
-
+    suite("#organizations-manipulation", function() {
       test("should list organizations of the user", function(done) {
         client.organizations_list().then(
           function(res) {
@@ -306,24 +306,45 @@ suite("[client]", function() {
             done(err);
           });
       });
+    });
 
-      test("should fetch members of the current organization", function(done) {
+    suite("#organizations-context", function() {
+      setup(function(done) {
         client.organizations_select(first_organization).then(
           function(res) {
-            client.my_organization_users().then(
-              function(res) {
-                try {
-                  (res.statusCode).should.equal(200);
-                  _.findIndex(res.body._items, {'user': client.user_id}).should.not.equal(-1);
-                  done();
-                } catch (e) {
-                  done(e);
-                }
-              },
-              function(err) {
-                done(err);
-              }
-            );
+            done();
+          });
+      });
+
+      test("should fetch members of the current organization", function(done) {
+        client.my_organization_users().then(
+          function(res) {
+            try {
+              (res.statusCode).should.equal(200);
+              _.findIndex(res.body._items, {'user': client.user_id}).should.not.equal(-1);
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            done(err);
+          });
+      });
+
+      test("should fetch bought levels of the current organization", function(done) {
+        client.my_organization_levels().then(
+          function(res) {
+            try {
+              (res.statusCode).should.equal(200);
+              res.body._items.should.be.an('array');
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            done(err);
           });
       });
     });

@@ -166,4 +166,12 @@ var Client = module.exports = function(options) {
     );
   };
 
+  this.my_organization_levels = function(cb) {
+    return client.require_auth().then(
+      function(res) {
+        return client.get('/organization-levels?where{"organization":"' + client.organization_id + '"}');
+      }
+    );
+  };
+
 }).call(Client.prototype);
