@@ -1,0 +1,15 @@
+sdk:
+  build: .
+  command: npm test
+  links:
+  - api
+
+api:
+  image: pathwar/api.pathwar.net:latest
+  command: /bin/bash -c 'python run.py seed-db && python run.py'
+  links:
+  - mongo
+
+mongo:
+  image: mongo:latest
+  command: --smallfiles

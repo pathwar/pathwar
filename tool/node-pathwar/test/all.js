@@ -10,8 +10,13 @@ var chai = require("chai"),
 chai.should();
 
 
-var valid_token = 'root-token';
+var valid_token = 'root-token',
+    api_endpoint = null;
 
+// if we run using Docker
+if (process.env['API_PORT_5000_TCP_ADDR']) {
+  api_endpoint = 'http://' + process.env['API_PORT_5000_TCP_ADDR'] + ':' + process.env['API_PORT_5000_TCP_PORT'] + '/';
+}
 
 var inspect = function(name, obj) {
   debug(name, util.inspect(obj, {showHidden: false, depth: null}));
@@ -23,9 +28,13 @@ suite("[client]", function() {
 
   suite('#http-requests', function() {
     setup(function() {
-      client = new Client({
+      var options = {
         token: valid_token
-      });
+      };
+      if (api_endpoint) {
+        options['api_endpoint'] = api_endpoint;
+      }
+      client = new Client(options);
     });
     teardown(function() {
       client = null;
@@ -142,9 +151,13 @@ suite("[client]", function() {
 
   suite('#authentication', function() {
     setup(function() {
-      client = new Client({
+      var options = {
         token: null
-      });
+      };
+      if (api_endpoint) {
+        options['api_endpoint'] = api_endpoint;
+      }
+      client = new Client(options);
     });
     teardown(function() {
       client = null;
@@ -234,9 +247,13 @@ suite("[client]", function() {
 
   suite('#authenticated', function() {
     setup(function(done) {
-      client = new Client({
+      var options = {
         token: null
-      });
+      };
+      if (api_endpoint) {
+        options['api_endpoint'] = api_endpoint;
+      }
+      client = new Client(options);
       return client.login('root', 'password').then(
         function() {
           done();
