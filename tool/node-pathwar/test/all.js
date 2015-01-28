@@ -63,7 +63,6 @@ suite("[client]", function() {
         });
     });
 
-
     test("should successfully execute POST /user-tokens", function(done) {
       client.post("/user-tokens", {
         is_session: true
@@ -136,8 +135,6 @@ suite("[client]", function() {
           done();
         });
     });
-
-
   });
 
   suite('#authentication', function() {
@@ -149,7 +146,6 @@ suite("[client]", function() {
     teardown(function() {
       client = null;
     });
-
 
     test("should successfully execute GET /", function(done) {
       client.get("/").then(
@@ -182,6 +178,53 @@ suite("[client]", function() {
           } catch (e) {
             done(e);
           }
+        });
+    });
+
+    test("should authenticate with user and password", function(done) {
+      (client.config.token == null).should.true();
+      client.login('root', 'toor').then(
+        function(res) {
+          inspect('res', res);
+          try {
+            (res.statusCode).should.equal(200);
+            (res.body.token == null).should.false();
+            (client.config.token == null).should.false();
+            (client.config.token).should.equal(res.body.token);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        },
+        function(err) {
+          inspect('err', err);
+          done(err);
+        });
+    });
+
+    test("should authenticate with user and password then GET /users", function(done) {
+      (client.config.token == null).should.true();
+      client.login('root', 'toor').then(
+        function(res) {
+          inspect('res', res);
+
+          client.get('/users').then(
+            function(res) {
+              try {
+                (res.statusCode).should.equal(200);
+                done();
+              } catch (e) {
+                done(e);
+              }
+            },
+            function(err) {
+              done(err);
+            });
+
+        },
+        function(err) {
+          inspect('err', err);
+          done(err);
         });
     });
 

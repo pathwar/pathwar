@@ -9,32 +9,47 @@ var Client = module.exports = function(options) {
 };
 
 
-httpinvoke = httpinvoke.hook('finished', function(err, output, statusCode, headers) {
-  var ret;
-  if(err) {
-    return arguments;
-  }
-  if(typeof statusCode === 'undefined') {
-    ret = new Error('Server or client error - undefined HTTP status');
-    ret.output = output;
-    ret.statusCode = statusCode;
-    ret.headers = headers;
-    return [ret , output, statusCode, headers];
-  }
-  if(statusCode >= 400 && statusCode <= 599) {
-    ret = new Error(output._error.message + ' - undefined HTTP status');
-    ret.output = output;
-    ret.statusCode = statusCode;
-    ret.headers = headers;
-    return [ret, output, statusCode, headers];
-  }
-  return arguments;
-});
-
-
-
 (function() {
+  var client;
+
+  // hooks
+  var hook_finished = function(err, output, statusCode, headers) {
+    // error handling
+    var err_ret;
+    if(err) {
+      return arguments;
+    }
+    if(typeof statusCode === 'undefined') {
+      err_ret = new Error('Server or client error - undefined HTTP status');
+      err_ret.output = output;
+      err_ret.statusCode = statusCode;
+      err_ret.headers = headers;
+      return [err_ret , output, statusCode, headers];
+    }
+    if(statusCode >= 400 && statusCode <= 599) {
+      err_ret = new Error(output._error.message + ' - undefined HTTP status');
+      err_ret.output = output;
+      err_ret.statusCode = statusCode;
+      err_ret.headers = headers;
+      return [err_ret, output, statusCode, headers];
+    }
+
+    // login handling
+    if (!client.config.token &&
+        _.has(output, '_links') &&
+        _.has(output._links, 'self') &&
+        _.has(output._links.self, 'href') &&
+        _.startsWith(output._links.self.href, 'user-tokens/')) {
+      client.config.token = output.token;
+    }
+
+    return arguments;
+  };
+  this.httpinvoke = httpinvoke.hook('finished', hook_finished);
+
+  // requests
   this.request = function(path, method, options, cb) {
+    client = this;
     var url = this.config.api_endpoint + path.replace(/^\//, '');
     options = options || {};
     _.defaults(options, {
@@ -50,7 +65,7 @@ httpinvoke = httpinvoke.hook('finished', function(err, output, statusCode, heade
       Authorization: 'Basic ' + new Buffer(this.config.token + ':').toString('base64')
     });
     debug(method + ' ' + url, options);
-    return httpinvoke(url, method, options, cb);
+    return this.httpinvoke(url, method, options, cb);
   };
 
   this.get = function(path, options, cb) {
@@ -69,4 +84,24 @@ httpinvoke = httpinvoke.hook('finished', function(err, output, statusCode, heade
     });
     return this.request(path, 'POST', options, cb);
   };
+
+  // helpers
+  this.login = function(username, password, cb) {
+    return this.post('/user-tokens', {
+      is_session: true
+    }, {
+      headers: {
+        Authorization: 'Basic ' + new Buffer(username + ':' + password).toString('base64')
+      }
+    }).then(function(res) {
+      return client.get('/user-tokens/' + res.body._id + '?embedded={"user":1}', {
+        headers: {
+          Authorization: 'Basic ' + new Buffer(username + ':' + password).toString('base64')
+        }
+      });
+    });
+  };
+
+  //this.logout = function(cb) {};
+
 }).call(Client.prototype);
