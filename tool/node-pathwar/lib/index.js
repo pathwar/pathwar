@@ -4,20 +4,29 @@ var httpinvoke = require('httpinvoke'),
     _ = require('lodash');
 
 
-var Client = module.exports = function(config) {
-  this.config = config;
+var Client = module.exports = function(options) {
+  this.config = _.defaults(options, config);
 };
 
 
 httpinvoke = httpinvoke.hook('finished', function(err, output, statusCode, headers) {
+  var ret;
   if(err) {
     return arguments;
   }
   if(typeof statusCode === 'undefined') {
-    return [new Error('Server or client error - undefined HTTP status'), output, statusCode, headers];
+    ret = new Error('Server or client error - undefined HTTP status');
+    ret.output = output;
+    ret.statusCode = statusCode;
+    ret.headers = headers;
+    return [ret , output, statusCode, headers];
   }
   if(statusCode >= 400 && statusCode <= 599) {
-    return [new Error(output._error.message + ' - HTTP status ' + statusCode), output, statusCode, headers];
+    ret = new Error(output._error.message + ' - undefined HTTP status');
+    ret.output = output;
+    ret.statusCode = statusCode;
+    ret.headers = headers;
+    return [ret, output, statusCode, headers];
   }
   return arguments;
 });
@@ -26,7 +35,7 @@ httpinvoke = httpinvoke.hook('finished', function(err, output, statusCode, heade
 
 (function() {
   this.request = function(path, method, options, cb) {
-    var url = config.api_endpoint + path.replace(/^\//, '');
+    var url = this.config.api_endpoint + path.replace(/^\//, '');
     options = options || {};
     _.defaults(options, {
       partialOutputMode: 'joined',
@@ -38,7 +47,7 @@ httpinvoke = httpinvoke.hook('finished', function(err, output, statusCode, heade
       outputType: 'json'
     });
     _.defaults(options.headers, {
-      Authorization: 'Basic ' + new Buffer(config.token + ':').toString('base64')
+      Authorization: 'Basic ' + new Buffer(this.config.token + ':').toString('base64')
     });
     debug(method + ' ' + url, options);
     return httpinvoke(url, method, options, cb);

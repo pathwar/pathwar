@@ -18,11 +18,16 @@ var inspect = function(name, obj) {
 suite("[client]", function() {
   var client;
 
-  setup(function() {
-    client = new Client();
-  });
-
   suite('#http-requests', function() {
+    setup(function() {
+      client = new Client({
+        token: 'root-token'
+      });
+    });
+    teardown(function() {
+      client = null;
+    });
+
     test("should successfully execute GET /", function(done) {
       client.get("/").then(
         function(res) {
@@ -57,6 +62,7 @@ suite("[client]", function() {
           done(err);
         });
     });
+
 
     test("should successfully execute POST /user-tokens", function(done) {
       client.post("/user-tokens", {
@@ -129,7 +135,55 @@ suite("[client]", function() {
           inspect('err', err);
           done();
         });
+    });
+
+
+  });
+
+  suite('#authentication', function() {
+    setup(function() {
+      client = new Client({
+        token: null
       });
+    });
+    teardown(function() {
+      client = null;
+    });
+
+
+    test("should successfully execute GET /", function(done) {
+      client.get("/").then(
+        function(res) {
+          inspect('res', res);
+          try {
+            (res.statusCode).should.equal(200);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        },
+        function(err) {
+          inspect('err', err);
+          done(err);
+        });
+    });
+
+    test("should receive a 401 when trying to GET /users", function(done) {
+      client.get("/users").then(
+        function(res) {
+          inspect('res', res);
+          done(true);
+        },
+        function(err) {
+          inspect('err', err);
+          try {
+            (err.statusCode).should.equal(401);
+            done();
+          } catch (e) {
+            done(e);
+          }
+        });
+    });
 
   });
 });
