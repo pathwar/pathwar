@@ -262,6 +262,8 @@ suite("[client]", function() {
     });
 
     suite("#organizations", function() {
+      var first_organization;
+
       test("should list organizations of the user", function(done) {
         client.organizations_list().then(
           function(res) {
@@ -271,6 +273,27 @@ suite("[client]", function() {
               (res.body._ids[0]).should.equal(res.body._items[0]._id);
               should.exist(res.body._items[0].organization);
               (res.body._items[0].user).should.equal(client.user_id);
+              (res.statusCode).should.equal(200);
+              first_organization = res.body._items[0]['organization'];
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
+          });
+      });
+
+      test("should switch to the first organization of the user", function(done) {
+        should.not.exist(client.organization_id);
+        client.organizations_select(first_organization).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              should.exist(client.organization_id);
+              (client.organization_id).should.equal(res.body._id);
               (res.statusCode).should.equal(200);
               done();
             } catch (e) {
