@@ -10,6 +10,9 @@ var chai = require("chai"),
 chai.should();
 
 
+var valid_token = 'root-token';
+
+
 var inspect = function(name, obj) {
   debug(name, util.inspect(obj, {showHidden: false, depth: null}));
 };
@@ -21,7 +24,7 @@ suite("[client]", function() {
   suite('#http-requests', function() {
     setup(function() {
       client = new Client({
-        token: 'root-token'
+        token: valid_token
       });
     });
     teardown(function() {
@@ -227,6 +230,41 @@ suite("[client]", function() {
           done(err);
         });
     });
+  });
 
+  suite('#authenticated', function() {
+    setup(function(done) {
+      client = new Client({
+        token: null
+      });
+      return client.login('root', 'password').then(
+        function() {
+          done();
+        });
+    });
+    teardown(function() {
+      client = null;
+    });
+
+    suite("#organizations", function() {
+      test("should list organizations of the user", function(done) {
+        client.organizations_list().then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.body._items[0].organization == null).should.false();
+              (res.body._items[0].user).should.equal(client.user_id);
+              (res.statusCode).should.equal(200);
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
+          });
+      });
+    });
   });
 });

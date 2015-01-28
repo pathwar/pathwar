@@ -6,6 +6,9 @@ var httpinvoke = require('httpinvoke'),
 
 var Client = module.exports = function(options) {
   this.config = _.defaults(options, config);
+  this.user_id = null;
+  this.organization_id = null;
+  this.scope = '*';
 };
 
 
@@ -39,8 +42,12 @@ var Client = module.exports = function(options) {
         _.has(output, '_links') &&
         _.has(output._links, 'self') &&
         _.has(output._links.self, 'href') &&
+        _.has(output, 'token') &&
         _.startsWith(output._links.self.href, 'user-tokens/')) {
       client.config.token = output.token;
+      client.user_id = output.user._id;
+      client.scope = output.scope;
+      debug("Logged. user_id=" + client.user_id + ", scope=" + client.scope + ".");
     }
 
     return arguments;
@@ -87,6 +94,7 @@ var Client = module.exports = function(options) {
 
   // helpers
   this.login = function(username, password, cb) {
+    debug("Logging in as " + username);
     return this.post('/user-tokens', {
       is_session: true
     }, {
@@ -98,10 +106,28 @@ var Client = module.exports = function(options) {
         headers: {
           Authorization: 'Basic ' + new Buffer(username + ':' + password).toString('base64')
         }
-      });
+      }, cb);
     });
   };
 
-  //this.logout = function(cb) {};
+  //FIXME: this.logout = function(cb) {};
+
+  this.require_auth = function(cb) {
+    if (!client.config.token && client.config.username && client.config.password) {
+      return client.login(client.config.username, client.config.password);
+    }
+    if (!client.user_id) {
+      return client.get('/user-tokens/' + client.config.token);
+    }
+    return client.get('/');
+  };
+
+  this.organizations_list = function(cb) {
+    return client.require_auth().then(
+      function(res) {
+        return client.get('/organization-users?where={"user":"'+client.user_id+'"}');
+      }
+    );
+  };
 
 }).call(Client.prototype);
