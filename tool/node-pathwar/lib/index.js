@@ -129,18 +129,18 @@ var Client = module.exports = function(options) {
 
   this.require_auth = function(cb) {
     if (!client.config.token && client.config.username && client.config.password) {
-      return client.login(client.config.username, client.config.password);
+      return client.login(client.config.username, client.config.password, cb);
     }
     if (!client.user_id) {
-      return client.get('/user-tokens/' + client.config.token);
+      return client.get('/user-tokens/' + client.config.token, {}, cb);
     }
-    return client.get('/');
+    return client.get('/', {}, cb);
   };
 
   this.organizations_list = function(cb) {
     return client.require_auth().then(
       function(res) {
-        return client.get('/organization-users?where={"user":"'+client.user_id+'"}');
+        return client.get('/organization-users?where={"user":"'+client.user_id+'"}', {}, cb);
       }
     );
   };
