@@ -3,6 +3,9 @@ sdk:
   command: npm test
   links:
   - api
+  volumes:
+  - ./test:/usr/src/app/test
+  - ./lib:/usr/src/app/lib
 
 api:
   image: pathwar/api.pathwar.net:latest
