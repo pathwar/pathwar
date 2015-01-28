@@ -4,10 +4,8 @@
 var chai = require("chai"),
     debug = require("debug")("tests"),
     Client = require(".."),
-    util = require("util");
-
-
-chai.should();
+    util = require("util"),
+    should = chai.should();
 
 
 var valid_token = 'root-token',
@@ -198,14 +196,14 @@ suite("[client]", function() {
     });
 
     test("should authenticate with user and password", function(done) {
-      (client.config.token == null).should.true();
+      should.not.exist(client.config.token);
       client.login('root', 'toor').then(
         function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(200);
             (res.body.token == null).should.false();
-            (client.config.token == null).should.false();
+            should.exist(client.config.token);
             (client.config.token).should.equal(res.body.token);
             done();
           } catch (e) {
@@ -219,7 +217,7 @@ suite("[client]", function() {
     });
 
     test("should authenticate with user and password then GET /users", function(done) {
-      (client.config.token == null).should.true();
+      should.not.exist(client.config.token);
       client.login('root', 'toor').then(
         function(res) {
           inspect('res', res);
@@ -271,7 +269,7 @@ suite("[client]", function() {
             try {
               (res.body._ids[0]).should.be.a('string');
               (res.body._ids[0]).should.equal(res.body._items[0]._id);
-              (res.body._items[0].organization == null).should.false();
+              should.exist(res.body._items[0].organization);
               (res.body._items[0].user).should.equal(client.user_id);
               (res.statusCode).should.equal(200);
               done();
