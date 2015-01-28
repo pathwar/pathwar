@@ -50,6 +50,21 @@ var Client = module.exports = function(options) {
       debug("Logged. user_id=" + client.user_id + ", scope=" + client.scope + ".");
     }
 
+    // Rich objects
+    if (output._links.self && output._links.self.href) {
+      var parts = output._links.self.href.split('?')[0].split('/');
+      switch (parts.length) {
+      case 1:  // resources collection
+        output._ids = _.chain(output._items)
+          .map(function(obj) { return obj._id; })
+          .value();
+        break;
+      case 2:  // resource item
+        // Nothing to do
+        break;
+      }
+    }
+
     return arguments;
   };
   this.httpinvoke = httpinvoke.hook('finished', hook_finished);

@@ -269,6 +269,8 @@ suite("[client]", function() {
           function(res) {
             inspect('res', res);
             try {
+              (res.body._ids[0]).should.be.a('string');
+              (res.body._ids[0]).should.equal(res.body._items[0]._id);
               (res.body._items[0].organization == null).should.false();
               (res.body._items[0].user).should.equal(client.user_id);
               (res.statusCode).should.equal(200);
