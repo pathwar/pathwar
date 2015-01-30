@@ -50,8 +50,15 @@ var Client = module.exports = function(options) {
       debug("Logged. user_id=" + client.user_id + ", scope=" + client.scope + ".");
     }
 
-    // Rich objects
-    if (output._links.self && output._links.self.href) {
+    // POST
+    if (output._status == 'OK') {
+      output.ids = _.chain(output._items)
+        .map(function(obj) { return obj._id; })
+        .value();
+    }
+
+    // Enrich fetched objects
+    if (output._links && output._links.self && output._links.self.href) {
       var parts = output._links.self.href.split('?')[0].split('/');
       switch (parts.length) {
       case 1:  // resources collection
