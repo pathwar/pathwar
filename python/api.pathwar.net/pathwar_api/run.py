@@ -183,18 +183,21 @@ def post_post_callback(resource, request, response):
     elif resource == 'organizations':
         organization = json.loads(response.get_data())
         user = request_get_user(request)
-        post_internal('organization-users', {
-            'organization': organization['_id'],
-            'role': 'owner',
-            'user': user['_id'],
-        })
-        orga_statistics = post_internal('organization-statistics', {
-            'organization': organization['_id'],
-        })
-        #app.data.driver.db['organizations'].update(
-        #    { '_id': organization['_id'] },
-        #    { 'statistics': orga_statistics[0]['_id'] },
-        #)
+        if not app.is_seed:
+            # FIXME: try to get this working even in a seed context
+            post_internal('organization-users', {
+                'organization': organization['_id'],
+                'role': 'owner',
+                'user': user['_id'],
+            })
+            orga_statistics = post_internal('organization-statistics', {
+                'organization': organization['_id'],
+            })
+
+        # app.data.driver.db['organizations'].update(
+        #     { '_id': organization['_id'] },
+        #     { 'statistics': orga_statistics[0]['_id'] },
+        # )
 
 
 # Initialize Eve
