@@ -31,3 +31,14 @@ portal:
   - API_PORT_5000_TCP_PORT=5000
   - BASE_PATH=/
   #- NO_PUSHSTATE=1
+
+
+# node.js sdk
+nodesdk:
+  build: node-pathwar
+  command: npm run seed
+  links:
+  - api
+  volumes:
+  - ./node-pathwar/test:/usr/src/app/test
+  - ./node-pathwar/lib:/usr/src/app/lib

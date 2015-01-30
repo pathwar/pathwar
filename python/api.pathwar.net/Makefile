@@ -1,6 +1,7 @@
 BLUEPRINT_FILE ?=	apiary.apib
 BLUEPRINT_TEMPLATE ?=	default
 FIG_API_SERVICE ?=	api
+NODE_SDK_SERVICE ?=	nodesdk
 
 
 # FILES/DIRECTORIES
@@ -82,8 +83,9 @@ api_build:	portal.pathwar.net
 flush-db:	mongo_up
 	fig run --no-deps $(FIG_API_SERVICE) python run.py flush-db
 
-seed-db:	mongo_up
-	fig run --no-deps $(FIG_API_SERVICE) python run.py seed-db
+seed-db:	flush-db
+	fig run --no-deps $(NODE_SDK_SERVICE) npm run seed
+	#fig run --no-deps $(FIG_API_SERVICE) python run.py seed-db
 
 api_up:
 	fig kill api
