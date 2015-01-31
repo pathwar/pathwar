@@ -118,7 +118,7 @@ suite("[seed]", function() {
         }
       );
     });
-    test("should successfully create some sessions", function(done) {
+    test("should successfully create some users", function(done) {
       var objects = [{
         login: 'joe',
         email: 'joe@pathwar.net',
@@ -145,9 +145,44 @@ suite("[seed]", function() {
             for (var idx in res.body._items) {
               var item = res.body._items[idx];
               ids.push(item._id);
-              console.log(item);
               (item._status).should.equal('OK');
               (item._links.self.title).should.equal('user');
+            }
+            refs['users'] = ids;
+            done();
+          } catch (e) {
+            done(e);
+          }
+        },
+        function(err) {
+          inspect('err', err);
+          done(err);
+        }
+      );
+    });
+    test("should successfully create some coupons", function(done) {
+      var objects = [{
+        hash: '1234567890',
+        value: 42,
+        session: refs.sessions[0]
+      }, {
+        hash: '000987654321',
+        value: 24,
+        session: refs.sessions[1]
+      }];
+      client.post("/coupons", objects).then(
+        function(res) {
+          inspect('res', res);
+          try {
+            (res.statusCode).should.equal(201);
+            (res.body._status).should.equal('OK');
+            (res.body._items.length).should.equal(objects.length);
+            var ids = [];
+            for (var idx in res.body._items) {
+              var item = res.body._items[idx];
+              ids.push(item._id);
+              (item._status).should.equal('OK');
+              (item._links.self.title).should.equal('coupon');
             }
             refs['users'] = ids;
             done();
