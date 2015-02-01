@@ -353,5 +353,46 @@ suite("[seed]", function() {
       );
     });
 
+    test("should create some level-hints", function(done) {
+      var objects = [{
+        level: refs.levels[0],
+        name: 'level sources',
+        price: 42
+      }, {
+        level: refs.levels[0],
+        name: 'full solution',
+        price: 420
+      }, {
+        level: refs.levels[1],
+        name: 'level sources',
+        price: 42
+      }];
+      client.post("/level-hints", objects).then(
+        function(res) {
+          inspect('res', res);
+          try {
+            (res.statusCode).should.equal(201);
+            (res.body._status).should.equal('OK');
+            (res.body._items.length).should.equal(objects.length);
+            var ids = [];
+            for (var idx in res.body._items) {
+              var item = res.body._items[idx];
+              ids.push(item._id);
+              (item._status).should.equal('OK');
+              (item._links.self.title).should.equal('level hint');
+            }
+            refs['level-hints'] = ids;
+            done();
+          } catch (e) {
+            done(e);
+          }
+        },
+        function(err) {
+          inspect('err', err);
+          done(err);
+        }
+      );
+    });
+
   });
 });
