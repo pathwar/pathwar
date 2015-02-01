@@ -241,5 +241,40 @@ suite("[seed]", function() {
       );
     });
 
+    test("should create some organizations", function(done) {
+      var objects = [{
+        name: 'pwn-around-the-world',
+        session: refs.sessions[0]
+      }, {
+        name: 'staff',
+        session: refs.sessions[1]
+      }];
+      client.post("/organizations", objects).then(
+        function(res) {
+          inspect('res', res);
+          try {
+            (res.statusCode).should.equal(201);
+            (res.body._status).should.equal('OK');
+            (res.body._items.length).should.equal(objects.length);
+            var ids = [];
+            for (var idx in res.body._items) {
+              var item = res.body._items[idx];
+              ids.push(item._id);
+              (item._status).should.equal('OK');
+              (item._links.self.title).should.equal('organization');
+            }
+            refs['organizations'] = ids;
+            done();
+          } catch (e) {
+            done(e);
+          }
+        },
+        function(err) {
+          inspect('err', err);
+          done(err);
+        }
+      );
+    });
+
   });
 });
