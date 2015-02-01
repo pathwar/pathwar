@@ -394,5 +394,19 @@ suite("[seed]", function() {
       );
     });
 
+    // TODO
+    // ----
+    // POST level-instances as admin
+    // POST items as admin
+    // POST organization-coupons as user
+    // POST organization-items as user
+    // POST organization-level-validations as user
+    // POST organization-achievements as user
+    // POST organization-levels as user (buy level)
+    // POST user-organization-invites as user
+    // POST organization-users as admin
+    // POST user-notifications as admin
+    // UPDATE organization-statistics as admin
+
   });
 });
