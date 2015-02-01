@@ -276,5 +276,43 @@ suite("[seed]", function() {
       );
     });
 
+    test("should create some achievements", function(done) {
+      var objects = [{
+        name: 'flash-gordon',
+        description: 'Validate a level in less than a minute'
+      }, {
+        name: 'hack-the-planet',
+        description: 'Finish 50 levels'
+      }, {
+        name: 'API-hacker',
+        description: 'Hack the API'
+      }];
+      client.post("/achievements", objects).then(
+        function(res) {
+          inspect('res', res);
+          try {
+            (res.statusCode).should.equal(201);
+            (res.body._status).should.equal('OK');
+            (res.body._items.length).should.equal(objects.length);
+            var ids = [];
+            for (var idx in res.body._items) {
+              var item = res.body._items[idx];
+              ids.push(item._id);
+              (item._status).should.equal('OK');
+              (item._links.self.title).should.equal('achievement');
+            }
+            refs['achievements'] = ids;
+            done();
+          } catch (e) {
+            done(e);
+          }
+        },
+        function(err) {
+          inspect('err', err);
+          done(err);
+        }
+      );
+    });
+
   });
 });
