@@ -56,7 +56,8 @@ suite("[seed]", function() {
           done(err);
         });
     });
-    test("should successfully create a user-tokens(is_session=true)", function(done) {
+
+    test("should create a user-tokens(is_session=true)", function(done) {
       client.post("/user-tokens", {
         is_session: true
       }).then(
@@ -81,7 +82,7 @@ suite("[seed]", function() {
 
   suite('#seed', function() {
     var refs = {};
-    test("should successfully create some sessions", function(done) {
+    test("should create some sessions", function(done) {
       var objects = [{
         name: 'world',
         public: true
@@ -118,7 +119,8 @@ suite("[seed]", function() {
         }
       );
     });
-    test("should successfully create some users", function(done) {
+
+    test("should create some users", function(done) {
       var objects = [{
         login: 'joe',
         email: 'joe@pathwar.net',
@@ -160,7 +162,8 @@ suite("[seed]", function() {
         }
       );
     });
-    test("should successfully create some coupons", function(done) {
+
+    test("should create some coupons", function(done) {
       var objects = [{
         hash: '1234567890',
         value: 42,
@@ -184,7 +187,7 @@ suite("[seed]", function() {
               (item._status).should.equal('OK');
               (item._links.self.title).should.equal('coupon');
             }
-            refs['users'] = ids;
+            refs['coupons'] = ids;
             done();
           } catch (e) {
             done(e);
@@ -196,5 +199,47 @@ suite("[seed]", function() {
         }
       );
     });
+
+    test("should create some servers", function(done) {
+      var objects = [{
+        name: 'c1-123',
+        ip_address: '1.2.3.4',
+        active: true,
+        token: '1234567890',
+        tags: ['docker', 'armhf']
+      }, {
+        name: 'dedibox-152',
+        ip_address: '4.3.2.1',
+        active: true,
+        token: '0987654321',
+        tags: ['docker', 'x86_64']
+      }];
+      client.post("/servers", objects).then(
+        function(res) {
+          inspect('res', res);
+          try {
+            (res.statusCode).should.equal(201);
+            (res.body._status).should.equal('OK');
+            (res.body._items.length).should.equal(objects.length);
+            var ids = [];
+            for (var idx in res.body._items) {
+              var item = res.body._items[idx];
+              ids.push(item._id);
+              (item._status).should.equal('OK');
+              (item._links.self.title).should.equal('server');
+            }
+            refs['servers'] = ids;
+            done();
+          } catch (e) {
+            done(e);
+          }
+        },
+        function(err) {
+          inspect('err', err);
+          done(err);
+        }
+      );
+    });
+
   });
 });
