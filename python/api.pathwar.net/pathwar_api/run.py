@@ -176,28 +176,37 @@ def post_post_callback(resource, request, response):
     """ Callback called just after a POST request ended. """
     app.logger.info('### post_post({}) request: {}, response: {}'
                     .format(resource, request, response))
+    dct = json.loads(response.get_data())
+    if '_items' in dct:
+        items = dct['_items']
+    else:
+        items = [dct]
+
     if resource == 'users':
         # print(response.get_data())
         app.logger.warn(dir(response))
 
     elif resource == 'organizations':
-        organization = json.loads(response.get_data())
-        user = request_get_user(request)
-        if not app.is_seed:
-            # FIXME: try to get this working even in a seed context
-            post_internal('organization-users', {
-                'organization': organization['_id'],
-                'role': 'owner',
-                'user': user['_id'],
-            })
-            orga_statistics = post_internal('organization-statistics', {
-                'organization': organization['_id'],
-            })
+        for organization in items:
+            user = request_get_user(request)
+            if not app.is_seed:
+                # FIXME: try to get this working even in a seed context
+                print('@' * 800)
+                print(organization)
+                app.logger.error(organization)
+                post_internal('organization-users', {
+                    'organization': organization['_id'],
+                    'role': 'owner',
+                    'user': user['_id'],
+                })
+                orga_statistics = post_internal('organization-statistics', {
+                    'organization': organization['_id'],
+                })
 
-        # app.data.driver.db['organizations'].update(
-        #     { '_id': organization['_id'] },
-        #     { 'statistics': orga_statistics[0]['_id'] },
-        # )
+            # app.data.driver.db['organizations'].update(
+            #     { '_id': organization['_id'] },
+            #     { 'statistics': orga_statistics[0]['_id'] },
+            # )
 
 
 # Initialize Eve
