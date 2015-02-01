@@ -314,5 +314,44 @@ suite("[seed]", function() {
       );
     });
 
+    test("should create some levels", function(done) {
+      var objects = [{
+        name: 'welcome',
+        description: 'An easy welcome level',
+        price: 42,
+        tags: ['easy', 'welcome', 'official']
+      }, {
+        name: 'pnu',
+        description: 'Possible not upload',
+        price: 420,
+        tags: ['php', 'advanced']
+      }];
+      client.post("/levels", objects).then(
+        function(res) {
+          inspect('res', res);
+          try {
+            (res.statusCode).should.equal(201);
+            (res.body._status).should.equal('OK');
+            (res.body._items.length).should.equal(objects.length);
+            var ids = [];
+            for (var idx in res.body._items) {
+              var item = res.body._items[idx];
+              ids.push(item._id);
+              (item._status).should.equal('OK');
+              (item._links.self.title).should.equal('level');
+            }
+            refs['levels'] = ids;
+            done();
+          } catch (e) {
+            done(e);
+          }
+        },
+        function(err) {
+          inspect('err', err);
+          done(err);
+        }
+      );
+    });
+
   });
 });
