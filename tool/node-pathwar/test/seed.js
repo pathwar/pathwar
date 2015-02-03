@@ -82,6 +82,7 @@ suite("[seed]", function() {
 
   suite('#seed', function() {
     var refs = {};
+
     test("should create some sessions", function(done) {
       var objects = [{
         name: 'world',
@@ -394,9 +395,46 @@ suite("[seed]", function() {
       );
     });
 
+    test("should create some level-instances", function(done) {
+      var objects = [{
+        level: refs.levels[0],
+        server: refs.servers[0]
+      }, {
+        level: refs.levels[0],
+        server: refs.servers[1]
+      }, {
+        level: refs.levels[1],
+        server: refs.servers[0]
+      }];
+      client.post("/level-instances", objects).then(
+        function(res) {
+          inspect('res', res);
+          try {
+            (res.statusCode).should.equal(201);
+            (res.body._status).should.equal('OK');
+            (res.body._items.length).should.equal(objects.length);
+            var ids = [];
+            for (var idx in res.body._items) {
+              var item = res.body._items[idx];
+              ids.push(item._id);
+              (item._status).should.equal('OK');
+              (item._links.self.title).should.equal('level instance');
+            }
+            refs['level-instances'] = ids;
+            done();
+          } catch (e) {
+            done(e);
+          }
+        },
+        function(err) {
+          inspect('err', err);
+          done(err);
+        }
+      );
+    });
+
     // TODO
     // ----
-    // POST level-instances as admin
     // POST items as admin
     // POST organization-coupons as user
     // POST organization-items as user
