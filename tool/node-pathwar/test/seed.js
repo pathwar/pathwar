@@ -484,13 +484,50 @@ suite("[seed]", function() {
 
     suite('#as-user', function() {
 
+      test("should create some organization-levels (buy) as user", function(done) {
+        var objects = [{
+          organization: refs.organizations[0],
+          level: refs.levels[0]
+        }, {
+          organization: refs.organizations[0],
+          level: refs.levels[1]
+        }, {
+          organization: refs.organizations[1],
+          level: refs.levels[0]
+        }];
+        client.post("/organization-levels", objects).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.statusCode).should.equal(201);
+              (res.body._status).should.equal('OK');
+              (res.body._items.length).should.equal(objects.length);
+              var ids = [];
+              for (var idx in res.body._items) {
+                var item = res.body._items[idx];
+                ids.push(item._id);
+                (item._status).should.equal('OK');
+                (item._links.self.title).should.equal('organization bought level');
+              }
+              refs['organization-levels'] = ids;
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
+          }
+        );
+      });
+
       // TODO
       // ----
       // POST organization-coupons as user
       // POST organization-items as user
       // POST organization-level-validations as user
       // POST organization-achievements as user
-      // POST organization-levels as user (buy level)
       // POST user-organization-invites as user
 
     });
