@@ -110,10 +110,6 @@ level_instances = {
     'public_item_methods': [],
     # 'url': 'levels/<level>/instances',
     'schema': {
-        'hash': {
-            'type': 'string',
-            'unique': True,
-        },
         # FIXME: Add instance data: blob ?
         'level': {
             'type': 'uuid',
@@ -158,6 +154,20 @@ level_instances = {
                         ],
                     },
                     'value': {
+                        'type': 'string',
+                    },
+                },
+            },
+        },
+        'urls': {
+            'type': 'list',
+            'schema': {
+                'type': 'dict',
+                'schema': {
+                    'name': {
+                        'type': 'string',
+                    },
+                    'url': {
                         'type': 'string',
                     },
                 },
