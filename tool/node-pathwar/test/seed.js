@@ -439,7 +439,15 @@ suite("[seed]", function() {
       test("should create some level-instances as admin", function(done) {
         var objects = [{
           level: refs.levels[0],
-          server: refs.servers[0]
+          server: refs.servers[0],
+          passphrases: [
+            { 'key': '0', 'value': '1234567890' },
+            { 'key': '1', 'value': '0987654321' }
+          ],
+          urls: [
+            { 'name': '80', 'url': 'http://1.2.3.4:1234/' },
+            { 'name': '22', 'url': 'http://1.2.3.4:1235/' }
+          ]
         }, {
           level: refs.levels[0],
           server: refs.servers[1]
