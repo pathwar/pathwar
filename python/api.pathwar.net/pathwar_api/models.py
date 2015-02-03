@@ -1,9 +1,17 @@
 achievements = {
     'item_title': 'achievement',
+
+    # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
-    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_methods': [],
+    'allowed_read_roles': ['*'],
+    'allowed_write_roles': ['admin'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'allowed_item_read_roles': ['*'],
+    'allowed_item_write_roles': ['admin'],
     'public_item_methods': [],
+
     'schema': {
         'name': {
             'type': 'string',
@@ -794,7 +802,7 @@ users = {
         },
         'role': {
             'type': 'string',
-            'allowed': ['user', 'superuser', 'admin'],
+            'allowed': ['user', 'level-server', 'moderator', 'admin'],
             'default': 'user',
             # chmod 600
         },
@@ -859,8 +867,7 @@ DOMAIN = {
 
 # Use defaults
 defaults = {
-    'item_url': 'regex("[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?' \
-       '[89ab][a-f0-9]{3}-?[a-f0-9]{12}")',
+    'item_url': 'regex("[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}")',
     'public_methods': [],
     'public_item_methods': [],
 }
