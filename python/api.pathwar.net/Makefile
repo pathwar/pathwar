@@ -3,6 +3,17 @@ BLUEPRINT_TEMPLATE ?=	default
 FIG_API_SERVICE ?=	api
 NODE_SDK_SERVICE ?=	nodesdk
 
+WATCH_FILES ?=	$(shell \
+		  find node-pathwar/ ./ \
+		  -not -ipath '*/node_modules/*' \
+		  -not -ipath '*/.git/*' \
+		  -not -ipath '*/vendor/*' \
+		  -not -ipath '*~' \
+		  -not -ipath '*.pyc' \
+		  -not -ipath '*\#' \
+		  -type f \
+		)
+
 
 # FILES/DIRECTORIES
 portal.pathwar.net:
@@ -91,7 +102,7 @@ seed-db-watch:
 	  clear; \
 	  $(MAKE) seed-db; \
 	  sleep .5; \
-	  fswatch -1 node-pathwar/test/seed.js; \
+	  fswatch -1 $(WATCH_FILES); \
 	done
 
 seed-db-node:	flush-db
