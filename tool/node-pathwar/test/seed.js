@@ -131,12 +131,35 @@ suite("[seed]", function() {
         }, {
           login: 'm1ch3l',
           email: 'm1ch3l@pathwar.net',
-          role: 'superuser',
           active: true,
           //available_sessions: [
           //  refs['sessions'][0]['_id'],
           //  refs['sessions'][1]['_id']
           //],
+          password: 'super-secure'
+        }, {
+          login: 'test-moderator',
+          email: 'test-moderator@pathwar.net',
+          role: 'moderator',
+          active: true,
+          password: 'super-secure'
+        }, {
+          login: 'test-admin',
+          email: 'test-admin@pathwar.net',
+          role: 'admin',
+          active: true,
+          password: 'super-secure'
+        }, {
+          login: 'test-user',
+          email: 'test-user@pathwar.net',
+          role: 'user',
+          active: true,
+          password: 'super-secure'
+        }, {
+          login: 'test-level-server',
+          email: 'test-level-server@pathwar.net',
+          role: 'level-server',
+          active: true,
           password: 'super-secure'
         }];
         client.post("/users", objects).then(
