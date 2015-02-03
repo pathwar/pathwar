@@ -8,11 +8,16 @@ sdk:
   - ./lib:/usr/src/app/lib
 
 api:
-  image: pathwar/api.pathwar.net:latest
-  command: /bin/bash -c 'python run.py seed-db && python run.py'
+  #image: pathwar/api.pathwar.net:latest
+  build: api.pathwar.net/pathwar_api
+  command: /bin/bash -c 'python run.py flush-db && python run.py'
   links:
   - mongo
+  - smtp
 
 mongo:
   image: mongo:latest
   command: --smallfiles
+
+smtp:
+  image: mredar/smtp-simple-debugging
