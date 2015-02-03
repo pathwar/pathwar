@@ -86,6 +86,14 @@ flush-db:	mongo_up
 seed-db:
 	$(MAKE) seed-db-node
 
+seed-db-watch:
+	while true; do \
+	  clear; \
+	  $(MAKE) seed-db; \
+	  sleep .5; \
+	  fswatch -1 node-pathwar/test/seed.js; \
+	done
+
 seed-db-node:	flush-db
 	fig run --no-deps $(NODE_SDK_SERVICE) npm run seed
 
