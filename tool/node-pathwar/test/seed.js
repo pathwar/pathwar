@@ -354,6 +354,45 @@ suite("[seed]", function() {
       );
     });
 
+    test("should create some items", function(done) {
+      var objects = [{
+        name: 'spiderpig-glasses',
+        description: 'Unlock all level hints',
+        price: 4242,
+        quantity: 1000
+      }, {
+        name: 'whoswho shield',
+        description: 'Cannot be attacked on whoswho',
+        price: 500,
+        quantity: 1
+      }];
+      client.post("/items", objects).then(
+        function(res) {
+          inspect('res', res);
+          try {
+            (res.statusCode).should.equal(201);
+            (res.body._status).should.equal('OK');
+            (res.body._items.length).should.equal(objects.length);
+            var ids = [];
+            for (var idx in res.body._items) {
+              var item = res.body._items[idx];
+              ids.push(item._id);
+              (item._status).should.equal('OK');
+              (item._links.self.title).should.equal('item');
+            }
+            refs['items'] = ids;
+            done();
+          } catch (e) {
+            done(e);
+          }
+        },
+        function(err) {
+          inspect('err', err);
+          done(err);
+        }
+      );
+    });
+
     test("should create some level-hints", function(done) {
       var objects = [{
         level: refs.levels[0],
@@ -435,7 +474,6 @@ suite("[seed]", function() {
 
     // TODO
     // ----
-    // POST items as admin
     // POST organization-coupons as user
     // POST organization-items as user
     // POST organization-level-validations as user
