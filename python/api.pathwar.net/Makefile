@@ -83,9 +83,14 @@ api_build:	portal.pathwar.net
 flush-db:	mongo_up
 	fig run --no-deps $(FIG_API_SERVICE) python run.py flush-db
 
-seed-db:	flush-db
+seed-db:
+	$(MAKE) seed-db-node
+
+seed-db-node:	flush-db
 	fig run --no-deps $(NODE_SDK_SERVICE) npm run seed
-	#fig run --no-deps $(FIG_API_SERVICE) python run.py seed-db
+
+seed-db-python:	flush-db
+	fig run --no-deps $(FIG_API_SERVICE) python run.py seed-db
 
 api_up:
 	fig kill api
