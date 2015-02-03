@@ -124,6 +124,7 @@ suite("[seed]", function() {
       });
 
       test("should create some users as admin+user (strange)", function(done) {
+        this.timeout(5000);
         var objects = [{
           login: 'joe',
           email: 'joe@pathwar.net',
