@@ -57,7 +57,7 @@ suite("[seed]", function() {
         });
     });
 
-    test("should create a user-tokens(is_session=true)", function(done) {
+    test("should create a user-tokens(is_session=true) as user", function(done) {
       client.post("/user-tokens", {
         is_session: true
       }).then(
@@ -83,406 +83,416 @@ suite("[seed]", function() {
   suite('#seed', function() {
     var refs = {};
 
-    test("should create some sessions", function(done) {
-      var objects = [{
-        name: 'world',
-        public: true
-      }, {
-        name: 'beta',
-        public: false
-      }, {
-        name: 'Epitech2015',
-        public: false
-      }];
-      client.post("/sessions", objects).then(
-        function(res) {
-          inspect('res', res);
-          try {
-            (res.statusCode).should.equal(201);
-            (res.body._status).should.equal('OK');
-            (res.body._items.length).should.equal(objects.length);
-            var ids = [];
-            for (var idx in res.body._items) {
-              var item = res.body._items[idx];
-              ids.push(item._id);
-              (item._status).should.equal('OK');
-              (item._links.self.title).should.equal('session');
+    suite('#as-admin', function() {
+
+      test("should create some sessions as admin", function(done) {
+        var objects = [{
+          name: 'world',
+          public: true
+        }, {
+          name: 'beta',
+          public: false
+        }, {
+          name: 'Epitech2015',
+          public: false
+        }];
+        client.post("/sessions", objects).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.statusCode).should.equal(201);
+              (res.body._status).should.equal('OK');
+              (res.body._items.length).should.equal(objects.length);
+              var ids = [];
+              for (var idx in res.body._items) {
+                var item = res.body._items[idx];
+                ids.push(item._id);
+                (item._status).should.equal('OK');
+                (item._links.self.title).should.equal('session');
+              }
+              refs['sessions'] = ids;
+              done();
+            } catch (e) {
+              done(e);
             }
-            refs['sessions'] = ids;
-            done();
-          } catch (e) {
-            done(e);
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
           }
-        },
-        function(err) {
-          inspect('err', err);
-          done(err);
-        }
-      );
+        );
+      });
+
+      test("should create some users as admin+user (strange)", function(done) {
+        var objects = [{
+          login: 'joe',
+          email: 'joe@pathwar.net',
+          password: 'secure'
+        }, {
+          login: 'm1ch3l',
+          email: 'm1ch3l@pathwar.net',
+          role: 'superuser',
+          active: true,
+          //available_sessions: [
+          //  refs['sessions'][0]['_id'],
+          //  refs['sessions'][1]['_id']
+          //],
+          password: 'super-secure'
+        }];
+        client.post("/users", objects).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.statusCode).should.equal(201);
+              (res.body._status).should.equal('OK');
+              (res.body._items.length).should.equal(objects.length);
+              var ids = [];
+              for (var idx in res.body._items) {
+                var item = res.body._items[idx];
+                ids.push(item._id);
+                (item._status).should.equal('OK');
+                (item._links.self.title).should.equal('user');
+              }
+              refs['users'] = ids;
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
+          }
+        );
+      });
+
+      test("should create some coupons as admin", function(done) {
+        var objects = [{
+          hash: '1234567890',
+          value: 42,
+          session: refs.sessions[0]
+        }, {
+          hash: '000987654321',
+          value: 24,
+          session: refs.sessions[1]
+        }];
+        client.post("/coupons", objects).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.statusCode).should.equal(201);
+              (res.body._status).should.equal('OK');
+              (res.body._items.length).should.equal(objects.length);
+              var ids = [];
+              for (var idx in res.body._items) {
+                var item = res.body._items[idx];
+                ids.push(item._id);
+                (item._status).should.equal('OK');
+                (item._links.self.title).should.equal('coupon');
+              }
+              refs['coupons'] = ids;
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
+          }
+        );
+      });
+
+      test("should create some servers as admin", function(done) {
+        var objects = [{
+          name: 'c1-123',
+          ip_address: '1.2.3.4',
+          active: true,
+          token: '1234567890',
+          tags: ['docker', 'armhf']
+        }, {
+          name: 'dedibox-152',
+          ip_address: '4.3.2.1',
+          active: true,
+          token: '0987654321',
+          tags: ['docker', 'x86_64']
+        }];
+        client.post("/servers", objects).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.statusCode).should.equal(201);
+              (res.body._status).should.equal('OK');
+              (res.body._items.length).should.equal(objects.length);
+              var ids = [];
+              for (var idx in res.body._items) {
+                var item = res.body._items[idx];
+                ids.push(item._id);
+                (item._status).should.equal('OK');
+                (item._links.self.title).should.equal('server');
+              }
+              refs['servers'] = ids;
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
+          }
+        );
+      });
+
+      test("should create some organizations as admin/user (strange)", function(done) {
+        var objects = [{
+          name: 'pwn-around-the-world',
+          session: refs.sessions[0]
+        }, {
+          name: 'staff',
+          session: refs.sessions[1]
+        }];
+        client.post("/organizations", objects).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.statusCode).should.equal(201);
+              (res.body._status).should.equal('OK');
+              (res.body._items.length).should.equal(objects.length);
+              var ids = [];
+              for (var idx in res.body._items) {
+                var item = res.body._items[idx];
+                ids.push(item._id);
+                (item._status).should.equal('OK');
+                (item._links.self.title).should.equal('organization');
+              }
+              refs['organizations'] = ids;
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
+          }
+        );
+      });
+
+      test("should create some achievements as admin", function(done) {
+        var objects = [{
+          name: 'flash-gordon',
+          description: 'Validate a level in less than a minute'
+        }, {
+          name: 'hack-the-planet',
+          description: 'Finish 50 levels'
+        }, {
+          name: 'API-hacker',
+          description: 'Hack the API'
+        }];
+        client.post("/achievements", objects).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.statusCode).should.equal(201);
+              (res.body._status).should.equal('OK');
+              (res.body._items.length).should.equal(objects.length);
+              var ids = [];
+              for (var idx in res.body._items) {
+                var item = res.body._items[idx];
+                ids.push(item._id);
+                (item._status).should.equal('OK');
+                (item._links.self.title).should.equal('achievement');
+              }
+              refs['achievements'] = ids;
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
+          }
+        );
+      });
+
+      test("should create some levels as admin", function(done) {
+        var objects = [{
+          name: 'welcome',
+          description: 'An easy welcome level',
+          price: 42,
+          tags: ['easy', 'welcome', 'official']
+        }, {
+          name: 'pnu',
+          description: 'Possible not upload',
+          price: 420,
+          tags: ['php', 'advanced']
+        }];
+        client.post("/levels", objects).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.statusCode).should.equal(201);
+              (res.body._status).should.equal('OK');
+              (res.body._items.length).should.equal(objects.length);
+              var ids = [];
+              for (var idx in res.body._items) {
+                var item = res.body._items[idx];
+                ids.push(item._id);
+                (item._status).should.equal('OK');
+                (item._links.self.title).should.equal('level');
+              }
+              refs['levels'] = ids;
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
+          }
+        );
+      });
+
+      test("should create some items as admin", function(done) {
+        var objects = [{
+          name: 'spiderpig-glasses',
+          description: 'Unlock all level hints',
+          price: 4242,
+          quantity: 1000
+        }, {
+          name: 'whoswho shield',
+          description: 'Cannot be attacked on whoswho',
+          price: 500,
+          quantity: 1
+        }];
+        client.post("/items", objects).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.statusCode).should.equal(201);
+              (res.body._status).should.equal('OK');
+              (res.body._items.length).should.equal(objects.length);
+              var ids = [];
+              for (var idx in res.body._items) {
+                var item = res.body._items[idx];
+                ids.push(item._id);
+                (item._status).should.equal('OK');
+                (item._links.self.title).should.equal('item');
+              }
+              refs['items'] = ids;
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
+          }
+        );
+      });
+
+      test("should create some level-hints as admin", function(done) {
+        var objects = [{
+          level: refs.levels[0],
+          name: 'level sources',
+          price: 42
+        }, {
+          level: refs.levels[0],
+          name: 'full solution',
+          price: 420
+        }, {
+          level: refs.levels[1],
+          name: 'level sources',
+          price: 42
+        }];
+        client.post("/level-hints", objects).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.statusCode).should.equal(201);
+              (res.body._status).should.equal('OK');
+              (res.body._items.length).should.equal(objects.length);
+              var ids = [];
+              for (var idx in res.body._items) {
+                var item = res.body._items[idx];
+                ids.push(item._id);
+                (item._status).should.equal('OK');
+                (item._links.self.title).should.equal('level hint');
+              }
+              refs['level-hints'] = ids;
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
+          }
+        );
+      });
+
+      test("should create some level-instances as admin", function(done) {
+        var objects = [{
+          level: refs.levels[0],
+          server: refs.servers[0]
+        }, {
+          level: refs.levels[0],
+          server: refs.servers[1]
+        }, {
+          level: refs.levels[1],
+          server: refs.servers[0]
+        }];
+        client.post("/level-instances", objects).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.statusCode).should.equal(201);
+              (res.body._status).should.equal('OK');
+              (res.body._items.length).should.equal(objects.length);
+              var ids = [];
+              for (var idx in res.body._items) {
+                var item = res.body._items[idx];
+                ids.push(item._id);
+                (item._status).should.equal('OK');
+                (item._links.self.title).should.equal('level instance');
+              }
+              refs['level-instances'] = ids;
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+          function(err) {
+            inspect('err', err);
+            done(err);
+          }
+        );
+      });
+
+      // TODO
+      // ----
+      // POST organization-users as admin
+      // POST user-notifications as admin
+      // UPDATE organization-statistics as admin
+
     });
 
-    test("should create some users", function(done) {
-      var objects = [{
-        login: 'joe',
-        email: 'joe@pathwar.net',
-        password: 'secure'
-      }, {
-        login: 'm1ch3l',
-        email: 'm1ch3l@pathwar.net',
-        role: 'superuser',
-        active: true,
-        //available_sessions: [
-        //  refs['sessions'][0]['_id'],
-        //  refs['sessions'][1]['_id']
-        //],
-        password: 'super-secure'
-      }];
-      client.post("/users", objects).then(
-        function(res) {
-          inspect('res', res);
-          try {
-            (res.statusCode).should.equal(201);
-            (res.body._status).should.equal('OK');
-            (res.body._items.length).should.equal(objects.length);
-            var ids = [];
-            for (var idx in res.body._items) {
-              var item = res.body._items[idx];
-              ids.push(item._id);
-              (item._status).should.equal('OK');
-              (item._links.self.title).should.equal('user');
-            }
-            refs['users'] = ids;
-            done();
-          } catch (e) {
-            done(e);
-          }
-        },
-        function(err) {
-          inspect('err', err);
-          done(err);
-        }
-      );
+    suite('#as-user', function() {
+
+      // TODO
+      // ----
+      // POST organization-coupons as user
+      // POST organization-items as user
+      // POST organization-level-validations as user
+      // POST organization-achievements as user
+      // POST organization-levels as user (buy level)
+      // POST user-organization-invites as user
+
     });
-
-    test("should create some coupons", function(done) {
-      var objects = [{
-        hash: '1234567890',
-        value: 42,
-        session: refs.sessions[0]
-      }, {
-        hash: '000987654321',
-        value: 24,
-        session: refs.sessions[1]
-      }];
-      client.post("/coupons", objects).then(
-        function(res) {
-          inspect('res', res);
-          try {
-            (res.statusCode).should.equal(201);
-            (res.body._status).should.equal('OK');
-            (res.body._items.length).should.equal(objects.length);
-            var ids = [];
-            for (var idx in res.body._items) {
-              var item = res.body._items[idx];
-              ids.push(item._id);
-              (item._status).should.equal('OK');
-              (item._links.self.title).should.equal('coupon');
-            }
-            refs['coupons'] = ids;
-            done();
-          } catch (e) {
-            done(e);
-          }
-        },
-        function(err) {
-          inspect('err', err);
-          done(err);
-        }
-      );
-    });
-
-    test("should create some servers", function(done) {
-      var objects = [{
-        name: 'c1-123',
-        ip_address: '1.2.3.4',
-        active: true,
-        token: '1234567890',
-        tags: ['docker', 'armhf']
-      }, {
-        name: 'dedibox-152',
-        ip_address: '4.3.2.1',
-        active: true,
-        token: '0987654321',
-        tags: ['docker', 'x86_64']
-      }];
-      client.post("/servers", objects).then(
-        function(res) {
-          inspect('res', res);
-          try {
-            (res.statusCode).should.equal(201);
-            (res.body._status).should.equal('OK');
-            (res.body._items.length).should.equal(objects.length);
-            var ids = [];
-            for (var idx in res.body._items) {
-              var item = res.body._items[idx];
-              ids.push(item._id);
-              (item._status).should.equal('OK');
-              (item._links.self.title).should.equal('server');
-            }
-            refs['servers'] = ids;
-            done();
-          } catch (e) {
-            done(e);
-          }
-        },
-        function(err) {
-          inspect('err', err);
-          done(err);
-        }
-      );
-    });
-
-    test("should create some organizations", function(done) {
-      var objects = [{
-        name: 'pwn-around-the-world',
-        session: refs.sessions[0]
-      }, {
-        name: 'staff',
-        session: refs.sessions[1]
-      }];
-      client.post("/organizations", objects).then(
-        function(res) {
-          inspect('res', res);
-          try {
-            (res.statusCode).should.equal(201);
-            (res.body._status).should.equal('OK');
-            (res.body._items.length).should.equal(objects.length);
-            var ids = [];
-            for (var idx in res.body._items) {
-              var item = res.body._items[idx];
-              ids.push(item._id);
-              (item._status).should.equal('OK');
-              (item._links.self.title).should.equal('organization');
-            }
-            refs['organizations'] = ids;
-            done();
-          } catch (e) {
-            done(e);
-          }
-        },
-        function(err) {
-          inspect('err', err);
-          done(err);
-        }
-      );
-    });
-
-    test("should create some achievements", function(done) {
-      var objects = [{
-        name: 'flash-gordon',
-        description: 'Validate a level in less than a minute'
-      }, {
-        name: 'hack-the-planet',
-        description: 'Finish 50 levels'
-      }, {
-        name: 'API-hacker',
-        description: 'Hack the API'
-      }];
-      client.post("/achievements", objects).then(
-        function(res) {
-          inspect('res', res);
-          try {
-            (res.statusCode).should.equal(201);
-            (res.body._status).should.equal('OK');
-            (res.body._items.length).should.equal(objects.length);
-            var ids = [];
-            for (var idx in res.body._items) {
-              var item = res.body._items[idx];
-              ids.push(item._id);
-              (item._status).should.equal('OK');
-              (item._links.self.title).should.equal('achievement');
-            }
-            refs['achievements'] = ids;
-            done();
-          } catch (e) {
-            done(e);
-          }
-        },
-        function(err) {
-          inspect('err', err);
-          done(err);
-        }
-      );
-    });
-
-    test("should create some levels", function(done) {
-      var objects = [{
-        name: 'welcome',
-        description: 'An easy welcome level',
-        price: 42,
-        tags: ['easy', 'welcome', 'official']
-      }, {
-        name: 'pnu',
-        description: 'Possible not upload',
-        price: 420,
-        tags: ['php', 'advanced']
-      }];
-      client.post("/levels", objects).then(
-        function(res) {
-          inspect('res', res);
-          try {
-            (res.statusCode).should.equal(201);
-            (res.body._status).should.equal('OK');
-            (res.body._items.length).should.equal(objects.length);
-            var ids = [];
-            for (var idx in res.body._items) {
-              var item = res.body._items[idx];
-              ids.push(item._id);
-              (item._status).should.equal('OK');
-              (item._links.self.title).should.equal('level');
-            }
-            refs['levels'] = ids;
-            done();
-          } catch (e) {
-            done(e);
-          }
-        },
-        function(err) {
-          inspect('err', err);
-          done(err);
-        }
-      );
-    });
-
-    test("should create some items", function(done) {
-      var objects = [{
-        name: 'spiderpig-glasses',
-        description: 'Unlock all level hints',
-        price: 4242,
-        quantity: 1000
-      }, {
-        name: 'whoswho shield',
-        description: 'Cannot be attacked on whoswho',
-        price: 500,
-        quantity: 1
-      }];
-      client.post("/items", objects).then(
-        function(res) {
-          inspect('res', res);
-          try {
-            (res.statusCode).should.equal(201);
-            (res.body._status).should.equal('OK');
-            (res.body._items.length).should.equal(objects.length);
-            var ids = [];
-            for (var idx in res.body._items) {
-              var item = res.body._items[idx];
-              ids.push(item._id);
-              (item._status).should.equal('OK');
-              (item._links.self.title).should.equal('item');
-            }
-            refs['items'] = ids;
-            done();
-          } catch (e) {
-            done(e);
-          }
-        },
-        function(err) {
-          inspect('err', err);
-          done(err);
-        }
-      );
-    });
-
-    test("should create some level-hints", function(done) {
-      var objects = [{
-        level: refs.levels[0],
-        name: 'level sources',
-        price: 42
-      }, {
-        level: refs.levels[0],
-        name: 'full solution',
-        price: 420
-      }, {
-        level: refs.levels[1],
-        name: 'level sources',
-        price: 42
-      }];
-      client.post("/level-hints", objects).then(
-        function(res) {
-          inspect('res', res);
-          try {
-            (res.statusCode).should.equal(201);
-            (res.body._status).should.equal('OK');
-            (res.body._items.length).should.equal(objects.length);
-            var ids = [];
-            for (var idx in res.body._items) {
-              var item = res.body._items[idx];
-              ids.push(item._id);
-              (item._status).should.equal('OK');
-              (item._links.self.title).should.equal('level hint');
-            }
-            refs['level-hints'] = ids;
-            done();
-          } catch (e) {
-            done(e);
-          }
-        },
-        function(err) {
-          inspect('err', err);
-          done(err);
-        }
-      );
-    });
-
-    test("should create some level-instances", function(done) {
-      var objects = [{
-        level: refs.levels[0],
-        server: refs.servers[0]
-      }, {
-        level: refs.levels[0],
-        server: refs.servers[1]
-      }, {
-        level: refs.levels[1],
-        server: refs.servers[0]
-      }];
-      client.post("/level-instances", objects).then(
-        function(res) {
-          inspect('res', res);
-          try {
-            (res.statusCode).should.equal(201);
-            (res.body._status).should.equal('OK');
-            (res.body._items.length).should.equal(objects.length);
-            var ids = [];
-            for (var idx in res.body._items) {
-              var item = res.body._items[idx];
-              ids.push(item._id);
-              (item._status).should.equal('OK');
-              (item._links.self.title).should.equal('level instance');
-            }
-            refs['level-instances'] = ids;
-            done();
-          } catch (e) {
-            done(e);
-          }
-        },
-        function(err) {
-          inspect('err', err);
-          done(err);
-        }
-      );
-    });
-
-    // TODO
-    // ----
-    // POST organization-coupons as user
-    // POST organization-items as user
-    // POST organization-level-validations as user
-    // POST organization-achievements as user
-    // POST organization-levels as user (buy level)
-    // POST user-organization-invites as user
-    // POST organization-users as admin
-    // POST user-notifications as admin
-    // UPDATE organization-statistics as admin
-
   });
 });
