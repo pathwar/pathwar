@@ -217,10 +217,18 @@ level_instances = {
 
 levels = {
     'item_title': 'level',
+
+    # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
-    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_methods': [],
+    'allowed_item_read_roles': ['*'],
+    'allowed_item_write_roles': ['admin'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
+    'allowed_item_read_roles': ['*'],
+    'allowed_item_write_roles': ['admin'],
+
     'schema': {
         'name': {
             'type': 'string',
