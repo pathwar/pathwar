@@ -106,7 +106,7 @@ seed-db-watch:
 	  fswatch -1 $(WATCH_FILES); \
 	done
 
-seed-db-node:	flush-db
+seed-db-node:	flush-db node-pathwar
 	fig -f $(FIG_FILE) run --no-deps $(NODE_SDK_SERVICE) npm run seed
 
 seed-db-python:	flush-db
@@ -131,3 +131,6 @@ portal_up:
 api_clean:
 	fig -f $(FIG_FILE) stop
 	fig -f $(FIG_FILE) rm --force
+
+node-pathwar:
+	git clone git://github.com/pathwar/node-pathwar
