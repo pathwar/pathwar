@@ -1,10 +1,10 @@
 # API
 api:
-  build: pathwar_api
+  build: .
   ports:
   - 5000:5000
   volumes:
-  - pathwar_api:/usr/src/app
+  - .:/usr/src/app
   links:
   - mongo
   - smtp
