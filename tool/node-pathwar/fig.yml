@@ -9,8 +9,8 @@ sdk:
 
 api:
   #image: pathwar/api.pathwar.net:latest
-  build: api.pathwar.net/pathwar_api
-  command: /bin/bash -c 'python run.py flush-db && python run.py'
+  build: api.pathwar.net
+  command: /bin/bash -c 'python pathwar_api/run.py flush-db && python pathwar_api/run.py'
   links:
   - mongo
   - smtp
