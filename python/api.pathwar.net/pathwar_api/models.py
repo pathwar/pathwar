@@ -524,10 +524,18 @@ organization_statistics = {
 
 organizations = {
     'item_title': 'organization',
+
+    # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
-    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_methods': [],
+    'allowed_item_read_roles': ['*'],
+    'allowed_item_write_roles': ['*'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
+    'allowed_item_read_roles': ['*'],
+    'allowed_item_write_roles': ['*'],
+
     'schema': {
         'name': {
             'type': 'string',
