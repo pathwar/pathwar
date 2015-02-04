@@ -802,10 +802,18 @@ user_tokens = {
 
 users = {
     'item_title': 'user',
+
+    # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
-    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_methods': ['POST'],
+    'allowed_item_read_roles': ['*'],
+    'allowed_item_write_roles': ['*'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
+    'allowed_item_read_roles': ['*'],
+    'allowed_item_write_roles': ['*'],
+
     'schema': {
         'login': {
             'type': 'string',
