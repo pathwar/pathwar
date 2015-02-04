@@ -2,6 +2,7 @@ BLUEPRINT_FILE ?=	apiary.apib
 BLUEPRINT_TEMPLATE ?=	default
 FIG_API_SERVICE ?=	api
 NODE_SDK_SERVICE ?=	nodesdk
+FIG_FILE ?=		fig.yml
 
 WATCH_FILES ?=	$(shell \
 		  find node-pathwar/ ./ \
@@ -30,13 +31,13 @@ build:	api_build blueprint_build
 release:	gh-pages
 
 up:	api_up portal_up
-	fig logs
+	fig -f $(FIG_FILE) logs
 
 kill:
-	fig kill
+	fig -f $(FIG_FILE) kill
 
 stop:
-	fig stop
+	fig -f $(FIG_FILE) stop
 
 shell:	api_shell
 
@@ -88,11 +89,11 @@ travis:
 .PHONY:	api_build api_up api_shell portal_up mongo_up smtp_up flush-db seed-db
 
 api_build:	portal.pathwar.net
-	fig build
+	fig -f $(FIG_FILE) build
 
 
 flush-db:	mongo_up
-	fig run --no-deps $(FIG_API_SERVICE) python pathwar_api/run.py flush-db
+	fig -f $(FIG_FILE) run --no-deps $(FIG_API_SERVICE) python pathwar_api/run.py flush-db
 
 seed-db:
 	$(MAKE) seed-db-node
@@ -106,27 +107,27 @@ seed-db-watch:
 	done
 
 seed-db-node:	flush-db
-	fig run --no-deps $(NODE_SDK_SERVICE) npm run seed
+	fig -f $(FIG_FILE) run --no-deps $(NODE_SDK_SERVICE) npm run seed
 
 seed-db-python:	flush-db
-	fig run --no-deps $(FIG_API_SERVICE) python pathwar_api/run.py seed-db
+	fig -f $(FIG_FILE) run --no-deps $(FIG_API_SERVICE) python pathwar_api/run.py seed-db
 
 api_up:
-	fig kill api
-	fig up --no-recreate -d api
+	fig -f $(FIG_FILE) kill api
+	fig -f $(FIG_FILE) up --no-recreate -d api
 
 api_shell:	mongo_up
-	fig run --no-deps $(FIG_API_SERVICE) /bin/bash
+	fig -f $(FIG_FILE) run --no-deps $(FIG_API_SERVICE) /bin/bash
 
 mongo_up:
-	fig up --no-recreate -d mongo
+	fig -f $(FIG_FILE) up --no-recreate -d mongo
 
 smtp_up:
-	fig up --no-recreate -d smtp
+	fig -f $(FIG_FILE) up --no-recreate -d smtp
 
 portal_up:
-	fig up --no-recreate -d portal
+	fig -f $(FIG_FILE) up --no-recreate -d portal
 
 api_clean:
-	fig stop
-	fig rm --force
+	fig -f $(FIG_FILE) stop
+	fig -f $(FIG_FILE) rm --force
