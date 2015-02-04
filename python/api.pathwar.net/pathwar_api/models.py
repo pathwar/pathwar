@@ -8,9 +8,9 @@ achievements = {
     'allowed_write_roles': ['admin'],
     # item
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_item_methods': [],
     'allowed_item_read_roles': ['*'],
     'allowed_item_write_roles': ['admin'],
-    'public_item_methods': [],
 
     'schema': {
         'name': {
@@ -26,10 +26,18 @@ achievements = {
 
 coupons = {
     'item_title': 'coupon',
+
+    # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
-    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_methods': [],
+    'allowed_read_roles': ['moderator', 'admin'],
+    'allowed_write_roles': ['moderator', 'admin'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
+    'allowed_item_read_roles': ['moderator', 'admin'],
+    'allowed_item_write_roles': ['moderator', 'admin'],
+
     'schema': {
         'hash': {
             'type': 'string',
