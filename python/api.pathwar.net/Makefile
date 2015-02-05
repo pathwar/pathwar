@@ -88,7 +88,7 @@ travis:
 # API
 .PHONY:	api_build api_up api_shell portal_up mongo_up smtp_up flush-db seed-db
 
-api_build:	portal.pathwar.net
+api_build:	portal.pathwar.net node-pathwar
 	fig -f $(FIG_FILE) build
 
 
