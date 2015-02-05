@@ -343,6 +343,11 @@ suite("[seed]", function() {
 
       test("should create some levels as admin", function(done) {
         var objects = [{
+          name: 'fake-level',
+          description: 'fake-description',
+          price: 424242,
+          tags: ['fake', 'example', 'dummy']
+        }, {
           name: 'welcome',
           description: 'An easy welcome level',
           price: 42,
@@ -352,6 +357,22 @@ suite("[seed]", function() {
           description: 'Possible not upload',
           price: 420,
           tags: ['php', 'advanced']
+        }, {
+          'name': 'calc'
+        }, {
+          'name': 'upload-hi'
+        }, {
+          'name': 'training-http'
+        }, {
+          'name': 'training-sqli'
+        }, {
+          'name': 'training-brute'
+        }, {
+          'name': 'training-include'
+        }, {
+          'name': 'training-tools'
+        }, {
+          'name': 'captcha'
         }];
         client.post("/levels", objects).then(
           function(res) {
@@ -473,11 +494,25 @@ suite("[seed]", function() {
             { 'name': '22', 'url': 'http://1.2.3.4:1235/' }
           ]
         }, {
-          level: refs.levels[0],
-          server: refs.servers[1]
+          level: refs.levels[1], server: refs.servers[1]
         }, {
-          level: refs.levels[1],
-          server: refs.servers[0]
+          level: refs.levels[2], server: refs.servers[1]
+        }, {
+          level: refs.levels[3], server: refs.servers[1]
+        }, {
+          level: refs.levels[4], server: refs.servers[1]
+        }, {
+          level: refs.levels[5], server: refs.servers[1]
+        }, {
+          level: refs.levels[6], server: refs.servers[1]
+        }, {
+          level: refs.levels[7], server: refs.servers[1]
+        }, {
+          level: refs.levels[8], server: refs.servers[1]
+        }, {
+          level: refs.levels[9], server: refs.servers[1]
+        }, {
+          level: refs.levels[10], server: refs.servers[1]
         }];
         client.post("/level-instances", objects).then(
           function(res) {
