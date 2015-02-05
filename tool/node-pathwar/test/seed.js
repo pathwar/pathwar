@@ -229,17 +229,17 @@ suite("[seed]", function() {
 
       test("should create some servers as admin", function(done) {
         var objects = [{
-          name: 'c1-123',
+          name: 'fake-server',
           ip_address: '1.2.3.4',
           active: true,
           token: '1234567890',
-          tags: ['docker', 'armhf']
+          tags: ['fake', 'dummy', 'example']
         }, {
-          name: 'dedibox-152',
-          ip_address: '4.3.2.1',
+          name: 'dedi-moul',
+          ip_address: '195.154.233.249',
           active: true,
           token: '0987654321',
-          tags: ['docker', 'x86_64']
+          tags: ['docker', 'x86_64', 'dedibox']
         }];
         client.post("/servers", objects).then(
           function(res) {
