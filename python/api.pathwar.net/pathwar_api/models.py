@@ -519,10 +519,18 @@ organization_items = {
 organization_users = {
     'item_title': 'organization user',
     'resource_title': 'organization users',
+
+    # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
-    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_methods': [],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['admin'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['admin'],
+
     # 'url': 'organizations/<organization>/users',
     'schema': {
         'organization': {
