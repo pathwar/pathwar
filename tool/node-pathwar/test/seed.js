@@ -87,10 +87,13 @@ suite("[seed]", function() {
 
       test("should create some sessions as admin", function(done) {
         var objects = [{
-          name: 'world',
+          name: 'Worldwide',
           public: true
         }, {
-          name: 'beta',
+          name: 'Staff',
+          public: false
+        }, {
+          name: 'Beta',
           public: false
         }, {
           name: 'Epitech2015',
@@ -194,11 +197,19 @@ suite("[seed]", function() {
       test("should create some coupons as admin", function(done) {
         var objects = [{
           hash: '1234567890',
-          value: 42,
+          value: 1,
           session: refs.sessions[0]
         }, {
           hash: '000987654321',
-          value: 24,
+          value: 1,
+          session: refs.sessions[1]
+        }, {
+          hash: '000987654321',
+          value: 2,
+          session: refs.sessions[1]
+        }, {
+          hash: '000987654321',
+          value: 3,
           session: refs.sessions[1]
         }];
         client.post("/coupons", objects).then(
