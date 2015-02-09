@@ -347,33 +347,60 @@ suite("[seed]", function() {
           name: 'fake-level',
           description: 'fake-description',
           price: 424242,
-          tags: ['fake', 'example', 'dummy']
+          tags: ['fake', 'example', 'dummy'],
+          author: 'Pathwar Team'
         }, {
           name: 'welcome',
           description: 'An easy welcome level',
-          price: 42,
-          tags: ['easy', 'welcome', 'official']
+          price: 0,
+          tags: ['easy', 'welcome', 'official', 'free'],
+          author: 'Pathwar Team'
         }, {
           name: 'pnu',
           description: 'Possible not upload',
-          price: 420,
-          tags: ['php', 'advanced']
+          price: 42,
+          tags: ['php', 'advanced'],
+          author: 'Pathwar Team'
         }, {
-          'name': 'calc'
+          name: 'calc',
+          price: 42,
+          tags: ['python', 'sql', 'easy'],
+          author: 'Pathwar Team'
         }, {
-          'name': 'upload-hi'
+          name: 'upload-hi',
+          price: 10,
+          tags: ['easy', 'upload', 'php'],
+          author: 'Pathwar Team'
         }, {
-          'name': 'training-http'
+          name: 'training-http',
+          price: 0,
+          tags: ['tutorial', 'easy', 'free'],
+          author: 'Pathwar Team'
         }, {
-          'name': 'training-sqli'
+          name: 'training-sqli',
+          price: 0,
+          tags: ['tutorial', 'easy', 'free'],
+          author: 'Pathwar Team'
         }, {
-          'name': 'training-brute'
+          name: 'training-brute',
+          price: 0,
+          tags: ['tutorial', 'easy', 'free'],
+          author: 'Pathwar Team'
         }, {
-          'name': 'training-include'
+          name: 'training-include',
+          price: 0,
+          tags: ['tutorial', 'easy', 'free'],
+          author: 'Pathwar Team'
         }, {
-          'name': 'training-tools'
+          name: 'training-tools',
+          price: 0,
+          tags: ['tutorial', 'easy', 'free'],
+          author: 'Pathwar Team'
         }, {
-          'name': 'captcha'
+          name: 'captcha',
+          price: 0,
+          tags: ['tutorial', 'easy', 'free'],
+          author: 'Pathwar Team'
         }];
         client.post("/levels", objects).then(
           function(res) {
