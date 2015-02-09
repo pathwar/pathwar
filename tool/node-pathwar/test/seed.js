@@ -128,6 +128,7 @@ suite("[seed]", function() {
         var objects = [{
           login: 'joe',
           email: 'joe@pathwar.net',
+          active: true,
           password: 'secure'
         }, {
           login: 'm1ch3l',
