@@ -304,10 +304,18 @@ levels = {
 organization_achievements = {
     'item_title': 'organization earned achievement',
     'resource_title': 'organization earned achievements',
+
+    # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
-    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_methods': [],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['user', 'admin'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['user', 'admin'],
+
     # 'url': 'organizations/<organization>/achievements',
     'schema': {
         'organization': {
