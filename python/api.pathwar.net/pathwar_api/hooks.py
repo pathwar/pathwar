@@ -2,6 +2,7 @@ from uuid import uuid4
 import json
 import bcrypt
 import random
+import md5
 
 from eve.methods.post import post, post_internal
 
@@ -52,6 +53,7 @@ def on_update_user(item):
         item['password'] = bcrypt.hashpw(
             password, item['password_salt']
         )
+    item['gravatar_hash'] = md5.new(item['email'].lower().strip()).hexdigest()
 
 
 def insert_callback(resource, items):

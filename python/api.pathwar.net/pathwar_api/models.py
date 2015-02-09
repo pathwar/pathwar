@@ -983,6 +983,10 @@ users = {
             },
             # chmod 446
         },
+        'gravatar_hash': {
+            'type': 'string',
+            'readonly': True,
+        },
         'available_sessions': {
             'type': 'list',
             'schema': {
