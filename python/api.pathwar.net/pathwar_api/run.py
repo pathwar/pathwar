@@ -44,9 +44,12 @@ class MockBasicAuth(BasicAuth):
                    method):
         if not len(username):
             return False
+
+        user = None
+
         if len(password):  # Login+Password based
             app.logger.warn('FIXME: check password')
-            return app.data.driver.db['users'].find({
+            user = app.data.driver.db['users'].find_one({
                 'login': username, 'active': True
             })
         else:  # Token-based
@@ -55,15 +58,33 @@ class MockBasicAuth(BasicAuth):
             if user_token:
                 user = app.data.driver.db['users'] \
                                       .find_one({'_id': user_token['user']})
-                if user['active']:
-                    return True
+                if not user['active']:
+                    user = None
+
+
+        if user:
+            app.logger.warn('username: {}, password: {}, allowed_roles: {}, '
+                            'resource: {}, method: {}, user: {}'.format(
+                                username, password, allowed_roles, resource,
+                                method, user,
+                            )
+            )
+            if user['role'] in allowed_roles:
+                return True
+            else:
+                return False
+        else:
+            app.logger.warn('No such active user: {}'.format(username))
             return False
 
 
 class MockTokenAuth(TokenAuth):
     def check_auth(self, token, allowed_roles, resource, method):
-        user_tokens = app.data.driver.db['user-tokens']
-        return user_tokens.find_one({'token': token})
+        user_token = app.data.driver.db['user-tokens'].find_one({
+            'token': token
+        })
+        app.logger.warn(token, allowed_roles, resource, method, user_token)
+        return user_token
 
 
 class UUIDValidator(Validator):
