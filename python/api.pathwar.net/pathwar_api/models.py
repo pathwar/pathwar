@@ -4,12 +4,12 @@ achievements = {
     # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'public_methods': [],
-    'allowed_read_roles': ['*'],
+    'allowed_read_roles': ['user', 'moderator', 'admin'],
     'allowed_write_roles': ['admin'],
     # item
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
-    'allowed_item_read_roles': ['*'],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['admin'],
 
     'schema': {
@@ -68,12 +68,12 @@ items = {
     # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'public_methods': [],
-    'allowed_item_read_roles': ['*'],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['admin'],
     # item
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
-    'allowed_item_read_roles': ['*'],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['admin'],
 
     'schema': {
@@ -221,12 +221,12 @@ levels = {
     # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'public_methods': [],
-    'allowed_item_read_roles': ['*'],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['admin'],
     # item
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
-    'allowed_item_read_roles': ['*'],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['admin'],
 
     'schema': {
@@ -528,13 +528,13 @@ organizations = {
     # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'public_methods': [],
-    'allowed_item_read_roles': ['*'],
-    'allowed_item_write_roles': ['*'],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['user', 'moderator', 'admin'],
     # item
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
-    'allowed_item_read_roles': ['*'],
-    'allowed_item_write_roles': ['*'],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['user', 'moderator', 'admin'],
 
     'schema': {
         'name': {
@@ -569,12 +569,12 @@ sessions = {
     # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'public_methods': [],
-    'allowed_item_read_roles': ['*'],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['admin'],
     # item
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
-    'allowed_item_read_roles': ['*'],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['admin'],
 
     'schema': {
@@ -806,13 +806,13 @@ users = {
     # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'public_methods': ['POST'],
-    'allowed_item_read_roles': ['*'],
-    'allowed_item_write_roles': ['*'],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['user', 'moderator', 'admin'],
     # item
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
-    'allowed_item_read_roles': ['*'],
-    'allowed_item_write_roles': ['*'],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['user', 'moderator', 'admin'],
 
     'schema': {
         'login': {
