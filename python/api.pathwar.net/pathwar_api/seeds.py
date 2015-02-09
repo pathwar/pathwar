@@ -82,7 +82,7 @@ def db_seed(app):
             }, {
                 'login': 'm1ch3l',
                 'email': 'm1ch3l@pathwar.net',
-                'role': 'superuser',
+                'role': 'moderator',
                 'active': True,
                 'password': 'secure',
                 'available_sessions': [
