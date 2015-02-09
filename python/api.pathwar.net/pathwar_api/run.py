@@ -153,7 +153,7 @@ def insert_callback(resource, items):
             # item['otp_secret'] = ...
             on_update_user(item)
 
-            if not app.is_seed:
+            if not app.is_seed and not item['active']:
                 # FIXME: put after insert success
                 verification_url = url_for(
                     'tools.email_verify',
