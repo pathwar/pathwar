@@ -1,6 +1,6 @@
 import os
 
-from models import DOMAIN
+from resources import DOMAIN
 
 
 # MAIL
