@@ -7,7 +7,7 @@ import bcrypt
 from eve.methods.post import post, post_internal
 
 from app import app
-from utils import request_get_user
+from utils import request_get_user, default_session
 
 
 class BaseItem(object):
@@ -77,6 +77,16 @@ class UserItem(BaseItem):
         # item['otp_secret'] = ...
         self.on_update(item)
 
+    def on_inserted(self, item):
+        # FIXME: create a user notification
+
+        # Create an organization in the default session
+        default_organization = post_internal('organizations', {
+            'name': 'default organization for {}'.format(item['login']),
+            'session': default_session()['_id'],
+            'owner': item['_id'],
+        })
+
         # Send verification email
         if not app.is_seed and not item['active']:
             # FIXME: put after insert success
@@ -93,7 +103,7 @@ class UserItem(BaseItem):
                 recipients=[item]
             )
 
-    def on_pre_post(self, request):
+    def on_pre_post_item(self, request, item):
         # FIXME: check for a password, users without password are built
         #        internally
         pass
@@ -104,61 +114,56 @@ class UserItem(BaseItem):
             del lookup['login']
             lookup['_id'] = request_get_user(request)['_id']
 
-    def on_post_post_item(self, request, response, item):
-        # FIXME: create a user notification
-        app.logger.warn('%' * 800)
-
-        worldwide_session = app.data.driver.db['sessions'].find_one({
-            'name': 'Worldwide'
-        })
-        default_organization = post_internal('organizations', {
-            'session': worldwide_session['_id'],
-        })
-        app.logger.warn(dir(response))
-
 
 class UserTokenItem(BaseItem):
     resource = 'user-tokens'
 
-    def on_pre_post(self, request):
+    def on_pre_post_item(self, request, item):
         # Handle login
         user = request_get_user(request)
-        app.logger.warn('@@@ pre_post_callback: user={}'.format(user))
+
+        # app.logger.warn('@@@ pre_post_callback: user={}'.format(user))
+
         if not user:
             abort(401)
-        # FIXME: try to not accept passing token/user (read-only)
-        payload = request.get_json()
-        payload['token'] = str(uuid4())
-        payload['user'] = user['_id']
+
+        # FIXME: do not accept passing token/user (read-only)
+
+        item['token'] = str(uuid4())
+        item['user'] = user['_id']
 
         # FIXME: add expiry_date
 
 
 class OrganizationItem(BaseItem):
-    def on_post_post_item(self, request, response, item):
-        user = request_get_user(request)
-        if not app.is_seed:
-            app.logger.error(item)
-            post_internal('organization-users', {
-                'organization': item['_id'],
-                'role': 'owner',
-                'user': user['_id'],
-            })
-            orga_statistics = post_internal('organization-statistics', {
-                'organization': item['_id'],
-            })
+    resource = 'organizations'
 
-        # app.data.driver.db['organizations'].update(
-        #     { '_id': organization['_id'] },
-        #     { 'statistics': orga_statistics[0]['_id'] },
-        # )
+    def on_pre_post_item(self, request, item):
+        # FIXME: add a security check to ensure owner is preset by
+        #        an internal commands, else drop it
 
+        if not 'owner' in item:
+            item['owner'] = request_get_user(request)['_id']
+
+    def on_inserted(self, item):
+        post_internal('organization-users', {
+            'organization': item['_id'],
+            'role': 'owner',
+            'user': item['owner'],
+        })
+        post_internal('organization-statistics', {
+            'organization': item['_id'],
+        })
+
+
+# FIXME: add backref to orgs on org-statistics.on_inserted event
 
 
 # Resource name / class mapping
 models = {
     'users': UserItem,
     'user-tokens': UserTokenItem,
+    'organizations': OrganizationItem,
 }
 
 
