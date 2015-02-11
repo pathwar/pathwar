@@ -20,7 +20,8 @@ class BaseItem(object):
     def on_insert(self, item):
         item['_id'] = str(uuid4())
 
-    def on_pre_post(self, request):
+
+    def on_inserted(self, item):
         pass
 
     def on_pre_get(self, request, lookup):
@@ -28,6 +29,19 @@ class BaseItem(object):
 
     def on_post_post_item(self, request, response, item):
         pass
+
+    def on_pre_post_item(self, request, item):
+        pass
+
+    def on_pre_post(self, request):
+        data = request.get_json()
+        if isinstance(data, list):
+            items = data
+        else:
+            items = [data]
+
+        for item in items:
+            self.on_pre_post_item(request, item)
 
     def on_post_post(self, request, response):
         dct = json.loads(response.get_data())
