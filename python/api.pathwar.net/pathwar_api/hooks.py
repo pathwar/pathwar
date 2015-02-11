@@ -120,16 +120,21 @@ def post_post_callback(resource, request, response):
         items = [dct]
 
     if resource == 'users':
-        # print(response.get_data())
+        # FIXME: create a user notification
+        app.logger.warn('%' * 800)
+
+        worldwide_session = app.data.driver.db['sessions'].find_one({
+            'name': 'Worldwide'
+        })
+        default_organization = post_internal('organizations', {
+            'session': worldwide_session['_id'],
+        })
         app.logger.warn(dir(response))
 
     elif resource == 'organizations':
         for organization in items:
             user = request_get_user(request)
             if not app.is_seed:
-                # FIXME: try to get this working even in a seed context
-                print('@' * 800)
-                print(organization)
                 app.logger.error(organization)
                 post_internal('organization-users', {
                     'organization': organization['_id'],
