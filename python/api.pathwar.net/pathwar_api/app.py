@@ -30,14 +30,14 @@ class MockBasicAuth(BasicAuth):
                 if not user['active']:
                     user = None
 
-
         if user:
-            app.logger.warn('username: {}, password: {}, allowed_roles: {}, '
-                            'resource: {}, method: {}, user: {}'.format(
-                                username, password, allowed_roles, resource,
-                                method, user,
-                            )
-            )
+            # app.logger.debug(
+            #     'username: {}, password: {}, allowed_roles: {}, '
+            #     'resource: {}, method: {}, user: {}'.format(
+            #         username, password, allowed_roles, resource,
+            #         method, user,
+            #     )
+            # )
             if user['role'] in allowed_roles:
                 return True
             else:

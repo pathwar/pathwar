@@ -10,7 +10,7 @@ def pre_get_callback(resource, request, lookup):
 
 def insert_callback(resource, items):
     """ Callback called just before inserting a resource in mongo. """
-    app.logger.debug('### insert_callback({}) {}'.format(resource, items))
+    # app.logger.debug('### insert_callback({}) {}'.format(resource, items))
     klass = resource_get_model(resource)
     for item in items:
         klass().on_insert(item)
@@ -34,8 +34,8 @@ def pre_post_callback(resource, request):
 
 def post_post_callback(resource, request, response):
     """ Callback called just after a POST request ended. """
-    app.logger.info('### post_post({}) request: {}, response: {}'
-                    .format(resource, request, response))
+    # app.logger.info('### post_post({}) request: {}, response: {}'
+    #                 .format(resource, request, response))
     klass = resource_get_model(resource)
     klass().on_post_post(request, response)
 
