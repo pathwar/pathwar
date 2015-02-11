@@ -16,6 +16,14 @@ def insert_callback(resource, items):
         klass().on_insert(item)
 
 
+def inserted_callback(resource, items):
+    """ Callback called just after inserting a resource in mongo. """
+    # app.logger.debug('### inserted_callback({}) {}'.format(resource, items))
+    klass = resource_get_model(resource)
+    for item in items:
+        klass().on_inserted(item)
+
+
 def pre_post_callback(resource, request):
     """ Callback called just before the normal processing behavior of a POST
     request.
@@ -36,6 +44,7 @@ def setup_hooks(_app):
     # Attach hooks
     app.on_pre_GET += pre_get_callback
     app.on_insert += insert_callback
+    app.on_inserted += inserted_callback
     app.on_pre_POST += pre_post_callback
     app.on_post_POST += post_post_callback
     # getattr(app, 'on_pre_POST_user-tokens') += pre_post_user_tokens_callback
