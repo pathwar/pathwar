@@ -622,6 +622,15 @@ organizations = {
                 'embeddable': True,
             },
         },
+        'owner': {
+            'type': 'uuid',
+            'required': False,
+            'data_relation': {
+                'resource': 'users',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
         'statistics': {
             'type': 'uuid',
             'required': False,
