@@ -114,6 +114,7 @@ seed-db-python:	flush-db
 
 api_up:
 	fig -f $(FIG_FILE) kill api
+	fig -f $(FIG_FILE) rm --force api
 	fig -f $(FIG_FILE) up --no-recreate -d api
 
 api_shell:	mongo_up
