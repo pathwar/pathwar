@@ -78,10 +78,19 @@ class UserItem(BaseItem):
         self._on_update(item)
 
     def on_inserted(self, item):
+        post_internal('activities', {
+            'user': item['_id'],
+            'action': 'users-create',
+            'category': 'account',
+            'linked_resources': [
+                {'kind': 'users', 'id': item['_id']}
+            ],
+        })
         post_internal('user-notifications', {
             'title': 'Welcome to your account !',
             'user': item['_id'],
         })
+
 
         # Create an organization in the default session
         default_organization = post_internal('organizations', {
@@ -156,6 +165,15 @@ class OrganizationItem(BaseItem):
         })
         post_internal('organization-statistics', {
             'organization': item['_id'],
+        })
+        post_internal('activities', {
+            'user': item['owner'],
+            'organization': item['_id'],
+            'action': 'organizations-create',
+            'category': 'organizations',
+            'linked_resources': [
+                {'kind': 'organizations', 'id': item['_id']}
+            ],
         })
         post_internal('user-notifications', {
             'title': 'You just created a new organization !',
