@@ -340,8 +340,8 @@ def db_seed(app):
         }])
 
     if organizations and users and levels:
-        user_activities, _, _ = post(
-            app, client, '/user-activities', [{
+        activities, _, _ = post(
+            app, client, '/activities', [{
                 'user': users[0]['_id'],
                 'category': 'level',
                 'action': 'bought-level',

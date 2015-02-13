@@ -720,10 +720,10 @@ servers = {
 }
 
 
-user_activities = {
+activities = {
     # FIXME: INTERNAL
-    'item_title': 'user activitie',
-    'resource_title': 'user activities',
+    'item_title': 'activity',
+    'resource_title': 'activities',
 
     # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
@@ -736,11 +736,9 @@ user_activities = {
     'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['admin'],
 
-    # 'url': 'users/<user>/activities',
     'schema': {
         'user': {
             'type': 'uuid',
-            'required': True,
             'data_relation': {
                 'resource': 'users',
                 'field': '_id',
@@ -757,6 +755,15 @@ user_activities = {
             'type': 'string',
             'default': 'common',
         },
+        'organization': {
+            'type': 'uuid',
+            'required': False,
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
         'linked_resources': {
             'type': 'list',
             'schema': {
@@ -769,15 +776,6 @@ user_activities = {
                         'type': 'uuid',
                     },
                 },
-            },
-        },
-        'organization': {
-            'type': 'uuid',
-            'required': False,
-            'data_relation': {
-                'resource': 'organizations',
-                'field': '_id',
-                'embeddable': True,
             },
         },
     },
@@ -1015,6 +1013,7 @@ users = {
 DOMAIN = {
     # Exposed
     'achievements': achievements,
+    'activities': activities,
     'coupons': coupons,
     'items': items,
     'level-hints': level_hints,
@@ -1030,7 +1029,6 @@ DOMAIN = {
     'organization-statistics': organization_statistics,
     'servers': servers,
     'sessions': sessions,
-    'user-activities': user_activities,
     'user-organization-invites': user_organization_invites,
     'user-notifications': user_notifications,
     'user-tokens': user_tokens,
