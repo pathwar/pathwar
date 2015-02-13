@@ -5,6 +5,7 @@ import md5
 
 import bcrypt
 from eve.methods.post import post, post_internal
+from flask import abort
 
 from app import app
 from utils import request_get_user, default_session
@@ -19,7 +20,6 @@ class BaseItem(object):
 
     def on_insert(self, item):
         item['_id'] = str(uuid4())
-
 
     def on_inserted(self, item):
         pass
