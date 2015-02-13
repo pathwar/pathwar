@@ -57,7 +57,7 @@ class BaseItem(object):
 class UserItem(BaseItem):
     resource = 'users'
 
-    def on_update(self, item):
+    def _on_update(self, item):
         if 'password' in item and \
            len(item['password']) and \
            not item['password'].startswith('$2a$'):
@@ -75,10 +75,13 @@ class UserItem(BaseItem):
         item['password_salt'] = bcrypt.gensalt().encode('utf-8')
         item['email_verification_token'] = str(uuid4())
         # item['otp_secret'] = ...
-        self.on_update(item)
+        self._on_update(item)
 
     def on_inserted(self, item):
-        # FIXME: create a user notification
+        post_internal('user-notifications', {
+            'title': 'Welcome to your account !',
+            'user': item['_id'],
+        })
 
         # Create an organization in the default session
         default_organization = post_internal('organizations', {
@@ -142,7 +145,7 @@ class OrganizationItem(BaseItem):
         # FIXME: add a security check to ensure owner is preset by
         #        an internal commands, else drop it
 
-        if not 'owner' in item:
+        if 'owner' not in item:
             item['owner'] = request_get_user(request)['_id']
 
     def on_inserted(self, item):
@@ -153,6 +156,10 @@ class OrganizationItem(BaseItem):
         })
         post_internal('organization-statistics', {
             'organization': item['_id'],
+        })
+        post_internal('user-notifications', {
+            'title': 'You just created a new organization !',
+            'user': item['owner'],
         })
 
 
