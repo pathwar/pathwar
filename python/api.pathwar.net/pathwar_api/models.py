@@ -101,7 +101,6 @@ class UserItem(BaseItem):
 
         # Send verification email
         if not app.is_seed and not item['active']:
-            # FIXME: put after insert success
             verification_url = url_for(
                 'tools.email_verify',
                 user_id=item['_id'],
@@ -192,6 +191,22 @@ class OrganizationItem(BaseItem):
         })
 
 
+class OrganizationLevelItem(BaseItem):
+    def on_inserted(self, item):
+        # FIXME: create notification for each organization members
+        post_internal('activities', {
+            #'user': item['owner'],
+            'organization': item['organization'],
+            'action': 'organization-levels-create',
+            'category': 'levels',
+            'linked_resources': [
+                {'kind': 'organizations', 'id': item['organization']},
+                {'kind': 'levels', 'id': item['level']},
+                {'kind': 'organization-levels', 'id': item['_id']},
+            ],
+        })
+
+
 # FIXME: add backref to orgs on org-statistics.on_inserted event
 
 
@@ -200,6 +215,7 @@ models = {
     'users': UserItem,
     'user-tokens': UserTokenItem,
     'organizations': OrganizationItem,
+    'organization-levels': OrganizationLevelItem,
 }
 
 
