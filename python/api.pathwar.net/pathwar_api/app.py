@@ -1,6 +1,7 @@
 from uuid import UUID
 import json
 
+import bcrypt
 from eve import Eve
 from eve.auth import BasicAuth, TokenAuth
 from eve.io.base import BaseJSONEncoder
@@ -16,11 +17,15 @@ class MockBasicAuth(BasicAuth):
 
         user = None
 
-        if len(password):  # Login+Password based
-            app.logger.warn('FIXME: check password')
+        if len(password):
+            # FIXME: restrict login+password access for a minimal amount of
+            #        resources
             user = app.data.driver.db['users'].find_one({
                 'login': username, 'active': True
             })
+            if bcrypt.hashpw(password, str(user['password_salt'])) != \
+               user['password']:
+                user = None
         else:  # Token-based
             user_token = app.data.driver.db['user-tokens'] \
                                         .find_one({'token': username})
