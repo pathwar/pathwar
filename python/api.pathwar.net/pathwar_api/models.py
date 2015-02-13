@@ -146,6 +146,17 @@ class UserTokenItem(BaseItem):
 
         # FIXME: add expiry_date
 
+    def on_inserted(self, item):
+        post_internal('activities', {
+            'user': item['user'],
+            'action': 'user-tokens-create',
+            'category': 'account',
+            'linked_resources': [
+                {'kind': 'users', 'id': item['user']},
+                {'kind': 'user-tokens', 'id': item['_id']}
+            ],
+        })
+
 
 class OrganizationItem(BaseItem):
     resource = 'organizations'
