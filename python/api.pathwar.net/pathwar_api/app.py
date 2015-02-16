@@ -23,9 +23,10 @@ class MockBasicAuth(BasicAuth):
             user = app.data.driver.db['users'].find_one({
                 'login': username, 'active': True
             })
-            if bcrypt.hashpw(password, str(user['password_salt'])) != \
-               user['password']:
-                user = None
+            if user:
+                hash_ = bcrypt.hashpw(password, str(user['password_salt']))
+                if hash_ != user['password']:
+                    user = None
         else:  # Token-based
             user_token = app.data.driver.db['user-tokens'] \
                                         .find_one({'token': username})
