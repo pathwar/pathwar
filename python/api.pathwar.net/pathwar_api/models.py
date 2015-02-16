@@ -16,11 +16,16 @@ class BaseItem(object):
 
     @classmethod
     def get_by_id(cls, uuid):
-        return current_app.data.driver.db[cls.resource].find_one({'_id': uuid})
+        return current_app.data.driver.db[cls.resource].find_one(
+            {'_id': uuid}
+        )
 
     @classmethod
     def update_by_id(cls, uuid, data):
-        return current_app.data.update(cls.resource, uuid, data)
+        return current_app.data.driver.db[cls.resource].update(
+            {'_id': uuid},
+            data
+        )
 
     def on_update(self, item):
         pass
@@ -200,11 +205,23 @@ class OrganizationLevelItem(BaseItem):
 
     def on_inserted(self, item):
         organization = OrganizationItem.get_by_id(item['organization'])
-        statistics = OrganizationStatisticItem.get_by_id(
-            organization['statistics']
-        )
+        level = LevelItem.get_by_id(item['level'])
+
+        # Removing cash
+        if level['price']:
+            OrganizationStatisticItem.update_by_id(
+                organization['statistics'],
+                {
+                    '$inc': {
+                        'cash': -level['price'],
+                    }
+                }
+            )
+
         # FIXME: create notification for each organization members
         # FIXME: add transaction history for statistics computing
+
+        # Add an activity
         post_internal('activities', {
             # 'user': item['owner'],
             'organization': item['organization'],
@@ -227,13 +244,18 @@ class OrganizationStatisticItem(BaseItem):
         })
 
 
+class LevelItem(BaseItem):
+    resource = 'levels'
+
+
 # Resource name / class mapping
 models = {
-    'users': UserItem,
-    'user-tokens': UserTokenItem,
-    'organizations': OrganizationItem,
+    'levels': LevelItem,
     'organization-levels': OrganizationLevelItem,
     'organization-statistics': OrganizationStatisticItem,
+    'organizations': OrganizationItem,
+    'user-tokens': UserTokenItem,
+    'users': UserItem,
 }
 
 
