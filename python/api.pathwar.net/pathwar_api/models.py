@@ -18,6 +18,10 @@ class BaseItem(object):
     def get_by_id(cls, uuid):
         return current_app.data.driver.db[cls.resource].find_one({'_id': uuid})
 
+    @classmethod
+    def update_by_id(cls, uuid, data):
+        return current_app.data.update(cls.resource, uuid, data)
+
     def on_update(self, item):
         pass
 
@@ -196,10 +200,11 @@ class OrganizationLevelItem(BaseItem):
 
     def on_inserted(self, item):
         organization = OrganizationItem.get_by_id(item['organization'])
-        # current_app.logger.debug('@' * 800)
-        # current_app.logger.debug(organization)
+        statistics = OrganizationStatisticItem.get_by_id(
+            organization['statistics']
+        )
         # FIXME: create notification for each organization members
-        # FIXME: add transaction history for money recomputing
+        # FIXME: add transaction history for statistics computing
         post_internal('activities', {
             # 'user': item['owner'],
             'organization': item['organization'],
@@ -217,11 +222,9 @@ class OrganizationStatisticItem(BaseItem):
     resource = 'organization-statistics'
 
     def on_inserted(self, item):
-        current_app.data.update(
-            'organizations', item['organization'], {
-                'statistics': item['_id'],
-            }
-        )
+        OrganizationItem.update_by_id(item['organization'], {
+            'statistics': item['_id'],
+        })
 
 
 # Resource name / class mapping
