@@ -196,6 +196,8 @@ class OrganizationItem(BaseItem):
 
 
 class OrganizationLevelItem(BaseItem):
+    resource = 'organization-levels'
+
     def on_inserted(self, item):
         organization = OrganizationItem.get_by_id(item['organization'])
         app.logger.debug(organization)
@@ -214,7 +216,15 @@ class OrganizationLevelItem(BaseItem):
         })
 
 
-# FIXME: add backref to orgs on org-statistics.on_inserted event
+class OrganizationStatisticItem(BaseItem):
+    resource = 'organization-statistics'
+
+    def on_inserted(self, item):
+        app.data.update(
+            'organizations', item['organization'], {
+                'statistics': item['_id'],
+            }
+        )
 
 
 # Resource name / class mapping
@@ -223,6 +233,7 @@ models = {
     'user-tokens': UserTokenItem,
     'organizations': OrganizationItem,
     'organization-levels': OrganizationLevelItem,
+    'organization-statistics': OrganizationStatisticItem,
 }
 
 
