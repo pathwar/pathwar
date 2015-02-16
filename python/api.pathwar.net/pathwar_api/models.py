@@ -15,6 +15,10 @@ class BaseItem(object):
     def __init__(self):
         pass
 
+    @classmethod
+    def get_by_id(cls, uuid):
+        return app.data.driver.db[cls.resource].find_one({'_id': uuid})
+
     def on_update(self, item):
         pass
 
@@ -193,9 +197,12 @@ class OrganizationItem(BaseItem):
 
 class OrganizationLevelItem(BaseItem):
     def on_inserted(self, item):
+        organization = OrganizationItem.get_by_id(item['organization'])
+        app.logger.debug(organization)
         # FIXME: create notification for each organization members
+        # FIXME: add transaction history for money recomputing
         post_internal('activities', {
-            #'user': item['owner'],
+            # 'user': item['owner'],
             'organization': item['organization'],
             'action': 'organization-levels-create',
             'category': 'levels',
