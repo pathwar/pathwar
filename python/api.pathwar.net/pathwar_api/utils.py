@@ -1,26 +1,32 @@
-from app import app
+from flask import current_app
 
 
 def request_get_user(request):
     auth = request.authorization
     if auth.get('username'):
         if auth.get('password'):  # user:pass
-            return app.data.driver.db['users'].find_one({
+            return current_app.data.driver.db['users'].find_one({
                 'login': auth.get('username'),
                 'active': True
             })
         else:  # token
-            user_token = app.data.driver.db['user-tokens'] \
-                                        .find_one({
-                                            'token': auth.get('username')
-                                        })
+            user_token = current_app \
+                .data \
+                .driver \
+                .db['user-tokens'] \
+                .find_one({
+                    'token': auth.get('username')
+                })
             if user_token:
-                return app.data.driver.db['users'] \
-                                      .find_one({'_id': user_token['user']})
+                return current_app \
+                    .data \
+                    .driver \
+                    .db['users'] \
+                    .find_one({'_id': user_token['user']})
     return None
 
 
 def default_session():
-    return app.data.driver.db['sessions'].find_one({
+    return current_app.data.driver.db['sessions'].find_one({
         'name': 'Worldwide'
     })

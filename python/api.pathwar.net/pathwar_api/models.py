@@ -5,9 +5,8 @@ import md5
 
 import bcrypt
 from eve.methods.post import post, post_internal
-from flask import abort
+from flask import abort, current_app
 
-from app import app
 from utils import request_get_user, default_session
 
 
@@ -17,7 +16,7 @@ class BaseItem(object):
 
     @classmethod
     def get_by_id(cls, uuid):
-        return app.data.driver.db[cls.resource].find_one({'_id': uuid})
+        return current_app.data.driver.db[cls.resource].find_one({'_id': uuid})
 
     def on_update(self, item):
         pass
@@ -95,7 +94,6 @@ class UserItem(BaseItem):
             'user': item['_id'],
         })
 
-
         # Create an organization in the default session
         default_organization = post_internal('organizations', {
             'name': 'default organization for {}'.format(item['login']),
@@ -104,7 +102,7 @@ class UserItem(BaseItem):
         })
 
         # Send verification email
-        if not app.is_seed and not item['active']:
+        if not current_app.is_seed and not item['active']:
             verification_url = url_for(
                 'tools.email_verify',
                 user_id=item['_id'],
@@ -136,8 +134,6 @@ class UserTokenItem(BaseItem):
     def on_pre_post_item(self, request, item):
         # Handle login
         user = request_get_user(request)
-
-        # app.logger.warn('@@@ pre_post_callback: user={}'.format(user))
 
         if not user:
             abort(401)
@@ -200,7 +196,8 @@ class OrganizationLevelItem(BaseItem):
 
     def on_inserted(self, item):
         organization = OrganizationItem.get_by_id(item['organization'])
-        app.logger.debug(organization)
+        # current_app.logger.debug('@' * 800)
+        # current_app.logger.debug(organization)
         # FIXME: create notification for each organization members
         # FIXME: add transaction history for money recomputing
         post_internal('activities', {
@@ -220,7 +217,7 @@ class OrganizationStatisticItem(BaseItem):
     resource = 'organization-statistics'
 
     def on_inserted(self, item):
-        app.data.update(
+        current_app.data.update(
             'organizations', item['organization'], {
                 'statistics': item['_id'],
             }
