@@ -28,6 +28,10 @@ class BaseItem(object):
             data
         )
 
+    @classmethod
+    def find(cls, lookup):
+        return list(current_app.data.driver.db[cls.resource].find(lookup))
+
     def on_update(self, item):
         pass
 
@@ -67,8 +71,25 @@ class BaseItem(object):
             self.on_post_post_item(request, response, item)
 
 
+class OrganizationUserItem(BaseItem):
+    resource = 'organization-users'
+
+
 class UserItem(BaseItem):
     resource = 'users'
+
+    @classmethod
+    def get_by_organization_id(cls, organization_id):
+        users_uuid = [
+            str(member['user']) for member in OrganizationUserItem.find({
+                'organization': organization_id,
+            })
+        ]
+        return cls.find({
+            '_id': {
+                '$in': users_uuid,
+            },
+        })
 
     def _on_update(self, item):
         if 'password' in item and \
@@ -206,9 +227,9 @@ class OrganizationLevelItem(BaseItem):
 
     def on_inserted(self, item):
         organization = OrganizationItem.get_by_id(item['organization'])
-        level = LevelItem.get_by_id(item['level'])
 
         # Removing cash
+        level = LevelItem.get_by_id(item['level'])
         if level['price']:
             OrganizationStatisticItem.update_by_id(
                 organization['statistics'],
@@ -219,8 +240,15 @@ class OrganizationLevelItem(BaseItem):
                 }
             )
 
-        # FIXME: create notification for each organization members
-        # FIXME: add transaction history for statistics computing
+        # Create a notification for each members of the team
+        members = UserItem.get_by_organization_id(organization['_id'])
+        for user in members:
+            post_internal('user-notifications', {
+                'title': 'Your team bought a new level',
+                'user': user['_id'],
+            })
+
+        # FIXME: add transaction history for statistics recomputing
 
         # Add an activity
         post_internal('activities', {
@@ -256,6 +284,7 @@ models = {
     'levels': LevelItem,
     'organization-levels': OrganizationLevelItem,
     'organization-statistics': OrganizationStatisticItem,
+    'organization-users': OrganizationUserItem,
     'organizations': OrganizationItem,
     'user-tokens': UserTokenItem,
     'users': UserItem,
