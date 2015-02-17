@@ -14,9 +14,11 @@ def email_verify(user_id, email_verification_token):
     if user:
         current_app.data.update(
             'users', user_id, {
-                'active': True,
-                'email_verification_token': None,
-            }
+                '$set': {
+                    'active': True,
+                    'email_verification_token': None,
+                },
+            },
         )
         return 'Email validated, you can now log in !'
     else:

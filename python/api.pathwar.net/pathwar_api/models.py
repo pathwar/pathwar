@@ -5,6 +5,7 @@ import md5
 
 import bcrypt
 from eve.methods.post import post, post_internal
+from eve.methods.patch import patch_internal
 from flask import abort, current_app
 
 from utils import request_get_user, default_session
@@ -240,7 +241,9 @@ class OrganizationStatisticItem(BaseItem):
 
     def on_inserted(self, item):
         OrganizationItem.update_by_id(item['organization'], {
-            'statistics': item['_id'],
+            '$set': {
+                'statistics': item['_id'],
+            },
         })
 
 
