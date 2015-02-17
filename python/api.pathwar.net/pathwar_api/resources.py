@@ -640,6 +640,15 @@ organizations = {
                 'embeddable': True,
             },
         },
+        'gravatar_email': {
+            'type': 'string',
+            # 'unique': True,
+            # 'required': True,
+        },
+        'gravatar_hash': {
+            'type': 'string',
+            'readonly': True,
+        },
     },
 }
 

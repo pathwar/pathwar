@@ -130,6 +130,7 @@ class UserItem(BaseItem):
             'name': 'default organization for {}'.format(item['login']),
             'session': default_session()['_id'],
             'owner': item['_id'],
+            'gravatar_email': item['email'],
         })
 
         # Send verification email
@@ -197,6 +198,13 @@ class OrganizationItem(BaseItem):
 
         if 'owner' not in item:
             item['owner'] = request_get_user(request)['_id']
+
+    def on_insert(self, item):
+        super(OrganizationItem, self).on_insert(item)
+        if 'gravatar_email' in item and item['gravatar_email']:
+            item['gravatar_hash'] = md5.new(
+                item['gravatar_email'].lower().strip()
+            ).hexdigest()
 
     def on_inserted(self, item):
         post_internal('organization-users', {
