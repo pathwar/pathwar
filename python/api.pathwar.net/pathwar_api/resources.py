@@ -574,6 +574,8 @@ organization_statistics = {
     'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['admin'],
 
+    'cache_control': 'private, no-cache, no-store, must-revalidate',
+
     'schema': {
         'organization': {
             'type': 'uuid',
