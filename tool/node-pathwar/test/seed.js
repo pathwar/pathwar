@@ -555,27 +555,21 @@ suite("[seed]", function() {
             { 'name': '80', 'url': 'http://1.2.3.4:1234/' },
             { 'name': '22', 'url': 'http://1.2.3.4:1235/' }
           ]
-        }, {
-          level: refs.levels[1], server: refs.servers[1]
-        }, {
-          level: refs.levels[2], server: refs.servers[1]
-        }, {
-          level: refs.levels[3], server: refs.servers[1]
-        }, {
-          level: refs.levels[4], server: refs.servers[1]
-        }, {
-          level: refs.levels[5], server: refs.servers[1]
-        }, {
-          level: refs.levels[6], server: refs.servers[1]
-        }, {
-          level: refs.levels[7], server: refs.servers[1]
-        }, {
-          level: refs.levels[8], server: refs.servers[1]
-        }, {
-          level: refs.levels[9], server: refs.servers[1]
-        }, {
-          level: refs.levels[10], server: refs.servers[1]
         }];
+        for (var i = 0; i < 50; i++) {
+          objects.push({
+            level: refs.levels[i % refs.servers.length],
+            server: refs.servers[i % refs.servers.length],
+            urls: [{
+              'name': '80',
+              'url': 'http://1.2.3.4:' + Math.ceil(Math.random() * 60000 + 2000).toString()
+            }],
+            passphrases: [{
+              'key': '0',
+              'value': Math.ceil(Math.random() * 1000).toString()
+            }]
+          });
+        }
         client.post("/level-instances", objects).then(
           function(res) {
             inspect('res', res);
