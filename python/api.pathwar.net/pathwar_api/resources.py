@@ -56,6 +56,15 @@ coupons = {
         'validations_left': {
             'type': 'integer',
         },
+        'author': {
+            'type': 'uuid',
+            'required': False,
+            'data_relation': {
+                'resource': 'users',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
         'session': {
             'type': 'uuid',
             # 'required': True,

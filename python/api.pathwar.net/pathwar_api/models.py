@@ -32,6 +32,10 @@ class BaseItem(object):
     def find(cls, lookup):
         return list(current_app.data.driver.db[cls.resource].find(lookup))
 
+    @classmethod
+    def find_one(cls, lookup):
+        return current_app.data.driver.db[cls.resource].find_one(lookup)
+
     def on_update(self, item):
         pass
 
@@ -192,6 +196,22 @@ class UserTokenItem(BaseItem):
 class OrganizationItem(BaseItem):
     resource = 'organizations'
 
+    @classmethod
+    def statistics_increment(cls, organization_id, payload):
+        organization = cls.get_by_id(organization_id)
+        OrganizationStatisticItem.update_by_id(
+            organization['statistics'], {
+                '$inc': payload,
+            }
+        )
+
+    @classmethod
+    def has_user(cls, organization_id, user_id):
+        return OrganizationUserItem.find_one({
+            'organization': organization_id,
+            'user': user_id,
+        })
+
     def on_pre_post_item(self, request, item):
         # FIXME: add a security check to ensure owner is preset by
         #        an internal commands, else drop it
@@ -234,22 +254,16 @@ class OrganizationLevelItem(BaseItem):
     resource = 'organization-levels'
 
     def on_inserted(self, item):
-        organization = OrganizationItem.get_by_id(item['organization'])
-
         # Removing cash
         level = LevelItem.get_by_id(item['level'])
         if level['price']:
-            OrganizationStatisticItem.update_by_id(
-                organization['statistics'],
-                {
-                    '$inc': {
-                        'cash': -level['price'],
-                    }
-                }
-            )
+            OrganizationItem.statistics_increment(
+                item['organization'], {
+                    'cash': -level['price'],
+                })
 
         # Create a notification for each members of the team
-        members = UserItem.get_by_organization_id(organization['_id'])
+        members = UserItem.get_by_organization_id(item['organization'])
         for user in members:
             post_internal('user-notifications', {
                 'title': 'Your team bought a new level',
@@ -295,10 +309,57 @@ class CouponItem(BaseItem):
         item['validations_left'] = item['validations_limit']
 
 
+class OrganizationCouponItem(BaseItem):
+    resource = 'organization-coupons'
+
+    def on_pre_post_item(self, request, item):
+        coupon = CouponItem.find_one({
+            'hash': item['coupon'],
+        })
+
+        if not coupon:
+            abort(404, "No such coupon")
+
+        # FIXME: race condition, need an atomic update + fetch
+
+        if coupon['validations_left'] < 1:
+            abort(403, "Expired coupon")
+
+        # Check if the user add a coupon to one of its organizations
+        user = request_get_user(request)
+        if not OrganizationItem.has_user(item['organization'], user['_id']):
+            abort(403, "You cannot validate a coupon for another organization")
+
+        # FIMME: check if this organization has already validated this coupon
+
+        # Translate coupon name with its uuid
+        item['coupon'] = coupon['_id']
+
+        # FIXME: add author
+        # item['author'] = user['_id']
+
+        # Decrease the validations_left
+        CouponItem.update_by_id(
+            coupon['_id'], {
+                '$inc': {
+                    'validations_left': -1,
+                }
+            }
+        )
+        current_app.logger.warn(coupon)
+
+        # Removing cash
+        OrganizationItem.statistics_increment(
+            item['organization'], {
+                'cash': coupon['value']
+            })
+
+
 # Resource name / class mapping
 models = {
     'coupons': CouponItem,
     'levels': LevelItem,
+    'organization-coupons': OrganizationCouponItem,
     'organization-levels': OrganizationLevelItem,
     'organization-statistics': OrganizationStatisticItem,
     'organization-users': OrganizationUserItem,
