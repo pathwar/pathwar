@@ -291,7 +291,8 @@ suite("[seed]", function() {
           session: refs.sessions[0]
         }, {
           name: 'staff',
-          session: refs.sessions[1]
+          session: refs.sessions[1],
+          owner: refs.users[0]
         }];
         client.post("/organizations", objects).then(
           function(res) {
