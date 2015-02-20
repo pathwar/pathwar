@@ -287,8 +287,17 @@ class LevelItem(BaseItem):
     resource = 'levels'
 
 
+class CouponItem(BaseItem):
+    resource = 'coupons'
+
+    def on_insert(self, item):
+        super(CouponItem, self).on_insert(item)
+        item['validations_left'] = item['validations_limit']
+
+
 # Resource name / class mapping
 models = {
+    'coupons': CouponItem,
     'levels': LevelItem,
     'organization-levels': OrganizationLevelItem,
     'organization-statistics': OrganizationStatisticItem,

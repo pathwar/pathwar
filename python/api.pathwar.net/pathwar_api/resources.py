@@ -49,9 +49,16 @@ coupons = {
             'type': 'integer',
             'default': 1,
         },
+        'validations_limit': {
+            'type': 'integer',
+            'default': 1,
+        },
+        'validations_left': {
+            'type': 'integer',
+        },
         'session': {
             'type': 'uuid',
-            'required': True,
+            # 'required': True,
             'data_relation': {
                 'resource': 'sessions',
                 'field': '_id',
