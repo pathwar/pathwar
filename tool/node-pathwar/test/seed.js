@@ -216,7 +216,21 @@ suite("[seed]", function() {
           hash: '000987654321',
           value: 3,
           session: refs.sessions[1]
+        }, {
+          hash: 'multi-session-trap',
+          value: -100
+        }, {
+          hash: 'multi-session-10',
+          value: 10,
+          validations_limit: 100
         }];
+        for (var i = 0; i < 100; i++) {
+          objects.push({
+            hash: '10-' + i,
+            value: 10,
+            session: refs.sessions[0]
+          });
+        }
         client.post("/coupons", objects).then(
           function(res) {
             inspect('res', res);
