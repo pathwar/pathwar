@@ -41,7 +41,7 @@ stop:
 
 shell:	api_shell
 
-clean:	blueprint_clean api_clean
+clean:	blueprint_clean api_clean portal_clean
 
 
 # BLUEPRINT
@@ -86,7 +86,7 @@ travis:
 
 
 # API
-.PHONY:	api_build api_up api_shell portal_up mongo_up smtp_up flush-db seed-db
+.PHONY:	api_build api_up api_shell portal_up mongo_up smtp_up flush-db seed-db portal_clean
 
 api_build:	portal.pathwar.net node-pathwar
 	fig -f $(FIG_FILE) build
@@ -127,11 +127,18 @@ smtp_up:
 	fig -f $(FIG_FILE) up --no-recreate -d smtp
 
 portal_up:
+	fig -f $(FIG_FILE) build portal
 	fig -f $(FIG_FILE) up --no-recreate -d portal
 
+
+portal_clean:
+	-fig -f $(FIG_FILE) kill portal
+	-fig -f $(FIG_FILE) rm --force portal
+	-rm -rf portal.pathwar.net/build
+
 api_clean:
-	fig -f $(FIG_FILE) stop
-	fig -f $(FIG_FILE) rm --force
+	-fig -f $(FIG_FILE) stop api
+	-fig -f $(FIG_FILE) rm --force api
 
 node-pathwar:
 	git clone git://github.com/pathwar/node-pathwar
