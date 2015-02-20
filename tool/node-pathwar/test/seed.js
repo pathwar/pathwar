@@ -361,12 +361,6 @@ suite("[seed]", function() {
 
       test("should create some levels as admin", function(done) {
         var objects = [{
-          name: 'fake-level',
-          description: 'fake-description',
-          price: 424242,
-          tags: ['fake', 'example', 'dummy'],
-          author: 'Pathwar Team'
-        }, {
           name: 'welcome',
           description: 'An easy welcome level',
           price: 0,
@@ -419,6 +413,15 @@ suite("[seed]", function() {
           tags: ['tutorial', 'easy', 'free'],
           author: 'Pathwar Team'
         }];
+
+        for (var i = 1; i < 50; i++) {
+          objects.push({
+            name: 'fake-level-' + i,
+            price: Math.ceil(Math.random() * 30),
+            tags: ['fake', 'dummy'],
+            author: 'Pathwar Team'
+          });
+        }
         client.post("/levels", objects).then(
           function(res) {
             inspect('res', res);
