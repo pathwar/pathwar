@@ -166,6 +166,11 @@ suite("[seed]", function() {
           role: 'level-server',
           active: true,
           password: 'super-secure'
+        }, {
+          login: 'moul',
+          email: 'm@42.am',
+          active: true,
+          password: 'super-secure'
         }];
         client.post("/users", objects).then(
           function(res) {
