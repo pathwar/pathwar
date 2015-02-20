@@ -330,7 +330,13 @@ class OrganizationCouponItem(BaseItem):
         if not OrganizationItem.has_user(item['organization'], user['_id']):
             abort(403, "You cannot validate a coupon for another organization")
 
-        # FIMME: check if this organization has already validated this coupon
+        # Check if organization has already validated this coupon
+        existing_coupon = OrganizationCouponItem.find_one({
+            'coupon': coupon['_id'],
+            'organization': item['organization'],
+        })
+        if existing_coupon:
+            abort(403, 'You already validated this coupon')
 
         # Translate coupon name with its uuid
         item['coupon'] = coupon['_id']
@@ -346,7 +352,6 @@ class OrganizationCouponItem(BaseItem):
                 }
             }
         )
-        current_app.logger.warn(coupon)
 
         # Removing cash
         OrganizationItem.statistics_increment(
