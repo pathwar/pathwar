@@ -335,8 +335,8 @@ class OrganizationCouponItem(BaseItem):
         # Translate coupon name with its uuid
         item['coupon'] = coupon['_id']
 
-        # FIXME: add author
-        # item['author'] = user['_id']
+        # Add author
+        item['author'] = user['_id']
 
         # Decrease the validations_left
         CouponItem.update_by_id(
