@@ -3,6 +3,7 @@ from flask.ext.mail import Mail, Message
 
 mail = Mail()
 
+
 def send_mail(recipients, subject, message):
     with mail.connect() as conn:
         for recipient in recipients:

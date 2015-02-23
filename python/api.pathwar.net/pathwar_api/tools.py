@@ -12,8 +12,10 @@ def email_verify(user_id, email_verification_token):
         'email_verification_token': str(email_verification_token),
     })
     if user:
-        current_app.data.update(
-            'users', user_id, {
+        current_app.data.driver.db['users'].update(
+            {
+                '_id': str(user_id)
+            }, {
                 '$set': {
                     'active': True,
                     'email_verification_token': None,

@@ -6,9 +6,10 @@ import md5
 import bcrypt
 from eve.methods.post import post, post_internal
 from eve.methods.patch import patch_internal
-from flask import abort, current_app
+from flask import abort, current_app, url_for
 
 from utils import request_get_user, default_session
+from mail import mail, send_mail
 
 
 class BaseItem(object):
