@@ -21,7 +21,8 @@ class MockBasicAuth(BasicAuth):
             # FIXME: restrict login+password access for a minimal amount of
             #        resources
             user = app.data.driver.db['users'].find_one({
-                'login': username, 'active': True
+                'login': username,
+                # 'active': True,  # FIXME: re-enable
             })
             if user and 'password_salt' in user:
                 hash_ = bcrypt.hashpw(password, str(user['password_salt']))
@@ -35,8 +36,9 @@ class MockBasicAuth(BasicAuth):
             if user_token:
                 user = app.data.driver.db['users'] \
                                       .find_one({'_id': user_token['user']})
-                if not user['active']:
-                    user = None
+                # FIXME: Re-enable later
+                # if not user['active']:
+                #     user = None
 
         if user:
             # app.logger.debug(

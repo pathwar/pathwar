@@ -7,7 +7,7 @@ def request_get_user(request):
         if auth.get('password'):  # user:pass
             return current_app.data.driver.db['users'].find_one({
                 'login': auth.get('username'),
-                'active': True
+                # 'active': True,  # FIXME: Reenable later
             })
         else:  # token
             user_token = current_app \
