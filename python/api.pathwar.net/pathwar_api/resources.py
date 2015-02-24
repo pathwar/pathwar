@@ -419,7 +419,6 @@ organization_level_validations = {
         },
         'organization': {
             'type': 'uuid',
-            'required': True,
             'data_relation': {
                 'resource': 'organizations',
                 'field': '_id',
@@ -428,7 +427,6 @@ organization_level_validations = {
         },
         'level': {
             'type': 'uuid',
-            'required': True,
             'data_relation': {
                 'resource': 'levels',
                 'field': '_id',
@@ -449,6 +447,20 @@ organization_level_validations = {
         },
         'screenshot': {
             'type': 'string',
+        },
+        'passphrases': {
+            'type': 'list',
+            'schema': {
+                'type': 'dict',
+                'schema': {
+                    'key': {
+                        'type': 'string',
+                    },
+                    'value': {
+                        'type': 'string',
+                    },
+                },
+            },
         },
     },
 }
