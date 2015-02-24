@@ -864,6 +864,10 @@ user_notifications = {
 
     # 'url': 'users/<user>/notifications',
     'schema': {
+        'read': {
+            'type': 'boolean',
+            'default': False,
+        },
         'title': {
             'type': 'string',
         },
