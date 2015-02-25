@@ -22,7 +22,8 @@ def email_verify(user_id, email_verification_token):
                 },
             },
         )
-        return 'Email validated, you can now log in !'
+        # FIXME: 302 redirect to the portal
+        return 'Email validated (FIXME: 302)'
     else:
         abort(404)
     print(user, user_id, email_verification_token)
