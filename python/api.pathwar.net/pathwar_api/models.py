@@ -314,6 +314,9 @@ class OrganizationCouponItem(BaseItem):
     resource = 'organization-coupons'
 
     def on_pre_post_item(self, request, item):
+        if 'coupon' not in item:
+            abort(422, "Missing coupon")
+
         coupon = CouponItem.find_one({
             'hash': item['coupon'],
         })
