@@ -322,17 +322,17 @@ class OrganizationCouponItem(BaseItem):
         })
 
         if not coupon:
-            abort(404, "No such coupon")
+            abort(422, "No such coupon")
 
         # FIXME: race condition, need an atomic update + fetch
 
         if coupon['validations_left'] < 1:
-            abort(403, "Expired coupon")
+            abort(422, "Expired coupon")
 
         # Check if the user add a coupon to one of its organizations
         user = request_get_user(request)
         if not OrganizationItem.has_user(item['organization'], user['_id']):
-            abort(403, "You cannot validate a coupon for another organization")
+            abort(422, "You cannot validate a coupon for another organization")
 
         # Check if organization has already validated this coupon
         existing_coupon = OrganizationCouponItem.find_one({
@@ -340,7 +340,7 @@ class OrganizationCouponItem(BaseItem):
             'organization': item['organization'],
         })
         if existing_coupon:
-            abort(403, 'You already validated this coupon')
+            abort(422, 'You already validated this coupon')
 
         # Translate coupon name with its uuid
         item['coupon'] = coupon['_id']
