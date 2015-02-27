@@ -294,6 +294,15 @@ levels = {
             'maxlength': 16,
             'unique': True,
         },
+        'statistics': {
+            'type': 'uuid',
+            'required': False,
+            'data_relation': {
+                'resource': 'level-statistics',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
         'description': {
             'type': 'string',
         },

@@ -372,13 +372,21 @@ class OrganizationStatisticItem(BaseItem):
 class LevelItem(BaseItem):
     resource = 'levels'
 
-    # FIXME: on_insert -> create LevelStatisticItem (as for Organization)
+    def on_inserted(self, item):
+        post_internal('level-statistics', {
+            'level': item['_id'],
+        })
 
 
 class LevelStatisticsItem(BaseItem):
     resource = 'level-statistics'
 
-    # FIXME: mimic organizationstatistics
+    def on_inserted(self, item):
+        LevelItem.update_by_id(item['level'], {
+            '$set': {
+                'statistics': item['_id'],
+            },
+        })
 
 
 class LevelInstanceItem(BaseItem):
