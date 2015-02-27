@@ -492,6 +492,11 @@ organization_levels = {
                 'embeddable': True,
             },
         },
+        'status': {
+            'type': 'string',
+            'allowed': ['in progress', 'validated'],
+            'default': 'in progress'
+        },
         'level': {
             'type': 'uuid',
             'required': True,
