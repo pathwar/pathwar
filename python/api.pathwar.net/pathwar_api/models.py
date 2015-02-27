@@ -375,6 +375,12 @@ class LevelItem(BaseItem):
     # FIXME: on_insert -> create LevelStatisticItem (as for Organization)
 
 
+class LevelStatisticsItem(BaseItem):
+    resource = 'level-statistics'
+
+    # FIXME: mimic organizationstatistics
+
+
 class LevelInstanceItem(BaseItem):
     resource = 'level-instances'
 
@@ -446,6 +452,7 @@ models = {
     'coupons': CouponItem,
     'levels': LevelItem,
     'level-instances': LevelInstanceItem,
+    'level-statistics': LevelStatisticsItem,
     'organization-coupons': OrganizationCouponItem,
     'organization-levels': OrganizationLevelItem,
     'organization-level-validations': OrganizationLevelValidationItem,
