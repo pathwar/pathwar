@@ -301,6 +301,8 @@ class OrganizationStatisticItem(BaseItem):
 class LevelItem(BaseItem):
     resource = 'levels'
 
+    # FIXME: on_insert -> create LevelStatisticItem (as for Organization)
+
 
 class CouponItem(BaseItem):
     resource = 'coupons'

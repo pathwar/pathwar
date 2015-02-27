@@ -238,6 +238,41 @@ level_instances = {
 }
 
 
+level_statistics = {
+    'item_title': 'level statistics',
+
+    # collection
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'public_methods': [],
+    'allowed_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_write_roles': ['admin'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_item_methods': [],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['admin'],
+
+    'cache_control': 'private, no-cache, no-store, must-revalidate',
+
+    'schema': {
+        'level': {
+            'type': 'uuid',
+            'required': True,
+            'data_relation': {
+                'resource': 'levels',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'amount_bought': {'type': 'integer', 'default': 0},
+        'amount_finished': {'type': 'integer', 'default': 0},
+        'fivestar_average': {'type': 'integer', 'default': 0},
+        'duration_average': {'type': 'integer', 'default': 0},
+        'amount_hints_bought': {'type': 'integer', 'default': 0},
+    },
+}
+
+
 levels = {
     'item_title': 'level',
 
@@ -1112,6 +1147,7 @@ DOMAIN = {
     'items': items,
     'level-hints': level_hints,
     'level-instances': level_instances,
+    'level-statistics': level_statistics,
     'levels': levels,
     'organization-achievements': organization_achievements,
     'organization-coupons': organization_coupons,
