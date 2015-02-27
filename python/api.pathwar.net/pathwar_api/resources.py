@@ -501,6 +501,7 @@ organization_level_hints = {
         },
         'level_hint': {
             'type': 'uuid',
+            'required': True,
             'data_relation': {
                 'resource': 'level-hints',
                 'field': '_id',
