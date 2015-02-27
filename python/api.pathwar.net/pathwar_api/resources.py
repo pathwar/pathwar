@@ -456,6 +456,55 @@ organization_level_validations = {
         },
     },
 }
+
+
+organization_level_hints = {
+    'item_title': 'organization level hint',
+    'resource_title': 'organization level hints',
+
+    # collection
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'public_methods': [],
+    'allowed_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_write_roles': ['user', 'admin'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_item_methods': [],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['user', 'admin'],
+
+    'schema': {
+        'organization': {
+            'type': 'uuid',
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'level': {
+            'type': 'uuid',
+            'data_relation': {
+                'resource': 'levels',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'organization_level': {
+            'type': 'uuid',
+            'required': True,
+            'data_relation': {
+                'resource': 'organization-levels',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'level_hint': {
+            'type': 'uuid',
+            'data_relation': {
+                'resource': 'level-hints',
+                'field': '_id',
+                'embeddable': True,
             },
         },
     },
@@ -1067,6 +1116,7 @@ DOMAIN = {
     'organization-coupons': organization_coupons,
     'organization-items': organization_items,
     'organization-level-validations': organization_level_validations,
+    'organization-level-hints': organization_level_hints,
     'organization-levels': organization_levels,
     'organization-users': organization_users,
     'organizations': organizations,
