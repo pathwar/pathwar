@@ -1131,8 +1131,13 @@ DOMAIN = {
 
 
 # Use defaults
+uuid_regex = '[a-f0-9]{8}-?' \
+             '[a-f0-9]{4}-?' \
+             '4[a-f0-9]{3}-?' \
+             '[89ab][a-f0-9]{3}-?' \
+             '[a-f0-9]{12}'
 defaults = {
-    'item_url': 'regex("[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}")',
+    'item_url': 'regex("{}")'.format(uuid_regex),
     'public_methods': [],
     'public_item_methods': [],
 }
