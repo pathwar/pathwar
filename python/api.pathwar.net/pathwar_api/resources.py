@@ -451,15 +451,11 @@ organization_level_validations = {
         'passphrases': {
             'type': 'list',
             'schema': {
-                'type': 'dict',
-                'schema': {
-                    'key': {
-                        'type': 'string',
-                    },
-                    'value': {
-                        'type': 'string',
-                    },
-                },
+                'type': 'string',
+            },
+        },
+    },
+}
             },
         },
     },
