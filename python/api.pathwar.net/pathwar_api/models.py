@@ -132,7 +132,7 @@ class UserItem(BaseItem):
 
         # Create an organization in the default session
         default_organization = post_internal('organizations', {
-            'name': 'default organization for {}'.format(item['login']),
+            'name': '{}'.format(item['login']),
             'session': default_session()['_id'],
             'owner': item['_id'],
             'gravatar_email': item['email'],
