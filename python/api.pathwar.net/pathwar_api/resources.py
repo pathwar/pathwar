@@ -477,6 +477,15 @@ organization_level_validations = {
                 'embeddable': True,
             },
         },
+        'author': {
+            'type': 'uuid',
+            'required': False,
+            'data_relation': {
+                'resource': 'users',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
         'explanation': {
             'type': 'string',
         },
@@ -484,6 +493,7 @@ organization_level_validations = {
             'type': 'string',
         },
         'passphrases': {
+            'required': True,
             'type': 'list',
             'schema': {
                 'type': 'string',

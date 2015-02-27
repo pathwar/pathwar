@@ -1,4 +1,5 @@
 from uuid import uuid4
+import itertools
 import json
 import random
 import md5
@@ -287,6 +288,76 @@ class OrganizationLevelItem(BaseItem):
         })
 
 
+class OrganizationLevelValidationItem(BaseItem):
+    resource = 'organization-level-validations'
+
+    def on_pre_post_item(self, request, item):
+        # Checking for mandatory fields
+        if 'organization_level' not in item:
+            abort(422, "Missing organization_level")
+        if 'passphrases' not in item:
+            abort(422, "Missing passphrases")
+        if not isinstance(item['passphrases'], list) or \
+           not len(item['passphrases']):
+            abort(422, "Invalid type for passphrases")
+        passphrases = map(str, item['passphrases'])
+        current_app.logger.warn(passphrases)
+        current_app.logger.warn(list(set(passphrases)))
+        if sorted(list(set(passphrases))) != sorted(passphrases):
+            abort(422, "Passphrases may be validated once")
+
+        # FIXME: race condition, need an atomic update + fetch
+
+        # Get OrganizationLevel from database
+        organization_level = OrganizationLevelItem.get_by_id(
+            item['organization_level'],
+        )
+        if not organization_level:
+            abort(422, "No such organization_level")
+        current_app.logger.info(
+            'organization_level: {}'.format(organization_level)
+        )
+
+        # Check if the user validate a level for one if its organizations
+        user = request_get_user(request)
+        if not OrganizationItem.has_user(
+                organization_level['organization'], user['_id']
+        ):
+            abort(422, "You cannot validate a coupon for another organization")
+
+        # Add author
+        item['author'] = user['_id']
+
+        # Add computed organization and level uuids
+        item['organization'] = organization_level['organization']
+        item['level'] = organization_level['level']
+
+        # FIXME: check if passphrase was already validated in another validation
+
+        # Checking if passphrases are valid
+        # FIXME: make the mongodb query filter more restrictive
+        level_instances = LevelInstanceItem.find({
+            'level': organization_level['level'],
+        })
+        available_passphrases = [
+            passphrase['value']
+            for passphrase in list(itertools.chain(*[
+                    level_instance['passphrases']
+                    for level_instance in level_instances
+            ]))
+        ]
+        current_app.logger.warn('{}'.format(available_passphrases))
+        for passphrase in passphrases:
+            if passphrase not in available_passphrases:
+                abort(422, "Bad passphrase")
+        current_app.logger.info('level: {}'.format(available_passphrases))
+
+    def on_inserted(self, item):
+        # FIXME: compute all the validations and update the OrganizationLevel
+        # FIXME: flag level instance as pwned -> redump if needed
+        pass
+
+
 class OrganizationStatisticItem(BaseItem):
     resource = 'organization-statistics'
 
@@ -302,6 +373,10 @@ class LevelItem(BaseItem):
     resource = 'levels'
 
     # FIXME: on_insert -> create LevelStatisticItem (as for Organization)
+
+
+class LevelInstanceItem(BaseItem):
+    resource = 'level-instances'
 
 
 class CouponItem(BaseItem):
@@ -370,8 +445,10 @@ class OrganizationCouponItem(BaseItem):
 models = {
     'coupons': CouponItem,
     'levels': LevelItem,
+    'level-instances': LevelInstanceItem,
     'organization-coupons': OrganizationCouponItem,
     'organization-levels': OrganizationLevelItem,
+    'organization-level-validations': OrganizationLevelValidationItem,
     'organization-statistics': OrganizationStatisticItem,
     'organization-users': OrganizationUserItem,
     'organizations': OrganizationItem,
