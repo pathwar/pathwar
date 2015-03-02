@@ -354,8 +354,8 @@ levels = {
         },
         'difficulty': {
             'type': 'integer',
-            'default': 2.5
-         }
+            'default': 1
+         },
         'lang': {
             'type': 'string',
             'default': 'en',
