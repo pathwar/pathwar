@@ -350,7 +350,7 @@ levels = {
         },
         'reward': {
             'type': 'integer',
-            'default': 1,
+            'default': 1
         },
         'difficulty': {
             'type': 'integer',
