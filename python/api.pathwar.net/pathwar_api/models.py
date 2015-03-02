@@ -290,6 +290,12 @@ class OrganizationLevelItem(BaseItem):
 
         # FIXME: add transaction history for statistics recomputing
 
+        # FIXME: add ranking (for medals)
+
+        # FIXME: check for achievements
+
+        # FIXME: send notification to teamates)
+
         # Add an activity
         post_internal('activities', {
             # 'user': item['owner'],
