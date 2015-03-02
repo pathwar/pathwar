@@ -625,6 +625,10 @@ organization_levels = {
                 'embeddable': True,
             },
         },
+        'rank': {
+            'type': 'integer',
+            'default': 0,
+        },
         'status': {
             'type': 'string',
             'allowed': ['in progress', 'validated'],
