@@ -87,7 +87,7 @@ suite("[seed]", function() {
 
       test("should create some sessions as admin", function(done) {
         var objects = [{
-          name: 'Worldwide',
+          name: 'World',
           public: true
         }, {
           name: 'Staff',
