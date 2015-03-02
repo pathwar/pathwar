@@ -348,6 +348,10 @@ levels = {
             'type': 'string',
             'default': 'dev',
         },
+        'gain': {
+            'type': 'integer',
+            'default': 1,
+        },
         'lang': {
             'type': 'string',
             'default': 'en',
