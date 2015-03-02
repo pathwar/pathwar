@@ -348,7 +348,7 @@ levels = {
             'type': 'string',
             'default': 'dev',
         },
-        'gain': {
+        'reward': {
             'type': 'integer',
             'default': 1,
         },
