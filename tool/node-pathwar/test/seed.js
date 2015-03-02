@@ -379,53 +379,83 @@ suite("[seed]", function() {
           description: 'An easy welcome level',
           price: 0,
           tags: ['easy', 'welcome', 'official', 'free'],
-          author: 'Pathwar Team'
+          author: {
+            'string': 'Pathwar Team',
+            'organization': refs['organizations'][1]
+          }
         }, {
           name: 'pnu',
           description: 'Possible not upload',
           price: 42,
           tags: ['php', 'advanced'],
-          author: 'Pathwar Team'
+          author: {
+            'string': 'Pathwar Team',
+            'organization': refs['organizations'][1]
+          }
         }, {
           name: 'calc',
           price: 42,
           tags: ['python', 'sql', 'easy'],
-          author: 'Pathwar Team'
+          author: {
+            'string': 'Pathwar Team',
+            'organization': refs['organizations'][1]
+          }
         }, {
           name: 'upload-hi',
           price: 10,
           tags: ['easy', 'upload', 'php'],
-          author: 'Pathwar Team'
+          author: {
+            'string': 'Pathwar Team',
+            'organization': refs['organizations'][1]
+          }
         }, {
           name: 'training-http',
           price: 0,
           tags: ['tutorial', 'easy', 'free'],
-          author: 'Pathwar Team'
+          author: {
+            'string': 'Pathwar Team',
+            'organization': refs['organizations'][1]
+          }
         }, {
           name: 'training-sqli',
           price: 0,
           tags: ['tutorial', 'easy', 'free'],
-          author: 'Pathwar Team'
+          author: {
+            'string': 'Pathwar Team',
+            'organization': refs['organizations'][1]
+          }
         }, {
           name: 'training-brute',
           price: 0,
           tags: ['tutorial', 'easy', 'free'],
-          author: 'Pathwar Team'
+          author: {
+            'string': 'Pathwar Team',
+            'organization': refs['organizations'][1]
+          }
         }, {
           name: 'training-include',
           price: 0,
           tags: ['tutorial', 'easy', 'free'],
-          author: 'Pathwar Team'
+          author: {
+            'string': 'Pathwar Team',
+            'organization': refs['organizations'][1]
+          }
         }, {
           name: 'training-tools',
           price: 0,
           tags: ['tutorial', 'easy', 'free'],
-          author: 'Pathwar Team'
+          author: {
+            'string': 'Pathwar Team',
+            'organization': refs['organizations'][1]
+          }
         }, {
           name: 'captcha',
           price: 0,
           tags: ['tutorial', 'easy', 'free'],
-          author: 'Pathwar Team'
+          author: {
+            'string': 'Pathwar Team',
+            'organization': refs['organizations'][1]
+          }
         }];
 
         for (var i = 1; i < 50; i++) {
@@ -433,7 +463,10 @@ suite("[seed]", function() {
             name: 'fake-level-' + i,
             price: Math.ceil(Math.random() * 30),
             tags: ['fake', 'dummy'],
-            author: 'Pathwar Team'
+            author: {
+              'string': 'Pathwar Team',
+              'organization': refs['organizations'][1]
+            }
           });
         }
         client.post("/levels", objects).then(
