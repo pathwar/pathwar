@@ -1215,6 +1215,76 @@ users = {
 }
 
 
+whoswhos = {
+    'item_title': 'whoswho',
+    'resource_title': 'whoswhos',
+
+    # collection
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'public_methods': [],
+    'allowed_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_write_roles': ['user', 'admin'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_item_methods': [],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['user', 'admin'],
+
+    'schema': {
+        'status': {
+            'type': 'string',
+            'allowed': ['success', 'failure'],
+            'default': 'pending'
+        },
+        'from': {
+            'type': 'dict',
+            'schema': {
+                'organization': {
+                    'type': 'uuid',
+                    'required': True,
+                    'data_relation': {
+                        'resource': 'organizations',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+                'author': {
+                    'type': 'uuid',
+                    'data_relation': {
+                        'resource': 'users',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+            },
+        },
+        'to': {
+            'type': 'dict',
+            'schema': {
+                'organization': {
+                    'type': 'uuid',
+                    'required': True,
+                    'data_relation': {
+                        'resource': 'organizations',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+                'author': {
+                    'type': 'uuid',
+                    'required': True,
+                    'data_relation': {
+                        'resource': 'users',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+            },
+        },
+    },
+}
+
+
 DOMAIN = {
     # Exposed
     'achievements': achievements,
@@ -1240,6 +1310,7 @@ DOMAIN = {
     'user-notifications': user_notifications,
     'user-tokens': user_tokens,
     'users': users,
+    'whoswhos': whoswhos,
 }
 
 
