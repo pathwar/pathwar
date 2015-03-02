@@ -352,6 +352,10 @@ levels = {
             'type': 'integer',
             'default': 1,
         },
+        'difficulty': {
+            'type': 'integer',
+            'default': 2.5
+         }
         'lang': {
             'type': 'string',
             'default': 'en',
