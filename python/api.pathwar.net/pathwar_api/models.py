@@ -9,7 +9,7 @@ from eve.methods.post import post, post_internal
 from eve.methods.patch import patch_internal
 from flask import abort, current_app, url_for
 
-from utils import request_get_user, default_session
+from utils import request_get_user
 from mail import mail, send_mail
 
 
@@ -81,6 +81,22 @@ class OrganizationUserItem(BaseItem):
     resource = 'organization-users'
 
 
+class SessionItem(BaseItem):
+    resource = 'sessions'
+
+    @classmethod
+    def get_by_name(cls, name):
+        return cls.find_one({'name': name})
+
+    @classmethod
+    def world_session(cls):
+        return cls.get_by_name('World')
+
+    @classmethod
+    def beta_session(cls):
+        return cls.get_by_name('Beta')
+
+
 class UserItem(BaseItem):
     resource = 'users'
 
@@ -134,7 +150,7 @@ class UserItem(BaseItem):
         # Create an organization in the default session
         default_organization = post_internal('organizations', {
             'name': '{}'.format(item['login']),
-            'session': default_session()['_id'],
+            'session': SessionItem.world_session()['_id'],
             'owner': item['_id'],
             'gravatar_email': item['email'],
         })

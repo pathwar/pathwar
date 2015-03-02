@@ -24,9 +24,3 @@ def request_get_user(request):
                     .db['users'] \
                     .find_one({'_id': user_token['user']})
     return None
-
-
-def default_session():
-    return current_app.data.driver.db['sessions'].find_one({
-        'name': 'Worldwide'
-    })
