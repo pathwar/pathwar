@@ -177,17 +177,6 @@ level_instances = {
                 'embeddable': True,
             },
         },
-        'organizations': {
-            'type': 'list',
-            'schema': {
-                'type': 'uuid',
-                'data_relation': {
-                    'resource': 'organizations',
-                    'field': '_id',
-                    'embeddable': True,
-                },
-            },
-        },
         'overrides': {
             'type': 'list',
             'schema': {
@@ -303,6 +292,22 @@ levels = {
                 'embeddable': True,
             },
         },
+        'availability': {
+            'type': 'dict',
+            'schema': {
+                'sessions': {
+                    'type': 'list',
+                    'schema': {
+                        'type': 'uuid',
+                        'data_relation': {
+                            'resource': 'sessions',
+                            'field': '_id',
+                            'embeddable': True,
+                        },
+                    },
+                },
+            },
+        },
         'description': {
             'type': 'string',
         },
@@ -344,6 +349,17 @@ levels = {
             'type': 'integer',
             'default': 1,
         },
+        'sources': {
+            'type': 'dict',
+            'schema': {
+                'git': {
+                    'type': 'string',
+                },
+                'build': {
+                    'type': 'string',
+                },
+            },
+        },
         'version': {
             'type': 'string',
             'default': 'dev',
@@ -355,10 +371,14 @@ levels = {
         'difficulty': {
             'type': 'integer',
             'default': 1
-         },
+        },
         'lang': {
             'type': 'string',
             'default': 'en',
+        },
+        'version': {
+            'type': 'string',
+            'default': 'latest',
         },
         'defaults': {
             'type': 'dict',
