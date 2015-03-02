@@ -308,7 +308,7 @@ levels = {
         },
         'price': {
             'type': 'integer',
-            'default': 4242,
+            'default': 1,
         },
         'tags': {
             'type': 'list',
@@ -317,8 +317,28 @@ levels = {
             'type': 'string',
         },
         'author': {
-            'type': 'string',
-            'default': 'Anonymous',
+            'type': 'dict',
+            'schema': {
+                'string': {
+                    'type': 'string',
+                },
+                'user': {
+                    'type': 'uuid',
+                    'data_relation': {
+                        'resource': 'user',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+                'organization': {
+                    'type': 'uuid',
+                    'data_relation': {
+                        'resource': 'organizations',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+            },
         },
         'passphrases_amount': {
             'type': 'integer',
@@ -332,21 +352,26 @@ levels = {
             'type': 'string',
             'default': 'en',
         },
-        'default_memory_limit': {
-            'type': 'string',
-            'default': '16M',
-        },
-        'default_cpu_shares': {
-            'type': 'string',
-            'default': '1/10',
-        },
-        'default_redump': {
-            'type': 'integer',
-            'default': 600,
-        },
-        'default_rootable': {
-            'type': 'boolean',
-            'default': True,
+        'defaults': {
+            'type': 'dict',
+            'schema': {
+                'memory_limit': {
+                    'type': 'string',
+                    'default': '16M',
+                },
+                'cpu_shares': {
+                    'type': 'string',
+                    'default': '1/10',
+                },
+                'redump': {
+                    'type': 'integer',
+                    'default': 600,
+                },
+                'rootable': {
+                    'type': 'boolean',
+                    'default': True,
+                },
+            },
         },
     },
 }
