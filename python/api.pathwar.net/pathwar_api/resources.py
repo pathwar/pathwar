@@ -1269,6 +1269,13 @@ users = {
             'type': 'string',
             'readonly': True,
         },
+        'groups': {
+            'type': 'list',
+            'schema': {
+                'type': 'string',
+                'allowed': ['security', 'staff', 'developer', 'beta'],
+            },
+        },
         'available_sessions': {
             'type': 'list',
             'schema': {
