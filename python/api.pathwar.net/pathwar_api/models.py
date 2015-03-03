@@ -288,12 +288,6 @@ class OrganizationLevelItem(BaseItem):
                 'user': user['_id'],
             })
 
-        # FIXME: add transaction history for statistics recomputing
-
-        # FIXME: add ranking (for medals)
-
-        # FIXME: check for achievements
-
         # FIXME: send notification to teamates)
 
         # Add an activity
@@ -308,6 +302,13 @@ class OrganizationLevelItem(BaseItem):
                 {'kind': 'organization-levels', 'id': item['_id']},
             ],
         })
+
+    # def on_updated(self, item):
+        # FIXME: add transaction history for statistics recomputing
+        # FIXME: add ranking (for medals)
+        # FIXME: check for achievements
+        # FIXME: compute rewards
+
 
 
 class OrganizationLevelValidationItem(BaseItem):
