@@ -310,7 +310,6 @@ class OrganizationLevelItem(BaseItem):
         # FIXME: compute rewards
 
 
-
 class OrganizationLevelValidationItem(BaseItem):
     resource = 'organization-level-validations'
 
@@ -379,6 +378,9 @@ class OrganizationLevelValidationItem(BaseItem):
         # FIXME: compute all the validations and update the OrganizationLevel
         # FIXME: flag level instance as pwned -> redump if needed
         pass
+
+
+# FIXME: class OrganizationLevelHintItem
 
 
 class OrganizationStatisticItem(BaseItem):
