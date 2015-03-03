@@ -101,6 +101,76 @@ items = {
 }
 
 
+hijack_proof = {
+    'item_title': 'hijack proof',
+    'resource_title': 'hijack proofs',
+
+    # collection
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'public_methods': [],
+    'allowed_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_write_roles': ['user', 'admin'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_item_methods': [],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['user', 'admin'],
+
+    'schema': {
+        'status': {
+            'type': 'string',
+            'allowed': ['success', 'failure'],
+            'default': 'pending'
+        },
+        'from': {
+            'type': 'dict',
+            'schema': {
+                'organization': {
+                    'type': 'uuid',
+                    'required': True,
+                    'data_relation': {
+                        'resource': 'organizations',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+                'author': {
+                    'type': 'uuid',
+                    'data_relation': {
+                        'resource': 'users',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+            },
+        },
+        'to': {
+            'type': 'dict',
+            'schema': {
+                'organization': {
+                    'type': 'uuid',
+                    'required': True,
+                    'data_relation': {
+                        'resource': 'organizations',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+                'author': {
+                    'type': 'uuid',
+                    'required': True,
+                    'data_relation': {
+                        'resource': 'users',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+            },
+        },
+    },
+}
+
+
 level_hints = {
     'item_title': 'level hint',
     'resource_title': 'level hints',
@@ -1290,6 +1360,7 @@ DOMAIN = {
     'achievements': achievements,
     'activities': activities,
     'coupons': coupons,
+    'hijack_proof': hijack_proof,
     'items': items,
     'level-hints': level_hints,
     'level-instances': level_instances,
