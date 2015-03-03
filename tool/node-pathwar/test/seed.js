@@ -141,7 +141,8 @@ suite("[seed]", function() {
           //  refs['sessions'][0]['_id'],
           //  refs['sessions'][1]['_id']
           //],
-          password: 'super-secure'
+          password: 'super-secure',
+          groups: ['beta', 'developer', 'security']
         }, {
           login: 'test-moderator',
           email: 'test-moderator@pathwar.net',
@@ -170,7 +171,8 @@ suite("[seed]", function() {
           login: 'moul',
           email: 'm@42.am',
           active: true,
-          password: 'super-secure'
+          password: 'super-secure',
+          groups: ['staff']
         }];
         client.post("/users", objects).then(
           function(res) {
