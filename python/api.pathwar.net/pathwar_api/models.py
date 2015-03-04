@@ -13,7 +13,7 @@ from utils import request_get_user
 from mail import mail, send_mail
 
 
-class BaseItem(object):
+class BaseModel(object):
     def __init__(self):
         pass
 
@@ -77,19 +77,19 @@ class BaseItem(object):
             self.on_post_post_item(request, response, item)
 
 
-class AchievementItem(BaseItem):
+class Achievement(BaseModel):
     resource = 'achievements'
 
 
-class ActivityItem(BaseItem):
+class Activity(BaseModel):
     resource = 'activity'
 
 
-class OrganizationUserItem(BaseItem):
+class OrganizationUser(BaseModel):
     resource = 'organization-users'
 
 
-class SessionItem(BaseItem):
+class Session(BaseModel):
     resource = 'sessions'
 
     @classmethod
@@ -105,13 +105,13 @@ class SessionItem(BaseItem):
         return cls.get_by_name('Beta')
 
 
-class UserItem(BaseItem):
+class User(BaseModel):
     resource = 'users'
 
     @classmethod
     def get_by_organization_id(cls, organization_id):
         users_uuid = [
-            str(member['user']) for member in OrganizationUserItem.find({
+            str(member['user']) for member in OrganizationUser.find({
                 'organization': organization_id,
             })
         ]
@@ -135,7 +135,7 @@ class UserItem(BaseItem):
         ).hexdigest()
 
     def on_insert(self, item):
-        super(UserItem, self).on_insert(item)
+        super(User, self).on_insert(item)
         item['password_salt'] = bcrypt.gensalt().encode('utf-8')
         item['email_verification_token'] = str(uuid4())
         # item['otp_secret'] = ...
@@ -158,7 +158,7 @@ class UserItem(BaseItem):
         # Create an organization in the default session
         default_organization = post_internal('organizations', {
             'name': '{}'.format(item['login']),
-            'session': SessionItem.world_session()['_id'],
+            'session': Session.world_session()['_id'],
             'owner': item['_id'],
             'gravatar_email': item['email'],
         })
@@ -190,19 +190,19 @@ class UserItem(BaseItem):
             lookup['_id'] = request_get_user(request)['_id']
 
 
-class UserHijackProofItem(BaseItem):
+class UserHijackProof(BaseModel):
     resource = 'user-hijack-proofs'
 
 
-class UserNotificationItem(BaseItem):
+class UserNotification(BaseModel):
     resource = 'user-notifications'
 
 
-class UserOrganizationInviteItem(BaseItem):
+class UserOrganizationInvite(BaseModel):
     resource = 'user-organization-invites'
 
 
-class UserTokenItem(BaseItem):
+class UserToken(BaseModel):
     resource = 'user-tokens'
 
     def on_pre_post_item(self, request, item):
@@ -231,13 +231,13 @@ class UserTokenItem(BaseItem):
         })
 
 
-class OrganizationItem(BaseItem):
+class Organization(BaseModel):
     resource = 'organizations'
 
     @classmethod
     def statistics_increment(cls, organization_id, payload):
         organization = cls.get_by_id(organization_id)
-        OrganizationStatisticItem.update_by_id(
+        OrganizationStatistic.update_by_id(
             organization['statistics'], {
                 '$inc': payload,
             }
@@ -245,7 +245,7 @@ class OrganizationItem(BaseItem):
 
     @classmethod
     def has_user(cls, organization_id, user_id):
-        return OrganizationUserItem.find_one({
+        return OrganizationUser.find_one({
             'organization': organization_id,
             'user': user_id,
         })
@@ -258,7 +258,7 @@ class OrganizationItem(BaseItem):
             item['owner'] = request_get_user(request)['_id']
 
     def on_insert(self, item):
-        super(OrganizationItem, self).on_insert(item)
+        super(Organization, self).on_insert(item)
         if 'gravatar_email' in item and item['gravatar_email']:
             item['gravatar_hash'] = md5.new(
                 item['gravatar_email'].lower().strip()
@@ -288,20 +288,20 @@ class OrganizationItem(BaseItem):
         })
 
 
-class OrganizationLevelItem(BaseItem):
+class OrganizationLevel(BaseModel):
     resource = 'organization-levels'
 
     def on_inserted(self, item):
         # Removing cash
-        level = LevelItem.get_by_id(item['level'])
+        level = Level.get_by_id(item['level'])
         if level['price']:
-            OrganizationItem.statistics_increment(
+            Organization.statistics_increment(
                 item['organization'], {
                     'cash': -level['price'],
                 })
 
         # Create a notification for each members of the team
-        members = UserItem.get_by_organization_id(item['organization'])
+        members = User.get_by_organization_id(item['organization'])
         for user in members:
             post_internal('user-notifications', {
                 'title': 'Your team bought a new level',
@@ -330,7 +330,7 @@ class OrganizationLevelItem(BaseItem):
         # FIXME: compute rewards
 
 
-class OrganizationLevelValidationItem(BaseItem):
+class OrganizationLevelValidation(BaseModel):
     resource = 'organization-level-validations'
 
     def on_pre_post_item(self, request, item):
@@ -351,7 +351,7 @@ class OrganizationLevelValidationItem(BaseItem):
         # FIXME: race condition, need an atomic update + fetch
 
         # Get OrganizationLevel from database
-        organization_level = OrganizationLevelItem.get_by_id(
+        organization_level = OrganizationLevel.get_by_id(
             item['organization_level'],
         )
         if not organization_level:
@@ -362,7 +362,7 @@ class OrganizationLevelValidationItem(BaseItem):
 
         # Check if the user validate a level for one if its organizations
         user = request_get_user(request)
-        if not OrganizationItem.has_user(
+        if not Organization.has_user(
                 organization_level['organization'], user['_id']
         ):
             abort(422, "You cannot validate a coupon for another organization")
@@ -379,7 +379,7 @@ class OrganizationLevelValidationItem(BaseItem):
 
         # Checking if passphrases are valid
         # FIXME: make the mongodb query filter more restrictive
-        level_instances = LevelInstanceItem.find({
+        level_instances = LevelInstance.find({
             'level': organization_level['level'],
         })
         available_passphrases = [
@@ -401,30 +401,30 @@ class OrganizationLevelValidationItem(BaseItem):
         pass
 
 
-class OrganizationLevelHintItem(BaseItem):
+class OrganizationLevelHint(BaseModel):
     resource = 'organization-level-hints'
 
 
-class OrganizationStatisticItem(BaseItem):
+class OrganizationStatistic(BaseModel):
     resource = 'organization-statistics'
 
     def on_inserted(self, item):
-        OrganizationItem.update_by_id(item['organization'], {
+        Organization.update_by_id(item['organization'], {
             '$set': {
                 'statistics': item['_id'],
             },
         })
 
 
-class InfrastructureHijackItem(BaseItem):
+class InfrastructureHijack(BaseModel):
     resource = 'infrastructure-hijacks'
 
 
-class ItemItem(BaseItem):
+class Item(BaseModel):
     resource = 'items'
 
 
-class LevelItem(BaseItem):
+class Level(BaseModel):
     resource = 'levels'
 
     def on_inserted(self, item):
@@ -433,49 +433,49 @@ class LevelItem(BaseItem):
         })
 
 
-class LevelStatisticsItem(BaseItem):
+class LevelStatistics(BaseModel):
     resource = 'level-statistics'
 
     def on_inserted(self, item):
-        LevelItem.update_by_id(item['level'], {
+        Level.update_by_id(item['level'], {
             '$set': {
                 'statistics': item['_id'],
             },
         })
 
 
-class LevelHintItem(BaseItem):
+class LevelHint(BaseModel):
     resource = 'level-hints'
 
 
-class LevelInstanceItem(BaseItem):
+class LevelInstance(BaseModel):
     resource = 'level-instances'
 
 
-class CouponItem(BaseItem):
+class Coupon(BaseModel):
     resource = 'coupons'
 
     def on_insert(self, item):
-        super(CouponItem, self).on_insert(item)
+        super(Coupon, self).on_insert(item)
         item['validations_left'] = item['validations_limit']
 
 
-class OrganizationItemItem(BaseItem):
+class OrganizationItem(BaseModel):
     resource = 'organization-items'
 
 
-class OrganizationAchievementItem(BaseItem):
+class OrganizationAchievement(BaseModel):
     resource = 'organization-achievements'
 
 
-class OrganizationCouponItem(BaseItem):
+class OrganizationCoupon(BaseModel):
     resource = 'organization-coupons'
 
     def on_pre_post_item(self, request, item):
         if 'coupon' not in item:
             abort(422, "Missing coupon")
 
-        coupon = CouponItem.find_one({
+        coupon = Coupon.find_one({
             'hash': item['coupon'],
         })
 
@@ -489,11 +489,11 @@ class OrganizationCouponItem(BaseItem):
 
         # Check if the user add a coupon to one of its organizations
         user = request_get_user(request)
-        if not OrganizationItem.has_user(item['organization'], user['_id']):
+        if not Organization.has_user(item['organization'], user['_id']):
             abort(422, "You cannot validate a coupon for another organization")
 
         # Check if organization has already validated this coupon
-        existing_coupon = OrganizationCouponItem.find_one({
+        existing_coupon = OrganizationCoupon.find_one({
             'coupon': coupon['_id'],
             'organization': item['organization'],
         })
@@ -507,7 +507,7 @@ class OrganizationCouponItem(BaseItem):
         item['author'] = user['_id']
 
         # Decrease the validations_left
-        CouponItem.update_by_id(
+        Coupon.update_by_id(
             coupon['_id'], {
                 '$inc': {
                     'validations_left': -1,
@@ -516,51 +516,51 @@ class OrganizationCouponItem(BaseItem):
         )
 
         # Removing cash
-        OrganizationItem.statistics_increment(
+        Organization.statistics_increment(
             item['organization'], {
                 'cash': coupon['value']
             })
 
 
-class WhoswhoAttemptItem(BaseItem):
+class WhoswhoAttempt(BaseModel):
     resource = 'whoswho-attempts'
 
 
-class ServerItem(BaseItem):
+class Server(BaseModel):
     resource = 'servers'
 
 
 # Resource name / class mapping
 models = {
-    'achievements': AchievementItem,
-    'activities': ActivityItem,
-    'coupons': CouponItem,
-    'infrastructure-hijacks': InfrastructureHijackItem,
-    'items': ItemItem,
-    'level-hints': LevelHintItem,
-    'level-instances': LevelInstanceItem,
-    'level-statistics': LevelStatisticsItem,
-    'levels': LevelItem,
-    'organization-achievements': OrganizationAchievementItem,
-    'organization-coupons': OrganizationCouponItem,
-    'organization-items': OrganizationItemItem,
-    'organization-level-hints': OrganizationLevelHintItem,
-    'organization-level-validations': OrganizationLevelValidationItem,
-    'organization-levels': OrganizationLevelItem,
-    'organization-statistics': OrganizationStatisticItem,
-    'organization-users': OrganizationUserItem,
-    'organizations': OrganizationItem,
-    'servers': ServerItem,
-    'sessions': SessionItem,
-    'user-hijack-proofs': UserHijackProofItem,
-    'user-notifications': UserNotificationItem,
-    'user-organization-invites': UserOrganizationInviteItem,
-    'user-tokens': UserTokenItem,
-    'users': UserItem,
-    'whoswho-attempts': WhoswhoAttemptItem,
+    'achievements': Achievement,
+    'activities': Activity,
+    'coupons': Coupon,
+    'infrastructure-hijacks': InfrastructureHijack,
+    'items': Item,
+    'level-hints': LevelHint,
+    'level-instances': LevelInstance,
+    'level-statistics': LevelStatistics,
+    'levels': Level,
+    'organization-achievements': OrganizationAchievement,
+    'organization-coupons': OrganizationCoupon,
+    'organization-items': OrganizationItem,
+    'organization-level-hints': OrganizationLevelHint,
+    'organization-level-validations': OrganizationLevelValidation,
+    'organization-levels': OrganizationLevel,
+    'organization-statistics': OrganizationStatistic,
+    'organization-users': OrganizationUser,
+    'organizations': Organization,
+    'servers': Server,
+    'sessions': Session,
+    'user-hijack-proofs': UserHijackProof,
+    'user-notifications': UserNotification,
+    'user-organization-invites': UserOrganizationInvite,
+    'user-tokens': UserToken,
+    'users': User,
+    'whoswho-attempts': WhoswhoAttempt,
 }
 
 
 def resource_get_model(resource):
     """ Returns class matching resource name string. """
-    return models.get(resource, BaseItem)
+    return models.get(resource, BaseModel)
