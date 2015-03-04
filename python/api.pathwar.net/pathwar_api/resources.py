@@ -202,6 +202,10 @@ level_instances = {
                 'embeddable': True,
             },
         },
+        'active': {
+            'type': 'boolean',
+            'default': True,
+        }
         'server': {
             'type': 'uuid',
             'required': True,
