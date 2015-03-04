@@ -77,6 +77,14 @@ class BaseItem(object):
             self.on_post_post_item(request, response, item)
 
 
+class AchievementItem(BaseItem):
+    resource = 'achievements'
+
+
+class ActivityItem(BaseItem):
+    resource = 'activity'
+
+
 class OrganizationUserItem(BaseItem):
     resource = 'organization-users'
 
@@ -180,6 +188,18 @@ class UserItem(BaseItem):
         if 'login' in lookup:
             del lookup['login']
             lookup['_id'] = request_get_user(request)['_id']
+
+
+class UserHijackProofItem(BaseItem):
+    resource = 'user-hijack-proofs'
+
+
+class UserNotificationItem(BaseItem):
+    resource = 'user-notifications'
+
+
+class UserOrganizationInviteItem(BaseItem):
+    resource = 'user-organization-invites'
 
 
 class UserTokenItem(BaseItem):
@@ -381,7 +401,8 @@ class OrganizationLevelValidationItem(BaseItem):
         pass
 
 
-# FIXME: class OrganizationLevelHintItem
+class OrganizationLevelHintItem(BaseItem):
+    resource = 'organization-level-hints'
 
 
 class OrganizationStatisticItem(BaseItem):
@@ -393,6 +414,14 @@ class OrganizationStatisticItem(BaseItem):
                 'statistics': item['_id'],
             },
         })
+
+
+class InfrastructureHijackItem(BaseItem):
+    resource = 'infrastructure-hijacks'
+
+
+class ItemItem(BaseItem):
+    resource = 'items'
 
 
 class LevelItem(BaseItem):
@@ -415,6 +444,10 @@ class LevelStatisticsItem(BaseItem):
         })
 
 
+class LevelHintItem(BaseItem):
+    resource = 'level-hints'
+
+
 class LevelInstanceItem(BaseItem):
     resource = 'level-instances'
 
@@ -425,6 +458,14 @@ class CouponItem(BaseItem):
     def on_insert(self, item):
         super(CouponItem, self).on_insert(item)
         item['validations_left'] = item['validations_limit']
+
+
+class OrganizationItemItem(BaseItem):
+    resource = 'organization-items'
+
+
+class OrganizationAchievementItem(BaseItem):
+    resource = 'organization-achievements'
 
 
 class OrganizationCouponItem(BaseItem):
@@ -481,20 +522,42 @@ class OrganizationCouponItem(BaseItem):
             })
 
 
+class WhoswhoAttemptItem(BaseItem):
+    resource = 'whoswho-attempts'
+
+
+class ServerItem(BaseItem):
+    resource = 'servers'
+
+
 # Resource name / class mapping
 models = {
+    'achievements': AchievementItem,
+    'activities': ActivityItem,
     'coupons': CouponItem,
-    'levels': LevelItem,
+    'infrastructure-hijacks': InfrastructureHijackItem,
+    'items': ItemItem,
+    'level-hints': LevelHintItem,
     'level-instances': LevelInstanceItem,
     'level-statistics': LevelStatisticsItem,
+    'levels': LevelItem,
+    'organization-achievements': OrganizationAchievementItem,
     'organization-coupons': OrganizationCouponItem,
-    'organization-levels': OrganizationLevelItem,
+    'organization-items': OrganizationItemItem,
+    'organization-level-hints': OrganizationLevelHintItem,
     'organization-level-validations': OrganizationLevelValidationItem,
+    'organization-levels': OrganizationLevelItem,
     'organization-statistics': OrganizationStatisticItem,
     'organization-users': OrganizationUserItem,
     'organizations': OrganizationItem,
+    'servers': ServerItem,
+    'sessions': SessionItem,
+    'user-hijack-proofs': UserHijackProofItem,
+    'user-notifications': UserNotificationItem,
+    'user-organization-invites': UserOrganizationInviteItem,
     'user-tokens': UserTokenItem,
     'users': UserItem,
+    'whoswho-attempts': WhoswhoAttemptItem,
 }
 
 
