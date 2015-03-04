@@ -69,6 +69,40 @@ coupons = {
 }
 
 
+infrastructure_hijacks = {
+    'item_title': 'infrastructure hijack',
+
+    # collection
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'public_methods': [],
+    'allowed_read_roles': ['moderator', 'admin'],
+    'allowed_write_roles': ['moderator', 'admin'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_item_methods': [],
+    'allowed_item_read_roles': ['moderator', 'admin'],
+    'allowed_item_write_roles': ['moderator', 'admin'],
+
+    'schema': {
+        'author': {
+            'type': 'uuid',
+            # 'required': True,
+            'data_relation': {
+                'resource': 'users',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'tags': {
+            'type': 'list',
+        },
+        'description': {
+            'type': 'string',
+        },
+    },
+}
+
+
 items = {
     'item_title': 'item',
 
@@ -983,7 +1017,7 @@ activities = {
 }
 
 
-user_hijack_proof = {
+user_hijack_proofs = {
     'item_title': 'user hijack proof',
     'resource_title': 'user hijack proofs',
 
@@ -1149,7 +1183,7 @@ user_tokens = {
             'type': 'string',
             'default': 'FIXME: generate a random token',
             'unique': True,
-            #'readonly': True,
+            # 'readonly': True,
         },
         'description': {  # For the user
             'type': 'string',
@@ -1162,7 +1196,7 @@ user_tokens = {
         'user': {  # Will be computed using the credentials
             'type': 'uuid',
             'required': False,
-            #'readonly': True,
+            # 'readonly': True,
             'data_relation': {
                 'resource': 'users',
                 'field': '_id',
@@ -1367,6 +1401,7 @@ DOMAIN = {
     'achievements': achievements,
     'activities': activities,
     'coupons': coupons,
+    'infrastructure-hijacks': infrastructure_hijacks,
     'items': items,
     'level-hints': level_hints,
     'level-instances': level_instances,
