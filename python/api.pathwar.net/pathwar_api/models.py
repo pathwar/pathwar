@@ -354,7 +354,8 @@ class OrganizationLevelValidationItem(BaseItem):
         item['organization'] = organization_level['organization']
         item['level'] = organization_level['level']
 
-        # FIXME: check if passphrase was already validated in another validation
+        # FIXME: check if passphrase was already validated in another
+        #        validation
 
         # Checking if passphrases are valid
         # FIXME: make the mongodb query filter more restrictive
@@ -364,8 +365,8 @@ class OrganizationLevelValidationItem(BaseItem):
         available_passphrases = [
             passphrase['value']
             for passphrase in list(itertools.chain(*[
-                    level_instance['passphrases']
-                    for level_instance in level_instances
+                level_instance['passphrases']
+                for level_instance in level_instances
             ]))
         ]
         current_app.logger.warn('{}'.format(available_passphrases))

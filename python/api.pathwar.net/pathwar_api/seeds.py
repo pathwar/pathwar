@@ -280,7 +280,7 @@ def db_seed(app):
                 'hash': '123456789',
                 'level': levels[0]['_id'],
                 'server': servers[0]['_id'],
-            # 'overrides': [{'key': 'cpu_shares', 'value': 42}],
+                # 'overrides': [{'key': 'cpu_shares', 'value': 42}],
             }, {
                 'hash': '987654321',
                 'level': levels[0]['_id'],
