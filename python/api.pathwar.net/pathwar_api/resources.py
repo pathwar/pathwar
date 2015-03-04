@@ -1340,9 +1340,9 @@ users = {
 }
 
 
-whoswhos = {
-    'item_title': 'whoswho',
-    'resource_title': 'whoswhos',
+whoswho_attempts = {
+    'item_title': 'whoswho attempt',
+    'resource_title': 'whoswho attempts',
 
     # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
@@ -1437,7 +1437,7 @@ DOMAIN = {
     'user-organization-invites': user_organization_invites,
     'user-tokens': user_tokens,
     'users': users,
-    'whoswhos': whoswhos,
+    'whoswho-attempts': whoswho_attempts,
 }
 
 
