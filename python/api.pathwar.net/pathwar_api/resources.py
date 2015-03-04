@@ -848,6 +848,11 @@ organizations = {
                 'embeddable': True,
             },
         },
+        'visibility': {
+            'type': 'string',
+            'allowed': ['public', 'private', 'unlisted'],
+            'default': 'public',
+        },
         'owner': {
             'type': 'uuid',
             'required': False,
@@ -1256,6 +1261,11 @@ users = {
             'type': 'string',
             'readonly': True,
             # chmod 002
+        },
+        'visibility': {
+            'type': 'string',
+            'allowed': ['public', 'private', 'unlisted'],
+            'default': 'public',
         },
         'password_salt': {  # Generated on subscription
             'type': 'string',
