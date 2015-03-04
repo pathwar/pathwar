@@ -205,7 +205,7 @@ level_instances = {
         'active': {
             'type': 'boolean',
             'default': True,
-        }
+        },
         'server': {
             'type': 'uuid',
             'required': True,
