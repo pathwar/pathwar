@@ -101,76 +101,6 @@ items = {
 }
 
 
-hijack_proof = {
-    'item_title': 'hijack proof',
-    'resource_title': 'hijack proofs',
-
-    # collection
-    'resource_methods': ['GET', 'POST', 'DELETE'],
-    'public_methods': [],
-    'allowed_read_roles': ['user', 'moderator', 'admin'],
-    'allowed_write_roles': ['user', 'admin'],
-    # item
-    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
-    'public_item_methods': [],
-    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
-    'allowed_item_write_roles': ['user', 'admin'],
-
-    'schema': {
-        'status': {
-            'type': 'string',
-            'allowed': ['success', 'failure'],
-            'default': 'pending'
-        },
-        'from': {
-            'type': 'dict',
-            'schema': {
-                'organization': {
-                    'type': 'uuid',
-                    'required': True,
-                    'data_relation': {
-                        'resource': 'organizations',
-                        'field': '_id',
-                        'embeddable': True,
-                    },
-                },
-                'author': {
-                    'type': 'uuid',
-                    'data_relation': {
-                        'resource': 'users',
-                        'field': '_id',
-                        'embeddable': True,
-                    },
-                },
-            },
-        },
-        'to': {
-            'type': 'dict',
-            'schema': {
-                'organization': {
-                    'type': 'uuid',
-                    'required': True,
-                    'data_relation': {
-                        'resource': 'organizations',
-                        'field': '_id',
-                        'embeddable': True,
-                    },
-                },
-                'author': {
-                    'type': 'uuid',
-                    'required': True,
-                    'data_relation': {
-                        'resource': 'users',
-                        'field': '_id',
-                        'embeddable': True,
-                    },
-                },
-            },
-        },
-    },
-}
-
-
 level_hints = {
     'item_title': 'level hint',
     'resource_title': 'level hints',
@@ -1053,6 +983,76 @@ activities = {
 }
 
 
+user_hijack_proof = {
+    'item_title': 'user hijack proof',
+    'resource_title': 'user hijack proofs',
+
+    # collection
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'public_methods': [],
+    'allowed_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_write_roles': ['user', 'admin'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_item_methods': [],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['user', 'admin'],
+
+    'schema': {
+        'status': {
+            'type': 'string',
+            'allowed': ['success', 'failure'],
+            'default': 'pending'
+        },
+        'from': {
+            'type': 'dict',
+            'schema': {
+                'organization': {
+                    'type': 'uuid',
+                    'required': True,
+                    'data_relation': {
+                        'resource': 'organizations',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+                'author': {
+                    'type': 'uuid',
+                    'data_relation': {
+                        'resource': 'users',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+            },
+        },
+        'to': {
+            'type': 'dict',
+            'schema': {
+                'organization': {
+                    'type': 'uuid',
+                    'required': True,
+                    'data_relation': {
+                        'resource': 'organizations',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+                'author': {
+                    'type': 'uuid',
+                    'required': True,
+                    'data_relation': {
+                        'resource': 'users',
+                        'field': '_id',
+                        'embeddable': True,
+                    },
+                },
+            },
+        },
+    },
+}
+
+
 user_organization_invites = {
     'item_title': 'user organization invite',
     'resource_title': 'user organization invites',
@@ -1367,7 +1367,6 @@ DOMAIN = {
     'achievements': achievements,
     'activities': activities,
     'coupons': coupons,
-    'hijack_proof': hijack_proof,
     'items': items,
     'level-hints': level_hints,
     'level-instances': level_instances,
@@ -1376,16 +1375,17 @@ DOMAIN = {
     'organization-achievements': organization_achievements,
     'organization-coupons': organization_coupons,
     'organization-items': organization_items,
-    'organization-level-validations': organization_level_validations,
     'organization-level-hints': organization_level_hints,
+    'organization-level-validations': organization_level_validations,
     'organization-levels': organization_levels,
+    'organization-statistics': organization_statistics,
     'organization-users': organization_users,
     'organizations': organizations,
-    'organization-statistics': organization_statistics,
     'servers': servers,
     'sessions': sessions,
-    'user-organization-invites': user_organization_invites,
+    'user-hijack-proofs': user_hijack_proofs,
     'user-notifications': user_notifications,
+    'user-organization-invites': user_organization_invites,
     'user-tokens': user_tokens,
     'users': users,
     'whoswhos': whoswhos,
