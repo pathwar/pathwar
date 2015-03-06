@@ -337,6 +337,22 @@ class OrganizationLevel(BaseModel):
             ],
         })
 
+        # FIXME: move achievements computing into a dedicated function so we
+        # can call it in a cronjob
+        bought_levels = len(
+            OrganizationLevel.find({'organization': item['organization']})
+        )
+        achievements = ['buy-1-level']
+        if bought_levels >= 5:
+            achievements.append('buy-5-levels')
+        if bought_levels >= 10:
+            achievements.append('buy-10-levels')
+        if bought_levels >= 50:
+            achievements.append('buy-50-levels')
+        if bought_levels >= 100:
+            achievements.append('buy-100-levels')
+        Achievement.unlock(item['organization'], achievements)
+
     # def on_updated(self, item):
         # FIXME: add transaction history for statistics recomputing
         # FIXME: add ranking (for medals)
