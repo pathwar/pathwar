@@ -84,6 +84,16 @@ class BaseModel(object):
 class Achievement(BaseModel):
     resource = 'achievements'
 
+    @classmethod
+    def unlock(cls, organization, achievements):
+        for achievement in achievements:
+            cls.post_internal({
+                'organization': organization,
+                'name': achievement
+            })
+
+    # FIXME: fail on existing couple organization.uuid/achievement.name
+
 
 class Activity(BaseModel):
     resource = 'activities'
