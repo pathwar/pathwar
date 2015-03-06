@@ -339,14 +339,59 @@ suite("[seed]", function() {
 
       test("should create some achievements as admin", function(done) {
         var objects = [{
-          name: 'flash-gordon',
-          description: 'Validate a level in less than a minute'
+          name: 'infrastructure-hacker',
+          description: 'You hacked pathwar'
         }, {
-          name: 'hack-the-planet',
-          description: 'Finish 50 levels'
+          name: 'level-developer',
+          description: 'You deveveloped a level'
         }, {
-          name: 'API-hacker',
-          description: 'Hack the API'
+          name: 'helloworld',
+          description: 'You know how to talk'
+        }, {
+          name: 'source-reader',
+          description: 'You can read the sources'
+        }, {
+          name: 'finish-less-1-hour',
+          description: 'Validate a level in less than 1 hour'
+        }, {
+          name: 'finish-less-10-minutes',
+          description: 'Validate a level in less than 10 minutes'
+        }, {
+          name: 'finish-less-5-minutes',
+          description: 'Validate a level in less than 5 minutes'
+        }, {
+          name: 'finish-less-1-minute',
+          description: 'Validate a level in less than 1 minute'
+        }, {
+          name: 'finish-1-level',
+          description: 'You finished 1 level'
+        }, {
+          name: 'finish-5-levels',
+          description: 'You finished 1 level'
+        }, {
+          name: 'finish-10-levels',
+          description: 'You finished 1 level'
+        }, {
+          name: 'finish-50-levels',
+          description: 'You finished 1 level'
+        }, {
+          name: 'finish-100-levels',
+          description: 'You finished 1 level'
+        }, {
+          name: 'buy-1-level',
+          description: 'You bought 1 level'
+        }, {
+          name: 'buy-5-levels',
+          description: 'You bought 5 levels'
+        }, {
+          name: 'buy-10-levels',
+          description: 'You bought 10 levels'
+        }, {
+          name: 'buy-50-levels',
+          description: 'You bought 50 levels'
+        }, {
+          name: 'buy-100-levels',
+          description: 'You bought 100 levels'
         }];
         client.post("/achievements", objects).then(
           function(res) {
