@@ -18,6 +18,10 @@ class BaseModel(object):
         pass
 
     @classmethod
+    def post_internal(cls, payload):
+        return post_internal(cls.resource, payload);
+
+    @classmethod
     def get_by_id(cls, uuid):
         return current_app.data.driver.db[cls.resource].find_one(
             {'_id': uuid}
@@ -82,7 +86,7 @@ class Achievement(BaseModel):
 
 
 class Activity(BaseModel):
-    resource = 'activity'
+    resource = 'activities'
 
 
 class OrganizationUser(BaseModel):
@@ -142,7 +146,7 @@ class User(BaseModel):
         self._on_update(item)
 
     def on_inserted(self, item):
-        post_internal('activities', {
+        Activity.post_internal({
             'user': item['_id'],
             'action': 'users-create',
             'category': 'account',
@@ -150,13 +154,13 @@ class User(BaseModel):
                 {'kind': 'users', 'id': item['_id']}
             ],
         })
-        post_internal('user-notifications', {
+        UserNotification.post_internal({
             'title': 'Welcome to your account !',
             'user': item['_id'],
         })
 
         # Create an organization in the default session
-        default_organization = post_internal('organizations', {
+        default_organization = Organization.post_internal({
             'name': '{}'.format(item['login']),
             'session': Session.world_session()['_id'],
             'owner': item['_id'],
@@ -220,7 +224,7 @@ class UserToken(BaseModel):
         # FIXME: add expiry_date
 
     def on_inserted(self, item):
-        post_internal('activities', {
+        Activity.post_internal({
             'user': item['user'],
             'action': 'user-tokens-create',
             'category': 'account',
@@ -237,7 +241,7 @@ class Organization(BaseModel):
     @classmethod
     def statistics_increment(cls, organization_id, payload):
         organization = cls.get_by_id(organization_id)
-        OrganizationStatistic.update_by_id(
+        OrganizationStatistics.update_by_id(
             organization['statistics'], {
                 '$inc': payload,
             }
@@ -265,15 +269,15 @@ class Organization(BaseModel):
             ).hexdigest()
 
     def on_inserted(self, item):
-        post_internal('organization-users', {
+        OrganizationUser.post_internal({
             'organization': item['_id'],
             'role': 'owner',
             'user': item['owner'],
         })
-        post_internal('organization-statistics', {
+        OrganizationStatistics.post_internal({
             'organization': item['_id'],
         })
-        post_internal('activities', {
+        Activity.post_internal({
             'user': item['owner'],
             'organization': item['_id'],
             'action': 'organizations-create',
@@ -282,7 +286,7 @@ class Organization(BaseModel):
                 {'kind': 'organizations', 'id': item['_id']}
             ],
         })
-        post_internal('user-notifications', {
+        UserNotification.post_internal({
             'title': 'You just created a new organization !',
             'user': item['owner'],
         })
@@ -303,7 +307,7 @@ class OrganizationLevel(BaseModel):
         # Create a notification for each members of the team
         members = User.get_by_organization_id(item['organization'])
         for user in members:
-            post_internal('user-notifications', {
+            UserNotification.post_internal({
                 'title': 'Your team bought a new level',
                 'user': user['_id'],
             })
@@ -311,7 +315,7 @@ class OrganizationLevel(BaseModel):
         # FIXME: send notification to teamates)
 
         # Add an activity
-        post_internal('activities', {
+        Activity.post_internal({
             # 'user': item['owner'],
             'organization': item['organization'],
             'action': 'organization-levels-create',
@@ -405,7 +409,7 @@ class OrganizationLevelHint(BaseModel):
     resource = 'organization-level-hints'
 
 
-class OrganizationStatistic(BaseModel):
+class OrganizationStatistics(BaseModel):
     resource = 'organization-statistics'
 
     def on_inserted(self, item):
@@ -428,7 +432,7 @@ class Level(BaseModel):
     resource = 'levels'
 
     def on_inserted(self, item):
-        post_internal('level-statistics', {
+        LevelStatistics.post_internal({
             'level': item['_id'],
         })
 
@@ -547,7 +551,7 @@ models = {
     'organization-level-hints': OrganizationLevelHint,
     'organization-level-validations': OrganizationLevelValidation,
     'organization-levels': OrganizationLevel,
-    'organization-statistics': OrganizationStatistic,
+    'organization-statistics': OrganizationStatistics,
     'organization-users': OrganizationUser,
     'organizations': Organization,
     'servers': Server,
