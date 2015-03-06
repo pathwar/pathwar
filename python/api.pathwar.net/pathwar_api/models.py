@@ -535,6 +535,30 @@ class OrganizationCoupon(BaseModel):
                 'cash': coupon['value']
             })
 
+        # FIXME: move achievements computing into a dedicated function so we
+        # can call it in a cronjob
+        validated_coupons = len(
+            OrganizationCoupon.find({
+                'organization': item['organization'],
+            })
+        )
+        achievements = ['validated-1-coupon']
+        if validated_coupons >= 5:
+            achievements.append('validated-5-coupons')
+        if validated_coupons >= 10:
+            achievements.append('validated-10-coupons')
+        if validated_coupons >= 50:
+            achievements.append('validated-50-coupons')
+        if validated_coupons >= 100:
+            achievements.append('validated-100-coupons')
+        if validated_coupons >= 500:
+            achievements.append('validated-500-coupons')
+        if validated_coupons >= 1000:
+            achievements.append('validated-1000-coupons')
+        if validated_coupons >= 5000:
+            achievements.append('validated-5000-coupons')
+        Achievement.unlock(item['organization'], achievements)
+
 
 class WhoswhoAttempt(BaseModel):
     resource = 'whoswho-attempts'
