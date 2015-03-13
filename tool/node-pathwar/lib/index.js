@@ -5,7 +5,7 @@ var httpinvoke = require('httpinvoke'),
 
 
 var Client = module.exports = function(options) {
-  this.config = _.defaults(options, config);
+  this.config = _.defaults(options || {}, config);
   this.user_id = null;
   this.organization_id = null;
   this.scope = '*';
