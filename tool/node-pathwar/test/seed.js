@@ -110,10 +110,12 @@ suite("[seed]", function() {
               (res.body._items.length).should.equal(objects.length);
               var ids = [];
               for (var idx in res.body._items) {
-                var item = res.body._items[idx];
-                ids.push(item._id);
-                (item._status).should.equal('OK');
-                (item._links.self.title).should.equal('session');
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  (item._links.self.title).should.equal('session');
+                }
               }
               refs['sessions'] = ids;
               done();
@@ -185,10 +187,12 @@ suite("[seed]", function() {
               (res.body._items.length).should.equal(objects.length);
               var ids = [];
               for (var idx in res.body._items) {
-                var item = res.body._items[idx];
-                ids.push(item._id);
-                (item._status).should.equal('OK');
-                (item._links.self.title).should.equal('user');
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  (item._links.self.title).should.equal('user');
+                }
               }
               refs['users'] = ids;
               done();
@@ -244,10 +248,12 @@ suite("[seed]", function() {
               (res.body._items.length).should.equal(objects.length);
               var ids = [];
               for (var idx in res.body._items) {
-                var item = res.body._items[idx];
-                ids.push(item._id);
-                (item._status).should.equal('OK');
-                (item._links.self.title).should.equal('coupon');
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  (item._links.self.title).should.equal('coupon');
+                }
               }
               refs['coupons'] = ids;
               done();
@@ -285,10 +291,12 @@ suite("[seed]", function() {
               (res.body._items.length).should.equal(objects.length);
               var ids = [];
               for (var idx in res.body._items) {
-                var item = res.body._items[idx];
-                ids.push(item._id);
-                (item._status).should.equal('OK');
-                (item._links.self.title).should.equal('server');
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  (item._links.self.title).should.equal('server');
+                }
               }
               refs['servers'] = ids;
               done();
@@ -321,10 +329,12 @@ suite("[seed]", function() {
               (res.body._items.length).should.equal(objects.length);
               var ids = [];
               for (var idx in res.body._items) {
-                var item = res.body._items[idx];
-                ids.push(item._id);
-                (item._status).should.equal('OK');
-                (item._links.self.title).should.equal('organization');
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  (item._links.self.title).should.equal('organization');
+                }
               }
               refs['organizations'] = ids;
               done();
@@ -404,10 +414,12 @@ suite("[seed]", function() {
               (res.body._items.length).should.equal(objects.length);
               var ids = [];
               for (var idx in res.body._items) {
-                var item = res.body._items[idx];
-                ids.push(item._id);
-                (item._status).should.equal('OK');
-                (item._links.self.title).should.equal('achievement');
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  (item._links.self.title).should.equal('achievement');
+                }
               }
               refs['achievements'] = ids;
               done();
@@ -527,10 +539,12 @@ suite("[seed]", function() {
               (res.body._items.length).should.equal(objects.length);
               var ids = [];
               for (var idx in res.body._items) {
-                var item = res.body._items[idx];
-                ids.push(item._id);
-                (item._status).should.equal('OK');
-                (item._links.self.title).should.equal('level');
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  (item._links.self.title).should.equal('level');
+                }
               }
               refs['levels'] = ids;
               done();
@@ -566,10 +580,12 @@ suite("[seed]", function() {
               (res.body._items.length).should.equal(objects.length);
               var ids = [];
               for (var idx in res.body._items) {
-                var item = res.body._items[idx];
-                ids.push(item._id);
-                (item._status).should.equal('OK');
-                (item._links.self.title).should.equal('item');
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  (item._links.self.title).should.equal('item');
+                }
               }
               refs['items'] = ids;
               done();
@@ -607,10 +623,12 @@ suite("[seed]", function() {
               (res.body._items.length).should.equal(objects.length);
               var ids = [];
               for (var idx in res.body._items) {
-                var item = res.body._items[idx];
-                ids.push(item._id);
-                (item._status).should.equal('OK');
-                (item._links.self.title).should.equal('level hint');
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  (item._links.self.title).should.equal('level hint');
+                }
               }
               refs['level-hints'] = ids;
               done();
@@ -661,10 +679,12 @@ suite("[seed]", function() {
               (res.body._items.length).should.equal(objects.length);
               var ids = [];
               for (var idx in res.body._items) {
-                var item = res.body._items[idx];
-                ids.push(item._id);
-                (item._status).should.equal('OK');
-                (item._links.self.title).should.equal('level instance');
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  (item._links.self.title).should.equal('level instance');
+                }
               }
               refs['level-instances'] = ids;
               done();
@@ -709,10 +729,12 @@ suite("[seed]", function() {
               (res.body._items.length).should.equal(objects.length);
               var ids = [];
               for (var idx in res.body._items) {
-                var item = res.body._items[idx];
-                ids.push(item._id);
-                (item._status).should.equal('OK');
-                (item._links.self.title).should.equal('organization bought level');
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  (item._links.self.title).should.equal('organization bought level');
+                }
               }
               refs['organization-levels'] = ids;
               done();
@@ -747,10 +769,12 @@ suite("[seed]", function() {
               (res.body._items.length).should.equal(objects.length);
               var ids = [];
               for (var idx in res.body._items) {
-                var item = res.body._items[idx];
-                ids.push(item._id);
-                (item._status).should.equal('OK');
-                (item._links.self.title).should.equal('organization earned achievement');
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  (item._links.self.title).should.equal('organization earned achievement');
+                }
               }
               refs['organization-achievements'] = ids;
               done();
