@@ -51,7 +51,7 @@ var Client = module.exports = function(options) {
     }
 
     // POST
-    if (output._status == 'OK') {
+    if (output._status === 'OK') {
       output.ids = _.chain(output._items)
         .map(function(obj) { return obj._id; })
         .value();
