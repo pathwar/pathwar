@@ -1,12 +1,14 @@
 "use strict";
 
 
-var _ = require('lodash'),
-    chai = require("chai"),
+var chai = require("chai"),
     debug = require("debug")("tests"),
     Client = require(".."),
-    util = require("util"),
-    should = chai.should();
+    util = require("util");
+
+
+// Initialize chai.should()
+chai.should();
 
 
 var valid_token = 'root-token',
