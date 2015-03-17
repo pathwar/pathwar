@@ -30,7 +30,7 @@ var Client = module.exports = function(options) {
       return [err_ret , output, statusCode, headers];
     }
     if(statusCode >= 400 && statusCode <= 599) {
-      err_ret = new Error(output._error.message + ' - undefined HTTP status');
+      err_ret = new Error(output._error.message + ' - ' + statusCode);
       err_ret.output = output;
       err_ret.statusCode = statusCode;
       err_ret.headers = headers;
