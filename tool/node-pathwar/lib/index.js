@@ -78,6 +78,10 @@ var Client = module.exports = function(options) {
 
   // requests
   this.request = function(path, method, options, cb) {
+    if (typeof options === 'function') {
+      cb = options;
+      options = {};
+    }
     client = this;
     var url = this.config.api_endpoint + path.replace(/^\//, '');
     options = options || {};
@@ -98,10 +102,18 @@ var Client = module.exports = function(options) {
   };
 
   this.get = function(path, options, cb) {
+    if (typeof options === 'function') {
+      cb = options;
+      options = {};
+    }
     return this.request(path, 'GET', options, cb);
   };
 
   this.post = function(path, input, options, cb) {
+    if (typeof options === 'function') {
+      cb = options;
+      options = {};
+    }
     options = options || {};
     _.defaults(options, {
       inputType: 'json',
