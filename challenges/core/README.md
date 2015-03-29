@@ -38,8 +38,8 @@ All templates support standard and [onbuild](https://docs.docker.com/reference/b
 Level requirements (see [level-helloworld](https://github.com/pathwar/level-helloworld))
 ------------------
 
-- have a `fig.yml` defining the level, you can have multiple linked containers, multiple ports. [(example)](https://github.com/pathwar/level-helloworld/blob/master/fig.yml)
-- even if you can run levels without any `Dockerfile` using `fig`, you need to have at least one Dockerfile inheriting from a `core` template (this repository), so we can integrate your level with our system. [(example)](https://github.com/pathwar/level-helloworld/blob/master/level.yml)
+- have a `docker-compose.yml` defining the level, you can have multiple linked containers, multiple ports. [(example)](https://github.com/pathwar/level-helloworld/blob/master/docker-compose.yml)
+- even if you can run levels without any `Dockerfile` using `docker-compose`, you need to have at least one Dockerfile inheriting from a `core` template (this repository), so we can integrate your level with our system. [(example)](https://github.com/pathwar/level-helloworld/blob/master/level.yml)
 - a `level.yml` file (manifest) defining your level specs, except for our system. [(example)](https://github.com/pathwar/level-helloworld/blob/master/level.yml)
 - a `scripts` directory with overrides for the [skeleton](https://github.com/pathwar/core/tree/master/skeleton/scripts). [(example)](https://github.com/pathwar/level-helloworld/tree/master/scripts)
 

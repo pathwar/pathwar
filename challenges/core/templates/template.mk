@@ -10,8 +10,8 @@ examples:	$(EXAMPLEBUILDS)
 
 $(EXAMPLEBUILDS):	$(BUILDS)
 	$(eval EXAMPLE := $(shell dirname $@))
-	cd $(EXAMPLE) && fig build
-	cd $(EXAMPLE) && fig up -d
+	cd $(EXAMPLE) && docker-compose build
+	cd $(EXAMPLE) && docker-compose up -d
 
 build:	$(BUILDS)
 

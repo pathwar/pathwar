@@ -1,5 +1,5 @@
-SERVICES ?=	$(shell cat fig.yml | grep '^[a-z]' | cut -d: -f1)
-# By default $(SERVICE) is the first service in fig.yml
+SERVICES ?=	$(shell cat docker-compose.yml | grep '^[a-z]' | cut -d: -f1)
+# By default $(SERVICE) is the first service in docker-compose.yml
 SERVICE ?=	$(shell echo $(SERVICES) | tr " " "\n" | head -1)
 
 
@@ -9,16 +9,16 @@ SERVICE ?=	$(shell echo $(SERVICES) | tr " " "\n" | head -1)
 all:	build
 
 build:
-	fig build
+	docker-compose build
 
 run:
-	fig stop
-	fig up -d
-	fig ps
-	fig logs
+	docker-compose stop
+	docker-compose up -d
+	docker-compose ps
+	docker-compose logs
 
 shell:
-	fig run $(SERVICE) /bin/bash
+	docker-compose run $(SERVICE) /bin/bash
 
 
 ## Travis
@@ -35,4 +35,4 @@ travis_run:
 
 travis_run_service:
 	# ./run is a wrapper to allow travis to run docker commands
-	./run fig run $(SERVICE) /bin/bash -d 'echo OK'
+	./run docker-compose run $(SERVICE) /bin/bash -d 'echo OK'

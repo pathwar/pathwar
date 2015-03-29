@@ -3,10 +3,10 @@ NAME =	hello
 all:	run
 
 build:
-	fig build
+	docker-compose build
 
 shell:	build
-	fig run $(NAME) /bin/bash
+	docker-compose run $(NAME) /bin/bash
 
 up:	build
-	fig up
+	docker-compose up
