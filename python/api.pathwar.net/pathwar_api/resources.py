@@ -1307,8 +1307,11 @@ users = {
         'social_links': {
             'type': 'list',
             'schema': {
-                'kind': {
-                    'type': 'string',
+                'type': 'dict',
+                'schema': {
+                    'kind': {
+                        'type': 'string',
+                    },
                 },
             },
             # chmod 446
