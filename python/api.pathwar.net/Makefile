@@ -127,7 +127,8 @@ smtp_up:
 	fig -f $(FIG_FILE) up --no-recreate -d smtp
 
 portal_up:
-	fig -f $(FIG_FILE) build portal
+	fig -f $(FIG_FILE) kill portal
+	fig -f $(FIG_FILE) rm --force portal
 	fig -f $(FIG_FILE) up --no-recreate -d portal
 
 
