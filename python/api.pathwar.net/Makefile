@@ -1,8 +1,6 @@
 BLUEPRINT_FILE ?=	apiary.apib
 BLUEPRINT_TEMPLATE ?=	default
-FIG_API_SERVICE ?=	api
-NODE_SDK_SERVICE ?=	nodesdk
-FIG_FILE ?=		fig.yml
+DOCKER_COMPOSE_FILE ?=	docker-compose.yml
 
 WATCH_FILES ?=	$(shell \
 		  find node-pathwar/ ./ \
@@ -31,13 +29,13 @@ build:	api_build blueprint_build
 release:	gh-pages
 
 up:	api_up portal_up
-	fig -f $(FIG_FILE) logs
+	docker-compose -f $(DOCKER_COMPOSE_FILE) logs
 
 kill:
-	fig -f $(FIG_FILE) kill
+	docker-compose -f $(DOCKER_COMPOSE_FILE) kill
 
 stop:
-	fig -f $(FIG_FILE) stop
+	docker-compose -f $(DOCKER_COMPOSE_FILE) stop
 
 shell:	api_shell
 
@@ -89,11 +87,11 @@ travis:
 .PHONY:	api_build api_up api_shell portal_up mongo_up smtp_up flush-db seed-db portal_clean
 
 api_build:	portal.pathwar.net node-pathwar
-	fig -f $(FIG_FILE) build
+	docker-compose -f $(DOCKER_COMPOSE_FILE) build
 
 
 flush-db:	mongo_up
-	fig -f $(FIG_FILE) run --no-deps $(FIG_API_SERVICE) python pathwar_api/run.py flush-db
+	docker-compose -f $(DOCKER_COMPOSE_FILE) run --no-deps api python pathwar_api/run.py flush-db
 
 seed-db:
 	$(MAKE) seed-db-node
@@ -107,39 +105,39 @@ seed-db-watch:
 	done
 
 seed-db-node:	flush-db node-pathwar
-	fig -f $(FIG_FILE) run --no-deps $(NODE_SDK_SERVICE) npm run seed
+	docker-compose -f $(DOCKER_COMPOSE_FILE) run --no-deps nodesdk npm run seed
 
 seed-db-python:	flush-db
-	fig -f $(FIG_FILE) run --no-deps $(FIG_API_SERVICE) python pathwar_api/run.py seed-db
+	docker-compose -f $(DOCKER_COMPOSE_FILE) run --no-deps api python pathwar_api/run.py seed-db
 
 api_up:
-	fig -f $(FIG_FILE) kill api
-	fig -f $(FIG_FILE) rm --force api
-	fig -f $(FIG_FILE) up --no-recreate -d api
+	docker-compose -f $(DOCKER_COMPOSE_FILE) kill api
+	docker-compose -f $(DOCKER_COMPOSE_FILE) rm --force api
+	docker-compose -f $(DOCKER_COMPOSE_FILE) up --no-recreate -d api
 
 api_shell:	mongo_up
-	fig -f $(FIG_FILE) run --no-deps $(FIG_API_SERVICE) /bin/bash
+	docker-compose -f $(DOCKER_COMPOSE_FILE) run --no-deps api /bin/bash
 
 mongo_up:
-	fig -f $(FIG_FILE) up --no-recreate -d mongo
+	docker-compose -f $(DOCKER_COMPOSE_FILE) up --no-recreate -d mongo
 
 smtp_up:
-	fig -f $(FIG_FILE) up --no-recreate -d smtp
+	docker-compose -f $(DOCKER_COMPOSE_FILE) up --no-recreate -d smtp
 
 portal_up:
-	fig -f $(FIG_FILE) kill portal
-	fig -f $(FIG_FILE) rm --force portal
-	fig -f $(FIG_FILE) up --no-recreate -d portal
+	docker-compose -f $(DOCKER_COMPOSE_FILE) kill portal
+	docker-compose -f $(DOCKER_COMPOSE_FILE) rm --force portal
+	docker-compose -f $(DOCKER_COMPOSE_FILE) up --no-recreate -d portal
 
 
 portal_clean:
-	-fig -f $(FIG_FILE) kill portal
-	-fig -f $(FIG_FILE) rm --force portal
+	-docker-compose -f $(DOCKER_COMPOSE_FILE) kill portal
+	-docker-compose -f $(DOCKER_COMPOSE_FILE) rm --force portal
 	-rm -rf portal.pathwar.net/build
 
 api_clean:
-	-fig -f $(FIG_FILE) stop api
-	-fig -f $(FIG_FILE) rm --force api
+	-docker-compose -f $(DOCKER_COMPOSE_FILE) stop api
+	-docker-compose -f $(DOCKER_COMPOSE_FILE) rm --force api
 
 node-pathwar:
 	git clone git://github.com/pathwar/node-pathwar
