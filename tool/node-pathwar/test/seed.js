@@ -18,6 +18,9 @@ var valid_token = 'root-token',
 if (process.env['API_PORT_5000_TCP_ADDR']) {
   api_endpoint = 'http://' + process.env['API_PORT_5000_TCP_ADDR'] + ':' + process.env['API_PORT_5000_TCP_PORT'] + '/';
 }
+if (process.env['API_ENDPOINT']) {
+  api_endpoint = process.env['API_ENDPOINT'];
+}
 
 var inspect = function(name, obj) {
   debug(name, util.inspect(obj, {showHidden: false, depth: null}));
