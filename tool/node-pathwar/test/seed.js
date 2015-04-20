@@ -661,7 +661,7 @@ suite("[seed]", function() {
         }];
         for (var i = 0; i < 50; i++) {
           objects.push({
-            level: refs.levels[i % refs.servers.length],
+            level: refs.levels[i % refs.levels.length],
             server: refs.servers[i % refs.servers.length],
             urls: [{
               'name': '80',
