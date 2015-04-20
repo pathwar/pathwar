@@ -482,6 +482,15 @@ class LevelInstance(BaseModel):
     resource = 'level-instances'
 
 
+class LevelInstanceUser(BaseModel):
+    resource = 'level-instance-users'
+
+    def on_insert(self, item):
+        super(LevelInstanceUser, self).on_insert(item)
+        item['hash'] = str(uuid4())
+        self._on_update(item)
+
+
 class Coupon(BaseModel):
     resource = 'coupons'
 
@@ -592,6 +601,7 @@ models = {
     'infrastructure-hijacks': InfrastructureHijack,
     'items': Item,
     'level-hints': LevelHint,
+    'level-instance-users': LevelInstanceUser,
     'level-instances': LevelInstance,
     'level-statistics': LevelStatistics,
     'levels': Level,

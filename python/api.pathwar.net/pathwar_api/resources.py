@@ -265,6 +265,66 @@ level_instances = {
 }
 
 
+level_instance_users = {
+    'item_title': 'level instance users',
+
+    # collection
+    'resource_methods': ['GET', 'POST', 'DELETE'],
+    'public_methods': [],
+    'allowed_read_roles': ['user', 'server', 'admin'],
+    'allowed_write_roles': ['admin'],
+    # item
+    'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
+    'public_item_methods': [],
+    'allowed_item_read_roles': ['user', 'server', 'admin'],
+    'allowed_item_write_roles': ['user', 'admin'],
+
+    'cache_control': 'private, no-cache, no-store, must-revalidate',
+
+    'schema': {
+        'level_instance': {
+            'type': 'uuid',
+            'required': True,
+            'data_relation': {
+                'resource': 'level-instances',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'level': {
+            'type': 'uuid',
+            'required': True,
+            'data_relation': {
+                'resource': 'levels',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'organization': {
+            'type': 'uuid',
+            'required': True,
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'user': {
+            'type': 'uuid',
+            'required': True,
+            'data_relation': {
+                'resource': 'users',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'hash': {
+            'type': 'string',
+        },
+    },
+}
+
+
 level_statistics = {
     'item_title': 'level statistics',
 
@@ -1421,6 +1481,7 @@ DOMAIN = {
     'infrastructure-hijacks': infrastructure_hijacks,
     'items': items,
     'level-hints': level_hints,
+    'level-instance-users': level_instance_users,
     'level-instances': level_instances,
     'level-statistics': level_statistics,
     'levels': levels,
