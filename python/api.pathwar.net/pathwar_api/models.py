@@ -485,10 +485,39 @@ class LevelInstance(BaseModel):
 class LevelInstanceUser(BaseModel):
     resource = 'level-instance-users'
 
+    def on_pre_post_item(self, request, item):
+        if 'level_instance' not in item:
+            abort(422, "Missing level_instance")
+        level_instance = LevelInstance.get_by_id(item['level_instance'])
+        if not level_instance:
+            abort(422, "No such level_instance")
+
+
+        organization_level = OrganizationLevel.find({
+            'organization': item['organization'],
+            'level': level_instance['level'],
+        })
+        if not len(organization_level):
+            abort(422, "No such organization_level")
+        organization_level = organization_level[0]
+
+        # FIXME: race condition, need an atomic update + fetch
+
+        # Check if the user add a coupon to one of its organizations
+        user = request_get_user(request)
+        if not Organization.has_user(item['organization'], user['_id']):
+            abort(422, "You cannot create object for another organization")
+
+        # FIXME: Check if entry already exists, if yes, update the existing one
+
+        # Add nested fields
+        item['level'] = level_instance['level']
+        item['organization_level'] = organization_level['_id']
+        item['user'] = user['_id']
+
     def on_insert(self, item):
         super(LevelInstanceUser, self).on_insert(item)
         item['hash'] = str(uuid4())
-        self._on_update(item)
 
 
 class Coupon(BaseModel):

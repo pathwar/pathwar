@@ -266,7 +266,8 @@ level_instances = {
 
 
 level_instance_users = {
-    'item_title': 'level instance users',
+    'item_title': 'level instance user',
+    'resource_title': 'level instance users',
 
     # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
@@ -293,7 +294,7 @@ level_instance_users = {
         },
         'level': {
             'type': 'uuid',
-            'required': True,
+            'required': False,
             'data_relation': {
                 'resource': 'levels',
                 'field': '_id',
@@ -302,16 +303,25 @@ level_instance_users = {
         },
         'organization': {
             'type': 'uuid',
-            'required': True,
+            'required': False,
             'data_relation': {
                 'resource': 'organizations',
                 'field': '_id',
                 'embeddable': True,
             },
         },
-        'user': {
+        'organization_level': {
             'type': 'uuid',
             'required': True,
+            'data_relation': {
+                'resource': 'organization-levels',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'user': {
+            'type': 'uuid',
+            'required': False,
             'data_relation': {
                 'resource': 'users',
                 'field': '_id',
