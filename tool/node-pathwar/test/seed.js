@@ -816,7 +816,7 @@ suite("[seed]", function() {
                   ids.push(item._id);
                   (item._status).should.equal('OK');
                   console.log(item._links.self.title);
-                  (item._links.self.title).should.equal('level instance users');
+                  (item._links.self.title).should.equal('level instance user');
                 }
               }
               refs['level-instance-users'] = ids;
