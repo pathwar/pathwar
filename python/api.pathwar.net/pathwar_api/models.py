@@ -19,7 +19,7 @@ class BaseModel(object):
 
     @classmethod
     def post_internal(cls, payload):
-        return post_internal(cls.resource, payload);
+        return post_internal(cls.resource, payload)
 
     @classmethod
     def get_by_id(cls, uuid):
