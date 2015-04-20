@@ -801,7 +801,6 @@ suite("[seed]", function() {
           level_instance: refs['level-instances'][2],
           organization: refs['organizations'][0]
         }];
-        console.log(objects);
         client.post("/level-instance-users", objects).then(
           function(res) {
             inspect('res', res);
@@ -815,19 +814,17 @@ suite("[seed]", function() {
                   var item = res.body._items[idx];
                   ids.push(item._id);
                   (item._status).should.equal('OK');
-                  console.log(item._links.self.title);
                   (item._links.self.title).should.equal('level instance user');
                 }
               }
               refs['level-instance-users'] = ids;
               done();
             } catch (e) {
-              console.log('test1');
               done(e);
             }
           },
           function(err) {
-            console.log(err.output._items);
+            // console.log(err.output._items);
             inspect('err', err);
             done(err);
           }
