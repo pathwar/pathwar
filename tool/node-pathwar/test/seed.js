@@ -792,6 +792,48 @@ suite("[seed]", function() {
         );
       });
 
+      test("should create some level-instance-users as user", function(done) {
+        this.timeout(10000);
+        var objects = [{
+          level_instance: refs['level-instances'][0],
+          organization: refs['organizations'][0]
+        }, {
+          level_instance: refs['level-instances'][2],
+          organization: refs['organizations'][0]
+        }];
+        console.log(objects);
+        client.post("/level-instance-users", objects).then(
+          function(res) {
+            inspect('res', res);
+            try {
+              (res.statusCode).should.equal(201);
+              (res.body._status).should.equal('OK');
+              (res.body._items.length).should.equal(objects.length);
+              var ids = [];
+              for (var idx in res.body._items) {
+                if (res.body._items.hasOwnProperty(idx)) {
+                  var item = res.body._items[idx];
+                  ids.push(item._id);
+                  (item._status).should.equal('OK');
+                  console.log(item._links.self.title);
+                  (item._links.self.title).should.equal('level instance users');
+                }
+              }
+              refs['level-instance-users'] = ids;
+              done();
+            } catch (e) {
+              console.log('test1');
+              done(e);
+            }
+          },
+          function(err) {
+            console.log(err.output._items);
+            inspect('err', err);
+            done(err);
+          }
+        );
+      });
+
       // TODO
       // ----
       // POST organization-coupons as user
