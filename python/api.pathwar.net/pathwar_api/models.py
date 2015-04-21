@@ -14,6 +14,8 @@ from mail import mail, send_mail
 
 
 class BaseModel(object):
+    SCHEMA_VERSION = 1
+
     def __init__(self):
         pass
 
@@ -47,6 +49,7 @@ class BaseModel(object):
 
     def on_insert(self, item):
         item['_id'] = str(uuid4())
+        item['_schema_version'] = self.SCHEMA_VERSION
 
     def on_inserted(self, item):
         pass

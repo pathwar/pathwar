@@ -1529,6 +1529,7 @@ defaults = {
 
 for resource_name, resource_obj in DOMAIN.items():
     DOMAIN[resource_name]['schema']['_id'] = {'type': 'uuid'}
+    DOMAIN[resource_name]['schema']['_schema_version'] = {'type': 'integer'}
     for key, value in defaults.items():
         if key not in resource_obj:
             DOMAIN[resource_name][key] = value
