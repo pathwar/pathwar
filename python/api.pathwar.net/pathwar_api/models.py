@@ -180,6 +180,9 @@ class User(BaseModel):
             'gravatar_email': item['email'],
         })
 
+        # FIXME: automatically open subscriptions based on email pattern
+        # matching
+
         # Send verification email
         if not current_app.is_seed and not item['active']:
             verification_url = url_for(
