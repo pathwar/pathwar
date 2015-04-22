@@ -23,13 +23,13 @@
   },
   "homepage": "https://github.com/pathwar/node-pathwar",
   "dependencies": {
-    "chai": "^1.10.0",
     "debug": "^2.1.1",
-    "httpinvoke": "^1.3.3",
     "lodash": "^3.0.0",
-    "rc": "^0.5.5"
+    "rc": "^0.5.5",
+    "request-promise": "^0.4.1"
   },
   "devDependencies": {
+    "chai": "^1.10.0",
     "mocha": "^2.1.0"
   }
 }

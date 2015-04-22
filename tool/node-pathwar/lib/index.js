@@ -1,4 +1,4 @@
-var httpinvoke = require('httpinvoke'),
+var rp = require('request-promise'),
     debug = require('debug')('pathwar:lib'),
     config = require('./config'),
     _ = require('lodash');
@@ -15,26 +15,12 @@ var Client = module.exports = function(options) {
 (function() {
   var client;
 
-  // hooks
+  // FIXME: check what we can keep in this code
   var hook_finished = function(err, output, statusCode, headers) {
     // error handling
     var err_ret;
     if(err) {
       return arguments;
-    }
-    if(typeof statusCode === 'undefined') {
-      err_ret = new Error('Server or client error - undefined HTTP status');
-      err_ret.output = output;
-      err_ret.statusCode = statusCode;
-      err_ret.headers = headers;
-      return [err_ret , output, statusCode, headers];
-    }
-    if(statusCode >= 400 && statusCode <= 599) {
-      err_ret = new Error(output._error.message + ' - ' + statusCode);
-      err_ret.output = output;
-      err_ret.statusCode = statusCode;
-      err_ret.headers = headers;
-      return [err_ret, output, statusCode, headers];
     }
 
     // login handling
@@ -74,71 +60,83 @@ var Client = module.exports = function(options) {
 
     return arguments;
   };
-  this.httpinvoke = httpinvoke.hook('finished', hook_finished);
+  //this.httpinvoke = httpinvoke.hook('finished', hook_finished);
 
   // requests
-  this.request = function(path, method, options, cb) {
+  this.request = function(path, method, input, options, cb) {
+    client = this;
+
+    // options parameter is optional
     if (typeof options === 'function') {
       cb = options;
       options = {};
     }
-    client = this;
-    var url = this.config.api_endpoint + path.replace(/^\//, '');
     options = options || {};
+
+    var url = this.config.api_endpoint + path.replace(/^\//, '');
+
+    // build options
     _.defaults(options, {
-      partialOutputMode: 'joined',
-      converters: {
-        'text json': JSON.parse,
-        'json text': JSON.stringify
-      },
+      method: method,
+      url: url,
       headers: {},
-      outputType: 'json'
+      resolveWithFullResponse: true
     });
+
+    // default headers
+    // FIXME: add user-agent
     _.defaults(options.headers, {
-      Authorization: 'Basic ' + new Buffer(this.config.token + ':').toString('base64')
+      Accept: 'application/json'
     });
+
+    // token-based authentication
+    if (client.config.token) {
+      _.defaults(options.headers, {
+        Authorization: 'Basic ' + new Buffer(this.config.token + ':').toString('base64')
+      });
+    }
+
+    // input is passed in the options object to rp, if input is empty
+    // we need to use json:true to enable automatic response JSON parsong
+    _.defaults(options, {
+      json: input || true
+    });
+
     debug(method + ' ' + url, options);
-    return this.httpinvoke(url, method, options, cb);
+
+    // FIXME: debug response from server
+
+    // FIXME: handle dry-run mode
+
+    return rp(options).promise().nodeify(cb);
   };
 
   this.get = function(path, options, cb) {
-    if (typeof options === 'function') {
-      cb = options;
-      options = {};
-    }
-    return this.request(path, 'GET', options, cb);
+    return this.request(path, 'GET', null, options, cb);
   };
 
   this.post = function(path, input, options, cb) {
-    if (typeof options === 'function') {
-      cb = options;
-      options = {};
-    }
-    options = options || {};
-    _.defaults(options, {
-      inputType: 'json',
-      headers: {},
-      input: input
-    });
-    _.defaults(options.headers, {
-      'Content-Type': 'application/json'
-    });
-    return this.request(path, 'POST', options, cb);
+    return this.request(path, 'POST', input, options, cb);
   };
+
+  // FIXME: add missing verbs
 
   // helpers
   this.login = function(username, password, cb) {
     debug("Logging in as " + username);
+    var basicAuth = new Buffer(username + ':' + password).toString('base64');
+
     return this.post('/user-tokens', {
       is_session: true
     }, {
       headers: {
-        Authorization: 'Basic ' + new Buffer(username + ':' + password).toString('base64')
+        Authorization: 'Basic ' + basicAuth
       }
     }).then(function(res) {
-      return client.get('/user-tokens/' + res.body._id + '?embedded={"user":1}', {
+      var url = '/user-tokens/' + res.body._id + '?embedded={"user":1}';
+      return client.get(url, {
         headers: {
-          Authorization: 'Basic ' + new Buffer(username + ':' + password).toString('base64')
+          Authorization: 'Basic ' + basicAuth
         }
       }, cb);
     });
