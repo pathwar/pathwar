@@ -1,3 +1,4 @@
+
 achievements = {
     'item_title': 'achievement',
 
@@ -426,7 +427,7 @@ levels = {
         'tags': {
             'type': 'list',
         },
-        'registry_url': {
+        'url': {
             'type': 'string',
         },
         'author': {
