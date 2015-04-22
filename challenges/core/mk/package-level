@@ -1,0 +1,69 @@
+#!/usr/bin/env python
+
+# note: this script *must* not have other deps than docker-compose and
+# standard packages, this allow us to use it everywhere without trouble.
+
+import argparse
+import logging
+import os
+import subprocess
+
+from compose.cli import command
+
+log = logging.getLogger(__name__)
+
+
+class PackageLevelCommand(command.Command):
+    """I package a Pathwar level.
+
+    Usage:
+      package-level [options] [COMMAND] [ARGS...]
+      package-level -h|--help
+
+    Options:
+      --version         Print version and exit
+
+    Commands:
+      build            Build a package for the level
+
+    """
+    def build(self, project, options):
+        """
+        Build or rebuild a Pathwar package.
+
+        Usage: build
+        """
+        containers = self.build_containers()
+        for container in containers:
+            self.export_container(container)
+        self.prepare_compose()
+        self.create_tarball()
+
+    def build_containers(self):
+        res = []
+        for service in project.get_services():
+            if 'build' in service.options:
+                name = 'pathwar-exportme-{}'.format(service.name)
+                res.append(service.create_container(name=name))
+        return res
+
+    def export_container(self, container):
+        pass
+
+    def prepare_compose(self):
+        pass
+
+    def create_tarball(self):
+        pass
+
+
+def main():
+    try:
+        command = PackageLevelCommand()
+        command.sys_dispatch()
+    except KeyboardInterrupt:
+        log.error("\nAborting.")
+        sys.exit(1)
+    
+if __name__ == '__main__':
+    main()
