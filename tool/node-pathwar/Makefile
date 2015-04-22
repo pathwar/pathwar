@@ -1,4 +1,4 @@
-.PHONY:	build test watch_test fig_api
+.PHONY:	build test watch_test docker_api
 
 
 build:
@@ -22,23 +22,23 @@ node_modules:
 	npm install
 
 
-docker_test:	fig_api
-	fig run sdk npm run seed
-	fig run sdk npm run test
+docker_test:	docker_api
+	docker-compose run sdk npm run seed
+	docker-compose run sdk npm run test
 
 
-watch_docker_test:	fig_api
+watch_docker_test:	docker_api
 	while true; \
 	  do clear; \
-	  fig run sdk npm test; \
+	  docker-compose run sdk npm test; \
 	  sleep .5; \
 	  fswatch -1 *; \
 	done
 
 
-fig_api:	api.pathwar.net
-	fig up -d --no-recreate api
-	fig run --no-deps api python run.py flush-db
+docker_api:	api.pathwar.net
+	docker-compose up -d --no-recreate api
+	docker-compose run --no-deps api python run.py flush-db
 
 
 api.pathwar.net:
