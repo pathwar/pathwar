@@ -8,8 +8,7 @@ mkdir -p /pathwar/passphrases
 
 for i in {0..2}; do
     # FIXME: get the amount of passphrases from the level.yml file
-    # FIXME: use something else than $RANDOM (/dev/urandom?)
-    passphrase=$(echo $RANDOM | md5sum | awk '{print $1}')
+    passphrase=$(head -c 512 /dev/urandom | sha224sum | awk '// { print $1; }')
     echo $passphrase > /pathwar/passphrases/${i}
 done
 
