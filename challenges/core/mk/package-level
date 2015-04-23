@@ -4,8 +4,11 @@
 # standard packages, this allow us to use it everywhere without trouble.
 
 import argparse
+import datetime
 import logging
 import os
+import tempfile
+import shutil
 import subprocess
 
 from compose.cli import command
@@ -27,34 +30,52 @@ class PackageLevelCommand(command.Command):
       build            Build a package for the level
 
     """
+    def __init__(self):
+        today = datetime.datetime.now().strftime("%Y-%m-%d")
+        prefix = '{0}-'.format(today)
+        self.tmpdir = tempfile.mkdtemp(prefix=prefix)
+        self.target = 'package-{0}-{1}.tar'.format(os.path.basename(os.getcwd()),
+                                                   today)
+
     def build(self, project, options):
         """
         Build or rebuild a Pathwar package.
 
         Usage: build
         """
-        containers = self.build_containers()
+        print('[+] building containers')
+        containers = self.build_containers(project)
+        print('[+] exporting containers')
         for container in containers:
-            self.export_container(container)
+            self.export_container(project.client, container)
+        print('[+] preparing production docker-compose.yml')
         self.prepare_compose()
+        print('[+] creating tarball')
         self.create_tarball()
 
-    def build_containers(self):
+    def build_containers(self, project):
         res = []
         for service in project.get_services():
             if 'build' in service.options:
                 name = 'pathwar-exportme-{}'.format(service.name)
-                res.append(service.create_container(name=name))
+                res.append((service.create_container(name=name), service.name))
         return res
 
-    def export_container(self, container):
-        pass
+    def export_container(self, client, pair):
+        container, service_name = pair
+        dst = '{0}/{1}.tar'.format(self.tmpdir, service_name)
+        rsp = client.export(container.id)
+        with open(dst, 'w+') as output:
+            for block in rsp.stream():
+                output.write(block)
 
     def prepare_compose(self):
         pass
 
     def create_tarball(self):
-        pass
+        subprocess.call('tar -zcf {0} -C {1} . 2>/dev/null'.format(self.target, self.tmpdir), shell=True)
+        print('Pathwar package is {0}'.format(self.target))
+        shutil.rmtree(self.tmpdir)
 
 
 def main():
