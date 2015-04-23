@@ -6,7 +6,7 @@ S3_URL ?= 	s3://pathwar-levels/
 PACKAGE_NAME = package-$(shell basename $(shell pwd)).tar
 
 ## Actions
-.PHONY: all build run shell $(PACKAGE_NAME)
+.PHONY: all build run shell package
 
 all:	build
 
@@ -28,10 +28,7 @@ package-level:
 	curl -O https://raw.githubusercontent.com/pathwar/core/master/mk/package-level
 	chmod +x $@
 
-package: $(PACKAGE_NAME)
-
-$(PACKAGE_NAME): package-level
-	-rm -f $(PACKAGE_NAME)
+package: package-level
 	./package-level build
 
 publish_on_s3:
