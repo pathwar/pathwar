@@ -10,6 +10,7 @@ import os
 import tempfile
 import shutil
 import subprocess
+import yaml
 
 from compose.cli import command
 
@@ -49,7 +50,7 @@ class PackageLevelCommand(command.Command):
         for container in containers:
             self.export_container(project.client, container)
         print('[+] preparing production docker-compose.yml')
-        self.prepare_compose()
+        self.prepare_compose(project)
         print('[+] creating tarball')
         self.create_tarball()
 
@@ -69,8 +70,17 @@ class PackageLevelCommand(command.Command):
             for block in rsp.stream():
                 output.write(block)
 
-    def prepare_compose(self):
-        pass
+    def prepare_compose(self, project):
+        with open('docker-compose.yml') as fh:
+            origin = yaml.safe_load(fh)
+            output = dict()
+            for name, conf in origin.iteritems():
+                if 'build' in conf:
+                    del conf['build']
+                    conf['image'] = 'image-for-{0}'.format(name)
+                    output[name] = conf
+            with open('{0}/docker-compose.yml'.format(self.tmpdir), 'w+') as r:
+                r.write(yaml.dump(output))
 
     def create_tarball(self):
         subprocess.call('tar -zcf {0} -C {1} . 2>/dev/null'.format(self.target, self.tmpdir), shell=True)
