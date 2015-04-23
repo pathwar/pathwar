@@ -35,7 +35,7 @@ $(PACKAGE_NAME): package-level
 	./package-level build
 
 publish_on_s3:
-	s3cmd put $(PACKAGE_NAME) $(S3_URL)/$(head -c 10 /dev/urandom | md5sum | awk '// { print $1; }').tar
+	s3cmd put $(PACKAGE_NAME) $(S3_URL)/$(shell head -c 128 /dev/urandom | tr -dc A-Za-z0-9).tar
 
 ## Travis
 .PHONY: travis_install travis_run travis_run_service
