@@ -35,8 +35,7 @@ class PackageLevelCommand(command.Command):
         today = datetime.datetime.now().strftime("%Y-%m-%d")
         prefix = '{0}-'.format(today)
         self.tmpdir = tempfile.mkdtemp(prefix=prefix)
-        self.target = 'package-{0}-{1}.tar'.format(os.path.basename(os.getcwd()),
-                                                   today)
+        self.target = 'package-{0}.tar'.format(os.path.basename(os.getcwd()))
 
     def build(self, project, options):
         """

@@ -2,9 +2,10 @@ SERVICES ?=	$(shell cat docker-compose.yml | grep '^[a-z]' | cut -d: -f1)
 # By default $(SERVICE) is the first service in docker-compose.yml
 SERVICE ?=	$(shell echo $(SERVICES) | tr " " "\n" | head -1)
 
+PACKAGE_NAME = package-$(shell basename $(shell pwd)).tar
 
 ## Actions
-.PHONY: all build run shell
+.PHONY: all build run shell $(PACKAGE_NAME)
 
 all:	build
 
@@ -19,6 +20,18 @@ run:
 
 shell:
 	docker-compose run $(SERVICE) /bin/bash
+
+
+## Package
+package-level:
+	curl -O https://raw.githubusercontent.com/pathwar/core/master/mk/package-level
+	chmod +x $@
+
+package: $(PACKAGE_NAME)
+
+$(PACKAGE_NAME): package-level
+	-rm -f $(PACKAGE_NAME)
+	./package-level build
 
 
 ## Travis
