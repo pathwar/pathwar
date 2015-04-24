@@ -4,7 +4,7 @@ achievements = {
 
     # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
-    'public_methods': [],
+    'public_methods': ['GET'],
     'allowed_read_roles': ['user', 'moderator', 'admin'],
     'allowed_write_roles': ['admin'],
     # item
