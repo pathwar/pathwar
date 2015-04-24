@@ -1,0 +1,25 @@
+api:
+  extends:
+    file: _common.yml
+    service: api
+  environment:
+  - MONGO_HOST=dev.pathwar.net
+  links:
+  - smtp
+
+smtp:
+  extends:
+    file: _common.yml
+    service: smtp
+
+portal:
+  extends:
+    file: _common.yml
+    service: portal
+
+nodesdk:
+  extends:
+    file: _common.yml
+    service: nodesdk
+  links:
+  - api

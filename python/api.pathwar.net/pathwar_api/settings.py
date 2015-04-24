@@ -17,14 +17,22 @@ DEFAULT_MAIL_SENDER = 'notifications@pathwar.net'
 
 
 # MONGO
-MONGO_DBNAME = 'api-bench'
-MONGO_HOST = os.environ['MONGO_PORT_27017_TCP_ADDR']
-MONGO_PORT = os.environ['MONGO_PORT_27017_TCP_PORT']
+MONGO_HOST = os.environ.get(
+    'MONGO_HOST', os.environ.get('MONGO_PORT_27017_TCP_ADDR')
+)
+MONGO_DBNAME = os.environ.get('MONGO_DBNAME', 'pathwar')
+MONGO_USERNAME = os.environ.get('MONGO_USERNAME')
+MONGO_PASSWORD = os.environ.get('MONGO_PASSWORD')
+MONGO_PORT = os.environ.get(
+    'MONGO_PORT_27017_TCP_PORT', os.environ.get('MONGO_PORT', "27017")
+)
+#print(MONGO_HOST, MONGO_PORT, MONGO_DBNAME, MONGO_USERNAME, MONGO_PASSWORD)
+#sys.exit(1)
 
 
 # EVE DEFAULTS
-PUBLIC_METHODS = ['GET']
-PUBLIC_ITEM_METHODS = ['GET']
+PUBLIC_METHODS = []
+PUBLIC_ITEM_METHODS = []
 
 
 # CORS HEADERS

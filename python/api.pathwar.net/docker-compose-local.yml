@@ -1,0 +1,29 @@
+api:
+  extends:
+    file: _common.yml
+    service: api
+  links:
+  - mongo
+  - smtp
+
+mongo:
+  extends:
+    file: _common.yml
+    service: mongo
+
+smtp:
+  extends:
+    file: _common.yml
+    service: smtp
+
+portal:
+  extends:
+    file: _common.yml
+    service: portal
+
+nodesdk:
+  extends:
+    file: _common.yml
+    service: nodesdk
+  links:
+  - api
