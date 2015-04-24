@@ -2,7 +2,7 @@
 api:
   build: .
   ports:
-  - 5000:5000
+  - 5000
   volumes:
   - .:/usr/src/app
   links:
@@ -26,8 +26,8 @@ smtp:
 portal:
   build: portal.pathwar.net
   ports:
-  - 8090:8090
-  - 35729:35729
+  - 8090
+  - 35729
   volumes:
   - "portal.pathwar.net:/usr/src/app/"
   environment:

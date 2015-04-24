@@ -1,6 +1,8 @@
+CONFIG ?=		docker-compose.yml
+DOCKER_COMPOSE ?=	docker-compose -p$(USER)_api -f$(CONFIG)
+
 BLUEPRINT_FILE ?=	apiary.apib
 BLUEPRINT_TEMPLATE ?=	default
-DOCKER_COMPOSE_FILE ?=	docker-compose.yml
 
 WATCH_FILES ?=	$(shell \
 		  find node-pathwar/ ./ \
@@ -15,8 +17,8 @@ WATCH_FILES ?=	$(shell \
 
 
 # FILES/DIRECTORIES
-portal.pathwar.net:
-	git clone https://github.com/pathwar/portal.pathwar.net
+portal.pathwar.net node-pathwar:
+	git clone https://github.com/pathwar/$@
 
 
 # ACTIONS
@@ -29,13 +31,13 @@ build:	api_build blueprint_build
 release:	gh-pages
 
 up:	api_up portal_up
-	docker-compose -f $(DOCKER_COMPOSE_FILE) logs
+	$(DOCKER_COMPOSE) logs
 
 kill:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) kill
+	$(DOCKER_COMPOSE) kill
 
 stop:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) stop
+	$(DOCKER_COMPOSE) stop
 
 shell:	api_shell
 
@@ -87,11 +89,11 @@ travis:
 .PHONY:	api_build api_up api_shell portal_up mongo_up smtp_up flush-db seed-db portal_clean
 
 api_build:	portal.pathwar.net node-pathwar
-	docker-compose -f $(DOCKER_COMPOSE_FILE) build
+	$(DOCKER_COMPOSE) build
 
 
 flush-db:	mongo_up
-	docker-compose -f $(DOCKER_COMPOSE_FILE) run --no-deps api python pathwar_api/run.py flush-db
+	$(DOCKER_COMPOSE) run --no-deps api python pathwar_api/run.py flush-db
 
 seed-db:
 	$(MAKE) seed-db-node
@@ -105,39 +107,36 @@ seed-db-watch:
 	done
 
 seed-db-node:	flush-db node-pathwar
-	docker-compose -f $(DOCKER_COMPOSE_FILE) run --no-deps nodesdk npm run seed
+	$(DOCKER_COMPOSE) run --no-deps nodesdk npm run seed
 
 seed-db-python:	flush-db
-	docker-compose -f $(DOCKER_COMPOSE_FILE) run --no-deps api python pathwar_api/run.py seed-db
+	$(DOCKER_COMPOSE) run --no-deps api python pathwar_api/run.py seed-db
 
 api_up:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) kill api
-	docker-compose -f $(DOCKER_COMPOSE_FILE) rm --force api
-	docker-compose -f $(DOCKER_COMPOSE_FILE) up --no-recreate -d api
+	$(DOCKER_COMPOSE) kill api
+	$(DOCKER_COMPOSE) rm --force api
+	$(DOCKER_COMPOSE) up --no-recreate -d api
 
 api_shell:	mongo_up
-	docker-compose -f $(DOCKER_COMPOSE_FILE) run --no-deps api /bin/bash
+	$(DOCKER_COMPOSE) run --no-deps api /bin/bash
 
 mongo_up:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) up --no-recreate -d mongo
+	$(DOCKER_COMPOSE) up --no-recreate -d mongo
 
 smtp_up:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) up --no-recreate -d smtp
+	$(DOCKER_COMPOSE) up --no-recreate -d smtp
 
 portal_up:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) kill portal
-	docker-compose -f $(DOCKER_COMPOSE_FILE) rm --force portal
-	docker-compose -f $(DOCKER_COMPOSE_FILE) up --no-recreate -d portal
+	$(DOCKER_COMPOSE) kill portal
+	$(DOCKER_COMPOSE) rm --force portal
+	$(DOCKER_COMPOSE) up --no-recreate -d portal
 
 
 portal_clean:
-	-docker-compose -f $(DOCKER_COMPOSE_FILE) kill portal
-	-docker-compose -f $(DOCKER_COMPOSE_FILE) rm --force portal
+	-$(DOCKER_COMPOSE) kill portal
+	-$(DOCKER_COMPOSE) rm --force portal
 	-rm -rf portal.pathwar.net/build
 
 api_clean:
-	-docker-compose -f $(DOCKER_COMPOSE_FILE) stop api
-	-docker-compose -f $(DOCKER_COMPOSE_FILE) rm --force api
-
-node-pathwar:
-	git clone git://github.com/pathwar/node-pathwar
+	-$(DOCKER_COMPOSE) stop api
+	-$(DOCKER_COMPOSE) rm --force api
