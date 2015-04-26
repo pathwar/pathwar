@@ -1,11 +1,13 @@
 var _ = require('lodash'),
+    Q = require('q'),
     program = require('commander'),
     utils = require('./utils');
 
 
 program
   .version(utils.getVersion('..'))
-  .option('--api-endpoint <url>', 'set the API endpoint');
+  .option('--api-endpoint <url>', 'set the API endpoint')
+  .option('--token <token>', 'set the token');
 //.option('--dry-run', 'do not execute actions')
 //.option('-D, --debug', 'enable debug mode')
 
@@ -67,9 +69,36 @@ program
   });
 
 
-program.command('add');
+program
+  .command('cat <item>')
+  .description('show object')
+  .action(function(item, options) {
+    var client = utils.newApi(options);
+
+    var once = function(item) {
+      // FIXME: if object is resolved, only create a request for his type
+      return [
+        client.get('/servers/' + item._id),
+        client.get('/users/' + item._id),
+        client.get('/coupons/' + item._id)
+        // FIXME: add all kind of items
+      ];
+    };
+
+    var promises = once({_id: item});
+    Q.allSettled(promises).then(function(results) {
+      var items = _.compact(_.pluck(_.pluck(results, 'value'), 'body'));
+      // FIXME: handle --format option
+      console.log(items[0]);
+    }, function(err) {
+      console.error(err);
+    });
+  });
+
+
+program.command('touch');
 program.command('rm');
-program.command('update');
+program.command('ed');
 
 
 module.exports = program;

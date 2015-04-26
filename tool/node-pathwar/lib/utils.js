@@ -31,6 +31,9 @@ module.exports.newApi = function(options) {
   if (options.parent.apiEndpoint) {
     config.api_endpoint = options.parent.apiEndpoint;
   }
+  if (options.parent.token) {
+    config.token = options.parent.token;
+  }
   if (options.parent.dryRun) {
     config.dry_run = options.parent.dryRun;
   }
