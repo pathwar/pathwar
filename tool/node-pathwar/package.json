@@ -2,10 +2,13 @@
   "name": "pathwar",
   "version": "0.3.0",
   "description": "Pathwar API client",
-  "main": "lib/index.js",
+  "main": "lib",
   "scripts": {
     "test": "mocha --reporter spec --ui tdd --bail --check-leaks ./test/all.js",
     "seed": "mocha --reporter spec --ui tdd --bail --check-leaks ./test/seed.js"
+  },
+  "bin": {
+    "pathwar": "./bin/pathwar"
   },
   "repository": {
     "type": "git",
@@ -23,8 +26,10 @@
   },
   "homepage": "https://github.com/pathwar/node-pathwar",
   "dependencies": {
+    "commander": "^2.8.1",
     "debug": "^2.1.1",
-    "lodash": "^3.0.0",
+    "lodash": "^3.7.0",
+    "nedb": "^1.1.2",
     "rc": "^0.5.5",
     "request-promise": "^0.4.1"
   },
