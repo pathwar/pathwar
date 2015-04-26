@@ -1201,6 +1201,11 @@ user_organization_invites = {
                 'embeddable': True,
             },
         },
+        "status": {
+            'type': 'string',
+            'default': 'pending',
+            'allowed': ['pending', 'accepted', 'refused'],
+        },
     },
 }
 

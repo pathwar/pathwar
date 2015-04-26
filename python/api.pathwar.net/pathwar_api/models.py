@@ -221,6 +221,8 @@ class UserNotification(BaseModel):
 class UserOrganizationInvite(BaseModel):
     resource = 'user-organization-invites'
 
+    # FIXME: on PATCH by the user, add him to the new organization
+
 
 class UserToken(BaseModel):
     resource = 'user-tokens'
