@@ -78,7 +78,7 @@ class PackageLevelCommand(command.Command):
                     del conf['build']
                     conf['image'] = 'image-for-{0}'.format(name)
                     conf['entrypoint'] = '/pathwar/scripts/init'
-                    output[name] = conf
+                output[name] = conf
             with open('{0}/docker-compose.yml'.format(self.tmpdir), 'w+') as r:
                 r.write(yaml.dump(output))
 
