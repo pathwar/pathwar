@@ -25,24 +25,40 @@ program
 program
   .command('ls [type]')
   .description('list objects')
+  //.option('-k, --keys <keys...>', 'keys to print')
+  //.option('-q, --quiet', 'only print ids')
+  //.option('-f, --filter <filter...>', 'filter constraints')
   .action(function(type, options) {
     var client = utils.newApi(options);
 
     type = type || '';
     client.get('/' + type)
       .then(function(res) {
-        var keys = _.keys(res.body._items[0]);
-        // FIXME: aggregate keys from all items and remove dummy fields
+        if (!res.body._items.length) {
+          console.error('No entries');
+          return;
+        }
+
+        // get all keys
+        var keys = _.difference(
+          _.union(_.flatten(_.map(res.body._items, _.keys))),
+          ['_links', '_etag']
+        );
+
         var table = utils.newTable({
           head: keys
         });
+
         _.forEach(res.body._items, function(item) {
           var row = [];
           _.forEach(keys, function(key) {
+            // FIXME: special print for uuids
+            // FIXME: special print for dates
             row.push(item[key] || '');
           });
           table.push(row);
         });
+
         console.log(table.toString());
       })
       .catch(function(err) {
