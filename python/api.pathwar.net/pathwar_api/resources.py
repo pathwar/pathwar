@@ -1253,7 +1253,7 @@ user_notifications = {
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
     'allowed_item_read_roles': ['user', 'moderator', 'admin'],
-    'allowed_item_write_roles': ['admin'],
+    'allowed_item_write_roles': ['user', 'admin'],
 
     # 'url': 'users/<user>/notifications',
     'schema': {
