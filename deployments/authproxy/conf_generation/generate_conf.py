@@ -9,7 +9,7 @@ import time
 import socket
 
 config = {}
-config['api_scheme'] = os.environ.get('PATHWAR_API_SCHEME','http')
+config['api_scheme'] = os.environ.get('PATHWAR_API_SCHEME','http://')
 config['api_url'] = os.environ.get('PATHWAR_API_HOST','localhost:5000')
 config['api_user'] = os.environ.get('PATHWAR_API_USER','default')
 config['api_pass'] = os.environ.get('PATHWAR_API_PASS','')
@@ -29,7 +29,7 @@ def daemonize():
         exit(0)
 
 def api_request(endpoint, **kwargs):
-    query = '{0}://{1}{2}'.format(config['api_scheme'],
+    query = '{0}{1}{2}'.format(config['api_scheme'],
                                   config['api_url'],
                                   endpoint)
     params = {}
