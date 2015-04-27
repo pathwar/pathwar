@@ -78,7 +78,7 @@ program
               // Dates
             case '_updated':
             case '_created':
-              row.push(moment(item[key]).fromNow());
+              row.push(moment(new Date(item[key])).fromNow());
               break;
 
               // UUID
