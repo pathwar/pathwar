@@ -501,7 +501,6 @@ class LevelInstanceUser(BaseModel):
         if not level_instance:
             abort(422, "No such level_instance")
 
-
         organization_level = OrganizationLevel.find({
             'organization': item['organization'],
             'level': level_instance['level'],
