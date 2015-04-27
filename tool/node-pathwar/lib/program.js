@@ -134,43 +134,32 @@ program
   .action(function(item, options) {
     var client = utils.newApi(options);
 
-    var getPromises = function(item) {
-      if (item._type) {
-        return [client.get('/' + item._type + '/' + item._id)];
-      }
-
-      return [
-        client.get('/servers/' + item._id),
-        client.get('/users/' + item._id),
-        client.get('/coupons/' + item._id)
-        // FIXME: add all kind of items
-      ];
-    };
-
-    // FIXME: resolve truncated UUIDs
-    var query;
-    if (item.indexOf('/') > 0) {
-      var split = item.split('/');
-      query = {
-        _type: split[0],
-        _id: split[1]
-      };
-    } else {
-      query = {
-        _id: item
-      };
-    }
-
-    Q.allSettled(getPromises(query)).then(function(results) {
-      var items = _.compact(_.pluck(_.pluck(results, 'value'), 'body'));
+    utils.searchItems(item, client, function(items) {
       // FIXME: handle --format option
       console.log(items[0]);
     }, utils.panic);
   });
 
 
+program
+  .command('rm <item>')
+  .alias('delete')
+  .description('remove an item')
+  .action(function(item, options) {
+    var client = utils.newApi(options);
+
+    // FIXME: add warning !
+
+    utils.searchItems(item, client, function(items) {
+      client.delete('/' + items[0]._links.self.href, {headers: {'If-Match': items[0]._etag}}).
+        then(function(res) {
+          console.log('done');
+        }).catch(utils.panic);
+    });
+  });
+
+
 program.command('touch');
-program.command('rm');
 program.command('ed');
 
 

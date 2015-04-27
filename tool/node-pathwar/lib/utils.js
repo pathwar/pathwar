@@ -1,4 +1,6 @@
-var Api = require('./index'),
+var _ = require('lodash'),
+    Api = require('./index'),
+    Q = require('q'),
     Table = require('cli-table'),
     debug = require('debug')('pathwar:utils'),
     rc = require('./config');
@@ -84,4 +86,41 @@ var panic = module.exports.panic = function(msg) {
 module.exports.collect = function(val, memo) {
   memo.push(val);
   return memo;
+};
+
+
+module.exports.searchItems = function(search, client, fn, errFn) {
+    var getPromises = function(item) {
+      if (item._type) {
+        return [client.get('/' + item._type + '/' + item._id)];
+      }
+
+      return [
+        client.get('/servers/' + item._id),
+        client.get('/users/' + item._id),
+        client.get('/coupons/' + item._id)
+        // FIXME: add all kind of items
+      ];
+    };
+
+  // FIXME: resolve truncated UUIDs
+
+    var query;
+    if (search.indexOf('/') > 0) {
+      var split = search.split('/');
+      query = {
+        _type: split[0],
+        _id: split[1]
+      };
+    } else {
+      query = {
+        _id: search
+      };
+    }
+
+  return Q.allSettled(getPromises(query)).then(function(results) {
+    var items = _.compact(_.pluck(_.pluck(results, 'value'), 'body'));
+    fn(items);
+    return items;
+  }, errFn);
 };
