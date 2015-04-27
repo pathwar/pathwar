@@ -7,6 +7,7 @@ server {
 
        location / {
        		access_by_lua '/pathwar/lua/auth.lua';
+		proxy_set_header Host $level_id;
 		proxy_pass $scheme://_LEVEL_URL_;
        }
 }
