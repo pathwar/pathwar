@@ -40,7 +40,7 @@ def api_request(endpoint, **kwargs):
     r = requests.get(query, params=params, auth=(config['api_user'],config['api_pass']))
     return r.json()
 
-ngx_tpl = open(config['ngx_tpl'].read()
+ngx_tpl = open(config['ngx_tpl']).read()
 
 daemonize()
 
