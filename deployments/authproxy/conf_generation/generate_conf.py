@@ -8,10 +8,13 @@ import json
 import pprint
 import time
 
-
-CONF_FILE='conf.ini'
-
-config = ConfigParser.ConfigParser()
+config = {}
+config['api_scheme'] = os.environ.get('PATHWAR_API_SCHEME','http')
+config['api_url'] = os.environ.get('PATHWAR_API_URL','localhost:5000')
+config['api_token'] = os.environ.get('PATHWAR_API_TOKEN','token')
+config['ngx_tpl'] = os.environ.get('PATHWAR_NGX_CONF_PATH','/pathwar/conf_generation/nginx.tpl')
+config['ngx_available_location'] = os.environ.get('PATHWAR_NGX_AVAILABLE','/etc/nginx/sites-available/')
+config['ngx_enabled_location'] = os.environ.get('PATHWAR_NGX_ENABLED','/etc/nginx/sites-enabled/')
 
 def daemonize():
     pid = os.fork()
@@ -37,10 +40,6 @@ def api_request(endpoint, **kwargs):
     r = requests.get(query, params=params, auth=(config.get('conf', 'api_token'),''))
     return r.json()
 
-
-if len(sys.argv) == 2:
-    CONF_FILE=sys.argv[1]
-config.readfp(open(CONF_FILE))
 ngx_tpl = open(config.get('conf','ngx_tpl')).read()
 
 daemonize()
