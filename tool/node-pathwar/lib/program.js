@@ -32,7 +32,7 @@ program
   .description('list objects')
   .option('--no-trunc', "don't truncate output")
   .option('-f, --field <field>', 'fields to print', utils.collect, [])
-  //.option('-q, --quiet', 'only print ids')
+  .option('-q, --quiet', 'only print ids')
   .action(function(type, conditions, options) {
     var client = utils.newApi(options);
 
@@ -46,6 +46,11 @@ program
       .then(function(res) {
         if (!res.body._items.length) {
           console.error('No entries');
+          return;
+        }
+
+        if (options.quiet) {
+          console.log(_.pluck(res.body._items, '_id').join('\n'));
           return;
         }
 
