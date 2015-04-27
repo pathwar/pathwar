@@ -143,7 +143,7 @@ program
       client.delete(items[0]).then(function(res) {
         console.log('done');
       }).catch(utils.panic);
-    });
+    }, utils.panic);
   });
 
 
@@ -162,7 +162,20 @@ program
   });
 
 
-program.command('ed');
+program
+  .command('update <item> <fields...>')
+  .alias('patch')
+  .description('update an item')
+  .action(function(item, fields, options) {
+    var client = utils.newApi(options);
+
+    utils.searchItems(item, client, function(items) {
+      var input = utils.castFields(items[0], fields);
+      client.patch(items[0], input).then(function(res) {
+        console.log(res.body._id);
+      }).catch(utils.panic);
+    }, utils.panic);
+  });
 
 
 module.exports = program;

@@ -149,6 +149,7 @@ module.exports.castFields = function(type, fields) {
 
     output[key] = value;
     // FIXME: cast values accordingly to the resources
+    // FIXME: type can be a type OR an object, if so, we need to resolve type
 
   });
   return output;
