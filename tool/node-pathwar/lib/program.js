@@ -1,5 +1,6 @@
 var _ = require('lodash'),
     Q = require('q'),
+    moment = require('moment'),
     program = require('commander'),
     utils = require('./utils');
 
@@ -54,9 +55,23 @@ program
         _.forEach(res.body._items, function(item) {
           var row = [];
           _.forEach(keys, function(key) {
-            // FIXME: special print for uuids
-            // FIXME: special print for dates
-            row.push(item[key] || '');
+
+            switch (key) {
+
+              // Dates
+            case '_updated':
+            case '_created':
+              row.push(moment(item[key]).fromNow());
+              break;
+
+              // UUID
+              // FIXME
+
+            default:
+              row.push(item[key] || '');
+              break;
+            }
+
           });
           table.push(row);
         });
