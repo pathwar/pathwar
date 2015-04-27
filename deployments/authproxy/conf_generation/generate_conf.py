@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import ConfigParser
 import requests
 import sys
 import os
@@ -10,8 +9,9 @@ import time
 
 config = {}
 config['api_scheme'] = os.environ.get('PATHWAR_API_SCHEME','http')
-config['api_url'] = os.environ.get('PATHWAR_API_URL','localhost:5000')
-config['api_token'] = os.environ.get('PATHWAR_API_TOKEN','token')
+config['api_url'] = os.environ.get('PATHWAR_API_HOST','localhost:5000')
+config['api_user'] = os.environ.get('PATHWAR_API_USER','default')
+config['api_pass'] = os.environ.get('PATHWAR_API_PASS','')
 config['ngx_tpl'] = os.environ.get('PATHWAR_NGX_CONF_PATH','/pathwar/conf_generation/nginx.tpl')
 config['ngx_available_location'] = os.environ.get('PATHWAR_NGX_AVAILABLE','/etc/nginx/sites-available/')
 config['ngx_enabled_location'] = os.environ.get('PATHWAR_NGX_ENABLED','/etc/nginx/sites-enabled/')
@@ -28,8 +28,8 @@ def daemonize():
         exit(0)
 
 def api_request(endpoint, **kwargs):
-    query = '{0}://{1}{2}'.format(config.get('conf', 'api_scheme'),
-                                  config.get('conf', 'api_url'),
+    query = '{0}://{1}{2}'.format(config['api_scheme'],
+                                  config['api_url'],
                                   endpoint)
     params = {}
     for arg in kwargs:
@@ -37,10 +37,10 @@ def api_request(endpoint, **kwargs):
             params[arg]=json.dumps(kwargs[arg])
         else:
             params[arg]=kwargs[arg]
-    r = requests.get(query, params=params, auth=(config.get('conf', 'api_token'),''))
+    r = requests.get(query, params=params, auth=(config['api_user'],config['api_pass']))
     return r.json()
 
-ngx_tpl = open(config.get('conf','ngx_tpl')).read()
+ngx_tpl = open(config['ngx_tpl'].read()
 
 daemonize()
 
@@ -66,14 +66,14 @@ while True:
         
     for id in confs:
         conf_name = '/' + id + '.conf'
-        with open(config.get('conf','ngx_available_location') + conf_name, 'w') as fd:
+        with open(config['ngx_available_location'] + conf_name, 'w') as fd:
             fd.write(confs[id])
         if id in active_levels:
-            os.symlink(config.get('conf','ngx_available_location') + conf_name,
-                       config.get('conf','ngx_enabled_location') + conf_name)
+            os.symlink(config['ngx_available_location'] + conf_name,
+                       config['ngx_enabled_location'] + conf_name)
         else:
             try:
-                os.unlink(config.get('conf','ngx_enabled_location') + conf_name)
+                os.unlink(config['ngx_enabled_location'] + conf_name)
             except:
                 pass        
     os.system('/etc/init.d/nginx reload')
