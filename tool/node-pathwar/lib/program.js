@@ -27,12 +27,12 @@ program
 
 
 program
-  .command('ls [type]')
+  .command('ls <type>')
   .description('list objects')
   .option('--no-trunc', "don't truncate output")
-  //.option('-k, --keys <keys...>', 'keys to print')
+  .option('-f, --field <field>', 'fields to print', utils.collect, [])
   //.option('-q, --quiet', 'only print ids')
-  //.option('-f, --filter <filter...>', 'filter constraints')
+  //.option('-w, --where <condition>', 'where constraints', utils.collect, [])
   .action(function(type, options) {
     var client = utils.newApi(options);
 
@@ -49,6 +49,16 @@ program
           _.union(_.flatten(_.map(res.body._items, _.keys))),
           ['_links', '_etag']
         );
+        if (options.field.length) {
+          keys = _.intersection(keys, options.field);
+          var difference = _.difference(options.field, keys);
+          if (difference.length) {
+            utils.error('Unknown fields: ' + difference);
+          }
+        }
+        if (!keys.length) {
+          utils.panic('No fields to print');
+        }
 
         var table = utils.newTable({
           head: keys

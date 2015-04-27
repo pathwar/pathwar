@@ -79,3 +79,9 @@ var panic = module.exports.panic = function(msg) {
   console.error('');
   process.exit(-1);
 };
+
+
+module.exports.collect = function(val, memo) {
+  memo.push(val);
+  return memo;
+};
