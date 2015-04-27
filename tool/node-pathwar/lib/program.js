@@ -151,10 +151,9 @@ program
     // FIXME: add warning !
 
     utils.searchItems(item, client, function(items) {
-      client.delete('/' + items[0]._links.self.href, {etag: items[0]._etag}).
-        then(function(res) {
-          console.log('done');
-        }).catch(utils.panic);
+      client.delete(items[0]).then(function(res) {
+        console.log('done');
+      }).catch(utils.panic);
     });
   });
 

@@ -73,15 +73,20 @@ var Client = module.exports = function(options) {
     }
     options = options || {};
 
-    var url = this.config.api_endpoint + path.replace(/^\//, '');
-
     // build options
     _.defaults(options, {
       method: method,
-      url: url,
       headers: {},
       resolveWithFullResponse: true
     });
+
+    if (typeof(path) == 'object' && path._links != undefined) {
+      var object = path;
+      options.etag = options.etag || object._etag;
+      path = object._links.self.href;
+    }
+
+    options.url = options.url || this.config.api_endpoint + path.replace(/^\//, '');
 
     if (options.etag) {
       _.defaults(options.headers, {
@@ -108,7 +113,7 @@ var Client = module.exports = function(options) {
       json: input || true
     });
 
-    debug(method + ' ' + url, options);
+    debug(method + ' ' + options.url, options);
 
     // FIXME: debug response from server
 
