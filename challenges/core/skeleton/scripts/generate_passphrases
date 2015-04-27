@@ -5,9 +5,8 @@ set -e
 . /pathwar/scripts/functions.sh
 
 mkdir -p /pathwar/passphrases
-
-for i in {0..2}; do
-    # FIXME: get the amount of passphrases from the level.yml file
+passphrases_number=$(cat /pathwar/level.yml | grep 'passphrases:' | cut -d ':' -f2 | sed -E 's/\s+//g')
+for i in $(seq 0 $passphrases_number); do
     passphrase=$(head -c 512 /dev/urandom | sha224sum | awk '// { print $1; }')
     echo $passphrase > /pathwar/passphrases/${i}
 done
