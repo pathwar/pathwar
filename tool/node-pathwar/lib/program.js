@@ -28,6 +28,7 @@ program
 
 program
   .command('ls <type> [conditions...]')
+  .alias('select')
   .description('list objects')
   .option('--no-trunc', "don't truncate output")
   .option('-f, --field <field>', 'fields to print', utils.collect, [])
@@ -57,7 +58,6 @@ program
       });
       url = url + '?where=' + JSON.stringify(where);
     }
-    console.log('url', url);
     client.get(url)
       .then(function(res) {
         if (!res.body._items.length) {
@@ -129,6 +129,7 @@ program
 
 program
   .command('cat <item>')
+  .alias('show')
   .description('show object')
   .action(function(item, options) {
     var client = utils.newApi(options);
