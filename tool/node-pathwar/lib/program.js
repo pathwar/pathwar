@@ -72,10 +72,14 @@ program
               break;
 
             default:
-              var value = item[key] || '';
+              var value = (item[key] || '').toString();
 
               if (validator.isUUID(value)) {
                 value = utils.truncateUUID(value, options.trunc);
+              }
+
+              if (value.substring(0, 4) == '$2a$') {
+                value = '<blowfish>';
               }
 
               row.push(value);
