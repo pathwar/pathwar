@@ -56,10 +56,14 @@ module.exports.truncateUUID = function(input, truncStatus) {
 
 var error = module.exports.error = function(msg) {
   if (msg && msg.options && msg.options.method && msg.options.url &&
-      msg.statusCode && msg.error && msg.error._error) {
+      msg.statusCode && msg.error) {
     debug('panic', msg);
     console.error('> ' + msg.options.method + ' ' + msg.options.url);
-    console.error('< ' + msg.error._error.message + ' (' + msg.statusCode + ')');
+    if (msg.error._error) {
+      console.error('< ' + msg.error._error.message + ' (' + msg.statusCode + ')');
+    } else {
+      console.error('< ' + msg.statusCode + ' error');
+    }
     if (msg.error._issues) {
       _.forEach(msg.error._issues, function(value, key) {
         console.error('  - ' + key + ': ' + value);
