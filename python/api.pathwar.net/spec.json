@@ -1,0 +1,5024 @@
+{
+  "domains": {
+    "level-instance-users": {
+      "/level-instance-users/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a level instance user"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "name": "organization_level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organization-levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "hash"
+            },
+            {
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "name": "level_instance",
+              "data_relation": {
+                "field": "_id",
+                "resource": "level-instances",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Update a level instance user"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a level instance user"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a level instance user"
+        }
+      },
+      "/level-instance-users": {
+        "POST": {
+          "params": [
+            {
+              "name": "organization_level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organization-levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "hash"
+            },
+            {
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "name": "level_instance",
+              "data_relation": {
+                "field": "_id",
+                "resource": "level-instances",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Create a level instance user"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all level-instance-users"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all level-instance-users"
+        }
+      }
+    },
+    "organization-levels": {
+      "/organization-levels": {
+        "POST": {
+          "params": [
+            {
+              "name": "status",
+              "allowed": [
+                "in progress",
+                "pending validation",
+                "validated",
+                "refused"
+              ],
+              "default": "in progress",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "has_access"
+            },
+            {
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "rank"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Create a organization bought level"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all organization-levels"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all organization-levels"
+        }
+      },
+      "/organization-levels/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a organization bought level"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "name": "status",
+              "allowed": [
+                "in progress",
+                "pending validation",
+                "validated",
+                "refused"
+              ],
+              "default": "in progress",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "has_access"
+            },
+            {
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "rank"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Update a organization bought level"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a organization bought level"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a organization bought level"
+        }
+      }
+    },
+    "organization-level-hints": {
+      "/organization-level-hints/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a organization level hint"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "name": "organization_level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organization-levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "level_hint",
+              "data_relation": {
+                "field": "_id",
+                "resource": "level-hints",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Update a organization level hint"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a organization level hint"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a organization level hint"
+        }
+      },
+      "/organization-level-hints": {
+        "POST": {
+          "params": [
+            {
+              "name": "organization_level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organization-levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "level_hint",
+              "data_relation": {
+                "field": "_id",
+                "resource": "level-hints",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Create a organization level hint"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all organization-level-hints"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all organization-level-hints"
+        }
+      }
+    },
+    "organization-coupons": {
+      "/organization-coupons/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a organization validated coupon"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "name": "coupon",
+              "data_relation": {
+                "field": "_id",
+                "resource": "coupons",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            }
+          ],
+          "label": "Update a organization validated coupon"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a organization validated coupon"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a organization validated coupon"
+        }
+      },
+      "/organization-coupons": {
+        "POST": {
+          "params": [
+            {
+              "name": "coupon",
+              "data_relation": {
+                "field": "_id",
+                "resource": "coupons",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            }
+          ],
+          "label": "Create a organization validated coupon"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all organization-coupons"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all organization-coupons"
+        }
+      }
+    },
+    "user-hijack-proofs": {
+      "/user-hijack-proofs": {
+        "POST": {
+          "params": [
+            {
+              "name": "status",
+              "allowed": [
+                "success",
+                "failure"
+              ],
+              "default": "pending",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "to",
+              "schema": {
+                "organization": {
+                  "required": true,
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "organizations",
+                    "embeddable": true
+                  }
+                },
+                "author": {
+                  "required": true,
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "users",
+                    "embeddable": true
+                  }
+                }
+              }
+            },
+            {
+              "name": "to.organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "name": "to.author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "from",
+              "schema": {
+                "organization": {
+                  "required": true,
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "organizations",
+                    "embeddable": true
+                  }
+                },
+                "author": {
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "users",
+                    "embeddable": true
+                  }
+                }
+              }
+            },
+            {
+              "name": "from.organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "from.author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            }
+          ],
+          "label": "Create a user hijack proof"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all user-hijack-proofs"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all user-hijack-proofs"
+        }
+      },
+      "/user-hijack-proofs/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a user hijack proof"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "name": "status",
+              "allowed": [
+                "success",
+                "failure"
+              ],
+              "default": "pending",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "to",
+              "schema": {
+                "organization": {
+                  "required": true,
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "organizations",
+                    "embeddable": true
+                  }
+                },
+                "author": {
+                  "required": true,
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "users",
+                    "embeddable": true
+                  }
+                }
+              }
+            },
+            {
+              "name": "to.organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "name": "to.author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "from",
+              "schema": {
+                "organization": {
+                  "required": true,
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "organizations",
+                    "embeddable": true
+                  }
+                },
+                "author": {
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "users",
+                    "embeddable": true
+                  }
+                }
+              }
+            },
+            {
+              "name": "from.organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "from.author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            }
+          ],
+          "label": "Update a user hijack proof"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a user hijack proof"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a user hijack proof"
+        }
+      }
+    },
+    "level-statistics": {
+      "/level-statistics": {
+        "POST": {
+          "params": [
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "fivestar_average"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "duration_average"
+            },
+            {
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "amount_bought"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "amount_finished"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "amount_hints_bought"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Create a level statistics"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all level-statistics"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all level-statistics"
+        }
+      },
+      "/level-statistics/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a level statistics"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "fivestar_average"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "duration_average"
+            },
+            {
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "amount_bought"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "amount_finished"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "amount_hints_bought"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Update a level statistics"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a level statistics"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a level statistics"
+        }
+      }
+    },
+    "organization-level-validations": {
+      "/organization-level-validations/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a organization level validation submission"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "name": "status",
+              "allowed": [
+                "pending",
+                "accepted",
+                "refused"
+              ],
+              "default": "pending",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "screenshot"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "explanation"
+            },
+            {
+              "name": "author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "name": "passphrases",
+              "required": true,
+              "type": "list",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "organization_level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organization-levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Update a organization level validation submission"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a organization level validation submission"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a organization level validation submission"
+        }
+      },
+      "/organization-level-validations": {
+        "POST": {
+          "params": [
+            {
+              "name": "status",
+              "allowed": [
+                "pending",
+                "accepted",
+                "refused"
+              ],
+              "default": "pending",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "screenshot"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "explanation"
+            },
+            {
+              "name": "author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "name": "passphrases",
+              "required": true,
+              "type": "list",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "organization_level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organization-levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Create a organization level validation submission"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all organization-level-validations"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all organization-level-validations"
+        }
+      }
+    },
+    "user-tokens": {
+      "/user-tokens/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a user token"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "name": "scopes",
+              "nullable": false,
+              "default": "*",
+              "required": false,
+              "type": "string",
+              "empty": false
+            },
+            {
+              "default": "",
+              "required": false,
+              "type": "string",
+              "name": "description"
+            },
+            {
+              "default": false,
+              "required": false,
+              "type": "boolean",
+              "name": "is_session"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "unique": true,
+              "name": "token",
+              "default": "FIXME: generate a random token",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "readonly": true,
+              "name": "expiry_date",
+              "nullable": true,
+              "default": null,
+              "required": false,
+              "type": "datetime"
+            },
+            {
+              "name": "user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Update a user token"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a user token"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a user token"
+        }
+      },
+      "/user-tokens": {
+        "POST": {
+          "params": [
+            {
+              "name": "scopes",
+              "nullable": false,
+              "default": "*",
+              "required": false,
+              "type": "string",
+              "empty": false
+            },
+            {
+              "default": "",
+              "required": false,
+              "type": "string",
+              "name": "description"
+            },
+            {
+              "default": false,
+              "required": false,
+              "type": "boolean",
+              "name": "is_session"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "unique": true,
+              "name": "token",
+              "default": "FIXME: generate a random token",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "readonly": true,
+              "name": "expiry_date",
+              "nullable": true,
+              "default": null,
+              "required": false,
+              "type": "datetime"
+            },
+            {
+              "name": "user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Create a user token"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all user-tokens"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all user-tokens"
+        }
+      }
+    },
+    "level-hints": {
+      "/level-hints": {
+        "POST": {
+          "params": [
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "price"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            }
+          ],
+          "label": "Create a level hint"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all level-hints"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all level-hints"
+        }
+      },
+      "/level-hints/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a level hint"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "price"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            }
+          ],
+          "label": "Update a level hint"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a level hint"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a level hint"
+        }
+      }
+    },
+    "user-organization-invites": {
+      "/user-organization-invites": {
+        "POST": {
+          "params": [
+            {
+              "name": "status",
+              "allowed": [
+                "pending",
+                "accepted",
+                "refused"
+              ],
+              "default": "pending",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Create a user organization invite"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all user-organization-invites"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all user-organization-invites"
+        }
+      },
+      "/user-organization-invites/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a user organization invite"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "name": "status",
+              "allowed": [
+                "pending",
+                "accepted",
+                "refused"
+              ],
+              "default": "pending",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Update a user organization invite"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a user organization invite"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a user organization invite"
+        }
+      }
+    },
+    "whoswho-attempts": {
+      "/whoswho-attempts": {
+        "POST": {
+          "params": [
+            {
+              "name": "status",
+              "allowed": [
+                "success",
+                "failure"
+              ],
+              "default": "pending",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "to",
+              "schema": {
+                "organization": {
+                  "required": true,
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "organizations",
+                    "embeddable": true
+                  }
+                },
+                "author": {
+                  "required": true,
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "users",
+                    "embeddable": true
+                  }
+                }
+              }
+            },
+            {
+              "name": "to.organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "name": "to.author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "from",
+              "schema": {
+                "organization": {
+                  "required": true,
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "organizations",
+                    "embeddable": true
+                  }
+                },
+                "author": {
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "users",
+                    "embeddable": true
+                  }
+                }
+              }
+            },
+            {
+              "name": "from.organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "from.author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            }
+          ],
+          "label": "Create a whoswho attempt"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all whoswho-attempts"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all whoswho-attempts"
+        }
+      },
+      "/whoswho-attempts/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a whoswho attempt"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "name": "status",
+              "allowed": [
+                "success",
+                "failure"
+              ],
+              "default": "pending",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "to",
+              "schema": {
+                "organization": {
+                  "required": true,
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "organizations",
+                    "embeddable": true
+                  }
+                },
+                "author": {
+                  "required": true,
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "users",
+                    "embeddable": true
+                  }
+                }
+              }
+            },
+            {
+              "name": "to.organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "name": "to.author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "from",
+              "schema": {
+                "organization": {
+                  "required": true,
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "organizations",
+                    "embeddable": true
+                  }
+                },
+                "author": {
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "users",
+                    "embeddable": true
+                  }
+                }
+              }
+            },
+            {
+              "name": "from.organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "from.author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            }
+          ],
+          "label": "Update a whoswho attempt"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a whoswho attempt"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a whoswho attempt"
+        }
+      }
+    },
+    "organization-users": {
+      "/organization-users": {
+        "POST": {
+          "params": [
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "name": "role",
+              "allowed": [
+                "pwner",
+                "owner"
+              ],
+              "default": "owner",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            }
+          ],
+          "label": "Create a organization user"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all organization-users"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all organization-users"
+        }
+      },
+      "/organization-users/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a organization user"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "name": "role",
+              "allowed": [
+                "pwner",
+                "owner"
+              ],
+              "default": "owner",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            }
+          ],
+          "label": "Update a organization user"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a organization user"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a organization user"
+        }
+      }
+    },
+    "achievements": {
+      "/achievements": {
+        "POST": {
+          "params": [
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "unique": true,
+              "required": false,
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "description"
+            }
+          ],
+          "label": "Create a achievement"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all achievements"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all achievements"
+        }
+      },
+      "/achievements/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a achievement"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "unique": true,
+              "required": false,
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "description"
+            }
+          ],
+          "label": "Update a achievement"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a achievement"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a achievement"
+        }
+      }
+    },
+    "activities": {
+      "/activities": {
+        "POST": {
+          "params": [
+            {
+              "default": "common",
+              "required": false,
+              "type": "string",
+              "name": "category"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "linked_resources",
+              "schema": {
+                "type": "dict",
+                "schema": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "uuid"
+                  }
+                }
+              }
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "action"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "arguments"
+            }
+          ],
+          "label": "Create a activity"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all activities"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all activities"
+        }
+      },
+      "/activities/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a activity"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "default": "common",
+              "required": false,
+              "type": "string",
+              "name": "category"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "linked_resources",
+              "schema": {
+                "type": "dict",
+                "schema": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "uuid"
+                  }
+                }
+              }
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "action"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "arguments"
+            }
+          ],
+          "label": "Update a activity"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a activity"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a activity"
+        }
+      }
+    },
+    "users": {
+      "/users/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a user"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "readonly": true,
+              "required": false,
+              "type": "string",
+              "name": "otp_secret"
+            },
+            {
+              "default": false,
+              "required": false,
+              "type": "boolean",
+              "name": "otp_enabled"
+            },
+            {
+              "readonly": true,
+              "required": false,
+              "type": "string",
+              "name": "password_salt"
+            },
+            {
+              "readonly": true,
+              "required": false,
+              "type": "string",
+              "name": "email_verification_token"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "social_links",
+              "schema": {
+                "type": "dict",
+                "schema": {
+                  "kind": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "name": "visibility",
+              "allowed": [
+                "public",
+                "private",
+                "unlisted"
+              ],
+              "default": "public",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "readonly": true,
+              "required": false,
+              "type": "string",
+              "name": "gravatar_hash"
+            },
+            {
+              "name": "role",
+              "allowed": [
+                "user",
+                "level-server",
+                "moderator",
+                "admin"
+              ],
+              "default": "user",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "location",
+              "schema": {
+                "city": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "location.city"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "location.country"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "groups",
+              "schema": {
+                "type": "string",
+                "allowed": [
+                  "security",
+                  "staff",
+                  "developer",
+                  "beta"
+                ]
+              }
+            },
+            {
+              "default": false,
+              "required": false,
+              "type": "boolean",
+              "name": "active"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "available_sessions",
+              "schema": {
+                "type": "uuid",
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "sessions",
+                  "embeddable": true
+                }
+              }
+            },
+            {
+              "unique": true,
+              "name": "login",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "password"
+            },
+            {
+              "unique": true,
+              "name": "email",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "label": "Update a user"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a user"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a user"
+        }
+      },
+      "/users": {
+        "POST": {
+          "params": [
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "readonly": true,
+              "required": false,
+              "type": "string",
+              "name": "otp_secret"
+            },
+            {
+              "default": false,
+              "required": false,
+              "type": "boolean",
+              "name": "otp_enabled"
+            },
+            {
+              "readonly": true,
+              "required": false,
+              "type": "string",
+              "name": "password_salt"
+            },
+            {
+              "readonly": true,
+              "required": false,
+              "type": "string",
+              "name": "email_verification_token"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "social_links",
+              "schema": {
+                "type": "dict",
+                "schema": {
+                  "kind": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "name": "visibility",
+              "allowed": [
+                "public",
+                "private",
+                "unlisted"
+              ],
+              "default": "public",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "readonly": true,
+              "required": false,
+              "type": "string",
+              "name": "gravatar_hash"
+            },
+            {
+              "name": "role",
+              "allowed": [
+                "user",
+                "level-server",
+                "moderator",
+                "admin"
+              ],
+              "default": "user",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "location",
+              "schema": {
+                "city": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "location.city"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "location.country"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "groups",
+              "schema": {
+                "type": "string",
+                "allowed": [
+                  "security",
+                  "staff",
+                  "developer",
+                  "beta"
+                ]
+              }
+            },
+            {
+              "default": false,
+              "required": false,
+              "type": "boolean",
+              "name": "active"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "available_sessions",
+              "schema": {
+                "type": "uuid",
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "sessions",
+                  "embeddable": true
+                }
+              }
+            },
+            {
+              "unique": true,
+              "name": "login",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "password"
+            },
+            {
+              "unique": true,
+              "name": "email",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "label": "Create a user"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all users"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all users"
+        }
+      }
+    },
+    "sessions": {
+      "/sessions/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a session"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "allow_update_organizations"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "description"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "tags"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "avatar"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "email_domain"
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "active"
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "allow_new_organizations"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "default": false,
+              "required": false,
+              "type": "boolean",
+              "name": "public"
+            },
+            {
+              "unique": true,
+              "required": false,
+              "type": "string",
+              "name": "name"
+            }
+          ],
+          "label": "Update a session"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a session"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a session"
+        }
+      },
+      "/sessions": {
+        "POST": {
+          "params": [
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "allow_update_organizations"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "description"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "tags"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "avatar"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "email_domain"
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "active"
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "allow_new_organizations"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "default": false,
+              "required": false,
+              "type": "boolean",
+              "name": "public"
+            },
+            {
+              "unique": true,
+              "required": false,
+              "type": "string",
+              "name": "name"
+            }
+          ],
+          "label": "Create a session"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all sessions"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all sessions"
+        }
+      }
+    },
+    "level-instances": {
+      "/level-instances": {
+        "POST": {
+          "params": [
+            {
+              "required": false,
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "overrides",
+              "schema": {
+                "type": "dict",
+                "schema": {
+                  "key": {
+                    "type": "string",
+                    "allowed": [
+                      "cpu_shares",
+                      "memory_limit",
+                      "redump",
+                      "rootable"
+                    ]
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "passphrases",
+              "schema": {
+                "type": "dict",
+                "schema": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "name": "server",
+              "data_relation": {
+                "field": "_id",
+                "resource": "servers",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "urls",
+              "schema": {
+                "type": "dict",
+                "schema": {
+                  "url": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "active"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Create a level instance"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all level-instances"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all level-instances"
+        }
+      },
+      "/level-instances/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a level instance"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "name": "level",
+              "data_relation": {
+                "field": "_id",
+                "resource": "levels",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "overrides",
+              "schema": {
+                "type": "dict",
+                "schema": {
+                  "key": {
+                    "type": "string",
+                    "allowed": [
+                      "cpu_shares",
+                      "memory_limit",
+                      "redump",
+                      "rootable"
+                    ]
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "passphrases",
+              "schema": {
+                "type": "dict",
+                "schema": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "name": "server",
+              "data_relation": {
+                "field": "_id",
+                "resource": "servers",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "urls",
+              "schema": {
+                "type": "dict",
+                "schema": {
+                  "url": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "active"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Update a level instance"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a level instance"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a level instance"
+        }
+      }
+    },
+    "levels": {
+      "/levels": {
+        "POST": {
+          "params": [
+            {
+              "default": "en",
+              "required": false,
+              "type": "string",
+              "name": "lang"
+            },
+            {
+              "name": "statistics",
+              "data_relation": {
+                "field": "_id",
+                "resource": "level-statistics",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "default": 1,
+              "required": false,
+              "type": "integer",
+              "name": "passphrases_amount"
+            },
+            {
+              "unique": true,
+              "name": "name",
+              "maxlength": 16,
+              "minlength": 3,
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "tags"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "url"
+            },
+            {
+              "default": 1,
+              "required": false,
+              "type": "integer",
+              "name": "price"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "author",
+              "schema": {
+                "organization": {
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "organizations",
+                    "embeddable": true
+                  }
+                },
+                "string": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "user",
+                    "embeddable": true
+                  }
+                }
+              }
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "author.organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "author.string"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "author.user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "user",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "sources",
+              "schema": {
+                "git": {
+                  "type": "string"
+                },
+                "build": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "sources.git"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "sources.build"
+            },
+            {
+              "default": "latest",
+              "required": false,
+              "type": "string",
+              "name": "version"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "defaults",
+              "schema": {
+                "rootable": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "memory_limit": {
+                  "default": "16M",
+                  "type": "string"
+                },
+                "cpu_shares": {
+                  "default": "1/10",
+                  "type": "string"
+                },
+                "redump": {
+                  "default": 600,
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "defaults.rootable"
+            },
+            {
+              "default": "16M",
+              "required": false,
+              "type": "string",
+              "name": "defaults.memory_limit"
+            },
+            {
+              "default": "1/10",
+              "required": false,
+              "type": "string",
+              "name": "defaults.cpu_shares"
+            },
+            {
+              "default": 600,
+              "required": false,
+              "type": "integer",
+              "name": "defaults.redump"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "description"
+            },
+            {
+              "default": 1,
+              "required": false,
+              "type": "integer",
+              "name": "difficulty"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "availability",
+              "schema": {
+                "sessions": {
+                  "type": "list",
+                  "schema": {
+                    "type": "uuid",
+                    "data_relation": {
+                      "field": "_id",
+                      "resource": "sessions",
+                      "embeddable": true
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "availability.sessions",
+              "schema": {
+                "type": "uuid",
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "sessions",
+                  "embeddable": true
+                }
+              }
+            },
+            {
+              "default": 1,
+              "required": false,
+              "type": "integer",
+              "name": "reward"
+            }
+          ],
+          "label": "Create a level"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all levels"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all levels"
+        }
+      },
+      "/levels/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a level"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "default": "en",
+              "required": false,
+              "type": "string",
+              "name": "lang"
+            },
+            {
+              "name": "statistics",
+              "data_relation": {
+                "field": "_id",
+                "resource": "level-statistics",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "default": 1,
+              "required": false,
+              "type": "integer",
+              "name": "passphrases_amount"
+            },
+            {
+              "unique": true,
+              "name": "name",
+              "maxlength": 16,
+              "minlength": 3,
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "tags"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "url"
+            },
+            {
+              "default": 1,
+              "required": false,
+              "type": "integer",
+              "name": "price"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "author",
+              "schema": {
+                "organization": {
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "organizations",
+                    "embeddable": true
+                  }
+                },
+                "string": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "uuid",
+                  "data_relation": {
+                    "field": "_id",
+                    "resource": "user",
+                    "embeddable": true
+                  }
+                }
+              }
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "author.organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "author.string"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "author.user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "user",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "sources",
+              "schema": {
+                "git": {
+                  "type": "string"
+                },
+                "build": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "sources.git"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "sources.build"
+            },
+            {
+              "default": "latest",
+              "required": false,
+              "type": "string",
+              "name": "version"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "defaults",
+              "schema": {
+                "rootable": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "memory_limit": {
+                  "default": "16M",
+                  "type": "string"
+                },
+                "cpu_shares": {
+                  "default": "1/10",
+                  "type": "string"
+                },
+                "redump": {
+                  "default": 600,
+                  "type": "integer"
+                }
+              }
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "defaults.rootable"
+            },
+            {
+              "default": "16M",
+              "required": false,
+              "type": "string",
+              "name": "defaults.memory_limit"
+            },
+            {
+              "default": "1/10",
+              "required": false,
+              "type": "string",
+              "name": "defaults.cpu_shares"
+            },
+            {
+              "default": 600,
+              "required": false,
+              "type": "integer",
+              "name": "defaults.redump"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "description"
+            },
+            {
+              "default": 1,
+              "required": false,
+              "type": "integer",
+              "name": "difficulty"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "dict",
+              "name": "availability",
+              "schema": {
+                "sessions": {
+                  "type": "list",
+                  "schema": {
+                    "type": "uuid",
+                    "data_relation": {
+                      "field": "_id",
+                      "resource": "sessions",
+                      "embeddable": true
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "availability.sessions",
+              "schema": {
+                "type": "uuid",
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "sessions",
+                  "embeddable": true
+                }
+              }
+            },
+            {
+              "default": 1,
+              "required": false,
+              "type": "integer",
+              "name": "reward"
+            }
+          ],
+          "label": "Update a level"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a level"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a level"
+        }
+      }
+    },
+    "servers": {
+      "/servers/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a server"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "unique": true,
+              "required": false,
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "default": [
+                "linux",
+                "public"
+              ],
+              "required": false,
+              "type": "list",
+              "name": "tags"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "token"
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "active"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "ip_address"
+            }
+          ],
+          "label": "Update a server"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a server"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a server"
+        }
+      },
+      "/servers": {
+        "POST": {
+          "params": [
+            {
+              "unique": true,
+              "required": false,
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "default": [
+                "linux",
+                "public"
+              ],
+              "required": false,
+              "type": "list",
+              "name": "tags"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "token"
+            },
+            {
+              "default": true,
+              "required": false,
+              "type": "boolean",
+              "name": "active"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "ip_address"
+            }
+          ],
+          "label": "Create a server"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all servers"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all servers"
+        }
+      }
+    },
+    "coupons": {
+      "/coupons": {
+        "POST": {
+          "params": [
+            {
+              "unique": true,
+              "name": "hash",
+              "maxlength": 32,
+              "minlength": 3,
+              "required": false,
+              "type": "string"
+            },
+            {
+              "default": 1,
+              "required": false,
+              "type": "integer",
+              "name": "validations_limit"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "validations_left"
+            },
+            {
+              "default": 1,
+              "required": false,
+              "type": "integer",
+              "name": "value"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "session",
+              "data_relation": {
+                "field": "_id",
+                "resource": "sessions",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Create a coupon"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all coupons"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all coupons"
+        }
+      },
+      "/coupons/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a coupon"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "unique": true,
+              "name": "hash",
+              "maxlength": 32,
+              "minlength": 3,
+              "required": false,
+              "type": "string"
+            },
+            {
+              "default": 1,
+              "required": false,
+              "type": "integer",
+              "name": "validations_limit"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "validations_left"
+            },
+            {
+              "default": 1,
+              "required": false,
+              "type": "integer",
+              "name": "value"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "session",
+              "data_relation": {
+                "field": "_id",
+                "resource": "sessions",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Update a coupon"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a coupon"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a coupon"
+        }
+      }
+    },
+    "organizations": {
+      "/organizations/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a organization"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "name": "statistics",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organization-statistics",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "unique": true,
+              "required": false,
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "name": "visibility",
+              "allowed": [
+                "public",
+                "private",
+                "unlisted"
+              ],
+              "default": "public",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "gravatar_email"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "readonly": true,
+              "required": false,
+              "type": "string",
+              "name": "gravatar_hash"
+            },
+            {
+              "name": "session",
+              "data_relation": {
+                "field": "_id",
+                "resource": "sessions",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "name": "owner",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Update a organization"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a organization"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a organization"
+        }
+      },
+      "/organizations": {
+        "POST": {
+          "params": [
+            {
+              "name": "statistics",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organization-statistics",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "unique": true,
+              "required": false,
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "name": "visibility",
+              "allowed": [
+                "public",
+                "private",
+                "unlisted"
+              ],
+              "default": "public",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "gravatar_email"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "readonly": true,
+              "required": false,
+              "type": "string",
+              "name": "gravatar_hash"
+            },
+            {
+              "name": "session",
+              "data_relation": {
+                "field": "_id",
+                "resource": "sessions",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "name": "owner",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": false,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Create a organization"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all organizations"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all organizations"
+        }
+      }
+    },
+    "infrastructure-hijacks": {
+      "/infrastructure-hijacks": {
+        "POST": {
+          "params": [
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "description"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "tags"
+            }
+          ],
+          "label": "Create a infrastructure hijack"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all infrastructure-hijacks"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all infrastructure-hijacks"
+        }
+      },
+      "/infrastructure-hijacks/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a infrastructure hijack"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "author",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              }
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "description"
+            },
+            {
+              "required": false,
+              "type": "list",
+              "name": "tags"
+            }
+          ],
+          "label": "Update a infrastructure hijack"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a infrastructure hijack"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a infrastructure hijack"
+        }
+      }
+    },
+    "organization-items": {
+      "/organization-items/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a organization item"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "name": "item",
+              "data_relation": {
+                "field": "_id",
+                "resource": "items",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            }
+          ],
+          "label": "Update a organization item"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a organization item"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a organization item"
+        }
+      },
+      "/organization-items": {
+        "POST": {
+          "params": [
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "name": "item",
+              "data_relation": {
+                "field": "_id",
+                "resource": "items",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            }
+          ],
+          "label": "Create a organization item"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all organization-items"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all organization-items"
+        }
+      }
+    },
+    "items": {
+      "/items": {
+        "POST": {
+          "params": [
+            {
+              "unique": true,
+              "required": false,
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "price"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "description"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "quantity"
+            }
+          ],
+          "label": "Create a item"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all items"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all items"
+        }
+      },
+      "/items/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a item"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "unique": true,
+              "required": false,
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "price"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "description"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "quantity"
+            }
+          ],
+          "label": "Update a item"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a item"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a item"
+        }
+      }
+    },
+    "organization-statistics": {
+      "/organization-statistics": {
+        "POST": {
+          "params": [
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "achievements"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "gold_medals"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "cash"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "silver_medals"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "bronze_medals"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "score"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Create a organization statistics"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all organization-statistics"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all organization-statistics"
+        }
+      },
+      "/organization-statistics/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a organization statistics"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "achievements"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "gold_medals"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "cash"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "silver_medals"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "bronze_medals"
+            },
+            {
+              "default": 0,
+              "required": false,
+              "type": "integer",
+              "name": "score"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            }
+          ],
+          "label": "Update a organization statistics"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a organization statistics"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a organization statistics"
+        }
+      }
+    },
+    "organization-achievements": {
+      "/organization-achievements": {
+        "POST": {
+          "params": [
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "name": "achievement",
+              "data_relation": {
+                "field": "_id",
+                "resource": "achievements",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            }
+          ],
+          "label": "Create a organization earned achievement"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all organization-achievements"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all organization-achievements"
+        }
+      },
+      "/organization-achievements/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a organization earned achievement"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "name": "organization",
+              "data_relation": {
+                "field": "_id",
+                "resource": "organizations",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "name": "achievement",
+              "data_relation": {
+                "field": "_id",
+                "resource": "achievements",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            }
+          ],
+          "label": "Update a organization earned achievement"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a organization earned achievement"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a organization earned achievement"
+        }
+      }
+    },
+    "user-notifications": {
+      "/user-notifications/{_id}": {
+        "PUT": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Replace a user notification"
+        },
+        "PATCH": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            },
+            {
+              "default": false,
+              "required": false,
+              "type": "boolean",
+              "name": "read"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "name": "user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "title"
+            }
+          ],
+          "label": "Update a user notification"
+        },
+        "DELETE": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Delete a user notification"
+        },
+        "GET": {
+          "params": [
+            {
+              "required": true,
+              "type": "string",
+              "name": "_id"
+            }
+          ],
+          "label": "Retrieve a user notification"
+        }
+      },
+      "/user-notifications": {
+        "POST": {
+          "params": [
+            {
+              "default": false,
+              "required": false,
+              "type": "boolean",
+              "name": "read"
+            },
+            {
+              "required": false,
+              "type": "integer",
+              "name": "_schema_version"
+            },
+            {
+              "required": false,
+              "type": "uuid",
+              "name": "_id"
+            },
+            {
+              "name": "user",
+              "data_relation": {
+                "field": "_id",
+                "resource": "users",
+                "embeddable": true
+              },
+              "required": true,
+              "type": "uuid"
+            },
+            {
+              "required": false,
+              "type": "string",
+              "name": "title"
+            }
+          ],
+          "label": "Create a user notification"
+        },
+        "DELETE": {
+          "params": [],
+          "label": "Delete all user-notifications"
+        },
+        "GET": {
+          "params": [],
+          "label": "Retrieve all user-notifications"
+        }
+      }
+    }
+  },
+  "api_name": "API",
+  "base": "http:///",
+  "server_name": null
+}
