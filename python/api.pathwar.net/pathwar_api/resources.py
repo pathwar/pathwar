@@ -760,7 +760,9 @@ organization_levels = {
         },
         'status': {
             'type': 'string',
-            'allowed': ['in progress', 'pending validation', 'validated', 'refused'],
+            'allowed': [
+                'in progress', 'pending validation', 'validated', 'refused'
+            ],
             'default': 'in progress'
         },
         'has_access': {
@@ -997,6 +999,18 @@ sessions = {
         'allow_update_organizations': {
             'type': 'boolean',
             'default': True,
+        },
+        'email_domain': {
+            'type': 'string',
+        },
+        'description': {
+            'type': 'string',
+        },
+        'tags': {
+            'type': 'list',
+        },
+        'avatar': {
+            'type': 'string',
         },
     },
 }
