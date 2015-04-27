@@ -6,6 +6,7 @@ import os
 import json
 import pprint
 import time
+import socket
 
 config = {}
 config['api_scheme'] = os.environ.get('PATHWAR_API_SCHEME','http')
@@ -56,19 +57,27 @@ while True:
             if k['active'] is True:
                 active_levels.append(k['_id'])
             server_name = k['urls'][0]['url']
+            if 'poney' in server_name:
+                print k['_id']
             server_name = server_name[7:] if server_name.startswith('http://') else server_name[8:]
             server_name = server_name[:server_name.find(':')]
             confs[k['_id']] = ngx_tpl
             confs[k['_id']] = confs[k['_id']].replace('_LEVEL_ID_', k['level']['_id']);
-            confs[k['_id']] = confs[k['_id']].replace('_LISTEN_PORT_', k['urls'][0]['name']);
-            confs[k['_id']] = confs[k['_id']].replace('_SERVER_NAME_', server_name);
-            confs[k['_id']] = confs[k['_id']].replace('_LEVEL_URL_', k['server']['ip_address']);
-        
+            confs[k['_id']] = confs[k['_id']].replace('_LEVEL_INSTANCE_ID_', k['_id']);
+            confs[k['_id']] = confs[k['_id']].replace('_LISTEN_PORT_', '80');
+            confs[k['_id']] = confs[k['_id']].replace('_SERVER_NAME_', '{0}.{1}'.format(k['_id'], 'levels.pathwar.net'));
+#            confs[k['_id']] = confs[k['_id']].replace('_LEVEL_URL_', k['server']['ip_address']);
+            confs[k['_id']] = confs[k['_id']].replace('_LEVEL_URL_', server_name);
+    pprint.pprint(confs)
     for id in confs:
         conf_name = '/' + id + '.conf'
         with open(config['ngx_available_location'] + conf_name, 'w') as fd:
             fd.write(confs[id])
         if id in active_levels:
+            try:
+                os.unlink(config['ngx_enabled_location'] + conf_name)
+            except:
+                pass
             os.symlink(config['ngx_available_location'] + conf_name,
                        config['ngx_enabled_location'] + conf_name)
         else:
