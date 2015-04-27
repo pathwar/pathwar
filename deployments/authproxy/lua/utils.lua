@@ -34,7 +34,7 @@ local function api_request(endpoint, where, embedded)
    end
    r,c,q = http.request(request)
    if c ~= 200 then
-      ngx.log(ngx.ERR, string.format("Bad response from API (%d) for request : %s",c, request))
+      ngx.log(ngx.ERR, string.format("Bad response from API (%s) for request : %s",c, request))
       ngx.exit(ngx.HTTP_INTERNAL_SERVER_ERROR)
    end
    return r,c,q
