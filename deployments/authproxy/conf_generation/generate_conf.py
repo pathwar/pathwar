@@ -85,5 +85,5 @@ while True:
                 os.unlink(config['ngx_enabled_location'] + conf_name)
             except:
                 pass        
-    os.system('/etc/init.d/nginx reload')
+    os.system('/usr/sbin/nginx -s reload')
     time.sleep(60 * 5) #refresh conf every 5 minutes
