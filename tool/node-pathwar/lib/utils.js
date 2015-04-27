@@ -58,10 +58,15 @@ var error = module.exports.error = function(msg) {
       msg.statusCode && msg.error && msg.error._error) {
     debug('panic', msg);
     console.error('> ' + msg.options.method + ' ' + msg.options.url);
-    console.error('< ' + msg.error._error + ' (' + msg.statusCode + ')');
+    console.error('< ' + msg.error._error.message + ' (' + msg.statusCode + ')');
+    if (msg.error._issues) {
+      _.forEach(msg.error._issues, function(value, key) {
+        console.error('  - ' + key + ': ' + value);
+      });
+    }
     if (msg.error.fields) {
       _.forEach(msg.error.fields, function(value, key) {
-        console.log(' - ' + key + ': ' + value.join('. '));
+        console.error(' - ' + key + ': ' + value.join('. '));
       });
     }
   } else {
