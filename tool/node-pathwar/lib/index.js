@@ -119,6 +119,10 @@ var Client = module.exports = function(options) {
     return this.request(path, 'POST', input, options, cb);
   };
 
+  this.delete = function(path, options, cb) {
+    return this.request(path, 'DELETE', null, options, cb);
+  };
+
   // FIXME: add missing verbs
 
   // helpers
