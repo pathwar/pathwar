@@ -134,7 +134,13 @@ var Client = module.exports = function(options) {
     return this.request(path, 'DELETE', null, options, cb);
   };
 
-  // FIXME: add missing verbs
+  this.patch = function(path, input, options, cb) {
+    return this.request(path, 'PATCH', input, options, cb);
+  };
+
+  this.put = function(path, input, options, cb) {
+    return this.request(path, 'PUT', input, options, cb);
+  };
 
   // helpers
   this.login = function(username, password, cb) {
