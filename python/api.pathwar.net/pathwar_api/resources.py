@@ -1205,6 +1205,15 @@ user_organization_invites = {
                 'embeddable': True,
             },
         },
+        'author': {
+            'type': 'uuid',
+            'required': False,
+            'data_relation': {
+                'resource': 'users',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
         "status": {
             'type': 'string',
             'default': 'pending',
