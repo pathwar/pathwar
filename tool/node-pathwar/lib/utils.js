@@ -1,5 +1,6 @@
 var Api = require('./index'),
     Table = require('cli-table'),
+    debug = require('debug')('pathwar:utils'),
     rc = require('./config');
 
 
@@ -38,4 +39,34 @@ module.exports.newApi = function(options) {
     config.dry_run = options.parent.dryRun;
   }
   return new Api(config);
+};
+
+
+var error = module.exports.error = function(msg) {
+  if (msg && msg.options && msg.options.method && msg.options.url &&
+      msg.statusCode && msg.error && msg.error._error) {
+    debug('panic', msg);
+    console.error('> ' + msg.options.method + ' ' + msg.options.url);
+    console.error('< ' + msg.error._error + ' (' + msg.statusCode + ')');
+    if (msg.error.fields) {
+      _.forEach(msg.error.fields, function(value, key) {
+        console.log(' - ' + key + ': ' + value.join('. '));
+      });
+    }
+  } else {
+    console.error(msg);
+  }
+};
+
+
+var panic = module.exports.panic = function(msg) {
+  error(msg);
+  console.error('');
+  console.error('   Hey ! this is probably a bug !');
+  console.error('   Fresh beers will be waiting for you on our next meetup');
+  console.error('                          if you report a new issue :) 🍻');
+  console.error('');
+  console.error('          https://github.com/pathwar/node-pathwar/issues');
+  console.error('');
+  process.exit(-1);
 };

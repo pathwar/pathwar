@@ -63,9 +63,7 @@ program
 
         console.log(table.toString());
       })
-      .catch(function(err) {
-        console.error(err);
-      });
+      .catch(utils.panic);
   });
 
 
@@ -90,9 +88,7 @@ program
       var items = _.compact(_.pluck(_.pluck(results, 'value'), 'body'));
       // FIXME: handle --format option
       console.log(items[0]);
-    }, function(err) {
-      console.error(err);
-    });
+    }, utils.panic);
   });
 
 
