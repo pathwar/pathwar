@@ -17,17 +17,26 @@ WATCH_FILES ?=	$(shell \
 		  -type f \
 		)
 
+REPOS ?=	portal.pathwar.net node-pathwar
+
+
+all:	up
+
 
 # FILES/DIRECTORIES
-portal.pathwar.net node-pathwar:
+$(REPOS):
 	git clone https://github.com/pathwar/$@
 
 
 # ACTIONS
-.PHONY:	all build release up shell clean kill stop
+.PHONY:	all build release up shell clean kill stop pull re
 
 
-all:	build
+re: stop up
+
+
+pull:	$(REPOS)
+	for repo in $(REPOS); do cd $$repo; git pull; cd -; done
 
 
 build:	api_build blueprint_build
@@ -39,14 +48,15 @@ release:	gh-pages
 up:	api_up portal_up
 
 
-logs:
-	$(DOCKER_COMPOSE) logs
-
-kill:
-	$(DOCKER_COMPOSE) kill
-
 stop:
+	$(DOCKER_COMPOSE) kill
 	$(DOCKER_COMPOSE) stop
+	$(DOCKER_COMPOSE) rm --force
+
+
+logs kill ps:
+	$(DOCKER_COMPOSE) $@
+
 
 shell:	api_shell
 

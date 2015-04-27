@@ -12,12 +12,12 @@ api:
 
 # API dependencies
 mongo:
-  image: mongo
+  image: mongo:latest
   command: --smallfiles
 
 
 smtp:
-  image: mredar/smtp-simple-debugging
+  image: mredar/smtp-simple-debugging:latest
 
 
 # PORTAL

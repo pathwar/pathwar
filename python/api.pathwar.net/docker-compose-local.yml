@@ -5,6 +5,8 @@ api:
   links:
   - mongo
   - smtp
+  ports:
+  - 5000:5000
 
 mongo:
   extends:
@@ -20,6 +22,8 @@ portal:
   extends:
     file: _common.yml
     service: portal
+  ports:
+  - 8090:8090
 
 nodesdk:
   extends:
