@@ -39,5 +39,6 @@ nodesdk:
   build: node-pathwar
   command: npm run seed
   volumes:
+  - .:/data
   - ./node-pathwar/test:/usr/src/app/test
   - ./node-pathwar/lib:/usr/src/app/lib

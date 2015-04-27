@@ -28,6 +28,10 @@ $(REPOS):
 	git clone https://github.com/pathwar/$@
 
 
+spec.json:
+	$(DOCKER_COMPOSE) run --no-deps nodesdk /bin/bash -c 'curl http://api:5000/docs/spec.json > /data/spec.json'
+
+
 # ACTIONS
 .PHONY:	all build release up shell clean kill stop pull re
 
