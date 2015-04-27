@@ -34,7 +34,8 @@
     "nedb": "^1.1.2",
     "q": "^1.2.1",
     "rc": "^0.5.5",
-    "request-promise": "^0.4.1"
+    "request-promise": "^0.4.1",
+    "validator": "^3.39.0"
   },
   "devDependencies": {
     "chai": "^1.10.0",

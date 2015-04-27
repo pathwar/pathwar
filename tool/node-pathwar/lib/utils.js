@@ -42,6 +42,15 @@ module.exports.newApi = function(options) {
 };
 
 
+module.exports.truncateUUID = function(input, truncStatus) {
+  if (truncStatus || truncStatus == undefined) {
+    return input.toString().substring(0, 8);
+  } else {
+    return input;
+  }
+};
+
+
 var error = module.exports.error = function(msg) {
   if (msg && msg.options && msg.options.method && msg.options.url &&
       msg.statusCode && msg.error && msg.error._error) {

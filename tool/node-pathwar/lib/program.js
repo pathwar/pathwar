@@ -2,7 +2,8 @@ var _ = require('lodash'),
     Q = require('q'),
     moment = require('moment'),
     program = require('commander'),
-    utils = require('./utils');
+    utils = require('./utils'),
+    validator = require('validator');
 
 
 program
@@ -28,6 +29,7 @@ program
 program
   .command('ls [type]')
   .description('list objects')
+  .option('--no-trunc', "don't truncate output")
   //.option('-k, --keys <keys...>', 'keys to print')
   //.option('-q, --quiet', 'only print ids')
   //.option('-f, --filter <filter...>', 'filter constraints')
@@ -65,10 +67,18 @@ program
               break;
 
               // UUID
-              // FIXME
+            case '_id':
+              row.push(utils.truncateUUID(item[key], options.trunc));
+              break;
 
             default:
-              row.push(item[key] || '');
+              var value = item[key] || '';
+
+              if (validator.isUUID(value)) {
+                value = utils.truncateUUID(value, options.trunc);
+              }
+
+              row.push(value);
               break;
             }
 
