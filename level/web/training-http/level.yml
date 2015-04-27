@@ -1,0 +1,14 @@
+level:
+  name: HTTP Tutorial
+  version: 1.0
+  author: Pathwar team
+  passphrases: 4
+  description: Introduction to HTTP
+  rootable: false
+  cpu_shares: 1/10
+  memory_limit: 16M
+  tags:
+    - http
+    - tp
+  redump: 600
+  lang: en

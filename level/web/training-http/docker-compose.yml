@@ -1,0 +1,6 @@
+traininghttp:
+  build: .
+  ports:
+    - 80
+#  environment:
+#    PATHWAR_DEBUG: true
