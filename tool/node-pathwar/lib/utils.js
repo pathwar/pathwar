@@ -139,7 +139,7 @@ module.exports.castFields = function(type, fields) {
     var split = field.split('=');
     var key = split[0], value = split[1];
 
-    if (['true', 'false', '1', '0', 'True', 'False'].indexOf(value) >= 0) {
+    if (['true', 'false', 'True', 'False'].indexOf(value) >= 0) {
       value = validator.toBoolean(value.toLowerCase());
     }
 
