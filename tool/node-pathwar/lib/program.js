@@ -39,23 +39,7 @@ program
     type = type || '';
     var url = '/' + type;
     if (conditions.length) {
-      var where = {};
-      _.forEach(conditions, function(condition) {
-        var split = condition.split('=');
-        var key = split[0], value = split[1];
-
-        if (['true', 'false', '1', '0', 'True', 'False'].indexOf(value) >= 0) {
-          value = validator.toBoolean(value.toLowerCase());
-        }
-
-        if (validator.isNumeric(value)) {
-          value = parseInt(value);
-        }
-
-        where[key] = value;
-        // FIXME: cast values accordingly to the resources
-
-      });
+      var where = utils.castFields(type, conditions);
       url = url + '?where=' + JSON.stringify(where);
     }
     client.get(url)
@@ -158,7 +142,21 @@ program
   });
 
 
-program.command('touch');
+program
+  .command('touch <type> [fields...]')
+  .alias('add')
+  .description('create an item')
+  .action(function(type, fields, options) {
+    var client = utils.newApi(options);
+
+    var input = utils.castFields(type, fields);
+
+    client.post('/' + type, input).then(function(res) {
+      console.log(res.body._id);
+    }).catch(utils.panic);
+  });
+
+
 program.command('ed');
 
 

@@ -3,7 +3,8 @@ var _ = require('lodash'),
     Q = require('q'),
     Table = require('cli-table'),
     debug = require('debug')('pathwar:utils'),
-    rc = require('./config');
+    rc = require('./config'),
+    validator = require('validator');
 
 
 module.exports.getVersion = function(module) {
@@ -128,4 +129,27 @@ module.exports.searchItems = function(search, client, fn, errFn) {
     fn(items);
     return items;
   }, errFn);
+};
+
+
+
+module.exports.castFields = function(type, fields) {
+  var output = {};
+  _.forEach(fields, function(field) {
+    var split = field.split('=');
+    var key = split[0], value = split[1];
+
+    if (['true', 'false', '1', '0', 'True', 'False'].indexOf(value) >= 0) {
+      value = validator.toBoolean(value.toLowerCase());
+    }
+
+    if (validator.isNumeric(value)) {
+      value = parseInt(value);
+    }
+
+    output[key] = value;
+    // FIXME: cast values accordingly to the resources
+
+  });
+  return output;
 };
