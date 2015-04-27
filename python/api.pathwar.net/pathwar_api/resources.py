@@ -760,8 +760,12 @@ organization_levels = {
         },
         'status': {
             'type': 'string',
-            'allowed': ['in progress', 'validated'],
+            'allowed': ['in progress', 'pending validation', 'validated', 'refused'],
             'default': 'in progress'
+        },
+        'has_access': {
+            'type': 'boolean',
+            'default': True
         },
         'level': {
             'type': 'uuid',
