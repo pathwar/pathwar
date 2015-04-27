@@ -145,6 +145,10 @@ seed-db-python:	flush-db
 	$(DOCKER_COMPOSE) run --no-deps api python pathwar_api/run.py seed-db
 
 
+node-shell:
+	$(DOCKER_COMPOSE) run --no-deps nodesdk /bin/bash
+
+
 api_up:
 	$(DOCKER_COMPOSE) kill api
 	$(DOCKER_COMPOSE) rm --force api
