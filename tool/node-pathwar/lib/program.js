@@ -27,17 +27,38 @@ program
 
 
 program
-  .command('ls <type>')
+  .command('ls <type> [conditions...]')
   .description('list objects')
   .option('--no-trunc', "don't truncate output")
   .option('-f, --field <field>', 'fields to print', utils.collect, [])
   //.option('-q, --quiet', 'only print ids')
-  //.option('-w, --where <condition>', 'where constraints', utils.collect, [])
-  .action(function(type, options) {
+  .action(function(type, conditions, options) {
     var client = utils.newApi(options);
 
     type = type || '';
-    client.get('/' + type)
+    var url = '/' + type;
+    if (conditions.length) {
+      var where = {};
+      _.forEach(conditions, function(condition) {
+        var split = condition.split('=');
+        var key = split[0], value = split[1];
+
+        if (['true', 'false', '1', '0', 'True', 'False'].indexOf(value) >= 0) {
+          value = validator.toBoolean(value.toLowerCase());
+        }
+
+        if (validator.isNumeric(value)) {
+          value = parseInt(value);
+        }
+
+        where[key] = value;
+        // FIXME: cast values accordingly to the resources
+
+      });
+      url = url + '?where=' + JSON.stringify(where);
+    }
+    console.log('url', url);
+    client.get(url)
       .then(function(res) {
         if (!res.body._items.length) {
           console.error('No entries');
