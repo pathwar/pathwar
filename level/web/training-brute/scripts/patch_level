@@ -1,0 +1,6 @@
+#!/bin/bash
+
+. /pathwar/scripts/functions.sh
+
+sed -i "s/{passphrase}/$(get_passphrase 0)/" /var/www/html/index.php
+
