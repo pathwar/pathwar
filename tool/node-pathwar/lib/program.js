@@ -134,8 +134,11 @@ program
   .action(function(item, options) {
     var client = utils.newApi(options);
 
-    var once = function(item) {
-      // FIXME: if object is resolved, only create a request for his type
+    var getPromises = function(item) {
+      if (item._type) {
+        return [client.get('/' + item._type + '/' + item._id)];
+      }
+
       return [
         client.get('/servers/' + item._id),
         client.get('/users/' + item._id),
@@ -144,8 +147,21 @@ program
       ];
     };
 
-    var promises = once({_id: item});
-    Q.allSettled(promises).then(function(results) {
+    // FIXME: resolve truncated UUIDs
+    var query;
+    if (item.indexOf('/') > 0) {
+      var split = item.split('/');
+      query = {
+        _type: split[0],
+        _id: split[1]
+      };
+    } else {
+      query = {
+        _id: item
+      };
+    }
+
+    Q.allSettled(getPromises(query)).then(function(results) {
       var items = _.compact(_.pluck(_.pluck(results, 'value'), 'body'));
       // FIXME: handle --format option
       console.log(items[0]);
