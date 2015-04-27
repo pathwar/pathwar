@@ -83,6 +83,12 @@ var Client = module.exports = function(options) {
       resolveWithFullResponse: true
     });
 
+    if (options.etag) {
+      _.defaults(options.headers, {
+        'If-Match': options.etag
+      });
+    }
+
     // default headers
     // FIXME: add user-agent
     _.defaults(options.headers, {
