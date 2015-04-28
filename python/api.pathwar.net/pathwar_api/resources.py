@@ -1426,8 +1426,8 @@ user_notifications = {
             'auth_field': 'user',
 
             'public_methods': [],
-            'allowed_write_roles': ['admin'],
-            'allowed_item_write_roles': ['admin'],
+            'allowed_write_roles': [],
+            'allowed_item_write_roles': ['user'],
         },
         'raw-user-notifications': {
             'allowed_read_roles': ['admin'],
