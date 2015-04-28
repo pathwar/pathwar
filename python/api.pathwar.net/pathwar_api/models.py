@@ -412,6 +412,10 @@ class Organization(BaseModel):
 class OrganizationLevel(BaseModel):
     resource = 'organization-levels'
 
+    def on_pre_post_item(self, request, item):
+        user = request_get_user(request)
+        item['author'] = user['_id']
+
     def on_inserted(self, item):
         # Removing cash
         level = Level.get_by_id(item['level'])
@@ -424,6 +428,8 @@ class OrganizationLevel(BaseModel):
         # Create a notification for each members of the team
         members = User.get_by_organization_id(item['organization'])
         for user in members:
+            if user['_id'] == item['author']:
+                continue
             UserNotification.post_internal({
                 'title': 'Your team bought a new level',
                 'user': user['_id'],

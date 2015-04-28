@@ -772,6 +772,15 @@ organization_levels = {
             'type': 'boolean',
             'default': True
         },
+        'author': {
+            'type': 'uuid',
+            'required': False,
+            'data_relation': {
+                'resource': 'users',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
         'level': {
             'type': 'uuid',
             'required': True,
