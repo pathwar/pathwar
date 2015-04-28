@@ -273,6 +273,34 @@ class UserOrganizationInvite(BaseModel):
     def on_pre_post_item(self, request, item):
         User.resolve_input(item, 'user')
 
+    def on_pre_patch_item(self, request, item):
+        # FIXME: check if invite is for current user
+        # FIXME: check if user is still solvable for accepting invite
+        # FIXME: check if status was pending
+        # FIXME: check for duplicate invites
+
+        payload = request.get_json()
+
+        # current_app.logger.warn(['pre_patch.payload', request.get_json()])
+
+    def on_updated(self, item, payload):
+        if payload['status'] != item['status']:
+            if payload['status'] == 'accepted':
+                members = User.get_by_organization_id(item['organization'])
+                for user in members:
+                    UserNotification.post_internal({
+                        'title': 'A new member joined your team',
+                        'user': user['_id'],
+                    })
+            # FIXME: post activity
+            # FIXME: this kind of activity is private to the team
+            elif payload['status'] == 'refused':
+                owner = Organization.get_by_id(item['organization'])['owner']
+                UserNotification.post_internal({
+                    'title': 'Your invitation was refused',
+                    'user': owner,
+                })
+
     # FIXME: check if user is solvable (no existing organization,
     #        validated user, etc...)
     # FIXME: on PATCH by the user, add him to the new organization
