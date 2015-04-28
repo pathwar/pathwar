@@ -99,7 +99,7 @@ infrastructure_hijacks = {
             'data_relation': {
                 'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
         'tags': {
@@ -350,7 +350,7 @@ level_instance_users = {
             'data_relation': {
                 'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
         'hash': {
@@ -469,9 +469,9 @@ levels = {
                 'user': {
                     'type': 'uuid',
                     'data_relation': {
-                        'resource': 'user',
+                        'resource': 'raw-users',
                         'field': '_id',
-                        'embeddable': True,
+                        'embeddable': False,
                     },
                 },
                 'organization': {
@@ -621,7 +621,7 @@ organization_coupons = {
             'data_relation': {
                 'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
         'coupon': {
@@ -693,7 +693,7 @@ organization_level_validations = {
             'data_relation': {
                 'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
         'explanation': {
@@ -820,7 +820,7 @@ organization_levels = {
             'data_relation': {
                 'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
         'level': {
@@ -918,7 +918,7 @@ organization_users = {
             'data_relation': {
                 'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
     },
@@ -1006,7 +1006,7 @@ organizations = {
             'data_relation': {
                 'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
         'statistics': {
@@ -1154,7 +1154,7 @@ activities = {
             'data_relation': {
                 'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
         'action': {
@@ -1235,7 +1235,7 @@ user_hijack_proofs = {
                     'data_relation': {
                         'resource': 'raw-users',
                         'field': '_id',
-                        'embeddable': True,
+                        'embeddable': False,
                     },
                 },
             },
@@ -1258,7 +1258,7 @@ user_hijack_proofs = {
                     'data_relation': {
                         'resource': 'raw-users',
                         'field': '_id',
-                        'embeddable': True,
+                        'embeddable': False,
                     },
                 },
             },
@@ -1292,7 +1292,7 @@ user_organization_invites = {
             'data_relation': {
                 'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
         'organization': {
@@ -1310,7 +1310,7 @@ user_organization_invites = {
             'data_relation': {
                 'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
         "status": {
@@ -1358,7 +1358,7 @@ user_notifications = {
             'data_relation': {
                 'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
         'action': {
@@ -1664,7 +1664,7 @@ whoswho_attempts = {
                     'data_relation': {
                         'resource': 'raw-users',
                         'field': '_id',
-                        'embeddable': True,
+                        'embeddable': False,
                     },
                 },
             },
@@ -1687,7 +1687,7 @@ whoswho_attempts = {
                     'data_relation': {
                         'resource': 'raw-users',
                         'field': '_id',
-                        'embeddable': True,
+                        'embeddable': False,
                     },
                 },
             },
