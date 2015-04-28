@@ -1290,9 +1290,9 @@ user_organization_invites = {
             'type': 'uuid',
             'required': True,
             'data_relation': {
-                'resource': 'raw-users',
+                'resource': 'users',
                 'field': '_id',
-                'embeddable': False,
+                'embeddable': True,
             },
         },
         'organization': {
@@ -1308,9 +1308,9 @@ user_organization_invites = {
             'type': 'uuid',
             'required': False,
             'data_relation': {
-                'resource': 'raw-users',
+                'resource': 'users',
                 'field': '_id',
-                'embeddable': False,
+                'embeddable': True,
             },
         },
         "status": {
