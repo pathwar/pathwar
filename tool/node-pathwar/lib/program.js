@@ -68,10 +68,10 @@ program
         }
 
         // get all keys
-        var keys = _.difference(
+        var keys = _.sortBy(_.difference(
           _.union(_.flatten(_.map(res.body._items, _.keys))),
           ['_links', '_etag']
-        );
+        ));
         if (options.field.length) {
           keys = _.intersection(keys, options.field);
           var difference = _.difference(options.field, keys);
