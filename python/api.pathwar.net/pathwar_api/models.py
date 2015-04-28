@@ -46,7 +46,7 @@ class BaseModel(object):
             input_[field] = items[0]
 
         if len(items) == 0:  # 0 matching item
-            abort(422, "Cannot resolve item '{}'".format(search))
+            abort(422, "No such item '{}'".format(search))
 
         if len(items) > 1:  # multiple matching items
             abort(422, "Too much candidates for item '{}'".format(search))
@@ -277,6 +277,7 @@ class UserOrganizationInvite(BaseModel):
 
     def on_pre_post_item(self, request, item):
         User.resolve_input(item, 'user')
+        Organization.resolve_input(item, 'organization')
         user = request_get_user(request)
         item['author'] = user['_id']
 
@@ -379,6 +380,7 @@ class UserToken(BaseModel):
 
 class Organization(BaseModel):
     resource = 'organizations'
+    search_fields = ['_id', 'name']
 
     @classmethod
     def statistics_increment(cls, organization_id, payload):
