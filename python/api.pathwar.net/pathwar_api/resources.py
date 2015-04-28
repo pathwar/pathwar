@@ -263,7 +263,8 @@ level_instances = {
             },
         },
         'name': {
-            'type': 'string'
+            'type': 'string',
+            'unique': True,
         }
     },
 }

@@ -9,7 +9,7 @@ from eve.methods.post import post, post_internal
 from eve.methods.patch import patch_internal
 from flask import abort, current_app, url_for
 
-from utils import request_get_user
+from utils import request_get_user, generate_name
 from mail import mail, send_mail
 
 
@@ -593,6 +593,10 @@ class LevelHint(BaseModel):
 
 class LevelInstance(BaseModel):
     resource = 'level-instances'
+
+    def on_pre_post_item(self, request, item):
+        if 'name' not in item:
+            item['name'] = generate_name()
 
 
 class LevelInstanceUser(BaseModel):
