@@ -272,6 +272,8 @@ class UserOrganizationInvite(BaseModel):
 
     def on_pre_post_item(self, request, item):
         User.resolve_input(item, 'user')
+        user = request_get_user(request)
+        item['author'] = user['_id']
 
     def on_inserted(self, item):
         UserNotification.post_internal({
