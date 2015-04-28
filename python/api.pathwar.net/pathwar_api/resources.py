@@ -1352,7 +1352,25 @@ user_organization_invites = {
         },
     },
     'views': {
-        'user-organization-invites': {},
+        'user-organization-invites': {
+            'datasource': {
+                'source': 'raw-user-organization-invites',
+                'projection': {
+                    '_schema_version': 0,
+                },
+            },
+            'public_methods': [],
+            'allowed_write_roles': ['user'],
+            'allowed_item_write_roles': ['user'],
+        },
+        'raw-user-organization-invites': {
+            'allowed_read_roles': ['admin'],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_read_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
+            'public_methods': [],
+            'public_item_methods': [],
+        },
     },
 }
 
@@ -1437,7 +1455,6 @@ user_notifications = {
             'public_methods': [],
             'public_item_methods': [],
         },
-
     },
 }
 

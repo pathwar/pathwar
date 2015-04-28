@@ -284,7 +284,16 @@ class UserNotification(BaseModel):
 
 
 class UserOrganizationInvite(BaseModel):
-    resource = 'user-organization-invites'
+    resource = 'raw-user-organization-invites'
+
+    def on_pre_get(self, request, lookup):
+        if request.path.split('/')[1] == 'user-organization-invites':
+            user = request_get_user(request)
+
+            lookup['$or'] = [
+                {'author': user['_id']},
+                {'user': user['_id']},
+            ]
 
     def on_pre_post_item(self, request, item):
         User.resolve_input(item, 'user')
@@ -829,9 +838,12 @@ models = {
     'servers': Server,
     'sessions': Session,
     'user-hijack-proofs': UserHijackProof,
-    'user-organization-invites': UserOrganizationInvite,
     'user-tokens': UserToken,
     'whoswho-attempts': WhoswhoAttempt,
+
+    # user-organization-invites
+    'raw-user-organization-invites': UserOrganizationInvite,
+    'user-organization-invites': UserOrganizationInvite,
 
     # user-notifications
     'user-notifications': UserNotification,
