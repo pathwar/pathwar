@@ -142,6 +142,7 @@ program
   .action(function(item, options) {
     var client = utils.newApi(options);
 
+    // FIXME: resolve nested fields
     utils.searchItems(item, client, function(items) {
       _.forEach(items, function(item) {
         if (options.trunc) {
