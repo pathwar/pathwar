@@ -1422,13 +1422,9 @@ user_notifications = {
                 'projection': {
                     '_schema_version': 0,
                 },
-                'filter': {
-                    # 'role': {'$in': ['user', 'moderator']},
-                    'active': True,
-                    # 'visibility': 'public',
-                },
             },
             'auth_field': 'user',
+
             'public_methods': [],
             'allowed_write_roles': ['admin'],
             'allowed_item_write_roles': ['admin'],
