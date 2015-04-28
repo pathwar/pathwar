@@ -676,7 +676,7 @@ class LevelHint(BaseModel):
 
 
 class LevelInstance(BaseModel):
-    resource = 'level-instances'
+    resource = 'raw-level-instances'
 
     def on_pre_post_item(self, request, item):
         if 'name' not in item:
@@ -843,7 +843,6 @@ models = {
     'items': Item,
     'level-hints': LevelHint,
     'level-instance-users': LevelInstanceUser,
-    'level-instances': LevelInstance,
     'level-statistics': LevelStatistics,
     'organization-achievements': OrganizationAchievement,
     'organization-items': OrganizationItem,
@@ -856,6 +855,10 @@ models = {
     'user-hijack-proofs': UserHijackProof,
     'user-tokens': UserToken,
     'whoswho-attempts': WhoswhoAttempt,
+
+    # level-instances
+    'level-instances': LevelInstance,
+    'raw-level-instances': LevelInstance,
 
     # organization-coupons
     'raw-organization-coupons': OrganizationCoupon,

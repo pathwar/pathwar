@@ -285,7 +285,31 @@ level_instances = {
         }
     },
     'views': {
-        'level-instances': {},
+        'level-instances': {
+            'datasource': {
+                'source': 'raw-level-instances',
+                'projection': {
+                    '_schema_version': 0,
+                    'passphrases': 0,
+                    'server': 0,
+                    'active': 0,
+                },
+                'filter': {
+                    'active': True,
+                },
+            },
+            'public_methods': [],
+            'allowed_write_roles': [],
+            'allowed_item_write_roles': [],
+        },
+        'raw-level-instances': {
+            'allowed_read_roles': ['admin'],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_read_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
+            'public_methods': [],
+            'public_item_methods': [],
+        },
     },
 }
 
