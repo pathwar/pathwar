@@ -286,12 +286,22 @@ class UserOrganizationInvite(BaseModel):
     def on_updated(self, item, payload):
         if payload['status'] != item['status']:
             if payload['status'] == 'accepted':
+                # Notify teamates
                 members = User.get_by_organization_id(item['organization'])
                 for user in members:
                     UserNotification.post_internal({
                         'title': 'A new member joined your team',
                         'user': user['_id'],
                     })
+
+                # Create OrganizationUser
+                current_app.logger.warn([item, payload])
+                OrganizationUser.post_internal({
+                    'organization': item['organization'],
+                    'role': 'pwner',
+                    'user': item['user'],
+                })
+
             # FIXME: post activity
             # FIXME: this kind of activity is private to the team
             elif payload['status'] == 'refused':
