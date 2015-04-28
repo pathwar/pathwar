@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 
 achievements = {
     'item_title': 'achievement',
@@ -21,6 +23,9 @@ achievements = {
         'description': {
             'type': 'string',
         },
+    },
+    'views': {
+        'achievements': {},
     },
 }
 
@@ -67,6 +72,9 @@ coupons = {
             },
         },
     },
+    'views': {
+        'coupons': {},
+    },
 }
 
 
@@ -101,6 +109,9 @@ infrastructure_hijacks = {
             'type': 'string',
         },
     },
+    'views': {
+        'infrastructure-hijacks': {},
+    },
 }
 
 
@@ -132,6 +143,9 @@ items = {
         'quantity': {
             'type': 'integer',
         },
+    },
+    'views': {
+        'items': {},
     },
 }
 
@@ -171,6 +185,9 @@ level_hints = {
                 'embeddable': True,
             },
         },
+    },
+    'views': {
+        'level-hints': {},
     },
 }
 
@@ -267,6 +284,9 @@ level_instances = {
             'unique': True,
         }
     },
+    'views': {
+        'level-instances': {},
+    },
 }
 
 
@@ -337,6 +357,9 @@ level_instance_users = {
             'type': 'string',
         },
     },
+    'views': {
+        'level-instance-users': {},
+    },
 }
 
 
@@ -371,6 +394,9 @@ level_statistics = {
         'fivestar_average': {'type': 'integer', 'default': 0},
         'duration_average': {'type': 'integer', 'default': 0},
         'amount_hints_bought': {'type': 'integer', 'default': 0},
+    },
+    'views': {
+        'level-statistics': {},
     },
 }
 
@@ -515,6 +541,9 @@ levels = {
             },
         },
     },
+    'views': {
+        'levels': {},
+    },
 }
 
 
@@ -553,6 +582,9 @@ organization_achievements = {
                 'embeddable': True,
             },
         },
+    },
+    'views': {
+        'organization-achievements': {},
     },
 }
 
@@ -601,6 +633,9 @@ organization_coupons = {
                 'embeddable': True,
             },
         },
+    },
+    'views': {
+        'organization-coupons': {},
     },
 }
 
@@ -675,6 +710,9 @@ organization_level_validations = {
             },
         },
     },
+    'views': {
+        'organization-level-validations': {},
+    },
 }
 
 
@@ -728,6 +766,9 @@ organization_level_hints = {
                 'embeddable': True,
             },
         },
+    },
+    'views': {
+        'organization-level-hints': {},
     },
 }
 
@@ -792,6 +833,9 @@ organization_levels = {
             },
         },
     },
+    'views': {
+        'organization-levels': {},
+    },
 }
 
 
@@ -830,6 +874,9 @@ organization_items = {
                 'embeddable': True,
             },
         },
+    },
+    'views': {
+        'organization-items': {},
     },
 }
 
@@ -875,6 +922,9 @@ organization_users = {
             },
         },
     },
+    'views': {
+        'organization-users': {},
+    },
 }
 
 
@@ -910,6 +960,9 @@ organization_statistics = {
         'silver_medals': {'type': 'integer', 'default': 0},
         'bronze_medals': {'type': 'integer', 'default': 0},
         'achievements': {'type': 'integer', 'default': 0},
+    },
+    'views': {
+        'organization-statistics': {},
     },
 }
 
@@ -975,6 +1028,9 @@ organizations = {
             'readonly': True,
         },
     },
+    'views': {
+        'organizations': {},
+    },
 }
 
 
@@ -1030,6 +1086,9 @@ sessions = {
             'type': 'string',
         },
     },
+    'views': {
+        'sessions': {},
+    },
 }
 
 
@@ -1066,6 +1125,9 @@ servers = {
             'type': 'list',
             'default': ['linux', 'public'],
         },
+    },
+    'views': {
+        'servers': {},
     },
 }
 
@@ -1128,6 +1190,9 @@ activities = {
                 },
             },
         },
+    },
+    'views': {
+        'activities': {},
     },
 }
 
@@ -1199,6 +1264,9 @@ user_hijack_proofs = {
             },
         },
     },
+    'views': {
+        'user-hijack-proofs': {},
+    },
 }
 
 
@@ -1250,6 +1318,9 @@ user_organization_invites = {
             'default': 'pending',
             'allowed': ['pending', 'accepted', 'refused'],
         },
+    },
+    'views': {
+        'user-organization-invites': {},
     },
 }
 
@@ -1314,6 +1385,9 @@ user_notifications = {
                 },
             },
         },
+    },
+    'views': {
+        'user-notifications': {},
     },
 }
 
@@ -1380,10 +1454,13 @@ user_tokens = {
             'nullable': True,
         },
     },
+    'views': {
+        'user-tokens': {},
+    }
 }
 
 
-raw_users = {
+users = {
     'item_title': 'user',
 
     # collection
@@ -1497,66 +1574,56 @@ raw_users = {
             # chmod 644
         },
     },
-}
-
-
-# /users
-users = raw_users.copy()
-users.update({
-    'datasource': {
-        'source': 'raw-users',
-        'projection': {
-            'email': 0,
-            'email_verification_token': 0,
-            'password': 0,
-            'password_salt': 0,
-            'active': 0,
-            'visibility': 0,
-            'otp_enabled': 0,
-            'groups': 0,
-            '_schema_version': 0,
-            'myself': 0,
+    'views': {
+        'users': {
+            'datasource': {
+                'source': 'raw-users',
+                'projection': {
+                    'email': 0,
+                    'email_verification_token': 0,
+                    'password': 0,
+                    'password_salt': 0,
+                    'active': 0,
+                    'visibility': 0,
+                    'otp_enabled': 0,
+                    'groups': 0,
+                    '_schema_version': 0,
+                    'myself': 0,
+                },
+                'filter': {
+                    'visibility': 'public',
+                    'role': {'$in': ['user', 'moderator']},
+                    'active': True,
+                    'visibility': 'public',
+                },
+            },
+            'public_methods': [],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
         },
-        'filter': {
-            'visibility': 'public',
-            'role': {'$in': ['user', 'moderator']},
-            'active': True,
-            'visibility': 'public',
-        }
+        'accounts': {
+            'datasource': {
+                'source': 'raw-users',
+                'projection': {
+                    'email_verification_token': 0,
+                    'password_salt': 0,
+                    'myself': 0,
+                    'active': 0,
+                    '_schema_version': 0,
+                }
+            },
+            'auth_field': 'myself',
+        },
+        'raw-users': {
+            'allowed_read_roles': ['admin'],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_read_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
+            'public_methods': [],
+            'public_item_methods': [],
+        },
     },
-    'public_methods': [],
-    'allowed_write_roles': ['admin'],
-    'allowed_item_write_roles': ['admin'],
-})
-
-
-# /accounts
-accounts = raw_users.copy()
-accounts.update({
-    'datasource': {
-        'source': 'raw-users',
-        'projection': {
-            'email_verification_token': 0,
-            'password_salt': 0,
-            'myself': 0,
-            'active': 0,
-            '_schema_version': 0,
-        }
-    },
-    'auth_field': 'myself',
-})
-
-
-raw_users.update({
-    'allowed_read_roles': ['admin'],
-    'allowed_write_roles': ['admin'],
-    'allowed_item_read_roles': ['admin'],
-    'allowed_item_write_roles': ['admin'],
-    'public_methods': [],
-    'public_item_methods': [],
-})
-from pprint import pprint
-pprint(users)
+}
 
 
 whoswho_attempts = {
@@ -1626,43 +1693,52 @@ whoswho_attempts = {
             },
         },
     },
+    'views': {
+        'whoswho-attempts': {},
+    }
 }
 
 
-DOMAIN = {
-    # Exposed
-    'achievements': achievements,
-    'activities': activities,
-    'coupons': coupons,
-    'infrastructure-hijacks': infrastructure_hijacks,
-    'items': items,
-    'level-hints': level_hints,
-    'level-instance-users': level_instance_users,
-    'level-instances': level_instances,
-    'level-statistics': level_statistics,
-    'levels': levels,
-    'organization-achievements': organization_achievements,
-    'organization-coupons': organization_coupons,
-    'organization-items': organization_items,
-    'organization-level-hints': organization_level_hints,
-    'organization-level-validations': organization_level_validations,
-    'organization-levels': organization_levels,
-    'organization-statistics': organization_statistics,
-    'organization-users': organization_users,
-    'organizations': organizations,
-    'servers': servers,
-    'sessions': sessions,
-    'user-hijack-proofs': user_hijack_proofs,
-    'user-notifications': user_notifications,
-    'user-organization-invites': user_organization_invites,
-    'user-tokens': user_tokens,
-    'whoswho-attempts': whoswho_attempts,
+DOMAIN = {}
 
-    # users
-    'raw-users': raw_users,
-    'accounts': accounts,
-    'users': users,
-}
+
+BASE_RESOURCES = [
+    achievements,
+    activities,
+    coupons,
+    infrastructure_hijacks,
+    items,
+    level_hints,
+    level_instance_users,
+    level_instances,
+    level_statistics,
+    levels,
+    organization_achievements,
+    organization_coupons,
+    organization_items,
+    organization_level_hints,
+    organization_level_validations,
+    organization_levels,
+    organization_statistics,
+    organization_users,
+    organizations,
+    servers,
+    sessions,
+    user_hijack_proofs,
+    user_notifications,
+    user_organization_invites,
+    user_tokens,
+    users,
+    whoswho_attempts,
+]
+
+
+for resource in BASE_RESOURCES:
+    for view_name in resource['views'].keys():
+        view = resource.copy()
+        view.update(resource['views'][view_name])
+        del view['views']
+        DOMAIN[view_name] = view
 
 
 # Use defaults
@@ -1671,11 +1747,14 @@ uuid_regex = '[a-f0-9]{8}-?' \
              '4[a-f0-9]{3}-?' \
              '[89ab][a-f0-9]{3}-?' \
              '[a-f0-9]{12}'
+
+
 defaults = {
     'item_url': 'regex("{}")'.format(uuid_regex),
     'public_methods': [],
     'public_item_methods': [],
 }
+
 
 for resource_name, resource_obj in DOMAIN.items():
     DOMAIN[resource_name]['schema']['_id'] = {'type': 'uuid'}
