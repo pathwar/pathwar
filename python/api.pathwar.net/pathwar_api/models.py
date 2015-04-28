@@ -254,9 +254,8 @@ class User(BaseModel):
             )
 
     def on_pre_post_item(self, request, item):
-        # FIXME: check for a password, users without password are built
-        #        internally
-        pass
+        if 'password' not in item:
+            abort(422, "Missing password")
 
     def on_pre_get(self, request, lookup):
         # Handle users/me

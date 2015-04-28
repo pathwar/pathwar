@@ -1499,44 +1499,63 @@ raw_users = {
     },
 }
 
+
 # /users
-users = {
+users = raw_users.copy()
+users.update({
     'datasource': {
         'source': 'raw-users',
         'projection': {
             'email': 0,
-            'gravatar_hash': 0,
             'email_verification_token': 0,
             'password': 0,
             'password_salt': 0,
+            'active': 0,
+            'visibility': 0,
+            'otp_enabled': 0,
+            'groups': 0,
+            '_schema_version': 0,
         },
         'filter': {
             'visibility': 'public',
-            'role': {'$in': ['user', 'moderator']}
+            'role': {'$in': ['user', 'moderator']},
+            'active': True,
+            'visibility': 'public',
         }
-    }
-}
-users.update(raw_users)
+    },
+    'public_methods': [],
+    'allowed_write_roles': ['admin'],
+    'allowed_item_write_roles': ['admin'],
+})
+
 
 # /accounts
-accounts = {
+accounts = raw_users.copy()
+accounts.update({
     'datasource': {
         'source': 'raw-users',
         'projection': {
             'email_verification_token': 0,
             'password_salt': 0,
             'myself': 0,
+            'active': 0,
+            '_schema_version': 0,
         }
     },
     'auth_field': 'myself',
-}
-accounts.update(raw_users)
-raw_users['allowed_read_roles'] = ['admin']
-raw_users['allowed_write_roles'] = ['admin']
-raw_users['allowed_item_read_roles'] = ['admin']
-raw_users['allowed_item_write_roles'] = ['admin']
-raw_users['public_methods'] = []
-raw_users['public_item_methods'] = []
+})
+
+
+raw_users.update({
+    'allowed_read_roles': ['admin'],
+    'allowed_write_roles': ['admin'],
+    'allowed_item_read_roles': ['admin'],
+    'allowed_item_write_roles': ['admin'],
+    'public_methods': [],
+    'public_item_methods': [],
+})
+from pprint import pprint
+pprint(users)
 
 
 whoswho_attempts = {
