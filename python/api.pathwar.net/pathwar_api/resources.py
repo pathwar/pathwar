@@ -1013,6 +1013,10 @@ sessions = {
             'type': 'boolean',
             'default': True,
         },
+        'anonymous': {
+            'type': 'boolean',
+            'default': False,
+        },
         'email_domain': {
             'type': 'string',
         },
