@@ -34,13 +34,21 @@ class BaseModel(object):
         ]
 
     @classmethod
-    def resolve(cls, search):
+    def resolve_input(cls, input_, field):
+        search = input_.get(field)
+
+        if not search:  # nothing to search, we continue
+            return False
+
         items = cls.search(search)
-        if len(items) == 1:
-            return items[0]
-        if len(items) == 0:
+
+        if len(items) == 1:  # 1 matching item
+            input_[field] = items[0]
+
+        if len(items) == 0:  # 0 matching item
             abort(422, "Cannot resolve item '{}'".format(search))
-        if len(items) > 1:
+
+        if len(items) > 1:  # multiple matching items
             abort(422, "Too much candidates for item '{}'".format(search))
 
     @classmethod
