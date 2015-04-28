@@ -1,5 +1,6 @@
 var _ = require('lodash'),
     Q = require('q'),
+    jsonPath = require('JSONPath'),
     moment = require('moment'),
     program = require('commander'),
     utils = require('./utils'),
@@ -137,6 +138,7 @@ program
   .alias('show')
   .description('show object')
   .option('--no-trunc', "don't truncate output")
+  .option('-f, --format <format>', 'format the output using the given template')
   .action(function(item, options) {
     var client = utils.newApi(options);
 
@@ -146,8 +148,16 @@ program
           delete item._links;
           delete item._etag;
         }
-        // FIXME: handle --format option
-        console.log(item);
+        if (options.format) {
+          var parsed = jsonPath.eval(item, '$' + options.format);
+          if (typeof(parsed) === 'object' && parsed.length === 1) {
+            console.log(parsed[0]);
+          } else {
+            console.log(parsed);
+          }
+        } else {
+          console.log(JSON.stringify(item, null, 2));
+        }
       });
     }, utils.panic);
   });
