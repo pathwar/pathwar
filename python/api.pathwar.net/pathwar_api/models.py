@@ -16,8 +16,32 @@ from mail import mail, send_mail
 class BaseModel(object):
     SCHEMA_VERSION = 1
 
+    search_fields = ['_id']
+
     def __init__(self):
         pass
+
+    @classmethod
+    def search(cls, search):
+        return [
+            item['_id'] for item in
+            cls.find({
+                '$or': [
+                    {field: search} for field in cls.search_fields
+                ]}, {
+                    "_id": 1,
+                })
+        ]
+
+    @classmethod
+    def resolve(cls, search):
+        items = cls.search(search)
+        if len(items) == 1:
+            return items[0]
+        if len(items) == 0:
+            abort(422, "Cannot resolve item '{}'".format(search))
+        if len(items) > 1:
+            abort(422, "Too much candidates for item '{}'".format(search))
 
     @classmethod
     def post_internal(cls, payload):
@@ -37,12 +61,16 @@ class BaseModel(object):
         )
 
     @classmethod
-    def find(cls, lookup):
-        return list(current_app.data.driver.db[cls.resource].find(lookup))
+    def find(cls, lookup, projection=None):
+        return list(current_app.data.driver.db[cls.resource].find(
+            lookup, projection
+        ))
 
     @classmethod
-    def find_one(cls, lookup):
-        return current_app.data.driver.db[cls.resource].find_one(lookup)
+    def find_one(cls, lookup, projection=None):
+        return current_app.data.driver.db[cls.resource].find_one(
+            lookup, projection
+        )
 
     def on_update(self, item):
         pass
@@ -124,6 +152,7 @@ class Session(BaseModel):
 
 class User(BaseModel):
     resource = 'users'
+    search_fields = ['_id', 'login']
 
     @classmethod
     def get_by_organization_id(cls, organization_id):
