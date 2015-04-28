@@ -89,7 +89,7 @@ infrastructure_hijacks = {
             'type': 'uuid',
             # 'required': True,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -328,7 +328,7 @@ level_instance_users = {
             'type': 'uuid',
             'required': False,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -587,7 +587,7 @@ organization_coupons = {
             'type': 'uuid',
             'required': False,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -656,7 +656,7 @@ organization_level_validations = {
             'type': 'uuid',
             'required': False,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -777,7 +777,7 @@ organization_levels = {
             'type': 'uuid',
             'required': False,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -869,7 +869,7 @@ organization_users = {
             'type': 'uuid',
             'required': True,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -951,7 +951,7 @@ organizations = {
             'type': 'uuid',
             'required': False,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -1090,7 +1090,7 @@ activities = {
         'user': {
             'type': 'uuid',
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -1168,7 +1168,7 @@ user_hijack_proofs = {
                 'author': {
                     'type': 'uuid',
                     'data_relation': {
-                        'resource': 'users',
+                        'resource': 'raw-users',
                         'field': '_id',
                         'embeddable': True,
                     },
@@ -1191,7 +1191,7 @@ user_hijack_proofs = {
                     'type': 'uuid',
                     'required': True,
                     'data_relation': {
-                        'resource': 'users',
+                        'resource': 'raw-users',
                         'field': '_id',
                         'embeddable': True,
                     },
@@ -1222,7 +1222,7 @@ user_organization_invites = {
             'type': 'uuid',
             'required': True,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -1240,7 +1240,7 @@ user_organization_invites = {
             'type': 'uuid',
             'required': False,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -1269,6 +1269,9 @@ user_notifications = {
     'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['user', 'admin'],
 
+    # ACL
+    'auth_field': 'user',
+
     # 'url': 'users/<user>/notifications',
     'schema': {
         'read': {
@@ -1282,7 +1285,7 @@ user_notifications = {
             'type': 'uuid',
             'required': True,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -1358,7 +1361,7 @@ user_tokens = {
             'required': False,
             # 'readonly': True,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
@@ -1380,7 +1383,7 @@ user_tokens = {
 }
 
 
-users = {
+raw_users = {
     'item_title': 'user',
 
     # collection
@@ -1395,6 +1398,9 @@ users = {
     'allowed_item_write_roles': ['user', 'moderator', 'admin'],
 
     'schema': {
+        #'myself': {
+        #    'type': 'uuid',
+        #},
         'login': {
             'type': 'string',
             'unique': True,
@@ -1493,6 +1499,45 @@ users = {
     },
 }
 
+# /users
+users = {
+    'datasource': {
+        'source': 'raw-users',
+        'projection': {
+            'email': 0,
+            'gravatar_hash': 0,
+            'email_verification_token': 0,
+            'password': 0,
+            'password_salt': 0,
+        },
+        'filter': {
+            'visibility': 'public',
+            'role': {'$in': ['user', 'moderator']}
+        }
+    }
+}
+users.update(raw_users)
+
+# /accounts
+accounts = {
+    'datasource': {
+        'source': 'raw-users',
+        'projection': {
+            'email_verification_token': 0,
+            'password_salt': 0,
+            'myself': 0,
+        }
+    },
+    'auth_field': 'myself',
+}
+accounts.update(raw_users)
+raw_users['allowed_read_roles'] = ['admin']
+raw_users['allowed_write_roles'] = ['admin']
+raw_users['allowed_item_read_roles'] = ['admin']
+raw_users['allowed_item_write_roles'] = ['admin']
+raw_users['public_methods'] = []
+raw_users['public_item_methods'] = []
+
 
 whoswho_attempts = {
     'item_title': 'whoswho attempt',
@@ -1530,7 +1575,7 @@ whoswho_attempts = {
                 'author': {
                     'type': 'uuid',
                     'data_relation': {
-                        'resource': 'users',
+                        'resource': 'raw-users',
                         'field': '_id',
                         'embeddable': True,
                     },
@@ -1553,7 +1598,7 @@ whoswho_attempts = {
                     'type': 'uuid',
                     'required': True,
                     'data_relation': {
-                        'resource': 'users',
+                        'resource': 'raw-users',
                         'field': '_id',
                         'embeddable': True,
                     },
@@ -1591,8 +1636,12 @@ DOMAIN = {
     'user-notifications': user_notifications,
     'user-organization-invites': user_organization_invites,
     'user-tokens': user_tokens,
-    'users': users,
     'whoswho-attempts': whoswho_attempts,
+
+    # users
+    'raw-users': raw_users,
+    'accounts': accounts,
+    'users': users,
 }
 
 

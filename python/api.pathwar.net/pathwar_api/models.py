@@ -171,7 +171,7 @@ class Session(BaseModel):
 
 
 class User(BaseModel):
-    resource = 'users'
+    resource = 'raw-users'
     search_fields = ['_id', 'login', 'email']
 
     @classmethod
@@ -204,6 +204,7 @@ class User(BaseModel):
         super(User, self).on_insert(item)
         item['password_salt'] = bcrypt.gensalt().encode('utf-8')
         item['email_verification_token'] = str(uuid4())
+        item['myself'] = item['_id']
         # item['otp_secret'] = ...
         self._on_update(item)
 
@@ -803,8 +804,12 @@ models = {
     'user-notifications': UserNotification,
     'user-organization-invites': UserOrganizationInvite,
     'user-tokens': UserToken,
-    'users': User,
     'whoswho-attempts': WhoswhoAttempt,
+
+    # users
+    'raw-users': User,
+    'users': User,
+    'accounts': User,
 }
 
 

@@ -48,7 +48,7 @@ def db_reset(app):
 
     # Create first user manually, the next requets (`post()`) will use the
     # token
-    root_id = app.data.driver.db['users'].insert({
+    root_id = app.data.driver.db['raw-users'].insert({
         'login': 'root',
         'role': 'admin',
         '_id': str(uuid4()),

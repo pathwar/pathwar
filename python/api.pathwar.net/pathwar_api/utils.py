@@ -9,7 +9,7 @@ def request_get_user(request):
     auth = request.authorization
     if auth.get('username'):
         if auth.get('password'):  # user:pass
-            return current_app.data.driver.db['users'].find_one({
+            return current_app.data.driver.db['raw-users'].find_one({
                 'login': auth.get('username'),
                 # 'active': True,  # FIXME: Reenable later
             })
@@ -25,13 +25,13 @@ def request_get_user(request):
                 return current_app \
                     .data \
                     .driver \
-                    .db['users'] \
+                    .db['raw-users'] \
                     .find_one({'_id': user_token['user']})
     return None
 
 
 def generate_name():
-    """ Python port of https://github.com/docker/docker/blob/040176f6e17d6c1cc2468377b57a8b61d101123c/pkg/namesgenerator/names-generator.go.
+    """ Python port of https://github.com/docker/docker/blob/master/pkg/namesgenerator/names-generator.go.
     """
     left = [
         "admiring",

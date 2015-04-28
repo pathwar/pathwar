@@ -27,7 +27,7 @@ class MockBasicAuth(BasicAuth):
         if len(password):
             # FIXME: restrict login+password access for a minimal amount of
             #        resources
-            user = app.data.driver.db['users'].find_one({
+            user = app.data.driver.db['raw-users'].find_one({
                 'login': username,
                 # 'active': True,  # FIXME: re-enable
             })
@@ -41,7 +41,7 @@ class MockBasicAuth(BasicAuth):
             user_token = app.data.driver.db['user-tokens'] \
                                         .find_one({'token': username})
             if user_token:
-                user = app.data.driver.db['users'] \
+                user = app.data.driver.db['raw-users'] \
                                       .find_one({'_id': user_token['user']})
                 if user['role'] != 'admin':
                     self.set_request_auth_value(user['_id'])
