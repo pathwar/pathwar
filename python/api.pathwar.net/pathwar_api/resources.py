@@ -1099,7 +1099,7 @@ activities = {
         },
         'category': {
             'type': 'string',
-            'default': 'common',
+            'default': 'general',
         },
         'organization': {
             'type': 'uuid',
@@ -1281,6 +1281,30 @@ user_notifications = {
                 'resource': 'users',
                 'field': '_id',
                 'embeddable': True,
+            },
+        },
+        'action': {
+            'type': 'string',
+        },
+        'category': {
+            'type': 'string',
+            'default': 'general',
+        },
+        'arguments': {
+            'type': 'list',
+        },
+        'linked_resources': {
+            'type': 'list',
+            'schema': {
+                'type': 'dict',
+                'schema': {
+                    'kind': {
+                        'type': 'string',
+                    },
+                    'id': {
+                        'type': 'uuid',
+                    },
+                },
             },
         },
     },

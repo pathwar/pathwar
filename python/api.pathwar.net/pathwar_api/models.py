@@ -211,7 +211,7 @@ class User(BaseModel):
         Activity.post_internal({
             'user': item['_id'],
             'action': 'users-create',
-            'category': 'account',
+            'category': 'accounts',
             'linked_resources': [
                 {'kind': 'users', 'id': item['_id']}
             ],
@@ -219,6 +219,11 @@ class User(BaseModel):
         UserNotification.post_internal({
             'title': 'Welcome to your account !',
             'user': item['_id'],
+            'action': 'users-create',
+            'category': 'accounts',
+            'linked_resources': [
+                {'kind': 'users', 'id': item['_id']}
+            ],
         })
 
         # Create an organization in the default session
@@ -279,6 +284,12 @@ class UserOrganizationInvite(BaseModel):
         UserNotification.post_internal({
             'title': 'You are invited to join a team',
             'user': item['user'],
+            'action': 'user-organization-invite-create',
+            'category': 'organizations',
+            'linked_resources': [
+                {'kind': 'organizations', 'id': item['organization']},
+                {'kind': 'author', 'id': item['author']},
+            ],
         })
 
     def on_pre_patch_item(self, request, item):
@@ -300,6 +311,12 @@ class UserOrganizationInvite(BaseModel):
                     UserNotification.post_internal({
                         'title': 'A new member joined your team',
                         'user': user['_id'],
+                        'action': 'user-organization-invite-accepted',
+                        'category': 'organizations',
+                        'linked_resources': [
+                            {'kind': 'organizations', 'id': item['organization']},
+                            {'kind': 'user', 'id': item['user']},
+                        ],
                     })
 
                 # Create OrganizationUser
@@ -317,6 +334,12 @@ class UserOrganizationInvite(BaseModel):
                 UserNotification.post_internal({
                     'title': 'Your invitation was refused',
                     'user': owner,
+                    'action': 'user-organization-invite-accepted',
+                    'category': 'organizations',
+                    'linked_resources': [
+                        {'kind': 'organizations', 'id': item['organization']},
+                        {'kind': 'user', 'id': item['user']},
+                    ],
                 })
 
     # FIXME: check if user is solvable (no existing organization,
@@ -346,7 +369,7 @@ class UserToken(BaseModel):
         Activity.post_internal({
             'user': item['user'],
             'action': 'user-tokens-create',
-            'category': 'account',
+            'category': 'accounts',
             'linked_resources': [
                 {'kind': 'users', 'id': item['user']},
                 {'kind': 'user-tokens', 'id': item['_id']}
@@ -408,6 +431,11 @@ class Organization(BaseModel):
         UserNotification.post_internal({
             'title': 'You just created a new organization !',
             'user': item['owner'],
+            'action': 'organizations-create',
+            'category': 'organizations',
+            'linked_resources': [
+                {'kind': 'organizations', 'id': item['_id']}
+            ],
         })
 
 
@@ -435,6 +463,12 @@ class OrganizationLevel(BaseModel):
             UserNotification.post_internal({
                 'title': 'Your team bought a new level',
                 'user': user['_id'],
+                'action': 'organization-level-create',
+                'category': 'levels',
+                'linked_resources': [
+                    {'kind': 'levels', 'id': item['level']},
+                    {'kind': 'organizations', 'id': item['organization']},
+                ],
             })
 
         # FIXME: send notification to teamates)
