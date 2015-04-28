@@ -652,7 +652,7 @@ class Item(BaseModel):
 
 
 class Level(BaseModel):
-    resource = 'levels'
+    resource = 'raw-levels'
 
     def on_inserted(self, item):
         LevelStatistics.post_internal({
@@ -833,7 +833,6 @@ models = {
     'level-instance-users': LevelInstanceUser,
     'level-instances': LevelInstance,
     'level-statistics': LevelStatistics,
-    'levels': Level,
     'organization-achievements': OrganizationAchievement,
     'organization-coupons': OrganizationCoupon,
     'organization-items': OrganizationItem,
@@ -846,6 +845,10 @@ models = {
     'user-hijack-proofs': UserHijackProof,
     'user-tokens': UserToken,
     'whoswho-attempts': WhoswhoAttempt,
+
+    # levels
+    'levels': Level,
+    'raw-levels': Level,
 
     # organization-users
     'organization-users': OrganizationUser,

@@ -542,7 +542,24 @@ levels = {
         },
     },
     'views': {
-        'levels': {},
+        'levels': {
+            'datasource': {
+                'source': 'raw-levels',
+                'projection': {
+                    '_schema_version': 0,
+                    'defaults': 0,
+                    'author': 0,
+                },
+            },
+        },
+        'raw-levels': {
+            'allowed_read_roles': ['admin'],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_read_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
+            'public_methods': [],
+            'public_item_methods': [],
+        },
     },
 }
 
