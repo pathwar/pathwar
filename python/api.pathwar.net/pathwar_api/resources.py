@@ -652,7 +652,25 @@ organization_coupons = {
         },
     },
     'views': {
-        'organization-coupons': {},
+        'organization-coupons': {
+            'datasource': {
+                'source': 'raw-organization-coupons',
+                'projection': {
+                    '_schema_version': 0,
+                },
+            },
+            'public_methods': [],
+            'allowed_write_roles': ['user'],
+            'allowed_item_write_roles': ['user'],
+        },
+        'raw-organization-coupons': {
+            'allowed_read_roles': ['admin'],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_read_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
+            'public_methods': [],
+            'public_item_methods': [],
+        },
     },
 }
 

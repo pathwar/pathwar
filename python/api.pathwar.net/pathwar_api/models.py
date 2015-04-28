@@ -737,7 +737,19 @@ class OrganizationAchievement(BaseModel):
 
 
 class OrganizationCoupon(BaseModel):
-    resource = 'organization-coupons'
+    resource = 'raw-organization-coupons'
+
+    def on_pre_get(self, request, lookup):
+        if request.path.split('/')[1] == 'organization-coupons':
+            user = request_get_user(request)
+            organization_users = [
+                organization_user['organization'] for organization_user in
+                OrganizationUser.get_by_user(user['_id'])
+            ]
+
+            lookup['organization'] = {
+                '$in': organization_users,
+            }
 
     def on_pre_post_item(self, request, item):
         if 'coupon' not in item:
@@ -834,7 +846,6 @@ models = {
     'level-instances': LevelInstance,
     'level-statistics': LevelStatistics,
     'organization-achievements': OrganizationAchievement,
-    'organization-coupons': OrganizationCoupon,
     'organization-items': OrganizationItem,
     'organization-level-hints': OrganizationLevelHint,
     'organization-level-validations': OrganizationLevelValidation,
@@ -845,6 +856,10 @@ models = {
     'user-hijack-proofs': UserHijackProof,
     'user-tokens': UserToken,
     'whoswho-attempts': WhoswhoAttempt,
+
+    # organization-coupons
+    'raw-organization-coupons': OrganizationCoupon,
+    'organization-coupons': OrganizationCoupon,
 
     # levels
     'levels': Level,
