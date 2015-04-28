@@ -508,7 +508,7 @@ class OrganizationLevelValidation(BaseModel):
         if not Organization.has_user(
                 organization_level['organization'], user['_id']
         ):
-            abort(422, "You cannot validate a coupon for another organization")
+            abort(422, "You cannot validate a level for another organization")
 
         # Add author
         item['author'] = user['_id']
