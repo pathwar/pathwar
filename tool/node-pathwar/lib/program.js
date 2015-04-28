@@ -61,15 +61,20 @@ program
           console.error('No entries');
           return;
         }
+        var items = res.body._items;
 
+        // sorting items
+        items = _.sortByOrder(items, ['_created'], [false]);
+
+        // quiet mode
         if (options.quiet) {
-          console.log(_.pluck(res.body._items, '_id').join('\n'));
+          console.log(_.pluck(items, '_id').join('\n'));
           return;
         }
 
         // get all keys
         var keys = _.sortBy(_.difference(
-          _.union(_.flatten(_.map(res.body._items, _.keys))),
+          _.union(_.flatten(_.map(items, _.keys))),
           ['_links', '_etag']
         ));
         if (options.field.length) {
@@ -87,7 +92,7 @@ program
           head: keys
         });
 
-        _.forEach(res.body._items, function(item) {
+        _.forEach(items, function(item) {
           var row = [];
           _.forEach(keys, function(key) {
 
