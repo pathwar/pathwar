@@ -176,7 +176,7 @@ suite("[seed]", function() {
           password: 'super-secure',
           groups: ['staff']
         }];
-        client.post("/users", objects).then(function(res) {
+        client.post("/accounts", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
