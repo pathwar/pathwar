@@ -1330,6 +1330,9 @@ user_tokens = {
     'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['user', 'admin'],
 
+    # ACL
+    'auth_field': 'user',
+
     # 'url': 'users/<user>/tokens',
     'schema': {
         'token': {
@@ -1343,6 +1346,10 @@ user_tokens = {
             'default': '',
         },
         'is_session': {  # If true, the token will have an expiry date
+            'type': 'boolean',
+            'default': False,
+        },
+        'is_admin': {
             'type': 'boolean',
             'default': False,
         },
