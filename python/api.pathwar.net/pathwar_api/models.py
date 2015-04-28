@@ -93,9 +93,6 @@ class BaseModel(object):
     def on_pre_get(self, request, lookup):
         pass
 
-    def on_post_post_item(self, request, response, item):
-        pass
-
     def on_pre_post_item(self, request, item):
         pass
 
@@ -109,6 +106,9 @@ class BaseModel(object):
         for item in items:
             self.on_pre_post_item(request, item)
 
+    def on_post_post_item(self, request, response, item):
+        pass
+
     def on_post_post(self, request, response):
         dct = json.loads(response.get_data())
         if '_items' in dct:
@@ -118,6 +118,16 @@ class BaseModel(object):
 
         for item in items:
             self.on_post_post_item(request, response, item)
+
+    def on_pre_patch_item(self, request, item):
+        pass
+
+    def on_pre_patch(self, request, query):
+        items = self.find(query)
+        current_app.logger.warn(items)
+
+        for item in items:
+            self.on_pre_patch_item(request, item)
 
 
 class Achievement(BaseModel):
