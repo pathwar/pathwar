@@ -273,6 +273,12 @@ class UserOrganizationInvite(BaseModel):
     def on_pre_post_item(self, request, item):
         User.resolve_input(item, 'user')
 
+    def on_inserted(self, item):
+        UserNotification.post_internal({
+            'title': 'You are invited to join a team',
+            'user': item['user'],
+        })
+
     def on_pre_patch_item(self, request, item):
         # FIXME: check if invite is for current user
         # FIXME: check if user is still solvable for accepting invite
