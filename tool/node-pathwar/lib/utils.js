@@ -106,10 +106,33 @@ module.exports.searchItems = function(search, client, fn, errFn) {
       }
 
       return [
+        client.get('/achievements/' + item._id),
+        client.get('/activities/' + item._id),
+        client.get('/coupons/' + item._id),
+        client.get('/infrastructure-hijacks/' + item._id),
+        client.get('/items/' + item._id),
+        client.get('/level-hints/' + item._id),
+        client.get('/level-instance-users/' + item._id),
+        client.get('/level-instances/' + item._id),
+        client.get('/level-statistics/' + item._id),
+        client.get('/levels/' + item._id),
+        client.get('/organization-achievements/' + item._id),
+        client.get('/organization-coupons/' + item._id),
+        client.get('/organization-items/' + item._id),
+        client.get('/organization-level-hints/' + item._id),
+        client.get('/organization-level-validations/' + item._id),
+        client.get('/organization-levels/' + item._id),
+        client.get('/organization-statistics/' + item._id),
+        client.get('/organization-users/' + item._id),
+        client.get('/organizations/' + item._id),
         client.get('/servers/' + item._id),
+        client.get('/sessions/' + item._id),
+        client.get('/user-hijack-proofs/' + item._id),
+        client.get('/user-notifications/' + item._id),
+        client.get('/user-organization-invites/' + item._id),
+        client.get('/user-tokens/' + item._id),
         client.get('/users/' + item._id),
-        client.get('/coupons/' + item._id)
-        // FIXME: add all kind of items
+        client.get('/whoswho-attempts/' + item._id)
       ];
     };
 
