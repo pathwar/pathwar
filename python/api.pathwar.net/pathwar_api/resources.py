@@ -348,9 +348,9 @@ level_instance_users = {
             'type': 'uuid',
             'required': False,
             'data_relation': {
-                'resource': 'raw-users',
+                'resource': 'users',
                 'field': '_id',
-                'embeddable': False,
+                'embeddable': True,
             },
         },
         'hash': {
@@ -916,9 +916,9 @@ organization_users = {
             'type': 'uuid',
             'required': True,
             'data_relation': {
-                'resource': 'raw-users',
+                'resource': 'users',
                 'field': '_id',
-                'embeddable': False,
+                'embeddable': True,
             },
         },
     },
@@ -1029,7 +1029,39 @@ organizations = {
         },
     },
     'views': {
-        'organizations': {},
+        'organizations': {
+            'datasource': {
+                'source': 'raw-organizations',
+                'projection': {
+                    'gravatar_email': 0,
+                    '_schema_version': 0,
+                    'visibility': 0,
+                    'owner': 0,
+                },
+                'filter': {
+                    'visibility': 'public',
+                },
+            },
+            'public_methods': [],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
+        },
+        'teams': {
+            'datasource': {
+                'source': 'raw-organizations',
+                'projection': {
+                    '_schema_version': 0,
+                },
+            },
+        },
+        'raw-organizations': {
+            'allowed_read_roles': ['admin'],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_read_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
+            'public_methods': [],
+            'public_item_methods': [],
+        },
     },
 }
 

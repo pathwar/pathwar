@@ -153,6 +153,14 @@ class Activity(BaseModel):
 class OrganizationUser(BaseModel):
     resource = 'organization-users'
 
+    # FIXME: rebuild the cross-references field User.organizations
+
+    @classmethod
+    def get_by_user(cls, user_id):
+        return cls.find({
+            'user': user_id,
+        })
+
 
 class Session(BaseModel):
     resource = 'sessions'
@@ -379,7 +387,7 @@ class UserToken(BaseModel):
 
 
 class Organization(BaseModel):
-    resource = 'organizations'
+    resource = 'raw-organizations'
     search_fields = ['_id', 'name']
 
     @classmethod
@@ -439,6 +447,24 @@ class Organization(BaseModel):
                 {'kind': 'organizations', 'id': item['_id']}
             ],
         })
+
+    def on_pre_get(self, request, lookup):
+        if request.path.split('/')[1] == 'teams':
+            user = request_get_user(request)
+            organization_users = [
+                organization_user['organization'] for organization_user in
+                OrganizationUser.get_by_user(user['_id'])
+            ]
+            current_app.logger.warn([
+                request, lookup,
+                OrganizationUser.get_by_user(user['_id'])
+            ])
+
+            if '_id' in lookup:
+                if lookup['_id'] not in organization_users:
+                    abort(401)
+            else:
+                lookup['_id'] = {'$in': organization_users}
 
 
 class OrganizationLevel(BaseModel):
@@ -796,7 +822,6 @@ models = {
     'organization-levels': OrganizationLevel,
     'organization-statistics': OrganizationStatistics,
     'organization-users': OrganizationUser,
-    'organizations': Organization,
     'servers': Server,
     'sessions': Session,
     'user-hijack-proofs': UserHijackProof,
@@ -804,6 +829,11 @@ models = {
     'user-organization-invites': UserOrganizationInvite,
     'user-tokens': UserToken,
     'whoswho-attempts': WhoswhoAttempt,
+
+    # organizations
+    'raw-organizations': Organization,
+    'teams': Organization,
+    'organizations': Organization,
 
     # users
     'raw-users': User,
