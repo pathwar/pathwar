@@ -151,7 +151,7 @@ class Activity(BaseModel):
 
 
 class OrganizationUser(BaseModel):
-    resource = 'organization-users'
+    resource = 'raw-organization-users'
 
     # FIXME: rebuild the cross-references field User.organizations
 
@@ -160,6 +160,18 @@ class OrganizationUser(BaseModel):
         return cls.find({
             'user': user_id,
         })
+
+    def on_pre_get(self, request, lookup):
+        if request.path.split('/')[1] == 'organization-users':
+            user = request_get_user(request)
+            organization_users = [
+                organization_user['organization'] for organization_user in
+                OrganizationUser.get_by_user(user['_id'])
+            ]
+
+            lookup['organization'] = {
+                '$in': organization_users,
+            }
 
 
 class Session(BaseModel):
@@ -468,11 +480,6 @@ class Organization(BaseModel):
                 organization_user['organization'] for organization_user in
                 OrganizationUser.get_by_user(user['_id'])
             ]
-            current_app.logger.warn([
-                request, lookup,
-                OrganizationUser.get_by_user(user['_id'])
-            ])
-
             if '_id' in lookup:
                 if lookup['_id'] not in organization_users:
                     abort(401)
@@ -834,12 +841,15 @@ models = {
     'organization-level-validations': OrganizationLevelValidation,
     'organization-levels': OrganizationLevel,
     'organization-statistics': OrganizationStatistics,
-    'organization-users': OrganizationUser,
     'servers': Server,
     'sessions': Session,
     'user-hijack-proofs': UserHijackProof,
     'user-tokens': UserToken,
     'whoswho-attempts': WhoswhoAttempt,
+
+    # organization-users
+    'organization-users': OrganizationUser,
+    'raw-organization-users': OrganizationUser,
 
     # user-organization-invites
     'raw-user-organization-invites': UserOrganizationInvite,
