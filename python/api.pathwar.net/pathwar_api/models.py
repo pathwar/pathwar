@@ -80,7 +80,10 @@ class BaseModel(object):
             lookup, projection
         )
 
-    def on_update(self, item):
+    def on_update(self, item, payload):
+        pass
+
+    def on_updated(self, item, payload):
         pass
 
     def on_insert(self, item):
@@ -124,7 +127,6 @@ class BaseModel(object):
 
     def on_pre_patch(self, request, query):
         items = self.find(query)
-        current_app.logger.warn(items)
 
         for item in items:
             self.on_pre_patch_item(request, item)
@@ -271,7 +273,8 @@ class UserOrganizationInvite(BaseModel):
     def on_pre_post_item(self, request, item):
         User.resolve_input(item, 'user')
 
-    # FIXME: check if user is solvable (no existing organization, validated user, etc...)
+    # FIXME: check if user is solvable (no existing organization,
+    #        validated user, etc...)
     # FIXME: on PATCH by the user, add him to the new organization
     # FIXME: on POST, send user notification
 
