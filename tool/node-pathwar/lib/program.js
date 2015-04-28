@@ -33,15 +33,27 @@ program
   .option('--no-trunc', "don't truncate output")
   .option('-f, --field <field>', 'fields to print', utils.collect, [])
   .option('-q, --quiet', 'only print ids')
+  .option('-l, --limit <max_results>', 'limit results to <max_results> items', 50)
+  .option('-p, --page <page>', 'use page <page>', 1)
   .action(function(type, conditions, options) {
     var client = utils.newApi(options);
 
     type = type || '';
-    var url = '/' + type;
+    var query = {};
     if (conditions.length) {
-      var where = utils.castFields(type, conditions);
-      url = url + '?where=' + JSON.stringify(where);
+      query['where'] = JSON.stringify(utils.castFields(type, conditions));
     }
+    if (options.limit) {
+      query['max_results'] = options.limit;
+    }
+    if (options.page) {
+      query['page'] = options.page;
+    }
+    var url = '/' + type + '?';
+    _.forEach(query, function(value, key) {
+      url += key + '=' + value + '&';
+    });
+
     client.get(url)
       .then(function(res) {
         if (!res.body._items.length) {
@@ -111,6 +123,10 @@ program
         });
 
         console.log(table.toString());
+        var meta = res.body._meta;
+        if (meta.max_results < meta.total) {
+          console.log('Displaying items: ' + (meta.max_results * (meta.page - 1)) + '-' + (meta.max_results * meta.page) + '/' + meta.total);
+        }
       })
       .catch(utils.panic);
   });
