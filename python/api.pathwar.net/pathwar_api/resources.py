@@ -741,12 +741,12 @@ organization_level_hints = {
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'public_methods': [],
     'allowed_read_roles': ['user', 'moderator', 'admin'],
-    'allowed_write_roles': ['user', 'admin'],
+    'allowed_write_roles': ['admin'],
     # item
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
     'allowed_item_read_roles': ['user', 'moderator', 'admin'],
-    'allowed_item_write_roles': ['user', 'admin'],
+    'allowed_item_write_roles': ['admin'],
 
     'schema': {
         'organization': {
@@ -863,13 +863,13 @@ organization_items = {
     # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'public_methods': [],
-    'allowed_read_roles': ['user', 'moderator', 'admin'],
-    'allowed_write_roles': ['user', 'admin'],
+    'allowed_read_roles': ['admin'],
+    'allowed_write_roles': ['admin'],
     # item
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
-    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
-    'allowed_item_write_roles': ['user', 'admin'],
+    'allowed_item_read_roles': ['admin'],
+    'allowed_item_write_roles': ['admin'],
 
     # 'url': 'organizations/<organization>/items',
     'schema': {
