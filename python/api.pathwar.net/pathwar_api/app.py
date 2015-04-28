@@ -46,8 +46,8 @@ class MockBasicAuth(BasicAuth):
                 if user['role'] != 'admin':
                     self.set_request_auth_value(user['_id'])
                 # FIXME: Re-enable later
-                # if not user['active']:
-                #     user = None
+                if not user['active']:
+                    user = None
 
         if user:
             # app.logger.debug(

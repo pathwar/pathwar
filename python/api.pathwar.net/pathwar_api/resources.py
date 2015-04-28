@@ -1515,6 +1515,7 @@ users.update({
             'otp_enabled': 0,
             'groups': 0,
             '_schema_version': 0,
+            'myself': 0,
         },
         'filter': {
             'visibility': 'public',
