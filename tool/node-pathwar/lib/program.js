@@ -136,12 +136,19 @@ program
   .command('cat <item>')
   .alias('show')
   .description('show object')
+  .option('--no-trunc', "don't truncate output")
   .action(function(item, options) {
     var client = utils.newApi(options);
 
     utils.searchItems(item, client, function(items) {
-      // FIXME: handle --format option
-      console.log(items[0]);
+      _.forEach(items, function(item) {
+        if (options.trunc) {
+          delete item._links;
+          delete item._etag;
+        }
+        // FIXME: handle --format option
+        console.log(item);
+      });
     }, utils.panic);
   });
 
