@@ -160,7 +160,7 @@ class Session(BaseModel):
 
 class User(BaseModel):
     resource = 'users'
-    search_fields = ['_id', 'login']
+    search_fields = ['_id', 'login', 'email']
 
     @classmethod
     def get_by_organization_id(cls, organization_id):
@@ -258,6 +258,10 @@ class UserNotification(BaseModel):
 class UserOrganizationInvite(BaseModel):
     resource = 'user-organization-invites'
 
+    def on_pre_post_item(self, request, item):
+        User.resolve_input(item, 'user')
+
+    # FIXME: check if user is solvable (no existing organization, validated user, etc...)
     # FIXME: on PATCH by the user, add him to the new organization
     # FIXME: on POST, send user notification
 
