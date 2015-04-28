@@ -1372,9 +1372,6 @@ user_notifications = {
     'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['user', 'admin'],
 
-    # ACL
-    'auth_field': 'user',
-
     # 'url': 'users/<user>/notifications',
     'schema': {
         'read': {
@@ -1419,7 +1416,32 @@ user_notifications = {
         },
     },
     'views': {
-        'user-notifications': {},
+        'user-notifications': {
+            'datasource': {
+                'source': 'raw-user-notifications',
+                'projection': {
+                    '_schema_version': 0,
+                },
+                'filter': {
+                    # 'role': {'$in': ['user', 'moderator']},
+                    'active': True,
+                    # 'visibility': 'public',
+                },
+            },
+            'auth_field': 'user',
+            'public_methods': [],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
+        },
+        'raw-user-notifications': {
+            'allowed_read_roles': ['admin'],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_read_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
+            'public_methods': [],
+            'public_item_methods': [],
+        },
+
     },
 }
 
@@ -1623,10 +1645,9 @@ users = {
                     'myself': 0,
                 },
                 'filter': {
-                    'visibility': 'public',
-                    'role': {'$in': ['user', 'moderator']},
+                    # 'role': {'$in': ['user', 'moderator']},
                     'active': True,
-                    'visibility': 'public',
+                    # 'visibility': 'public',
                 },
             },
             'public_methods': [],

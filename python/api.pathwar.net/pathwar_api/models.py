@@ -277,7 +277,10 @@ class UserHijackProof(BaseModel):
 
 
 class UserNotification(BaseModel):
-    resource = 'user-notifications'
+    resource = 'raw-user-notifications'
+
+    def on_inserted(self, item):
+        pass
 
 
 class UserOrganizationInvite(BaseModel):
@@ -306,9 +309,7 @@ class UserOrganizationInvite(BaseModel):
         # FIXME: check if user is still solvable for accepting invite
         # FIXME: check if status was pending
         # FIXME: check for duplicate invites
-
         payload = request.get_json()
-
         # current_app.logger.warn(['pre_patch.payload', request.get_json()])
 
     def on_updated(self, item, payload):
@@ -323,7 +324,10 @@ class UserOrganizationInvite(BaseModel):
                         'action': 'user-organization-invite-accepted',
                         'category': 'organizations',
                         'linked_resources': [
-                            {'kind': 'organizations', 'id': item['organization']},
+                            {
+                                'kind': 'organizations',
+                                'id': item['organization'],
+                            },
                             {'kind': 'user', 'id': item['user']},
                         ],
                     })
@@ -825,10 +829,13 @@ models = {
     'servers': Server,
     'sessions': Session,
     'user-hijack-proofs': UserHijackProof,
-    'user-notifications': UserNotification,
     'user-organization-invites': UserOrganizationInvite,
     'user-tokens': UserToken,
     'whoswho-attempts': WhoswhoAttempt,
+
+    # user-notifications
+    'user-notifications': UserNotification,
+    'raw-user-notifications': UserNotification,
 
     # organizations
     'raw-organizations': Organization,
