@@ -644,7 +644,7 @@ suite("[seed]", function() {
             }]
           });
         }
-        client.post("/level-instances", objects).then(function(res) {
+        client.post("/raw-level-instances", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
