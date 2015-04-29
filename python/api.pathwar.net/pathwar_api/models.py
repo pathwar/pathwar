@@ -683,14 +683,31 @@ class OrganizationLevelValidation(BaseModel):
         #        are valid
         # FIXME: flag level instance as pwned -> redump if needed
 
-        current_app.logger.warn(['#' * 80, item])
-
         OrganizationLevel.update_by_id(item['organization_level'], {
             '$set': {
                 'status': 'pending validation',
                 'has_access': False,
             },
         })
+
+        members = User.get_by_organization_id(item['organization'])
+        for user in members:
+            if user['_id'] == item['author']:
+                continue
+            UserNotification.post_internal({
+                'title': 'New level validation',
+                'user': user['_id'],
+                'action': 'organization-level-validation-create',
+                'category': 'levels',
+                'linked_resources': [
+                    {
+                        'kind': 'organizations',
+                        'id': item['organization'],
+                    },
+                    {'kind': 'users', 'id': item['author']},
+                    {'kind': 'levels', 'id': item['level']},
+                ],
+            })
 
 
 class OrganizationLevelHint(BaseModel):
