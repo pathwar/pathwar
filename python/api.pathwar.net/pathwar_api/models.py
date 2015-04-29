@@ -379,7 +379,7 @@ class UserOrganizationInvite(BaseModel):
                                 'kind': 'organizations',
                                 'id': item['organization'],
                             },
-                            {'kind': 'user', 'id': item['user']},
+                            {'kind': 'users', 'id': item['user']},
                         ],
                     })
 
@@ -402,7 +402,7 @@ class UserOrganizationInvite(BaseModel):
                     'category': 'organizations',
                     'linked_resources': [
                         {'kind': 'organizations', 'id': item['organization']},
-                        {'kind': 'user', 'id': item['user']},
+                        {'kind': 'users', 'id': item['user']},
                     ],
                 })
 
@@ -879,7 +879,27 @@ class OrganizationCoupon(BaseModel):
             }
         )
 
-        # Removing cash
+    def on_inserted(self, item):
+        members = User.get_by_organization_id(item['organization'])
+        for user in members:
+            UserNotification.post_internal({
+                'title': 'Coupon validated',
+                'user': user['_id'],
+                'action': 'organization-coupon-create',
+                'category': 'coupons',
+                'linked_resources': [
+                    {
+                        'kind': 'organizations',
+                        'id': item['organization'],
+                    },
+                    {'kind': 'users', 'id': item['author']},
+                    {'kind': 'organization-coupons', 'id': item['_id']},
+                ],
+            })
+
+        coupon = Coupon.get_by_id(item['coupon'])
+
+        # Update team cash
         Organization.statistics_increment(
             item['organization'], {
                 'cash': coupon['value']
