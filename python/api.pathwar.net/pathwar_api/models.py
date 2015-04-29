@@ -548,6 +548,35 @@ class OrganizationLevel(BaseModel):
             }
 
     def on_pre_post_item(self, request, item):
+        if 'organization' not in item:
+            abort(422, "Missing organization")
+        if 'level' not in item:
+            abort(422, "Missing level")
+
+        organization = Organization.get_by_id(item['organization'])
+        if not organization:
+            abort(422, "No such organization")
+
+        level = Level.get_by_id(item['level'])
+        if not level:
+            abort(422, "No such level")
+
+        organization_statistics = OrganizationStatistics.get_by_id(
+            organization['statistics'],
+        )
+        if not organization_statistics:
+            abort(422, "No such organization_statistics")
+
+        if organization_statistics['cash'] < level['price']:
+            abort(422, "Not enough money")
+
+        existing_items = OrganizationLevel.find({
+            'level': item['level'],
+            'organization': item['organization'],
+        })
+        if existing_items:
+            abort(422, "You cannot buy two times a level")
+
         user = request_get_user(request)
         item['author'] = user['_id']
 
