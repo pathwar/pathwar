@@ -358,6 +358,20 @@ level_instance_users = {
             'type': 'string',
         },
     },
+    'views': {
+        'level-instance-users': {
+            'datasource': {
+                'source': 'raw-level-instance-users',
+                'projection': {
+                    '_schema_version': 0,
+                },
+            },
+            'auth_field': 'user',
+            'public_methods': [],
+            'allowed_write_roles': ['user'],
+            'allowed_item_write_roles': ['user'],
+        },
+    },
 }
 
 
