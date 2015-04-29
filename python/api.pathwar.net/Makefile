@@ -145,6 +145,14 @@ seed-db-node:	flush-db node-pathwar
 	$(DOCKER_COMPOSE) run --no-deps nodesdk npm run seed
 
 
+pathwar-cli: node-pathwar
+	$(DOCKER_COMPOSE) run --no-deps nodesdk /bin/bash -ec 'while read cmd; do ./bin/pathwar $$cmd; done'
+
+
+pathwar-cli-do: node-pathwar
+	$(DOCKER_COMPOSE) run --no-deps nodesdk /bin/bash -ec './bin/pathwar $(COMMAND)'
+
+
 seed-db-python:	flush-db
 	$(DOCKER_COMPOSE) run --no-deps api python pathwar_api/run.py seed-db
 

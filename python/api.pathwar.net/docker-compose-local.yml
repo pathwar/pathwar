@@ -31,3 +31,6 @@ nodesdk:
     service: nodesdk
   links:
   - api
+  environment:
+  - pathwar_api_endpoint=http://api:5000/
+  - pathwar_token=root-token
