@@ -488,7 +488,19 @@ class Organization(BaseModel):
 
 
 class OrganizationLevel(BaseModel):
-    resource = 'organization-levels'
+    resource = 'raw-organization-levels'
+
+    def on_pre_get(self, request, lookup):
+        if request.path.split('/')[1] == 'organization-levels':
+            user = request_get_user(request)
+            organization_users = [
+                organization_user['organization'] for organization_user in
+                OrganizationUser.get_by_user(user['_id'])
+            ]
+
+            lookup['organization'] = {
+                '$in': organization_users,
+            }
 
     def on_pre_post_item(self, request, item):
         user = request_get_user(request)
@@ -848,13 +860,16 @@ models = {
     'organization-items': OrganizationItem,
     'organization-level-hints': OrganizationLevelHint,
     'organization-level-validations': OrganizationLevelValidation,
-    'organization-levels': OrganizationLevel,
     'organization-statistics': OrganizationStatistics,
     'servers': Server,
     'sessions': Session,
     'user-hijack-proofs': UserHijackProof,
     'user-tokens': UserToken,
     'whoswho-attempts': WhoswhoAttempt,
+
+    # organization-levels
+    'raw-organization-levels': OrganizationLevel,
+    'organization-levels': OrganizationLevel,
 
     # level-instances
     'level-instances': LevelInstance,

@@ -839,12 +839,12 @@ organization_levels = {
     # collection
     'resource_methods': ['GET', 'POST', 'DELETE'],
     'public_methods': [],
-    'allowed_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_read_roles': ['user', 'admin'],
     'allowed_write_roles': ['user', 'admin'],
     # item
     'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
     'public_item_methods': [],
-    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_read_roles': ['user', 'admin'],
     'allowed_item_write_roles': ['user', 'admin'],
 
     # 'url': 'organizations/<organization>/levels',
@@ -893,7 +893,26 @@ organization_levels = {
         },
     },
     'views': {
-        'organization-levels': {},
+        'organization-levels': {
+            'datasource': {
+                'source': 'raw-organization-levels',
+                'projection': {
+                    '_schema_version': 0,
+                    'author': 0,
+                },
+            },
+            'public_methods': [],
+            'allowed_write_roles': ['user'],
+            'allowed_item_write_roles': ['user'],
+        },
+        'raw-organization-levels': {
+            'allowed_read_roles': ['admin'],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_read_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
+            'public_methods': [],
+            'public_item_methods': [],
+        },
     },
 }
 
