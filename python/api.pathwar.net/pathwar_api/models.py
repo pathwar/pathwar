@@ -11,6 +11,7 @@ from flask import abort, current_app, url_for
 
 from utils import request_get_user, generate_name
 from mail import mail, send_mail
+from resources import BASE_RESOURCES
 
 
 class BaseModel(object):
@@ -20,6 +21,14 @@ class BaseModel(object):
 
     def __init__(self):
         pass
+
+    @classmethod
+    def base_resource(cls):
+        return BASE_RESOURCES.get(cls.resource)
+
+    @classmethod
+    def base_views(cls):
+        return cls.base_resource()['views']
 
     @classmethod
     def search(cls, search):
@@ -151,7 +160,7 @@ class Activity(BaseModel):
 
 
 class OrganizationUser(BaseModel):
-    resource = 'raw-organization-users'
+    resource = 'organization-users'
 
     # FIXME: rebuild the cross-references field User.organizations
 
@@ -191,7 +200,7 @@ class Session(BaseModel):
 
 
 class User(BaseModel):
-    resource = 'raw-users'
+    resource = 'users'
     search_fields = ['_id', 'login', 'email']
 
     @classmethod
@@ -289,14 +298,14 @@ class UserHijackProof(BaseModel):
 
 
 class UserNotification(BaseModel):
-    resource = 'raw-user-notifications'
+    resource = 'user-notifications'
 
     def on_inserted(self, item):
         pass
 
 
 class UserOrganizationInvite(BaseModel):
-    resource = 'raw-user-organization-invites'
+    resource = 'user-organization-invites'
 
     def on_pre_get(self, request, lookup):
         if request.path.split('/')[1] == 'user-organization-invites':
@@ -412,7 +421,7 @@ class UserToken(BaseModel):
 
 
 class Organization(BaseModel):
-    resource = 'raw-organizations'
+    resource = 'organizations'
     search_fields = ['_id', 'name']
 
     @classmethod
@@ -488,7 +497,7 @@ class Organization(BaseModel):
 
 
 class OrganizationLevel(BaseModel):
-    resource = 'raw-organization-levels'
+    resource = 'organization-levels'
 
     def on_pre_get(self, request, lookup):
         if request.path.split('/')[1] == 'organization-levels':
@@ -664,7 +673,7 @@ class Item(BaseModel):
 
 
 class Level(BaseModel):
-    resource = 'raw-levels'
+    resource = 'levels'
 
     def on_inserted(self, item):
         LevelStatistics.post_internal({
@@ -688,7 +697,7 @@ class LevelHint(BaseModel):
 
 
 class LevelInstance(BaseModel):
-    resource = 'raw-level-instances'
+    resource = 'level-instances'
 
     def on_pre_post_item(self, request, item):
         if 'name' not in item:
@@ -749,7 +758,7 @@ class OrganizationAchievement(BaseModel):
 
 
 class OrganizationCoupon(BaseModel):
-    resource = 'raw-organization-coupons'
+    resource = 'organization-coupons'
 
     def on_pre_get(self, request, lookup):
         if request.path.split('/')[1] == 'organization-coupons':
@@ -847,64 +856,45 @@ class Server(BaseModel):
 
 
 # Resource name / class mapping
-models = {
-    'achievements': Achievement,
-    'activities': Activity,
-    'coupons': Coupon,
-    'infrastructure-hijacks': InfrastructureHijack,
-    'items': Item,
-    'level-hints': LevelHint,
-    'level-instance-users': LevelInstanceUser,
-    'level-statistics': LevelStatistics,
-    'organization-achievements': OrganizationAchievement,
-    'organization-items': OrganizationItem,
-    'organization-level-hints': OrganizationLevelHint,
-    'organization-level-validations': OrganizationLevelValidation,
-    'organization-statistics': OrganizationStatistics,
-    'servers': Server,
-    'sessions': Session,
-    'user-hijack-proofs': UserHijackProof,
-    'user-tokens': UserToken,
-    'whoswho-attempts': WhoswhoAttempt,
+base_models = [
+    Achievement,
+    Activity,
+    Coupon,
+    InfrastructureHijack,
+    Item,
+    Level,
+    Level,
+    LevelHint,
+    LevelInstance,
+    LevelInstance,
+    LevelInstanceUser,
+    LevelStatistics,
+    Organization,
+    OrganizationAchievement,
+    OrganizationCoupon,
+    OrganizationItem,
+    OrganizationLevel,
+    OrganizationLevelHint,
+    OrganizationLevelValidation,
+    OrganizationStatistics,
+    OrganizationUser,
+    Server,
+    Session,
+    User,
+    User,
+    User,
+    UserHijackProof,
+    UserNotification,
+    UserOrganizationInvite,
+    UserToken,
+    WhoswhoAttempt,
+]
 
-    # organization-levels
-    'raw-organization-levels': OrganizationLevel,
-    'organization-levels': OrganizationLevel,
-
-    # level-instances
-    'level-instances': LevelInstance,
-    'raw-level-instances': LevelInstance,
-
-    # organization-coupons
-    'raw-organization-coupons': OrganizationCoupon,
-    'organization-coupons': OrganizationCoupon,
-
-    # levels
-    'levels': Level,
-    'raw-levels': Level,
-
-    # organization-users
-    'organization-users': OrganizationUser,
-    'raw-organization-users': OrganizationUser,
-
-    # user-organization-invites
-    'raw-user-organization-invites': UserOrganizationInvite,
-    'user-organization-invites': UserOrganizationInvite,
-
-    # user-notifications
-    'user-notifications': UserNotification,
-    'raw-user-notifications': UserNotification,
-
-    # organizations
-    'raw-organizations': Organization,
-    'teams': Organization,
-    'organizations': Organization,
-
-    # users
-    'raw-users': User,
-    'users': User,
-    'accounts': User,
-}
+print(42)
+models = {}
+for entry in base_models:
+    for view_name, view in entry.base_views.items():
+        models[view_name] = view
 
 
 def resource_get_model(resource):

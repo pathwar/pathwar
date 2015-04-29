@@ -24,9 +24,6 @@ achievements = {
             'type': 'string',
         },
     },
-    'views': {
-        'achievements': {},
-    },
 }
 
 
@@ -72,9 +69,6 @@ coupons = {
             },
         },
     },
-    'views': {
-        'coupons': {},
-    },
 }
 
 
@@ -109,9 +103,6 @@ infrastructure_hijacks = {
             'type': 'string',
         },
     },
-    'views': {
-        'infrastructure-hijacks': {},
-    },
 }
 
 
@@ -143,9 +134,6 @@ items = {
         'quantity': {
             'type': 'integer',
         },
-    },
-    'views': {
-        'items': {},
     },
 }
 
@@ -185,9 +173,6 @@ level_hints = {
                 'embeddable': True,
             },
         },
-    },
-    'views': {
-        'level-hints': {},
     },
 }
 
@@ -302,14 +287,6 @@ level_instances = {
             'allowed_write_roles': [],
             'allowed_item_write_roles': [],
         },
-        'raw-level-instances': {
-            'allowed_read_roles': ['admin'],
-            'allowed_write_roles': ['admin'],
-            'allowed_item_read_roles': ['admin'],
-            'allowed_item_write_roles': ['admin'],
-            'public_methods': [],
-            'public_item_methods': [],
-        },
     },
 }
 
@@ -381,9 +358,6 @@ level_instance_users = {
             'type': 'string',
         },
     },
-    'views': {
-        'level-instance-users': {},
-    },
 }
 
 
@@ -418,9 +392,6 @@ level_statistics = {
         'fivestar_average': {'type': 'integer', 'default': 0},
         'duration_average': {'type': 'integer', 'default': 0},
         'amount_hints_bought': {'type': 'integer', 'default': 0},
-    },
-    'views': {
-        'level-statistics': {},
     },
 }
 
@@ -576,14 +547,6 @@ levels = {
                 },
             },
         },
-        'raw-levels': {
-            'allowed_read_roles': ['admin'],
-            'allowed_write_roles': ['admin'],
-            'allowed_item_read_roles': ['admin'],
-            'allowed_item_write_roles': ['admin'],
-            'public_methods': [],
-            'public_item_methods': [],
-        },
     },
 }
 
@@ -623,9 +586,6 @@ organization_achievements = {
                 'embeddable': True,
             },
         },
-    },
-    'views': {
-        'organization-achievements': {},
     },
 }
 
@@ -686,14 +646,6 @@ organization_coupons = {
             'public_methods': [],
             'allowed_write_roles': ['user'],
             'allowed_item_write_roles': ['user'],
-        },
-        'raw-organization-coupons': {
-            'allowed_read_roles': ['admin'],
-            'allowed_write_roles': ['admin'],
-            'allowed_item_read_roles': ['admin'],
-            'allowed_item_write_roles': ['admin'],
-            'public_methods': [],
-            'public_item_methods': [],
         },
     },
 }
@@ -769,9 +721,6 @@ organization_level_validations = {
             },
         },
     },
-    'views': {
-        'organization-level-validations': {},
-    },
 }
 
 
@@ -825,9 +774,6 @@ organization_level_hints = {
                 'embeddable': True,
             },
         },
-    },
-    'views': {
-        'organization-level-hints': {},
     },
 }
 
@@ -905,14 +851,6 @@ organization_levels = {
             'allowed_write_roles': ['user'],
             'allowed_item_write_roles': ['user'],
         },
-        'raw-organization-levels': {
-            'allowed_read_roles': ['admin'],
-            'allowed_write_roles': ['admin'],
-            'allowed_item_read_roles': ['admin'],
-            'allowed_item_write_roles': ['admin'],
-            'public_methods': [],
-            'public_item_methods': [],
-        },
     },
 }
 
@@ -954,7 +892,14 @@ organization_items = {
         },
     },
     'views': {
-        'organization-items': {},
+        'organization-items': {
+            'datasource': {
+                'source': 'raw-organization-items',
+                'projection': {
+                    '_schema_version': 0,
+                },
+            },
+        },
     },
 }
 
@@ -1011,14 +956,6 @@ organization_users = {
             'public_methods': [],
             'allowed_write_roles': ['user'],
             'allowed_item_write_roles': ['user'],
-        },
-        'raw-organization-users': {
-            'allowed_read_roles': ['admin'],
-            'allowed_write_roles': ['admin'],
-            'allowed_item_read_roles': ['admin'],
-            'allowed_item_write_roles': ['admin'],
-            'public_methods': [],
-            'public_item_methods': [],
         },
     },
 }
@@ -1150,14 +1087,6 @@ organizations = {
                 },
             },
         },
-        'raw-organizations': {
-            'allowed_read_roles': ['admin'],
-            'allowed_write_roles': ['admin'],
-            'allowed_item_read_roles': ['admin'],
-            'allowed_item_write_roles': ['admin'],
-            'public_methods': [],
-            'public_item_methods': [],
-        },
     },
 }
 
@@ -1214,9 +1143,6 @@ sessions = {
             'type': 'string',
         },
     },
-    'views': {
-        'sessions': {},
-    },
 }
 
 
@@ -1253,9 +1179,6 @@ servers = {
             'type': 'list',
             'default': ['linux', 'public'],
         },
-    },
-    'views': {
-        'servers': {},
     },
 }
 
@@ -1318,9 +1241,6 @@ activities = {
                 },
             },
         },
-    },
-    'views': {
-        'activities': {},
     },
 }
 
@@ -1392,9 +1312,6 @@ user_hijack_proofs = {
             },
         },
     },
-    'views': {
-        'user-hijack-proofs': {},
-    },
 }
 
 
@@ -1458,14 +1375,6 @@ user_organization_invites = {
             'public_methods': [],
             'allowed_write_roles': ['user'],
             'allowed_item_write_roles': ['user'],
-        },
-        'raw-user-organization-invites': {
-            'allowed_read_roles': ['admin'],
-            'allowed_write_roles': ['admin'],
-            'allowed_item_read_roles': ['admin'],
-            'allowed_item_write_roles': ['admin'],
-            'public_methods': [],
-            'public_item_methods': [],
         },
     },
 }
@@ -1543,14 +1452,6 @@ user_notifications = {
             'allowed_write_roles': [],
             'allowed_item_write_roles': ['user'],
         },
-        'raw-user-notifications': {
-            'allowed_read_roles': ['admin'],
-            'allowed_write_roles': ['admin'],
-            'allowed_item_read_roles': ['admin'],
-            'allowed_item_write_roles': ['admin'],
-            'public_methods': [],
-            'public_item_methods': [],
-        },
     },
 }
 
@@ -1617,9 +1518,6 @@ user_tokens = {
             'nullable': True,
         },
     },
-    'views': {
-        'user-tokens': {},
-    }
 }
 
 
@@ -1776,14 +1674,6 @@ users = {
             },
             'auth_field': 'myself',
         },
-        'raw-users': {
-            'allowed_read_roles': ['admin'],
-            'allowed_write_roles': ['admin'],
-            'allowed_item_read_roles': ['admin'],
-            'allowed_item_write_roles': ['admin'],
-            'public_methods': [],
-            'public_item_methods': [],
-        },
     },
 }
 
@@ -1855,52 +1745,84 @@ whoswho_attempts = {
             },
         },
     },
-    'views': {
-        'whoswho-attempts': {},
-    }
 }
 
 
 DOMAIN = {}
 
 
-BASE_RESOURCES = [
-    achievements,
-    activities,
-    coupons,
-    infrastructure_hijacks,
-    items,
-    level_hints,
-    level_instance_users,
-    level_instances,
-    level_statistics,
-    levels,
-    organization_achievements,
-    organization_coupons,
-    organization_items,
-    organization_level_hints,
-    organization_level_validations,
-    organization_levels,
-    organization_statistics,
-    organization_users,
-    organizations,
-    servers,
-    sessions,
-    user_hijack_proofs,
-    user_notifications,
-    user_organization_invites,
-    user_tokens,
-    users,
-    whoswho_attempts,
-]
+BASE_RESOURCES = {
+    'achievements': achievements,
+    'activities': activities,
+    'coupons': coupons,
+    'infrastructure-hijacks': infrastructure_hijacks,
+    'items': items,
+    'level-hints': level_hints,
+    'level-instance-users': level_instance_users,
+    'level-instances': level_instances,
+    'level-statistics': level_statistics,
+    'levels': levels,
+    'organization-achievements': organization_achievements,
+    'organization-coupons': organization_coupons,
+    'organization-items': organization_items,
+    'organization-level-hints': organization_level_hints,
+    'organization-level-validations': organization_level_validations,
+    'organization-levels': organization_levels,
+    'organization-statistics': organization_statistics,
+    'organization-users': organization_users,
+    'organizations': organizations,
+    'servers': servers,
+    'sessions': sessions,
+    'user-hijack-proofs': user_hijack_proofs,
+    'user-notifications': user_notifications,
+    'user-organization-invites': user_organization_invites,
+    'user-tokens': user_tokens,
+    'users': users,
+    'whoswho-attempts': whoswho_attempts,
+}
 
 
-for resource in BASE_RESOURCES:
+for resource_name, resource in BASE_RESOURCES.items():
+    print(resource_name)
+    if 'views' not in resource:
+        resource['views'] = {}
+
+    # Default raw view
+    raw_name = 'raw-{}'.format(resource_name)
+    if raw_name not in resource['views']:
+        resource['views'][raw_name] = {
+            'allowed_read_roles': ['admin'],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_read_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
+            'public_methods': [],
+            'public_item_methods': [],
+        }
+
+    # Default base view
+    if resource_name not in resource['views']:
+        resource['views'][resource_name] = {
+            'datasource': {
+                'source': raw_name,
+                'projection': {
+                    '_schema_version': 0,
+                },
+            },
+        },
+
+    current_app.logger.warn(resource)
+    import pprint
+    pprint.pprint(resource)
+
     for view_name in resource['views'].keys():
         view = resource.copy()
         view.update(resource['views'][view_name])
         del view['views']
         DOMAIN[view_name] = view
+
+
+print("TEST")
+sys.exit(1)
 
 
 # Use defaults
