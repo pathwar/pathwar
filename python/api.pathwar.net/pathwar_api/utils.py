@@ -30,6 +30,26 @@ def request_get_user(request):
     return None
 
 
+def is_restricted_word(input_):
+    input_ = input_.lower()
+
+    restricted_words = (
+        'admin',
+        'administrateur',
+        'administrator',
+        'admins',
+        'god',
+        'mod',
+        'mods',
+        'pathwar',
+        'root',
+    )
+    for word in restricted_words:
+        if word in input_:
+            return True
+    return False
+
+
 def generate_name():
     """ Python port of github.com/docker/docker names-generator.go
     """

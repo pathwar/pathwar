@@ -10,7 +10,7 @@ from eve.methods.post import post, post_internal
 from eve.methods.patch import patch_internal
 from flask import abort, current_app, url_for
 
-from utils import request_get_user, generate_name
+from utils import request_get_user, generate_name, is_restricted_word
 from mail import mail, send_mail
 from resources import BASE_RESOURCES
 
@@ -348,6 +348,10 @@ If you received this email by mistake, simply delete it. You won't be subscribed
     def on_pre_post_item(self, request, item):
         if 'password' not in item:
             abort(422, "Missing password")
+        if 'login' not in item:
+            abort(422, "Missing login")
+        if is_restricted_word(item['login']):
+            abort(422, "Invalid login")
 
     def on_pre_get(self, request, lookup):
         # Handle users/me
@@ -564,6 +568,11 @@ class Organization(BaseModel):
     def on_pre_post_item(self, request, item):
         myself = request_get_user(request)
         session = Session.resolve_input(item, 'session')
+
+        if 'name' not in item:
+            abort(422, "Missing name")
+        if is_restricted_word(item['name']):
+            abort(422, "Invalid name")
 
         # Forbid invitation of someone already in a team in this session
         if User.has_an_organization_for_session(
