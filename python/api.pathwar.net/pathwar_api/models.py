@@ -752,6 +752,8 @@ class LevelInstanceUser(BaseModel):
     resource = 'level-instance-users'
 
     def on_pre_post_item(self, request, item):
+        # FIXME: add expiry_date
+
         if 'level_instance' not in item:
             abort(422, "Missing level_instance")
         level_instance = LevelInstance.get_by_id(item['level_instance'])

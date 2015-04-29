@@ -359,6 +359,12 @@ level_instance_users = {
                 'embeddable': True,
             },
         },
+        'expiry_date': {
+            'type': 'datetime',
+            'default': None,  # For tokens without expiry date
+            'readonly': True,
+            'nullable': True,
+        },
         'hash': {
             'type': 'string',
         },
