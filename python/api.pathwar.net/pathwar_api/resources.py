@@ -1008,9 +1008,6 @@ organization_statistics = {
         'bronze_medals': {'type': 'integer', 'default': 0},
         'achievements': {'type': 'integer', 'default': 0},
     },
-    'views': {
-        'organization-statistics': {},
-    },
 }
 
 
