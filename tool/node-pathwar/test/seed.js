@@ -29,6 +29,7 @@ var inspect = function(name, obj) {
 
 suite("[seed]", function() {
   var client;
+  var current_user;
 
   setup(function() {
     var options = {
@@ -67,11 +68,27 @@ suite("[seed]", function() {
       client.post("/raw-user-tokens", {
         is_session: true
       }).then(function(res) {
-        inspect('res', res);
         try {
           (res.statusCode).should.equal(201);
           (res.body._status).should.equal('OK');
           (res.body._links.self.title).should.equal('user token');
+          done();
+        } catch (e) {
+          done(e);
+        }
+      }).catch(function(err) {
+        inspect('err', err);
+        done(err);
+      });
+    });
+
+    test("should get account information as user", function(done) {
+      client.get("/accounts").then(function(res) {
+        try {
+          (res.statusCode).should.equal(200);
+          (res.body._meta.total).should.equal(1);
+          (res.body._links.self.title).should.equal('accounts');
+          current_user = res.body._items[0]._id;
           done();
         } catch (e) {
           done(e);
@@ -390,6 +407,30 @@ suite("[seed]", function() {
         }, {
           name: 'buy-100-levels',
           description: 'You bought 100 levels'
+        }, {
+          name: 'validated-1-coupon',
+          description: 'Your team validated 1 coupon'
+        }, {
+          name: 'validated-5-coupons',
+          description: 'Your team validated 5 coupons'
+        }, {
+          name: 'validated-10-coupons',
+          description: 'Your team validated 10 coupons'
+        }, {
+          name: 'validated-50-coupons',
+          description: 'Your team validated 50 coupons'
+        }, {
+          name: 'validated-100-coupons',
+          description: 'Your team validated 100 coupons'
+        }, {
+          name: 'validated-500-coupons',
+          description: 'Your team validated 500 coupons'
+        }, {
+          name: 'validated-1000-coupons',
+          description: 'Your team validated 1000 coupons'
+        }, {
+          name: 'validated-5000-coupons',
+          description: 'Your team validated 5000 coupons'
         }];
         client.post("/raw-achievements", objects).then(function(res) {
           inspect('res', res);
@@ -764,7 +805,8 @@ suite("[seed]", function() {
           level_instance: refs['level-instances'][2],
           organization: refs['organizations'][0]
         }];
-        client.post("/level-instance-users", objects).then(function(res) {
+        // FIXME: use a real user and use the non-raw url
+        client.post("/raw-level-instance-users", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
