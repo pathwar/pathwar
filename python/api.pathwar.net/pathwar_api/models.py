@@ -513,8 +513,10 @@ class UserToken(BaseModel):
         item['token'] = str(uuid4())
         item['user'] = user['_id']
 
-        item['expiry_date'] = datetime.datetime.utcnow() + \
-                              datetime.timedelta(hours=12)
+        item['expiry_date'] = (
+            datetime.datetime.utcnow() +
+            datetime.timedelta(hours=12)
+        )
 
     def on_inserted(self, item):
         Activity.post_internal({
@@ -561,7 +563,6 @@ class Organization(BaseModel):
                 422,
                 'You cannot invite someone already in another organization'
             )
-
 
         # FIXME: add a security check to ensure owner is preset by
         #        an internal commands, else drop it
@@ -980,7 +981,6 @@ class OrganizationAchievement(BaseModel):
                     {'kind': 'achievements', 'id': item['achievement']},
                 ],
             })
-
 
 
 class OrganizationCoupon(BaseModel):

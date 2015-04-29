@@ -108,7 +108,10 @@ if len(SENTRY_URL):
         'disable_existing_loggers': False,
         'formatters': {
             'console': {
-                'format': '[%(asctime)s][%(levelname)s] %(name)s %(filename)s:%(funcName)s:%(lineno)d | %(message)s',
+                'format': (
+                    '[%(asctime)s][%(levelname)s] %(name)s ' +
+                    '%(filename)s:%(funcName)s:%(lineno)d | %(message)s'
+                ),
                 'datefmt': '%H:%M:%S',
             },
         },

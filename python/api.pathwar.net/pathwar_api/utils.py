@@ -31,7 +31,7 @@ def request_get_user(request):
 
 
 def generate_name():
-    """ Python port of https://github.com/docker/docker/blob/master/pkg/namesgenerator/names-generator.go.
+    """ Python port of github.com/docker/docker names-generator.go
     """
     left = [
         "admiring",
