@@ -48,6 +48,7 @@ class MockBasicAuth(BasicAuth):
                 # FIXME: Re-enable later
                 if not user['active']:
                     user = None
+                    abort(401, 'You need to validate your email address first')
 
         if user:
             # app.logger.debug(
