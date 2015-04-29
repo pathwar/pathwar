@@ -1218,6 +1218,10 @@ activities = {
             'type': 'string',
             'default': 'general',
         },
+        'public': {
+            'type': 'boolean',
+            'default': False,
+        },
         'organization': {
             'type': 'uuid',
             'required': False,
@@ -1240,6 +1244,38 @@ activities = {
                     },
                 },
             },
+        },
+    },
+    'views': {
+        'activities': {
+            'datasource': {
+                'source': 'raw-activities',
+                'projection': {
+                    '_schema_version': 0,
+                    'user': 0,
+                    'organization': 0,
+                    'public': 0,
+                },
+                'filter': {
+                    'public': True,
+                },
+            },
+            'public_methods': [],
+            'allowed_read_roles': ['user', 'moderator', 'admin'],
+            'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+            'allowed_write_roles': [],
+            'allowed_item_write_roles': [],
+        },
+        'user-activities': {
+            'datasource': {
+                'source': 'raw-activities',
+                'projection': {
+                    '_schema_version': 0,
+                },
+            },
+            'public_methods': [],
+            'allowed_write_roles': [],
+            'allowed_item_write_roles': [],
         },
     },
 }
@@ -1655,6 +1691,7 @@ users = {
                     # 'role': {'$in': ['user', 'moderator']},
                     'active': True,
                     # 'visibility': 'public',
+                    'role': {'$nin': ['level-server']},
                 },
             },
             'public_methods': [],
@@ -1840,3 +1877,7 @@ for resource_name, resource in BASE_RESOURCES.items():
         view.update(resource['views'][view_name])
         # del view['views']
         DOMAIN[view_name] = view
+
+    if 'activities' in resource_name:
+        import pprint
+        pprint.pprint(DOMAIN[resource_name])

@@ -162,6 +162,22 @@ class Achievement(BaseModel):
 class Activity(BaseModel):
     resource = 'activities'
 
+    def on_pre_get(self, request, lookup):
+        if request.path.split('/')[1] == 'user-activities':
+            user = request_get_user(request)
+            organization_users = [
+                organization_user['organization'] for organization_user in
+                OrganizationUser.get_by_user(user['_id'])
+            ]
+
+            lookup['$or'] = [{
+                'organization': {
+                    '$in': organization_users,
+                },
+            }, {
+                'user': user['_id'],
+            }]
+
 
 class OrganizationUser(BaseModel):
     resource = 'organization-users'
@@ -246,8 +262,9 @@ class User(BaseModel):
             'user': item['_id'],
             'action': 'users-create',
             'category': 'accounts',
+            'public': False,  # Pass to True when public
             'linked_resources': [
-                {'kind': 'users', 'id': item['_id']}
+                {'kind': 'users', 'id': item['_id']},
             ],
         })
         UserNotification.post_internal({
@@ -256,7 +273,7 @@ class User(BaseModel):
             'action': 'users-create',
             'category': 'accounts',
             'linked_resources': [
-                {'kind': 'users', 'id': item['_id']}
+                {'kind': 'users', 'id': item['_id']},
             ],
         })
 
@@ -417,6 +434,7 @@ class UserToken(BaseModel):
             'user': item['user'],
             'action': 'user-tokens-create',
             'category': 'accounts',
+            'public': False,
             'linked_resources': [
                 {'kind': 'users', 'id': item['user']},
                 {'kind': 'user-tokens', 'id': item['_id']}
@@ -472,6 +490,7 @@ class Organization(BaseModel):
             'organization': item['_id'],
             'action': 'organizations-create',
             'category': 'organizations',
+            'public': True,
             'linked_resources': [
                 {'kind': 'organizations', 'id': item['_id']}
             ],
@@ -552,10 +571,10 @@ class OrganizationLevel(BaseModel):
             'organization': item['organization'],
             'action': 'organization-levels-create',
             'category': 'levels',
+            'public': True,
             'linked_resources': [
                 {'kind': 'organizations', 'id': item['organization']},
                 {'kind': 'levels', 'id': item['level']},
-                {'kind': 'organization-levels', 'id': item['_id']},
             ],
         })
 
