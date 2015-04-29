@@ -243,6 +243,19 @@ class User(BaseModel):
     search_fields = ['_id', 'login', 'email']
 
     @classmethod
+    def has_an_organization_for_session(cls, user, session):
+        user_organizations = OrganizationUser.find({
+            'user': user,
+        })
+        for user_organization in user_organizations:
+            organization = Organization.get_by_id(
+                user_organization['organization']
+            )
+            if organization['session'] == session:
+                return True
+        return False
+
+    @classmethod
     def get_by_organization_id(cls, organization_id):
         users_uuid = [
             str(member['user']) for member in OrganizationUser.find({
@@ -351,6 +364,7 @@ class UserOrganizationInvite(BaseModel):
         if request.path.split('/')[1] == 'user-organization-invites':
             user = request_get_user(request)
 
+            # lookup['status'] = 'pending'
             lookup['$or'] = [
                 {'author': user['_id']},
                 {'user': user['_id']},
@@ -382,6 +396,13 @@ class UserOrganizationInvite(BaseModel):
             abort(422, 'You cannot invite someone twice')
 
         # Forbid invitation of someone already in a team in this session
+        if User.has_an_organization_for_session(
+            item['user'], organization['session']
+        ):
+            abort(
+                422,
+                'You cannot invite someone already in another organization'
+            )
 
         # Forbid invitation in world session
         if organization['session'] == Session.world_session()['_id']:
@@ -405,12 +426,28 @@ class UserOrganizationInvite(BaseModel):
         })
 
     def on_pre_patch_item(self, request, item):
-        # FIXME: check if invite is for current user
         # FIXME: check if user is still solvable for accepting invite
-        # FIXME: check if status was pending
-        # FIXME: check for duplicate invites
-        payload = request.get_json()
-        # current_app.logger.warn(['pre_patch.payload', request.get_json()])
+        current = UserOrganizationInvite.get_by_id(
+            request.path.split('/')[2]
+        )
+        user = request_get_user(request)
+        if not current:
+            abort(422, "No such user-organization-invite")
+
+        if current['status'] != 'pending':
+            abort(422, "Invitation expired")
+
+        if current['user'] == user['_id']:
+            abort(422, "This invitation was not for you")
+
+        if item['status'] == 'accepted':
+            organization = Organization.get_by_id([
+                current['organization']
+            ])
+            if User.has_an_organization_for_session(
+                user['_id'], organization['session']
+            ):
+                abort(422, "You already have an organization")
 
     def on_updated(self, item, payload):
         if payload['status'] != item['status']:
@@ -513,11 +550,24 @@ class Organization(BaseModel):
         })
 
     def on_pre_post_item(self, request, item):
+        myself = request_get_user(request)
+        organization = Organization.resolve_input(item, 'organization')
+
+        # Forbid invitation of someone already in a team in this session
+        if User.has_an_organization_for_session(
+                myself['_id'], organization['session']
+        ):
+            abort(
+                422,
+                'You cannot invite someone already in another organization'
+            )
+
+
         # FIXME: add a security check to ensure owner is preset by
         #        an internal commands, else drop it
 
         if 'owner' not in item:
-            item['owner'] = request_get_user(request)['_id']
+            item['owner'] = myself['_id']
 
     def on_insert(self, item):
         super(Organization, self).on_insert(item)
