@@ -604,6 +604,18 @@ class OrganizationLevel(BaseModel):
 class OrganizationLevelValidation(BaseModel):
     resource = 'organization-level-validations'
 
+    def on_pre_get(self, request, lookup):
+        if request.path.split('/')[1] == 'organization-level-validations':
+            user = request_get_user(request)
+            organization_users = [
+                organization_user['organization'] for organization_user in
+                OrganizationUser.get_by_user(user['_id'])
+            ]
+
+            lookup['organization'] = {
+                '$in': organization_users,
+            }
+
     def on_pre_post_item(self, request, item):
         # Checking for mandatory fields
         if 'organization_level' not in item:

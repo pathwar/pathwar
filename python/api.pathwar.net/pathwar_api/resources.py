@@ -721,6 +721,20 @@ organization_level_validations = {
             },
         },
     },
+    'views': {
+        'organization-level-validations': {
+            'datasource': {
+                'source': 'raw-organization-level-validations',
+                'projection': {
+                    '_schema_version': 0,
+                    'passphrases': 0,
+                },
+            },
+            'public_methods': [],
+            'allowed_write_roles': ['user', 'admin'],
+            'allowed_item_write_roles': ['admin'],
+        },
+    },
 }
 
 
@@ -1879,7 +1893,3 @@ for resource_name, resource in BASE_RESOURCES.items():
         view.update(resource['views'][view_name])
         # del view['views']
         DOMAIN[view_name] = view
-
-    if 'activities' in resource_name:
-        import pprint
-        pprint.pprint(DOMAIN[resource_name])
