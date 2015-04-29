@@ -1,9 +1,10 @@
 from uuid import UUID
 import json
-
+import os
 import bcrypt
 import logging.config
 import logging
+
 from eve import Eve
 from eve.auth import BasicAuth, TokenAuth
 from eve.io.base import BaseJSONEncoder
@@ -13,7 +14,7 @@ from raven.handlers.logging import SentryHandler
 from raven.conf import setup_logging
 
 
-SENTRY_URL = os.environ['SENTRY_URL']
+SENTRY_URL = os.environ.get('SENTRY_URL', '')
 
 
 class MockBasicAuth(BasicAuth):
