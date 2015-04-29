@@ -563,11 +563,11 @@ class Organization(BaseModel):
 
     def on_pre_post_item(self, request, item):
         myself = request_get_user(request)
-        organization = Organization.resolve_input(item, 'organization')
+        session = Session.resolve_input(item, 'session')
 
         # Forbid invitation of someone already in a team in this session
         if User.has_an_organization_for_session(
-                myself['_id'], organization['session']
+                myself['_id'], session['_id']
         ):
             abort(
                 422,
