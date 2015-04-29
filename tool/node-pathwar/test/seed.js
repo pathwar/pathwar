@@ -64,7 +64,7 @@ suite("[seed]", function() {
     });
 
     test("should create a user-tokens(is_session=true) as user", function(done) {
-      client.post("/user-tokens", {
+      client.post("/raw-user-tokens", {
         is_session: true
       }).then(function(res) {
         inspect('res', res);
@@ -102,7 +102,7 @@ suite("[seed]", function() {
           name: 'Epitech2015',
           public: false
         }];
-        client.post("/sessions", objects).then(function(res) {
+        client.post("/raw-sessions", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
@@ -128,7 +128,7 @@ suite("[seed]", function() {
         });
       });
 
-      test("should create some users as admin+user (strange)", function(done) {
+      test("should create some users as admin", function(done) {
         this.timeout(5000);
         var objects = [{
           login: 'joe',
@@ -176,7 +176,7 @@ suite("[seed]", function() {
           password: 'super-secure',
           groups: ['staff']
         }];
-        client.post("/accounts", objects).then(function(res) {
+        client.post("/raw-users", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
@@ -234,7 +234,7 @@ suite("[seed]", function() {
             session: refs.sessions[0]
           });
         }
-        client.post("/coupons", objects).then(function(res) {
+        client.post("/raw-coupons", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
@@ -274,7 +274,7 @@ suite("[seed]", function() {
           token: '0987654321',
           tags: ['docker', 'x86_64', 'dedibox']
         }];
-        client.post("/servers", objects).then(function(res) {
+        client.post("/raw-servers", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
@@ -309,7 +309,7 @@ suite("[seed]", function() {
           session: refs.sessions[1],
           owner: refs.users[0]
         }];
-        client.post("/organizations", objects).then(function(res) {
+        client.post("/raw-organizations", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
@@ -391,7 +391,7 @@ suite("[seed]", function() {
           name: 'buy-100-levels',
           description: 'You bought 100 levels'
         }];
-        client.post("/achievements", objects).then(function(res) {
+        client.post("/raw-achievements", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
@@ -513,7 +513,7 @@ suite("[seed]", function() {
             }
           });
         }
-        client.post("/levels", objects).then(function(res) {
+        client.post("/raw-levels", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
@@ -551,7 +551,7 @@ suite("[seed]", function() {
           price: 500,
           quantity: 1
         }];
-        client.post("/items", objects).then(function(res) {
+        client.post("/raw-items", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
@@ -591,7 +591,7 @@ suite("[seed]", function() {
           name: 'level sources',
           price: 42
         }];
-        client.post("/level-hints", objects).then(function(res) {
+        client.post("/raw-level-hints", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
@@ -691,7 +691,8 @@ suite("[seed]", function() {
           organization: refs.organizations[1],
           level: refs.levels[0]
         }];
-        client.post("/organization-levels", objects).then(function(res) {
+        // FIXME: should use non-raw resource
+        client.post("/raw-organization-levels", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
@@ -728,7 +729,7 @@ suite("[seed]", function() {
           organization: refs.organizations[1],
           achievement: refs.achievements[0]
         }];
-        client.post("/organization-achievements", objects).then(function(res) {
+        client.post("/raw-organization-achievements", objects).then(function(res) {
           inspect('res', res);
           try {
             (res.statusCode).should.equal(201);
