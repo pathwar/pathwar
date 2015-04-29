@@ -2,11 +2,18 @@ from uuid import UUID
 import json
 
 import bcrypt
+import logging.config
+import logging
 from eve import Eve
 from eve.auth import BasicAuth, TokenAuth
 from eve.io.base import BaseJSONEncoder
 from eve.io.mongo import Validator
 from flask import abort, url_for
+from raven.handlers.logging import SentryHandler
+from raven.conf import setup_logging
+
+
+SENTRY_URL = os.environ['SENTRY_URL']
 
 
 class MockBasicAuth(BasicAuth):
@@ -92,3 +99,43 @@ app = Eve(
     json_encoder=UUIDEncoder,
     validator=UUIDValidator,
 )
+
+if len(SENTRY_URL):
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'console': {
+                'format': '[%(asctime)s][%(levelname)s] %(name)s %(filename)s:%(funcName)s:%(lineno)d | %(message)s',
+                'datefmt': '%H:%M:%S',
+            },
+        },
+
+        'handlers': {
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+                'formatter': 'console'
+            },
+            'sentry': {
+                'level': 'INFO',
+                'class': 'raven.handlers.logging.SentryHandler',
+                'dsn': SENTRY_URL,
+                'site': 'api',
+            },
+        },
+
+        'loggers': {
+            '': {
+                'handlers': ['console', 'sentry'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+            'api': {
+                'handlers': ['console', 'sentry'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+        }
+    }
+    logging.config.dictConfig(LOGGING)

@@ -3,3 +3,4 @@ flask-mail >=0.9
 requests >=2.5
 eve >=0.5.3
 eve-docs >=0.1
+raven
