@@ -46,7 +46,7 @@ pull:	$(REPOS)
 build:	api_build blueprint_build
 
 
-release:	gh-pages
+release: gh-pages
 
 
 up:	api_up portal_up
@@ -88,7 +88,7 @@ blueprint_clean:
 .PHONY:	gh-pages gh-pages_do gh-pages_teardown
 
 
-gh-pages:
+gh-pages: spec.json
 	$(MAKE) gh-pages_do || $(MAKE) gh-pages_teardown
 
 
