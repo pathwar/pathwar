@@ -679,9 +679,18 @@ class OrganizationLevelValidation(BaseModel):
         current_app.logger.info('level: {}'.format(available_passphrases))
 
     def on_inserted(self, item):
-        # FIXME: compute all the validations and update the OrganizationLevel
+        # FIXME: compute all the validations and check if _all_ passphrases
+        #        are valid
         # FIXME: flag level instance as pwned -> redump if needed
-        pass
+
+        current_app.logger.warn(['#' * 80, item])
+
+        OrganizationLevel.update_by_id(item['organization_level'], {
+            '$set': {
+                'status': 'pending validation',
+                'has_access': False,
+            },
+        })
 
 
 class OrganizationLevelHint(BaseModel):

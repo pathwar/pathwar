@@ -205,6 +205,11 @@ level_instances = {
                 'embeddable': True,
             },
         },
+        'pwn_status': {
+            'type': 'string',
+            'allowed': ['unknown', 'pwned'],
+            'default': 'unknown',
+        },
         'active': {
             'type': 'boolean',
             'default': True,
