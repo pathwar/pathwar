@@ -1431,6 +1431,8 @@ user_notifications = {
     'allowed_item_read_roles': ['user', 'moderator', 'admin'],
     'allowed_item_write_roles': ['user', 'admin'],
 
+    'cache_control': 'private, no-cache, no-store, must-revalidate',
+
     # 'url': 'users/<user>/notifications',
     'schema': {
         'read': {
