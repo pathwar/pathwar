@@ -17,6 +17,12 @@ run_script() {
     fi
 }
 
+# Fix permissions
+fix_permissions() {
+    echo '[+] Fixing permissions'
+    chmod 700 /pathwar
+}
+
 # Passphrase helpers
 get_passphrase() {
     key="${1}"

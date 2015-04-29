@@ -6,4 +6,5 @@ set -e
 
 run_script generate_passphrases
 run_script patch_level
+run_script fix_permissions
 run_script run
