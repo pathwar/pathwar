@@ -328,7 +328,17 @@ class User(BaseModel):
                 email_verification_token=item['email_verification_token'],
                 _external=True,
             )
-            message = 'Verification link: {}'.format(verification_url)
+            message = """
+            You're almost done. Please, confirm your registration to Pathwar by clicking the link below.
+
+    {}
+
+Thanks,
+Pathwar Team
+
+If you received this email by mistake, simply delete it. You won't be subscribed if you don't click the confirmation link above.
+""".format(verification_url)
+
             send_mail(
                 message=message,
                 subject='Email verification',
