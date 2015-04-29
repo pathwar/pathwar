@@ -32,34 +32,41 @@ class BaseModel(object):
         return cls.base_resource()['views']
 
     @classmethod
-    def search(cls, search):
-        return [
-            item['_id'] for item in
-            cls.find({
-                '$or': [
-                    {field: search} for field in cls.search_fields
-                ]}, {
-                    "_id": 1,
-                })
-        ]
+    def search(cls, search, full_object=False):
+        query = {
+            '$or': [
+                {field: search} for field in cls.search_fields
+            ]
+        }
+
+        if full_object:
+            return cls.find(query)
+        else:
+            return [
+                item['_id'] for item in
+                cls.find(query, {'_id': 1})
+            ]
 
     @classmethod
-    def resolve_input(cls, input_, field):
+    def resolve_input(cls, input_, field, optional=False):
         search = input_.get(field)
 
-        if not search:  # nothing to search, we continue
-            return False
+        if not search:
+            if optional:
+                return False
+            else:
+                abort(422, "Missing {}".format(cls.resource))
 
-        items = cls.search(search)
-
-        if len(items) == 1:  # 1 matching item
-            input_[field] = items[0]
-
+        items = cls.search(search, full_object=True)
         if len(items) == 0:  # 0 matching item
             abort(422, "No such item '{}'".format(search))
 
-        if len(items) > 1:  # multiple matching items
+        elif len(items) > 1:  # multiple matching items
             abort(422, "Too much candidates for item '{}'".format(search))
+
+        else:  # len == 1
+            input_[field] = items[0]['_id']
+            return items[0]
 
     @classmethod
     def mongo_resource(cls):
@@ -350,10 +357,40 @@ class UserOrganizationInvite(BaseModel):
             ]
 
     def on_pre_post_item(self, request, item):
-        User.resolve_input(item, 'user')
-        Organization.resolve_input(item, 'organization')
+        # Prepare input
+        invited_user = User.resolve_input(item, 'user')
+        organization = Organization.resolve_input(item, 'organization')
+
+        # Author field
         user = request_get_user(request)
         item['author'] = user['_id']
+
+        # Forbid invite if non-owner
+        if organization['owner'] != user['_id']:
+            abort(422, "You are not owner of the organization")
+
+        # Forbid self-invitation
+        if user['_id'] == item['user']:
+            abort(422, "You cannot invite yourself")
+
+        # Forbid duplicates invitations
+        existing_items = UserOrganizationInvite.find({
+            'user': item['user'],
+            'organization': item['organization'],
+        })
+        if len(existing_items):
+            abort(422, 'You cannot invite someone twice')
+
+        # Forbid invitation of someone already in a team in this session
+
+        # Forbid invitation in world session
+        if organization['session'] == Session.world_session()['_id']:
+            abort(422, 'You cannot invite someone else in your account')
+
+        # DEBUG
+        # current_app.logger.warn(organization)
+        # current_app.logger.warn(user)
+        # current_app.logger.warn(['item', item])
 
     def on_inserted(self, item):
         UserNotification.post_internal({
@@ -731,6 +768,8 @@ class OrganizationLevelValidation(BaseModel):
                 'has_access': False,
             },
         })
+
+        # FIXME: remove access to organization for this level
 
         members = User.get_by_organization_id(item['organization'])
         for user in members:
