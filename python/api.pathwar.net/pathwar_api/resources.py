@@ -1536,9 +1536,9 @@ users = {
     'allowed_item_write_roles': ['user', 'moderator', 'admin'],
 
     'schema': {
-        #'myself': {
-        #    'type': 'uuid',
-        #},
+        'myself': {
+            'type': 'uuid',
+        },
         'login': {
             'type': 'string',
             'unique': True,
@@ -1658,8 +1658,8 @@ users = {
                 },
             },
             'public_methods': [],
-            'allowed_write_roles': ['admin'],
-            'allowed_item_write_roles': ['admin'],
+            'allowed_read_roles': ['user', 'admin'],
+            'allowed_item_read_roles': ['user', 'admin'],
         },
         'accounts': {
             'datasource': {
@@ -1673,6 +1673,10 @@ users = {
                 }
             },
             'auth_field': 'myself',
+            'allowed_read_roles': ['user', 'admin'],
+            'allowed_item_read_roles': ['user', 'admin'],
+            'allowed_write_roles': ['user', 'admin'],
+            'allowed_item_write_roles': ['user', 'admin'],
         },
     },
 }
@@ -1783,7 +1787,6 @@ BASE_RESOURCES = {
 
 
 for resource_name, resource in BASE_RESOURCES.items():
-    print(resource_name)
     if 'views' not in resource:
         resource['views'] = {}
 
@@ -1808,41 +1811,32 @@ for resource_name, resource in BASE_RESOURCES.items():
                     '_schema_version': 0,
                 },
             },
-        },
+        }
 
-    current_app.logger.warn(resource)
-    import pprint
-    pprint.pprint(resource)
+    # Update resource
+    resource['schema']['_id'] = {'type': 'uuid'}
+    resource['schema']['_schema_version'] = {'type': 'integer'}
+    uuid_regex = '[a-f0-9]{8}-?' \
+                 '[a-f0-9]{4}-?' \
+                 '4[a-f0-9]{3}-?' \
+                 '[89ab][a-f0-9]{3}-?' \
+                 '[a-f0-9]{12}'
+    defaults = {
+        'item_url': 'regex("{}")'.format(uuid_regex),
+        'public_methods': [],
+        'public_item_methods': [],
+        'allowed_item_read_roles': ['admin'],
+        'allowed_item_write_roles': ['admin'],
+        'allowed_read_roles': ['admin'],
+        'allowed_write_roles': ['admin'],
+    }
+    for key, value in defaults.items():
+        if key not in resource:
+            resource[key] = value
 
+    # Register each views
     for view_name in resource['views'].keys():
         view = resource.copy()
         view.update(resource['views'][view_name])
-        del view['views']
+        # del view['views']
         DOMAIN[view_name] = view
-
-
-print("TEST")
-sys.exit(1)
-
-
-# Use defaults
-uuid_regex = '[a-f0-9]{8}-?' \
-             '[a-f0-9]{4}-?' \
-             '4[a-f0-9]{3}-?' \
-             '[89ab][a-f0-9]{3}-?' \
-             '[a-f0-9]{12}'
-
-
-defaults = {
-    'item_url': 'regex("{}")'.format(uuid_regex),
-    'public_methods': [],
-    'public_item_methods': [],
-}
-
-
-for resource_name, resource_obj in DOMAIN.items():
-    DOMAIN[resource_name]['schema']['_id'] = {'type': 'uuid'}
-    DOMAIN[resource_name]['schema']['_schema_version'] = {'type': 'integer'}
-    for key, value in defaults.items():
-        if key not in resource_obj:
-            DOMAIN[resource_name][key] = value

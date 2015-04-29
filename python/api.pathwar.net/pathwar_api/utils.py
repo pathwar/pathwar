@@ -17,7 +17,7 @@ def request_get_user(request):
             user_token = current_app \
                 .data \
                 .driver \
-                .db['user-tokens'] \
+                .db['raw-user-tokens'] \
                 .find_one({
                     'token': auth.get('username')
                 })

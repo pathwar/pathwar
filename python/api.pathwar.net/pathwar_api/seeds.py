@@ -54,7 +54,7 @@ def db_reset(app):
         '_id': str(uuid4()),
         'active': True,
     })
-    app.data.driver.db['user-tokens'].insert({
+    app.data.driver.db['raw-user-tokens'].insert({
         'user': root_id,
         'token': 'root-token',
         '_id': str(uuid4()),

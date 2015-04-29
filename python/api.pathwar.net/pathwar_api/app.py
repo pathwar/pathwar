@@ -38,7 +38,7 @@ class MockBasicAuth(BasicAuth):
             else:
                 user = None
         else:  # Token-based
-            user_token = app.data.driver.db['user-tokens'] \
+            user_token = app.data.driver.db['raw-user-tokens'] \
                                         .find_one({'token': username})
             if user_token:
                 user = app.data.driver.db['raw-users'] \

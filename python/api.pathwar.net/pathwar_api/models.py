@@ -61,31 +61,35 @@ class BaseModel(object):
             abort(422, "Too much candidates for item '{}'".format(search))
 
     @classmethod
+    def mongo_resource(cls):
+        return 'raw-{}'.format(cls.resource)
+
+    @classmethod
     def post_internal(cls, payload):
-        return post_internal(cls.resource, payload)
+        return post_internal(cls.mongo_resource(), payload)
 
     @classmethod
     def get_by_id(cls, uuid):
-        return current_app.data.driver.db[cls.resource].find_one(
+        return current_app.data.driver.db[cls.mongo_resource()].find_one(
             {'_id': uuid}
         )
 
     @classmethod
     def update_by_id(cls, uuid, data):
-        return current_app.data.driver.db[cls.resource].update(
+        return current_app.data.driver.db[cls.mongo_resource()].update(
             {'_id': uuid},
             data
         )
 
     @classmethod
     def find(cls, lookup, projection=None):
-        return list(current_app.data.driver.db[cls.resource].find(
+        return list(current_app.data.driver.db[cls.mongo_resource()].find(
             lookup, projection
         ))
 
     @classmethod
     def find_one(cls, lookup, projection=None):
-        return current_app.data.driver.db[cls.resource].find_one(
+        return current_app.data.driver.db[cls.mongo_resource()].find_one(
             lookup, projection
         )
 
@@ -890,11 +894,11 @@ base_models = [
     WhoswhoAttempt,
 ]
 
-print(42)
+
 models = {}
 for entry in base_models:
-    for view_name, view in entry.base_views.items():
-        models[view_name] = view
+    for view_name, view in entry.base_views().items():
+        models[view_name] = entry
 
 
 def resource_get_model(resource):
