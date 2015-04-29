@@ -160,10 +160,15 @@ class Achievement(BaseModel):
                     'Unknown achievement {}'.format(achievement_name)
                 )
                 continue
-            OrganizationAchievement.post_internal({
+            # FIXME: optimize
+            if not OrganizationAchievement.find({
                 'organization': organization,
                 'achievement': achievement['_id'],
-            })
+            }):
+                OrganizationAchievement.post_internal({
+                    'organization': organization,
+                    'achievement': achievement['_id'],
+                })
 
 
 class Activity(BaseModel):
@@ -827,6 +832,17 @@ class OrganizationAchievement(BaseModel):
     resource = 'organization-achievements'
 
     def on_inserted(self, item):
+        Activity.post_internal({
+            'organization': item['organization'],
+            'action': 'organization-achievement-create',
+            'category': 'achievements',
+            'public': True,
+            'linked_resources': [
+                {'kind': 'organizations', 'id': item['organization']},
+                {'kind': 'achievements', 'id': item['achievement']},
+            ],
+        })
+
         members = User.get_by_organization_id(item['organization'])
         for user in members:
             UserNotification.post_internal({
