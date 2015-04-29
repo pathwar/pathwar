@@ -150,13 +150,20 @@ class Achievement(BaseModel):
 
     @classmethod
     def unlock(cls, organization, achievements):
-        for achievement in achievements:
-            cls.post_internal({
-                'organization': organization,
-                'name': achievement
+        for achievement_name in achievements:
+            achievement = Achievement.find_one({
+                'name': achievement_name
             })
-
-    # FIXME: fail on existing couple organization.uuid/achievement.name
+            current_app.logger.warn([organization, achievement, achievement_name])
+            if not achievement:
+                current_app.logger.error(
+                    'Unknown achievement {}'.format(achievement_name)
+                )
+                continue
+            OrganizationAchievement.post_internal({
+                'organization': organization,
+                'achievement': achievement['_id'],
+            })
 
 
 class Activity(BaseModel):
@@ -345,7 +352,7 @@ class UserOrganizationInvite(BaseModel):
 
     def on_inserted(self, item):
         UserNotification.post_internal({
-            'title': 'You are invited to join a team',
+            'title': 'New team invitation',
             'user': item['user'],
             'action': 'user-organization-invite-create',
             'category': 'organizations',
@@ -370,7 +377,7 @@ class UserOrganizationInvite(BaseModel):
                 members = User.get_by_organization_id(item['organization'])
                 for user in members:
                     UserNotification.post_internal({
-                        'title': 'A new member joined your team',
+                        'title': 'New team member',
                         'user': user['_id'],
                         'action': 'user-organization-invite-accepted',
                         'category': 'organizations',
@@ -495,15 +502,15 @@ class Organization(BaseModel):
                 {'kind': 'organizations', 'id': item['_id']}
             ],
         })
-        UserNotification.post_internal({
-            'title': 'You just created a new organization !',
-            'user': item['owner'],
-            'action': 'organizations-create',
-            'category': 'organizations',
-            'linked_resources': [
-                {'kind': 'organizations', 'id': item['_id']}
-            ],
-        })
+        # UserNotification.post_internal({
+        #     'title': 'You just created a new organization !',
+        #     'user': item['owner'],
+        #     'action': 'organizations-create',
+        #     'category': 'organizations',
+        #     'linked_resources': [
+        #         {'kind': 'organizations', 'id': item['_id']}
+        #     ],
+        # })
 
     def on_pre_get(self, request, lookup):
         if request.path.split('/')[1] == 'teams':
@@ -553,7 +560,7 @@ class OrganizationLevel(BaseModel):
             if user['_id'] == item['author']:
                 continue
             UserNotification.post_internal({
-                'title': 'Your team bought a new level',
+                'title': 'New level bought',
                 'user': user['_id'],
                 'action': 'organization-level-create',
                 'category': 'levels',
@@ -818,6 +825,24 @@ class OrganizationItem(BaseModel):
 
 class OrganizationAchievement(BaseModel):
     resource = 'organization-achievements'
+
+    def on_inserted(self, item):
+        members = User.get_by_organization_id(item['organization'])
+        for user in members:
+            UserNotification.post_internal({
+                'title': 'Achievement unlocked',
+                'user': user['_id'],
+                'action': 'organization-achievement-create',
+                'category': 'achievements',
+                'linked_resources': [
+                    {
+                        'kind': 'organizations',
+                        'id': item['organization'],
+                    },
+                    {'kind': 'achievements', 'id': item['achievement']},
+                ],
+            })
+
 
 
 class OrganizationCoupon(BaseModel):

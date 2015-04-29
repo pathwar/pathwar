@@ -364,6 +364,7 @@ level_instance_users = {
             'default': None,  # For tokens without expiry date
             'readonly': True,
             'nullable': True,
+            'required': False,
         },
         'hash': {
             'type': 'string',
@@ -380,7 +381,7 @@ level_instance_users = {
             'auth_field': 'user',
             'public_methods': [],
             'allowed_write_roles': ['user'],
-            'allowed_item_write_roles': ['user'],
+            'allowed_item_write_roles': [],
         },
     },
 }
