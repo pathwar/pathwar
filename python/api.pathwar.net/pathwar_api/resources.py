@@ -1054,7 +1054,10 @@ organizations = {
     'schema': {
         'name': {
             'type': 'string',
+            'required': True,
             'unique': True,
+            'minlength': 3,
+            'maxlength': 32,
         },
         'session': {
             'type': 'uuid',
@@ -1620,6 +1623,8 @@ users = {
             'unique': True,
             'required': True,
             # chmod 646
+            'minlength': 3,
+            'maxlength': 32,
         },
         'email': {
             'type': 'string',

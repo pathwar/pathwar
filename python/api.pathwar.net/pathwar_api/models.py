@@ -329,7 +329,7 @@ class User(BaseModel):
                 _external=True,
             )
             message = """
-            You're almost done. Please, confirm your registration to Pathwar by clicking the link below.
+You're almost done. Please, confirm your registration to Pathwar by clicking the link below.
 
     {}
 
