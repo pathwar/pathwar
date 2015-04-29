@@ -1589,7 +1589,7 @@ user_tokens = {
         'expiry_date': {  # Null expiry_date means no expiration
             'type': 'datetime',
             'default': None,  # For tokens without expiry date
-            'readonly': True,
+            # 'readonly': True,
             'nullable': True,
         },
     },

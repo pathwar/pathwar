@@ -3,8 +3,9 @@ import itertools
 import json
 import random
 import md5
-
 import bcrypt
+import datetime
+
 from eve.methods.post import post, post_internal
 from eve.methods.patch import patch_internal
 from flask import abort, current_app, url_for
@@ -154,7 +155,6 @@ class Achievement(BaseModel):
             achievement = Achievement.find_one({
                 'name': achievement_name
             })
-            current_app.logger.warn([organization, achievement, achievement_name])
             if not achievement:
                 current_app.logger.error(
                     'Unknown achievement {}'.format(achievement_name)
@@ -439,7 +439,8 @@ class UserToken(BaseModel):
         item['token'] = str(uuid4())
         item['user'] = user['_id']
 
-        # FIXME: add expiry_date
+        item['expiry_date'] = datetime.datetime.utcnow() + \
+                              datetime.timedelta(hours=12)
 
     def on_inserted(self, item):
         Activity.post_internal({
@@ -781,7 +782,8 @@ class LevelInstanceUser(BaseModel):
     resource = 'level-instance-users'
 
     def on_pre_post_item(self, request, item):
-        # FIXME: add expiry_date
+        item['expiry_date'] = datetime.datetime.utcnow() + \
+                              datetime.timedelta(hours=12)
 
         if 'level_instance' not in item:
             abort(422, "Missing level_instance")
