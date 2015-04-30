@@ -130,6 +130,10 @@ local function __user_has_access(login, pass)
    r,c,q = api_request('/organization-users',{user=user_id})   
    local data = json.decode(r)
    local level_id = get_level_id()
+   if data['_meta']['total'] == 0 then
+      ngx.log(ngx.ERR, string.format('No org for user %s (%s) ??', login, user_id))
+      return nil
+   end
    for _,org_user in pairs(data['_items']) do
       local org_id = org_user['organization']
       r,c,q = api_request('/level-instance-users',{user=user_id,
