@@ -182,7 +182,7 @@ class Achievement(BaseModel):
             })
             if not achievement:
                 current_app.logger.error(
-                    'Unknown achievement {}'.format(achievement_name)
+                    'Unknown achievement %s', achievement_name,
                 )
                 continue
             # FIXME: optimize
@@ -459,11 +459,6 @@ class UserOrganizationInvite(BaseModel):
         if organization['session'] == Session.world_session()['_id']:
             abort(422, 'You cannot invite someone else in your account')
 
-        # DEBUG
-        # current_app.logger.warn(organization)
-        # current_app.logger.warn(user)
-        # current_app.logger.warn(['item', item])
-
     def on_inserted(self, item):
         UserNotification.post_internal({
             'title': 'New team invitation',
@@ -521,7 +516,6 @@ class UserOrganizationInvite(BaseModel):
                     })
 
                 # Create OrganizationUser
-                current_app.logger.warn([item, payload])
                 OrganizationUser.post_internal({
                     'organization': item['organization'],
                     'role': 'pwner',
@@ -812,8 +806,6 @@ class OrganizationLevelValidation(BaseModel):
            not len(item['passphrases']):
             abort(422, "Invalid type for passphrases")
         passphrases = map(str, item['passphrases'])
-        current_app.logger.warn(passphrases)
-        current_app.logger.warn(list(set(passphrases)))
         if sorted(list(set(passphrases))) != sorted(passphrases):
             abort(422, "Passphrases may be validated once")
 
@@ -825,9 +817,6 @@ class OrganizationLevelValidation(BaseModel):
         )
         if not organization_level:
             abort(422, "No such organization_level")
-        current_app.logger.info(
-            'organization_level: {}'.format(organization_level)
-        )
 
         # Check if the user validate a level for one if its organizations
         user = request_get_user(request)
@@ -858,11 +847,9 @@ class OrganizationLevelValidation(BaseModel):
                 for level_instance in level_instances
             ]))
         ]
-        current_app.logger.warn('{}'.format(available_passphrases))
         for passphrase in passphrases:
             if passphrase not in available_passphrases:
                 abort(422, "Bad passphrase")
-        current_app.logger.info('level: {}'.format(available_passphrases))
 
     def on_inserted(self, item):
         # FIXME: compute all the validations and check if _all_ passphrases

@@ -64,7 +64,7 @@ class MockBasicAuth(BasicAuth):
             else:
                 return False
         else:
-            app.logger.warn('No such active user: {}'.format(username))
+            app.logger.info('No such active user: %s', username)
             return False
 
 
