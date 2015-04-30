@@ -1455,9 +1455,10 @@ user_organization_invites = {
             'type': 'uuid',
             'required': True,
             'data_relation': {
-                'resource': 'users',
+                # FIXME: switch back to embeddable users
+                'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
         'organization': {
