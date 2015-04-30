@@ -865,6 +865,7 @@ class OrganizationLevelValidation(BaseModel):
             Organization.statistics_increment(
                 item['organization'], {
                     'cash': int(level['reward']),
+                    'score': 10,
                 })
 
         OrganizationLevel.update_by_id(item['organization_level'], {
@@ -1044,6 +1045,12 @@ class OrganizationAchievement(BaseModel):
             ],
         })
 
+        Organization.statistics_increment(
+            item['organization'], {
+                'achievements': 1,
+                'score': 5,
+            })
+
         members = User.get_by_organization_id(item['organization'])
         for user in members:
             UserNotification.post_internal({
@@ -1143,7 +1150,8 @@ class OrganizationCoupon(BaseModel):
         # Update team cash
         Organization.statistics_increment(
             item['organization'], {
-                'cash': coupon['value']
+                'cash': coupon['value'],
+                'coupons': 1,
             })
 
         # FIXME: move achievements computing into a dedicated function so we
