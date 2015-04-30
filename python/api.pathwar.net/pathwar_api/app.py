@@ -123,7 +123,7 @@ if len(SENTRY_URL):
                 'formatter': 'console'
             },
             'sentry': {
-                'level': 'INFO',
+                'level': 'WARN',
                 'class': 'raven.handlers.logging.SentryHandler',
                 'dsn': SENTRY_URL,
                 'site': 'api',
