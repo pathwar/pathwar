@@ -256,6 +256,20 @@ level_instances = {
                 },
             },
         },
+        'private_urls': {
+            'type': 'list',
+            'schema': {
+                'type': 'dict',
+                'schema': {
+                    'name': {
+                        'type': 'string',
+                    },
+                    'url': {
+                        'type': 'string',
+                    },
+                },
+            },
+        },
         'passphrases': {
             'type': 'list',
             'schema': {
@@ -284,6 +298,7 @@ level_instances = {
                     'passphrases': 0,
                     'server': 0,
                     'active': 0,
+                    'private_urls': 0,
                 },
                 'filter': {
                     'active': True,
