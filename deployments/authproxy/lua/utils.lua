@@ -127,7 +127,7 @@ local function __user_has_access(login, pass)
 	 user_id = user_infos['_id']
       end
    end
-   r,c,q = api_request('/organization-users',{user=user_id})   
+   r,c,q = api_request('/raw-organization-users',{user=user_id})   
    local data = json.decode(r)
    local level_id = get_level_id()
    if data['_meta']['total'] == 0 then
