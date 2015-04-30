@@ -389,7 +389,7 @@ level_instance_users = {
         'expiry_date': {
             'type': 'datetime',
             'default': None,  # For tokens without expiry date
-            'readonly': True,
+            # 'readonly': True,
             'nullable': True,
             'required': False,
         },
