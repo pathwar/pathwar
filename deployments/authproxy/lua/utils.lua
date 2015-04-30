@@ -134,6 +134,7 @@ local function __user_has_access(login, pass)
       ngx.log(ngx.ERR, string.format('No org for user %s (%s) ??', login, user_id))
       return nil
    end
+   local ok = false
    for _,org_user in pairs(data['_items']) do
       local org_id = org_user['organization']
       r,c,q = api_request('/raw-level-instance-users',{user=user_id,
@@ -149,10 +150,14 @@ local function __user_has_access(login, pass)
 					org_id
 				       )
 	 )
-	 return nil
+      else
+        ok = true
       end
    end
-   return 1
+   if ok == true then
+      return 1
+   end
+   return nil
 end
 
 local function user_has_access(login, pass)
