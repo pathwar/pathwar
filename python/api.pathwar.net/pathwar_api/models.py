@@ -440,12 +440,6 @@ class UserOrganizationInvite(BaseModel):
         if len(existing_items):
             abort(422, 'You cannot invite someone twice')
 
-        if 'email_domain' in session and session['email_domain']:
-            regex = fnmatch.translate(session['email_domain'])
-            reobj = re.compile(regex)
-            if not reobj.match(myself['email']):
-                abort(422, 'This is a private session')
-
         # Forbid invitation of someone already in a team in this session
         if User.has_an_organization_for_session(
             item['user'], organization['session']
@@ -604,6 +598,12 @@ class Organization(BaseModel):
             abort(422, "Missing name")
         if is_restricted_word(item['name']):
             abort(422, "Invalid name")
+
+        if 'email_domain' in session and session['email_domain']:
+            regex = fnmatch.translate(session['email_domain'])
+            reobj = re.compile(regex)
+            if not reobj.match(myself['email']):
+                abort(422, 'This is a private session')
 
         # Forbid invitation of someone already in a team in this session
         if User.has_an_organization_for_session(
