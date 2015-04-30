@@ -136,8 +136,8 @@ local function __user_has_access(login, pass)
    end
    for _,org_user in pairs(data['_items']) do
       local org_id = org_user['organization']
-      r,c,q = api_request('/level-instance-users',{user=user_id,
-						   organization=org_id,
+      r,c,q = api_request('/raw-level-instance-users',{user=user_id,
+				        	   organization=org_id,
 						   hash=pass,
 						   level=level_id})
       data = json.decode(r)
