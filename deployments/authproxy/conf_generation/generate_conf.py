@@ -67,6 +67,8 @@ while True:
         for k in levels['_items']:
             if k['active'] is True:
                 active_levels.append(k['_id'])
+            if k.get('private_urls') is None:
+                continue
             level_url = k['private_urls'][0]['url']
             if level_url.startswith('http://'):
                 level_url = level_url[7:]
