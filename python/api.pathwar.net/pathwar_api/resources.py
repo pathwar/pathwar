@@ -1006,9 +1006,9 @@ organization_users = {
             'type': 'uuid',
             'required': True,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
-                'embeddable': True,
+                'embeddable': False,
             },
         },
     },
