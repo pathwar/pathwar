@@ -14,6 +14,7 @@ config['api_url'] = os.environ.get('PATHWAR_API_HOST','localhost:5000')
 config['api_user'] = os.environ.get('PATHWAR_API_USER','default')
 config['api_pass'] = os.environ.get('PATHWAR_API_PASS','')
 config['ngx_tpl'] = os.environ.get('PATHWAR_NGX_CONF_PATH','/pathwar/conf_generation/nginx.tpl')
+config['ngx_default'] = os.environ.get('PATHWAR_NGX_CONF_PATH','/pathwar/conf_generation/nginx_default.conf')
 config['ngx_available_location'] = os.environ.get('PATHWAR_NGX_AVAILABLE','/etc/nginx/sites-available/')
 config['ngx_enabled_location'] = os.environ.get('PATHWAR_NGX_ENABLED','/etc/nginx/sites-enabled/')
 
@@ -42,6 +43,7 @@ def api_request(endpoint, **kwargs):
     return r.json()
 
 ngx_tpl = open(config['ngx_tpl']).read()
+ngx_default = open(config['ngx_default']).read()
 
 daemonize()
 
@@ -71,7 +73,8 @@ while True:
             confs[k['_id']] = confs[k['_id']].replace('_SERVER_NAME_', '{0}.{1}'.format(k['_id'], 'levels.pathwar.net'));
 #            confs[k['_id']] = confs[k['_id']].replace('_LEVEL_URL_', k['server']['ip_address']);
             confs[k['_id']] = confs[k['_id']].replace('_LEVEL_URL_', level_url);
-    pprint.pprint(confs)
+    confs['default']=ngx_default
+    active_levels.append('default')
     for id in confs:
         conf_name = '/' + id + '.conf'
         with open(config['ngx_available_location'] + conf_name, 'w') as fd:
