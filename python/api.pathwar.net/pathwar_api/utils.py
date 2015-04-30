@@ -238,7 +238,7 @@ def is_restricted_word(input_):
     return input_ in restricted_words
 
 
-def generate_name():
+def generate_name(sep='-'):
     """ Python port of github.com/docker/docker names-generator.go
     """
     left = [
@@ -382,4 +382,4 @@ def generate_name():
         "yalow",
         "yonath",
     ]
-    return random.choice(left) + '_' + random.choice(right)
+    return random.choice(left) + sep + random.choice(right)
