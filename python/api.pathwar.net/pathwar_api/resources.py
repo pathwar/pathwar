@@ -1945,6 +1945,11 @@ for resource_name, resource in BASE_RESOURCES.items():
 
     # Register each views
     for view_name in resource['views'].keys():
+
+        # if 'schema' in resource['views'][view_name]:
+        #     view['schema'].update(resource['views'][view_name]['schema'])
+        #     del resource['views'][view_name]['schema']
+
         view = resource.copy()
         view.update(resource['views'][view_name])
         # del view['views']
