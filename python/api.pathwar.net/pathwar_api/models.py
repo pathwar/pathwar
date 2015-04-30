@@ -477,7 +477,7 @@ class UserOrganizationInvite(BaseModel):
         if current['status'] != 'pending':
             abort(422, "Invitation expired")
 
-        if current['user'] == user['_id']:
+        if current['user'] != user['_id']:
             abort(422, "This invitation was not for you")
 
         if item['status'] == 'accepted':
