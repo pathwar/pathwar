@@ -349,7 +349,7 @@ level_instance_users = {
     'allowed_read_roles': ['user', 'server', 'admin'],
     'allowed_write_roles': ['admin'],
     # item
-    'item_methods': ['GET', 'PATCH'],
+    'item_methods': ['GET', 'PATCH', 'DELETE'],
     'public_item_methods': [],
     'allowed_item_read_roles': ['user', 'server', 'admin'],
     'allowed_item_write_roles': ['admin'],
