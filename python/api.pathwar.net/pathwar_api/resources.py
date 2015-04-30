@@ -216,7 +216,8 @@ level_instances = {
         },
         'server': {
             'type': 'uuid',
-            'required': True,
+            'required': False,
+            'nullable': True,
             'data_relation': {
                 'resource': 'servers',
                 'field': '_id',
