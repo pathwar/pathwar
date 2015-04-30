@@ -163,29 +163,34 @@ module.exports.searchItems = function(search, client, fn, errFn) {
 module.exports.castFields = function(type, fields) {
   var output = {};
   _.forEach(fields, function(field) {
-    try {  // field is a valid JSON
+    if (field[0] == '@') {
+      var fs = require('fs');
+      output = JSON.parse(fs.readFileSync(field.substring(1), 'utf-8'));
+    } else {
+      try {  // field is a valid JSON
 
-      var parsed = JSON.parse(field);
-      if (typeof(parsed) === 'object') {
-        output = _.defaults(output, parsed);
+        var parsed = JSON.parse(field);
+        if (typeof(parsed) === 'object') {
+          output = _.defaults(output, parsed);
+        }
+
+      } catch (e) {  // field is an operation
+
+        var split = field.split('=');
+        var key = split[0], value = split[1];
+
+        if (['true', 'false', 'True', 'False'].indexOf(value) >= 0) {
+          value = validator.toBoolean(value.toLowerCase());
+        }
+
+        if (validator.isNumeric(value)) {
+          value = parseInt(value);
+        }
+
+        output[key] = value;
+        // FIXME: cast values accordingly to the resources
+        // FIXME: type can be a type OR an object, if so, we need to resolve type
       }
-
-    } catch (e) {  // field is an operation
-
-      var split = field.split('=');
-      var key = split[0], value = split[1];
-
-      if (['true', 'false', 'True', 'False'].indexOf(value) >= 0) {
-        value = validator.toBoolean(value.toLowerCase());
-      }
-
-      if (validator.isNumeric(value)) {
-        value = parseInt(value);
-      }
-
-      output[key] = value;
-      // FIXME: cast values accordingly to the resources
-      // FIXME: type can be a type OR an object, if so, we need to resolve type
     }
 
   });
