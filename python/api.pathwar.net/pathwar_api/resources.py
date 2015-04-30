@@ -1072,12 +1072,22 @@ organization_statistics = {
                 'embeddable': True,
             },
         },
+        'session': {
+            'type': 'uuid',
+            'required': False,
+            'data_relation': {
+                'resource': 'sessions',
+                'field': '_id',
+                'embeddable': False,
+            },
+        },
         'cash': {'type': 'integer', 'default': 0},
         'score': {'type': 'integer', 'default': 0},
         'gold_medals': {'type': 'integer', 'default': 0},
         'silver_medals': {'type': 'integer', 'default': 0},
         'bronze_medals': {'type': 'integer', 'default': 0},
         'achievements': {'type': 'integer', 'default': 0},
+        'coupons': {'type': 'integer', 'default': 0},
     },
 }
 

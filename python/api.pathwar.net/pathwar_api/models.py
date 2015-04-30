@@ -852,9 +852,20 @@ class OrganizationLevelValidation(BaseModel):
                 abort(422, "Bad passphrase")
 
     def on_inserted(self, item):
+        # FIXME: flag level instance as pwned -> redump if needed
+
+        # First validation, give cash
         # FIXME: compute all the validations and check if _all_ passphrases
         #        are valid
-        # FIXME: flag level instance as pwned -> redump if needed
+        organization_level = OrganizationLevel.get_by_id(
+            item['organization_level']
+        )
+        level = Level.get_by_id(organization_level['level'])
+        if organization_level['status'] == 'in progress':
+            Organization.statistics_increment(
+                item['organization'], {
+                    'cash': int(level['reward']),
+                })
 
         OrganizationLevel.update_by_id(item['organization_level'], {
             '$set': {
@@ -891,6 +902,15 @@ class OrganizationLevelHint(BaseModel):
 
 class OrganizationStatistics(BaseModel):
     resource = 'organization-statistics'
+
+    def _on_update(self, item):
+        if 'session' not in item:
+            organization = Organization.get_by_id(item['organization'])
+            item['session'] = organization['session']
+
+    def on_insert(self, item):
+        super(OrganizationStatistics, self).on_insert(item)
+        self._on_update(item)
 
     def on_inserted(self, item):
         Organization.update_by_id(item['organization'], {
