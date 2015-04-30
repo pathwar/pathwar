@@ -167,7 +167,7 @@ local function user_has_access(login, pass)
       ngx.log(ngx.ERR, string.format('Error while accessing cache: %s', err))
       return false
    end
-   local cache_data, from_cache = cache_table:load(login..'||'..pass)
+   local cache_data, from_cache = cache_table:load(login..'||'..pass..'||'..get_level_id())
    if cache_data then
       return true
    else
