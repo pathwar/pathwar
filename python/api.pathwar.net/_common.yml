@@ -6,7 +6,7 @@ api:
   volumes:
   - .:/usr/src/app
   environment:
-  - VIRTUAL_HOST
+#  - VIRTUAL_HOST
   - VIRTUAL_PORT=5000
 
 
