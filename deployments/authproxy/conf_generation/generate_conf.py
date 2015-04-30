@@ -61,7 +61,7 @@ while True:
         for k in levels['_items']:
             if k['active'] is True:
                 active_levels.append(k['_id'])
-            level_url = k['urls'][0]['url']
+            level_url = k['private_urls'][0]['url']
             if level_url.startswith('http://'):
                 level_url = level_url[7:]
             confs[k['_id']] = ngx_tpl
