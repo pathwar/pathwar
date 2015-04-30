@@ -44,7 +44,10 @@ def api_request(endpoint, **kwargs):
         else:
             params[arg]=kwargs[arg]
     r = requests.get(query, params=params, auth=(config['api_user'],config['api_pass']))
-    return r.json()
+    try:
+        return r.json()
+    except:
+        return {}
 
 ngx_tpl = open(config['ngx_tpl']).read()
 ngx_default = open(config['ngx_default']).read()
@@ -55,7 +58,7 @@ while True:
     confs = {}
     active_levels = []
 
-    links = api_request('/raw-level-instances')['_links']
+    links = api_request('/raw-level-instances').get('_links')
 
     try:
         last = int(links['last']['href'].split('?')[1].split('=')[1])
