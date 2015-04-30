@@ -918,6 +918,14 @@ class Level(BaseModel):
                     item['availability']['sessions']
                 )
 
+    def on_pre_patch_item(self, request, item):
+        # FIXME: references update seems to be broken
+        if 'availability' in item:
+            if 'sessions' in item['availability']:
+                item['availability']['sessions'] = Session.resolve_list(
+                    item['availability']['sessions']
+                )
+
     def on_inserted(self, item):
         LevelStatistics.post_internal({
             'level': item['_id'],
