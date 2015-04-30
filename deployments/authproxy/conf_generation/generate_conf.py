@@ -49,10 +49,15 @@ while True:
     confs = {}
     active_levels = []
 
-    links = api_request('/level-instances')['_links']
-    last = int(links['last']['href'].split('?')[1].split('=')[1])
+    links = api_request('/raw-level-instances')['_links']
+
+    try:
+        last = int(links['last']['href'].split('?')[1].split('=')[1])
+    except KeyError:
+        last = 1
+        
     for x in xrange(1,last+1):
-        levels=api_request('/level-instances',embedded={'server':1, 'level':1},page=x)
+        levels=api_request('/raw-level-instances',embedded={'server':1, 'level':1},page=x)
         for k in levels['_items']:
             if k['active'] is True:
                 active_levels.append(k['_id'])
