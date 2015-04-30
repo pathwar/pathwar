@@ -47,6 +47,7 @@ coupons = {
             'minlength': 3,
             'maxlength': 32,
             'unique': True,
+            'required': True,
         },
         'value': {
             'type': 'integer',
@@ -484,6 +485,7 @@ levels = {
             'minlength': 3,
             'maxlength': 32,
             'unique': True,
+            'required': True,
         },
         'statistics': {
             'type': 'uuid',
@@ -515,7 +517,7 @@ levels = {
         },
         'price': {
             'type': 'integer',
-            'default': 1,
+            'default': 1000,
         },
         'tags': {
             'type': 'list',

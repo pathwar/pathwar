@@ -71,6 +71,22 @@ class BaseModel(object):
             return items[0]
 
     @classmethod
+    def resolve_list(cls, list_):
+        new_list = []
+        for search in list_:
+            items = cls.search(search)
+
+            if len(items) == 0:  # 0 matching item
+                abort(422, "No such item '{}'".format(search))
+
+            elif len(items) > 1:  # multiple matching items
+                abort(422, "Too much candidates for item '{}'".format(search))
+
+            else:  # len == 1
+                new_list.append(items[0])
+        return new_list
+
+    @classmethod
     def mongo_resource(cls):
         return 'raw-{}'.format(cls.resource)
 
@@ -907,6 +923,13 @@ class Item(BaseModel):
 
 class Level(BaseModel):
     resource = 'levels'
+
+    def on_pre_post_item(self, request, item):
+        if 'availability' in item:
+            if 'sessions' in item['availability']:
+                item['availability']['sessions'] = Session.resolve_list(
+                    item['availability']['sessions']
+                )
 
     def on_inserted(self, item):
         LevelStatistics.post_internal({
