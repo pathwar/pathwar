@@ -597,6 +597,7 @@ levels = {
                     '_schema_version': 0,
                     'defaults': 0,
                     'author': 0,
+                    'url': 0,
                 },
             },
         },
