@@ -1,10 +1,12 @@
 from uuid import uuid4
-import itertools
-import json
-import random
-import md5
 import bcrypt
 import datetime
+import fnmatch
+import itertools
+import json
+import md5
+import random
+import re
 
 from eve.methods.post import post, post_internal
 from eve.methods.patch import patch_internal
@@ -224,6 +226,7 @@ class OrganizationUser(BaseModel):
 
 class Session(BaseModel):
     resource = 'sessions'
+    search_fields = ['_id', 'name']
 
     @classmethod
     def get_by_name(cls, name):
@@ -393,6 +396,18 @@ class UserOrganizationInvite(BaseModel):
         user = request_get_user(request)
         item['author'] = user['_id']
 
+        # Inactive users
+        if not invited_user['active']:
+            abort(422, 'The user is not yet validated')
+
+        # Email restriction
+        session = Session.get_by_id(organization['session'])
+        if 'email_domain' in session and session['email_domain']:
+            regex = fnmatch.translate(session['email_domain'])
+            reobj = re.compile(regex)
+            if not reobj.match(invited_user['email']):
+                abort(422, 'This is a private session')
+
         # Forbid invite if non-owner
         if organization['owner'] != user['_id']:
             abort(422, "You are not owner of the organization")
@@ -408,6 +423,12 @@ class UserOrganizationInvite(BaseModel):
         })
         if len(existing_items):
             abort(422, 'You cannot invite someone twice')
+
+        if 'email_domain' in session and session['email_domain']:
+            regex = fnmatch.translate(session['email_domain'])
+            reobj = re.compile(regex)
+            if not reobj.match(myself['email']):
+                abort(422, 'This is a private session')
 
         # Forbid invitation of someone already in a team in this session
         if User.has_an_organization_for_session(
