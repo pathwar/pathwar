@@ -293,6 +293,32 @@ level_instances = {
             'allowed_write_roles': [],
             'allowed_item_write_roles': [],
         },
+        'hypervisor-level-instances': {
+            'datasource': {
+                'source': 'raw-level-instances',
+                'projection': {
+                    '_schema_version': 0,
+                },
+            },
+            'schema': {
+                'level': {
+                    'type': 'uuid',
+                    'required': True,
+                    'data_relation': {
+                        'resource': 'raw-levels',
+                        'field': '_id',
+                        # 'field': 'name',
+                        'embeddable': True,
+                    },
+                },
+            },
+            # 'embedded_fields': ['level'],
+            'public_methods': [],
+            'allowed_read_roles': ['hypervisor', 'admin'],
+            'allowed_item_read_roles': ['hypervisor', 'admin'],
+            'allowed_write_roles': ['hypervisor', 'admin'],
+            'allowed_item_write_roles': ['hypervisor', 'admin'],
+        },
     },
 }
 
