@@ -17,6 +17,10 @@ config['ngx_tpl'] = os.environ.get('PATHWAR_NGX_CONF_PATH','/pathwar/conf_genera
 config['ngx_default'] = os.environ.get('PATHWAR_NGX_CONF_PATH','/pathwar/conf_generation/nginx_default.conf')
 config['ngx_available_location'] = os.environ.get('PATHWAR_NGX_AVAILABLE','/etc/nginx/sites-available/')
 config['ngx_enabled_location'] = os.environ.get('PATHWAR_NGX_ENABLED','/etc/nginx/sites-enabled/')
+try:
+    config['refresh_time'] = int(os.environ.get('PATHWAR_REFRESH_TIME','60'))
+except ValueError:
+    config['refresh_time'] = 60
 
 def daemonize():
     pid = os.fork()
@@ -92,4 +96,4 @@ while True:
             except:
                 pass        
     os.system('/usr/sbin/nginx -s reload')
-    time.sleep(60 * 5) #refresh conf every 5 minutes
+    time.sleep(config['refresh_time']) #refresh conf every 5 minutes
