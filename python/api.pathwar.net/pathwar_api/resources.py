@@ -1820,6 +1820,51 @@ users = {
 }
 
 
+password_recover_requests = {
+    'item_title': 'password recover request',
+
+    # collection
+    'resource_methods': ['GET', 'POST'],
+    'public_methods': ['POST'],
+    'allowed_read_roles': ['admin'],
+    'allowed_write_roles': ['user'],
+    # item
+    'item_methods': ['GET'],
+    'public_item_methods': [],
+    'allowed_item_read_roles': ['admin'],
+    'allowed_item_write_roles': ['internal'],
+
+    'schema': {
+        'user': {
+            'type': 'uuid',
+            'required': True,
+            'data_relation': {
+                'resource': 'users',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'verification_token': {
+            'type': 'string',
+            'readonly': True,
+        },
+        'status': {
+            'type': 'string',
+            'allowed': ['used', 'cancelled', 'pending'],
+            'default': 'pending',
+        },
+        'password_salt': {
+            'type': 'string',
+            'readonly': True,
+        },
+        'password': {
+            'required': True,
+            'type': 'string',
+        },
+    },
+}
+
+
 whoswho_attempts = {
     'item_title': 'whoswho attempt',
     'resource_title': 'whoswho attempts',
@@ -1913,6 +1958,7 @@ BASE_RESOURCES = {
     'organization-statistics': organization_statistics,
     'organization-users': organization_users,
     'organizations': organizations,
+    'password-recover-requests': password_recover_requests,
     'servers': servers,
     'sessions': sessions,
     'user-hijack-proofs': user_hijack_proofs,

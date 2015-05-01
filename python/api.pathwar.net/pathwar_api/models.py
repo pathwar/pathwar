@@ -5,9 +5,11 @@ import fnmatch
 import itertools
 import json
 import md5
+import os
 import random
 import re
 
+import requests
 from eve.methods.post import post, post_internal
 from eve.methods.patch import patch_internal
 from flask import abort, current_app, url_for
@@ -255,6 +257,98 @@ class Session(BaseModel):
     @classmethod
     def beta_session(cls):
         return cls.get_by_name('Beta')
+
+
+class PasswordRecoverRequest(BaseModel):
+    resource = 'password-recover-requests'
+
+    def on_pre_post_item(self, request, item):
+        if 'password' not in item:
+            abort(422, "Missing password")
+        if 'email' not in item:
+            abort(422, "Missing email")
+
+        # match user
+        user = User.resolve_input(item, 'email')
+        item['user'] = user['_id']
+        del item['email']
+
+        # FIXME: check if user is blocked
+        if not user['active']:
+            abort(422, 'Account not yet validated')
+
+        # check for captcha
+        recaptcha_secret = os.environ.get('RECAPTCHA_SECRET')
+        if recaptcha_secret:
+            if 'captcha_response' not in item:
+                abort(422, "Missing captcha_response")
+            req = requests.post(
+                'https://www.google.com/recaptcha/api/siteverify', data={
+                    'secret': recaptcha_secret,
+                    'response': item['captcha_response'],
+                    # FIXME: 'remoteip': user_ip
+                })
+            if not req.json().get('success'):
+                abort(422, "Invalid captcha")
+        del item['captcha_response']
+
+    def on_insert(self, item):
+        super(PasswordRecoverRequest, self).on_insert(item)
+        item['password_salt'] = bcrypt.gensalt().encode('utf-8')
+        item['verification_token'] = str(uuid4())
+        # crypt new password
+        if 'password' in item and \
+           len(item['password']):
+            password = item['password'].encode('utf-8')
+            item['password'] = bcrypt.hashpw(
+                password, item['password_salt']
+            )
+
+    def on_inserted(self, item):
+        Activity.post_internal({
+            'user': item['_id'],
+            'action': 'password-recover-request-create',
+            'category': 'accounts',
+            'public': False,
+            'linked_resources': [
+                {'kind': 'users', 'id': item['_id']},
+            ],
+        })
+        UserNotification.post_internal({
+            'title': 'You created a password recover request',
+            'user': item['_id'],
+            'action': 'password-recover-request-create',
+            'category': 'accounts',
+            'linked_resources': [
+                {'kind': 'users', 'id': item['_id']},
+            ],
+        })
+
+        # Send email
+        verification_url = url_for(
+            'tools.password_recover_verify',
+            user_id=item['user'],
+            verification_token=item['verification_token'],
+            _external=True,
+        )
+        message = """
+We received a request to reset the the password of this account. If you did not send it, please ignore this email.
+
+If you want to get a new password for your account, please click or copy the link below.
+
+    {}
+
+Thanks,
+Pathwar Team
+
+If you received this email by mistake, simply delete it. You won't be subscribed if you don't click the confirmation link above.
+""".format(verification_url)
+
+        send_mail(
+            message=message,
+            subject='Password recover verification',
+            recipients=[User.get_by_id(item['user'])]
+        )
 
 
 class User(BaseModel):
@@ -1210,6 +1304,7 @@ base_models = [
     OrganizationLevelValidation,
     OrganizationStatistics,
     OrganizationUser,
+    PasswordRecoverRequest,
     Server,
     Session,
     User,
