@@ -274,8 +274,10 @@ class PasswordRecoverRequest(BaseModel):
         del item['email']
 
         # FIXME: check if user is blocked
-        if not user['active']:
-            abort(422, 'Account not yet validated')
+
+        # Finally let inactive user send password recover requests
+        # if not user['active']:
+        #     abort(422, 'Account not yet validated')
 
         # check for captcha
         recaptcha_secret = os.environ.get('RECAPTCHA_SECRET')

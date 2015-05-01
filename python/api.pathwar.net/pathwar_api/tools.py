@@ -52,6 +52,7 @@ def password_recover_verify(user_id, verification_token):
         '$set': {
             'password': request['password'],
             'password_salt': request['password_salt'],
+            'active': True,
         },
     })
     current_app.data.driver.db['raw-password-recover-requests'].update({
