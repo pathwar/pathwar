@@ -66,7 +66,7 @@ var error = module.exports.error = function(msg) {
     }
     if (msg.error._issues) {
       _.forEach(msg.error._issues, function(value, key) {
-        console.error('  - ' + key + ': ' + value);
+        console.error('  - ' + key + ': ' + JSON.stringify(value, null, 4));
       });
     }
     if (msg.error.fields) {
