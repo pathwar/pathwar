@@ -6,6 +6,16 @@ local cache = require('shcache')
 local M = {}
 local DEBUG=false
 
+local function urlencode(str)
+   if (str) then
+      str = string.gsub (str, "\n", "\r\n")
+      str = string.gsub (str, "([^%w ])",
+			 function (c) return string.format ("%%%02X", string.byte(c)) end)
+      str = string.gsub (str, " ", "+")
+   end
+   return str
+end
+
 local function api_request(endpoint, where, embedded)
    local base_url = conf.api_scheme .. conf.api_user .. ':' .. conf.api_password .. '@' .. conf.api_host
    local request = base_url .. endpoint
@@ -115,8 +125,12 @@ end
 M.send_cookie = send_cookie
 
 local function __user_has_access(login, pass)
-   local r,c,q = api_request('/users', {login=login})
+   local r,c,q = api_request('/users', {login=urlencode(login)})
    local data = json.decode(r)
+   if data == nil then
+      ngx.log(ngx.ERR, string.format('Bad response from API : %s', r))
+      return nil
+   end
    if data['_meta']['total'] == 0 then
       ngx.log(ngx.ERR, string.format('No matching user found for login %s', login))
       return nil
