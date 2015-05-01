@@ -29,18 +29,18 @@ def inserted_callback(resource, items):
         klass().on_inserted(item)
 
 
-def update_callback(resource, payload, item):
+def update_callback(resource, item, original):
     """ Callback called just before updating a resource in mongo. """
     # app.logger.debug('### update_callback({}) {}'.format(resource, items))
     klass = resource_get_model(resource)
-    klass().on_update(item, payload)
+    klass().on_update(item, original)
 
 
-def updated_callback(resource, payload, item):
+def updated_callback(resource, item, original):
     """ Callback called just after updating a resource in mongo. """
     # app.logger.debug('### updated_callback({}) {}'.format(resource, items))
     klass = resource_get_model(resource)
-    klass().on_updated(item, payload)
+    klass().on_updated(item, original)
 
 
 def pre_post_callback(resource, request):

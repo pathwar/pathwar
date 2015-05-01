@@ -85,10 +85,6 @@ def db_seed(app):
                 'role': 'moderator',
                 'active': True,
                 'password': 'secure',
-                'available_sessions': [
-                    sessions[0]['_id'],
-                    sessions[1]['_id'],
-                ],
             }])
     lemming_users, _, _ = post(
         app, client, '/users', [{

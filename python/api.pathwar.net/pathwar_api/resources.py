@@ -1673,6 +1673,12 @@ users = {
     'schema': {
         'myself': {
             'type': 'uuid',
+            'readonly': True,
+        },
+        'last_login': {
+            'type': 'string',
+            'nullable': True,
+            'readonly': True,
         },
         'login': {
             'type': 'string',
@@ -1688,10 +1694,43 @@ users = {
             'required': True,
             # chmod 606
         },
+        'name': {
+            'type': 'string',
+            'maxlength': 64,
+        },
+        'website': {
+            'type': 'string',
+            'maxlength': 128,
+        },
+        'twitter_handle': {
+            'type': 'string',
+            'maxlength': 64,
+        },
+        'github_handle': {
+            'type': 'string',
+            'maxlength': 64,
+        },
+        'company': {
+            'type': 'string',
+            'maxlength': 128,
+        },
+        'location': {
+            'type': 'string',
+            'maxlength': 64,
+        },
+        'student_id': {
+            'type': 'string',
+            'maxlength': 64,
+        },
         'active': {
             'type': 'boolean',
             'default': False,
-            # chmod 644
+            'readonly': True,
+        },
+        'blocked': {
+            'type': 'boolean',
+            'default': False,
+            'readonly': True,
         },
         'email_verification_token': {
             'type': 'string',
@@ -1728,26 +1767,6 @@ users = {
             'default': 'user',
             # chmod 600
         },
-        'location': {
-            'type': 'dict',
-            'schema': {
-                'city': {'type': 'string'},
-                'country': {'type': 'string'},
-            },
-            # chmod 646
-        },
-        'social_links': {
-            'type': 'list',
-            'schema': {
-                'type': 'dict',
-                'schema': {
-                    'kind': {
-                        'type': 'string',
-                    },
-                },
-            },
-            # chmod 446
-        },
         'gravatar_hash': {
             'type': 'string',
             'readonly': True,
@@ -1759,34 +1778,25 @@ users = {
                 'allowed': ['security', 'staff', 'developer', 'beta'],
             },
         },
-        'available_sessions': {
-            'type': 'list',
-            'schema': {
-                'type': 'uuid',
-                'data_relation': {
-                    'resource': 'sessions',
-                    'field': '_id',
-                    'embeddable': True,
-                },
-            },
-            # chmod 644
-        },
     },
     'views': {
         'users': {
             'datasource': {
                 'source': 'raw-users',
                 'projection': {
+                    '_schema_version': 0,
+                    'active': 0,
                     'email': 0,
                     'email_verification_token': 0,
+                    'groups': 0,
+                    'last_login': 0,
+                    'myself': 0,
+                    'otp_enabled': 0,
+                    'otp_secret': 0,
                     'password': 0,
                     'password_salt': 0,
-                    'active': 0,
+                    'student_id': 0,
                     'visibility': 0,
-                    'otp_enabled': 0,
-                    'groups': 0,
-                    '_schema_version': 0,
-                    'myself': 0,
                 },
                 'filter': {
                     # 'role': {'$in': ['user', 'moderator']},
@@ -1798,6 +1808,7 @@ users = {
             'public_methods': [],
             'allowed_read_roles': ['user', 'admin'],
             'allowed_item_read_roles': ['user', 'admin'],
+            'allowed_item_write_roles': [],
         },
         'accounts': {
             'datasource': {

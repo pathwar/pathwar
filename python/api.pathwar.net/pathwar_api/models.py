@@ -121,10 +121,10 @@ class BaseModel(object):
             lookup, projection
         )
 
-    def on_update(self, item, payload):
+    def on_update(self, item, original):
         pass
 
-    def on_updated(self, item, payload):
+    def on_updated(self, item, original):
         pass
 
     def on_insert(self, item):
@@ -460,6 +460,29 @@ If you received this email by mistake, simply delete it. You won't be subscribed
                 recipients=[item]
             )
 
+    def on_update(self, item, original):
+        if ('login' in item
+            and item['login'] != original['login']):
+            if original.get('last_login'):
+                abort(422, "You can change your login only 1 time")
+
+            if Organization.find_one({'name': item['login']}):
+                abort(422, "Name already taken")
+
+            if User.find_one({'login': item['login']}):
+                abort(422, "Name already taken")
+
+            world_organization = Organization.find_one({
+                'owner': original['_id'],
+                'session': Session.world_session()['_id'],
+            })
+            Organization.update_by_id(world_organization['_id'], {
+                '$set': {
+                    'name': item['login'],
+                },
+            })
+            item['last_login'] = original['login']
+
     def on_pre_post_item(self, request, item):
         if 'password' not in item:
             abort(422, "Missing password")
@@ -585,7 +608,7 @@ class UserOrganizationInvite(BaseModel):
             ):
                 abort(422, "You already have an organization")
 
-    def on_updated(self, item, payload):
+    def on_updated(self, item, original):
         if payload['status'] != item['status']:
             if payload['status'] == 'accepted':
                 # Notify teamates
@@ -1035,7 +1058,7 @@ class Level(BaseModel):
                     item['availability']['sessions']
                 )
 
-    def on_pre_patch_item(self, request, item):
+    def on_update(self, item, original):
         # FIXME: references update seems to be broken
         if 'availability' in item:
             if 'sessions' in item['availability']:
