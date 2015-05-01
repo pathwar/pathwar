@@ -488,8 +488,18 @@ If you received this email by mistake, simply delete it. You won't be subscribed
             abort(422, "Missing password")
         if 'login' not in item:
             abort(422, "Missing login")
+        if 'email' not in item:
+            abort(422, "Missing email")
         if is_restricted_word(item['login']):
             abort(422, "Invalid login")
+        existing_user = User.find_one({
+            '$or': [
+                {'login': item['login']},
+                {'email': item['email']},
+            ]
+        })
+        if existing_user:
+            abort(422, "Login or email already taken")
 
     def on_pre_get(self, request, lookup):
         # Handle users/me
