@@ -1,14 +1,14 @@
 level:
-  name: Level training include
+  name: training-include
   version: 1.0
-  author: Pathwar team
+  author: Pathwar Team
   passphrases: 1
-  description: Welcome! This level will teach you how to fuck with includes
+  description: Training level introducing include exploits
   rootable: false
   cpu_shares: 1/10
   memory_limit: 16M
   tags:
-    - tutorial
-	- include
-    redump: 600
-    lang: en
+  - tutorial
+  - include
+  redump: 600
+  lang: en
