@@ -5,6 +5,9 @@ server {
 
        set $level_id '_LEVEL_ID_';
 
+       access_log /var/log/nginx/_LEVEL_INSTANCE_ID__access.log;
+       error_log /var/log/nginx/_LEVEL_INSTANCE_ID__error.log;
+
        location / {
    		resolver 8.8.8.8;
        		access_by_lua_file '/pathwar/lua/auth.lua';
