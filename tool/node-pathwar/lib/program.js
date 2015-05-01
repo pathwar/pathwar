@@ -36,6 +36,7 @@ program
   .option('-q, --quiet', 'only print ids')
   .option('-l, --limit <max_results>', 'limit results to <max_results> items', 50)
   .option('-p, --page <page>', 'use page <page>', 1)
+  .option('-o, --order <field>', 'order by <field>', '-_updated')
   .action(function(type, conditions, options) {
     var client = utils.newApi(options);
 
@@ -50,6 +51,11 @@ program
     if (options.page) {
       query['page'] = options.page;
     }
+
+    if (options.order) {
+      query['sort'] = options.order;
+    }
+
     var url = '/' + type + '?';
     _.forEach(query, function(value, key) {
       url += key + '=' + value + '&';
