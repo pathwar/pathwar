@@ -461,7 +461,7 @@ If you received this email by mistake, simply delete it. You won't be subscribed
             )
 
     def on_update(self, item, original):
-        if 'blocked' in item:
+        if 'blocked' in item and item['blocked'] != original.get('blocked'):
             user = request_get_user(flask_request)
             if user.get('role') != 'admin':
                 abort(422, 'blocked field is read-only')
