@@ -1518,7 +1518,7 @@ user_organization_invites = {
             },
             'public_methods': [],
             'resource_methods': ['GET'],
-            'resource_item_methods': ['GET', 'DELETE'],
+            'item_methods': ['GET', 'DELETE'],
             'allowed_write_roles': [],
             'allowed_item_write_roles': ['admin'],
             'allowed_read_roles': ['admin'],
