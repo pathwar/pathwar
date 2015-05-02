@@ -47,11 +47,14 @@ class MockBasicAuth(BasicAuth):
                 if user['role'] != 'admin':
                     self.set_request_auth_value(user['_id'])
                 # FIXME: Re-enable later
-                if not user['active']:
-                    user = None
-                    abort(401, 'You need to validate your email address first')
 
         if user:
+            if user.get('blocked'):
+                abort(401, 'Your account is blocked, contact an administrator')
+
+            if not user['active']:
+                abort(401, 'You need to validate your email address first')
+
             # app.logger.debug(
             #     'username: {}, password: {}, allowed_roles: {}, '
             #     'resource: {}, method: {}, user: {}'.format(

@@ -12,7 +12,7 @@ import re
 import requests
 from eve.methods.post import post, post_internal
 from eve.methods.patch import patch_internal
-from flask import abort, current_app, url_for
+from flask import abort, current_app, url_for, request as flask_request
 
 from utils import request_get_user, generate_name, is_restricted_word
 from mail import mail, send_mail
@@ -461,6 +461,10 @@ If you received this email by mistake, simply delete it. You won't be subscribed
             )
 
     def on_update(self, item, original):
+        if 'blocked' in item:
+            user = request_get_user(flask_request)
+            if user.get('role') != 'admin':
+                abort(422, 'blocked field is read-only')
         if ('login' in item
             and item['login'] != original['login']):
             if original.get('last_login'):

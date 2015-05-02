@@ -1730,7 +1730,6 @@ users = {
         'blocked': {
             'type': 'boolean',
             'default': False,
-            'readonly': True,
         },
         'email_verification_token': {
             'type': 'string',
