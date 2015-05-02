@@ -833,6 +833,11 @@ class OrganizationLevel(BaseModel):
         if not level:
             abort(422, "No such level")
 
+        sessions_availability = level.get('availability', {}).get('sessions')
+        if (sessions_availability and
+            organization['session'] not in sessions_availability):
+            abort(422, "You cannot buy this level in this session")
+
         organization_statistics = OrganizationStatistics.get_by_id(
             organization['statistics'],
         )
