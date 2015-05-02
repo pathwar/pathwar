@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo '[+] Fixing permissions'
+chmod 700 /pathwar
