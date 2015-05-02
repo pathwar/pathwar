@@ -461,11 +461,12 @@ If you received this email by mistake, simply delete it. You won't be subscribed
             )
 
     def on_update(self, item, original):
+        current_user = request_get_user(flask_request)
         if 'email' in item and item['email'] != original['email']:
-            abort(422, 'You cannot update your email')
+            if current_user.get('role') != 'admin':
+                abort(422, 'You cannot update your email')
         if 'blocked' in item and item['blocked'] != original.get('blocked'):
-            user = request_get_user(flask_request)
-            if user.get('role') != 'admin':
+            if current_user.get('role') != 'admin':
                 abort(422, 'blocked field is read-only')
         if ('login' in item
             and item['login'] != original['login']):
