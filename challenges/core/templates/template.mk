@@ -20,7 +20,7 @@ $(BUILDS):	$(SKELETONS)
 	$(eval TAGS := $(shell cat $(VERSION)/tags))
 	docker build -t $(NAME):$(VERSION) $(VERSION)
 	for tag in $(TAGS); do \
-		docker tag $(NAME):$(VERSION) $(NAME):$$tag; \
+		docker tag -f $(NAME):$(VERSION) $(NAME):$$tag; \
 	done
 
 $(SKELETONS):	../../skeleton ../../skeleton/* ../../skeleton/*/*
