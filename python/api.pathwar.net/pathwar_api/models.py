@@ -625,10 +625,10 @@ class UserOrganizationInvite(BaseModel):
                 abort(422, "You already have an organization")
 
     def on_updated(self, item, original):
-        if payload['status'] != item['status']:
-            if payload['status'] == 'accepted':
+        if item['status'] != original['status']:
+            if item['status'] == 'accepted':
                 # Notify teamates
-                members = User.get_by_organization_id(item['organization'])
+                members = User.get_by_organization_id(original['organization'])
                 for user in members:
                     UserNotification.post_internal({
                         'title': 'New team member',
@@ -638,31 +638,31 @@ class UserOrganizationInvite(BaseModel):
                         'linked_resources': [
                             {
                                 'kind': 'organizations',
-                                'id': item['organization'],
+                                'id': original['organization'],
                             },
-                            {'kind': 'users', 'id': item['user']},
+                            {'kind': 'users', 'id': original['user']},
                         ],
                     })
 
                 # Create OrganizationUser
                 OrganizationUser.post_internal({
-                    'organization': item['organization'],
+                    'organization': original['organization'],
                     'role': 'pwner',
-                    'user': item['user'],
+                    'user': original['user'],
                 })
 
             # FIXME: post activity
             # FIXME: this kind of activity is private to the team
-            elif payload['status'] == 'refused':
-                owner = Organization.get_by_id(item['organization'])['owner']
+            elif item['status'] == 'refused':
+                owner = Organization.get_by_id(original['organization'])['owner']
                 UserNotification.post_internal({
                     'title': 'Your invitation was refused',
                     'user': owner,
                     'action': 'user-organization-invite-accepted',
                     'category': 'organizations',
                     'linked_resources': [
-                        {'kind': 'organizations', 'id': item['organization']},
-                        {'kind': 'users', 'id': item['user']},
+                        {'kind': 'organizations', 'id': original['organization']},
+                        {'kind': 'users', 'id': original['user']},
                     ],
                 })
 
