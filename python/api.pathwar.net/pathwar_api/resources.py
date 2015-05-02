@@ -1849,7 +1849,7 @@ password_recover_requests = {
             'type': 'uuid',
             'required': True,
             'data_relation': {
-                'resource': 'users',
+                'resource': 'raw-users',
                 'field': '_id',
                 'embeddable': True,
             },
