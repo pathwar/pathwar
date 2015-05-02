@@ -4,14 +4,17 @@ import os
 import bcrypt
 import logging.config
 import logging
+import urllib
 
 from eve import Eve
 from eve.auth import BasicAuth, TokenAuth
 from eve.io.base import BaseJSONEncoder
 from eve.io.mongo import Validator
-from flask import abort, url_for
+from flask import abort, url_for, current_app
 from raven.handlers.logging import SentryHandler
 from raven.conf import setup_logging
+
+from models import User
 
 
 SENTRY_URL = os.environ.get('SENTRY_URL', '')
@@ -28,11 +31,18 @@ class MockBasicAuth(BasicAuth):
         if len(password):
             # FIXME: restrict login+password access for a minimal amount of
             #        resources
-            user = app.data.driver.db['raw-users'].find_one({
-                'login': username,
-                # 'active': True,  # FIXME: re-enable
-            })
+            try:
+                username = urllib.unquote(username)
+            except:
+                pass
+            users = User.search(username, full_object=True)
+            if users:
+                user = users[0]
             if user and 'password_salt' in user:
+                try:
+                    password = urllib.unquote(password)
+                except:
+                    pass
                 hash_ = bcrypt.hashpw(password, str(user['password_salt']))
                 if hash_ != user['password']:
                     user = None
@@ -49,7 +59,7 @@ class MockBasicAuth(BasicAuth):
                 # FIXME: Re-enable later
 
         if user:
-            if user.get('blocked'):
+            if user.get('blocked', False):
                 abort(401, 'Your account is blocked, contact an administrator')
 
             if not user['active']:

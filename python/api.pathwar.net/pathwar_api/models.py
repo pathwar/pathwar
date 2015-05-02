@@ -461,6 +461,8 @@ If you received this email by mistake, simply delete it. You won't be subscribed
             )
 
     def on_update(self, item, original):
+        if 'email' in item and item['email'] != original['email']:
+            abort(422, 'You cannot update your email')
         if 'blocked' in item and item['blocked'] != original.get('blocked'):
             user = request_get_user(flask_request)
             if user.get('role') != 'admin':
@@ -676,7 +678,6 @@ class UserToken(BaseModel):
     def on_pre_post_item(self, request, item):
         # Handle login
         user = request_get_user(request)
-
         if not user:
             abort(401)
 

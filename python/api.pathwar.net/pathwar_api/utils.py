@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import random
+import urllib
 
 from flask import current_app
 
@@ -9,8 +10,16 @@ def request_get_user(request):
     auth = request.authorization
     if auth.get('username'):
         if auth.get('password'):  # user:pass
+            username = auth.get('username')
+            try:
+                username = urllib.unquote(username)
+            except:
+                pass
             return current_app.data.driver.db['raw-users'].find_one({
-                'login': auth.get('username'),
+                '$or': [
+                    {'login': username},
+                    {'email': username},
+                ]
                 # 'active': True,  # FIXME: Reenable later
             })
         else:  # token
