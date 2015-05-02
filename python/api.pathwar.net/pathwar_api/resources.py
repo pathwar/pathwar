@@ -1509,6 +1509,21 @@ user_organization_invites = {
             'allowed_write_roles': ['user'],
             'allowed_item_write_roles': ['user'],
         },
+        'admin-delete-user-organization-invites': {
+            'datasource': {
+                'source': 'raw-user-organization-invites',
+                'projection': {
+                    '_schema_version': 0,
+                },
+            },
+            'public_methods': [],
+            'resource_item_methods': ['GET'],
+            'resource_item_methods': ['DELETE'],
+            'allowed_write_roles': [],
+            'allowed_item_write_roles': ['admin'],
+            'allowed_read_roles': ['admin'],
+            'allowed_item_read_roles': [],
+        },
     },
 }
 

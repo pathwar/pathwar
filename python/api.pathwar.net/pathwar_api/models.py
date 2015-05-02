@@ -610,9 +610,7 @@ class UserOrganizationInvite(BaseModel):
             abort(422, "No such user-organization-invite")
 
         if current['status'] != 'pending':
-            request_user = request_get_user(flask_request)
-            if user.get('role') != 'admin':
-                abort(422, "Invitation expired")
+            abort(422, "Invitation expired")
 
         if current['user'] != user['_id']:
             abort(422, "This invitation was not for you")
