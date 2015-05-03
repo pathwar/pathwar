@@ -1,8 +1,8 @@
 testing:
   build: .
   ports:
-  - 22
   - 80
+  - 22
   volumes:
   - www:/var/www/html/
   environment:
