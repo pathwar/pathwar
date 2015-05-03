@@ -52,7 +52,9 @@ $(PACKAGE_NAME): $(PKGLVL) $(ASSETS)
 
 
 publish_on_s3: $(PACKAGE)
-	s3cmd put --acl-public $(PACKAGE_NAME) $(S3_URL)/$(shell head -c 128 /dev/urandom | tr -dc A-Za-z0-9).tar
+	$(eval RAND := $(shell head -c 128 /dev/urandom | tr -dc A-Za-z0-9))
+	s3cmd put --acl-public $(PACKAGE_NAME) $(S3_URL)/$(RAND).tar
+	s3cmd info $(S3_URL)/$(RAND).tar | grep URL | awk '{print $$2}'
 
 
 ## Travis
