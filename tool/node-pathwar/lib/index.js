@@ -1,6 +1,7 @@
 var rp = require('request-promise'),
     debug = require('debug')('pathwar:lib'),
     config = require('./config'),
+    Q = require('q'),
     _ = require('lodash');
 
 
@@ -140,6 +141,49 @@ var Client = module.exports = function(options) {
 
   this.put = function(path, input, options, cb) {
     return this.request(path, 'PUT', input, options, cb);
+  };
+
+  this.all = function(path, options, cb) {
+    var deferred = Q.defer();
+    var promises = [];
+
+    var output = this.get(path, options, cb);
+    promises.push(output);
+
+    var aggregated = [];
+    output.then(function(firstData) {
+      // aggregated.push(console.log(firstData.body._items));
+      console.log(firstData.body._meta, firstData.body._links.next);
+
+      for (var i = 2;
+           i <= Math.ceil(firstData.body._meta.total / firstData.body._meta.max_results);
+           i++) {
+        var url = path.replace(/page=[0-9]+/, '') + '&page=' + i;
+        var output = client.get(url, options);
+        promises.push(output);
+      }
+      Q.all(promises).then(
+        function(data) {
+          data = _.flatten(_.pluck(_.pluck(data, 'body'), '_items'));
+
+          deferred.resolve({
+            body: {
+              _items: data,
+              _meta: {
+                total: firstData.body._meta.total,
+                max_results: firstData.body._meta.total,
+                page: 1
+              }
+            }
+          });
+        }, function(error){
+          deferred.reject(error);
+        }
+      );
+    }, function(error){
+      deferred.reject(error);
+    });
+    return deferred.promise;
   };
 
   // helpers

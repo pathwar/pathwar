@@ -36,6 +36,7 @@ program
   .option('-q, --quiet', 'only print ids')
   .option('-l, --limit <max_results>', 'limit results to <max_results> items', 50)
   .option('-p, --page <page>', 'use page <page>', 1)
+  .option('-a, --all', 'automatically walk paginated results')
   .option('-o, --order <field>', 'order by <field>', '-_updated')
   .action(function(type, conditions, options) {
     var client = utils.newApi(options);
@@ -61,7 +62,8 @@ program
       url += key + '=' + value + '&';
     });
 
-    client.get(url)
+    var getter = options.all ? 'all' : 'get';
+    client[getter](url)
       .then(function(res) {
         if (!res.body._items.length) {
           console.error('No entries');
@@ -136,8 +138,8 @@ program
 
         console.log(table.toString());
         var meta = res.body._meta;
-        if (meta.max_results < meta.total) {
-          console.log('Displaying items: ' + (meta.max_results * (meta.page - 1)) + '-' + (meta.max_results * meta.page) + '/' + meta.total);
+        if (meta.max_results < meta.total || options.all) {
+          console.log('Displaying items: ' + (meta.max_results * (meta.page - 1) + 1) + '-' + (meta.max_results * meta.page) + '/' + meta.total);
         }
       })
       .catch(utils.panic);
