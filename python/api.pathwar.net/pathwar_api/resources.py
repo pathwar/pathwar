@@ -496,6 +496,11 @@ levels = {
                 'embeddable': True,
             },
         },
+        'accessible': {
+            'type': 'string',
+            'allowed': ['until validated', 'forever'],
+            'default': 'until validated',
+        },
         'availability': {
             'type': 'dict',
             'schema': {
