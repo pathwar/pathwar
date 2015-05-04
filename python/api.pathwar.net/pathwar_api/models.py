@@ -13,8 +13,12 @@ import requests
 from eve.methods.post import post, post_internal
 from eve.methods.patch import patch_internal
 from flask import abort, current_app, url_for, request as flask_request
+from validate_email import validate_email
 
-from utils import request_get_user, generate_name, is_restricted_word
+from utils import (
+    request_get_user, generate_name, is_restricted_word,
+    check_blacklisted_email
+)
 from mail import mail, send_mail
 from resources import BASE_RESOURCES
 
@@ -499,6 +503,14 @@ If you received this email by mistake, simply delete it. You won't be subscribed
             abort(422, "Missing email")
         if is_restricted_word(item['login']):
             abort(422, "Invalid login")
+
+        item['email'] = item['email'].strip().lower()
+        if not validate_email(item['email'], check_mx=True):
+            abort(422, "Bad email")
+
+        if check_blacklisted_email(item['email']):
+            abort(422, "Bad email")
+
         existing_user = User.find_one({
             '$or': [
                 {'login': item['login']},
