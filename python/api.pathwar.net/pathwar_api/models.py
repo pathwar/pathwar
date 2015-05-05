@@ -402,13 +402,28 @@ class User(BaseModel):
 
     def on_insert(self, item):
         super(User, self).on_insert(item)
-        item['password_salt'] = bcrypt.gensalt().encode('utf-8')
-        item['email_verification_token'] = str(uuid4())
+        if item.get('pnj'):
+            item['active'] = True
+        else:
+            item['password_salt'] = bcrypt.gensalt().encode('utf-8')
+            item['email_verification_token'] = str(uuid4())
         item['myself'] = item['_id']
         # item['otp_secret'] = ...
         self._on_update(item)
 
     def on_inserted(self, item):
+        if 'pnj' in item and item['pnj']:
+            # Create a token
+            UserToken.post_internal({
+                'user': item['_id'],
+                'scopes': '*',
+                'expiry_date': None,
+            })
+
+            # Do not apply other standard users hooks
+            return
+
+        # Post an activity
         Activity.post_internal({
             'user': item['_id'],
             'action': 'users-create',
@@ -418,6 +433,8 @@ class User(BaseModel):
                 {'kind': 'users', 'id': item['_id']},
             ],
         })
+
+        # Post a user notification
         UserNotification.post_internal({
             'title': 'Welcome to your account !',
             'user': item['_id'],
@@ -466,14 +483,14 @@ If you received this email by mistake, simply delete it. You won't be subscribed
 
     def on_update(self, item, original):
         current_user = request_get_user(flask_request)
-        if 'email' in item and item['email'] != original['email']:
-            if current_user.get('role') != 'admin':
-                abort(422, 'You cannot update your email')
-        if 'blocked' in item and item['blocked'] != original.get('blocked'):
-            if current_user.get('role') != 'admin':
-                abort(422, 'blocked field is read-only')
-        if ('login' in item
-            and item['login'] != original['login']):
+        is_admin = current_user.get('role') == 'admin'
+
+        for field in ('email', 'blocked', 'pnj'):
+            if field_changed(field, item, original):
+                if not is_admin:
+                    abort(422, 'You cannot update field {}'.format(field))
+
+        if field_changed('login', item, original):
             if original.get('last_login'):
                 abort(422, "You can change your login only 1 time")
 
@@ -495,6 +512,10 @@ If you received this email by mistake, simply delete it. You won't be subscribed
             item['last_login'] = original['login']
 
     def on_pre_post_item(self, request, item):
+        if request.path.split('/')[1] == 'pnjs':
+            item['pnj'] = True
+        return
+
         if 'password' not in item:
             abort(422, "Missing password")
         if 'login' not in item:
@@ -696,13 +717,16 @@ class UserToken(BaseModel):
 
         # FIXME: do not accept passing token/user (read-only)
 
-        item['token'] = str(uuid4())
         item['user'] = user['_id']
 
         item['expiry_date'] = (
             datetime.datetime.utcnow() +
             datetime.timedelta(hours=12)
         )
+
+    def on_insert(self, item):
+        super(UserToken, self).on_insert(item)
+        item['token'] = str(uuid4())
 
     def on_inserted(self, item):
         Activity.post_internal({

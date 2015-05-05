@@ -1789,6 +1789,10 @@ users = {
             'default': 'user',
             # chmod 600
         },
+        'pnj': {
+            'type': 'boolean',
+            'default': False,
+        },
         'gravatar_hash': {
             'type': 'string',
             'readonly': True,
@@ -1819,12 +1823,14 @@ users = {
                     'password_salt': 0,
                     'student_id': 0,
                     'visibility': 0,
+                    'pnj': 0,
                 },
                 'filter': {
-                    # 'role': {'$in': ['user', 'moderator']},
+                    'role': 'user',
                     'active': True,
+                    # 'blocked': False,
                     # 'visibility': 'public',
-                    'role': {'$nin': ['level-server']},
+                    # 'pnj': False,
                 },
             },
             'public_methods': [],
@@ -1840,6 +1846,7 @@ users = {
                     'password_salt': 0,
                     'myself': 0,
                     'active': 0,
+                    'pnj': 0,
                     '_schema_version': 0,
                 }
             },
@@ -1848,6 +1855,25 @@ users = {
             'allowed_item_read_roles': ['user', 'admin'],
             'allowed_write_roles': ['user', 'admin'],
             'allowed_item_write_roles': ['user', 'admin'],
+        },
+        'pnjs': {
+            'datasource': {
+                'source': 'raw-users',
+                'projection': {
+                    'email_verification_token': 0,
+                    'password_salt': 0,
+                    'password': 0,
+                    '_schema_version': 0,
+                },
+                'filter': {
+                    # 'pnj': True,
+                },
+            },
+            'auth_field': 'myself',
+            'allowed_read_roles': ['admin'],
+            'allowed_item_read_roles': ['admin'],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_write_roles': ['admin'],
         },
     },
 }
