@@ -36,7 +36,10 @@ PUBLIC_ITEM_METHODS = []
 
 
 # CORS HEADERS
-X_DOMAINS = '*'
+# X_DOMAINS = '*'
+X_DOMAINS = os.environ.get('X_DOMAINS', '*').strip().split(',')
+if len(X_DOMAINS) == 1:
+    X_DOMAINS = X_DOMAINS[0]
 X_HEADERS = ['Content-Type', 'If-Match', 'Authorization']
 X_EXPOSE_HEADERS = ['Content-Length', 'Content-Type']
 
