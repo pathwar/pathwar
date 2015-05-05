@@ -5,6 +5,11 @@ import urllib
 
 from flask import current_app
 
+
+def field_changed(field, payload, original):
+    return field in payload and payload[field] != original[field]
+
+
 def request_get_user(request):
     auth = request.authorization
     if auth.get('username'):
@@ -36,6 +41,7 @@ def request_get_user(request):
                     .db['raw-users'] \
                     .find_one({'_id': user_token['user']})
     return None
+
 
 def is_restricted_word(input_):
     input_ = input_.lower()
@@ -244,6 +250,7 @@ def is_restricted_word(input_):
     )
     return input_ in restricted_words
 
+
 def generate_name(sep='-'):
     """ Python port of github.com/docker/docker names-generator.go
     """
@@ -389,6 +396,7 @@ def generate_name(sep='-'):
         "yonath",
     ]
     return random.choice(left) + sep + random.choice(right)
+
 
 def check_blacklisted_email(email):
     domain = email.split('@')[1]

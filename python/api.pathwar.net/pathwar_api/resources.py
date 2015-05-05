@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 achievements = {
     'item_title': 'achievement',
 
@@ -1117,7 +1116,12 @@ organizations = {
             'required': True,
             'unique': True,
             'minlength': 3,
-            'maxlength': 32,
+            'maxlength': 48,
+        },
+        'last_name': {
+            'type': 'string',
+            'nullable': True,
+            'readonly': True,
         },
         'session': {
             'type': 'uuid',
@@ -1166,10 +1170,11 @@ organizations = {
             'datasource': {
                 'source': 'raw-organizations',
                 'projection': {
-                    'gravatar_email': 0,
                     '_schema_version': 0,
-                    'visibility': 0,
+                    'gravatar_email': 0,
+                    'last_name': 0,
                     'owner': 0,
+                    'visibility': 0,
                 },
                 'filter': {
                     'visibility': 'public',
@@ -1187,6 +1192,8 @@ organizations = {
                     '_schema_version': 0,
                 },
             },
+            'allowed_write_roles': [],
+            'allowed_item_write_roles': ['user'],
         },
     },
 }

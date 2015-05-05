@@ -17,7 +17,7 @@ from validate_email import validate_email
 
 from utils import (
     request_get_user, generate_name, is_restricted_word,
-    check_blacklisted_email
+    check_blacklisted_email, field_changed,
 )
 from mail import mail, send_mail
 from resources import BASE_RESOURCES
@@ -760,6 +760,36 @@ class Organization(BaseModel):
             'organization': organization_id,
             'user': user_id,
         })
+
+    def on_update(self, item, original):
+        organization = Organization.get_by_id(original['_id'])
+        myself = request_get_user(flask_request)
+        if organization['owner'] != myself['_id']:
+            abort(422, "Only the team leader can update the organization")
+
+        if 'name' in item:
+            item['name'] = item['name'].strip()
+
+        if 'name' in item and item['name'] != original['name']:
+            if original.get('last_name'):
+                abort(422, "You can change your team name only 1 time")
+
+            if original['session'] == Session.world_session()['_id']:
+                abort(422, "You cannot change your team name on world session")
+
+            if Organization.find_one({'name': item['name']}):
+                abort(422, "Name already taken")
+            if User.find_one({'login': item['name']}):
+                abort(422, "Name already taken")
+
+            item['last_name'] = original['name']
+
+        if field_changed('owner', item, original):
+            abort(422, 'Changing owner is not yet implemented')
+
+        for field in ('session', 'statistics', 'gravatar_hash'):
+            if field_changed(field, item, original):
+                abort(422, "Changing field {} is forbidden".format(field))
 
     def on_pre_post_item(self, request, item):
         myself = request_get_user(request)
