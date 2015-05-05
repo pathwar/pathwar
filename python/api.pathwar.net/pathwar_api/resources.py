@@ -33,12 +33,12 @@ coupons = {
     # collection
     'resource_methods': ['GET', 'POST'],
     'public_methods': [],
-    'allowed_read_roles': ['moderator', 'admin'],
-    'allowed_write_roles': ['moderator', 'admin'],
+    'allowed_read_roles': ['moderator', 'admin', 'm1ch3l'],
+    'allowed_write_roles': ['moderator', 'admin', 'm1ch3l'],
     # item
     'item_methods': ['GET', 'PATCH'],
     'public_item_methods': [],
-    'allowed_item_read_roles': ['moderator', 'admin'],
+    'allowed_item_read_roles': ['moderator', 'admin', 'm1ch3l'],
     'allowed_item_write_roles': ['moderator', 'admin'],
 
     'schema': {
@@ -1362,7 +1362,7 @@ activities = {
                 },
             },
             'public_methods': [],
-            'allowed_read_roles': ['user', 'moderator', 'admin'],
+            'allowed_read_roles': ['user', 'moderator', 'admin', 'm1ch3l'],
             'allowed_item_read_roles': ['user', 'moderator', 'admin'],
             'allowed_write_roles': [],
             'allowed_item_write_roles': [],
@@ -1782,7 +1782,10 @@ users = {
         },
         'role': {
             'type': 'string',
-            'allowed': ['user', 'level-server', 'moderator', 'admin'],
+            'allowed': [
+                'user', 'level-server', 'moderator', 'admin', 'm1ch3l',
+                'authproxy', 'hypervisor',
+            ],
             'default': 'user',
             # chmod 600
         },
