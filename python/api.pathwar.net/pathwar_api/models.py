@@ -393,6 +393,22 @@ If you received this email by mistake, simply delete it. You won't be subscribed
         )
 
 
+class Task(BaseModel):
+    resource = 'tasks'
+
+    def on_pre_post_item(self, request, item):
+        # FIXME: check for input
+        pass
+
+    def on_insert(self, item):
+        super(Task, self).on_insert(item)
+        item['status'] = 'pending'
+        item['author'] = request_get_user(flask_request)['_id']
+
+    def on_inserted(self, item):
+        current_app.logger.warn(item)
+
+
 class User(BaseModel):
     resource = 'users'
     search_fields = ['_id', 'login', 'email']
@@ -1479,7 +1495,6 @@ base_models = [
     Level,
     LevelHint,
     LevelInstance,
-    LevelInstance,
     LevelInstanceUser,
     LevelStatistics,
     Organization,
@@ -1494,8 +1509,7 @@ base_models = [
     PasswordRecoverRequest,
     Server,
     Session,
-    User,
-    User,
+    Task,
     User,
     UserHijackProof,
     UserNotification,

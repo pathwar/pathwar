@@ -2006,6 +2006,44 @@ whoswho_attempts = {
 }
 
 
+tasks = {
+    'item_title': 'task',
+    'resource_title': 'tasks',
+
+    # collection
+    'resource_methods': ['GET', 'POST'],
+    'public_methods': [],
+    'allowed_read_roles': ['admin'],
+    'allowed_write_roles': ['admin'],
+    # item
+    'item_methods': ['GET'],
+    'public_item_methods': [],
+    'allowed_item_read_roles': ['admin'],
+    'allowed_item_write_roles': ['admin'],
+
+    'schema': {
+        'name': {
+            'type': 'string',
+            'required': True,
+        },
+        'status': {
+            'type': 'string',
+            'default': 'pending',
+            'allowed': ['pending', 'failed', 'succeed'],
+            'readonly': True,
+        },
+        'author': {
+            'type': 'uuid',
+            'data_relation': {
+                'resource': 'raw-users',
+                'field': '_id',
+                'embeddable': False,
+            },
+        },
+    },
+}
+
+
 DOMAIN = {}
 
 
@@ -2037,6 +2075,7 @@ BASE_RESOURCES = {
     'user-organization-invites': user_organization_invites,
     'user-tokens': user_tokens,
     'users': users,
+    'tasks': tasks,
     'whoswho-attempts': whoswho_attempts,
 }
 
