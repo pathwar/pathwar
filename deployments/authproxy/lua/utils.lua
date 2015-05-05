@@ -1,5 +1,5 @@
 local conf = require('auth_conf')
-local http = require('socket.http')
+local https = require('ssl.https')
 local json = require('cjson.safe')
 local cache = require('shcache')
 
@@ -42,7 +42,7 @@ local function api_request(endpoint, where, embedded)
    if DEBUG then
       ngx.say(request)
    end
-   r,c,q = http.request(request)
+   r,c,q = https.request(request)
    if c ~= 200 then
       ngx.log(ngx.ERR, string.format("Bad response from API (%s) for request : %s",c, request))
       ngx.exit(ngx.HTTP_INTERNAL_SERVER_ERROR)
