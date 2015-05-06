@@ -114,6 +114,12 @@ class BaseModel(object):
         )
 
     @classmethod
+    def update(cls, where, data, upsert=False, multi=False):
+        return current_app.data.driver.db[cls.mongo_resource()].update(
+            where, data, upsert=upsert, multi=multi
+        )
+
+    @classmethod
     def find(cls, lookup, projection=None):
         return list(current_app.data.driver.db[cls.mongo_resource()].find(
             lookup, projection
@@ -231,6 +237,31 @@ class OrganizationUser(BaseModel):
     def get_by_user(cls, user_id):
         return cls.find({
             'user': user_id,
+        })
+
+    def on_update(self, item, original):
+        myself = request_get_user(flask_request)
+        organization_user = OrganizationUser.get_by_id(original['_id'])
+        organization = Organization.get_by_id(
+            organization_user['organization']
+        )
+        #if (organization['owner'] != myself['_id']
+        #    and myself['role'] != 'admin'):
+        #    abort(422, 'Only team owner can make this change')
+
+        # Remove current owner
+        OrganizationUser.update({
+            'organization': organization['_id'],
+            'role': 'owner'
+        }, {
+            '$set': {
+                'role': 'pwner'
+            },
+        }, multi=True)
+        Organization.update_by_id(organization['_id'], {
+            '$set': {
+                'owner': organization_user['user']
+            }
         })
 
     def on_pre_get(self, request, lookup):

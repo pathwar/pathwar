@@ -1043,8 +1043,8 @@ organization_users = {
                 },
             },
             'public_methods': [],
-            'allowed_write_roles': ['user'],
-            'allowed_item_write_roles': [],
+            'allowed_write_roles': ['admin'],
+            'allowed_item_write_roles': ['user', 'admin'],
         },
     },
 }
