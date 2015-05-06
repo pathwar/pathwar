@@ -7,7 +7,13 @@ from flask import current_app
 
 
 def field_changed(field, payload, original):
-    return field in payload and payload[field] != original[field]
+    if field not in payload:
+        return False
+
+    if not field in original:
+        return True
+
+    return payload[field] != original[field]
 
 
 def request_get_user(request):

@@ -245,9 +245,9 @@ class OrganizationUser(BaseModel):
         organization = Organization.get_by_id(
             organization_user['organization']
         )
-        #if (organization['owner'] != myself['_id']
-        #    and myself['role'] != 'admin'):
-        #    abort(422, 'Only team owner can make this change')
+        if (organization['owner'] != myself['_id']
+            and myself['role'] != 'admin'):
+            abort(422, 'Only team owner can make this change')
 
         # Remove current owner
         OrganizationUser.update({
