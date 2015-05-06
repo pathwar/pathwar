@@ -470,12 +470,12 @@ levels = {
     # collection
     'resource_methods': ['GET', 'POST'],
     'public_methods': [],
-    'allowed_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_read_roles': ['user', 'moderator', 'm1ch3l', 'admin'],
     'allowed_write_roles': ['admin'],
     # item
     'item_methods': ['GET', 'PATCH'],
     'public_item_methods': [],
-    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_read_roles': ['user', 'm1ch3l', 'moderator', 'admin'],
     'allowed_item_write_roles': ['admin'],
 
     'schema': {
@@ -1104,12 +1104,12 @@ organizations = {
     # collection
     'resource_methods': ['GET', 'POST'],
     'public_methods': [],
-    'allowed_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_read_roles': ['user', 'm1ch3l', 'moderator', 'admin'],
     'allowed_write_roles': ['user', 'moderator', 'admin'],
     # item
     'item_methods': ['GET', 'PATCH'],
     'public_item_methods': [],
-    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_read_roles': ['user', 'm1ch3l', 'moderator', 'admin'],
     'allowed_item_write_roles': ['admin'],
 
     'schema': {
@@ -1844,9 +1844,10 @@ users = {
                 },
             },
             'public_methods': [],
-            'allowed_read_roles': ['user', 'admin'],
-            'allowed_item_read_roles': ['user', 'admin'],
+            'allowed_read_roles': ['user', 'm1ch3l', 'admin'],
+            'allowed_item_read_roles': ['user', 'm1ch3l', 'admin'],
             'allowed_item_write_roles': [],
+            'allowed_write_roles': [],
         },
         'accounts': {
             'cache_control': 'private, no-cache, no-store, must-revalidate',
