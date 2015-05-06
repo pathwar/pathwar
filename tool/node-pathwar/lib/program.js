@@ -156,6 +156,9 @@ program
     var client = utils.newApi(options);
 
     // FIXME: resolve nested fields
+    if (item[item.length - 1] == '/') {
+      utils.panic("invalid item '" + item + "'");
+    }
     utils.searchItems(item, client, function(items) {
       _.forEach(items, function(item) {
         if (options.trunc) {
