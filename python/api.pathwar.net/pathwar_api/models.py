@@ -764,6 +764,10 @@ class Organization(BaseModel):
     def on_update(self, item, original):
         organization = Organization.get_by_id(original['_id'])
         myself = request_get_user(flask_request)
+
+        if not Organization.has_user(organization['_id'], myself['_id']):
+            abort(422, "You cannot validate a level for another organization")
+
         if organization['owner'] != myself['_id']:
             abort(422, "Only the team leader can update the organization")
 
@@ -790,6 +794,11 @@ class Organization(BaseModel):
         for field in ('session', 'statistics', 'gravatar_hash'):
             if field_changed(field, item, original):
                 abort(422, "Changing field {} is forbidden".format(field))
+
+        if field_changed('gravatar_email', item, original):
+            item['gravatar_hash'] = md5.new(
+                item['gravatar_email'].lower().strip()
+            ).hexdigest()
 
     def on_pre_post_item(self, request, item):
         myself = request_get_user(request)
