@@ -1374,6 +1374,16 @@ class OrganizationCoupon(BaseModel):
         )
 
     def on_inserted(self, item):
+        Activity.post_internal({
+            'organization': item['organization'],
+            'action': 'organization-coupon-create',
+            'category': 'coupons',
+            'public': True,
+            'linked_resources': [
+                {'kind': 'organizations', 'id': item['organization']},
+            ],
+        })
+
         members = User.get_by_organization_id(item['organization'])
         for user in members:
             UserNotification.post_internal({
