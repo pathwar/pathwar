@@ -126,6 +126,10 @@ class BaseModel(object):
         ))
 
     @classmethod
+    def all(cls):
+        return list(current_app.data.driver.db[cls.mongo_resource()].find())
+
+    @classmethod
     def find_one(cls, lookup, projection=None):
         return current_app.data.driver.db[cls.mongo_resource()].find_one(
             lookup, projection
@@ -397,8 +401,11 @@ class Task(BaseModel):
     resource = 'tasks'
 
     def on_pre_post_item(self, request, item):
-        # FIXME: check for input
-        pass
+        if 'name' not in item:
+            abort(422, 'name is required')
+
+        if item['name'] not in current_app.jobs:
+            abort(422, 'unknown job')
 
     def on_insert(self, item):
         super(Task, self).on_insert(item)
@@ -407,6 +414,8 @@ class Task(BaseModel):
 
     def on_inserted(self, item):
         current_app.logger.warn(item)
+        job = current_app.jobs[item['name']](item['_id'])
+        job.call()
 
 
 class User(BaseModel):

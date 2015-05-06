@@ -9,6 +9,7 @@ from seeds import db_reset, db_init, db_seed
 from tools import bp_tools
 from mail import mail, send_mail
 from hooks import setup_hooks
+from jobs import setup_jobs
 
 
 def eve_init():
@@ -21,6 +22,9 @@ def eve_init():
 
     # mail
     mail.init_app(app)
+
+    # jobs
+    setup_jobs(app)
 
     # hooks
     setup_hooks(app)
