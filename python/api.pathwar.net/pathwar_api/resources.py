@@ -1185,7 +1185,8 @@ organizations = {
             'allowed_item_write_roles': ['admin'],
         },
         'teams': {
-            # FIXME: enable user PATCH
+            'cache_control': 'private, no-cache, no-store, must-revalidate',
+            'item_methods': ['GET', 'PATCH'],
             'datasource': {
                 'source': 'raw-organizations',
                 'projection': {
@@ -1846,6 +1847,7 @@ users = {
             'allowed_item_write_roles': [],
         },
         'accounts': {
+            'cache_control': 'private, no-cache, no-store, must-revalidate',
             'datasource': {
                 'source': 'raw-users',
                 'projection': {
