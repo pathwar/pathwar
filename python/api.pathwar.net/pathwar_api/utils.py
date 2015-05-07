@@ -3,7 +3,7 @@
 import random
 import urllib
 
-from flask import current_app
+from flask import current_app, abort
 
 
 def check_request_item(request, item):
