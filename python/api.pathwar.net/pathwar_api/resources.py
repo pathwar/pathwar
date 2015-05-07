@@ -1195,7 +1195,7 @@ organizations = {
                     '_schema_version': 0,
                 },
             },
-            'allowed_write_roles': [],
+            'allowed_write_roles': ['user'],
             'allowed_item_write_roles': ['user'],
         },
     },
