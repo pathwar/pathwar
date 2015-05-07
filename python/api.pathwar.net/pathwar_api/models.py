@@ -248,19 +248,22 @@ class OrganizationUser(BaseModel):
         if (organization['owner'] != myself['_id']
             and myself['role'] != 'admin'):
             abort(422, 'Only team owner can make this change')
+        new_owner = User.get_by_id(organization_user['user'])
+        if new_owner.get('blocked'):
+            abort(422, "This user is blocked")
 
         # Remove current owner
         OrganizationUser.update({
             'organization': organization['_id'],
-            'role': 'owner'
+            'role': 'owner',
         }, {
             '$set': {
-                'role': 'pwner'
+                'role': 'pwner',
             },
         }, multi=True)
         Organization.update_by_id(organization['_id'], {
             '$set': {
-                'owner': organization_user['user']
+                'owner': new_owner['_id'],
             }
         })
 
