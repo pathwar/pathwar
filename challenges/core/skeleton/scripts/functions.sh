@@ -17,6 +17,11 @@ run_script() {
     fi
 }
 
+# Random helpers
+get_uuid() {
+    cat /proc/sys/kernel/random/uuid
+}
+
 # Passphrase helpers
 get_passphrase() {
     key="${1}"
