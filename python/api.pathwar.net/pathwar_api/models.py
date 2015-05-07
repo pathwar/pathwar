@@ -545,7 +545,7 @@ If you received this email by mistake, simply delete it. You won't be subscribed
     def on_pre_post_item(self, request, item):
         if request.path.split('/')[1] == 'pnjs':
             item['pnj'] = True
-        return
+            return
 
         if 'password' not in item:
             abort(422, "Missing password")
@@ -563,14 +563,14 @@ If you received this email by mistake, simply delete it. You won't be subscribed
         if check_blacklisted_email(item['email']):
             abort(422, "Bad email")
 
-        existing_user = User.find_one({
-            '$or': [
-                {'login': item['login']},
-                {'email': item['email']},
-            ]
-        })
-        if existing_user:
-            abort(422, "Login or email already taken")
+        if User.find_one({
+            'login': item['login'],
+        }):
+            abort(422, 'Login is already taken')
+        if User.find_one({
+            'email': item['email'],
+        }):
+            abort(422, 'Password is already taken')
 
     def on_pre_get(self, request, lookup):
         # Handle users/me
