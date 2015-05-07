@@ -1,6 +1,8 @@
 python-pathwar
 ==============
 
+:warning: THIS IS JUST A PLACEHOLDER, THE CODE IS NOT YET WORKING :warning:
+
 Pathwar API client in Python
 
 Examples
