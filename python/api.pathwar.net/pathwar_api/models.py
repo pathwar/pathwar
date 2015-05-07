@@ -570,7 +570,7 @@ If you received this email by mistake, simply delete it. You won't be subscribed
         if User.find_one({
             'email': item['email'],
         }):
-            abort(422, 'Password is already taken')
+            abort(422, 'Email is already taken')
 
     def on_pre_get(self, request, lookup):
         # Handle users/me
