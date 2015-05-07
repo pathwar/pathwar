@@ -17,7 +17,7 @@ from validate_email import validate_email
 
 from utils import (
     request_get_user, generate_name, is_restricted_word,
-    check_blacklisted_email, field_changed,
+    check_blacklisted_email, field_changed, check_request_item,
 )
 from mail import mail, send_mail
 from resources import BASE_RESOURCES
@@ -148,7 +148,7 @@ class BaseModel(object):
         pass
 
     def on_pre_post_item(self, request, item):
-        pass
+        check_request_item(request, item)
 
     def on_pre_post(self, request):
         data = request.get_json()
@@ -298,6 +298,8 @@ class PasswordRecoverRequest(BaseModel):
     resource = 'password-recover-requests'
 
     def on_pre_post_item(self, request, item):
+        check_request_item(request, item)
+
         if 'password' not in item:
             abort(422, "Missing password")
         if 'email' not in item:
@@ -543,6 +545,8 @@ If you received this email by mistake, simply delete it. You won't be subscribed
             item['last_login'] = original['login']
 
     def on_pre_post_item(self, request, item):
+        check_request_item(request, item)
+
         if request.path.split('/')[1] == 'pnjs':
             item['pnj'] = True
             return
@@ -604,6 +608,8 @@ class UserOrganizationInvite(BaseModel):
             ]
 
     def on_pre_post_item(self, request, item):
+        check_request_item(request, item)
+
         # Prepare input
         invited_user = User.resolve_input(item, 'user')
         organization = Organization.resolve_input(item, 'organization')
@@ -741,6 +747,8 @@ class UserToken(BaseModel):
     resource = 'user-tokens'
 
     def on_pre_post_item(self, request, item):
+        check_request_item(request, item)
+
         # Handle login
         user = request_get_user(request)
         if not user:
@@ -832,6 +840,8 @@ class Organization(BaseModel):
             ).hexdigest()
 
     def on_pre_post_item(self, request, item):
+        check_request_item(request, item)
+
         myself = request_get_user(request)
         session = Session.resolve_input(item, 'session')
 
@@ -927,6 +937,8 @@ class OrganizationLevel(BaseModel):
             }
 
     def on_pre_post_item(self, request, item):
+        check_request_item(request, item)
+
         if 'organization' not in item:
             abort(422, "Missing organization")
         if 'level' not in item:
@@ -1043,6 +1055,8 @@ class OrganizationLevelValidation(BaseModel):
             }
 
     def on_pre_post_item(self, request, item):
+        check_request_item(request, item)
+
         # Checking for mandatory fields
         if 'organization_level' not in item:
             abort(422, "Missing organization_level")
@@ -1179,6 +1193,8 @@ class Level(BaseModel):
     resource = 'levels'
 
     def on_pre_post_item(self, request, item):
+        check_request_item(request, item)
+
         if 'availability' in item:
             if 'sessions' in item['availability']:
                 item['availability']['sessions'] = Session.resolve_list(
@@ -1218,6 +1234,8 @@ class LevelInstance(BaseModel):
     resource = 'level-instances'
 
     def on_pre_post_item(self, request, item):
+        check_request_item(request, item)
+
         if 'name' not in item:
             item['name'] = generate_name()
 
@@ -1226,6 +1244,8 @@ class LevelInstanceUser(BaseModel):
     resource = 'level-instance-users'
 
     def on_pre_post_item(self, request, item):
+        check_request_item(request, item)
+
         item['expiry_date'] = datetime.datetime.utcnow() + \
                               datetime.timedelta(hours=12)
 
@@ -1330,6 +1350,8 @@ class OrganizationCoupon(BaseModel):
             }
 
     def on_pre_post_item(self, request, item):
+        check_request_item(request, item)
+
         if 'coupon' not in item:
             abort(422, "Missing coupon")
 

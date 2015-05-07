@@ -6,6 +6,11 @@ import urllib
 from flask import current_app
 
 
+def check_request_item(request, item):
+    if not item:
+        abort(422, 'Invalid data')
+
+
 def field_changed(field, payload, original):
     if field not in payload:
         return False
