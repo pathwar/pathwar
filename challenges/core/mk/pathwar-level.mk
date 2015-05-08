@@ -13,11 +13,17 @@ SECTIONS ?=	$(shell cat $(CONFIG) | grep -E '^[a-z]' | cut -d: -f1)
 MAIN_SECTION ?=	$(shell echo $(SECTIONS) | cut -d\  -f1)
 MAIN_CID :=	$(shell $(DOCKER_COMPOSE) ps -q $(MAIN_SECTION))
 EXEC_MAIN_SECTION :=	docker exec -it $(MAIN_CID)
+MYSQL_CID :=	$(shell $(DOCKER_COMPOSE) ps -q mysql)
+MYSQL_IP :=	$(shell docker inspect -f '{{ .NetworkSettings.IPAddress }}' $(MYSQL_CID))
 
 
 ## Actions
 all: up ps logs
 .PHONY: all build run shell package publish_on_s3 info
+
+
+shellmysql:
+	docker run -it --rm orchardup/mysql mysql -h$(MYSQL_IP)
 
 
 info: before
