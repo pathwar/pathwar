@@ -1,3 +1,4 @@
+CONFIG ?=	docker-compose.yml
 SERVICES ?=	$(shell cat docker-compose.yml | grep '^[a-z]' | cut -d: -f1)
 # By default $(SERVICE) is the first service in docker-compose.yml
 SERVICE ?=	$(shell echo $(SERVICES) | tr " " "\n" | head -1)
@@ -6,16 +7,20 @@ PACKAGE_NAME ?=	package-$(shell basename $(shell pwd)).tar
 EXCLUDES ?=	$(PACKAGE_NAME) .git
 ASSETS ?=	$(filter-out $(EXCLUDES),$(wildcard *))
 PKGLVL ?=	/tmp/package_level
-DOCKER_COMPOSE ?=	docker-compose
+DOCKER_COMPOSE ?=	docker-compose -p$(USER)_$(shell basename $(shell pwd) | sed 's/[^a-z]//g')
 S3CMD ?=	s3cmd
+SECTIONS ?=	$(shell cat $(CONFIG) | grep -E '^[a-z]' | cut -d: -f1)
+MAIN_SECTION ?=	$(shell echo $(SECTIONS) | cut -d\  -f1)
+MAIN_CID :=	$(shell $(DOCKER_COMPOSE) ps -q $(MAIN_SECTION))
+EXEC_MAIN_SECTION :=	docker exec -it $(MAIN_CID)
 
 
 ## Actions
-all: build
+all: up
 .PHONY: all build run shell package publish_on_s3 info
 
 
-info:
+info: before
 	@echo "ASSETS:        $(ASSETS)"
 	@echo "EXLUDES:       $(EXCLUDES)"
 	@echo "PACKAGE_NAME:  $(PACKAGE_NAME)"
@@ -24,20 +29,28 @@ info:
 	@echo "SERVICES:      $(SERVICES)"
 
 
-build:
-	$(DOCKER_COMPOSE) build
+before::
 
 
-run:
-	$(DOCKER_COMPOSE) kill
-	$(DOCKER_COMPOSE) stop
-	$(DOCKER_COMPOSE) up -d
-	$(DOCKER_COMPOSE) ps
-	$(DOCKER_COMPOSE) logs
+kill stop rm:: before
+	$(DOCKER_COMPOSE) kill $(SECTIONS)
+	$(DOCKER_COMPOSE) stop $(SECTIONS)
+	$(DOCKER_COMPOSE) rm --force $(SECTIONS)
+
+
+re:: stop up
+
+
+up:: before
+	$(DOCKER_COMPOSE) up --no-recreate -d $(SECTIONS)
 
 
 shell:
 	$(DOCKER_COMPOSE) run $(SERVICE) /bin/bash
+
+
+shellexec:: before
+	$(EXEC_MAIN_SECTION) bash
 
 
 ## Package
@@ -51,6 +64,15 @@ package: $(PACKAGE_NAME)
 
 $(PACKAGE_NAME): $(PKGLVL) $(ASSETS)
 	$(PKGLVL) build
+
+
+build ps:: before
+	$(DOCKER_COMPOSE) $@
+
+
+logs:: up
+	$(DOCKER_COMPOSE) $@ $(SECTIONS)
+
 
 
 publish_on_s3: $(PACKAGE)
