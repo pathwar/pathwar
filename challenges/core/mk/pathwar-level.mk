@@ -6,6 +6,8 @@ PACKAGE_NAME ?=	package-$(shell basename $(shell pwd)).tar
 EXCLUDES ?=	$(PACKAGE_NAME) .git
 ASSETS ?=	$(filter-out $(EXCLUDES),$(wildcard *))
 PKGLVL ?=	/tmp/package_level
+DOCKER_COMPOSE ?=	docker-compose
+S3CMD ?=	s3cmd
 
 
 ## Actions
@@ -23,19 +25,19 @@ info:
 
 
 build:
-	docker-compose build
+	$(DOCKER_COMPOSE) build
 
 
 run:
-	docker-compose kill
-	docker-compose stop
-	docker-compose up -d
-	docker-compose ps
-	docker-compose logs
+	$(DOCKER_COMPOSE) kill
+	$(DOCKER_COMPOSE) stop
+	$(DOCKER_COMPOSE) up -d
+	$(DOCKER_COMPOSE) ps
+	$(DOCKER_COMPOSE) logs
 
 
 shell:
-	docker-compose run $(SERVICE) /bin/bash
+	$(DOCKER_COMPOSE) run $(SERVICE) /bin/bash
 
 
 ## Package
@@ -53,8 +55,8 @@ $(PACKAGE_NAME): $(PKGLVL) $(ASSETS)
 
 publish_on_s3: $(PACKAGE)
 	$(eval RAND := $(shell head -c 128 /dev/urandom | tr -dc A-Za-z0-9))
-	s3cmd put --acl-public $(PACKAGE_NAME) $(S3_URL)/$(RAND).tar
-	s3cmd info $(S3_URL)/$(RAND).tar | grep URL | awk '{print $$2}'
+	$(S3CMD) put --acl-public $(PACKAGE_NAME) $(S3_URL)/$(RAND).tar
+	$(S3CMD) info $(S3_URL)/$(RAND).tar | grep URL | awk '{print $$2}'
 
 
 ## Travis
@@ -74,4 +76,4 @@ travis_run:
 
 travis_run_service:
 	# ./run is a wrapper to allow travis to run docker commands
-	./run docker-compose run $(SERVICE) /bin/bash -d 'echo OK'
+	./run $(DOCKER_COMPOSE) run $(SERVICE) /bin/bash -d 'echo OK'
