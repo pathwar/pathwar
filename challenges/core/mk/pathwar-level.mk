@@ -16,7 +16,7 @@ EXEC_MAIN_SECTION :=	docker exec -it $(MAIN_CID)
 
 
 ## Actions
-all: up
+all: up ps logs
 .PHONY: all build run shell package publish_on_s3 info
 
 
