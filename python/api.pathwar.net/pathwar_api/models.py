@@ -401,10 +401,10 @@ class Task(BaseModel):
     resource = 'tasks'
 
     def on_pre_post_item(self, request, item):
-        if 'name' not in item:
-            abort(422, 'name is required')
+        if 'job' not in item:
+            abort(422, 'job is required')
 
-        if item['name'] not in current_app.jobs:
+        if item['job'] not in current_app.jobs:
             abort(422, 'unknown job')
 
     def on_insert(self, item):
@@ -414,7 +414,7 @@ class Task(BaseModel):
 
     def on_inserted(self, item):
         current_app.logger.warn(item)
-        job = current_app.jobs[item['name']](item['_id'])
+        job = current_app.jobs[item['job']](item['_id'])
         job.call()
 
 

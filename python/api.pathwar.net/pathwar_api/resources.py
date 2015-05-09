@@ -2022,9 +2022,15 @@ tasks = {
     'allowed_item_write_roles': ['admin'],
 
     'schema': {
-        'name': {
+        'job': {
             'type': 'string',
             'required': True,
+        },
+        'args': {
+            'type': 'list',
+        },
+        'duration': {
+            'type': 'float',
         },
         'status': {
             'type': 'string',
