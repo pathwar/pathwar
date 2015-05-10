@@ -37,7 +37,7 @@ program
   .option('-l, --limit <max_results>', 'limit results to <max_results> items', 50)
   .option('-p, --page <page>', 'use page <page>', 1)
   .option('-a, --all', 'automatically walk paginated results')
-  .option('-o, --order <field>', 'order by <field>', '-_updated')
+  .option('-o, --order <field>', 'order by <field>', '@_updated')
   .action(function(type, conditions, options) {
     var client = utils.newApi(options);
 
@@ -54,7 +54,7 @@ program
     }
 
     if (options.order) {
-      query['sort'] = options.order;
+      query['sort'] = options.order.replace('@', '-');
     }
 
     var url = '/' + type + '?';
