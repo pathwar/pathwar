@@ -85,10 +85,7 @@ class UpdateStatsJob(Job):
 
     def run(self):
         # global statistics
-        gs = {
-            'level_bought': 0,
-            'level_finished': 0,
-        }
+        gs = {}
         gs['users'] = User.count({'active': True})
         # FIXME: remove beta levels
         gs['achievements'] = Achievement.count()
@@ -108,7 +105,7 @@ class UpdateStatsJob(Job):
         gs['organizations'] = Organization.count()
 
         last_record = GlobalStatistics.last_record()
-        if not all(item in last_record.items()
+        if not last_record or not all(item in last_record.items()
                    for item in gs.items()):
             GlobalStatistics.post_internal(gs)
 
