@@ -118,7 +118,8 @@ program
               break;
 
             default:
-              var value = (item[key] || '').toString();
+              var value = (item[key] === undefined || item[key] === null)
+                ? '' : item[key].toString();
 
               if (validator.isUUID(value)) {
                 value = utils.truncateUUID(value, options.trunc);
