@@ -14,6 +14,7 @@ from models import (
     OrganizationStatistics,
     Session,
     Task,
+    User,
     UserToken,
 )
 
@@ -81,6 +82,10 @@ class UpdateStatsJob(Job):
             'level_bought': 0,
             'level_finished': 0,
         }
+        global_statistics['users'] = User.count({'active': True})
+        # FIXME: remove beta levels
+        global_statistics['levels'] = Level.count()
+        global_statistics['organizations'] = Organization.count()
 
         # level statistics
         levels = Level.all()

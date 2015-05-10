@@ -448,6 +448,9 @@ global_statistics = {
     'schema': {
         'level_bought': { 'type': 'integer', 'default': 0 },
         'level_finished': { 'type': 'integer', 'default': 0 },
+        'levels': { 'type': 'integer', 'default': 0 },
+        'organizations': { 'type': 'integer', 'default': 0 },
+        'users': { 'type': 'integer', 'default': 0 },
     },
 }
 
