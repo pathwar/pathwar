@@ -75,8 +75,27 @@ class UpdateStatsJob(Job):
     name = 'update-stats'
 
     def run(self):
+        # level statistics
+        levels = Level.all()
+        for level in levels:
+            current_app.logger.warn(level)
+            LevelStatistics.update_by_id(level['statistics'], {
+                '$set': {
+                    'amount_bought': OrganizationLevel.count({
+                        'level': level['_id'],
+                    }),
+                    'amount_finished': OrganizationLevel.count({
+                        'level': level['_id'],
+                        'status': {
+                            '$in': ['pending validation'],
+                        },
+                    }),
+                },
+            })
+
+        return
+
         sessions = Session.all()
-        # levels = Level.all()
         for session in sessions:
             organization_levels = OrganizationLevel.find({
                 'session': session['_id'],
