@@ -429,6 +429,29 @@ level_instance_users = {
 }
 
 
+global_statistics = {
+    'item_title': 'global statistics',
+
+    # collection
+    'resource_methods': ['GET', 'POST'],
+    'public_methods': [],
+    'allowed_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_write_roles': ['admin'],
+    # item
+    'item_methods': ['GET', 'PATCH'],
+    'public_item_methods': [],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['admin'],
+
+    'cache_control': 'private, no-cache, no-store, must-revalidate',
+
+    'schema': {
+        'level_bought': { 'type': 'integer', 'default': 0 },
+        'level_finished': { 'type': 'integer', 'default': 0 },
+    },
+}
+
+
 level_statistics = {
     'item_title': 'level statistics',
 
@@ -2057,6 +2080,7 @@ BASE_RESOURCES = {
     'achievements': achievements,
     'activities': activities,
     'coupons': coupons,
+    'global-statistics': global_statistics,
     'infrastructure-hijacks': infrastructure_hijacks,
     'items': items,
     'level-hints': level_hints,

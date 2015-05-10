@@ -5,6 +5,7 @@ import datetime
 from flask import current_app
 
 from models import (
+    GlobalStatistics,
     Level,
     LevelInstanceUser,
     LevelStatistics,
@@ -75,23 +76,39 @@ class UpdateStatsJob(Job):
     name = 'update-stats'
 
     def run(self):
+        # global statistics
+        global_statistics = {
+            'level_bought': 0,
+            'level_finished': 0,
+        }
+
         # level statistics
         levels = Level.all()
         for level in levels:
-            current_app.logger.warn(level)
-            LevelStatistics.update_by_id(level['statistics'], {
-                '$set': {
-                    'amount_bought': OrganizationLevel.count({
-                        'level': level['_id'],
-                    }),
-                    'amount_finished': OrganizationLevel.count({
-                        'level': level['_id'],
-                        'status': {
-                            '$in': ['pending validation'],
-                        },
-                    }),
+            amount_bought = OrganizationLevel.count({
+                'level': level['_id'],
+            })
+            # FIXME: filter, only 1 by organization
+            amount_finished = OrganizationLevel.count({
+                'level': level['_id'],
+                'status': {
+                    '$in': ['pending validation'],
                 },
             })
+            global_statistics['level_bought'] += amount_bought
+            global_statistics['level_finished'] += amount_finished
+
+            LevelStatistics.update_by_id(level['statistics'], {
+                '$set': {
+                    'amount_bought': amount_bought,
+                    'amount_finished': amount_finished,
+                    # FIXME: fivestar average
+                    # FIXME: duration average
+                    # FIXME: amount hints bought
+                },
+            })
+
+        GlobalStatistics.post_internal(global_statistics)
 
         return
 
