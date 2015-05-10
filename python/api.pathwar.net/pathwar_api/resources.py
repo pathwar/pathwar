@@ -446,9 +446,14 @@ global_statistics = {
     'cache_control': 'private, no-cache, no-store, must-revalidate',
 
     'schema': {
+        'achievements': { 'type': 'integer', 'default': 0 },
+        'coupons': { 'type': 'integer', 'default': 0 },
+        'expired_coupons': { 'type': 'integer', 'default': 0 },
         'level_bought': { 'type': 'integer', 'default': 0 },
         'level_finished': { 'type': 'integer', 'default': 0 },
         'levels': { 'type': 'integer', 'default': 0 },
+        'organization_achievements': { 'type': 'integer', 'default': 0 },
+        'organization_coupons': { 'type': 'integer', 'default': 0 },
         'organizations': { 'type': 'integer', 'default': 0 },
         'users': { 'type': 'integer', 'default': 0 },
     },

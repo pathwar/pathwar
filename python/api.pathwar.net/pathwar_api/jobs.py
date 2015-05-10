@@ -5,11 +5,15 @@ import datetime
 from flask import current_app
 
 from models import (
+    Achievement,
+    Coupon,
     GlobalStatistics,
     Level,
     LevelInstanceUser,
     LevelStatistics,
     Organization,
+    OrganizationAchievement,
+    OrganizationCoupon,
     OrganizationLevel,
     OrganizationStatistics,
     Session,
@@ -78,14 +82,27 @@ class UpdateStatsJob(Job):
 
     def run(self):
         # global statistics
-        global_statistics = {
+        gs = {
             'level_bought': 0,
             'level_finished': 0,
         }
-        global_statistics['users'] = User.count({'active': True})
+        gs['users'] = User.count({'active': True})
         # FIXME: remove beta levels
-        global_statistics['levels'] = Level.count()
-        global_statistics['organizations'] = Organization.count()
+        gs['achievements'] = Achievement.count()
+        gs['expired_coupons'] = Coupon.count({
+            'validations_left': 0,
+        })
+        gs['coupons'] = Coupon.count()
+        gs['level_bought'] = OrganizationLevel.count()
+        gs['level_finished'] = OrganizationLevel.count({
+            'status': {
+                '$in': ['pending validation', 'validated'],
+            },
+        })
+        gs['levels'] = Level.count()
+        gs['organization_achievements'] = OrganizationAchievement.count()
+        gs['organization_coupons'] = OrganizationCoupon.count()
+        gs['organizations'] = Organization.count()
 
         # level statistics
         levels = Level.all()
@@ -97,11 +114,9 @@ class UpdateStatsJob(Job):
             amount_finished = OrganizationLevel.count({
                 'level': level['_id'],
                 'status': {
-                    '$in': ['pending validation'],
+                    '$in': ['pending validation', 'validated'],
                 },
             })
-            global_statistics['level_bought'] += amount_bought
-            global_statistics['level_finished'] += amount_finished
 
             LevelStatistics.update_by_id(level['statistics'], {
                 '$set': {
@@ -113,13 +128,6 @@ class UpdateStatsJob(Job):
                 },
             })
 
-        last_record = GlobalStatistics.last_record()
-        if not all(item in last_record.items()
-                   for item in global_statistics.items()):
-            GlobalStatistics.post_internal(global_statistics)
-
-        return
-
         sessions = Session.all()
         for session in sessions:
             organization_levels = OrganizationLevel.find({
@@ -129,11 +137,29 @@ class UpdateStatsJob(Job):
                 'session': session['_id'],
             })
             for organization in organizations:
-                current_app.logger.info(
-                    'session=%s organization=%s',
-                    session['name'],
-                    organization['name'],
-                )
+                coupons = OrganizationCoupon.count({
+                    'organization': organization['_id'],
+                })
+                achievements = OrganizationAchievement.count({
+                    'organization': organization['_id'],
+                })
+                # current_app.logger.debug(
+                #     'session=%s organization=%s coupons=%d',
+                #     session['name'],
+                #     organization['name'],
+                #     coupons,
+                # )
+                OrganizationStatistics.update_by_id(organization['statistics'], {
+                    '$set': {
+                        'coupons': coupons,
+                        'achievements': achievements,
+                    },
+                })
+
+        last_record = GlobalStatistics.last_record()
+        if not all(item in last_record.items()
+                   for item in gs.items()):
+            GlobalStatistics.post_internal(gs)
 
 
 JOBS_CLASSES = (
