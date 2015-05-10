@@ -156,7 +156,6 @@ class UpdateStatsJob(Job):
                     continue
                 level = levels.get(validation['level'])
                 if not level:
-                    current_app.logger.warn(level)
                     continue
                 level['validations'] = level.get('validations', 0)
 
