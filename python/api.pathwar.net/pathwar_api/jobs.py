@@ -107,6 +107,12 @@ class UpdateStatsJob(Job):
         gs['organization_coupons'] = OrganizationCoupon.count()
         gs['organizations'] = Organization.count()
 
+        last_record = GlobalStatistics.last_record()
+        if not all(item in last_record.items()
+                   for item in gs.items()):
+            GlobalStatistics.post_internal(gs)
+
+
         # level statistics
         levels = mongo_list_to_dict(
             Level.all()
@@ -215,11 +221,6 @@ class UpdateStatsJob(Job):
                         })
                     },
                 })
-
-        last_record = GlobalStatistics.last_record()
-        if not all(item in last_record.items()
-                   for item in gs.items()):
-            GlobalStatistics.post_internal(gs)
 
 
 JOBS_CLASSES = (
