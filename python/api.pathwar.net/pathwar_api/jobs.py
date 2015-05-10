@@ -187,6 +187,15 @@ class UpdateStatsJob(Job):
                 achievements = OrganizationAchievement.count({
                     'organization': organization['_id'],
                 })
+                validated_levels = list(set(
+                    organization.get('validated_levels', [])
+                ))
+                score = 0
+                score += organization.get('gold_medals', 0) * 5
+                score += organization.get('silver_medals', 0) * 3
+                score += organization.get('bronze_medals', 0) * 1
+                score += len(validated_levels) * 10
+                score += achievements * 2
                 # current_app.logger.debug(
                 #     'session=%s organization=%s coupons=%d',
                 #     session['name'],
@@ -196,13 +205,12 @@ class UpdateStatsJob(Job):
                 OrganizationStatistics.update_by_id(organization['statistics'], {
                     '$set': {
                         'coupons': coupons,
+                        'score': score,
                         'achievements': achievements,
                         'gold_medals': organization.get('gold_medals', 0),
                         'silver_medals': organization.get('silver_medals', 0),
                         'bronze_medals': organization.get('bronze_medals', 0),
-                        'finished_levels': len(set(
-                            organization.get('validated_levels', [])
-                        )),
+                        'finished_levels': len(validated_levels),
                         'bought_levels': OrganizationLevel.count({
                             'organization': organization['_id'],
                         })

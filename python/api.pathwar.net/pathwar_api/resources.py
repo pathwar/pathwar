@@ -1128,6 +1128,20 @@ organization_statistics = {
         'bought_levels': {'type': 'integer', 'default': 0},
         'finished_levels': {'type': 'integer', 'default': 0},
     },
+    'views': {
+        'organization-statistics-2': {
+            'datasource': {
+                'source': 'raw-organization-statistics',
+                'projection': {
+                    '_schema_version': 0,
+                },
+                'default_sort': [
+                    ('score', 1),
+                    ('cash', 1),
+                ],
+            },
+        },
+    },
 }
 
 
