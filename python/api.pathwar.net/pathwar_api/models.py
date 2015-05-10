@@ -114,6 +114,7 @@ class BaseModel(object):
         )
 
     @classmethod
+<<<<<<< HEAD
     def update(cls, where, data, upsert=False, multi=False):
         return current_app.data.driver.db[cls.mongo_resource()].update(
             where, data, upsert=upsert, multi=multi
@@ -123,6 +124,11 @@ class BaseModel(object):
     def find(cls, lookup, projection=None, raw=False):
         res = current_app.data.driver.db[cls.mongo_resource()] \
                                      .find(lookup, projection)
+=======
+    def find(cls, lookup=None, projection=None, raw=False):
+        mongo_resource = current_app.data.driver.db[cls.mongo_resource()]
+        res = mongo_resource.find(lookup, projection)
+>>>>>>> Added more stats to teams
         if raw:
             return res
         return list(res)

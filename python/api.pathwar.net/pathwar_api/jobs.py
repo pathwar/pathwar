@@ -15,12 +15,14 @@ from models import (
     OrganizationAchievement,
     OrganizationCoupon,
     OrganizationLevel,
+    OrganizationLevelValidation,
     OrganizationStatistics,
     Session,
     Task,
     User,
     UserToken,
 )
+from utils import mongo_list_to_dict
 
 
 class Job(object):
@@ -133,10 +135,52 @@ class UpdateStatsJob(Job):
             organization_levels = OrganizationLevel.find({
                 'session': session['_id'],
             })
-            organizations = Organization.find({
-                'session': session['_id'],
-            })
-            for organization in organizations:
+
+            organizations = mongo_list_to_dict(
+                Organization.find({
+                    'session': session['_id'],
+                })
+            )
+
+            levels = mongo_list_to_dict(
+                Level.find({})
+            )
+            
+            validations = OrganizationLevelValidation.find()
+
+            for validation in validations:
+                if validation['status'] == 'refused':
+                    continue
+                organization = organizations.get(validation['organization'])
+                if not organization:
+                    continue
+                level = levels.get(validation['level'])
+                if not level:
+                    current_app.logger.warn(level)
+                    continue
+                level['validations'] = level.get('validations', 0)
+
+                defaults = {
+                    'validated_levels': [],
+                    'gold_medals': 0,
+                    'silver_medals': 0,
+                    'bronze_medals': 0,
+                }
+                for key, value in defaults.items():
+                    if key not in organization:
+                        organization[key] = value
+
+                if level['validations'] == 0:
+                    organization['gold_medals'] += 1
+                elif level['validations'] == 1:
+                    organization['silver_medals'] += 1
+                elif level['validations'] == 2:
+                    organization['bronze_medals'] += 1
+                organization['validated_levels'].append(level['_id'])
+                level['validations'] += 1
+
+
+            for organization in organizations.values():
                 coupons = OrganizationCoupon.count({
                     'organization': organization['_id'],
                 })
@@ -153,6 +197,15 @@ class UpdateStatsJob(Job):
                     '$set': {
                         'coupons': coupons,
                         'achievements': achievements,
+                        'gold_medals': organization.get('gold_medals', 0),
+                        'silver_medals': organization.get('silver_medals', 0),
+                        'bronze_medals': organization.get('bronze_medals', 0),
+                        'finished_levels': len(set(
+                            organization.get('validated_levels', [])
+                        )),
+                        'bought_levels': OrganizationLevel.count({
+                            'organization': organization['_id'],
+                        })
                     },
                 })
 

@@ -11,6 +11,12 @@ def check_request_item(request, item):
         abort(422, 'Invalid data')
 
 
+def mongo_list_to_dict(mongo_list):
+    return {
+        entry['_id']: entry for entry in mongo_list
+    }
+
+
 def field_changed(field, payload, original):
     if field not in payload:
         return False
