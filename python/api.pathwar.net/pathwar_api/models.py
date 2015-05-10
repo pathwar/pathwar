@@ -120,9 +120,20 @@ class BaseModel(object):
         )
 
     @classmethod
-    def find(cls, lookup, projection=None):
-        return list(current_app.data.driver.db[cls.mongo_resource()] \
-                    .find(lookup, projection))
+    def find(cls, lookup, projection=None, raw=False):
+        res = current_app.data.driver.db[cls.mongo_resource()] \
+                                     .find(lookup, projection)
+        if raw:
+            return res
+        return list(res)
+
+    @classmethod
+    def last_record(cls):
+        mongo_resource = current_app.data.driver.db[cls.mongo_resource()]
+        res = list(mongo_resource.find(limit=1, sort=[('_created', -1)]))
+        if len(res):
+            return res[0]
+        return None
 
     @classmethod
     def remove(cls, lookup, show_stats=True):
@@ -1263,11 +1274,6 @@ class Level(BaseModel):
 
 class GlobalStatistics(BaseModel):
     resource = 'global-statistics'
-
-    @classmethod
-    def latest(cls):
-        # FIXME: return latest item
-        return None
 
 
 class LevelStatistics(BaseModel):

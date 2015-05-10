@@ -113,7 +113,10 @@ class UpdateStatsJob(Job):
                 },
             })
 
-        GlobalStatistics.post_internal(global_statistics)
+        last_record = GlobalStatistics.last_record()
+        if not all(item in last_record.items()
+                   for item in global_statistics.items()):
+            GlobalStatistics.post_internal(global_statistics)
 
         return
 
