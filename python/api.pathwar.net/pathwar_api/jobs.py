@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+import math
 
 from flask import current_app
 
@@ -107,8 +108,10 @@ class UpdateStatsJob(Job):
         gs['organizations'] = Organization.count()
 
         # level statistics
-        levels = Level.all()
-        for level in levels:
+        levels = mongo_list_to_dict(
+            Level.all()
+        )
+        for level in levels.values():
             amount_bought = OrganizationLevel.count({
                 'level': level['_id'],
             })
@@ -119,6 +122,7 @@ class UpdateStatsJob(Job):
                     '$in': ['pending validation', 'validated'],
                 },
             })
+            level['amount_bought'] = amount_bought
 
             LevelStatistics.update_by_id(level['statistics'], {
                 '$set': {
@@ -142,11 +146,7 @@ class UpdateStatsJob(Job):
                 })
             )
 
-            levels = mongo_list_to_dict(
-                Level.find({})
-            )
-            
-            validations = OrganizationLevelValidation.find()
+            validations = OrganizationLevelValidation.all()
 
             for validation in validations:
                 if validation['status'] == 'refused':
@@ -191,17 +191,17 @@ class UpdateStatsJob(Job):
                     organization.get('validated_levels', [])
                 ))
                 score = 0
-                score += organization.get('gold_medals', 0) * 5
-                score += organization.get('silver_medals', 0) * 3
-                score += organization.get('bronze_medals', 0) * 1
+                score += organization.get('gold_medals', 0) * 9
+                score += organization.get('silver_medals', 0) * 5
+                score += organization.get('bronze_medals', 0) * 2
                 score += len(validated_levels) * 10
                 score += achievements * 2
-                # current_app.logger.debug(
-                #     'session=%s organization=%s coupons=%d',
-                #     session['name'],
-                #     organization['name'],
-                #     coupons,
-                # )
+
+                for validated_level in validated_levels:
+                    level = levels[validated_level]
+                    percent = float(level['validations']) / float(level['amount_bought'])
+                    score += int(round(-math.log(percent) * 2))
+
                 OrganizationStatistics.update_by_id(organization['statistics'], {
                     '$set': {
                         'coupons': coupons,
