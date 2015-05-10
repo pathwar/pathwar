@@ -121,9 +121,28 @@ class BaseModel(object):
 
     @classmethod
     def find(cls, lookup, projection=None):
-        return list(current_app.data.driver.db[cls.mongo_resource()].find(
-            lookup, projection
-        ))
+        return list(current_app.data.driver.db[cls.mongo_resource()] \
+                    .find(lookup, projection))
+
+    @classmethod
+    def remove(cls, lookup, show_stats=True):
+        mongo_resource = current_app.data.driver.db[cls.mongo_resource()]
+
+        if show_stats:
+            total_count = mongo_resource.count()
+            remove_count = mongo_resource.find(lookup).count()
+            current_app.logger.warn(
+                "removing %d of %d '%s' entries",
+                remove_count, total_count, cls.mongo_resource()
+            )
+
+        return mongo_resource.remove(lookup)
+
+    @classmethod
+    def count(cls, lookup=None):
+        return current_app.data.driver.db[cls.mongo_resource()] \
+                                      .find(lookup) \
+                                      .count()
 
     @classmethod
     def all(cls):
@@ -413,7 +432,6 @@ class Task(BaseModel):
         item['author'] = request_get_user(flask_request)['_id']
 
     def on_inserted(self, item):
-        current_app.logger.warn(item)
         job = current_app.jobs[item['job']](item['_id'])
         job.call()
 

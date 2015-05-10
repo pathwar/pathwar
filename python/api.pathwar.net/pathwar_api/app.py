@@ -115,6 +115,7 @@ app = Eve(
     validator=UUIDValidator,
 )
 
+
 if len(SENTRY_URL):
     LOGGING = {
         'version': 1,

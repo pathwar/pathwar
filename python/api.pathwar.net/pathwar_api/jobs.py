@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
 
+import datetime
+
 from flask import current_app
 
 from models import (
     Level,
+    LevelInstanceUser,
     LevelStatistics,
     Organization,
     OrganizationLevel,
     OrganizationStatistics,
     Session,
     Task,
+    UserToken,
 )
 
 
@@ -43,6 +47,30 @@ class TestJob(Job):
         current_app.logger.warn('test job called')
 
 
+class CleanJob(Job):
+    name = 'clean'
+
+    def run(self):
+        now = datetime.datetime.utcnow()
+
+        # Flush tasks collection
+        # current_app.data.driver.db['raw-tasks'].drop()
+
+        # Clean expired api tokens
+        UserToken.remove({
+            'expiry_date': {
+                '$lt': now,
+            },
+        })
+
+        # Clean expired level access tokens
+        LevelInstanceUser.remove({
+            'expiry_date': {
+                '$lt': now,
+            },
+        })
+
+
 class UpdateStatsJob(Job):
     name = 'update-stats'
 
@@ -65,6 +93,7 @@ class UpdateStatsJob(Job):
 
 
 JOBS_CLASSES = (
+    CleanJob,
     TestJob,
     UpdateStatsJob,
 )
