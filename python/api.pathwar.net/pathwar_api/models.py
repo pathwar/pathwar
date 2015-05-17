@@ -1014,6 +1014,10 @@ class OrganizationLevel(BaseModel):
         if not organization:
             abort(422, "No such organization")
 
+        session = Session.get_by_id(organization['session'])
+        if not session.get('active', False):
+            abort(422, "Session {} is inactive".format(session['name']))
+
         level = Level.get_by_id(item['level'])
         if not level:
             abort(422, "No such level")
