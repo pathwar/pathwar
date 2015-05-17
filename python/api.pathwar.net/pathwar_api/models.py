@@ -1441,6 +1441,11 @@ class OrganizationCoupon(BaseModel):
         if coupon['validations_left'] < 1:
             abort(422, "Expired coupon")
 
+        organization = Organization.get_by_id(item['organization'])
+        session = Session.get_by_id(organization['session'])
+        if not session.get('active', False):
+            abort(422, "Session {} is inactive".format(session['name']))
+
         # Check if the user add a coupon to one of its organizations
         user = request_get_user(request)
         if not Organization.has_user(item['organization'], user['_id']):
