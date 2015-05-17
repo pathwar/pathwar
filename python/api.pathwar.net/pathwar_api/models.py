@@ -1352,6 +1352,12 @@ class LevelInstanceUser(BaseModel):
         if not Organization.has_user(item['organization'], user['_id']):
             abort(422, "You cannot create object for another organization")
 
+        # Checking for inactive session
+        organization = Organization.get_by_id(organization_level['organization'])
+        session = Session.get_by_id(organization['session'])
+        if not session.get('active', False):
+            abort(422, "Session {} is inactive".format(session['name']))
+
         # FIXME: Check if entry already exists, if yes, update the existing one
 
         # Add nested fields
