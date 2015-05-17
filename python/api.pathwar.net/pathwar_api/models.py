@@ -1155,6 +1155,12 @@ class OrganizationLevelValidation(BaseModel):
         ):
             abort(422, "You cannot validate a level for another organization")
 
+        # Checking for inactive session
+        organization = Organization.get_by_id(organization_level['organization'])
+        session = Session.get_by_id(organization['session'])
+        if not session.get('active', False):
+            abort(422, "Session {} is inactive".format(session['name']))
+
         # Add author
         item['author'] = user['_id']
 
