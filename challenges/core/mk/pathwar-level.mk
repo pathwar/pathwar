@@ -104,4 +104,4 @@ travis_run:
 
 travis_run_service:
 	# ./run is a wrapper to allow travis to run docker commands
-	./run $(DOCKER_COMPOSE) run $(SERVICE) /bin/bash -d 'echo OK'
+	./run "$(DOCKER_COMPOSE) run $(SERVICE) /bin/bash -xec 'echo OK'"
