@@ -787,6 +787,14 @@ organization_level_validations = {
                 'embeddable': True,
             },
         },
+        'admin_bonus': {
+            'type': 'boolean',
+            'default': False,
+        },
+        'admin_malus': {
+            'type': 'boolean',
+            'default': False,
+        },
         'level': {
             'type': 'uuid',
             'data_relation': {
@@ -834,6 +842,8 @@ organization_level_validations = {
                 'projection': {
                     '_schema_version': 0,
                     'passphrases': 0,
+                    'admin_bonus': 0,
+                    'admin_malus': 0,
                 },
             },
             'public_methods': [],
