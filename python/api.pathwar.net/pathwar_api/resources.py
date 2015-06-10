@@ -1034,6 +1034,59 @@ organization_items = {
 }
 
 
+organization_bonuses = {
+    'bonus_title': 'organization bonus',
+    'resource_title': 'organization bonuses',
+
+    # collection
+    'resource_methods': ['GET', 'POST'],
+    'public_methods': [],
+    'allowed_read_roles': ['admin'],
+    'allowed_write_roles': ['admin'],
+    # bonus
+    'bonus_methods': ['GET', 'PATCH'],
+    'public_bonus_methods': [],
+    'allowed_bonus_read_roles': ['admin'],
+    'allowed_bonus_write_roles': ['admin'],
+
+    # 'url': 'organizations/<organization>/bonuses',
+    'schema': {
+        'organization': {
+            'type': 'uuid',
+            'required': True,
+            'data_relation': {
+                'resource': 'organizations',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+        'admin_name': {
+            'type': 'string',
+            'required': True,
+        },
+        'comment': {
+            'type': 'string',
+            'required': True,
+        },
+        'points': {
+            'type': 'integer',
+            'default': 1,
+            'max': 5,
+        },
+    },
+    'views': {
+        'organization-bonuses': {
+            'datasource': {
+                'source': 'raw-organization-bonuses',
+                'projection': {
+                    '_schema_version': 0,
+                },
+            },
+        },
+    },
+}
+
+
 organization_users = {
     'item_title': 'organization user',
     'resource_title': 'organization users',
@@ -2123,6 +2176,7 @@ BASE_RESOURCES = {
     'level-statistics': level_statistics,
     'levels': levels,
     'organization-achievements': organization_achievements,
+    'organization-bonuses': organization_bonuses,
     'organization-coupons': organization_coupons,
     'organization-items': organization_items,
     'organization-level-hints': organization_level_hints,
@@ -2134,12 +2188,12 @@ BASE_RESOURCES = {
     'password-recover-requests': password_recover_requests,
     'servers': servers,
     'sessions': sessions,
+    'tasks': tasks,
     'user-hijack-proofs': user_hijack_proofs,
     'user-notifications': user_notifications,
     'user-organization-invites': user_organization_invites,
     'user-tokens': user_tokens,
     'users': users,
-    'tasks': tasks,
     'whoswho-attempts': whoswho_attempts,
 }
 
