@@ -617,6 +617,10 @@ If you received this email by mistake, simply delete it. You won't be subscribed
             item['pnj'] = True
             return
 
+        # ensure the default role is a 'user', thanks @lusob
+        if request.path.split('/')[1] == 'accounts':
+            item['role'] = 'user'
+
         if 'password' not in item:
             abort(422, "Missing password")
         if 'login' not in item:
