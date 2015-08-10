@@ -584,7 +584,7 @@ If you received this email by mistake, simply delete it. You won't be subscribed
         current_user = request_get_user(flask_request)
         is_admin = current_user.get('role') == 'admin'
 
-        for field in ('email', 'blocked', 'pnj'):
+        for field in ('email', 'blocked', 'pnj', 'role'):
             if field_changed(field, item, original):
                 if not is_admin:
                     abort(422, 'You cannot update field {}'.format(field))
