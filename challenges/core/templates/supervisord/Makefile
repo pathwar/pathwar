@@ -1,5 +1,5 @@
 NAME ?=		pathwar/supervisord
 VERSIONS ?=	latest onbuild
-EXAMPLES ?=	ssh
+EXAMPLES ?=	sshd
 
 -include ../template.mk

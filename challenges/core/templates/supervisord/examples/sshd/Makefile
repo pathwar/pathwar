@@ -1,6 +1,6 @@
 NAME =	example
 
-all:	run
+all:	up
 
 build:
 	docker-compose build
