@@ -13,8 +13,6 @@ SECTIONS ?=	$(shell cat $(CONFIG) | grep -E '^[a-z]' | cut -d: -f1)
 MAIN_SECTION ?=	$(shell echo $(SECTIONS) | cut -d\  -f1)
 MAIN_CID :=	$(shell $(DOCKER_COMPOSE) ps -q $(MAIN_SECTION))
 EXEC_MAIN_SECTION :=	docker exec -it $(MAIN_CID)
-MYSQL_CID :=	$(shell $(DOCKER_COMPOSE) ps -q mysql)
-MYSQL_IP :=	$(shell docker inspect -f '{{ .NetworkSettings.IPAddress }}' $(MYSQL_CID))
 
 
 ## Actions
@@ -23,7 +21,7 @@ all: up ps logs
 
 
 shellmysql:
-	docker run -it --rm orchardup/mysql mysql -h$(MYSQL_IP)
+	docker run -it --rm orchardup/mysql mysql -h$(shell docker inspect -f '{{ .NetworkSettings.IPAddress }}' $(shell $(DOCKER_COMPOSE) ps -q mysql))
 
 
 info: before
