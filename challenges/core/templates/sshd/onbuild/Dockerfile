@@ -30,10 +30,20 @@ RUN groupadd --gid 4242 bobby                    \
       --password $(openssl passwd -crypt bobby)  \
       bobby
 
+# Create 'super-bobby' user
+RUN groupadd --gid 8484 super-bobby              \
+ && useradd                                      \
+      --gid super-bobby                          \
+      --groups super-bobby                       \
+      --uid 8484                                 \
+      --shell /bin/bash                          \
+      super-bobby
+
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 
 # Onbuild
+ONBUILD WORKDIR /home/bobby
 ONBUILD CMD /pathwar/scripts/init
 ONBUILD COPY scripts /pathwar/scripts/
 ONBUILD COPY level.yml /pathwar/
