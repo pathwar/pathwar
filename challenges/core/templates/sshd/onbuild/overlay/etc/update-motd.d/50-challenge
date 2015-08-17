@@ -1,0 +1,11 @@
+#!/bin/sh
+
+echo
+if [ -x ~bobby/level ]; then
+    printf '/--------------------------------------------------------\\\n'
+    printf '|     Challenge                                          |\n'
+    printf '\\--------------------------------------------------------/\n'
+    echo
+    ( cd ~bobby; file ./level )
+    echo
+fi

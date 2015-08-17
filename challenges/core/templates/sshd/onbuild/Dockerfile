@@ -22,8 +22,10 @@ COPY skeleton /pathwar
 RUN echo /usr/bin/supervisord > /pathwar/scripts/run
 
 
-# Cleanup fancy /home
-RUN rm -f /etc/skel/*
+# Cleanup fancy ubuntu stuff
+RUN rm -f /etc/skel/* \
+ && rm -f /etc/legal \
+ && rm -f /etc/update-motd.d/*
 
 # Prepare environment for SSH
 RUN mkdir -p /var/run/sshd
@@ -51,7 +53,8 @@ RUN groupadd --gid 8484 super-bobby              \
       --shell /bin/bash                          \
       super-bobby
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+# Copy the content of ./overlay/ to /
+COPY overlay /
 
 
 # Onbuild
