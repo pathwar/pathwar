@@ -253,6 +253,11 @@ level_instances = {
                     'url': {
                         'type': 'string',
                     },
+                    'kind': {
+                        'type': 'string',
+                        'allowed': ['http', 'https', 'ssh', 'ssh2docker', 'tcp', 'udp', 'other'],
+                        'default': 'http',
+                    },
                 },
             },
         },
