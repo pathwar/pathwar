@@ -17,6 +17,22 @@ run_script() {
     fi
 }
 
+exec_script() {
+    script="${1}"
+    shift
+    args="${@}"
+    if [ -f "/pathwar/scripts/${script}" ]; then
+        if [ $# -gt 0 ]; then
+            echo "[+] Running '${script}' script (args: ${args})"
+        else
+            echo "[+] Running '${script}' script"
+        fi
+        exec /pathwar/scripts/${script} ${args}
+    else
+        echo "[-] Script '${script}' not found"
+    fi
+}
+
 # Random helpers
 get_uuid() {
     cat /proc/sys/kernel/random/uuid
