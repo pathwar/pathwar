@@ -1,9 +1,14 @@
 #!/bin/sh
 
-#exec 2>&1
+run-parts --lsbsysinit /etc/update-motd.d > /etc/motd
+chmod 644 /etc/motd
+
+
 (
     set -x
-    ls -ls /home/super-bobby
-    ls -la /home/bobby
+    ls -laR /home
 )
+
+
+#exec 2>&1
 exec sudo -u bobby /usr/local/bin/level-enter

@@ -1,11 +1,13 @@
 #!/bin/sh
 
+FILE=~bobby/level
+
 echo
-if [ -x ~bobby/level ]; then
+if [ -x ~$FILE ]; then
     printf '/--------------------------------------------------------\\\n'
-    printf '|     Challenge                                          |\n'
+    printf '|     Challenge %42s        |\n' $FILE
     printf '\\--------------------------------------------------------/\n'
     echo
-    ( cd ~bobby; file ./level )
+    file $(readlink -f $FILE)
     echo
 fi
