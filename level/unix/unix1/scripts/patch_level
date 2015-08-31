@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. /pathwar/scripts/functions.sh
+
+get_passphrase 0 > ~bobby/.passwd
