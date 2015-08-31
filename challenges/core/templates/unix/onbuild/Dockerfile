@@ -8,10 +8,11 @@ RUN apt-get update \
  && apt-get -y -q upgrade \
  && apt-get -y -q install \
       curl \
+      emacs-nox \
       gcc \
       mg \
+      sudo \
       vim \
-      emacs-nox \
  && apt-get clean
 
 
@@ -40,20 +41,26 @@ RUN groupadd --gid 4242 bobby      \
       --create-home                \
       bobby                        \
  && mkdir -p /home/bobby           \
- && chown bobby:bobby /home/bobby
+ && chown bobby:bobby /home/bobby  \
+ && chmod 755 /home/bobby
 
 
 WORKDIR /home/bobby
 
 
 # Create 'super-bobby' user
-RUN groupadd --gid 8484 super-bobby              \
- && useradd                                      \
-      --gid super-bobby                          \
-      --groups super-bobby                       \
-      --uid 8484                                 \
-      --shell /bin/bash                          \
-      super-bobby
+RUN groupadd --gid 8484 super-bobby                  \
+ && useradd                                          \
+      --home /home/super-bobby                       \
+      --gid super-bobby                              \
+      --groups super-bobby                           \
+      --uid 8484                                     \
+      --shell /bin/bash                              \
+      --no-create-home                               \
+      super-bobby                                    \
+ && mkdir -p /home/super-bobby                       \
+ && chown super-bobby:super-bobby /home/super-bobby  \
+ && chmod 755 /home/super-bobby
 
 
 # Copy the content of ./overlay/ to /

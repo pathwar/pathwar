@@ -8,10 +8,11 @@ RUN apt-get update \
  && apt-get -y -q upgrade \
  && apt-get -y -q install \
       curl \
+      emacs-nox \
       gcc \
       mg \
+      sudo \
       vim \
-      emacs-nox \
  && apt-get clean
 
 
