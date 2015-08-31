@@ -62,7 +62,6 @@ COPY overlay /
 
 # Onbuild
 ONBUILD WORKDIR /home/bobby
-ONBUILD USER bobby
 ONBUILD CMD /pathwar/scripts/init
 ONBUILD COPY scripts /pathwar/scripts/
 ONBUILD COPY level.yml /pathwar/
