@@ -3,9 +3,9 @@
 FILE=~bobby/level
 
 echo
-if [ -x ~$FILE ]; then
+if [ -f $(readlink -f $FILE) ]; then
     printf '/--------------------------------------------------------\\\n'
-    printf '|     Challenge %42s        |\n' $FILE
+    printf '|     Challenge %-36s     |\n' $FILE
     printf '\\--------------------------------------------------------/\n'
     echo
     file $(readlink -f $FILE)
