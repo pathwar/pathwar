@@ -850,6 +850,36 @@ class UserToken(BaseModel):
         })
 
 
+class UserSshkey(BaseModel):
+    resource = 'user-sshkeys'
+
+    def on_pre_post_item(self, request, item):
+        check_request_item(request, item)
+
+        # Handle login
+        user = request_get_user(request)
+        if not user:
+            abort(401)
+        item['user'] = user['_id']
+
+    def on_insert(self, item):
+        super(UserSshkey, self).on_insert(item)
+        # FIXME: process fingerprint
+        # item['fingerprint'] = ...
+
+    def on_inserted(self, item):
+        Activity.post_internal({
+            'user': item['user'],
+            'action': 'user-sshkeys-create',
+            'category': 'accounts',
+            'public': False,
+            'linked_resources': [
+                {'kind': 'users', 'id': item['user']},
+                {'kind': 'user-sshkeys', 'id': item['_id']}
+            ],
+        })
+
+
 class Organization(BaseModel):
     resource = 'organizations'
     search_fields = ['_id', 'name']
@@ -1595,6 +1625,7 @@ base_models = [
     UserHijackProof,
     UserNotification,
     UserOrganizationInvite,
+    UserSshkey,
     UserToken,
     WhoswhoAttempt,
 ]

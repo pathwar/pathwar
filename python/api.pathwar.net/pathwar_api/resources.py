@@ -1800,6 +1800,55 @@ user_tokens = {
     },
 }
 
+user_sshkeys = {
+    'item_title': 'user ssh key',
+    'resource_title': 'user ssh keys',
+
+    # collection
+    'resource_methods': ['GET', 'DELETE', 'POST'],
+    'public_methods': [],
+    'allowed_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_write_roles': ['user', 'admin'],
+    # item
+    'item_methods': ['GET', 'DELETE', 'PATCH'],
+    'public_item_methods': [],
+    'allowed_item_read_roles': ['user', 'moderator', 'admin'],
+    'allowed_item_write_roles': ['admin'],
+
+    # ACL
+    'auth_field': 'user',
+
+    # 'url': 'users/<user>/sshkeys',
+    'schema': {
+        'key': {
+            'type': 'string',
+            'default': '',
+        },
+        'description': {  # For the user
+            'type': 'string',
+            'default': '',
+        },
+        'type': {
+            'type': 'string',
+            'default': 'ssh-rsa',
+        },
+        'fingerprint': {
+            'type': 'string',
+            'readonly': True,
+        },
+        'user': {  # Will be computed using the credentials
+            'type': 'uuid',
+            'required': False,
+            # 'readonly': True,
+            'data_relation': {
+                'resource': 'raw-users',
+                'field': '_id',
+                'embeddable': True,
+            },
+        },
+    },
+}
+
 
 users = {
     'item_title': 'user',
@@ -2197,6 +2246,7 @@ BASE_RESOURCES = {
     'user-hijack-proofs': user_hijack_proofs,
     'user-notifications': user_notifications,
     'user-organization-invites': user_organization_invites,
+    'user-sshkeys': user_sshkeys,
     'user-tokens': user_tokens,
     'users': users,
     'whoswho-attempts': whoswho_attempts,
