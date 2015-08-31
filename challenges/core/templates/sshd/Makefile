@@ -8,5 +8,5 @@ EXTRA_DEPENDENCIES ?=	$(addsuffix /overlay, $(VERSIONS))
 
 
 $(EXTRA_DEPENDENCIES):	./overlay
-	rm -f $@
+	rm -rf $@
 	cp -rf $< $@

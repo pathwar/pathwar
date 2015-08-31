@@ -42,6 +42,7 @@ RUN groupadd --gid 4242 bobby                    \
       bobby                                      \
  && mkdir /home/bobby                            \
  && chown bobby:bobby /home/bobby
+ENV SU_USER bobby
 WORKDIR /home/bobby
 
 # Create 'super-bobby' user
