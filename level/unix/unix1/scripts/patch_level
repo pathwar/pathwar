@@ -2,4 +2,4 @@
 
 . /pathwar/scripts/functions.sh
 
-get_passphrase 0 > ~bobby/.passwd
+get_passphrase 0 > ~super-bobby/.passwd
