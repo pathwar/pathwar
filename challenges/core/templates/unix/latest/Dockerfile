@@ -39,7 +39,7 @@ RUN groupadd --gid 4242 bobby      \
       --shell /bin/bash            \
       --create-home                \
       bobby                        \
- && mkdir /home/bobby              \
+ && mkdir -p /home/bobby           \
  && chown bobby:bobby /home/bobby
 
 

@@ -4,7 +4,7 @@ EXAMPLEBUILDS =	$(addprefix examples/, $(addsuffix /build, $(EXAMPLES)))
 
 all:	build
 
-dependencies:	$(SKELETONS)
+dependencies:	$(SKELETONS) $(EXTRA_DEPENDENCIES)
 
 examples:	$(EXAMPLEBUILDS)
 
@@ -15,7 +15,7 @@ $(EXAMPLEBUILDS):	$(BUILDS)
 
 build:	$(BUILDS)
 
-$(BUILDS):	$(SKELETONS)
+$(BUILDS):	dependencies
 	$(eval VERSION := $(shell dirname $@))
 	$(eval TAGS := $(shell cat $(VERSION)/tags))
 	docker build -t $(NAME):$(VERSION) $(VERSION)
@@ -30,4 +30,4 @@ release:
 	docker push $(NAME)
 
 clean:
-	rm -rf $(SKELETONS)
+	rm -rf $(SKELETONS) $(EXTRA_DEPENDENCIES)
