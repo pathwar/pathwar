@@ -1,0 +1,14 @@
+#!/bin/sh
+
+echo
+printf '/--------------------------------------------------------\\\n'
+printf '|     Welcome on %-36s    |\n' $(hostname)'!'
+printf '\\--------------------------------------------------------/\n'
+
+cat <<EOF
+
+Useful commands installed:
+  - emacs
+  - vim
+  - gcc
+EOF
