@@ -26,7 +26,7 @@
             <?php if ($_GET['pass'] == md5("763")) : ?>
             Congratz! The passphrase is <b>{passphrase}</b>
             <?php else : ?>
-            <img width='600px' src="http://i.ytimg.com/vi/bzENn8ouarU/maxresdefault.jpg" alt="u_shall_not_pass" />
+            <img width='600px' src="//i.ytimg.com/vi/bzENn8ouarU/maxresdefault.jpg" alt="u_shall_not_pass" />
             <br />
 	    Invalid password.
             <?php endif ?>
