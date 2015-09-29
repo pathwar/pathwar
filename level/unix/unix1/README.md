@@ -1,11 +1,5 @@
-- need to isolate network
-- bonus -> logging commands
-- proxified by nginx
-- password random
-- add webshell
-- don't use supervisord if not required
-- custom motd
-- cleanup skel
-- setup chroot
-- cleanup ps output
-- chmod everything
+# Test
+
+```bash
+make unix_run
+```
