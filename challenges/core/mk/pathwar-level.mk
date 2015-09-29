@@ -7,12 +7,14 @@ PACKAGE_NAME ?=	package-$(shell basename $(shell pwd)).tar
 EXCLUDES ?=	$(PACKAGE_NAME) .git
 ASSETS ?=	$(filter-out $(EXCLUDES),$(wildcard *))
 PKGLVL ?=	/tmp/package_level
-DOCKER_COMPOSE ?=	docker-compose -p$(USER)_$(shell basename $(shell pwd) | sed 's/[^a-z]//g')
+DOCKER_COMPOSE_NAME ?=	$(USER)$(shell basename $(shell pwd) | sed 's/[^a-z]//g')
+DOCKER_COMPOSE ?=	docker-compose -p$(DOCKER_COMPOSE_NAME)
 S3CMD ?=	s3cmd
 SECTIONS ?=	$(shell cat $(CONFIG) | grep -E '^[a-z]' | cut -d: -f1)
 MAIN_SECTION ?=	$(shell echo $(SECTIONS) | cut -d\  -f1)
 MAIN_CID :=	$(shell $(DOCKER_COMPOSE) ps -q $(MAIN_SECTION))
 EXEC_MAIN_SECTION :=	docker exec -it $(MAIN_CID)
+UNIX_USER ?=	bobby
 
 
 ## Actions
@@ -22,6 +24,12 @@ all: up ps logs
 
 shellmysql:
 	docker run -it --rm orchardup/mysql mysql -h$(shell docker inspect -f '{{ .NetworkSettings.IPAddress }}' $(shell $(DOCKER_COMPOSE) ps -q mysql))
+
+
+unix_run: build
+	docker run $(DOCKER_COMPOSE_NAME)_$(MAIN_SECTION)
+	docker commit `docker ps -lq` tmp
+	docker run -it --rm -u $(UNIX_USER) tmp level-enter
 
 
 info: before
