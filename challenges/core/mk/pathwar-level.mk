@@ -86,9 +86,8 @@ logs:: up
 	$(DOCKER_COMPOSE) $@ $(SECTIONS)
 
 
-
-publish_on_s3: $(PACKAGE)
-	$(eval RAND := $(shell head -c 128 /dev/urandom | tr -dc A-Za-z0-9))
+publish_on_s3: $(PACKAGE_NAME)
+	$(eval RAND := $(shell openssl rand -base64 46 | tr -dc A-Za-z0-9))
 	$(S3CMD) put --acl-public $(PACKAGE_NAME) $(S3_URL)/$(RAND).tar
 	$(S3CMD) info $(S3_URL)/$(RAND).tar | grep URL | awk '{print $$2}'
 
