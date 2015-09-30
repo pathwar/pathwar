@@ -9,6 +9,8 @@ ASSETS ?=	$(filter-out $(EXCLUDES),$(wildcard *))
 PKGLVL ?=	/tmp/package_level
 DOCKER_COMPOSE_NAME ?=	$(USER)$(shell basename $(shell pwd) | sed 's/[^a-z]//g')
 DOCKER_COMPOSE ?=	docker-compose -p$(DOCKER_COMPOSE_NAME)
+STORE_HOST ?=		store.pathwar.net
+STORE_PATH ?=		pathwar
 S3CMD ?=	s3cmd
 SECTIONS ?=	$(shell cat $(CONFIG) | grep -E '^[a-z]' | cut -d: -f1)
 MAIN_SECTION ?=	$(shell echo $(SECTIONS) | cut -d\  -f1)
@@ -19,7 +21,7 @@ UNIX_USER ?=	bobby
 
 ## Actions
 all: up ps logs
-.PHONY: all build run shell package publish_on_s3 info
+.PHONY: all build run shell package info
 
 
 shellmysql:
@@ -86,6 +88,14 @@ logs:: up
 	$(DOCKER_COMPOSE) $@ $(SECTIONS)
 
 
+.PHONY: publish_on_store
+publish_on_store: $(PACKAGE_NAME)
+	$(eval RAND := $(shell openssl rand -base64 46 | tr -dc A-Za-z0-9))
+	rsync -Pave ssh $(PACKAGE_NAME) $(STORE_HOST):store/$(STORE_PATH)/$(RAND).tar
+	@echo http://$(STORE_HOST)/$(STORE_PATH)/$(RAND).tar
+
+
+.PHONY: publish_on_s3
 publish_on_s3: $(PACKAGE_NAME)
 	$(eval RAND := $(shell openssl rand -base64 46 | tr -dc A-Za-z0-9))
 	$(S3CMD) put --acl-public $(PACKAGE_NAME) $(S3_URL)/$(RAND).tar
