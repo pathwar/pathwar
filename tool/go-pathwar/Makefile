@@ -6,9 +6,8 @@ GOINSTALL ?= $(GOCMD) install
 GOTEST ?=    $(GOCMD) test
 GOFMT ?=     gofmt -w
 
-NAME = pathwar-cli
 DEPS = .deps
-SRC = .
+SRC = cmd/pathwar-cli
 PACKAGES = $(shell find ./pkg/* -type d)
 
 BUILD_LIST = $(foreach int, $(SRC), $(int)_build)
@@ -28,13 +27,13 @@ test: $(TEST_LIST)
 iref: $(IREF_LIST)
 fmt: $(FMT_LIST)
 
-$(DEPS) :
+$(DEPS): Godeps/Godeps.json
 	godep 2> /dev/null || go get github.com/tools/godep
 	godep restore
 	touch $@
 
 $(BUILD_LIST): %_build: %_fmt %_iref
-	$(GOBUILD) -o $(NAME) ./$*
+	$(GOBUILD) -o $(notdir $*) ./$*
 	go tool vet -all=true $(SRC)
 	go tool vet -all=true $(PACKAGES)
 $(CLEAN_LIST): %_clean:
