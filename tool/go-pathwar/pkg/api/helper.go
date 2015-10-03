@@ -3,7 +3,9 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
+	"os"
+
+	"github.com/parnurzeal/gorequest"
 )
 
 type PathwarGenerateAToken struct {
@@ -13,12 +15,11 @@ type PathwarGenerateAToken struct {
 	Status  string `json:"_status"`
 }
 
-func (p *APIPathwar) GenerateAToken(login, password string, tmp bool) (*PathwarGenerateAToken, error) {
-	request := p.client.Post(strings.Join([]string{APIUrl, "user-tokens"}, "/"))
+func GenerateAToken(login, password string, tmp bool) (*PathwarGenerateAToken, error) {
+	request := gorequest.New().Post(fmt.Sprintf("%s/user-tokens/", APIUrl))
 	request = request.SetBasicAuth(login, password)
-
 	request = request.Send(fmt.Sprintf("{\"is_session\": %v}", tmp))
-	if p.debug {
+	if os.Getenv("PATHWAR_DEBUG") != "" {
 		request = request.SetDebug(true)
 	}
 	resp, body, errs := request.EndBytes()
@@ -41,10 +42,10 @@ type PathwarToken struct {
 	Token string `json:"token"`
 }
 
-func (p *APIPathwar) GetToken(login, password, id string) (*PathwarToken, error) {
-	request := p.client.Get(fmt.Sprintf("%s/user-tokens/%s", APIUrl, id))
+func GetToken(login, password, id string) (*PathwarToken, error) {
+	request := gorequest.New().Get(fmt.Sprintf("%s/user-tokens/%s", APIUrl, id))
 	request = request.SetBasicAuth(login, password)
-	if p.debug {
+	if os.Getenv("PATHWAR_DEBUG") != "" {
 		request = request.SetDebug(true)
 	}
 	resp, body, errs := request.EndBytes()
