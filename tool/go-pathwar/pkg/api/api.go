@@ -60,8 +60,7 @@ func (p *APIPathwar) GetResquest(url string) ([]byte, error) {
 	resp, body, errs := request.EndBytes()
 
 	if len(errs) != 0 {
-		err := printErrors(errs)
-		return nil, err
+		return nil, printErrors(errs)
 	}
 	if err := httpHandleError([]int{200}, resp.StatusCode, body); err != nil {
 		return nil, err
@@ -79,8 +78,7 @@ func (p *APIPathwar) DeleteResquest(url, etag string) ([]byte, error) {
 	resp, body, errs := request.EndBytes()
 
 	if len(errs) != 0 {
-		err := printErrors(errs)
-		return nil, err
+		return nil, printErrors(errs)
 	}
 	if err := httpHandleError([]int{200}, resp.StatusCode, body); err != nil {
 		return nil, err
@@ -103,8 +101,7 @@ func (p *APIPathwar) PatchResquest(url, etag string, data interface{}) ([]byte, 
 	resp, body, errs := request.EndBytes()
 
 	if len(errs) != 0 {
-		err := printErrors(errs)
-		return nil, err
+		return nil, printErrors(errs)
 	}
 	if err := httpHandleError([]int{200}, resp.StatusCode, body); err != nil {
 		return nil, err
@@ -126,8 +123,7 @@ func (p *APIPathwar) PostResquest(url string, data interface{}) ([]byte, error) 
 	resp, body, errs := request.EndBytes()
 
 	if len(errs) != 0 {
-		err := printErrors(errs)
-		return nil, err
+		return nil, printErrors(errs)
 	}
 	if err := httpHandleError([]int{201}, resp.StatusCode, body); err != nil {
 		return nil, err
