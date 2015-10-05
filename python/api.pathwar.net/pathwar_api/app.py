@@ -54,9 +54,6 @@ class MockBasicAuth(BasicAuth):
             if user_token:
                 user = app.data.driver.db['raw-users'] \
                                       .find_one({'_id': user_token['user']})
-                if user['role'] != 'admin':
-                    self.set_request_auth_value(user['_id'])
-                # FIXME: Re-enable later
 
         if user:
             if user.get('blocked', False):
@@ -73,6 +70,8 @@ class MockBasicAuth(BasicAuth):
             #     )
             # )
             if user['role'] in allowed_roles:
+                if user['role'] != 'admin':
+                    self.set_request_auth_value(user['_id'])
                 return True
             else:
                 return False
