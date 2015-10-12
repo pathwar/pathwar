@@ -25,3 +25,22 @@ func TestGetUsers(t *testing.T) {
 		})
 	})
 }
+
+func TestGetRawOrganizationUsers(t *testing.T) {
+	Convey("Testing GetRawOrganizationUsers", t, func() {
+		Convey("without where clause", func() {
+			client := NewAPIPathwar(os.Getenv("PATHWAR_TOKEN"), os.Getenv("PATHWAR_DEBUG"))
+			rawOrganizationUsers, err := client.GetRawOrganizationUsers(nil)
+			So(err, ShouldBeNil)
+			So(len(rawOrganizationUsers.Items), ShouldNotEqual, 0)
+			So(rawOrganizationUsers.Items[0].Id, ShouldNotBeNil)
+		})
+		Convey("with where clause", func() {
+			client := NewAPIPathwar(os.Getenv("PATHWAR_TOKEN"), os.Getenv("PATHWAR_DEBUG"))
+			rawOrganizationUsers, err := client.GetRawOrganizationUsers(map[string]string{"role": "pwner"})
+			So(err, ShouldBeNil)
+			So(len(rawOrganizationUsers.Items), ShouldNotEqual, 0)
+			So(rawOrganizationUsers.Items[0].Role, ShouldEqual, "pwner")
+		})
+	})
+}
