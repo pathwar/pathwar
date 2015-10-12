@@ -86,11 +86,14 @@ type RawLevelInstances struct {
 type RawLevelInstance struct {
 	StdItem
 
-	Active      bool     `json:"active"`
-	Level       string   `json:"level"`
-	Name        string   `json:"name"`
-	Passphrases []string `json:"passphrases"`
-	PwnStatus   string   `json:"pwn_status"`
+	Active      bool   `json:"active"`
+	Level       string `json:"level"`
+	Name        string `json:"name"`
+	PwnStatus   string `json:"pwn_status"`
+	Passphrases []struct {
+		Value string `json:"value"`
+		Key   string `json:"key"`
+	} `json:"passphrases"`
 	PrivateUrls []struct {
 		Url  string `json:"url"`
 		Name string `json:"name"`

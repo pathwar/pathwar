@@ -63,3 +63,22 @@ func TestGetRawLevelInstanceUsers(t *testing.T) {
 		})*/
 	})
 }
+
+func TestGetRawLevelInstances(t *testing.T) {
+	Convey("Testing GetRawLevelInstances", t, func() {
+		Convey("without where clause", func() {
+			client := NewAPIPathwar(os.Getenv("PATHWAR_TOKEN"), os.Getenv("PATHWAR_DEBUG"))
+			rawLevelInstances, err := client.GetRawLevelInstances(nil)
+			So(err, ShouldBeNil)
+			So(len(rawLevelInstances.Items), ShouldNotEqual, 0)
+			So(rawLevelInstances.Items[0].Id, ShouldNotBeNil)
+		})
+		Convey("with where clause", func() {
+			client := NewAPIPathwar(os.Getenv("PATHWAR_TOKEN"), os.Getenv("PATHWAR_DEBUG"))
+			rawLevelInstances, err := client.GetRawLevelInstances(map[string]bool{"active": true})
+			So(err, ShouldBeNil)
+			So(len(rawLevelInstances.Items), ShouldNotEqual, 0)
+			So(rawLevelInstances.Items[0].Active, ShouldEqual, true)
+		})
+	})
+}
