@@ -98,3 +98,18 @@ func TestGetRawLevelInstances(t *testing.T) {
 		})
 	})
 }
+
+func TestGetRawLevelInstance(t *testing.T) {
+	Convey("Testing GetRawLevelInstance", t, func() {
+		client := NewAPIPathwar(os.Getenv("PATHWAR_TOKEN"), os.Getenv("PATHWAR_DEBUG"))
+		rawLevelInstances, err := client.GetRawLevelInstances(map[string]bool{"active": true})
+		So(err, ShouldBeNil)
+		So(len(rawLevelInstances.Items) > 0, ShouldBeTrue)
+
+		rawLevelInstanceID := rawLevelInstances.Items[0].Id
+		rawLevelInstance, err := client.GetRawLevelInstance(rawLevelInstanceID)
+		So(err, ShouldBeNil)
+		So(rawLevelInstance.Id, ShouldEqual, rawLevelInstanceID)
+		So(rawLevelInstance.Active, ShouldBeTrue)
+	})
+}

@@ -95,6 +95,17 @@ func (p *APIPathwar) GetRawLevelInstances(where interface{}) (*RawLevelInstances
 	return &result, err
 }
 
+func (p *APIPathwar) GetRawLevelInstance(rawLevelInstanceID string) (*RawLevelInstance, error) {
+	resp, err := p.GetRequest(fmt.Sprintf("raw-level-instances/%s", rawLevelInstanceID))
+	if err != nil {
+		return nil, err
+	}
+
+	var result RawLevelInstance
+	err = json.Unmarshal(resp, &result)
+	return &result, err
+}
+
 // ---
 
 type PathwarGenerateAToken struct {
