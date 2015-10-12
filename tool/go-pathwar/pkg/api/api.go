@@ -51,7 +51,7 @@ type PathwarEtag struct {
 	Etag string `json:"_etag"`
 }
 
-func (p *APIPathwar) GetResquest(url string) ([]byte, error) {
+func (p *APIPathwar) GetRequest(url string) ([]byte, error) {
 	request := p.client.Get(strings.Join([]string{APIUrl, url}, "/"))
 	request = request.SetBasicAuth(p.token, "")
 	if p.debug {
@@ -68,7 +68,7 @@ func (p *APIPathwar) GetResquest(url string) ([]byte, error) {
 	return body, nil
 }
 
-func (p *APIPathwar) DeleteResquest(url, etag string) ([]byte, error) {
+func (p *APIPathwar) DeleteRequest(url, etag string) ([]byte, error) {
 	request := p.client.Delete(strings.Join([]string{APIUrl, url}, "/"))
 	request = request.SetBasicAuth(p.token, "")
 	request = request.Set("If-Match", etag)
@@ -86,7 +86,7 @@ func (p *APIPathwar) DeleteResquest(url, etag string) ([]byte, error) {
 	return body, nil
 }
 
-func (p *APIPathwar) PatchResquest(url, etag string, data interface{}) ([]byte, error) {
+func (p *APIPathwar) PatchRequest(url, etag string, data interface{}) ([]byte, error) {
 	payload, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
@@ -109,7 +109,7 @@ func (p *APIPathwar) PatchResquest(url, etag string, data interface{}) ([]byte, 
 	return body, nil
 }
 
-func (p *APIPathwar) PostResquest(url string, data interface{}) ([]byte, error) {
+func (p *APIPathwar) PostRequest(url string, data interface{}) ([]byte, error) {
 	payload, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
