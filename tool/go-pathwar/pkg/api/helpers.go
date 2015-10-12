@@ -44,6 +44,18 @@ func (p *APIPathwar) GetRawOrganizationUsers(where interface{}) (*RawOrganizatio
 	return &result, err
 }
 
+func (p *APIPathwar) GetRawLevelInstanceUsers(where interface{}) (*RawLevelInstanceUsers, error) {
+	whereString, err := marshalWhere(where)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := p.GetRequest(fmt.Sprintf("raw-level-instance-users?where=%s", whereString))
+	var result RawLevelInstanceUsers
+	err = json.Unmarshal(resp, &result)
+	return &result, err
+}
+
 // ---
 
 type PathwarGenerateAToken struct {
