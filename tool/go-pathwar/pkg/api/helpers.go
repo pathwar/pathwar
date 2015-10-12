@@ -8,6 +8,32 @@ import (
 	"github.com/parnurzeal/gorequest"
 )
 
+func marshalWhere(where interface{}) (string, error) {
+	if where == nil {
+		return "{}", nil
+	}
+
+	whereString, err := json.Marshal(where)
+	if err != nil {
+		return "", err
+	}
+	return string(whereString), nil
+}
+
+func (p *APIPathwar) GetUsers(where interface{}) (*Users, error) {
+	whereString, err := marshalWhere(where)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := p.GetRequest(fmt.Sprintf("users?where=%s", whereString))
+	var users Users
+	err = json.Unmarshal(resp, &users)
+	return &users, err
+}
+
+// ---
+
 type PathwarGenerateAToken struct {
 	ID      string `json:"_id"`
 	Created string `json:"_created"`
