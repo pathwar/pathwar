@@ -26,6 +26,22 @@ func TestGetUsers(t *testing.T) {
 	})
 }
 
+func TestGetUser(t *testing.T) {
+	Convey("Testing GetUser", t, func() {
+		client := NewAPIPathwar(os.Getenv("PATHWAR_TOKEN"), os.Getenv("PATHWAR_DEBUG"))
+		users, err := client.GetUsers(map[string]string{"login": "moul"})
+		So(err, ShouldBeNil)
+		So(len(users.Items), ShouldEqual, 1)
+
+		userID := users.Items[0].Id
+		user, err := client.GetUser(userID)
+		So(err, ShouldBeNil)
+		So(user.Id, ShouldEqual, userID)
+		So(user.Login, ShouldEqual, "moul")
+		So(user.Name, ShouldEqual, "Manfred Touron")
+	})
+}
+
 func TestGetRawOrganizationUsers(t *testing.T) {
 	Convey("Testing GetRawOrganizationUsers", t, func() {
 		Convey("without where clause", func() {

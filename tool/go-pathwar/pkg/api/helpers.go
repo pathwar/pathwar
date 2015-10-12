@@ -36,6 +36,17 @@ func (p *APIPathwar) GetUsers(where interface{}) (*Users, error) {
 	return &result, err
 }
 
+func (p *APIPathwar) GetUser(userID string) (*User, error) {
+	resp, err := p.GetRequest(fmt.Sprintf("users/%s", userID))
+	if err != nil {
+		return nil, err
+	}
+
+	var result User
+	err = json.Unmarshal(resp, &result)
+	return &result, err
+}
+
 func (p *APIPathwar) GetRawOrganizationUsers(where interface{}) (*RawOrganizationUsers, error) {
 	whereString, err := marshalWhere(where)
 	if err != nil {
