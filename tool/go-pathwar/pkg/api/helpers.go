@@ -27,6 +27,10 @@ func (p *APIPathwar) GetUsers(where interface{}) (*Users, error) {
 	}
 
 	resp, err := p.GetRequest(fmt.Sprintf("users?where=%s", whereString))
+	if err != nil {
+		return nil, err
+	}
+
 	var result Users
 	err = json.Unmarshal(resp, &result)
 	return &result, err
@@ -39,6 +43,10 @@ func (p *APIPathwar) GetRawOrganizationUsers(where interface{}) (*RawOrganizatio
 	}
 
 	resp, err := p.GetRequest(fmt.Sprintf("raw-organization-users?where=%s", whereString))
+	if err != nil {
+		return nil, err
+	}
+
 	var result RawOrganizationUsers
 	err = json.Unmarshal(resp, &result)
 	return &result, err
@@ -51,6 +59,10 @@ func (p *APIPathwar) GetRawLevelInstanceUsers(where interface{}) (*RawLevelInsta
 	}
 
 	resp, err := p.GetRequest(fmt.Sprintf("raw-level-instance-users?where=%s", whereString))
+	if err != nil {
+		return nil, err
+	}
+
 	var result RawLevelInstanceUsers
 	err = json.Unmarshal(resp, &result)
 	return &result, err
@@ -63,6 +75,10 @@ func (p *APIPathwar) GetRawLevelInstances(where interface{}) (*RawLevelInstances
 	}
 
 	resp, err := p.GetRequest(fmt.Sprintf("raw-level-instances?where=%s", whereString))
+	if err != nil {
+		return nil, err
+	}
+
 	var result RawLevelInstances
 	err = json.Unmarshal(resp, &result)
 	return &result, err
