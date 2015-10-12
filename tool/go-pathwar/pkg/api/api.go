@@ -47,10 +47,6 @@ func httpHandleError(goodStatusCode []int, statusCode int, body []byte) error {
 	return nil
 }
 
-type PathwarEtag struct {
-	Etag string `json:"_etag"`
-}
-
 func (p *APIPathwar) GetRequest(url string) ([]byte, error) {
 	request := p.client.Get(strings.Join([]string{APIUrl, url}, "/"))
 	request = request.SetBasicAuth(p.token, "")
