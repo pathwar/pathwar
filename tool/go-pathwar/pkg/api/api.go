@@ -14,16 +14,14 @@ var (
 )
 
 type APIPathwar struct {
-	token  string
-	client *gorequest.SuperAgent
-	debug  bool
+	token string
+	debug bool
 }
 
 func NewAPIPathwar(token, debug string) *APIPathwar {
 	return &APIPathwar{
-		client: gorequest.New(),
-		token:  token,
-		debug:  debug != "",
+		token: token,
+		debug: debug != "",
 	}
 }
 
@@ -48,7 +46,7 @@ func httpHandleError(goodStatusCode []int, statusCode int, body []byte) error {
 }
 
 func (p *APIPathwar) GetRequest(url string) ([]byte, error) {
-	request := p.client.Get(strings.Join([]string{APIUrl, url}, "/"))
+	request := gorequest.New().Get(strings.Join([]string{APIUrl, url}, "/"))
 	request = request.SetBasicAuth(p.token, "")
 	if p.debug {
 		request = request.SetDebug(true)
@@ -65,7 +63,7 @@ func (p *APIPathwar) GetRequest(url string) ([]byte, error) {
 }
 
 func (p *APIPathwar) DeleteRequest(url, etag string) ([]byte, error) {
-	request := p.client.Delete(strings.Join([]string{APIUrl, url}, "/"))
+	request := gorequest.New().Delete(strings.Join([]string{APIUrl, url}, "/"))
 	request = request.SetBasicAuth(p.token, "")
 	request = request.Set("If-Match", etag)
 	if p.debug {
@@ -87,7 +85,7 @@ func (p *APIPathwar) PatchRequest(url, etag string, data interface{}) ([]byte, e
 	if err != nil {
 		return nil, err
 	}
-	request := p.client.Patch(strings.Join([]string{APIUrl, url}, "/"))
+	request := gorequest.New().Patch(strings.Join([]string{APIUrl, url}, "/"))
 	request = request.SetBasicAuth(p.token, "")
 	request = request.Set("If-Match", etag)
 	request = request.Send(string(payload))
@@ -110,7 +108,7 @@ func (p *APIPathwar) PostRequest(url string, data interface{}) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	request := p.client.Post(strings.Join([]string{APIUrl, url}, "/"))
+	request := gorequest.New().Post(strings.Join([]string{APIUrl, url}, "/"))
 	request = request.SetBasicAuth(p.token, "")
 	request = request.Send(string(payload))
 	if p.debug {
