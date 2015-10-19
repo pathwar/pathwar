@@ -1,22 +1,22 @@
-CONFIG ?=	docker-compose.yml
-SERVICES ?=	$(shell cat docker-compose.yml | grep '^[a-z]' | cut -d: -f1)
+CONFIG ?=		docker-compose.yml
+SERVICES ?=		$(shell cat docker-compose.yml | grep '^[a-z]' | cut -d: -f1)
 # By default $(SERVICE) is the first service in docker-compose.yml
-SERVICE ?=	$(shell echo $(SERVICES) | tr " " "\n" | head -1)
-S3_URL ?= 	s3://pathwar-levels/
-PACKAGE_NAME ?=	package-$(shell basename $(shell pwd)).tar
-EXCLUDES ?=	$(PACKAGE_NAME) .git
-ASSETS ?=	$(filter-out $(EXCLUDES),$(wildcard *))
-PKGLVL ?=	/tmp/package_level
+SERVICE ?=		$(shell echo $(SERVICES) | tr " " "\n" | head -1)
+S3_URL ?=		s3://pathwar-levels/
+PACKAGE_NAME ?=		package-$(shell basename $(shell pwd)).tar
+EXCLUDES ?=		$(PACKAGE_NAME) .git
+ASSETS ?=		$(filter-out $(EXCLUDES),$(wildcard *))
+PKGLVL ?=		/tmp/package_level
 DOCKER_COMPOSE_NAME ?=	$(USER)$(shell basename $(shell pwd) | sed 's/[^a-z]//g')
 DOCKER_COMPOSE ?=	docker-compose -p$(DOCKER_COMPOSE_NAME)
 STORE_HOST ?=		store.pathwar.net
 STORE_PATH ?=		pathwar
-S3CMD ?=	s3cmd
-SECTIONS ?=	$(shell cat $(CONFIG) | grep -E '^[a-z]' | cut -d: -f1)
-MAIN_SECTION ?=	$(shell echo $(SECTIONS) | cut -d\  -f1)
-MAIN_CID :=	$(shell $(DOCKER_COMPOSE) ps -q $(MAIN_SECTION))
+S3CMD ?=		s3cmd
+SECTIONS ?=		$(shell cat $(CONFIG) | grep -E '^[a-z]' | cut -d: -f1)
+MAIN_SECTION ?=		$(shell echo $(SECTIONS) | cut -d\  -f1)
+MAIN_CID :=		$(shell $(DOCKER_COMPOSE) ps -q $(MAIN_SECTION))
 EXEC_MAIN_SECTION :=	docker exec -it $(MAIN_CID)
-UNIX_USER ?=	bobby
+UNIX_USER ?=		bobby
 
 
 ## Actions
@@ -25,7 +25,11 @@ all: up ps logs
 
 
 shellmysql:
-	docker run -it --rm orchardup/mysql mysql -h$(shell docker inspect -f '{{ .NetworkSettings.IPAddress }}' $(shell $(DOCKER_COMPOSE) ps -q mysql))
+	docker run \
+	  -it --rm \
+	  orchardup/mysql \
+	  mysql \
+	    -h$(shell docker inspect -f '{{ .NetworkSettings.IPAddress }}' $(shell $(DOCKER_COMPOSE) ps -q mysql))
 
 
 unix_run: build
