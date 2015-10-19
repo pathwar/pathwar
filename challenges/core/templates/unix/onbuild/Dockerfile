@@ -66,6 +66,7 @@ RUN groupadd --gid 8484 super-bobby                  \
 # Copy the content of ./overlay/ to /
 COPY overlay /
 
+LABEL PWR_LEVEL_TYPE=unix
 
 # Onbuild
 ONBUILD WORKDIR /home/bobby
