@@ -21,7 +21,7 @@ COPY skeleton /pathwar
 
 
 # Override pathwar scripts
-RUN echo /bin/bash > /pathwar/scripts/run
+RUN echo 'echo "level created, now you can enter with `level-enter`"; exit 0' > /pathwar/scripts/run
 
 
 # Cleanup fancy ubuntu stuff
