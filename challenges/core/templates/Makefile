@@ -10,3 +10,4 @@ build release clean examples dependencies:
 
 dist:	dependencies
 	git add -f */*/skeleton
+	git add -f */*/overlay
