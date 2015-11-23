@@ -1,4 +1,4 @@
-CHILDREN = nginx apache-php ruby python nodejs golang
+CHILDREN = nginx apache-php ruby python nodejs golang unix sshd supervisord phantomjs
 
 
 all:	build
