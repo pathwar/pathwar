@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 int main(int argc, char **argv) {
-  FILE *passwd = fopen("/home/super-boddy/.passwd", "rt");
+  FILE *passwd = fopen("/home/super-bobby/.passwd", "rt");
   char buffer[32];
   fgets(buffer, sizeof(buffer), passwd);
   printf(argv[1]);
