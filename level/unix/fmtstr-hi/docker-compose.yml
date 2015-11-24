@@ -1,4 +1,4 @@
 unix:
   build: .
   environment:
-    PATHWAR_DEBUG: true
+    PATHWAR_DEBUG: 'True'
