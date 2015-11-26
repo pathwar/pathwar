@@ -1,5 +1,4 @@
-/* gcc -o level level.c */
-
+/* cc -o level level.c  -Wno-format-security */
 #include <stdio.h>
 #include <unistd.h>
 
