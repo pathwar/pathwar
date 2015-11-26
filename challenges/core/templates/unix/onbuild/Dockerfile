@@ -7,13 +7,31 @@ MAINTAINER Pathwar Team <team@pathwar.net> (@pathwar_net)
 RUN apt-get update \
  && apt-get -y -q upgrade \
  && apt-get -y -q install \
+      binutils \
       curl \
       emacs-nox \
       gcc \
+      gdb \
+      libc-bin \
+      lsof \
+      ltrace  \
       mg \
+      net-tools \
+      nmap \
+      perl \
+      php5-cli \
+      python \
+      ruby \
+      socat \
+      strace \
       sudo \
+      syslinux-common \
+      tcpdump \
+      tshark \
       vim \
- && apt-get clean
+      wget \
+      wireshark \
+&& apt-get clean
 
 
 # Add Pathwar tools
