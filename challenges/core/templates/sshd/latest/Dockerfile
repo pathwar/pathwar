@@ -1,5 +1,5 @@
 # pathwar/sshd:latest
-FROM ubuntu:vivid
+FROM ubuntu:wily
 MAINTAINER Pathwar Team <team@pathwar.net> (@pathwar_net)
 
 # Install dependencies
