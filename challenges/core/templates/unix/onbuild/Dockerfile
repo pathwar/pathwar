@@ -30,7 +30,6 @@ RUN apt-get update \
       tshark \
       vim \
       wget \
-      wireshark \
 && apt-get clean
 
 
