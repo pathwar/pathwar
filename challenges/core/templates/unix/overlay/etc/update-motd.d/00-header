@@ -9,6 +9,6 @@ cat <<EOF
 Useful commands installed:
   - gdb, ltrace, strace, nm, objdump, ldd, hexdump
   - gcc, php, perl, python, ruby
-  - wget, curl, socat, nc, tcpdump, tshark, nmap
+  - wget, curl, socat, nc, tcpdump, nmap
   - emacs, vim, mg
 EOF

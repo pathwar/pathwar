@@ -27,7 +27,6 @@ RUN apt-get update \
       sudo \
       syslinux-common \
       tcpdump \
-      tshark \
       vim \
       wget \
 && apt-get clean
