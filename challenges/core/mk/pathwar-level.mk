@@ -81,6 +81,7 @@ package: $(PACKAGE_NAME)
 
 
 $(PACKAGE_NAME): $(PKGLVL) $(ASSETS)
+	-@docker ps -a -f name=pathwar-exportme -q | xargs docker rm 2>/dev/null || true
 	$(PKGLVL) build
 
 
