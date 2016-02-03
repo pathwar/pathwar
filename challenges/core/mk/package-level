@@ -10,14 +10,15 @@ import os
 import tempfile
 import shutil
 import subprocess
+import sys
 import yaml
 
-from compose.cli import command
+from compose.cli import main as command
 
 log = logging.getLogger(__name__)
 
 
-class PackageLevelCommand(command.Command):
+class PackageLevelCommand(command.TopLevelCommand):
     """I package a Pathwar level.
 
     Usage:
