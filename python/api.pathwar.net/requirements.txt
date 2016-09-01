@@ -1,8 +1,24 @@
-bcrypt >=1.1
-flask-mail ==0.9
-requests ==2.5
-eve ==0.5.3
-eve-docs ==0.1
-raven
-validate_email
-pyDNS
+bcrypt==1.1.1
+blinker==1.3
+Cerberus==0.8.1
+cffi==0.9.2
+Eve==0.5.3
+Eve-docs==0.1.4
+Events==0.2.1
+Flask==0.10.1
+Flask-Bootstrap==3.3.2.1
+Flask-Mail==0.9.1
+Flask-PyMongo==0.3.1
+itsdangerous==0.24
+Jinja2==2.7.3
+MarkupSafe==0.23
+pycparser==2.12
+pydns==2.3.6
+pymongo==2.8
+raven==5.3.1
+requests==2.7.0
+simplejson==3.6.5
+six==1.9.0
+validate-email==1.3
+virtualenv==12.1.1
+Werkzeug==0.10.4
