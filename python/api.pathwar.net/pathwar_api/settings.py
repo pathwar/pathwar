@@ -26,6 +26,7 @@ MONGO_PASSWORD = os.environ.get('MONGO_PASSWORD')
 MONGO_PORT = os.environ.get(
     'MONGO_PORT_27017_TCP_PORT', os.environ.get('MONGO_PORT', "27017")
 )
+MONGO_REPLICA_SET = os.environ.get('MONGO_REPLICA_SET')
 # print(MONGO_HOST, MONGO_PORT, MONGO_DBNAME, MONGO_USERNAME, MONGO_PASSWORD)
 # sys.exit(1)
 
