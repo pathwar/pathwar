@@ -2,13 +2,16 @@ syntax = "proto3";
 
 package pathwar.server;
 
+import "google/api/annotations.proto";
 //import "gogoproto/gogo.proto";
 //import "google/protobuf/timestamp.proto";
 
 option go_package = "pathwar.pw/server";
 
 service Server {
-  rpc Ping(Void) returns (Void) {};
+  rpc Ping(Void) returns (Void) {
+    option (google.api.http) = {get: "/ping"};
+  };
 }
 
 message Void {}
