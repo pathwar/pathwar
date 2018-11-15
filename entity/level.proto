@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package pathwar.entity;
+
+option go_package = "pathwar.pw/entity";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "entity/base.proto";
+
+message Level {
+  Base base = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+
+  string name = 2;
+}
