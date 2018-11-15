@@ -1,22 +1,13 @@
 package server
 
 import (
-	"encoding/json"
-	"fmt"
-
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
-type serverOptions struct{}
-
-func (opts serverOptions) String() string {
-	out, _ := json.Marshal(opts)
-	return string(out)
-}
-
 func serverSetupFlags(flags *pflag.FlagSet, opts *serverOptions) {
+	flags.StringVar(&opts.GRPCBind, "grpc-bind", ":4444", "grpc server address")
 	viper.BindPFlags(flags)
 }
 
@@ -33,9 +24,4 @@ func NewServerCommand() *cobra.Command {
 	}
 	serverSetupFlags(cmd.Flags(), opts)
 	return cmd
-}
-
-func server(opts *serverOptions) error {
-	fmt.Println("hello world server")
-	return nil
 }
