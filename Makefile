@@ -11,11 +11,13 @@ rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subs
 GOPATH ?= $(HOME)/go
 BIN = $(GOPATH)/bin/pathwar.pw
 SOURCES = $(call rwildcard, ./, *.go)
+OUR_SOURCES = $(filter-out $(call rwildcard,vendor//,*.go),$(SOURCES))
 PROTOS = $(call rwildcard, ./, *.proto)
+OUR_PROTOS = $(filter-out $(call rwildcard,vendor//,*.proto),$(PROTOS))
 GENERATED_FILES = \
-	$(patsubst %.proto,%.pb.go,$(PROTOS)) \
+	$(patsubst %.proto,%.pb.go,$(OUR_PROTOS)) \
 	$(call rwildcard ./, *.gen.go)
-PROTOC_OPTS = -I/protobuf:.
+PROTOC_OPTS = -I/protobuf:vendor:.
 RUN_OPTS ?=
 
 ##
@@ -36,7 +38,7 @@ run: $(BIN)
 
 .PHONY: install
 install: $(BIN)
-$(BIN): .generated $(SOURCES)
+$(BIN): .generated $(OUR_SOURCES)
 	go install -v
 
 .PHONY: clean
@@ -45,15 +47,16 @@ clean:
 
 .PHONY: generate
 generate: .generated
-.generated: $(PROTOS)
+.generated: $(OUR_PROTOS)
 	rm -f $(GENERATED_FILES)
+	go mod vendor
 	docker run \
 	  --user="$(shell id -u)" \
 	  --volume="$(PWD):/go/src/pathwar.pw" \
 	  --workdir="/go/src/pathwar.pw" \
 	  --entrypoint="sh" \
 	  --rm \
-	  moul/protoc-gen-gotemplate \
+	  pathwar/protoc:v1 \
 	  -xec "make _generate"
 	touch $@
 
@@ -61,4 +64,8 @@ generate: .generated
 _generate: $(GENERATED_FILES)
 
 %.pb.go: %.proto
-	protoc $(PROTOC_OPTS) --gofast_out=plugins=grpc:"$(GOPATH)/src" "$(dir $<)"/*.proto
+	protoc $(PROTOC_OPTS) --gogoopsee_out=plugins=grpc+graphql:. "$(dir $<)"/*.proto
+
+.PHONY: test
+test: .generated
+	go test -v ./...

@@ -1,9 +1,11 @@
 package server
 
 import (
+	"context"
 	"encoding/json"
 	"net"
 
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
@@ -19,6 +21,13 @@ func (opts serverOptions) String() string {
 }
 
 func server(opts *serverOptions) error {
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	mux := runtime.NewServeMux()
+	opts := []grpc.DialOption{grpc.WithInsecure()}
+	err := RegisterServerFromEndpoint(ctx, mux, opts.HttpBind, opts)
 	listener, err := net.Listen("tcp", opts.GRPCBind)
 	if err != nil {
 		return errors.Wrap(err, "failed to listen")

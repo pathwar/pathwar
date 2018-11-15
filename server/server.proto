@@ -2,13 +2,15 @@ syntax = "proto3";
 
 package pathwar.server;
 
-//import "gogoproto/gogo.proto";
-//import "google/protobuf/timestamp.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/opsee/protobuf/opseeproto/opsee.proto";
 
-option go_package = "pathwar.pw/server";
+option go_package = "server";
+
+option (opseeproto.graphql) = true;
 
 service Server {
   rpc Ping(Void) returns (Void) {};
 }
 
-message Void {}
+message Void { string void = 1; }
