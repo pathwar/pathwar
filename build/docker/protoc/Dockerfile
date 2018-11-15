@@ -2,8 +2,8 @@ FROM    moul/protoc-gen-gotemplate:latest as pgg
 
 FROM    golang:1.11-alpine as builder
 RUN     apk --no-cache add make git go rsync libc-dev openssh docker
-RUN     go get -u -v \
-          github.com/gogo/protobuf/protoc-gen-gofast \
+RUN     go get -u \
+          github.com/gogo/protobuf/protoc-gen-gogofaster \
           github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
 
 FROM    golang:1.11-alpine

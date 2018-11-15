@@ -14,6 +14,7 @@ import (
 	"go.uber.org/zap/zapcore"
 
 	"pathwar.pw/server"
+	"pathwar.pw/sql"
 )
 
 func main() {
@@ -60,6 +61,7 @@ func newRootCommand() *cobra.Command {
 
 	cmd.AddCommand(
 		server.NewServerCommand(),
+		sql.NewSQLCommand(),
 	)
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))

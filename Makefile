@@ -71,5 +71,5 @@ test: .generated
 	protoc \
 	  $(PROTOC_OPTS) \
 	  --grpc-gateway_out=logtostderr=true:"$(GOPATH)/src" \
-	  --gofast_out=plugins=grpc:"$(GOPATH)/src" \
+	  --gogofaster_out=plugins=grpc:"$(GOPATH)/src" \
 	  "$(dir $<)"/*.proto
