@@ -1,0 +1,40 @@
+version: 2
+
+jobs:
+  # lint:             # various linting
+  # generate          # this job generates files ('make generate') and raise an error if the generated files are not the same as before
+  # docker.images:    # this job builds docker images
+  # docker.build:     # build the project from within Docker, based on the Dockerfile
+
+  # build and unit test the project
+  test:
+    docker:
+      - image: circleci/golang:1.11.3
+    working_directory: /go/src/pathwar.pw
+    environment:
+      GOPATH: /go
+      GO111MODULE: "on"
+    steps:
+      - checkout
+      # FIXME: restore cache
+      - run:
+          name: fetch dependencies
+          command: |
+            go clean -modcache
+            go get
+      - run:
+          name: install
+          command: |
+            touch .generated
+            make install
+      - run:
+          name: test
+          command: make test
+      # FIXME: save cache
+      # FIXME: store_test_results
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - test
