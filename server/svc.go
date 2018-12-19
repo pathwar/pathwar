@@ -20,6 +20,7 @@ func (s *svc) Authenticate(ctx context.Context, input *AuthenticateInput) (*Auth
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		// FIXME: use mapstructure
 		"username": input.Username,
+		// FIXME: if needed encrypt sensitive data
 	})
 	tokenString, err := token.SignedString(s.jwtKey)
 	if err != nil {

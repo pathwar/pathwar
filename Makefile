@@ -73,3 +73,7 @@ test: .generated
 	  --grpc-gateway_out=logtostderr=true:"$(GOPATH)/src" \
 	  --gogofaster_out=plugins=grpc:"$(GOPATH)/src" \
 	  "$(dir $<)"/*.proto
+
+.PHONY: docker.build
+docker.build:
+	docker build -t pathwar/pathwar .
