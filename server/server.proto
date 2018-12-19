@@ -3,15 +3,40 @@ syntax = "proto3";
 package pathwar.server;
 
 import "google/api/annotations.proto";
-//import "gogoproto/gogo.proto";
+import "entity/session.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 //import "google/protobuf/timestamp.proto";
 
 option go_package = "pathwar.pw/server";
+option (gogoproto.sizer_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+
 
 service Server {
+  rpc Authenticate(AuthenticateInput) returns (AuthenticateOutput) {
+    option (google.api.http) = {
+      post: "/authenticate"
+      body: "*"
+    };
+  };
+
   rpc Ping(Void) returns (Void) {
     option (google.api.http) = {get: "/ping"};
+  };
+
+  rpc Session(Void) returns (pathwar.entity.Session) {
+    option (google.api.http) = {get: "/session"};
   };
 }
 
 message Void {}
+
+message AuthenticateInput {
+  string username = 1;
+  string password = 2;
+}
+
+message AuthenticateOutput {
+  string token = 1;
+}

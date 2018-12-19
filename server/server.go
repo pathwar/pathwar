@@ -2,11 +2,15 @@ package server
 
 import (
 	"context"
+	"crypto/rand"
 	"encoding/json"
 	"net"
 	"net/http"
 
+	"github.com/gogo/gateway"
+	"github.com/gogo/protobuf/gogoproto"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
@@ -17,9 +21,12 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
+var _ = gogoproto.IsStdTime
+
 type serverOptions struct {
 	GRPCBind       string
 	HTTPBind       string
+	JWTKey         string
 	WithReflection bool
 }
 
@@ -39,12 +46,21 @@ func server(opts *serverOptions) error {
 }
 
 func startHTTPServer(ctx context.Context, opts *serverOptions) error {
-	mux := runtime.NewServeMux()
+	gwmux := runtime.NewServeMux(
+		runtime.WithMarshalerOption(runtime.MIMEWildcard, &gateway.JSONPb{
+			EmitDefaults: false,
+			Indent:       "  ",
+			OrigName:     true,
+		}),
+		runtime.WithProtoErrorHandler(runtime.DefaultHTTPProtoErrorHandler),
+	)
 	grpcOpts := []grpc.DialOption{grpc.WithInsecure()}
-	if err := RegisterServerHandlerFromEndpoint(ctx, mux, opts.GRPCBind, grpcOpts); err != nil {
+	if err := RegisterServerHandlerFromEndpoint(ctx, gwmux, opts.GRPCBind, grpcOpts); err != nil {
 		return err
 	}
 	zap.L().Info("starting HTTP server", zap.String("bind", opts.HTTPBind))
+	mux := http.NewServeMux()
+	mux.Handle("/", gwmux)
 	return http.ListenAndServe(opts.HTTPBind, mux)
 }
 
@@ -66,12 +82,14 @@ func startGRPCServer(ctx context.Context, opts *serverOptions) error {
 	grpcLogger := zap.L().Named("grpc")
 	serverStreamOpts := []grpc.StreamServerInterceptor{
 		grpc_recovery.StreamServerInterceptor(),
+		grpc_auth.StreamServerInterceptor(authFunc),
 		grpc_ctxtags.StreamServerInterceptor(),
 		grpc_zap.StreamServerInterceptor(grpcLogger),
 		grpc_recovery.StreamServerInterceptor(),
 	}
 	serverUnaryOpts := []grpc.UnaryServerInterceptor{
 		grpc_recovery.UnaryServerInterceptor(),
+		grpc_auth.UnaryServerInterceptor(authFunc),
 		grpc_ctxtags.UnaryServerInterceptor(),
 		grpc_zap.UnaryServerInterceptor(grpcLogger),
 		grpc_recovery.UnaryServerInterceptor(),
@@ -80,7 +98,12 @@ func startGRPCServer(ctx context.Context, opts *serverOptions) error {
 		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(serverStreamOpts...)),
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(serverUnaryOpts...)),
 	)
-	RegisterServerServer(grpcServer, &svc{})
+
+	svc, err := newSvc(opts)
+	if err != nil {
+		return errors.Wrap(err, "failed to initialize service")
+	}
+	RegisterServerServer(grpcServer, svc)
 	if opts.WithReflection {
 		reflection.Register(grpcServer)
 	}
@@ -92,4 +115,17 @@ func startGRPCServer(ctx context.Context, opts *serverOptions) error {
 
 	zap.L().Info("starting gRPC server", zap.String("bind", opts.GRPCBind))
 	return grpcServer.Serve(listener)
+}
+
+func newSvc(opts *serverOptions) (*svc, error) {
+	jwtKey := []byte(opts.JWTKey)
+	if len(jwtKey) == 0 { // generate random JWT key
+		jwtKey = make([]byte, 128)
+		if _, err := rand.Read(jwtKey); err != nil {
+			return nil, errors.Wrap(err, "failed to generate random JWT token")
+		}
+	}
+	return &svc{
+		jwtKey: jwtKey,
+	}, nil
 }
