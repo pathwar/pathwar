@@ -9,6 +9,7 @@ import (
 func serverSetupFlags(flags *pflag.FlagSet, opts *serverOptions) {
 	flags.StringVar(&opts.GRPCBind, "grpc-bind", ":9111", "gRPC server address")
 	flags.StringVar(&opts.HTTPBind, "http-bind", ":8000", "HTTP server address")
+	flags.StringVar(&opts.JWTKey, "jwt-key", "", "JWT secure key")
 	viper.BindPFlags(flags)
 }
 
