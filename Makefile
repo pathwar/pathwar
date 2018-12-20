@@ -45,6 +45,12 @@ $(BIN): .generated $(OUR_SOURCES)
 clean:
 	rm -f $(GENERATED_FILES) .generated
 
+.PHONY: _ci_prepare
+_ci_prepare:
+	touch $(OUR_PROTOS) $(GENERATED_FILES)
+	sleep 1
+	touch .generated
+
 .PHONY: generate
 generate: .generated
 .generated: $(OUR_PROTOS)
@@ -77,3 +83,13 @@ test: .generated
 .PHONY: docker.build
 docker.build:
 	docker build -t pathwar/pathwar .
+
+.PHONY: docker.integration
+docker.integration:
+	docker-compose -f ./test/docker-compose.yml up -d server
+	docker-compose -f ./test/docker-compose.yml run client
+	docker-compose -f ./test/docker-compose.yml down
+
+.PHONY: integration
+integration:
+	./test/integration.sh

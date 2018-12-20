@@ -12,9 +12,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: docker build
-          command: docker build -t pathwar/pathwar .
+      - run: docker build -t pathwar/pathwar .
       # FIXME: save cache
 
   # build and unit test the project
@@ -28,22 +26,30 @@ jobs:
     steps:
       - checkout
       # FIXME: restore cache
-      - run:
-          name: fetch dependencies
-          command: |
-            go clean -modcache
-            go get
-      - run:
-          name: install
-          command: |
-            sleep 1
-            touch .generated
-            make install
-      - run:
-          name: test
-          command: make test
+      - run: go clean -modcache
+      - run: go get
+      - run: make _ci_prepare
+      - run: make test
       # FIXME: save cache
       # FIXME: store_test_results
+
+  docker.integration:
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - run:
+          name: Install Deps
+          command: |
+            apk --no-cache add curl openssl python3 make bash
+            pip3 install -U pip docker-compose
+            docker-compose --version
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: docker build -t pathwar/pathwar .
+      - run: make docker.integration
+      - run: make docker.integration
+      - run: docker-compose logs
 
 workflows:
   version: 2
@@ -51,3 +57,4 @@ workflows:
     jobs:
       - test
       - docker.build
+      - docker.integration

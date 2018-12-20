@@ -1,0 +1,15 @@
+version: '2.3'
+
+services:
+  server:
+    extends:
+      file: ../docker-compose.yml
+      service: server
+
+  client:
+    build: .
+    environment:
+      TARGET: http://server:8000
+    depends_on:
+      - server
+    tty: true
