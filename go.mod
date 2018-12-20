@@ -26,7 +26,7 @@ require (
 	github.com/spf13/viper v1.3.1
 	go.uber.org/zap v1.9.1
 	golang.org/x/net v0.0.0-20181217023233-e147a9138326
-	google.golang.org/genproto v0.0.0-20181219182458-5a97ab628bfb
+	google.golang.org/genproto v0.0.0-20181219182458-5a97ab628bfb // indirect
 	google.golang.org/grpc v1.17.0
 	moul.io/zapgorm v0.0.0-20181003053625-c808c1c4adc6
 )
