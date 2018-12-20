@@ -1,0 +1,11 @@
+version: '2.3'
+
+services:
+  server:
+    &server
+    image: pathwar/pathwar
+    command: server
+    #depends_on:
+    #  - mysql
+    ports:
+      - 8000
