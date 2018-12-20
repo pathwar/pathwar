@@ -22,15 +22,22 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
 type Level struct {
-	Metadata `protobuf:"bytes,1,opt,name=metadata,embedded=metadata" json:"metadata"`
-	Name     string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Metadata    `protobuf:"bytes,1,opt,name=metadata,embedded=metadata" json:"metadata"`
+	Name        string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Author      string   `protobuf:"bytes,4,opt,name=author,proto3" json:"author,omitempty"`
+	SourceUrl   string   `protobuf:"bytes,5,opt,name=source_url,json=sourceUrl,proto3" json:"source_url,omitempty"`
+	Version     string   `protobuf:"bytes,6,opt,name=version,proto3" json:"version,omitempty"`
+	Lang        string   `protobuf:"bytes,7,opt,name=lang,proto3" json:"lang,omitempty"`
+	Tags        []string `protobuf:"bytes,8,rep,name=tags" json:"tags,omitempty"`
+	IsDraft     bool     `protobuf:"varint,9,opt,name=is_draft,json=isDraft,proto3" json:"is_draft,omitempty"`
 }
 
 func (m *Level) Reset()         { *m = Level{} }
 func (m *Level) String() string { return proto.CompactTextString(m) }
 func (*Level) ProtoMessage()    {}
 func (*Level) Descriptor() ([]byte, []int) {
-	return fileDescriptor_level_8d69cb1c66ff7401, []int{0}
+	return fileDescriptor_level_f690ff15de12530c, []int{0}
 }
 func (m *Level) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -66,6 +73,55 @@ func (m *Level) GetName() string {
 	return ""
 }
 
+func (m *Level) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *Level) GetAuthor() string {
+	if m != nil {
+		return m.Author
+	}
+	return ""
+}
+
+func (m *Level) GetSourceUrl() string {
+	if m != nil {
+		return m.SourceUrl
+	}
+	return ""
+}
+
+func (m *Level) GetVersion() string {
+	if m != nil {
+		return m.Version
+	}
+	return ""
+}
+
+func (m *Level) GetLang() string {
+	if m != nil {
+		return m.Lang
+	}
+	return ""
+}
+
+func (m *Level) GetTags() []string {
+	if m != nil {
+		return m.Tags
+	}
+	return nil
+}
+
+func (m *Level) GetIsDraft() bool {
+	if m != nil {
+		return m.IsDraft
+	}
+	return false
+}
+
 func init() {
 	proto.RegisterType((*Level)(nil), "pathwar.entity.Level")
 }
@@ -98,6 +154,61 @@ func (m *Level) MarshalTo(dAtA []byte) (int, error) {
 		i = encodeVarintLevel(dAtA, i, uint64(len(m.Name)))
 		i += copy(dAtA[i:], m.Name)
 	}
+	if len(m.Description) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintLevel(dAtA, i, uint64(len(m.Description)))
+		i += copy(dAtA[i:], m.Description)
+	}
+	if len(m.Author) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintLevel(dAtA, i, uint64(len(m.Author)))
+		i += copy(dAtA[i:], m.Author)
+	}
+	if len(m.SourceUrl) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintLevel(dAtA, i, uint64(len(m.SourceUrl)))
+		i += copy(dAtA[i:], m.SourceUrl)
+	}
+	if len(m.Version) > 0 {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintLevel(dAtA, i, uint64(len(m.Version)))
+		i += copy(dAtA[i:], m.Version)
+	}
+	if len(m.Lang) > 0 {
+		dAtA[i] = 0x3a
+		i++
+		i = encodeVarintLevel(dAtA, i, uint64(len(m.Lang)))
+		i += copy(dAtA[i:], m.Lang)
+	}
+	if len(m.Tags) > 0 {
+		for _, s := range m.Tags {
+			dAtA[i] = 0x42
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if m.IsDraft {
+		dAtA[i] = 0x48
+		i++
+		if m.IsDraft {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
+	}
 	return i, nil
 }
 
@@ -121,6 +232,35 @@ func (m *Level) Size() (n int) {
 	l = len(m.Name)
 	if l > 0 {
 		n += 1 + l + sovLevel(uint64(l))
+	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovLevel(uint64(l))
+	}
+	l = len(m.Author)
+	if l > 0 {
+		n += 1 + l + sovLevel(uint64(l))
+	}
+	l = len(m.SourceUrl)
+	if l > 0 {
+		n += 1 + l + sovLevel(uint64(l))
+	}
+	l = len(m.Version)
+	if l > 0 {
+		n += 1 + l + sovLevel(uint64(l))
+	}
+	l = len(m.Lang)
+	if l > 0 {
+		n += 1 + l + sovLevel(uint64(l))
+	}
+	if len(m.Tags) > 0 {
+		for _, s := range m.Tags {
+			l = len(s)
+			n += 1 + l + sovLevel(uint64(l))
+		}
+	}
+	if m.IsDraft {
+		n += 2
 	}
 	return n
 }
@@ -226,6 +366,200 @@ func (m *Level) Unmarshal(dAtA []byte) error {
 			}
 			m.Name = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLevel
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthLevel
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Author", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLevel
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthLevel
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Author = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SourceUrl", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLevel
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthLevel
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.SourceUrl = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Version", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLevel
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthLevel
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Version = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Lang", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLevel
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthLevel
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Lang = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Tags", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLevel
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthLevel
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Tags = append(m.Tags, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		case 9:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsDraft", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLevel
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsDraft = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipLevel(dAtA[iNdEx:])
@@ -352,21 +686,28 @@ var (
 	ErrIntOverflowLevel   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("entity/level.proto", fileDescriptor_level_8d69cb1c66ff7401) }
+func init() { proto.RegisterFile("entity/level.proto", fileDescriptor_level_f690ff15de12530c) }
 
-var fileDescriptor_level_8d69cb1c66ff7401 = []byte{
-	// 201 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4a, 0xcd, 0x2b, 0xc9,
-	0x2c, 0xa9, 0xd4, 0xcf, 0x49, 0x2d, 0x4b, 0xcd, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2,
-	0x2b, 0x48, 0x2c, 0xc9, 0x28, 0x4f, 0x2c, 0xd2, 0x83, 0xc8, 0x49, 0xe9, 0xa6, 0x67, 0x96, 0x64,
-	0x94, 0x26, 0xe9, 0x25, 0xe7, 0xe7, 0xea, 0xa7, 0xe7, 0xa7, 0xe7, 0xeb, 0x83, 0x95, 0x25, 0x95,
-	0xa6, 0x81, 0x79, 0x60, 0x0e, 0x98, 0x05, 0xd1, 0x2e, 0x25, 0x0a, 0x35, 0x32, 0x37, 0xb5, 0x24,
-	0x31, 0x25, 0xb1, 0x24, 0x11, 0x22, 0xac, 0x14, 0xcd, 0xc5, 0xea, 0x03, 0xb2, 0x44, 0xc8, 0x8e,
-	0x8b, 0x03, 0x26, 0x25, 0xc1, 0xa8, 0xc0, 0xa8, 0xc1, 0x6d, 0x24, 0xa1, 0x87, 0x6a, 0xa3, 0x9e,
-	0x2f, 0x54, 0xde, 0x89, 0xe3, 0xc4, 0x3d, 0x79, 0x86, 0x0b, 0xf7, 0xe4, 0x19, 0x83, 0xe0, 0x7a,
-	0x84, 0x84, 0xb8, 0x58, 0xf2, 0x12, 0x73, 0x53, 0x25, 0x98, 0x14, 0x18, 0x35, 0x38, 0x83, 0xc0,
-	0x6c, 0x27, 0xed, 0x13, 0x8f, 0xe4, 0x18, 0x2f, 0x3c, 0x92, 0x63, 0x7c, 0xf0, 0x48, 0x8e, 0x71,
-	0xc2, 0x63, 0x39, 0x86, 0x0b, 0x8f, 0xe5, 0x18, 0x6e, 0x3c, 0x96, 0x63, 0x88, 0x12, 0x84, 0x19,
-	0x5d, 0x50, 0xae, 0x0f, 0x31, 0x3d, 0x89, 0x0d, 0xec, 0x20, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff,
-	0xff, 0xe2, 0x6e, 0x74, 0x81, 0xfc, 0x00, 0x00, 0x00,
+var fileDescriptor_level_f690ff15de12530c = []byte{
+	// 314 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x54, 0x90, 0x4f, 0x4b, 0xc3, 0x30,
+	0x18, 0xc6, 0x9b, 0xfd, 0xed, 0x32, 0x10, 0x0c, 0x28, 0x71, 0x60, 0x56, 0x3c, 0x0d, 0xc4, 0x16,
+	0xf4, 0xee, 0x61, 0x78, 0xd4, 0xcb, 0xc0, 0x8b, 0x97, 0x91, 0x6d, 0x59, 0x17, 0x68, 0x9b, 0x92,
+	0xa4, 0x1b, 0x7e, 0x0b, 0xfd, 0x56, 0x3b, 0xf6, 0xe8, 0x69, 0x48, 0xfb, 0x45, 0x24, 0x49, 0x2b,
+	0x7a, 0x7b, 0x9e, 0xe7, 0x97, 0xbc, 0xef, 0xcb, 0x03, 0x11, 0xcb, 0x34, 0xd7, 0xef, 0x51, 0xc2,
+	0xf6, 0x2c, 0x09, 0x73, 0x29, 0xb4, 0x40, 0x67, 0x39, 0xd5, 0xbb, 0x03, 0x95, 0xa1, 0x63, 0x93,
+	0xbb, 0x98, 0xeb, 0x5d, 0xb1, 0x0a, 0xd7, 0x22, 0x8d, 0x62, 0x11, 0x8b, 0xc8, 0x3e, 0x5b, 0x15,
+	0x5b, 0xeb, 0xac, 0xb1, 0xca, 0x7d, 0x9f, 0x5c, 0x34, 0x23, 0x53, 0xa6, 0xe9, 0x86, 0x6a, 0xea,
+	0xe2, 0x9b, 0xcf, 0x0e, 0xec, 0x3f, 0x9b, 0x2d, 0xe8, 0x11, 0xfa, 0x2d, 0xc3, 0x20, 0x00, 0xb3,
+	0xf1, 0x3d, 0x0e, 0xff, 0xaf, 0x0c, 0x5f, 0x1a, 0x3e, 0xf7, 0x8f, 0xa7, 0xa9, 0x57, 0x9e, 0xa6,
+	0x60, 0xf1, 0xfb, 0x07, 0x21, 0xd8, 0xcb, 0x68, 0xca, 0x70, 0x27, 0x00, 0xb3, 0xd1, 0xc2, 0x6a,
+	0x14, 0xc0, 0xf1, 0x86, 0xa9, 0xb5, 0xe4, 0xb9, 0xe6, 0x22, 0xc3, 0x5d, 0x8b, 0xfe, 0x46, 0xe8,
+	0x12, 0x0e, 0x68, 0xa1, 0x77, 0x42, 0xe2, 0x9e, 0x85, 0x8d, 0x43, 0xd7, 0x10, 0x2a, 0x51, 0xc8,
+	0x35, 0x5b, 0x16, 0x32, 0xc1, 0x7d, 0xcb, 0x46, 0x2e, 0x79, 0x95, 0x09, 0xc2, 0x70, 0xb8, 0x67,
+	0x52, 0x99, 0xa1, 0x03, 0xcb, 0x5a, 0x6b, 0xce, 0x48, 0x68, 0x16, 0xe3, 0xa1, 0x3b, 0xc3, 0x68,
+	0x93, 0x69, 0x1a, 0x2b, 0xec, 0x07, 0x5d, 0x93, 0x19, 0x8d, 0xae, 0xa0, 0xcf, 0xd5, 0x72, 0x23,
+	0xe9, 0x56, 0xe3, 0x51, 0x00, 0x66, 0xfe, 0x62, 0xc8, 0xd5, 0x93, 0xb1, 0xf3, 0xdb, 0x63, 0x45,
+	0x40, 0x59, 0x11, 0xf0, 0x5d, 0x11, 0xf0, 0x51, 0x13, 0xaf, 0xac, 0x89, 0xf7, 0x55, 0x13, 0xef,
+	0xed, 0xbc, 0x2d, 0x24, 0x3f, 0x44, 0xae, 0x93, 0xd5, 0xc0, 0xf6, 0xf8, 0xf0, 0x13, 0x00, 0x00,
+	0xff, 0xff, 0x2d, 0x64, 0xc5, 0xba, 0xb3, 0x01, 0x00, 0x00,
 }
