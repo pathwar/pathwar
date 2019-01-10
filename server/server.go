@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"crypto/rand"
-	"encoding/json"
 	"net"
 	"net/http"
 
@@ -15,7 +14,6 @@ import (
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
@@ -26,19 +24,7 @@ import (
 
 var _ = gogoproto.IsStdTime
 
-type Options struct {
-	GRPCBind       string
-	HTTPBind       string
-	JWTKey         string
-	WithReflection bool
-}
-
-func (opts Options) String() string {
-	out, _ := json.Marshal(opts)
-	return string(out)
-}
-
-func server(opts *Options) error {
+func server(opts *serverOptions) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -48,7 +34,7 @@ func server(opts *Options) error {
 	return <-errs
 }
 
-func startHTTPServer(ctx context.Context, opts *Options) error {
+func startHTTPServer(ctx context.Context, opts *serverOptions) error {
 	gwmux := runtime.NewServeMux(
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, &gateway.JSONPb{
 			EmitDefaults: false,
@@ -67,7 +53,7 @@ func startHTTPServer(ctx context.Context, opts *Options) error {
 	return http.ListenAndServe(opts.HTTPBind, mux)
 }
 
-func startGRPCServer(ctx context.Context, opts *Options) error {
+func startGRPCServer(ctx context.Context, opts *serverOptions) error {
 	listener, err := net.Listen("tcp", opts.GRPCBind)
 	if err != nil {
 		return errors.Wrap(err, "failed to listen")
@@ -102,12 +88,7 @@ func startGRPCServer(ctx context.Context, opts *Options) error {
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(serverUnaryOpts...)),
 	)
 
-	db, err := sql.FromOpts(sql.GetOptions())
-	if err != nil {
-		return errors.Wrap(err, "failed to initialize database")
-	}
-
-	svc, err := newSvc(opts, db)
+	svc, err := newSvc(opts)
 	if err != nil {
 		return errors.Wrap(err, "failed to initialize service")
 	}
@@ -125,7 +106,12 @@ func startGRPCServer(ctx context.Context, opts *Options) error {
 	return grpcServer.Serve(listener)
 }
 
-func newSvc(opts *Options, db *gorm.DB) (*svc, error) {
+func newSvc(opts *serverOptions) (*svc, error) {
+	db, err := sql.FromOpts(&opts.sql)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to initialize database")
+	}
+
 	jwtKey := []byte(opts.JWTKey)
 	if len(jwtKey) == 0 { // generate random JWT key
 		jwtKey = make([]byte, 128)
