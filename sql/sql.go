@@ -19,10 +19,6 @@ type Options struct {
 	Path string
 }
 
-type dump struct {
-	Levels []*entity.Level
-}
-
 func FromOpts(opts *Options) (*gorm.DB, error) {
 	db, err := gorm.Open("sqlite3", opts.Path)
 	if err != nil {
@@ -48,19 +44,29 @@ func FromOpts(opts *Options) (*gorm.DB, error) {
 	return db, nil
 }
 
-func sqlDump(opts *Options) error {
-	d := dump{}
+func DoDump(db *gorm.DB) (*entity.Dump, error) {
+	dump := entity.Dump{}
+	if err := db.Find(&dump.Levels).Error; err != nil {
+		return nil, err
+	}
+	if err := db.Find(&dump.Sessions).Error; err != nil {
+		return nil, err
+	}
+	return &dump, nil
+}
 
+func runDump(opts *Options) error {
 	db, err := FromOpts(opts)
 	if err != nil {
 		return err
 	}
 
-	if err := db.Find(&d.Levels).Error; err != nil {
+	dump, err := DoDump(db)
+	if err != nil {
 		return err
 	}
 
-	out, err := json.MarshalIndent(d, "", "  ")
+	out, err := json.MarshalIndent(dump, "", "  ")
 	if err != nil {
 		return err
 	}

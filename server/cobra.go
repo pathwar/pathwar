@@ -16,17 +16,20 @@ func serverSetupFlags(flags *pflag.FlagSet, opts *Options) {
 	}
 }
 
+var globalOpts Options
+
+func GetOptions() *Options {
+	opts := globalOpts
+	return &opts
+}
+
 func NewServerCommand() *cobra.Command {
-	opts := &Options{}
 	cmd := &cobra.Command{
 		Use: "server",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := viper.Unmarshal(opts); err != nil {
-				return err
-			}
-			return server(opts)
+			return server(GetOptions())
 		},
 	}
-	serverSetupFlags(cmd.Flags(), opts)
+	serverSetupFlags(cmd.Flags(), &globalOpts)
 	return cmd
 }

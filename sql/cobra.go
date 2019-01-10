@@ -14,6 +14,13 @@ func sqlSetupFlags(flags *pflag.FlagSet, opts *Options) {
 	}
 }
 
+var globalOpts Options
+
+func GetOptions() *Options {
+	opts := globalOpts
+	return &opts
+}
+
 func NewSQLCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use: "sql",
@@ -23,16 +30,12 @@ func NewSQLCommand() *cobra.Command {
 }
 
 func NewSQLDumpCommand() *cobra.Command {
-	opts := &Options{}
 	cmd := &cobra.Command{
 		Use: "dump",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := viper.Unmarshal(opts); err != nil {
-				return err
-			}
-			return sqlDump(opts)
+			return runDump(GetOptions())
 		},
 	}
-	sqlSetupFlags(cmd.Flags(), opts)
+	sqlSetupFlags(cmd.Flags(), &globalOpts)
 	return cmd
 }

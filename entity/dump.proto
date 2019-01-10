@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pathwar.entity;
+
+option go_package = "pathwar.pw/entity";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "entity/metadata.proto";
+import "entity/session.proto";
+import "entity/level.proto";
+
+message Dump {
+  repeated Session sessions = 1;
+  repeated Level levels = 2;
+}
