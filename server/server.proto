@@ -4,6 +4,7 @@ package pathwar.server;
 
 import "google/api/annotations.proto";
 import "entity/session.proto";
+import "entity/dump.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 //import "google/protobuf/timestamp.proto";
 
@@ -31,6 +32,10 @@ service Server {
 
   rpc GenerateFakeData(Void) returns (Void) {
     option (google.api.http) = {post: "/dev/generate-fake-data"};
+  };
+
+  rpc Dump(Void) returns (pathwar.entity.Dump) {
+    option (google.api.http) = {post: "/dev/sql-dump"};
   };
 }
 

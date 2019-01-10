@@ -6,7 +6,9 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
+
 	"pathwar.pw/entity"
+	"pathwar.pw/sql"
 )
 
 type svc struct {
@@ -56,4 +58,8 @@ func (s *svc) GenerateFakeData(ctx context.Context, _ *Void) (*Void, error) {
 		return nil, err
 	}
 	return &Void{}, nil
+}
+
+func (s *svc) Dump(ctx context.Context, _ *Void) (*entity.Dump, error) {
+	return sql.DoDump(s.db)
 }

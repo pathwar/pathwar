@@ -33,7 +33,7 @@ func NewSQLDumpCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use: "dump",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return sqlDump(GetOptions())
+			return runDump(GetOptions())
 		},
 	}
 	sqlSetupFlags(cmd.Flags(), &globalOpts)
