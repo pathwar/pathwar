@@ -5,5 +5,7 @@ func All() []interface{} {
 		Level{},
 		UserSession{},
 		User{},
+		TeamMember{},
+		Team{},
 	}
 }

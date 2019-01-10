@@ -3,8 +3,7 @@ syntax = "proto3";
 package pathwar.server;
 
 import "google/api/annotations.proto";
-import "entity/user_session.proto";
-import "entity/dump.proto";
+import "entity/entity.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 //import "google/protobuf/timestamp.proto";
 

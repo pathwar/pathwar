@@ -55,6 +55,12 @@ func DoDump(db *gorm.DB) (*entity.Dump, error) {
 	if err := db.Find(&dump.Users).Error; err != nil {
 		return nil, err
 	}
+	if err := db.Find(&dump.Teams).Error; err != nil {
+		return nil, err
+	}
+	if err := db.Find(&dump.TeamMembers).Error; err != nil {
+		return nil, err
+	}
 	return &dump, nil
 }
 
