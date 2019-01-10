@@ -4,12 +4,14 @@ import (
 	"context"
 
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 	"pathwar.pw/entity"
 )
 
 type svc struct {
 	jwtKey []byte
+	db     *gorm.DB
 }
 
 func (s *svc) Ping(_ context.Context, _ *Void) (*Void, error) {
@@ -38,4 +40,20 @@ func (s *svc) Session(ctx context.Context, _ *Void) (*entity.Session, error) {
 		return nil, errors.Wrap(err, "failed to get context session")
 	}
 	return &sess, nil
+}
+
+func (s *svc) GenerateFakeData(ctx context.Context, _ *Void) (*Void, error) {
+	if err := s.db.Create(&entity.Level{
+		Name:        "level1",
+		Description: "description 1",
+		Author:      "author 1",
+		SourceUrl:   "http://1.2.3.4",
+		Version:     "1.0",
+		Lang:        "en",
+		//Tags:        []string{"test", "example"},
+		IsDraft: false,
+	}).Error; err != nil {
+		return nil, err
+	}
+	return &Void{}, nil
 }

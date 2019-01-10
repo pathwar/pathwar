@@ -16,6 +16,6 @@ message Level {
   string source_url = 5;
   string version = 6;
   string lang = 7;
-  repeated string tags = 8;
+  // repeated string tags = 8;
   bool is_draft = 9;
 }

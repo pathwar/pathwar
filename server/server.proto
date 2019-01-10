@@ -28,6 +28,10 @@ service Server {
   rpc Session(Void) returns (pathwar.entity.Session) {
     option (google.api.http) = {get: "/session"};
   };
+
+  rpc GenerateFakeData(Void) returns (Void) {
+    option (google.api.http) = {post: "/dev/generate-fake-data"};
+  };
 }
 
 message Void {}

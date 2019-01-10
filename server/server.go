@@ -15,10 +15,12 @@ import (
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"pathwar.pw/sql"
 )
 
 var _ = gogoproto.IsStdTime
@@ -99,7 +101,12 @@ func startGRPCServer(ctx context.Context, opts *Options) error {
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(serverUnaryOpts...)),
 	)
 
-	svc, err := newSvc(opts)
+	db, err := sql.FromOpts(sql.GetOptions())
+	if err != nil {
+		return errors.Wrap(err, "failed to initialize database")
+	}
+
+	svc, err := newSvc(opts, db)
 	if err != nil {
 		return errors.Wrap(err, "failed to initialize service")
 	}
@@ -117,7 +124,7 @@ func startGRPCServer(ctx context.Context, opts *Options) error {
 	return grpcServer.Serve(listener)
 }
 
-func newSvc(opts *Options) (*svc, error) {
+func newSvc(opts *Options, db *gorm.DB) (*svc, error) {
 	jwtKey := []byte(opts.JWTKey)
 	if len(jwtKey) == 0 { // generate random JWT key
 		jwtKey = make([]byte, 128)
@@ -127,5 +134,6 @@ func newSvc(opts *Options) (*svc, error) {
 	}
 	return &svc{
 		jwtKey: jwtKey,
+		db:     db,
 	}, nil
 }

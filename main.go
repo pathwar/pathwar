@@ -56,6 +56,13 @@ func newRootCommand() *cobra.Command {
 			}
 		}
 
+		if err := viper.Unmarshal(sql.GetOptions()); err != nil {
+			return err
+		}
+		if err := viper.Unmarshal(server.GetOptions()); err != nil {
+			return err
+		}
+
 		return nil
 	}
 
