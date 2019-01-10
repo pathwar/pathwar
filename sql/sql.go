@@ -49,7 +49,7 @@ func DoDump(db *gorm.DB) (*entity.Dump, error) {
 	if err := db.Find(&dump.Levels).Error; err != nil {
 		return nil, err
 	}
-	if err := db.Find(&dump.Sessions).Error; err != nil {
+	if err := db.Find(&dump.UserSessions).Error; err != nil {
 		return nil, err
 	}
 	return &dump, nil

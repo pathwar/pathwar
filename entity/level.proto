@@ -10,12 +10,20 @@ import "entity/metadata.proto";
 message Level {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
 
-  string name = 2;
-  string description = 3;
-  string author = 4;
-  string source_url = 5;
-  string version = 6;
-  string lang = 7;
-  // repeated string tags = 8;
-  bool is_draft = 9;
+  //
+  // fields
+  //
+
+  string name = 100;
+  string description = 101;
+  string author = 102;
+  string source_url = 103;
+  string version = 104;
+  string lang = 105;
+  bool is_draft = 106;
+  // repeated string tags = 107;
+
+  //
+  // associations
+  //
 }

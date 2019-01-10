@@ -7,8 +7,16 @@ option go_package = "pathwar.pw/entity";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "entity/metadata.proto";
 
-message Session {
+message UserSession {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
 
-  string username = 2;
+  //
+  // fields
+  //
+
+  string username = 100;
+
+  //
+  // associations
+  //
 }
