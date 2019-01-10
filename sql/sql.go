@@ -1,8 +1,6 @@
 package sql
 
 import (
-	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -14,10 +12,6 @@ import (
 
 	"pathwar.pw/entity"
 )
-
-type Options struct {
-	Path string
-}
 
 func FromOpts(opts *Options) (*gorm.DB, error) {
 	db, err := gorm.Open("sqlite3", opts.Path)
@@ -42,34 +36,4 @@ func FromOpts(opts *Options) (*gorm.DB, error) {
 	// FIXME: apply real migrations
 
 	return db, nil
-}
-
-func DoDump(db *gorm.DB) (*entity.Dump, error) {
-	dump := entity.Dump{}
-	if err := db.Find(&dump.Levels).Error; err != nil {
-		return nil, err
-	}
-	if err := db.Find(&dump.Sessions).Error; err != nil {
-		return nil, err
-	}
-	return &dump, nil
-}
-
-func runDump(opts *Options) error {
-	db, err := FromOpts(opts)
-	if err != nil {
-		return err
-	}
-
-	dump, err := DoDump(db)
-	if err != nil {
-		return err
-	}
-
-	out, err := json.MarshalIndent(dump, "", "  ")
-	if err != nil {
-		return err
-	}
-	fmt.Println(string(out))
-	return nil
 }

@@ -36,8 +36,8 @@ func (s *svc) Authenticate(ctx context.Context, input *AuthenticateInput) (*Auth
 	}, nil
 }
 
-func (s *svc) Session(ctx context.Context, _ *Void) (*entity.Session, error) {
-	sess, err := sessionFromContext(ctx)
+func (s *svc) UserSession(ctx context.Context, _ *Void) (*entity.UserSession, error) {
+	sess, err := userSessionFromContext(ctx)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get context session")
 	}

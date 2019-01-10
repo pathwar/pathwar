@@ -13,6 +13,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
+	"pathwar.pw/pkg/cli"
 	"pathwar.pw/server"
 	"pathwar.pw/sql"
 )
@@ -29,10 +30,20 @@ func main() {
 
 func newRootCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use: "pathwar.pw",
+		// Use: "pathwar.pw",
+		Use: os.Args[0],
 	}
 	cmd.PersistentFlags().BoolP("help", "h", false, "print usage")
 	//cmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose mode")
+
+	// Add commands
+	commands := cli.Commands{}
+	for name, command := range sql.Commands() {
+		commands[name] = command
+	}
+	for name, command := range server.Commands() {
+		commands[name] = command
+	}
 
 	cmd.PersistentPreRunE = func(cmd *cobra.Command, args []string) error {
 		// setup logging
@@ -56,20 +67,22 @@ func newRootCommand() *cobra.Command {
 			}
 		}
 
-		if err := viper.Unmarshal(sql.GetOptions()); err != nil {
-			return err
-		}
-		if err := viper.Unmarshal(server.GetOptions()); err != nil {
-			return err
+		for _, command := range commands {
+			if err := command.LoadDefaultOptions(); err != nil {
+				return err
+			}
 		}
 
 		return nil
 	}
 
-	cmd.AddCommand(
-		server.NewServerCommand(),
-		sql.NewSQLCommand(),
-	)
+	for name, command := range commands {
+		if strings.Contains(name, " ") { // do not add commands where level > 1
+			continue
+		}
+		cmd.AddCommand(command.CobraCommand(commands))
+	}
+
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 	return cmd

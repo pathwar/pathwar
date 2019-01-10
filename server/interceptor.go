@@ -10,12 +10,13 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+
 	"pathwar.pw/entity"
 )
 
 type ctxKey string
 
-var sessionCtx ctxKey = "session"
+var userSessionCtx ctxKey = "user-session"
 
 func (s *svc) AuthFuncOverride(ctx context.Context, fullMethodName string) (context.Context, error) {
 	switch fullMethodName {
@@ -50,7 +51,7 @@ func (s *svc) AuthFuncOverride(ctx context.Context, fullMethodName string) (cont
 	if !ok || !token.Valid {
 		return nil, status.Errorf(codes.Unauthenticated, "invalid token")
 	}
-	ctx = context.WithValue(ctx, sessionCtx, entity.Session{
+	ctx = context.WithValue(ctx, userSessionCtx, entity.UserSession{
 		// FIXME: use mapstructure
 		Username: claims["username"].(string),
 	})
@@ -63,11 +64,11 @@ func authFunc(ctx context.Context) (context.Context, error) {
 	return nil, fmt.Errorf("should not happen")
 }
 
-func sessionFromContext(ctx context.Context) (entity.Session, error) {
-	sess := ctx.Value(sessionCtx)
+func userSessionFromContext(ctx context.Context) (entity.UserSession, error) {
+	sess := ctx.Value(userSessionCtx)
 	if sess == nil {
-		return entity.Session{}, errors.New("context does not contain a session")
+		return entity.UserSession{}, errors.New("context does not contain a session")
 	}
 
-	return sess.(entity.Session), nil
+	return sess.(entity.UserSession), nil
 }

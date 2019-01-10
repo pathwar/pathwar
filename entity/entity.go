@@ -3,6 +3,9 @@ package entity
 func All() []interface{} {
 	return []interface{}{
 		Level{},
-		Session{},
+		UserSession{},
+		User{},
+		TeamMember{},
+		Team{},
 	}
 }

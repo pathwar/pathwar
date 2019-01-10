@@ -1,0 +1,131 @@
+syntax = "proto3";
+
+package pathwar.entity;
+
+import "github.com/golang/protobuf/ptypes/timestamp/timestamp.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option go_package = "pathwar.pw/entity";
+option (gogoproto.sizer_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+
+message Metadata {
+  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
+}
+
+message TeamMember {
+  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+
+  //
+  // fields
+  //
+
+  enum Role {
+    Undefined = 0;
+    Owner = 1;
+    Basic = 2;
+  }
+  Role role = 100;
+
+  //
+  // associations
+  //
+
+  User user = 200;
+  string user_id = 201 [(gogoproto.customname) = "UserID"];
+
+  Team team = 202;
+  string team_id = 203 [(gogoproto.customname) = "TeamID"];
+}
+
+message User {
+  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+
+  //
+  // fields
+  //
+
+  string username = 100;
+  string email = 101;
+  string password_hash = 102;
+  string password_salt = 103;
+
+  //
+  // associations
+  //
+
+  repeated UserSession sessions = 200; // HasMany
+  repeated TeamMember team_memberships = 201; // Many2Many
+}
+
+message UserSession {
+  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+
+  //
+  // fields
+  //
+
+  string username = 100;
+
+  //
+  // associations
+  //
+
+  string user_id = 200 [(gogoproto.customname) = "UserID"]; // HasOne
+}
+
+message Team {
+  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+
+  //
+  // fields
+  //
+
+  string name = 100;
+  string gravatar_url = 101;
+
+  //
+  // associations
+  //
+
+  repeated TeamMember members = 200; // HasMany
+}
+
+message Level {
+  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+
+  //
+  // fields
+  //
+
+  string name = 100;
+  string description = 101;
+  string author = 102;
+  string source_url = 103;
+  string version = 104;
+  string lang = 105;
+  bool is_draft = 106;
+  // repeated string tags = 107;
+
+  //
+  // associations
+  //
+}
+
+message Dump {
+  // non-gorm entity -> no metadata
+
+  //
+  // associations
+  //
+
+  repeated UserSession user_sessions = 1;
+  repeated Level levels = 2;
+  repeated User users = 3;
+  repeated TeamMember team_members = 4;
+  repeated Team teams = 5;
+}
