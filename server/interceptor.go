@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	jwt "github.com/dgrijalva/jwt-go"
-	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 	"pathwar.pw/entity"
 )
 
@@ -26,11 +26,11 @@ func (s *svc) AuthFuncOverride(ctx context.Context, fullMethodName string) (cont
 
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
-		return nil, grpc.Errorf(codes.Unauthenticated, "cannot get metadata/headers")
+		return nil, status.Errorf(codes.Unauthenticated, "cannot get metadata/headers")
 	}
 	auth, ok := md["authorization"]
 	if !ok || len(auth) < 1 {
-		return nil, grpc.Errorf(codes.Unauthenticated, "no token provided")
+		return nil, status.Errorf(codes.Unauthenticated, "no token provided")
 	}
 	if strings.HasPrefix(auth[0], "Bearer ") {
 		auth[0] = auth[0][7:]
@@ -38,17 +38,17 @@ func (s *svc) AuthFuncOverride(ctx context.Context, fullMethodName string) (cont
 
 	token, err := jwt.Parse(auth[0], func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, grpc.Errorf(codes.Unauthenticated, "there was an error")
+			return nil, status.Errorf(codes.Unauthenticated, "there was an error")
 		}
 		return s.jwtKey, nil
 	})
 	if err != nil {
-		return nil, grpc.Errorf(codes.Unauthenticated, err.Error())
+		return nil, status.Errorf(codes.Unauthenticated, err.Error())
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok || !token.Valid {
-		return nil, grpc.Errorf(codes.Unauthenticated, "invalid token")
+		return nil, status.Errorf(codes.Unauthenticated, "invalid token")
 	}
 	ctx = context.WithValue(ctx, sessionCtx, entity.Session{
 		// FIXME: use mapstructure
