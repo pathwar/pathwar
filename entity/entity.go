@@ -4,5 +4,6 @@ func All() []interface{} {
 	return []interface{}{
 		Level{},
 		UserSession{},
+		User{},
 	}
 }

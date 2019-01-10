@@ -5,15 +5,18 @@ package pathwar.entity;
 option go_package = "pathwar.pw/entity";
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
-// import "entity/metadata.proto";
 import "entity/user_session.proto";
 import "entity/level.proto";
+import "entity/user.proto";
 
 message Dump {
+  // non-gorm entity -> no metadata
+
   //
   // associations
   //
 
-  repeated UserSession user_sessions = 1;
-  repeated Level levels = 2;
+  repeated UserSession user_sessions = 1; // HasMany
+  repeated Level levels = 2; // HasMany
+  repeated User users = 3; // HasMany
 }
