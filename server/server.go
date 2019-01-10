@@ -23,19 +23,19 @@ import (
 
 var _ = gogoproto.IsStdTime
 
-type serverOptions struct {
+type Options struct {
 	GRPCBind       string
 	HTTPBind       string
 	JWTKey         string
 	WithReflection bool
 }
 
-func (opts serverOptions) String() string {
+func (opts Options) String() string {
 	out, _ := json.Marshal(opts)
 	return string(out)
 }
 
-func server(opts *serverOptions) error {
+func server(opts *Options) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -45,7 +45,7 @@ func server(opts *serverOptions) error {
 	return <-errs
 }
 
-func startHTTPServer(ctx context.Context, opts *serverOptions) error {
+func startHTTPServer(ctx context.Context, opts *Options) error {
 	gwmux := runtime.NewServeMux(
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, &gateway.JSONPb{
 			EmitDefaults: false,
@@ -64,7 +64,7 @@ func startHTTPServer(ctx context.Context, opts *serverOptions) error {
 	return http.ListenAndServe(opts.HTTPBind, mux)
 }
 
-func startGRPCServer(ctx context.Context, opts *serverOptions) error {
+func startGRPCServer(ctx context.Context, opts *Options) error {
 	listener, err := net.Listen("tcp", opts.GRPCBind)
 	if err != nil {
 		return errors.Wrap(err, "failed to listen")
@@ -117,7 +117,7 @@ func startGRPCServer(ctx context.Context, opts *serverOptions) error {
 	return grpcServer.Serve(listener)
 }
 
-func newSvc(opts *serverOptions) (*svc, error) {
+func newSvc(opts *Options) (*svc, error) {
 	jwtKey := []byte(opts.JWTKey)
 	if len(jwtKey) == 0 { // generate random JWT key
 		jwtKey = make([]byte, 128)

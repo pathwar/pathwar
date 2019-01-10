@@ -93,3 +93,7 @@ docker.integration:
 .PHONY: integration
 integration:
 	./test/integration.sh
+
+.PHONY: lint
+lint:
+	golangci-lint run --verbose ./...

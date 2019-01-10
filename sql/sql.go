@@ -8,14 +8,14 @@ import (
 	"os"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/mattn/go-sqlite3" // required by gorm
 	"go.uber.org/zap"
 	"moul.io/zapgorm"
 
 	"pathwar.pw/entity"
 )
 
-type SQLOptions struct {
+type Options struct {
 	Path string
 }
 
@@ -23,7 +23,7 @@ type dump struct {
 	Levels []*entity.Level
 }
 
-func FromOpts(opts *SQLOptions) (*gorm.DB, error) {
+func FromOpts(opts *Options) (*gorm.DB, error) {
 	db, err := gorm.Open("sqlite3", opts.Path)
 	if err != nil {
 		return nil, err
@@ -48,7 +48,7 @@ func FromOpts(opts *SQLOptions) (*gorm.DB, error) {
 	return db, nil
 }
 
-func sqlDump(opts *SQLOptions) error {
+func sqlDump(opts *Options) error {
 	d := dump{}
 
 	db, err := FromOpts(opts)
