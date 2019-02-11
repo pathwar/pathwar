@@ -13,6 +13,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
+	"pathwar.pw/hypervisor"
 	"pathwar.pw/pkg/cli"
 	"pathwar.pw/server"
 	"pathwar.pw/sql"
@@ -42,6 +43,9 @@ func newRootCommand() *cobra.Command {
 		commands[name] = command
 	}
 	for name, command := range server.Commands() {
+		commands[name] = command
+	}
+	for name, command := range hypervisor.Commands() {
 		commands[name] = command
 	}
 
