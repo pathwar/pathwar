@@ -5,6 +5,8 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
+	"os"
 	"time"
 
 	"github.com/docker/docker/api/types"
@@ -25,6 +27,7 @@ import (
 type runOptions struct {
 	target  string `mapstructure:"target"`
 	webPort int    `mapstructure:"web-port"`
+	detach  bool   `mapstructure:"detach"`
 	// port, other options
 	// driver=docker
 }
@@ -54,12 +57,14 @@ func (cmd *runCommand) LoadDefaultOptions() error { return viper.Unmarshal(&cmd.
 func (cmd *runCommand) ParseFlags(flags *pflag.FlagSet) {
 	flags.StringVarP(&cmd.opts.target, "target", "t", "", "target (image, path, etc)")
 	flags.IntVarP(&cmd.opts.webPort, "web-port", "p", 8080, "web listening port")
+	flags.BoolVarP(&cmd.opts.detach, "detach", "d", false, "detach mode")
 	if err := viper.BindPFlags(flags); err != nil {
 		zap.L().Warn("failed to bind viper flags", zap.Error(err))
 	}
 }
 
 func runRun(opts runOptions) error {
+	// FIXME: ensure proxy is setup with xip.io as default hostname
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
@@ -148,19 +153,38 @@ func runRun(opts runOptions) error {
 	}
 
 	// start container
-	if err := cli.ContainerStart(ctx, cont.ID, types.ContainerStartOptions{}); err != nil {
+	ctxCancel, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+	if err := cli.ContainerStart(ctxCancel, cont.ID, types.ContainerStartOptions{}); err != nil {
 		return err
+	}
+
+	if opts.detach {
+		fmt.Println(cont.ID)
+		return nil
 	}
 
 	// FIXME: wait for error or ctrl+C
-	ctxCancel, cancel := context.WithTimeout(ctx, 5*time.Second)
-	defer cancel()
-	_, errC := cli.ContainerWait(ctxCancel, cont.ID, "")
+	/*_, errC := cli.ContainerWait(ctx, cont.ID, "")
 	if err := <-errC; err != nil {
+		return err
+	}*/
+
+	// read logs
+	stream, err := cli.ContainerLogs(ctx, cont.ID, types.ContainerLogsOptions{
+		ShowStdout: true,
+		ShowStderr: true,
+		Follow:     true,
+	})
+	if err != nil {
+		return err
+	}
+	if _, err = io.Copy(os.Stderr, stream); err != nil && err != io.EOF {
 		return err
 	}
 
-	duration := 2 * time.Second
+	// cleanup
+	duration := 50 * time.Millisecond
 	if err := cli.ContainerStop(ctx, cont.ID, &duration); err != nil {
 		return errors.Wrap(err, "failed to stop container")
 	}
