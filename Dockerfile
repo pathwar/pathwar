@@ -6,7 +6,7 @@ COPY            go.* /go/src/pathwar.pw/
 WORKDIR         /go/src/pathwar.pw
 RUN             go get .
 COPY            . .
-RUN             touch .generated && make install
+RUN             touch .proto.generated && make install
 
 # runtime
 FROM            alpine:3.8

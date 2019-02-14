@@ -11,12 +11,18 @@ rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subs
 GOPATH ?= $(HOME)/go
 BIN = $(GOPATH)/bin/pathwar.pw
 SOURCES = $(call rwildcard, ./, *.go)
+ENTRYPOINT_SOURCES = ./entrypoint/main.go
 OUR_SOURCES = $(filter-out $(call rwildcard,vendor//,*.go),$(SOURCES))
 PROTOS = $(call rwildcard, ./, *.proto)
 OUR_PROTOS = $(filter-out $(call rwildcard,vendor//,*.proto),$(PROTOS))
-GENERATED_FILES = \
+GENERATED_PB_FILES = \
 	$(patsubst %.proto,%.pb.go,$(PROTOS)) \
 	$(call rwildcard ./, *.gen.go)
+ENTRYPOINT_OUT_FILES = \
+	./entrypoint/out/entrypoint-linux-amd64
+GENERATED_FILES = \
+	$(GENERATED_PB_FILES) \
+	$(ENTRYPOINT_OUT_FILES)
 PROTOC_OPTS = -I/protobuf:vendor:.
 RUN_OPTS ?=
 
@@ -38,22 +44,23 @@ run: $(BIN)
 
 .PHONY: install
 install: $(BIN)
-$(BIN): .generated $(OUR_SOURCES)
+$(BIN): .proto.generated $(ENTRYPOINT_OUT_FILES) $(OUR_SOURCES)
 	go install -v
 
 .PHONY: clean
 clean:
-	rm -f $(GENERATED_FILES) .generated
+	rm -f $(GENERATED_FILES) .proto.generated
 
 .PHONY: _ci_prepare
 _ci_prepare:
+	mkdir -p $(dir $(GENERATED_FILES))
 	touch $(OUR_PROTOS) $(GENERATED_FILES)
 	sleep 1
-	touch .generated
+	touch .proto.generated
 
 .PHONY: generate
-generate: .generated
-.generated: $(OUR_PROTOS)
+generate: .proto.generated
+.proto.generated: $(OUR_PROTOS)
 	rm -f $(GENERATED_FILES)
 	go mod vendor
 	docker run \
@@ -63,14 +70,18 @@ generate: .generated
 	  --entrypoint="sh" \
 	  --rm \
 	  pathwar/protoc:v1 \
-	  -xec "make _generate"
+	  -xec "make _proto_generate"
 	touch $@
 
 .PHONY: _generate
-_generate: $(GENERATED_FILES)
+_proto_generate: $(GENERATED_PB_FILES)
+
+$(ENTRYPOINT_OUT_FILES): $(ENTRYPOINT_SOURCES)
+	mkdir -p ./entrypoint/out
+	GOOS=linux GOARCH=amd64 go build -o ./entrypoint/out/entrypoint-linux-amd64 $<
 
 .PHONY: test
-test: .generated
+test: .proto.generated
 	go test -v ./...
 
 %.pb.go: %.proto

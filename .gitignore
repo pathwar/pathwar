@@ -1,9 +1,11 @@
+entrypoint/out/
 vendor/
 *~
 *#
 .#*
 
 /.generated
+/.*.generated
 
 # Binaries for programs and plugins
 *.exe
