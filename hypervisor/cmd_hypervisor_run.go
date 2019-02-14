@@ -5,14 +5,14 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io/ioutil"
-	"os"
 	"time"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/strslice"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
+	packr "github.com/gobuffalo/packr/v2"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -81,7 +81,8 @@ func runRun(opts runOptions) error {
 			nat.Port("80/tcp"): {},
 		},
 		// Hostname: ""
-		Cmd: imageInspect.Config.Cmd,
+		Entrypoint: strslice.StrSlice{"/pathwar"},
+		Cmd:        append(imageInspect.Config.Entrypoint, imageInspect.Config.Cmd...),
 	}
 	hostConfig := &container.HostConfig{
 		// Binds: /etc/timezone
@@ -98,10 +99,6 @@ func runRun(opts runOptions) error {
 
 	// FIXME: create a limited network config
 	// FIXME: restrict resources (cgroups, etc.)
-	// FIXME: handle exposed port
-	// FIXME: handle entrypoint/cmd
-	// FIXME: wrap with custom init
-	// FIXME: copy init binary into image
 	// FIXME: configure env
 	// FIXME: copy tokens somewhere safe in the image
 
@@ -118,11 +115,8 @@ func runRun(opts runOptions) error {
 	// inject tools in container
 	// FIXME: support alternative architectures -> using copyFromContainer with a dedicated image?
 	var buf bytes.Buffer
-	binaryPath, err := os.Executable()
-	if err != nil {
-		return err
-	}
-	binary, err := ioutil.ReadFile(binaryPath)
+	var entrypointBox = packr.New("entrypoint-binaries", "../entrypoint/out")
+	binary, err := entrypointBox.Find("entrypoint-linux-amd64")
 	if err != nil {
 		return err
 	}
