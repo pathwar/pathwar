@@ -1,8 +1,12 @@
 package hypervisor
 
 import (
+	"archive/tar"
+	"bytes"
 	"context"
 	"fmt"
+	"io/ioutil"
+	"os"
 	"time"
 
 	"github.com/docker/docker/api/types"
@@ -111,6 +115,42 @@ func runRun(opts runOptions) error {
 		}
 	}
 
+	// inject tools in container
+	// FIXME: support alternative architectures -> using copyFromContainer with a dedicated image?
+	var buf bytes.Buffer
+	binaryPath, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	binary, err := ioutil.ReadFile(binaryPath)
+	if err != nil {
+		return err
+	}
+	tw := tar.NewWriter(&buf)
+	if err := tw.WriteHeader(&tar.Header{
+		Name: "pathwar",
+		Mode: 0755,
+		Size: int64(len(binary)),
+	}); err != nil {
+		return err
+	}
+	if _, err := tw.Write(binary); err != nil {
+		return err
+	}
+	if err := tw.Close(); err != nil {
+		return err
+	}
+	if err := cli.CopyToContainer(
+		ctx,
+		cont.ID,
+		"/",
+		&buf,
+		types.CopyToContainerOptions{},
+	); err != nil {
+		return err
+	}
+
+	// start container
 	if err := cli.ContainerStart(ctx, cont.ID, types.ContainerStartOptions{}); err != nil {
 		return err
 	}
