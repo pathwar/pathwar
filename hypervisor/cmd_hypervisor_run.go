@@ -29,6 +29,8 @@ type runOptions struct {
 	// driver=docker
 }
 
+const createdByPathwarLabel = "created-by-pathwar-hypervisor"
+
 type runCommand struct{ opts runOptions }
 
 func (cmd *runCommand) CobraCommand(commands cli.Commands) *cobra.Command {
@@ -83,6 +85,7 @@ func runRun(opts runOptions) error {
 		// Hostname: ""
 		Entrypoint: strslice.StrSlice{"/pathwar"},
 		Cmd:        append(imageInspect.Config.Entrypoint, imageInspect.Config.Cmd...),
+		Labels:     map[string]string{createdByPathwarLabel: "true"},
 	}
 	hostConfig := &container.HostConfig{
 		// Binds: /etc/timezone

@@ -21,8 +21,9 @@ func (opts Options) String() string {
 
 func Commands() cli.Commands {
 	return cli.Commands{
-		"hypervisor":     &hypervisorCommand{},
-		"hypervisor run": &runCommand{},
+		"hypervisor":       &hypervisorCommand{},
+		"hypervisor run":   &runCommand{},
+		"hypervisor prune": &pruneCommand{},
 	}
 }
 
@@ -39,5 +40,6 @@ func (cmd *hypervisorCommand) CobraCommand(commands cli.Commands) *cobra.Command
 		Use: "hypervisor",
 	}
 	command.AddCommand(commands["hypervisor run"].CobraCommand(commands))
+	command.AddCommand(commands["hypervisor prune"].CobraCommand(commands))
 	return command
 }
