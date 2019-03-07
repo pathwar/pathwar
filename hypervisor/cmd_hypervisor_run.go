@@ -4,6 +4,7 @@ import (
 	"archive/tar"
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"os"
@@ -22,6 +23,7 @@ import (
 	"go.uber.org/zap"
 
 	"pathwar.pw/pkg/cli"
+	pwctlconfig "pathwar.pw/pwctl/config"
 )
 
 type runOptions struct {
@@ -88,7 +90,7 @@ func runRun(opts runOptions) error {
 			nat.Port("80/tcp"): {},
 		},
 		// Hostname: ""
-		Entrypoint: strslice.StrSlice{"/pathwar"},
+		Entrypoint: strslice.StrSlice{"/bin/pwctl", "entrypoint"},
 		Cmd:        append(imageInspect.Config.Entrypoint, imageInspect.Config.Cmd...),
 		Labels:     map[string]string{createdByPathwarLabel: "true"},
 	}
@@ -108,7 +110,6 @@ func runRun(opts runOptions) error {
 	// FIXME: create a limited network config
 	// FIXME: restrict resources (cgroups, etc.)
 	// FIXME: configure env
-	// FIXME: copy tokens somewhere safe in the image
 
 	cont, err := cli.ContainerCreate(ctx, containerConfig, hostConfig, nil, "")
 	if err != nil {
@@ -120,23 +121,44 @@ func runRun(opts runOptions) error {
 		}
 	}
 
-	// inject tools in container
+	pwctlConfig := pwctlconfig.Config{
+		Passphrases: []string{
+			randString(10),
+			randString(10),
+			randString(10),
+		},
+	}
+	// if !pwctlConfig.Validate() ...
+	pwctlConfigJSON, _ := json.Marshal(pwctlConfig)
+
+	// inject tools & config in container
 	// FIXME: support alternative architectures -> using copyFromContainer with a dedicated image?
 	var buf bytes.Buffer
-	var entrypointBox = packr.New("entrypoint-binaries", "../entrypoint/out")
-	binary, err := entrypointBox.Find("entrypoint-linux-amd64")
+	var pwctlBox = packr.New("pwctl-binaries", "../pwctl/out")
+	binary, err := pwctlBox.Find("pwctl-linux-amd64")
 	if err != nil {
 		return err
 	}
 	tw := tar.NewWriter(&buf)
 	if err := tw.WriteHeader(&tar.Header{
-		Name: "pathwar",
+		Name: "/bin/pwctl",
 		Mode: 0755,
 		Size: int64(len(binary)),
 	}); err != nil {
 		return err
 	}
 	if _, err := tw.Write(binary); err != nil {
+		return err
+	}
+	if err := tw.WriteHeader(&tar.Header{
+		Name: "/pwctl.json",
+		Mode: 0755,
+		Size: int64(len(pwctlConfigJSON)),
+		// FIXME: chown it to container's default user
+	}); err != nil {
+		return err
+	}
+	if _, err := tw.Write(pwctlConfigJSON); err != nil {
 		return err
 	}
 	if err := tw.Close(); err != nil {

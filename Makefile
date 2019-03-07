@@ -11,18 +11,18 @@ rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subs
 GOPATH ?= $(HOME)/go
 BIN = $(GOPATH)/bin/pathwar.pw
 SOURCES = $(call rwildcard, ./, *.go)
-ENTRYPOINT_SOURCES = ./entrypoint/main.go
+PWCTL_SOURCES = $(call rwildcard,pwctl//,*.go)
 OUR_SOURCES = $(filter-out $(call rwildcard,vendor//,*.go),$(SOURCES))
 PROTOS = $(call rwildcard, ./, *.proto)
 OUR_PROTOS = $(filter-out $(call rwildcard,vendor//,*.proto),$(PROTOS))
 GENERATED_PB_FILES = \
 	$(patsubst %.proto,%.pb.go,$(PROTOS)) \
 	$(call rwildcard ./, *.gen.go)
-ENTRYPOINT_OUT_FILES = \
-	./entrypoint/out/entrypoint-linux-amd64
+PWCTL_OUT_FILES = \
+	./pwctl/out/pwctl-linux-amd64
 GENERATED_FILES = \
 	$(GENERATED_PB_FILES) \
-	$(ENTRYPOINT_OUT_FILES)
+	$(PWCTL_OUT_FILES)
 PROTOC_OPTS = -I/protobuf:vendor:.
 RUN_OPTS ?=
 
@@ -44,7 +44,7 @@ run: $(BIN)
 
 .PHONY: install
 install: $(BIN)
-$(BIN): .proto.generated $(ENTRYPOINT_OUT_FILES) $(OUR_SOURCES)
+$(BIN): .proto.generated $(PWCTL_OUT_FILES) $(OUR_SOURCES)
 	go install -v
 
 .PHONY: clean
@@ -67,7 +67,7 @@ generate: .proto.generated
 	  --user="$(shell id -u)" \
 	  --volume="$(PWD):/go/src/pathwar.pw" \
 	  --workdir="/go/src/pathwar.pw" \
-	  --entrypoint="sh" \
+	  --pwctl="sh" \
 	  --rm \
 	  pathwar/protoc:v1 \
 	  -xec "make _proto_generate"
@@ -76,9 +76,9 @@ generate: .proto.generated
 .PHONY: _generate
 _proto_generate: $(GENERATED_PB_FILES)
 
-$(ENTRYPOINT_OUT_FILES): $(ENTRYPOINT_SOURCES)
-	mkdir -p ./entrypoint/out
-	GOOS=linux GOARCH=amd64 go build -o ./entrypoint/out/entrypoint-linux-amd64 $<
+$(PWCTL_OUT_FILES): $(PWCTL_SOURCES)
+	mkdir -p ./pwctl/out
+	GOOS=linux GOARCH=amd64 go build -o ./pwctl/out/pwctl-linux-amd64 ./pwctl/
 
 .PHONY: test
 test: .proto.generated
