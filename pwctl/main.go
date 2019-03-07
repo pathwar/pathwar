@@ -23,10 +23,18 @@ func main() {
 	rootCmd.AddCommand(&cobra.Command{
 		Use:  "entrypoint",
 		Args: cobra.MinimumNArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			// FIXME: prepare the level
-			// FIXME: add a self-destruct mode that allow having root access only at runtime
+		RunE: func(_ *cobra.Command, args []string) error {
 			// FIXME: lock to block other commands
+
+			// prepare the level
+			cmd := exec.Command("/pathwar-hooks/on-init")
+			if err := cmd.Run(); err != nil {
+				return err
+			}
+
+			// FIXME: add a self-destruct mode that allow having root access only at runtime
+
+			// switch to original's entrypoint
 			binary, err := exec.LookPath(args[0])
 			if err != nil {
 				return err
