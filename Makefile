@@ -61,13 +61,13 @@ _ci_prepare:
 .PHONY: generate
 generate: .proto.generated
 .proto.generated: $(OUR_PROTOS)
-	rm -f $(GENERATED_FILES)
+	rm -f $(GENERATED_PB_FILES)
 	go mod vendor
 	docker run \
 	  --user="$(shell id -u)" \
 	  --volume="$(PWD):/go/src/pathwar.pw" \
 	  --workdir="/go/src/pathwar.pw" \
-	  --pwctl="sh" \
+	  --entrypoint="sh" \
 	  --rm \
 	  pathwar/protoc:v1 \
 	  -xec "make _proto_generate"

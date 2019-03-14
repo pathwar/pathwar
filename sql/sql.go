@@ -30,10 +30,13 @@ func FromOpts(opts *Options) (*gorm.DB, error) {
 	db.BlockGlobalUpdate(true)
 	db.SingularTable(true)
 	db.LogMode(true)
+	if err := db.Exec("PRAGMA foreign_keys = ON").Error; err != nil {
+		return nil, err
+	}
 	if err := db.AutoMigrate(entity.All()...).Error; err != nil {
 		return nil, err
 	}
-	// FIXME: apply real migrations
+	// FIXME: use gormigrate
 
 	return db, nil
 }
