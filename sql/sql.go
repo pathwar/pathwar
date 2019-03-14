@@ -6,7 +6,8 @@ import (
 	"os"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/mattn/go-sqlite3" // required by gorm
+	//_ "github.com/mattn/go-sqlite3" // required by gorm
+	_ "github.com/go-sql-driver/mysql" // required by gorm
 	"go.uber.org/zap"
 	"moul.io/zapgorm"
 
@@ -14,7 +15,7 @@ import (
 )
 
 func FromOpts(opts *Options) (*gorm.DB, error) {
-	db, err := gorm.Open("sqlite3", opts.Path)
+	db, err := gorm.Open("mysql", opts.Config)
 	if err != nil {
 		return nil, err
 	}
@@ -30,10 +31,10 @@ func FromOpts(opts *Options) (*gorm.DB, error) {
 	db.BlockGlobalUpdate(true)
 	db.SingularTable(true)
 	db.LogMode(true)
-	if err := db.Exec("PRAGMA foreign_keys = ON").Error; err != nil {
+	if err := db.AutoMigrate(entity.All()...).Error; err != nil {
 		return nil, err
 	}
-	if err := db.AutoMigrate(entity.All()...).Error; err != nil {
+	if err := db.Model(entity.Achievement{}).AddForeignKey("team_member_id", "team_member(id)", "RESTRICT", "RESTRICT").Error; err != nil {
 		return nil, err
 	}
 	// FIXME: use gormigrate

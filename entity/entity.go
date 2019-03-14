@@ -2,7 +2,6 @@ package entity
 
 func All() []interface{} {
 	return []interface{}{
-		Achievement{},
 		Coupon{},
 		Event{},
 		Hypervisor{},
@@ -19,5 +18,6 @@ func All() []interface{} {
 		UserSession{},
 		User{},
 		WhoswhoAttempt{},
+		Achievement{},
 	}
 }

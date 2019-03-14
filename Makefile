@@ -39,13 +39,33 @@ help:
 	  sed 's/^/  $(HELP_MSG_PREFIX)make /'
 
 .PHONY: run
-run: $(BIN)
+run: $(BIN) mysql.up
 	$(BIN) server $(RUN_OPTS)
 
 .PHONY: install
 install: $(BIN)
 $(BIN): .proto.generated $(PWCTL_OUT_FILES) $(OUR_SOURCES)
 	go install -v
+
+.PHONY: mysql.up
+mysql.up:
+	docker-compose up -d mysql
+	@echo "Waiting for mysql to be ready..."
+	@while ! mysqladmin ping -h127.0.0.1 -P3306 --silent; do sleep 1; done
+	@echo "Done."
+
+.PHONY: mysql.down
+mysql.down:
+	docker-compose stop mysql || true
+	docker-compose rm -f -v mysql || true
+
+.PHONY: mysql.shell
+mysql.shell:
+	mysql -h127.0.0.1 -P3306 -uroot -puns3cur3 pathwar
+
+.PHONY: mysql.dump
+mysql.dump:
+	mysqldump -h127.0.0.1 -P3306 -uroot -puns3cur3 pathwar
 
 .PHONY: clean
 clean:
@@ -93,13 +113,14 @@ test: .proto.generated
 
 .PHONY: docker.build
 docker.build:
-	docker build -t pathwar/pathwar .
+	docker build -t pathwar/pathwar:latest .
+	docker build -t pathwar/pathwar:test ./test
 
-.PHONY: docker.integration
-docker.integration:
-	docker-compose -f ./test/docker-compose.yml up -d server
-	docker-compose -f ./test/docker-compose.yml run client
-	docker-compose -f ./test/docker-compose.yml down
+.PHONY: integration.run
+integration.run:
+	docker-compose -f ./docker-compose.yml -f ./test/docker-compose.yml up -d --no-build server
+	docker-compose -f ./docker-compose.yml -f ./test/docker-compose.yml run --no-deps client
+	docker-compose -f ./docker-compose.yml -f ./test/docker-compose.yml down
 
 .PHONY: integration
 integration:

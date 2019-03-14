@@ -36,10 +36,10 @@ message TeamMember {
   //
 
   User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
-  string user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"type:string not null REFERENCES user(id)\" gorm:\"index\""];
+  string user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   TournamentTeam tournament_team = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentTeamID\""];
-  string tournament_team_id = 203 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"type:string not null REFERENCES tournament_team(id)\" gorm:\"index\""];
+  string tournament_team_id = 203 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 // User definces a User Account / Profile
@@ -142,7 +142,7 @@ message TournamentTeam {
   //
 
   Tournament tournament = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentID\""];
-  string tournament_id = 201 [(gogoproto.customname) = "TournamentID", (gogoproto.moretags) = "sql:\"type:string not null REFERENCES tournament(id)\" gorm:\"index\""];
+  string tournament_id = 201 [(gogoproto.customname) = "TournamentID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message WhoswhoAttempt {
@@ -169,7 +169,7 @@ message LevelSubscription {
   //
 
   TournamentTeam tournament_team = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentTeamID\""];
-  string tournament_team_id = 201 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"type:string not null REFERENCES tournament_team(id)\" gorm:\"index\""];
+  string tournament_team_id = 201 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message ShopItem {
@@ -184,7 +184,7 @@ message ShopItem {
   //
 
   TournamentTeam tournament_team = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentTeamID\""];
-  string tournament_team_id = 201 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"type:string not null REFERENCES tournament_team(id)\" gorm:\"index\""];
+  string tournament_team_id = 201 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message LevelFlavor {
@@ -210,7 +210,7 @@ message LevelInstance {
   // associations
   //
   Hypervisor hypervisor = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:HypervisorID\""];
-  string hypervisor_id = 201 [(gogoproto.customname) = "HypervisorID", (gogoproto.moretags) = "sql:\"type:string not null REFERENCES hypervisor(id)\" gorm:\"index\""];
+  string hypervisor_id = 201 [(gogoproto.customname) = "HypervisorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message Hypervisor {
@@ -261,7 +261,7 @@ message Coupon {
   // associations
   //
   TeamMember team_member = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamMemberID\""];
-  string team_member_id = 201 [(gogoproto.customname) = "TeamMemberID", (gogoproto.moretags) = "sql:\"type:string REFERENCES team_member(id)\" gorm:\"index\""];
+  string team_member_id = 201 [(gogoproto.customname) = "TeamMemberID", (gogoproto.moretags) = "gorm:\"index\""];
 }
 
 message Achievement {
@@ -308,7 +308,7 @@ message Achievement {
   //
 
   TeamMember team_member = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamMemberID\""];
-  string team_member_id = 201 [(gogoproto.customname) = "TeamMemberID", (gogoproto.moretags) = "sql:\"type:string not null REFERENCES team_member(id)\" gorm:\"index\""];
+  string team_member_id = 201 [(gogoproto.customname) = "TeamMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message Dump {

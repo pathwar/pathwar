@@ -2,10 +2,22 @@ version: '2.3'
 
 services:
   server:
-    &server
-    image: pathwar/pathwar
-    command: server
-    #depends_on:
-    #  - mysql
+    image: pathwar/pathwar:latest
+    build: .
+    entrypoint: /bin/bash -c
+    command:
+      - ./wait-for-it.sh mysql:3306 -- /bin/pathwar.pw server --sql-config="root:uns3cur3@tcp(mysql:3306)/pathwar?charset=utf8"
+    depends_on:
+      - mysql
     ports:
       - 8000
+
+  mysql:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: uns3cur3
+      MYSQL_DATABASE: pathwar

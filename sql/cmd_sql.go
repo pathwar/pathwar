@@ -9,7 +9,7 @@ import (
 )
 
 type Options struct {
-	Path string `mapstructure:"path"`
+	Config string `mapstructure:"config"`
 }
 
 func Commands() cli.Commands {
@@ -28,7 +28,7 @@ type sqlCommand struct{ opts Options }
 
 func (cmd *sqlCommand) LoadDefaultOptions() error { return viper.Unmarshal(&cmd.opts) }
 func (cmd *sqlCommand) ParseFlags(flags *pflag.FlagSet) {
-	flags.StringVarP(&cmd.opts.Path, "sql-path", "", "/tmp/pathwar.db", "SQL db path")
+	flags.StringVarP(&cmd.opts.Config, "sql-config", "", "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8", "SQL connection config")
 	if err := viper.BindPFlags(flags); err != nil {
 		zap.L().Warn("failed to bind viper flags", zap.Error(err))
 	}
