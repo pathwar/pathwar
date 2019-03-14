@@ -50,8 +50,9 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run: docker build -t pathwar/pathwar .
-      - run: make docker.integration
-      - run: make docker.integration
+      - run: docker build -t pathwar/pathwar:test ./test
+      - run: make integration.run
+      - run: make integration.run # yes, again
       - run: docker-compose logs
 
 workflows:

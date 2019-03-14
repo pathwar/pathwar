@@ -1,3 +1,5 @@
+.circleci/
+test/
 .git/
 *~
 .#*

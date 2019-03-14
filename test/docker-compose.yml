@@ -1,15 +1,15 @@
 version: '2.3'
 
 services:
-  server:
-    extends:
-      file: ../docker-compose.yml
-      service: server
-
   client:
-    build: .
+    image: pathwar/pathwar:test
+    #build: .
     environment:
       TARGET: http://server:8000
+    command:
+      - ./wait-for-it.sh server:8000 -- ./integration.sh
     depends_on:
+      - server
+    links:
       - server
     tty: true
