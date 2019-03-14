@@ -4,9 +4,11 @@ services:
   server:
     image: pathwar/pathwar:latest
     build: .
-    entrypoint: /bin/bash -c
+    entrypoint:
+      - "/bin/bash"
+      - "-c"
     command:
-      - ./wait-for-it.sh mysql:3306 -- /bin/pathwar.pw server --sql-config="root:uns3cur3@tcp(mysql:3306)/pathwar?charset=utf8"
+      - "./wait-for-it.sh mysql:3306 -- /bin/pathwar.pw server --sql-config='root:uns3cur3@tcp(mysql:3306)/pathwar?charset=utf8'"
     depends_on:
       - mysql
     ports:

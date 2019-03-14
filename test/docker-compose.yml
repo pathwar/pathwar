@@ -3,7 +3,7 @@ version: '2.3'
 services:
   client:
     image: pathwar/pathwar:test
-    build: .
+    #build: .
     environment:
       TARGET: http://server:8000
     command:
