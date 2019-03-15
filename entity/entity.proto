@@ -27,7 +27,32 @@ message TeamMember {
   enum Role {
     Undefined = 0;
     Owner = 1;
-    Basic = 2;
+    Member = 2;
+  }
+  Role role = 100;
+
+  //
+  // associations
+  //
+
+  User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
+  string user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+
+  Team team = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamID\""];
+  string team_id = 203 [(gogoproto.customname) = "TeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+}
+
+message TournamentMember {
+  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+
+  //
+  // fields
+  //
+
+  enum Role {
+    Undefined = 0;
+    Owner = 1;
+    Member = 2;
   }
   Role role = 100;
 
@@ -45,9 +70,44 @@ message TeamMember {
   repeated Achievement achievements = 205;
   repeated WhoswhoAttempt sent_whoswho_attempts = 206;
   repeated WhoswhoAttempt received_whoswho_attempts = 207;
+  repeated InventoryItem items = 208;
 }
 
-// User definces a User Account / Profile
+message AuthMethod {
+  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+
+  //
+  // fields
+  //
+
+  enum Provider {
+    Undefined = 0;
+    EmailAndPassword = 1;
+    SSHKey = 2;
+    // GitHub
+    // Google
+    // Facebook
+    // PasswordLess
+    // Phone
+    // ...
+  }
+
+  string identifier = 100;
+  string email_address = 101;
+  string password_hash = 102;
+  string salt = 103;
+  string totp_token = 104;
+  string url = 105;
+  bool is_verified = 107;
+
+  //
+  // associations
+  //
+
+  repeated User users = 200;
+}
+
+// User defines a User Account / Profile
 message User {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
 
@@ -56,18 +116,20 @@ message User {
   //
 
   string username = 100;
-  string email = 101;
-  string password_hash = 102;
-  string password_salt = 103;
-  string ssh_key = 104;
+  string gravatar_url = 101;
+  string website_url = 102;
+  string locale = 103;
+  bool is_staff = 104;
 
   //
   // associations
   //
 
   repeated UserSession sessions = 200;
-  repeated TeamMember team_memberships = 201;
+  repeated TournamentMember tournament_memberships = 201;
   repeated Notification notifications = 202;
+  repeated AuthMethod auth_methods = 203;
+  repeated Team teams = 204;
 }
 
 message UserSession {
@@ -77,7 +139,7 @@ message UserSession {
   // fields
   //
 
-  string username = 100;
+  string username = 100 [(gogoproto.moretags) = "gorm:\"-\""];
 
   //
   // associations
@@ -96,6 +158,7 @@ message Team {
 
   string name = 100;
   string gravatar_url = 101;
+  string locale = 102;
 
   //
   // associations
@@ -115,15 +178,43 @@ message Level {
   string name = 100;
   string description = 101;
   string author = 102;
-  string source_url = 103;
-  string version = 104;
-  string lang = 105;
+  string locale = 105;
   bool is_draft = 106;
-  // repeated string tags = 107;
+  string preview_url = 107;
+  // repeated string tags = ;
 
   //
   // associations
   //
+}
+
+message LevelVersion {
+  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+
+  //
+  // fields
+  //
+
+  enum Driver {
+    Unknown = 0;
+    Docker = 1;
+    // Kubernetes
+    // Static
+  }
+  string version = 100;
+  string changelog = 101;
+  bool is_draft = 102;
+  bool is_latest = 103;
+  string source_url = 104;
+
+  //
+  // associations
+  //
+
+  Level level = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelID\""];
+  string level_id = 201 [(gogoproto.customname) = "LevelID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+
+  repeated LevelFlavor flavors = 202;
 }
 
 message Tournament {
@@ -133,11 +224,30 @@ message Tournament {
   // fields
   //
 
+  enum Status {
+    UnknownStatus = 0;
+    Started = 1;
+    Stopped = 2;
+  }
+
+  enum Visibility {
+    UnknownVisibility = 0;
+    Private = 1;
+    Unlisted = 2;
+    Public = 3;
+  }
+
+  string name = 100;
+  Status status = 101;
+  Visibility visibility = 102;
+  bool is_default = 103;
+
   //
   // associations
   //
 
-  repeated TournamentTeam tournament_teams = 200;
+  repeated TournamentTeam teams = 200;
+  repeated Coupon coupons = 201;
 }
 
 message TournamentTeam {
@@ -146,6 +256,13 @@ message TournamentTeam {
   //
   // fields
   //
+
+  bool is_default = 100;
+
+  /* statistics
+  int64 cash = ;
+  int64 score = ;
+  */
 
   //
   // associations
@@ -157,7 +274,8 @@ message TournamentTeam {
   Team team = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamID\""];
   string team_id = 203 [(gogoproto.customname) = "TeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  repeated ShopItem shop_items = 204;
+  repeated LevelSubscription level_subscriptions = 205;
+  repeated TournamentMember members = 206;
 }
 
 message WhoswhoAttempt {
@@ -171,14 +289,42 @@ message WhoswhoAttempt {
   //
   // associations
   //
-  TeamMember author_team_member = 200 [(gogoproto.moretags) = "sql:\"not null\" gorm:\"foreignkey:AuthorTeamMemberID\""];
-  string author_team_member_id = 201 [(gogoproto.customname) = "AuthorTeamMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  TournamentMember author = 200 [(gogoproto.moretags) = "sql:\"not null\" gorm:\"foreignkey:AuthorID\""];
+  string author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  TeamMember target_team_member = 202 [(gogoproto.moretags) = "sql:\"not null\" gorm:\"foreignkey:TargetTeamMemberID\""];
-  string target_team_member_id = 203 [(gogoproto.customname) = "TargetTeamMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  TournamentMember target_member = 202 [(gogoproto.moretags) = "sql:\"not null\" gorm:\"foreignkey:TargetMemberID\""];
+  string target_member_id = 203 [(gogoproto.customname) = "TargetMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  TournamentTeam target_tournament_team = 204 [(gogoproto.moretags) = "sql:\"not null\" gorm:\"foreignkey:TargetTournamentTeamID\""];
-  string target_tournament_team_id = 205 [(gogoproto.customname) = "TargetTournamentTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  TournamentTeam target_team = 204 [(gogoproto.moretags) = "sql:\"not null\" gorm:\"foreignkey:TargetTeamID\""];
+  string target_team_id = 205 [(gogoproto.customname) = "TargetTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+}
+
+message LevelValidation {
+  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+
+  //
+  // fields
+  //
+
+  enum Status {
+    Unknown = 0;
+    Sent = 1;
+    Accepted = 2;
+    Refused = 3;
+    AutoAccepted = 4;
+  }
+
+  Status status = 100;
+  string author_comment = 101;
+  string corrector_comment = 102;
+  // FIXME: attachment
+
+  //
+  // associations
+  //
+
+  LevelSubscription level_subscription = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelSubscriptionID\""];
+  string level_subscription_id = 201 [(gogoproto.customname) = "LevelSubscriptionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message LevelSubscription {
@@ -197,21 +343,29 @@ message LevelSubscription {
 
   LevelFlavor level_flavor = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelFlavorID\""];
   string level_flavor_id = 203 [(gogoproto.customname) = "LevelFlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+
+  repeated LevelValidation validations = 204;
 }
 
-message ShopItem {
+message InventoryItem {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
 
   //
   // fields
   //
 
+  enum Item {
+    Unknown = 0;
+  }
+
+  Item item = 100;
+
   //
   // associations
   //
 
-  TournamentTeam tournament_team = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentTeamID\""];
-  string tournament_team_id = 201 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  TournamentMember owner = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:OwnerID\""];
+  string owner_id = 201 [(gogoproto.customname) = "OwnerID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message LevelFlavor {
@@ -228,8 +382,8 @@ message LevelFlavor {
   Level level = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelID\""];
   string level_id = 201 [(gogoproto.customname) = "LevelID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  repeated LevelInstance level_instances = 202;
-  repeated LevelSubscription level_subscriptions = 203;
+  repeated LevelInstance instances = 202;
+  repeated LevelSubscription subscriptions = 203;
 }
 
 message LevelInstance {
@@ -239,6 +393,14 @@ message LevelInstance {
   // fields
   //
 
+  enum Status {
+    Unknown = 0;
+    Active = 1;
+    Inactive = 2;
+  }
+
+  Status status = 100;
+
   //
   // associations
   //
@@ -246,8 +408,8 @@ message LevelInstance {
   Hypervisor hypervisor = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:HypervisorID\""];
   string hypervisor_id = 201 [(gogoproto.customname) = "HypervisorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  LevelFlavor level_flavor = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelFlavorID\""];
-  string level_flavor_id = 203 [(gogoproto.customname) = "LevelFlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  LevelFlavor flavor = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:FlavorID\""];
+  string flavor_id = 203 [(gogoproto.customname) = "FlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message Hypervisor {
@@ -256,6 +418,16 @@ message Hypervisor {
   //
   // fields
   //
+
+  enum Status {
+    Unknown = 0;
+    Active = 1;
+    Inactive = 2;
+  }
+
+  string name = 100;
+  string address = 101;
+  Status status = 102;
 
   //
   // associations
@@ -266,6 +438,8 @@ message Hypervisor {
 
 message Event {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+
+  // FIXME: to be defined! (event-sourcing)
 
   //
   // fields
@@ -279,9 +453,16 @@ message Event {
 message Notification {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
 
+  // FIXME: get inspiration from push notifications
+
   //
   // fields
   //
+
+  bool is_read = 100;
+  string click_url = 101;
+  string msg = 102;
+  string args = 103; // marshaled args
 
   //
   // associations
@@ -297,14 +478,37 @@ message Coupon {
   //
   // fields
   //
-  int32 value = 100;
+  string hash = 100 [(gogoproto.moretags) = "gorm:\"unique_index\""];
+  int32 value = 101;
+  int32 max_validation_count = 102;
 
   //
   // associations
   //
-  TeamMember team_member = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamMemberID\""];
-  string team_member_id = 201 [(gogoproto.customname) = "TeamMemberID", (gogoproto.moretags) = "gorm:\"index\""];
+  Tournament tournament = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentID\""];
+  string tournament_id = 201 [(gogoproto.customname) = "TournamentID", (gogoproto.moretags) = "gorm:\"index\""];
+
+  repeated CouponValidation validations = 202;
 }
+
+message CouponValidation {
+ Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+
+  //
+  // fields
+  //
+  string comment = 100;
+
+  //
+  // associations
+  //
+  TournamentMember author = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:AuthorID\""];
+  string author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+
+  Coupon coupon = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:CouponID\""];
+  string coupon_id = 203 [(gogoproto.customname) = "CouponID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+}
+
 
 message Achievement {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
@@ -314,43 +518,64 @@ message Achievement {
   //
   enum Type {
     Undefined = 0;
-    Buy1LevelAchievement = 1;
-    Buy5LevelsAchievement = 2;
-    Buy10LevelsAchievements = 3;
-    Buy20LevelsAchievements = 4;
-    Buy50LevelsAchievements = 5;
-    Buy100LevelsAchievements = 6;
-    Buy200LevelsAchievements = 7;
-    Buy500LevelsAchievements = 8;
-    Buy1000LevelsAchievements = 9;
-    Validate1LevelAchievement = 10;
-    Validate5LevelsAchievement = 11;
-    Validate10LevelsAchievements = 12;
-    Validate20LevelsAchievements = 13;
-    Validate50LevelsAchievements = 14;
-    Validate100LevelsAchievements = 15;
-    Validate200LevelsAchievements = 16;
-    Validate500LevelsAchievements = 17;
-    Validate1000LevelsAchievements = 18;
-    Validate1Coupon = 19;
-    Validate5Coupons = 20;
-    Validate10Coupons = 21;
-    Validate20Coupons = 22;
-    Validate50Coupons = 23;
-    Validate100Coupons = 24;
-    Validate200Coupons = 25;
-    Validate500Coupons = 26;
-    Validate1000Coupons = 27;
+
+    Buy1Level = 1;
+    Buy5Levels = 2;
+    Buy10Levels = 3;
+    Buy20Levels = 4;
+    Buy50Levels = 5;
+
+    Validate1Level = 10;
+    Validate5Levels = 11;
+    Validate10Levels = 12;
+    Validate20Levels = 13;
+    Validate50Levels = 14;
+
+    Validate1Coupon = 20;
+    Validate5Coupons = 21;
+    Validate10Coupons = 22;
+    Validate20Coupons = 23;
+    Validate50Coupons = 24;
+    Validate100Coupons = 25;
+
+    Author1Level = 30;
+    Author2Levels = 31;
+    Author5Levels = 32;
+    Author10Levels = 33;
+
+    EarlyAdopterTop100 = 40;
+    EarlyAdopterTop1000 = 41;
+
+    Old1Year = 50;
+    //Old2Years = 51;
+
+    Send1PullRequest = 90;
+    Send2PullRequests = 91;
+    Send5PullRequests = 92;
+    Send10Pullrequests = 93;
+
+    Staff = 100;
+    Contributor = 101;
+    BugHunter = 102;
+    Moderator = 103;
+    HackThePlatform = 104;
     // Special = 99;
   }
+
   Type type = 100;
+  bool is_global = 101;
+  string comment = 102;
+  string argument = 103;
 
   //
   // associations
   //
 
-  TeamMember team_member = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamMemberID\""];
-  string team_member_id = 201 [(gogoproto.customname) = "TeamMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  TournamentMember author = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:AuthorID\""];
+  string author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+
+  LevelValidation level_validation = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelValidationID\""];
+  string level_validationt_id = 203 [(gogoproto.customname) = "LevelValidationID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message Dump {
@@ -360,9 +585,26 @@ message Dump {
   // associations
   //
 
-  repeated UserSession user_sessions = 1;
-  repeated Level levels = 2;
-  repeated User users = 3;
-  repeated TeamMember team_members = 4;
-  repeated Team teams = 5;
+  repeated Achievement achievements = 1;
+  repeated AuthMethod auth_methods = 20;
+  repeated Coupon coupons = 2;
+  repeated CouponValidation coupon_validations = 21;
+  repeated Event events = 3;
+  repeated Hypervisor hypervisors = 4;
+  repeated InventoryItem inventory_items = 11;
+  repeated Level levels = 9;
+  repeated LevelFlavor level_flavors = 5;
+  repeated LevelInstance level_instances = 6;
+  repeated LevelSubscription level_subscriptions = 7;
+  repeated LevelValidation level_validations = 8;
+  repeated LevelVersion level_versions = 22;
+  repeated Notification notifications = 10;
+  repeated Team teams = 13;
+  repeated TeamMember team_members = 12;
+  repeated Tournament tournaments = 16;
+  repeated TournamentMember tournament_members = 14;
+  repeated TournamentTeam tournament_teams = 15;
+  repeated User users = 18;
+  repeated UserSession user_sessions = 17;
+  repeated WhoswhoAttempt whoswho_attempts = 19;
 }
