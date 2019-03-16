@@ -29,8 +29,8 @@ func FromOpts(opts *Options) (*gorm.DB, error) {
 	log.SetOutput(os.Stderr)
 
 	db.SetLogger(zapgorm.New(zap.L().Named("vendor.gorm")))
-	db = db.Set("gorm:auto_preload", true)
-	db = db.Set("gorm:association_autoupdate", true)
+	db = db.Set("gorm:auto_preload", false)
+	db = db.Set("gorm:association_autoupdate", false)
 	db.BlockGlobalUpdate(true)
 	db.SingularTable(true)
 	db.LogMode(true)

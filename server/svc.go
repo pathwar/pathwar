@@ -5,6 +5,7 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
+	"github.com/moul/gofakeit"
 	"github.com/pkg/errors"
 
 	"pathwar.pw/entity"
@@ -45,14 +46,34 @@ func (s *svc) UserSession(ctx context.Context, _ *Void) (*entity.UserSession, er
 }
 
 func (s *svc) GenerateFakeData(ctx context.Context, _ *Void) (*Void, error) {
-	if err := s.db.Create(&entity.Level{
-		Name:        "level1",
-		Description: "description 1",
-		Author:      "author 1",
-		Locale:      "fr_FR",
-		IsDraft:     false,
-	}).Error; err != nil {
-		return nil, err
+	levels := []*entity.Level{}
+	for i := 0; i < 5; i++ {
+		level := &entity.Level{
+			Name:        gofakeit.HipsterWord(),
+			Description: gofakeit.HipsterSentence(10),
+			Author:      gofakeit.Name(),
+			Locale:      "fr_FR",
+			IsDraft:     false,
+			Versions:    []*entity.LevelVersion{},
+		}
+		for i := 0; i < 2; i++ {
+			version := &entity.LevelVersion{
+				Driver:    entity.LevelVersion_Docker,
+				Version:   gofakeit.IPv4Address(),
+				Changelog: gofakeit.HipsterSentence(5),
+				IsDraft:   false,
+				IsLatest:  i == 0,
+				SourceURL: gofakeit.URL(),
+			}
+			level.Versions = append(level.Versions, version)
+		}
+		levels = append(levels, level)
+	}
+
+	for _, level := range levels {
+		if err := s.db.Set("gorm:association_autoupdate", true).Create(level).Error; err != nil {
+			return nil, err
+		}
 	}
 	return &Void{}, nil
 }

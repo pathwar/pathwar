@@ -66,11 +66,11 @@ message TournamentMember {
   TournamentTeam tournament_team = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentTeamID\""];
   string tournament_team_id = 203 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  repeated Coupon coupons = 204;
-  repeated Achievement achievements = 205;
-  repeated WhoswhoAttempt sent_whoswho_attempts = 206;
-  repeated WhoswhoAttempt received_whoswho_attempts = 207;
-  repeated InventoryItem items = 208;
+  repeated Coupon coupons = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated Achievement achievements = 205 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated WhoswhoAttempt sent_whoswho_attempts = 206 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated WhoswhoAttempt received_whoswho_attempts = 207 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated InventoryItem items = 208 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message AuthMethod {
@@ -104,7 +104,8 @@ message AuthMethod {
   // associations
   //
 
-  repeated User users = 200;
+  User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
+  string user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 // User defines a User Account / Profile
@@ -125,11 +126,11 @@ message User {
   // associations
   //
 
-  repeated UserSession sessions = 200;
-  repeated TournamentMember tournament_memberships = 201;
-  repeated Notification notifications = 202;
-  repeated AuthMethod auth_methods = 203;
-  repeated Team teams = 204;
+  repeated UserSession sessions = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated TournamentMember tournament_memberships = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated Notification notifications = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated AuthMethod auth_methods = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated Team teams = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message UserSession {
@@ -164,8 +165,8 @@ message Team {
   // associations
   //
 
-  repeated TournamentTeam tournament_teams = 200;
-  repeated WhoswhoAttempt received_whoswho_attempts = 201;
+  repeated TournamentTeam tournament_teams = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated WhoswhoAttempt received_whoswho_attempts = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message Level {
@@ -186,6 +187,8 @@ message Level {
   //
   // associations
   //
+
+  repeated LevelVersion versions = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message LevelVersion {
@@ -205,7 +208,8 @@ message LevelVersion {
   string changelog = 101;
   bool is_draft = 102;
   bool is_latest = 103;
-  string source_url = 104;
+  string source_url = 104 [(gogoproto.customname) = "SourceURL"];
+  Driver driver = 105;
 
   //
   // associations
@@ -214,7 +218,7 @@ message LevelVersion {
   Level level = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelID\""];
   string level_id = 201 [(gogoproto.customname) = "LevelID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  repeated LevelFlavor flavors = 202;
+  repeated LevelFlavor flavors = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message Tournament {
@@ -246,8 +250,8 @@ message Tournament {
   // associations
   //
 
-  repeated TournamentTeam teams = 200;
-  repeated Coupon coupons = 201;
+  repeated TournamentTeam teams = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated Coupon coupons = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message TournamentTeam {
@@ -274,8 +278,8 @@ message TournamentTeam {
   Team team = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamID\""];
   string team_id = 203 [(gogoproto.customname) = "TeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  repeated LevelSubscription level_subscriptions = 205;
-  repeated TournamentMember members = 206;
+  repeated LevelSubscription level_subscriptions = 205 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated TournamentMember members = 206 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message WhoswhoAttempt {
@@ -344,7 +348,7 @@ message LevelSubscription {
   LevelFlavor level_flavor = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelFlavorID\""];
   string level_flavor_id = 203 [(gogoproto.customname) = "LevelFlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  repeated LevelValidation validations = 204;
+  repeated LevelValidation validations = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message InventoryItem {
@@ -382,8 +386,8 @@ message LevelFlavor {
   Level level = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelID\""];
   string level_id = 201 [(gogoproto.customname) = "LevelID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  repeated LevelInstance instances = 202;
-  repeated LevelSubscription subscriptions = 203;
+  repeated LevelInstance instances = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated LevelSubscription subscriptions = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message LevelInstance {
@@ -433,7 +437,7 @@ message Hypervisor {
   // associations
   //
 
-  repeated LevelInstance level_instances = 200;
+  repeated LevelInstance level_instances = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message Event {
@@ -488,7 +492,7 @@ message Coupon {
   Tournament tournament = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentID\""];
   string tournament_id = 201 [(gogoproto.customname) = "TournamentID", (gogoproto.moretags) = "gorm:\"index\""];
 
-  repeated CouponValidation validations = 202;
+  repeated CouponValidation validations = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message CouponValidation {
