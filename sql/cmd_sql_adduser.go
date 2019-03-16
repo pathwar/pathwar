@@ -1,7 +1,6 @@
 package sql
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -9,7 +8,6 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-	"pathwar.pw/entity"
 	"pathwar.pw/pkg/cli"
 )
 
@@ -53,32 +51,35 @@ func (cmd *adduserCommand) ParseFlags(flags *pflag.FlagSet) {
 }
 
 func runAdduser(opts adduserOptions) error {
-	db, err := FromOpts(&opts.sql)
-	if err != nil {
-		return err
-	}
+	return fmt.Errorf("implementation is outdated and needs to be updated")
+	/*
+		db, err := FromOpts(&opts.sql)
+		if err != nil {
+			return err
+		}
 
-	user := entity.User{
-		Email:        opts.email,
-		Username:     opts.username,
-		PasswordSalt: "FIXME: randomize",
-	}
-	user.PasswordHash = "FIXME: generate"
+		user := entity.User{
+			Email:        opts.email,
+			Username:     opts.username,
+			PasswordSalt: "FIXME: randomize",
+		}
+		user.PasswordHash = "FIXME: generate"
 
-	// FIXME: randomize username, password if empty
-	// FIXME: verify email address validity
-	// FIXME: verify email address spam/blacklist
-	// FIXME: user.Validate()
+		// FIXME: randomize username, password if empty
+		// FIXME: verify email address validity
+		// FIXME: verify email address spam/blacklist
+		// FIXME: user.Validate()
 
-	if err := db.Create(&user).Error; err != nil {
-		return err
-	}
+		if err := db.Create(&user).Error; err != nil {
+			return err
+		}
 
-	out, err := json.MarshalIndent(user, "", "  ")
-	if err != nil {
-		return err
-	}
-	fmt.Println(string(out))
+		out, err := json.MarshalIndent(user, "", "  ")
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(out))
 
-	return nil
+		return nil
+	*/
 }

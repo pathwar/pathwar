@@ -49,11 +49,8 @@ func (s *svc) GenerateFakeData(ctx context.Context, _ *Void) (*Void, error) {
 		Name:        "level1",
 		Description: "description 1",
 		Author:      "author 1",
-		SourceUrl:   "http://1.2.3.4",
-		Version:     "1.0",
-		Lang:        "en",
-		//Tags:        []string{"test", "example"},
-		IsDraft: false,
+		Locale:      "fr_FR",
+		IsDraft:     false,
 	}).Error; err != nil {
 		return nil, err
 	}
