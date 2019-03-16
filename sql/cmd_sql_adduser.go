@@ -51,7 +51,7 @@ func (cmd *adduserCommand) ParseFlags(flags *pflag.FlagSet) {
 }
 
 func runAdduser(opts adduserOptions) error {
-	return fmt.Errorf("implementation is outdated and needs to be updated...")
+	return fmt.Errorf("implementation is outdated and needs to be updated")
 	/*
 		db, err := FromOpts(&opts.sql)
 		if err != nil {
