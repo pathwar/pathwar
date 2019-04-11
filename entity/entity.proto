@@ -117,8 +117,8 @@ message User {
   //
 
   string username = 100;
-  string gravatar_url = 101;
-  string website_url = 102;
+  string gravatar_url = 101 [(gogoproto.customname) = "GravatarURL"];
+  string website_url = 102 [(gogoproto.customname) = "WebsiteURL"];
   string locale = 103;
   bool is_staff = 104;
 
@@ -130,7 +130,7 @@ message User {
   repeated TournamentMember tournament_memberships = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated Notification notifications = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated AuthMethod auth_methods = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
-  repeated Team teams = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated TeamMember memberships = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message UserSession {
@@ -158,7 +158,7 @@ message Team {
   //
 
   string name = 100;
-  string gravatar_url = 101;
+  string gravatar_url = 101 [(gogoproto.customname) = "GravatarURL"];
   string locale = 102;
 
   //
@@ -167,6 +167,7 @@ message Team {
 
   repeated TournamentTeam tournament_teams = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated WhoswhoAttempt received_whoswho_attempts = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated TeamMember members = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message Level {
@@ -383,8 +384,8 @@ message LevelFlavor {
   // associations
   //
 
-  Level level = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelID\""];
-  string level_id = 201 [(gogoproto.customname) = "LevelID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Level level_version = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelVersionID\""];
+  string level_version_id = 201 [(gogoproto.customname) = "LevelVersionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   repeated LevelInstance instances = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated LevelSubscription subscriptions = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];

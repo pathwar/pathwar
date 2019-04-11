@@ -1,15 +1,14 @@
 package sql
 
 import (
+	"encoding/base64"
 	"io/ioutil"
 	"log"
 	"os"
 
+	_ "github.com/go-sql-driver/mysql" // required by gorm
 	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
-
-	//_ "github.com/mattn/go-sqlite3" // required by gorm
-	_ "github.com/go-sql-driver/mysql" // required by gorm
 	"go.uber.org/zap"
 	"moul.io/zapgorm"
 
@@ -49,7 +48,12 @@ func FromOpts(opts *Options) (*gorm.DB, error) {
 }
 
 func beforeCreate(scope *gorm.Scope) {
-	if err := scope.SetColumn("ID", uuid.NewV4().String()); err != nil {
+	id, err := uuid.NewV4().MarshalBinary()
+	if err != nil {
+		panic(err)
+	}
+	out := base64.StdEncoding.EncodeToString(id)
+	if err := scope.SetColumn("ID", out); err != nil {
 		panic(err)
 	}
 }
