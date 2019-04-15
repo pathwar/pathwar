@@ -48,6 +48,18 @@ func DoDump(db *gorm.DB) (*entity.Dump, error) {
 	if err := db.Find(&dump.Levels).Error; err != nil {
 		return nil, err
 	}
+	if err := db.Find(&dump.LevelVersions).Error; err != nil {
+		return nil, err
+	}
+	if err := db.Find(&dump.LevelFlavors).Error; err != nil {
+		return nil, err
+	}
+	if err := db.Find(&dump.LevelInstances).Error; err != nil {
+		return nil, err
+	}
+	if err := db.Find(&dump.Hypervisors).Error; err != nil {
+		return nil, err
+	}
 	if err := db.Find(&dump.UserSessions).Error; err != nil {
 		return nil, err
 	}
@@ -58,6 +70,21 @@ func DoDump(db *gorm.DB) (*entity.Dump, error) {
 		return nil, err
 	}
 	if err := db.Find(&dump.TeamMembers).Error; err != nil {
+		return nil, err
+	}
+	if err := db.Find(&dump.Tournaments).Error; err != nil {
+		return nil, err
+	}
+	if err := db.Find(&dump.TournamentTeams).Error; err != nil {
+		return nil, err
+	}
+	if err := db.Find(&dump.TournamentMembers).Error; err != nil {
+		return nil, err
+	}
+	if err := db.Find(&dump.Coupons).Error; err != nil {
+		return nil, err
+	}
+	if err := db.Find(&dump.Events).Error; err != nil {
 		return nil, err
 	}
 	return &dump, nil

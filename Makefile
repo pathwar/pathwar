@@ -129,3 +129,9 @@ integration:
 .PHONY: lint
 lint:
 	golangci-lint run --verbose ./...
+
+.PHONY: generate-fake-data
+generate-fake-data:
+	AUTH_TOKEN=`http --check-status :8000/authenticate username=integration | jq -r .token` && \
+	  http POST :8000/dev/generate-fake-data Authorization:$$AUTH_TOKEN && \
+	  http POST :8000/dev/sql-dump Authorization:$$AUTH_TOKEN

@@ -43,11 +43,12 @@ func ForeignKeys() [][3]string {
 	return [][3]string{
 		{"Achievement", "author_id", "tournament_member(id)"},
 		{"Achievement", "level_validation_id", "level_validation(id)"},
+		{"AuthMethod", "user_id", "user(id)"},
 		{"Coupon", "tournament_id", "tournament(id)"},
 		{"CouponValidation", "author_id", "tournament_member(id)"},
 		{"CouponValidation", "coupon_id", "coupon(id)"},
 		{"InventoryItem", "owner_id", "tournament_member(id)"},
-		{"LevelFlavor", "level_id", "level(id)"},
+		{"LevelFlavor", "level_version_id", "level_version(id)"},
 		{"LevelInstance", "flavor_id", "level_flavor(id)"},
 		{"LevelInstance", "hypervisor_id", "hypervisor(id)"},
 		{"LevelSubscription", "level_flavor_id", "level_flavor(id)"},

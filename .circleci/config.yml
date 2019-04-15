@@ -8,7 +8,7 @@ jobs:
   # build the project from within Docker, based on the Dockerfile
   docker.build:
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: docker:18.06.3-ce-git
     steps:
       - checkout
       - setup_remote_docker
@@ -18,7 +18,7 @@ jobs:
   # build and unit test the project
   test:
     docker:
-      - image: circleci/golang:1.11.4
+      - image: circleci/golang:1.12.4
     working_directory: /go/src/pathwar.pw
     environment:
       GOPATH: /go
@@ -38,15 +38,13 @@ jobs:
 
   docker.integration:
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: docker/compose:1.24.0
     steps:
       - checkout
       - run:
           name: Install Deps
           command: |
-            apk --no-cache add curl openssl python3 make bash
-            pip3 install -U pip docker-compose
-            docker-compose --version
+            apk --no-cache add curl openssl make bash
       - setup_remote_docker:
           docker_layer_caching: true
       - run: docker build -t pathwar/pathwar .
