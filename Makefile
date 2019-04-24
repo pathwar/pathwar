@@ -109,6 +109,7 @@ test: .proto.generated
 	  $(PROTOC_OPTS) \
 	  --grpc-gateway_out=logtostderr=true:"$(GOPATH)/src" \
 	  --gogofaster_out=plugins=grpc:"$(GOPATH)/src" \
+	  --swagger_out=logtostderr=true:. \
 	  "$(dir $<)"/*.proto
 
 .PHONY: docker.build
