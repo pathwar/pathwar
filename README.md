@@ -1,6 +1,12 @@
 # pathwar
 Pathwar monorepo
 
+## API Documentation
+
+* SwaggerHub: https://app.swaggerhub.com/apis/B7491/Pathwar/0
+* Protobuf file: https://github.com/pathwar/pathwar/blob/master/server/server.proto
+* Available both using gRPC and HTTP (via https://github.com/grpc-ecosystem/grpc-gateway)
+
 ## Database schemas (expected)
 
 ```
