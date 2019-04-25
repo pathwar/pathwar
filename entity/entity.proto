@@ -133,6 +133,8 @@ message User {
   repeated TeamMember memberships = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
+message UserList { repeated User items = 1; }
+
 message UserSession {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
 
@@ -169,6 +171,8 @@ message Team {
   repeated WhoswhoAttempt received_whoswho_attempts = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated TeamMember members = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
+
+message TeamList { repeated Team items = 1; }
 
 message Level {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
@@ -254,6 +258,8 @@ message Tournament {
   repeated TournamentTeam teams = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated Coupon coupons = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
+
+message TournamentList { repeated Tournament items = 1; }
 
 message TournamentTeam {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];

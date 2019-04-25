@@ -17,6 +17,7 @@
   "paths": {
     "/authenticate": {
       "post": {
+        "summary": "Create a session based on credentials",
         "operationId": "Authenticate",
         "responses": {
           "200": {
@@ -75,6 +76,7 @@
     },
     "/ping": {
       "get": {
+        "summary": "Verify the service is up and running",
         "operationId": "Ping",
         "responses": {
           "200": {
@@ -89,14 +91,66 @@
         ]
       }
     },
+    "/teams": {
+      "get": {
+        "summary": "List teams",
+        "operationId": "Teams",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/entityTeamList"
+            }
+          }
+        },
+        "tags": [
+          "Server"
+        ]
+      }
+    },
+    "/tournaments": {
+      "get": {
+        "summary": "List tournaments",
+        "operationId": "Tournaments",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/entityTournamentList"
+            }
+          }
+        },
+        "tags": [
+          "Server"
+        ]
+      }
+    },
     "/user-session": {
       "get": {
+        "summary": "Get current user's session",
         "operationId": "UserSession",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/entityUserSession"
+            }
+          }
+        },
+        "tags": [
+          "Server"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "List users",
+        "operationId": "Users",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/entityUserList"
             }
           }
         },
@@ -762,6 +816,17 @@
         }
       }
     },
+    "entityTeamList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/entityTeam"
+          }
+        }
+      }
+    },
     "entityTeamMember": {
       "type": "object",
       "properties": {
@@ -823,6 +888,17 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/entityCoupon"
+          }
+        }
+      }
+    },
+    "entityTournamentList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/entityTournament"
           }
         }
       }
@@ -988,6 +1064,17 @@
         }
       },
       "title": "User defines a User Account / Profile"
+    },
+    "entityUserList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/entityUser"
+          }
+        }
+      }
     },
     "entityUserSession": {
       "type": "object",
