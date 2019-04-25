@@ -117,8 +117,10 @@ swagger.yaml: $(PROTOS)
 	  $(PROTOC_OPTS) \
 	  --swagger_out=logtostderr=true:. \
 	  ./server/*.proto
-	cat server/server.swagger.json | json2yaml > swagger.yaml
+	echo 'swagger: "2.0"' > swagger.yaml.tmp
+	cat server/server.swagger.json | json2yaml | grep -v 'swagger:."2.0"' >> swagger.yaml.tmp
 	rm -f server/server.swagger.json
+	mv swagger.yaml.tmp swagger.yaml
 
 .PHONY: docker.build
 docker.build:
