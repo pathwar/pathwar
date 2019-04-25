@@ -1,4 +1,4 @@
-package hypervisor
+package hypervisor // import "pathwar.pw/hypervisor"
 
 import "math/rand"
 

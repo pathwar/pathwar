@@ -8,6 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/moul/gofakeit"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"pathwar.pw/entity"
 	"pathwar.pw/sql"
@@ -130,26 +131,31 @@ func (s *svc) GenerateFakeData(ctx context.Context, _ *Void) (*Void, error) {
 	}
 	tournaments[0].IsDefault = true
 
+	zap.L().Debug("Generating hypervisors")
 	for _, entity := range hypervisors {
 		if err := s.db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
 			return nil, err
 		}
 	}
+	zap.L().Debug("Generating users")
 	for _, entity := range users {
 		if err := s.db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
 			return nil, err
 		}
 	}
+	zap.L().Debug("Generating levels")
 	for _, entity := range levels {
 		if err := s.db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
 			return nil, err
 		}
 	}
+	zap.L().Debug("Generating tournaments")
 	for _, entity := range tournaments {
 		if err := s.db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
 			return nil, err
 		}
 	}
+	zap.L().Debug("Generating teams")
 	for _, entity := range teams {
 		if err := s.db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
 			return nil, err
@@ -181,11 +187,13 @@ func (s *svc) GenerateFakeData(ctx context.Context, _ *Void) (*Void, error) {
 		}
 	}
 
+	zap.L().Debug("Generating memberships")
 	for _, entity := range memberships {
 		if err := s.db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
 			return nil, err
 		}
 	}
+	zap.L().Debug("Generating coupons")
 	for _, entity := range coupons {
 		if err := s.db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
 			return nil, err

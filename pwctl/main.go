@@ -1,4 +1,4 @@
-package main
+package main // import "pathwar.pw/pwctl"
 
 import (
 	"encoding/json"
