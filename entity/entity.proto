@@ -133,6 +133,8 @@ message User {
   repeated TeamMember memberships = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
+message UserList { repeated User items = 1; }
+
 message UserSession {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
 
@@ -255,9 +257,7 @@ message Tournament {
   repeated Coupon coupons = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
-message Tournaments {
-  repeated Tournament items = 1;
-}
+message TournamentList { repeated Tournament items = 1; }
 
 message TournamentTeam {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];

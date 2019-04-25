@@ -99,7 +99,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/entityTournaments"
+              "$ref": "#/definitions/entityTournamentList"
             }
           }
         },
@@ -117,6 +117,23 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/entityUserSession"
+            }
+          }
+        },
+        "tags": [
+          "Server"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "List users",
+        "operationId": "Users",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/entityUserList"
             }
           }
         },
@@ -847,6 +864,17 @@
         }
       }
     },
+    "entityTournamentList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/entityTournament"
+          }
+        }
+      }
+    },
     "entityTournamentMember": {
       "type": "object",
       "properties": {
@@ -954,17 +982,6 @@
         }
       }
     },
-    "entityTournaments": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/entityTournament"
-          }
-        }
-      }
-    },
     "entityUser": {
       "type": "object",
       "properties": {
@@ -1019,6 +1036,17 @@
         }
       },
       "title": "User defines a User Account / Profile"
+    },
+    "entityUserList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/entityUser"
+          }
+        }
+      }
     },
     "entityUserSession": {
       "type": "object",

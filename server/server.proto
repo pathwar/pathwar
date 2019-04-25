@@ -38,8 +38,15 @@ service Server {
   };
 
   // List tournaments
-  rpc Tournaments(Void) returns (pathwar.entity.Tournaments) {
+  rpc Tournaments(Void) returns (pathwar.entity.TournamentList) {
     option (google.api.http) = {get: "/tournaments"};
+    // FIXME: pagination & filters
+  };
+
+  // List users
+  rpc Users(Void) returns (pathwar.entity.UserList) {
+    option (google.api.http) = {get: "/users"};
+    // FIXME: pagination & filters
   };
 
   //
