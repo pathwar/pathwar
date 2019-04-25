@@ -22,7 +22,8 @@ PWCTL_OUT_FILES = \
 	./pwctl/out/pwctl-linux-amd64
 GENERATED_FILES = \
 	$(GENERATED_PB_FILES) \
-	$(PWCTL_OUT_FILES)
+	$(PWCTL_OUT_FILES) \
+	swagger.yaml
 PROTOC_OPTS = -I/protobuf:vendor:.
 RUN_OPTS ?=
 
@@ -94,7 +95,7 @@ generate: .proto.generated
 	touch $@
 
 .PHONY: _generate
-_proto_generate: $(GENERATED_PB_FILES)
+_proto_generate: $(GENERATED_PB_FILES) swagger.yaml
 
 $(PWCTL_OUT_FILES): $(PWCTL_SOURCES)
 	mkdir -p ./pwctl/out
@@ -109,8 +110,15 @@ test: .proto.generated
 	  $(PROTOC_OPTS) \
 	  --grpc-gateway_out=logtostderr=true:"$(GOPATH)/src" \
 	  --gogofaster_out=plugins=grpc:"$(GOPATH)/src" \
-	  --swagger_out=logtostderr=true:. \
 	  "$(dir $<)"/*.proto
+
+swagger.yaml: $(PROTOS)
+	protoc \
+	  $(PROTOC_OPTS) \
+	  --swagger_out=logtostderr=true:. \
+	  ./server/*.proto
+	cat server/server.swagger.json | json2yaml > swagger.yaml
+	rm -f server/server.swagger.json
 
 .PHONY: docker.build
 docker.build:

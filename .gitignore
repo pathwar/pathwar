@@ -3,6 +3,8 @@ vendor/
 *#
 .#*
 
+*.swagger.json
+
 /.generated
 /.*.generated
 
