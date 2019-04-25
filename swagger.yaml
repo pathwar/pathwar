@@ -684,7 +684,7 @@ definitions:
   serverVoid:
     type: object
 info:
-  title: server/server.proto
+  title: Pathwar API
   version: version not set
 paths:
   /authenticate:

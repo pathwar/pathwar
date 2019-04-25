@@ -24,7 +24,7 @@ GENERATED_FILES = \
 	$(GENERATED_PB_FILES) \
 	$(PWCTL_OUT_FILES) \
 	swagger.yaml
-PROTOC_OPTS = -I/protobuf:vendor:.
+PROTOC_OPTS = -I/protobuf:vendor/github.com/grpc-ecosystem/grpc-gateway:vendor:.
 RUN_OPTS ?=
 
 ##

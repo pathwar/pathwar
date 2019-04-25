@@ -5,6 +5,7 @@ package pathwar.server;
 import "google/api/annotations.proto";
 import "entity/entity.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "protoc-gen-swagger/options/annotations.proto";
 //import "google/protobuf/timestamp.proto";
 
 option go_package = "pathwar.pw/server";
@@ -12,6 +13,11 @@ option (gogoproto.sizer_all) = true;
 option (gogoproto.marshaler_all) = true;
 option (gogoproto.unmarshaler_all) = true;
 
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+  info: {
+    title: "Pathwar API";
+  };
+};
 
 service Server {
 
