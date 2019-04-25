@@ -196,6 +196,8 @@ message Level {
   repeated LevelVersion versions = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
+message LevelList { repeated Level items = 1; }
+
 message LevelVersion {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
 

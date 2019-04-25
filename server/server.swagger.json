@@ -74,6 +74,23 @@
         ]
       }
     },
+    "/levels": {
+      "get": {
+        "summary": "List levels",
+        "operationId": "Levels",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/entityLevelList"
+            }
+          }
+        },
+        "tags": [
+          "Server"
+        ]
+      }
+    },
     "/ping": {
       "get": {
         "summary": "Verify the service is up and running",
@@ -637,6 +654,17 @@
         "Inactive"
       ],
       "default": "Unknown"
+    },
+    "entityLevelList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/entityLevel"
+          }
+        }
+      }
     },
     "entityLevelSubscription": {
       "type": "object",
