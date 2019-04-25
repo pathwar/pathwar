@@ -255,6 +255,10 @@ message Tournament {
   repeated Coupon coupons = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
+message Tournaments {
+  repeated Tournament items = 1;
+}
+
 message TournamentTeam {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
 

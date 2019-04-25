@@ -17,6 +17,7 @@
   "paths": {
     "/authenticate": {
       "post": {
+        "summary": "Create a session based on credentials",
         "operationId": "Authenticate",
         "responses": {
           "200": {
@@ -75,6 +76,7 @@
     },
     "/ping": {
       "get": {
+        "summary": "Verify the service is up and running",
         "operationId": "Ping",
         "responses": {
           "200": {
@@ -89,8 +91,26 @@
         ]
       }
     },
+    "/tournaments": {
+      "get": {
+        "summary": "List tournaments",
+        "operationId": "Tournaments",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/entityTournaments"
+            }
+          }
+        },
+        "tags": [
+          "Server"
+        ]
+      }
+    },
     "/user-session": {
       "get": {
+        "summary": "Get current user's session",
         "operationId": "UserSession",
         "responses": {
           "200": {
@@ -930,6 +950,17 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/entityTournamentMember"
+          }
+        }
+      }
+    },
+    "entityTournaments": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/entityTournament"
           }
         }
       }
