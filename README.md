@@ -3,7 +3,7 @@ Pathwar monorepo
 
 ## API Documentation
 
-* SwaggerHub: https://app.swaggerhub.com/apis/Pathwar/Pathwar/0
+* SwaggerHub: https://pathwar.docs.apiary.io/
 * Protobuf file: https://github.com/pathwar/pathwar/blob/master/server/server.proto
 * Available both using gRPC and HTTP (via https://github.com/grpc-ecosystem/grpc-gateway)
 * GoDoc: [![GoDoc](https://godoc.org/pathwar.pw?status.svg)](https://godoc.org/pathwar.pw)
