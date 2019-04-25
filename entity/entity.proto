@@ -172,6 +172,8 @@ message Team {
   repeated TeamMember members = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
+message TeamList { repeated Team items = 1; }
+
 message Level {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
 

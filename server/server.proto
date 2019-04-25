@@ -49,6 +49,12 @@ service Server {
     // FIXME: pagination & filters
   };
 
+  // List teams
+  rpc Teams(Void) returns (pathwar.entity.TeamList) {
+    option (google.api.http) = {get: "/teams"};
+    // FIXME: pagination & filters
+  };
+
   //
   // dev stuff (should be disabled in production)
   //

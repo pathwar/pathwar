@@ -91,6 +91,23 @@
         ]
       }
     },
+    "/teams": {
+      "get": {
+        "summary": "List teams",
+        "operationId": "Teams",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/entityTeamList"
+            }
+          }
+        },
+        "tags": [
+          "Server"
+        ]
+      }
+    },
     "/tournaments": {
       "get": {
         "summary": "List tournaments",
@@ -795,6 +812,17 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/entityTeamMember"
+          }
+        }
+      }
+    },
+    "entityTeamList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/entityTeam"
           }
         }
       }
