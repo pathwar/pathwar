@@ -49,6 +49,12 @@ service Server {
     // FIXME: pagination & filters
   };
 
+  // List levels
+  rpc Levels(Void) returns (pathwar.entity.LevelList) {
+    option (google.api.http) = {get: "/levels"};
+    // FIXME: pagination & filters
+  };
+
   // List teams
   rpc Teams(Void) returns (pathwar.entity.TeamList) {
     option (google.api.http) = {get: "/teams"};
