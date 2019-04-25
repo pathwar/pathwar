@@ -1,3 +1,4 @@
+basePath: /
 consumes:
 - application/json
 definitions:
@@ -670,6 +671,8 @@ definitions:
         type: string
     type: object
   serverAuthenticateInput:
+    description: AuthenticateInput contains everything (credentials) to authenticate
+      a user and create a new session.
     properties:
       password:
         type: string
@@ -677,15 +680,29 @@ definitions:
         type: string
     type: object
   serverAuthenticateOutput:
+    description: AuthenticateOutput contains a session token (JWT).
     properties:
       token:
         type: string
     type: object
   serverVoid:
+    example: {}
+    title: Void is an empty message
     type: object
+externalDocs:
+  description: More about Pathwar
+  url: https://github.com/pathwar/pathwar
+host: api.pathwar.net
 info:
-  title: server/server.proto
-  version: version not set
+  contact:
+    email: staff@pathwar.net
+    name: Pathwar Team
+    url: https://github.com/pathwar/pathwar
+  license:
+    name: Apache-2.0
+    url: https://github.com/pathwar/pathwar/blob/master/LICENSE
+  title: Pathwar API
+  version: "1.0"
 paths:
   /authenticate:
     post:
@@ -701,6 +718,18 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/serverAuthenticateOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+        "418":
+          description: I'm a teapot.
+          schema:
+            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: Create a session based on credentials
       tags:
       - Server
@@ -712,6 +741,18 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/serverVoid'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+        "418":
+          description: I'm a teapot.
+          schema:
+            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       tags:
       - Server
   /dev/sql-dump:
@@ -722,6 +763,18 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/entityDump'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+        "418":
+          description: I'm a teapot.
+          schema:
+            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       tags:
       - Server
   /levels:
@@ -732,6 +785,18 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/entityLevelList'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+        "418":
+          description: I'm a teapot.
+          schema:
+            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: List levels
       tags:
       - Server
@@ -743,6 +808,18 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/serverVoid'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+        "418":
+          description: I'm a teapot.
+          schema:
+            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: Verify the service is up and running
       tags:
       - Server
@@ -754,6 +831,18 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/entityTeamList'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+        "418":
+          description: I'm a teapot.
+          schema:
+            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: List teams
       tags:
       - Server
@@ -765,6 +854,18 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/entityTournamentList'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+        "418":
+          description: I'm a teapot.
+          schema:
+            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: List tournaments
       tags:
       - Server
@@ -776,6 +877,18 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/entityUserSession'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+        "418":
+          description: I'm a teapot.
+          schema:
+            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: Get current user's session
       tags:
       - Server
@@ -787,12 +900,34 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/entityUserList'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+        "418":
+          description: I'm a teapot.
+          schema:
+            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: List users
       tags:
       - Server
 produces:
 - application/json
 schemes:
-- http
 - https
+- wss
+security:
+- ApiKeyAuth: []
+  BasicAuth: []
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: X-API-Key
+    type: apiKey
+  BasicAuth:
+    type: basic
 swagger: "2.0"
