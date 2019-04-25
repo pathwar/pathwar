@@ -1,4 +1,4 @@
-package sql
+package sql // import "pathwar.pw/sql"
 
 import (
 	"encoding/base64"

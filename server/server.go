@@ -1,4 +1,4 @@
-package server
+package server // import "pathwar.pw/server"
 
 import (
 	"context"
