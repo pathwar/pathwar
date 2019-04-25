@@ -1,3 +1,4 @@
+swagger: "2.0"
 basePath: /
 consumes:
 - application/json
@@ -726,10 +727,6 @@ paths:
           description: Returned when the resource does not exist.
           schema:
             format: string
-        "418":
-          description: I'm a teapot.
-          schema:
-            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: Create a session based on credentials
       tags:
       - Server
@@ -749,10 +746,6 @@ paths:
           description: Returned when the resource does not exist.
           schema:
             format: string
-        "418":
-          description: I'm a teapot.
-          schema:
-            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       tags:
       - Server
   /dev/sql-dump:
@@ -771,10 +764,6 @@ paths:
           description: Returned when the resource does not exist.
           schema:
             format: string
-        "418":
-          description: I'm a teapot.
-          schema:
-            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       tags:
       - Server
   /levels:
@@ -793,10 +782,6 @@ paths:
           description: Returned when the resource does not exist.
           schema:
             format: string
-        "418":
-          description: I'm a teapot.
-          schema:
-            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: List levels
       tags:
       - Server
@@ -816,10 +801,6 @@ paths:
           description: Returned when the resource does not exist.
           schema:
             format: string
-        "418":
-          description: I'm a teapot.
-          schema:
-            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: Verify the service is up and running
       tags:
       - Server
@@ -839,10 +820,6 @@ paths:
           description: Returned when the resource does not exist.
           schema:
             format: string
-        "418":
-          description: I'm a teapot.
-          schema:
-            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: List teams
       tags:
       - Server
@@ -862,10 +839,6 @@ paths:
           description: Returned when the resource does not exist.
           schema:
             format: string
-        "418":
-          description: I'm a teapot.
-          schema:
-            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: List tournaments
       tags:
       - Server
@@ -885,10 +858,6 @@ paths:
           description: Returned when the resource does not exist.
           schema:
             format: string
-        "418":
-          description: I'm a teapot.
-          schema:
-            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: Get current user's session
       tags:
       - Server
@@ -908,10 +877,6 @@ paths:
           description: Returned when the resource does not exist.
           schema:
             format: string
-        "418":
-          description: I'm a teapot.
-          schema:
-            $ref: .grpc.gateway.examples.examplepb.NumericEnum
       summary: List users
       tags:
       - Server
@@ -930,4 +895,3 @@ securityDefinitions:
     type: apiKey
   BasicAuth:
     type: basic
-swagger: "2.0"
