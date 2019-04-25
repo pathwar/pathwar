@@ -36,11 +36,11 @@ require (
 	github.com/spf13/viper v1.3.1
 	go.uber.org/zap v1.9.1
 	golang.org/x/crypto v0.0.0-20190103213133-ff983b9c42bc // indirect
-	golang.org/x/net v0.0.0-20190110044637-be1c187aa6c6
+	golang.org/x/net v0.0.0-20190110044637-be1c187aa6c6 // indirect
 	golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4
 	golang.org/x/time v0.0.0-20181108054448-85acf8d2951c // indirect
 	google.golang.org/appengine v1.2.0 // indirect
-	google.golang.org/genproto v0.0.0-20190108161440-ae2f86662275
+	google.golang.org/genproto v0.0.0-20190108161440-ae2f86662275 // indirect
 	google.golang.org/grpc v1.17.0
 	gotest.tools v0.0.0-20181223230014-1083505acf35 // indirect
 	moul.io/zapgorm v0.0.0-20181220094309-2149c5ded6fc

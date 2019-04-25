@@ -5,7 +5,8 @@ RUN     apk --no-cache add make git go rsync libc-dev openssh docker
 RUN     go get -u \
           github.com/gogo/protobuf/protoc-gen-gogofaster \
           github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway \
-          github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
+          github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger \
+          github.com/simplealpine/json2yaml
 
 FROM    golang:1.11-alpine
 RUN     apk --no-cache add git make protobuf gcc libc-dev && \

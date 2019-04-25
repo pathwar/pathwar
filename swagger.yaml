@@ -1,207 +1,96 @@
-swagger: '2.0'
-info:
-  title: server/server.proto
-  version: version not set
-schemes:
-  - http
-  - https
 consumes:
-  - application/json
-produces:
-  - application/json
-paths:
-  /authenticate:
-    post:
-      summary: Create a session based on credentials
-      operationId: Authenticate
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/serverAuthenticateOutput'
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/serverAuthenticateInput'
-      tags:
-        - Server
-  /dev/generate-fake-data:
-    post:
-      operationId: GenerateFakeData
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/serverVoid'
-      tags:
-        - Server
-  /dev/sql-dump:
-    post:
-      operationId: Dump
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/entityDump'
-      tags:
-        - Server
-  /levels:
-    get:
-      summary: List levels
-      operationId: Levels
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/entityLevelList'
-      tags:
-        - Server
-  /ping:
-    get:
-      summary: Verify the service is up and running
-      operationId: Ping
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/serverVoid'
-      tags:
-        - Server
-  /teams:
-    get:
-      summary: List teams
-      operationId: Teams
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/entityTeamList'
-      tags:
-        - Server
-  /tournaments:
-    get:
-      summary: List tournaments
-      operationId: Tournaments
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/entityTournamentList'
-      tags:
-        - Server
-  /user-session:
-    get:
-      summary: Get current user's session
-      operationId: UserSession
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/entityUserSession'
-      tags:
-        - Server
-  /users:
-    get:
-      summary: List users
-      operationId: Users
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/entityUserList'
-      tags:
-        - Server
+- application/json
 definitions:
   InventoryItemItem:
-    type: string
-    enum:
-      - Unknown
     default: Unknown
+    enum:
+    - Unknown
+    type: string
   LevelVersionDriver:
-    type: string
-    enum:
-      - Unknown
-      - Docker
     default: Unknown
-  TournamentVisibility:
-    type: string
     enum:
-      - UnknownVisibility
-      - Private
-      - Unlisted
-      - Public
+    - Unknown
+    - Docker
+    type: string
+  TournamentVisibility:
     default: UnknownVisibility
+    enum:
+    - UnknownVisibility
+    - Private
+    - Unlisted
+    - Public
+    type: string
   entityAchievement:
-    type: object
     properties:
-      metadata:
-        $ref: '#/definitions/entityMetadata'
-      type:
-        $ref: '#/definitions/entityAchievementType'
-      is_global:
-        type: boolean
-        format: boolean
-      comment:
-        type: string
       argument:
         type: string
       author:
         $ref: '#/definitions/entityTournamentMember'
       author_id:
         type: string
+      comment:
+        type: string
+      is_global:
+        format: boolean
+        type: boolean
       level_validation:
         $ref: '#/definitions/entityLevelValidation'
       level_validationt_id:
         type: string
-  entityAchievementType:
-    type: string
-    enum:
-      - Undefined
-      - Buy1Level
-      - Buy5Levels
-      - Buy10Levels
-      - Buy20Levels
-      - Buy50Levels
-      - Validate1Level
-      - Validate5Levels
-      - Validate10Levels
-      - Validate20Levels
-      - Validate50Levels
-      - Validate1Coupon
-      - Validate5Coupons
-      - Validate10Coupons
-      - Validate20Coupons
-      - Validate50Coupons
-      - Validate100Coupons
-      - Author1Level
-      - Author2Levels
-      - Author5Levels
-      - Author10Levels
-      - EarlyAdopterTop100
-      - EarlyAdopterTop1000
-      - Old1Year
-      - Send1PullRequest
-      - Send2PullRequests
-      - Send5PullRequests
-      - Send10Pullrequests
-      - Staff
-      - Contributor
-      - BugHunter
-      - Moderator
-      - HackThePlatform
-    default: Undefined
-    title: fields
-  entityAuthMethod:
-    type: object
-    properties:
       metadata:
         $ref: '#/definitions/entityMetadata'
-      identifier:
-        type: string
+      type:
+        $ref: '#/definitions/entityAchievementType'
+    type: object
+  entityAchievementType:
+    default: Undefined
+    enum:
+    - Undefined
+    - Buy1Level
+    - Buy5Levels
+    - Buy10Levels
+    - Buy20Levels
+    - Buy50Levels
+    - Validate1Level
+    - Validate5Levels
+    - Validate10Levels
+    - Validate20Levels
+    - Validate50Levels
+    - Validate1Coupon
+    - Validate5Coupons
+    - Validate10Coupons
+    - Validate20Coupons
+    - Validate50Coupons
+    - Validate100Coupons
+    - Author1Level
+    - Author2Levels
+    - Author5Levels
+    - Author10Levels
+    - EarlyAdopterTop100
+    - EarlyAdopterTop1000
+    - Old1Year
+    - Send1PullRequest
+    - Send2PullRequests
+    - Send5PullRequests
+    - Send10Pullrequests
+    - Staff
+    - Contributor
+    - BugHunter
+    - Moderator
+    - HackThePlatform
+    title: fields
+    type: string
+  entityAuthMethod:
+    properties:
       email_address:
         type: string
+      identifier:
+        type: string
+      is_verified:
+        format: boolean
+        type: boolean
+      metadata:
+        $ref: '#/definitions/entityMetadata'
       password_hash:
         type: string
       salt:
@@ -210,274 +99,267 @@ definitions:
         type: string
       url:
         type: string
-      is_verified:
-        type: boolean
-        format: boolean
       user:
         $ref: '#/definitions/entityUser'
       user_id:
         type: string
-  entityCoupon:
     type: object
+  entityCoupon:
     properties:
+      hash:
+        title: fields
+        type: string
+      max_validation_count:
+        format: int32
+        type: integer
       metadata:
         $ref: '#/definitions/entityMetadata'
-      hash:
-        type: string
-        title: fields
-      value:
-        type: integer
-        format: int32
-      max_validation_count:
-        type: integer
-        format: int32
       tournament:
         $ref: '#/definitions/entityTournament'
         title: associations
       tournament_id:
         type: string
       validations:
-        type: array
         items:
           $ref: '#/definitions/entityCouponValidation'
-  entityCouponValidation:
+        type: array
+      value:
+        format: int32
+        type: integer
     type: object
+  entityCouponValidation:
     properties:
-      metadata:
-        $ref: '#/definitions/entityMetadata'
-      comment:
-        type: string
-        title: fields
       author:
         $ref: '#/definitions/entityTournamentMember'
         title: associations
       author_id:
         type: string
+      comment:
+        title: fields
+        type: string
       coupon:
         $ref: '#/definitions/entityCoupon'
       coupon_id:
         type: string
-  entityDump:
+      metadata:
+        $ref: '#/definitions/entityMetadata'
     type: object
+  entityDump:
     properties:
       achievements:
-        type: array
         items:
           $ref: '#/definitions/entityAchievement'
-      auth_methods:
         type: array
+      auth_methods:
         items:
           $ref: '#/definitions/entityAuthMethod'
-      coupons:
         type: array
-        items:
-          $ref: '#/definitions/entityCoupon'
       coupon_validations:
-        type: array
         items:
           $ref: '#/definitions/entityCouponValidation'
-      events:
         type: array
+      coupons:
+        items:
+          $ref: '#/definitions/entityCoupon'
+        type: array
+      events:
         items:
           $ref: '#/definitions/entityEvent'
-      hypervisors:
         type: array
+      hypervisors:
         items:
           $ref: '#/definitions/entityHypervisor'
-      inventory_items:
         type: array
+      inventory_items:
         items:
           $ref: '#/definitions/entityInventoryItem'
-      levels:
         type: array
-        items:
-          $ref: '#/definitions/entityLevel'
       level_flavors:
-        type: array
         items:
           $ref: '#/definitions/entityLevelFlavor'
-      level_instances:
         type: array
+      level_instances:
         items:
           $ref: '#/definitions/entityLevelInstance'
-      level_subscriptions:
         type: array
+      level_subscriptions:
         items:
           $ref: '#/definitions/entityLevelSubscription'
-      level_validations:
         type: array
+      level_validations:
         items:
           $ref: '#/definitions/entityLevelValidation'
-      level_versions:
         type: array
+      level_versions:
         items:
           $ref: '#/definitions/entityLevelVersion'
-      notifications:
         type: array
+      levels:
+        items:
+          $ref: '#/definitions/entityLevel'
+        type: array
+      notifications:
         items:
           $ref: '#/definitions/entityNotification'
-      teams:
         type: array
-        items:
-          $ref: '#/definitions/entityTeam'
       team_members:
-        type: array
         items:
           $ref: '#/definitions/entityTeamMember'
-      tournaments:
         type: array
+      teams:
         items:
-          $ref: '#/definitions/entityTournament'
-      tournament_members:
+          $ref: '#/definitions/entityTeam'
         type: array
+      tournament_members:
         items:
           $ref: '#/definitions/entityTournamentMember'
-      tournament_teams:
         type: array
+      tournament_teams:
         items:
           $ref: '#/definitions/entityTournamentTeam'
-      users:
         type: array
+      tournaments:
         items:
-          $ref: '#/definitions/entityUser'
-      user_sessions:
+          $ref: '#/definitions/entityTournament'
         type: array
+      user_sessions:
         items:
           $ref: '#/definitions/entityUserSession'
-      whoswho_attempts:
         type: array
+      users:
+        items:
+          $ref: '#/definitions/entityUser'
+        type: array
+      whoswho_attempts:
         items:
           $ref: '#/definitions/entityWhoswhoAttempt'
-  entityEvent:
+        type: array
     type: object
+  entityEvent:
     properties:
       metadata:
         $ref: '#/definitions/entityMetadata'
-  entityHypervisor:
     type: object
+  entityHypervisor:
     properties:
+      address:
+        type: string
+      level_instances:
+        items:
+          $ref: '#/definitions/entityLevelInstance'
+        type: array
       metadata:
         $ref: '#/definitions/entityMetadata'
       name:
         type: string
-      address:
-        type: string
       status:
         $ref: '#/definitions/entityHypervisorStatus'
-      level_instances:
-        type: array
-        items:
-          $ref: '#/definitions/entityLevelInstance'
-  entityHypervisorStatus:
-    type: string
-    enum:
-      - Unknown
-      - Active
-      - Inactive
-    default: Unknown
-  entityInventoryItem:
     type: object
+  entityHypervisorStatus:
+    default: Unknown
+    enum:
+    - Unknown
+    - Active
+    - Inactive
+    type: string
+  entityInventoryItem:
     properties:
-      metadata:
-        $ref: '#/definitions/entityMetadata'
       item:
         $ref: '#/definitions/InventoryItemItem'
+      metadata:
+        $ref: '#/definitions/entityMetadata'
       owner:
         $ref: '#/definitions/entityTournamentMember'
       owner_id:
         type: string
-  entityLevel:
     type: object
+  entityLevel:
     properties:
+      author:
+        type: string
+      description:
+        type: string
+      is_draft:
+        format: boolean
+        type: boolean
+      locale:
+        type: string
       metadata:
         $ref: '#/definitions/entityMetadata'
       name:
         type: string
-      description:
-        type: string
-      author:
-        type: string
-      locale:
-        type: string
-      is_draft:
-        type: boolean
-        format: boolean
       preview_url:
         type: string
       versions:
-        type: array
         items:
           $ref: '#/definitions/entityLevelVersion'
-  entityLevelFlavor:
+        type: array
     type: object
+  entityLevelFlavor:
     properties:
-      metadata:
-        $ref: '#/definitions/entityMetadata'
+      instances:
+        items:
+          $ref: '#/definitions/entityLevelInstance'
+        type: array
       level_version:
         $ref: '#/definitions/entityLevel'
       level_version_id:
         type: string
-      instances:
-        type: array
-        items:
-          $ref: '#/definitions/entityLevelInstance'
-      subscriptions:
-        type: array
-        items:
-          $ref: '#/definitions/entityLevelSubscription'
-  entityLevelInstance:
-    type: object
-    properties:
       metadata:
         $ref: '#/definitions/entityMetadata'
-      status:
-        $ref: '#/definitions/entityLevelInstanceStatus'
-      hypervisor:
-        $ref: '#/definitions/entityHypervisor'
-      hypervisor_id:
-        type: string
+      subscriptions:
+        items:
+          $ref: '#/definitions/entityLevelSubscription'
+        type: array
+    type: object
+  entityLevelInstance:
+    properties:
       flavor:
         $ref: '#/definitions/entityLevelFlavor'
       flavor_id:
         type: string
-  entityLevelInstanceStatus:
-    type: string
-    enum:
-      - Unknown
-      - Active
-      - Inactive
-    default: Unknown
-  entityLevelList:
+      hypervisor:
+        $ref: '#/definitions/entityHypervisor'
+      hypervisor_id:
+        type: string
+      metadata:
+        $ref: '#/definitions/entityMetadata'
+      status:
+        $ref: '#/definitions/entityLevelInstanceStatus'
     type: object
+  entityLevelInstanceStatus:
+    default: Unknown
+    enum:
+    - Unknown
+    - Active
+    - Inactive
+    type: string
+  entityLevelList:
     properties:
       items:
-        type: array
         items:
           $ref: '#/definitions/entityLevel'
-  entityLevelSubscription:
+        type: array
     type: object
+  entityLevelSubscription:
     properties:
+      level_flavor:
+        $ref: '#/definitions/entityLevelFlavor'
+      level_flavor_id:
+        type: string
       metadata:
         $ref: '#/definitions/entityMetadata'
       tournament_team:
         $ref: '#/definitions/entityTournamentTeam'
       tournament_team_id:
         type: string
-      level_flavor:
-        $ref: '#/definitions/entityLevelFlavor'
-      level_flavor_id:
-        type: string
       validations:
-        type: array
         items:
           $ref: '#/definitions/entityLevelValidation'
-  entityLevelValidation:
+        type: array
     type: object
+  entityLevelValidation:
     properties:
-      metadata:
-        $ref: '#/definitions/entityMetadata'
-      status:
-        $ref: '#/definitions/entityLevelValidationStatus'
       author_comment:
         type: string
       corrector_comment:
@@ -486,294 +368,298 @@ definitions:
         $ref: '#/definitions/entityLevelSubscription'
       level_subscription_id:
         type: string
-  entityLevelValidationStatus:
-    type: string
-    enum:
-      - Unknown
-      - Sent
-      - Accepted
-      - Refused
-      - AutoAccepted
-    default: Unknown
-  entityLevelVersion:
-    type: object
-    properties:
       metadata:
         $ref: '#/definitions/entityMetadata'
-      version:
-        type: string
+      status:
+        $ref: '#/definitions/entityLevelValidationStatus'
+    type: object
+  entityLevelValidationStatus:
+    default: Unknown
+    enum:
+    - Unknown
+    - Sent
+    - Accepted
+    - Refused
+    - AutoAccepted
+    type: string
+  entityLevelVersion:
+    properties:
       changelog:
-        type: string
-      is_draft:
-        type: boolean
-        format: boolean
-      is_latest:
-        type: boolean
-        format: boolean
-      source_url:
         type: string
       driver:
         $ref: '#/definitions/LevelVersionDriver'
+      flavors:
+        items:
+          $ref: '#/definitions/entityLevelFlavor'
+        type: array
+      is_draft:
+        format: boolean
+        type: boolean
+      is_latest:
+        format: boolean
+        type: boolean
       level:
         $ref: '#/definitions/entityLevel'
       level_id:
         type: string
-      flavors:
-        type: array
-        items:
-          $ref: '#/definitions/entityLevelFlavor'
-  entityMetadata:
-    type: object
-    properties:
-      id:
-        type: string
-      created_at:
-        type: string
-        format: date-time
-      updated_at:
-        type: string
-        format: date-time
-  entityNotification:
-    type: object
-    properties:
       metadata:
         $ref: '#/definitions/entityMetadata'
-      is_read:
-        type: boolean
-        format: boolean
+      source_url:
+        type: string
+      version:
+        type: string
+    type: object
+  entityMetadata:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+      id:
+        type: string
+      updated_at:
+        format: date-time
+        type: string
+    type: object
+  entityNotification:
+    properties:
+      args:
+        type: string
       click_url:
         type: string
+      is_read:
+        format: boolean
+        type: boolean
+      metadata:
+        $ref: '#/definitions/entityMetadata'
       msg:
-        type: string
-      args:
         type: string
       user:
         $ref: '#/definitions/entityUser'
       user_id:
         type: string
-  entityTeam:
     type: object
+  entityTeam:
     properties:
-      metadata:
-        $ref: '#/definitions/entityMetadata'
-      name:
-        type: string
       gravatar_url:
         type: string
       locale:
         type: string
-      tournament_teams:
-        type: array
-        items:
-          $ref: '#/definitions/entityTournamentTeam'
-      received_whoswho_attempts:
-        type: array
-        items:
-          $ref: '#/definitions/entityWhoswhoAttempt'
       members:
-        type: array
         items:
           $ref: '#/definitions/entityTeamMember'
-  entityTeamList:
+        type: array
+      metadata:
+        $ref: '#/definitions/entityMetadata'
+      name:
+        type: string
+      received_whoswho_attempts:
+        items:
+          $ref: '#/definitions/entityWhoswhoAttempt'
+        type: array
+      tournament_teams:
+        items:
+          $ref: '#/definitions/entityTournamentTeam'
+        type: array
     type: object
+  entityTeamList:
     properties:
       items:
-        type: array
         items:
           $ref: '#/definitions/entityTeam'
-  entityTeamMember:
+        type: array
     type: object
+  entityTeamMember:
     properties:
       metadata:
         $ref: '#/definitions/entityMetadata'
       role:
         $ref: '#/definitions/entityTeamMemberRole'
-      user:
-        $ref: '#/definitions/entityUser'
-      user_id:
-        type: string
       team:
         $ref: '#/definitions/entityTeam'
       team_id:
         type: string
-  entityTeamMemberRole:
-    type: string
-    enum:
-      - Undefined
-      - Owner
-      - Member
-    default: Undefined
-  entityTournament:
+      user:
+        $ref: '#/definitions/entityUser'
+      user_id:
+        type: string
     type: object
+  entityTeamMemberRole:
+    default: Undefined
+    enum:
+    - Undefined
+    - Owner
+    - Member
+    type: string
+  entityTournament:
     properties:
+      coupons:
+        items:
+          $ref: '#/definitions/entityCoupon'
+        type: array
+      is_default:
+        format: boolean
+        type: boolean
       metadata:
         $ref: '#/definitions/entityMetadata'
       name:
         type: string
       status:
         $ref: '#/definitions/entityTournamentStatus'
-      visibility:
-        $ref: '#/definitions/TournamentVisibility'
-      is_default:
-        type: boolean
-        format: boolean
       teams:
-        type: array
         items:
           $ref: '#/definitions/entityTournamentTeam'
-      coupons:
         type: array
-        items:
-          $ref: '#/definitions/entityCoupon'
-  entityTournamentList:
+      visibility:
+        $ref: '#/definitions/TournamentVisibility'
     type: object
+  entityTournamentList:
     properties:
       items:
-        type: array
         items:
           $ref: '#/definitions/entityTournament'
-  entityTournamentMember:
+        type: array
     type: object
+  entityTournamentMember:
     properties:
+      achievements:
+        items:
+          $ref: '#/definitions/entityAchievement'
+        type: array
+      coupons:
+        items:
+          $ref: '#/definitions/entityCoupon'
+        type: array
+      items:
+        items:
+          $ref: '#/definitions/entityInventoryItem'
+        type: array
       metadata:
         $ref: '#/definitions/entityMetadata'
+      received_whoswho_attempts:
+        items:
+          $ref: '#/definitions/entityWhoswhoAttempt'
+        type: array
       role:
         $ref: '#/definitions/entityTournamentMemberRole'
-      user:
-        $ref: '#/definitions/entityUser'
-      user_id:
-        type: string
+      sent_whoswho_attempts:
+        items:
+          $ref: '#/definitions/entityWhoswhoAttempt'
+        type: array
       tournament_team:
         $ref: '#/definitions/entityTournamentTeam'
       tournament_team_id:
         type: string
-      coupons:
-        type: array
-        items:
-          $ref: '#/definitions/entityCoupon'
-      achievements:
-        type: array
-        items:
-          $ref: '#/definitions/entityAchievement'
-      sent_whoswho_attempts:
-        type: array
-        items:
-          $ref: '#/definitions/entityWhoswhoAttempt'
-      received_whoswho_attempts:
-        type: array
-        items:
-          $ref: '#/definitions/entityWhoswhoAttempt'
-      items:
-        type: array
-        items:
-          $ref: '#/definitions/entityInventoryItem'
-  entityTournamentMemberRole:
-    type: string
-    enum:
-      - Undefined
-      - Owner
-      - Member
-    default: Undefined
-  entityTournamentStatus:
-    type: string
-    enum:
-      - UnknownStatus
-      - Started
-      - Stopped
-    default: UnknownStatus
-  entityTournamentTeam:
-    type: object
-    properties:
-      metadata:
-        $ref: '#/definitions/entityMetadata'
-      is_default:
-        type: boolean
-        format: boolean
-      tournament:
-        $ref: '#/definitions/entityTournament'
-      tournament_id:
-        type: string
-      team:
-        $ref: '#/definitions/entityTeam'
-      team_id:
-        type: string
-      level_subscriptions:
-        type: array
-        items:
-          $ref: '#/definitions/entityLevelSubscription'
-      members:
-        type: array
-        items:
-          $ref: '#/definitions/entityTournamentMember'
-  entityUser:
-    type: object
-    properties:
-      metadata:
-        $ref: '#/definitions/entityMetadata'
-      username:
-        type: string
-      gravatar_url:
-        type: string
-      website_url:
-        type: string
-      locale:
-        type: string
-      is_staff:
-        type: boolean
-        format: boolean
-      sessions:
-        type: array
-        items:
-          $ref: '#/definitions/entityUserSession'
-      tournament_memberships:
-        type: array
-        items:
-          $ref: '#/definitions/entityTournamentMember'
-      notifications:
-        type: array
-        items:
-          $ref: '#/definitions/entityNotification'
-      auth_methods:
-        type: array
-        items:
-          $ref: '#/definitions/entityAuthMethod'
-      memberships:
-        type: array
-        items:
-          $ref: '#/definitions/entityTeamMember'
-    title: User defines a User Account / Profile
-  entityUserList:
-    type: object
-    properties:
-      items:
-        type: array
-        items:
-          $ref: '#/definitions/entityUser'
-  entityUserSession:
-    type: object
-    properties:
-      metadata:
-        $ref: '#/definitions/entityMetadata'
-      username:
-        type: string
       user:
         $ref: '#/definitions/entityUser'
       user_id:
         type: string
-  entityWhoswhoAttempt:
     type: object
+  entityTournamentMemberRole:
+    default: Undefined
+    enum:
+    - Undefined
+    - Owner
+    - Member
+    type: string
+  entityTournamentStatus:
+    default: UnknownStatus
+    enum:
+    - UnknownStatus
+    - Started
+    - Stopped
+    type: string
+  entityTournamentTeam:
+    properties:
+      is_default:
+        format: boolean
+        type: boolean
+      level_subscriptions:
+        items:
+          $ref: '#/definitions/entityLevelSubscription'
+        type: array
+      members:
+        items:
+          $ref: '#/definitions/entityTournamentMember'
+        type: array
+      metadata:
+        $ref: '#/definitions/entityMetadata'
+      team:
+        $ref: '#/definitions/entityTeam'
+      team_id:
+        type: string
+      tournament:
+        $ref: '#/definitions/entityTournament'
+      tournament_id:
+        type: string
+    type: object
+  entityUser:
+    properties:
+      auth_methods:
+        items:
+          $ref: '#/definitions/entityAuthMethod'
+        type: array
+      gravatar_url:
+        type: string
+      is_staff:
+        format: boolean
+        type: boolean
+      locale:
+        type: string
+      memberships:
+        items:
+          $ref: '#/definitions/entityTeamMember'
+        type: array
+      metadata:
+        $ref: '#/definitions/entityMetadata'
+      notifications:
+        items:
+          $ref: '#/definitions/entityNotification'
+        type: array
+      sessions:
+        items:
+          $ref: '#/definitions/entityUserSession'
+        type: array
+      tournament_memberships:
+        items:
+          $ref: '#/definitions/entityTournamentMember'
+        type: array
+      username:
+        type: string
+      website_url:
+        type: string
+    title: User defines a User Account / Profile
+    type: object
+  entityUserList:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entityUser'
+        type: array
+    type: object
+  entityUserSession:
     properties:
       metadata:
         $ref: '#/definitions/entityMetadata'
-      success:
-        type: boolean
-        format: boolean
-        title: fields
+      user:
+        $ref: '#/definitions/entityUser'
+      user_id:
+        type: string
+      username:
+        type: string
+    type: object
+  entityWhoswhoAttempt:
+    properties:
       author:
         $ref: '#/definitions/entityTournamentMember'
         title: associations
       author_id:
         type: string
+      metadata:
+        $ref: '#/definitions/entityMetadata'
+      success:
+        format: boolean
+        title: fields
+        type: boolean
       target_member:
         $ref: '#/definitions/entityTournamentMember'
       target_member_id:
@@ -782,17 +668,131 @@ definitions:
         $ref: '#/definitions/entityTournamentTeam'
       target_team_id:
         type: string
-  serverAuthenticateInput:
     type: object
+  serverAuthenticateInput:
     properties:
-      username:
-        type: string
       password:
         type: string
-  serverAuthenticateOutput:
+      username:
+        type: string
     type: object
+  serverAuthenticateOutput:
     properties:
       token:
         type: string
+    type: object
   serverVoid:
     type: object
+info:
+  title: server/server.proto
+  version: version not set
+paths:
+  /authenticate:
+    post:
+      operationId: Authenticate
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/serverAuthenticateInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/serverAuthenticateOutput'
+      summary: Create a session based on credentials
+      tags:
+      - Server
+  /dev/generate-fake-data:
+    post:
+      operationId: GenerateFakeData
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/serverVoid'
+      tags:
+      - Server
+  /dev/sql-dump:
+    post:
+      operationId: Dump
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/entityDump'
+      tags:
+      - Server
+  /levels:
+    get:
+      operationId: Levels
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/entityLevelList'
+      summary: List levels
+      tags:
+      - Server
+  /ping:
+    get:
+      operationId: Ping
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/serverVoid'
+      summary: Verify the service is up and running
+      tags:
+      - Server
+  /teams:
+    get:
+      operationId: Teams
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/entityTeamList'
+      summary: List teams
+      tags:
+      - Server
+  /tournaments:
+    get:
+      operationId: Tournaments
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/entityTournamentList'
+      summary: List tournaments
+      tags:
+      - Server
+  /user-session:
+    get:
+      operationId: UserSession
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/entityUserSession'
+      summary: Get current user's session
+      tags:
+      - Server
+  /users:
+    get:
+      operationId: Users
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/entityUserList'
+      summary: List users
+      tags:
+      - Server
+produces:
+- application/json
+schemes:
+- http
+- https
+swagger: "2.0"
