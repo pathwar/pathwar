@@ -82,17 +82,6 @@ option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
       };
     };
   };
-  responses: {
-    key: "418";
-    value: {
-      description: "I'm a teapot.";
-      schema: {
-        json_schema: {
-          ref: ".grpc.gateway.examples.examplepb.NumericEnum";
-        };
-      };
-    };
-  };
 };
 
 service Server {

@@ -2,6 +2,7 @@ vendor/
 *~
 *#
 .#*
+swagger.yaml.tmp
 
 *.swagger.json
 
