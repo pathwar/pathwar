@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 import App from './App';
+import "tabler-react/dist/Tabler.css";
+
 
 export default class Root extends Component {
   render() {

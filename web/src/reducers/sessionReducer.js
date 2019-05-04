@@ -1,4 +1,4 @@
-import {SET_SESSION, SWITCH_SESSION} from '../constants/actionTypes';
+import { SET_SESSION } from '../constants/actionTypes';
 
 const initialState = {
   session: {
