@@ -6,14 +6,14 @@ const initialState = {
   }
 };
 
-export default function sessionReducer(state = initialState.session, {type, payload}) {
+export default function sessionReducer(state = initialState.session, action) {
 
-  switch (type) {
+  switch (action.type) {
     case SET_SESSION:
       
       return {
         ...state,
-        activeSession: payload.session
+        activeSession: action.payload
       };
 
     default:
