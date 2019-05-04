@@ -71,6 +71,7 @@ class SiteWrapper extends React.Component {
 
 SiteWrapper.propTypes = {
     children: PropTypes.node,
+    session: PropTypes.object,
     fetchUserSessionAction: PropTypes.func
 };
 
