@@ -14,7 +14,7 @@ const CompetitionsPage = () => {
       <Page.Content title="Competitions">
         <Grid.Row cards={true}>
           <Grid.Col xs={12} sm={8} lg={6}>
-            <h2>Levels</h2>
+            <h3>Levels</h3>
             <LevelsCardPreview />
           </Grid.Col>
 
