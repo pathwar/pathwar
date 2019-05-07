@@ -1,5 +1,5 @@
 import * as React from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, NavLink } from "react-router-dom";
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import {
@@ -18,7 +18,9 @@ const navBarItems = [
   },
   {
     value: "Statistics",
+    to: "/statistics",
     icon: "bar-chart-2",
+    LinkComponent: withRouter(NavLink)
   },
   {
     value: "Competitions",
