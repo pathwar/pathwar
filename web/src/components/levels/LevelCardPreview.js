@@ -13,9 +13,14 @@ const LevelBody = (props) => {
             <br />
             <br />
             <p>{description}</p>
-            <Button RootComponent={Link} to="/" color="info" size="sm">
-                See level
-            </Button>
+            <Button.List>
+                <Button RootComponent={Link} to="/" color="info" size="sm">
+                    View level
+                </Button>
+                <Button RootComponent={Link} to="/" color="success" size="sm">
+                    Validate level
+                </Button>
+            </Button.List>
         </React.Fragment>
     )
 }
