@@ -6,6 +6,7 @@ import {
 } from "tabler-react";
 
 import SiteWrapper from "../SiteWrapper";
+import LevelsCardPreview from "../levels/LevelCardPreview";
 
 const CompetitionsPage = () => {
   return (
@@ -13,9 +14,8 @@ const CompetitionsPage = () => {
       <Page.Content title="Competitions">
         <Grid.Row cards={true}>
           <Grid.Col xs={12} sm={8} lg={6}>
-          </Grid.Col>
-          
-          <Grid.Col xs={12} sm={4} lg={3}>
+            <h2>Levels</h2>
+            <LevelsCardPreview />
           </Grid.Col>
 
         </Grid.Row>
