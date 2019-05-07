@@ -1,12 +1,18 @@
+/* eslint-disable react/prop-types */
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { Card, Button } from "tabler-react";
 
-const LevelBody = () => {
+const LevelBody = (props) => {
+    const { author, description, locale, key } = props;
+
     return (
-        <React.Fragment>
-            <strong>Author: Author Name</strong>
-            <p>Level description</p>
+        <React.Fragment key={key}>
+            <strong><small>Author: </small>{author}</strong><br />
+            <strong><small>Locale: </small>{locale}</strong>
+            <br />
+            <br />
+            <p>{description}</p>
             <Button RootComponent={Link} to="/" color="info" size="sm">
                 See level
             </Button>
@@ -14,16 +20,16 @@ const LevelBody = () => {
     )
 }
 
-const LevelCardPreview = () => {
-    // const { title, author, description } = props;
+const LevelCardPreview = (props) => {
+    const { levels } = props;
 
-    return (
-        <Card title="Level Title"
+    return levels.map((level) => 
+    <Card title={level.name} key={level.metadata.id}
         isCollapsible
         statusColor="orange" 
-        body={<LevelBody />}
-        />
-    )
+        body={<LevelBody key={level.metadata.id} author={level.author} description={level.description} locale={level.locale} />}
+    />)
 }
+
 
 export default LevelCardPreview;

@@ -6,7 +6,7 @@ const initialState = {
   }
 };
 
-export default function competitionsReducer(state = initialState.session, action) {
+export default function competitionsReducer(state = initialState.competition, action) {
 
   switch (action.type) {
     case SET_LEVELS_LIST:
