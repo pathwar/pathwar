@@ -1,11 +1,11 @@
 /* eslint-disable import/no-named-as-default */
 import { Route, Switch } from "react-router-dom";
-
-import HomePage from "./pages/HomePage";
-import NotFoundPage from "./pages/NotFoundPage";
 import PropTypes from "prop-types";
 import React from "react";
 import { hot } from "react-hot-loader";
+import HomePage from "./pages/HomePage";
+import NotFoundPage from "./pages/NotFoundPage";
+import CompetitionsPage from "./pages/CompetitionsPage";
 
 class App extends React.Component {
   render() {
@@ -13,6 +13,7 @@ class App extends React.Component {
       <div>
         <Switch>
           <Route exact path="/" component={HomePage} />
+          <Route exact path="/competitions" component={CompetitionsPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </div>

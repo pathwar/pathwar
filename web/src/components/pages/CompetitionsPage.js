@@ -6,20 +6,16 @@ import {
 } from "tabler-react";
 
 import SiteWrapper from "../SiteWrapper";
-import TeamsCard from "../teams/TeamsCards";
-import TeamStatsStampCard from "../teams/TeamsStatsStampCard";
 
-const Home = () => {
+const CompetitionsPage = () => {
   return (
     <SiteWrapper>
-      <Page.Content title="Dashboard">
+      <Page.Content title="Competitions">
         <Grid.Row cards={true}>
           <Grid.Col xs={12} sm={8} lg={6}>
-            <TeamsCard />
           </Grid.Col>
           
           <Grid.Col xs={12} sm={4} lg={3}>
-            <TeamStatsStampCard />
           </Grid.Col>
 
         </Grid.Row>
@@ -28,4 +24,4 @@ const Home = () => {
   );
 }
 
-export default Home;
+export default CompetitionsPage;

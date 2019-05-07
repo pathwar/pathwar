@@ -15,6 +15,7 @@ const navBarItems = [
     to: "/",
     icon: "clipboard",
     useExact: true,
+    LinkComponent: withRouter(NavLink)
   },
   {
     value: "Statistics",
@@ -24,7 +25,9 @@ const navBarItems = [
   },
   {
     value: "Competitions",
+    to: "/competitions",
     icon: "flag",
+    LinkComponent: withRouter(NavLink)
   }
 ];
 
