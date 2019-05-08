@@ -1,0 +1,13 @@
+
+//Session
+export const SET_SESSION = 'SET_SESSION';
+export const SET_SESSION_FAILED = "GET_SESSION_FAILED";
+export const SWITCH_SESSION = 'SWITCH_SESSION';
+
+//Teams
+export const SET_TEAMS_LIST = "SET_TEAMS_LIST";
+export const SET_TEAMS_LIST_FAILED = "SET_TEAMS_LIST_FAILED";
+
+//Levels
+export const SET_LEVELS_LIST = "SET_LEVELS_LIST";
+export const SET_LEVELS_LIST_FAILED = "SET_LEVELS_LIST_FAILED";
