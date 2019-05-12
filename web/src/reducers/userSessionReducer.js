@@ -13,7 +13,7 @@ const initialState = {
   }
 };
 
-export default function sessionReducer(state = initialState.session, action) {
+export default function userSessionReducer(state = initialState.session, action) {
 
   switch (action.type) {
     case PERFORM_LOGIN:
