@@ -10,7 +10,7 @@ import {
 const navBarItems = [
   {
     value: "Dashboard",
-    to: "/",
+    to: "/dashboard",
     icon: "clipboard",
     useExact: true,
     LinkComponent: withRouter(NavLink)
