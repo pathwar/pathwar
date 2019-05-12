@@ -1,9 +1,7 @@
 import { 
   PERFORM_LOGIN, 
-  LOGIN_SUCCESS,
   LOGIN_FAILED,
-  SET_USER_SESSION,
-  SET_USER_SESSION_FAILED
+  SET_USER_SESSION
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -20,36 +18,23 @@ export default function sessionReducer(state = initialState.session, action) {
     case PERFORM_LOGIN:
       return {
         ...state,
+        error: null,
         fetching: true
       };
-
-    case LOGIN_SUCCESS:
-      return {
-        ...state,
-        fetching: false,
-        error: null
-    };
 
     case LOGIN_FAILED:
       return {
         ...state,
         fetching: false,
+        activeUser: null,
         error: action.payload
     } ;
-        
 
     case SET_USER_SESSION:
-      
       return {
         ...state,
-        activeUser: action.payload
-      };
-
-    case SET_USER_SESSION_FAILED:
-      
-      return {
-        ...state,
-        activeUser: null
+        fetching: false,
+        activeUser: action.payload.activeUser
       };
 
     default:

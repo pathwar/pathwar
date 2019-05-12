@@ -7,8 +7,6 @@ import {
   RouterContextProvider,
 } from "tabler-react";
 
-import { fetchUserSession as fetchUserSessionAction } from "../actions/userSession";
-
 const navBarItems = [
   {
     value: "Dashboard",
@@ -49,11 +47,6 @@ const accountDropdownProps = ({activeUser}) => {
 
 class SiteWrapper extends React.Component {
 
-  componentDidMount() {
-      const { fetchUserSessionAction } = this.props;
-      fetchUserSessionAction();
-  }
-
   render() {
     const { userSession } = this.props;
 
@@ -77,16 +70,14 @@ class SiteWrapper extends React.Component {
 SiteWrapper.propTypes = {
     children: PropTypes.node,
     userSession: PropTypes.object,
-    fetchUserSessionAction: PropTypes.func
+    performLoginAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
     userSession: state.userSession
 });
 
-const mapDispatchToProps = {
-    fetchUserSessionAction: () => fetchUserSessionAction()
-};
+const mapDispatchToProps = {};
 
 export default connect(
 	mapStateToProps,
