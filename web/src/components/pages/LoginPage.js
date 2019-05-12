@@ -1,11 +1,16 @@
-/* eslint-disable no-unused-vars */
 import * as React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { Formik } from "formik";
 import { LoginPage as TablerLoginPage } from "tabler-react";
+
+import { performLoginAction } from "../../actions/userSession";
 
 class LoginPage extends React.PureComponent {
   
   render() {
+    const { performLoginAction } = this.props;
+
     return (
       <Formik
         initialValues={{
@@ -23,11 +28,8 @@ class LoginPage extends React.PureComponent {
           }
           return errors;
         }}
-        onSubmit={(
-          values,
-          { setSubmitting, setErrors }
-        ) => {
-          alert("Done!");
+        onSubmit={(values) => {
+          performLoginAction(values.email, values.password);
         }}
         render={({
           values,
@@ -35,8 +37,7 @@ class LoginPage extends React.PureComponent {
           touched,
           handleChange,
           handleBlur,
-          handleSubmit,
-          isSubmitting,
+          handleSubmit
         }) => (
           <TablerLoginPage
             onSubmit={handleSubmit}
@@ -52,4 +53,17 @@ class LoginPage extends React.PureComponent {
   }
 }
 
-export default LoginPage;
+LoginPage.propTypes = {
+  performLoginAction: PropTypes.func
+};
+
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = {
+  performLoginAction: (email, password) => performLoginAction(email, password)
+};
+
+export default connect(
+mapStateToProps,
+mapDispatchToProps
+)(LoginPage);
