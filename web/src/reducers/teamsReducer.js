@@ -12,7 +12,7 @@ const initialState = {
   }
 };
 
-export default function sessionReducer(state = initialState.teams, action) {
+export default function teamsReducer(state = initialState.teams, action) {
 
   switch (action.type) {
     case GET_USER_TEAMS:
