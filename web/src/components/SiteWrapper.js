@@ -7,7 +7,7 @@ import {
   RouterContextProvider,
 } from "tabler-react";
 
-import { fetchUserSession as fetchUserSessionAction } from "../actions/session";
+import { fetchUserSession as fetchUserSessionAction } from "../actions/userSession";
 
 const navBarItems = [
   {
@@ -31,8 +31,8 @@ const navBarItems = [
   }
 ];
 
-const accountDropdownProps = ({activeSession}) => {
-    const username = activeSession ? activeSession.username : "Log In?";
+const accountDropdownProps = ({activeUser}) => {
+    const username = activeUser ? activeUser.username : "Log In?";
     return {
         avatarURL: `"${require('../images/pathwar-logo.png')}"`,
         name: `${username}`,
@@ -55,7 +55,7 @@ class SiteWrapper extends React.Component {
   }
 
   render() {
-    const { session } = this.props;
+    const { userSession } = this.props;
 
     return (
       <Site.Wrapper
@@ -63,7 +63,7 @@ class SiteWrapper extends React.Component {
           href: "/",
           alt: "Pathwar Project",
           imageURL: "/pathwar-logo.png",
-          accountDropdown: accountDropdownProps(session)
+          accountDropdown: accountDropdownProps(userSession)
         }}
         navProps={{ itemsObjects: navBarItems }}
         routerContextComponentType={withRouter(RouterContextProvider)}
@@ -76,12 +76,12 @@ class SiteWrapper extends React.Component {
 
 SiteWrapper.propTypes = {
     children: PropTypes.node,
-    session: PropTypes.object,
+    userSession: PropTypes.object,
     fetchUserSessionAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
-    session: state.session
+    userSession: state.userSession
 });
 
 const mapDispatchToProps = {

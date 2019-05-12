@@ -1,8 +1,10 @@
 
-//Session
-export const SET_SESSION = 'SET_SESSION';
-export const SET_SESSION_FAILED = "GET_SESSION_FAILED";
-export const SWITCH_SESSION = 'SWITCH_SESSION';
+//Login / Session
+export const PERFORM_LOGIN = "PERFORM_LOGIN";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILED = "LOGIN_FAILED";
+export const SET_USER_SESSION = 'SET_USER_SESSION';
+export const SET_USER_SESSION_FAILED = "SET_USER_SESSION_FAILED";
 
 //Teams
 export const SET_TEAMS_LIST = "SET_TEAMS_LIST";
