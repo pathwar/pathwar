@@ -9,7 +9,7 @@ import ValidationCouponStamp from "../coupon/ValidateCouponStampCard";
 
 import { fetchLevels as fetchLevelsAction } from "../../actions/levels";
 
-class CompetitionsPage extends React.Component {
+class CompetitionPage extends React.Component {
 
     componentDidMount() {
         const { fetchLevelsAction } = this.props;
@@ -38,7 +38,7 @@ class CompetitionsPage extends React.Component {
     }
 }
 
-CompetitionsPage.propTypes = {
+CompetitionPage.propTypes = {
     competitions: PropTypes.object,
     fetchLevelsAction: PropTypes.func
 };
@@ -54,5 +54,5 @@ const mapDispatchToProps = {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(CompetitionsPage);
+)(CompetitionPage);
 
