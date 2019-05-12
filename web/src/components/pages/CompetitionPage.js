@@ -7,7 +7,7 @@ import SiteWrapper from "../SiteWrapper";
 import LevelsCardPreview from "../levels/LevelCardPreview";
 import ValidationCouponStamp from "../coupon/ValidateCouponStampCard";
 
-import { fetchLevels as fetchLevelsAction } from "../../actions/levels";
+import { fetchLevels as fetchLevelsAction } from "../../actions/competitions";
 
 class CompetitionPage extends React.Component {
 
@@ -17,7 +17,7 @@ class CompetitionPage extends React.Component {
     }
   
     render() {
-        const { competitions } = this.props;
+        const { competition } = this.props;
 
         return (
             <SiteWrapper>
@@ -25,7 +25,7 @@ class CompetitionPage extends React.Component {
                 <Grid.Row cards={true}>
                   <Grid.Col xs={12} sm={8} lg={6}>
                     <h3>Levels</h3>
-                    {competitions.levels && <LevelsCardPreview levels={competitions.levels} />}
+                    {competition.levels && <LevelsCardPreview levels={competition.levels} />}
                   </Grid.Col>
                   <Grid.Col xs={12} sm={4} lg={3}>
                     <h3>Actions</h3>
@@ -39,12 +39,12 @@ class CompetitionPage extends React.Component {
 }
 
 CompetitionPage.propTypes = {
-    competitions: PropTypes.object,
+    competition: PropTypes.object,
     fetchLevelsAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
-    competitions: state.competitions
+    competition: state.competition
 });
 
 const mapDispatchToProps = {

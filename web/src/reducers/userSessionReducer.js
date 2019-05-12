@@ -8,7 +8,8 @@ const initialState = {
   session: {
     error: null,
     fetching: false,
-    activeUser: null
+    activeUser: null,
+    isAuthenticated: false
   }
 };
 
@@ -27,6 +28,7 @@ export default function sessionReducer(state = initialState.session, action) {
         ...state,
         fetching: false,
         activeUser: null,
+        isAuthenticated: false,
         error: action.payload
     } ;
 
@@ -34,7 +36,8 @@ export default function sessionReducer(state = initialState.session, action) {
       return {
         ...state,
         fetching: false,
-        activeUser: action.payload.activeUser
+        activeUser: action.payload.activeUser,
+        isAuthenticated: true
       };
 
     default:
