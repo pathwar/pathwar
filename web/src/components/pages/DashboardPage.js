@@ -9,7 +9,7 @@ import SiteWrapper from "../SiteWrapper";
 import TeamsCard from "../teams/TeamsCards";
 import TeamStatsStampCard from "../teams/TeamsStatsStampCard";
 
-const Home = () => {
+const Dashboard = () => {
   return (
     <SiteWrapper>
       <Page.Content title="Dashboard">
@@ -28,4 +28,4 @@ const Home = () => {
   );
 }
 
-export default Home;
+export default Dashboard;
