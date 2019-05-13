@@ -18,7 +18,7 @@
     "clean-dist": "npm run remove-dist && mkdir dist",
     "remove-dist": "rimraf ./dist",
     "prebuild": "npm run lint && npm run test && npm run clean-dist",
-    "build": "babel-node tools/build.js && nom run open:dist",
+    "build": "babel-node tools/build.js && npm run open:dist",
     "netlify": "babel-node tools/build.js",
     "test": "jest",
     "test:CI": "jest",
