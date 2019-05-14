@@ -7,12 +7,10 @@ import {
   RouterContextProvider,
 } from "tabler-react";
 
-import { fetchUserSession as fetchUserSessionAction } from "../actions/session";
-
 const navBarItems = [
   {
     value: "Dashboard",
-    to: "/",
+    to: "/dashboard",
     icon: "clipboard",
     useExact: true,
     LinkComponent: withRouter(NavLink)
@@ -24,15 +22,15 @@ const navBarItems = [
     LinkComponent: withRouter(NavLink)
   },
   {
-    value: "Competitions",
-    to: "/competitions",
+    value: "Competition",
+    to: "/competition",
     icon: "flag",
     LinkComponent: withRouter(NavLink)
   }
 ];
 
-const accountDropdownProps = ({activeSession}) => {
-    const username = activeSession ? activeSession.username : "Log In?";
+const accountDropdownProps = ({activeUser}) => {
+    const username = activeUser ? activeUser.username : "Log In?";
     return {
         avatarURL: `"${require('../images/pathwar-logo.png')}"`,
         name: `${username}`,
@@ -49,13 +47,8 @@ const accountDropdownProps = ({activeSession}) => {
 
 class SiteWrapper extends React.Component {
 
-  componentDidMount() {
-      const { fetchUserSessionAction } = this.props;
-      fetchUserSessionAction();
-  }
-
   render() {
-    const { session } = this.props;
+    const { userSession } = this.props;
 
     return (
       <Site.Wrapper
@@ -63,7 +56,7 @@ class SiteWrapper extends React.Component {
           href: "/",
           alt: "Pathwar Project",
           imageURL: "/pathwar-logo.png",
-          accountDropdown: accountDropdownProps(session)
+          accountDropdown: accountDropdownProps(userSession)
         }}
         navProps={{ itemsObjects: navBarItems }}
         routerContextComponentType={withRouter(RouterContextProvider)}
@@ -76,17 +69,15 @@ class SiteWrapper extends React.Component {
 
 SiteWrapper.propTypes = {
     children: PropTypes.node,
-    session: PropTypes.object,
-    fetchUserSessionAction: PropTypes.func
+    userSession: PropTypes.object,
+    performLoginAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
-    session: state.session
+    userSession: state.userSession
 });
 
-const mapDispatchToProps = {
-    fetchUserSessionAction: () => fetchUserSessionAction()
-};
+const mapDispatchToProps = {};
 
 export default connect(
 	mapStateToProps,
