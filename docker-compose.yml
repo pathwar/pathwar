@@ -23,3 +23,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: uns3cur3
       MYSQL_DATABASE: pathwar
+
+  web:
+    build: web
+    ports:
+      - 3000:3000
+      - 3001:3001
+    environment:
+      - NODE_ENV=development
