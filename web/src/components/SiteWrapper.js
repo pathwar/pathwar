@@ -40,7 +40,7 @@ const accountDropdownProps = ({activeUser}) => {
             { icon: "settings", value: "Settings" },
             { isDivider: true },
             { icon: "help-circle", value: "Need help?" },
-            { icon: "log-out", value: "Sign out" },
+            { icon: "log-out", value: "Sign out", to: "/logout" },
         ],
     }
 };
