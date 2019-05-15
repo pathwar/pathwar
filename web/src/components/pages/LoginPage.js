@@ -1,15 +1,37 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
-import { LoginPage as TablerLoginPage } from "tabler-react";
+import Cookies from "js-cookie";
 
-import { performLoginAction } from "../../actions/userSession";
+import { LoginPage as TablerLoginPage } from "tabler-react";
+import { performLoginAction, pingUserAction } from "../../actions/userSession";
+import { USER_SESSION_TOKEN_NAME } from "../../constants/userSession";
 
 class LoginPage extends React.PureComponent {
+
+  state = {
+    redirectToReferrer: false
+  }
+
+  componentDidMount() {
+    const { pingUserAction } = this.props;
+    const token = Cookies.get(USER_SESSION_TOKEN_NAME);
+    if(token) {
+      pingUserAction();
+    }
+  }
   
   render() {
-    const { performLoginAction } = this.props;
+    const self = this;
+    const { performLoginAction, userSession, location } = this.props;
+    const { redirectToReferrer } = this.state;
+    const { from } = location.state || { from: { pathname: '/' } }
+
+    if (redirectToReferrer === true || userSession.isAuthenticated) {
+      return ( <Redirect to={from} /> )
+    }
 
     return (
       <Formik
@@ -28,8 +50,10 @@ class LoginPage extends React.PureComponent {
           }
           return errors;
         }}
-        onSubmit={(values) => {
-          performLoginAction(values.email, values.password);
+        onSubmit={ async (values) => {
+          await performLoginAction(values.email, values.password).then(() => {
+            self.setState({ redirectToReferrer: true })
+          });
         }}
         render={({
           values,
@@ -54,13 +78,19 @@ class LoginPage extends React.PureComponent {
 }
 
 LoginPage.propTypes = {
-  performLoginAction: PropTypes.func
+  userSession: PropTypes.object,
+  location: PropTypes.object,
+  performLoginAction: PropTypes.func,
+  pingUserAction: PropTypes.func
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = state => ({
+  userSession: state.userSession
+});
 
 const mapDispatchToProps = {
-  performLoginAction: (email, password) => performLoginAction(email, password)
+  performLoginAction: (email, password) => performLoginAction(email, password),
+  pingUserAction: () => pingUserAction()
 };
 
 export default connect(

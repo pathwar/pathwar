@@ -3,8 +3,10 @@ import { Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 import React from "react";
 import { hot } from "react-hot-loader";
+import ProtectedRoute from "./ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
+import LogoutPage from "./pages/LogoutPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import CompetitionPage from "./pages/CompetitionPage";
 
@@ -13,10 +15,11 @@ class App extends React.Component {
     return (
       <div>
         <Switch>
-          <Route exact path="/" component={LoginPage} />
+          <ProtectedRoute exact path="/" component={DashboardPage} />
           <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/dashboard" component={DashboardPage} />
-          <Route exact path="/competition" component={CompetitionPage} />
+          <ProtectedRoute exact path="/dashboard" component={DashboardPage} />
+          <ProtectedRoute exact path="/competition" component={CompetitionPage} />
+          <Route path="/logout" component={LogoutPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </div>

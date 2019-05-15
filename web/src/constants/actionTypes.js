@@ -2,7 +2,9 @@
 //Login / Session
 export const PERFORM_LOGIN = "PERFORM_LOGIN";
 export const LOGIN_FAILED = "LOGIN_FAILED";
-export const SET_USER_SESSION = 'SET_USER_SESSION';
+export const SET_USER_SESSION = "SET_USER_SESSION";
+export const PING_USER_SUCCESS = "PING_USER_SUCCESS";
+export const PING_USER_FAILED = "PING_USER_FAILED";
 
 //Teams
 export const GET_USER_TEAMS = "GET_USER_TEAMS";
