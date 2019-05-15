@@ -19,7 +19,7 @@ class App extends React.Component {
           <Route exact path="/login" component={LoginPage} />
           <ProtectedRoute exact path="/dashboard" component={DashboardPage} />
           <ProtectedRoute exact path="/competition" component={CompetitionPage} />
-          <Route exact path="/logout" component={LogoutPage} />
+          <Route path="/logout" component={LogoutPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </div>
