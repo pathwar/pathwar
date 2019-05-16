@@ -49,7 +49,7 @@ func startHTTPServer(ctx context.Context, opts *serverOptions) error {
 	}
 	zap.L().Info("starting HTTP server", zap.String("bind", opts.HTTPBind))
 	mux := http.NewServeMux()
-	mux.Handle("/", gwmux)
+	mux.Handle("/api/", gwmux)
 	return http.ListenAndServe(opts.HTTPBind, mux)
 }
 
