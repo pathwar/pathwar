@@ -19,6 +19,7 @@ type serverOptions struct {
 	HTTPBind       string
 	JWTKey         string
 	WithReflection bool
+	WebDir         string
 }
 
 func (opts serverOptions) String() string {
@@ -38,6 +39,7 @@ func (cmd *serverCommand) LoadDefaultOptions() error { return viper.Unmarshal(&c
 func (cmd *serverCommand) ParseFlags(flags *pflag.FlagSet) {
 	flags.StringVar(&cmd.opts.GRPCBind, "grpc-bind", ":9111", "gRPC server address")
 	flags.StringVar(&cmd.opts.HTTPBind, "http-bind", ":8000", "HTTP server address")
+	flags.StringVar(&cmd.opts.WebDir, "web-dir", "", "Static Files Directory")
 	flags.StringVar(&cmd.opts.JWTKey, "jwt-key", "", "JWT secure key")
 	flags.BoolVarP(&cmd.opts.WithReflection, "grpc-reflection", "", false, "enable gRPC reflection")
 	if err := viper.BindPFlags(flags); err != nil {
