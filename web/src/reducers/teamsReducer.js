@@ -7,8 +7,9 @@ import {
 const initialState = {
   teams: {
       fetchingUserTeams: null,
-      userTeams: null,
-      teamsList: null
+      userTeamsList: null,
+      activeTeam: null,
+      allTeamsList: null
   }
 };
 
@@ -25,13 +26,14 @@ export default function teamsReducer(state = initialState.teams, action) {
       return {
         ...state,
         fetchingUserTeams: false,
-        userTeams: action.payload.userTeams
+        userTeamsList: action.payload.userTeamsList,
+        activeTeam: action.payload.lastActiveTeam
       }
 
     case SET_TEAMS_LIST:
       return {
         ...state,
-        teamsList: action.payload.teamsList
+        allTeamsList: action.payload.allTeamsList
       };
 
     default:

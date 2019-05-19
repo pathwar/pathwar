@@ -1,11 +1,14 @@
 import * as React from "react";
 import { connect } from "react-redux"
-import { Card, Table, Avatar } from "tabler-react";
+import { Card, Table, Avatar, Button } from "tabler-react";
 import PropTypes from "prop-types";
 import { fetchTeamsList as fetchTeamsListAction } from "../../actions/teams"
 
-const TeamsRows = ({teamsList}) => {
-    return teamsList.map((team) => {
+const TeamsRows = ({allTeamsList, userTeamsList}) => {
+    return allTeamsList.map((team) => {
+
+        const isUserOnTem = userTeamsList ? userTeamsList.find((userTeam) => team.metadata.id === userTeam.metadata.id) : undefined;
+        
         return (
             <Table.Row key={team.metadata.id}>
             <Table.Col className="w-1">
@@ -13,13 +16,19 @@ const TeamsRows = ({teamsList}) => {
             </Table.Col>
             <Table.Col>{team.name}</Table.Col>
             <Table.Col>{team.locale}</Table.Col>
+            {isUserOnTem && <Table.Col>
+                Joined
+            </Table.Col>}
+            {!isUserOnTem && <Table.Col>
+                <Button color="info" size="sm">Join</Button>
+            </Table.Col>}
         </Table.Row>
         )
     })
                     
 }
 
-class TeamsCard extends React.PureComponent {
+class AllTeamsCard extends React.PureComponent {
 
     componentDidMount() {
         const { fetchTeamsListAction } = this.props;
@@ -31,7 +40,7 @@ class TeamsCard extends React.PureComponent {
         return (
             <Card>
                   <Card.Header>
-                    <Card.Title>Teams</Card.Title>
+                    <Card.Title>All Teams</Card.Title>
                   </Card.Header>
                   <Table
                     cards={true}
@@ -43,10 +52,11 @@ class TeamsCard extends React.PureComponent {
                       <Table.Row>
                         <Table.ColHeader colSpan={2}>Name</Table.ColHeader>
                         <Table.ColHeader>Locale</Table.ColHeader>
+                        <Table.ColHeader></Table.ColHeader>
                       </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {teams.teamsList && <TeamsRows teamsList={teams.teamsList} />}
+                        {teams.allTeamsList && <TeamsRows allTeamsList={teams.allTeamsList} userTeamsList={teams.userTeamsList} />}
                     </Table.Body>
                   </Table>
                 </Card>
@@ -54,7 +64,7 @@ class TeamsCard extends React.PureComponent {
     }
 }
 
-TeamsCard.propTypes = {
+AllTeamsCard.propTypes = {
     teams: PropTypes.object,
     fetchTeamsListAction: PropTypes.func
 };
@@ -70,4 +80,4 @@ const mapDispatchToProps = {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(TeamsCard);
+)(AllTeamsCard);

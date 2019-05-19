@@ -7,16 +7,22 @@ import {
 } from "../constants/actionTypes"
 import { getAllTeams, getUserTeams } from "../api/teams"
 
-export const fetchUserTeams = (userId) => async dispatch => {
+export const fetchUserTeams = (userID) => async dispatch => {
 	dispatch({
 		type: GET_USER_TEAMS
 	})
 
 	try {
-		const response = await getUserTeams(userId);
+		const response = await getUserTeams(userID);
+		const teams = response.data.items;
+		const lastActiveTeam = teams.find((team) => team.lastActive);
+
 		dispatch({
 			type: GET_USER_TEAMS_SUCCESS,
-			payload: { userTeams: response.data.items }
+			payload: { 
+				userTeamsList: teams,
+				lastActiveTeam: lastActiveTeam
+			}
 		})
 	} catch (error) {
 		dispatch({
@@ -31,7 +37,7 @@ export const fetchTeamsList = () => async dispatch => {
 		const response = await getAllTeams();
 		dispatch({
 			type: SET_TEAMS_LIST,
-			payload: { teamsList: response.data.items }
+			payload: { allTeamsList: response.data.items }
 		});
 	} catch (error) {
 		dispatch({ type: SET_TEAMS_LIST_FAILED, payload: { error } });
