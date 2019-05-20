@@ -1,22 +1,22 @@
 import { 
-	GET_USER_COMPETITIONS_SUCCESS, 
-	GET_USER_COMPETITIONS_FAILED,
+	GET_TOURNAMENTS_SUCCESS, 
+	GET_TOURNAMENTS_FAILED,
 	SET_LEVELS_LIST, 
 	SET_LEVELS_LIST_FAILED 
 } from "../constants/actionTypes"
-import { getCompetitions, getLevels } from "../api/competitions"
+import { getTournaments, getLevels } from "../api/tournaments"
 
-export const fetchCompetitions = () => async dispatch => {
+export const fetchTournaments = () => async dispatch => {
 	try {
-		const response = await getCompetitions();
+		const response = await getTournaments();
 		dispatch({
-			type: GET_USER_COMPETITIONS_SUCCESS,
-			payload: { allCompetitions: response.data.items }
+			type: GET_TOURNAMENTS_SUCCESS,
+			payload: { allTournaments: response.data.items }
 		});
 
 	} catch (error) {
 		dispatch({
-			type: GET_USER_COMPETITIONS_FAILED,
+			type: GET_TOURNAMENTS_FAILED,
 			payload: { error }
 		});
 	}
@@ -27,7 +27,7 @@ export const fetchLevels = (competitionId) => async dispatch => {
 		const response = await getLevels(competitionId);
 		dispatch({
 			type: SET_LEVELS_LIST,
-			payload: response.data.items
+			payload: { activeLevels: response.data.items }
 		});
 	} catch (error) {
 		dispatch({ type: SET_LEVELS_LIST_FAILED, payload: { error } });

@@ -22,8 +22,8 @@ const navBarItems = [
     LinkComponent: withRouter(NavLink)
   },
   {
-    value: "Competition",
-    to: "/competition",
+    value: "Tournament",
+    to: "/tournament",
     icon: "flag",
     LinkComponent: withRouter(NavLink)
   }
