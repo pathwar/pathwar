@@ -3,9 +3,11 @@ import {
 	GET_USER_TEAMS_SUCCESS,
 	GET_USER_TEAMS_FAILED, 
 	SET_TEAMS_LIST, 
-	SET_TEAMS_LIST_FAILED 
+	SET_TEAMS_LIST_FAILED,
+	JOIN_TEAM_SUCCESS,
+	JOIN_TEAM_FAILED
 } from "../constants/actionTypes"
-import { getAllTeams, getUserTeams } from "../api/teams"
+import { getAllTeams, getUserTeams, joinTeam as joinTeamCall } from "../api/teams"
 
 export const fetchUserTeams = (userID) => async dispatch => {
 	dispatch({
@@ -43,3 +45,20 @@ export const fetchTeamsList = () => async dispatch => {
 		dispatch({ type: SET_TEAMS_LIST_FAILED, payload: { error } });
 	}
 };
+
+export const joinTeam = (userID, teamID) => async dispatch => {
+	try {
+		const response = await joinTeamCall(userID, teamID);
+		dispatch({
+			type: JOIN_TEAM_SUCCESS,
+			payload: response.data
+		});
+
+		dispatch(fetchTeamsList())
+		dispatch(fetchUserTeams(userID))
+	}
+	catch (error) {
+		dispatch({ type: JOIN_TEAM_FAILED, payload: { error } });
+		alert("Join team failed, please try again!")
+	}
+}

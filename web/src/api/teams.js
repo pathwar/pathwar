@@ -40,3 +40,7 @@ export function getUserTeams(userID) {
     // Uncomment line to use base api with auth token
     // return baseApi.get(`/user-teams`, { userID });
 }
+
+export function joinTeam(userID, teamID) {
+  // return axios.post("/join-teams", {userID, teamID})
+}
