@@ -9,6 +9,8 @@ import {
 } from "../constants/actionTypes"
 import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
 import { performLogin, pingUser } from "../api/userSession"
+import { fetchUserTeams as fetchUserTeamsAction } from "./teams";
+
 
 export const performLoginAction = (email, password) => async dispatch => {
 	dispatch({
@@ -17,6 +19,7 @@ export const performLoginAction = (email, password) => async dispatch => {
 
 	try {
 		const response = await performLogin(email, password);
+		const userID = response.data.metadata.id;
 		
 		dispatch({
 			type: SET_USER_SESSION,
@@ -24,6 +27,9 @@ export const performLoginAction = (email, password) => async dispatch => {
 		});
 
 		Cookies.set(USER_SESSION_TOKEN_NAME, response.data.token)
+
+		dispatch(fetchUserTeamsAction(userID))
+
 	} catch (error) {
 		dispatch({ type: LOGIN_FAILED, payload: { error } });
 	}
@@ -33,6 +39,7 @@ export const pingUserAction = () => async dispatch => {
 
 	try {
 		const response = await pingUser();
+		const userID = response.data.user.metadata.id;
 		dispatch({
 			type: PING_USER_SUCCESS,
 			payload: { 
@@ -42,6 +49,8 @@ export const pingUserAction = () => async dispatch => {
 		});
 
 		Cookies.set(USER_SESSION_TOKEN_NAME, response.data.token)
+
+		dispatch(fetchUserTeamsAction(userID))
 	} catch (error) {
 		dispatch({ type: PING_USER_FAILED, payload: { error } });
 	}

@@ -6,7 +6,8 @@ import {
 } from "tabler-react";
 
 import SiteWrapper from "../SiteWrapper";
-import TeamsCard from "../teams/TeamsCards";
+import AllTeamsCard from "../teams/AllTeamsList";
+import UserTeamsCard from "../teams/UserTeamsList";
 import TeamStatsStampCard from "../teams/TeamsStatsStampCard";
 
 const Dashboard = () => {
@@ -14,12 +15,13 @@ const Dashboard = () => {
     <SiteWrapper>
       <Page.Content title="Dashboard">
         <Grid.Row cards={true}>
-          <Grid.Col xs={12} sm={8} lg={6}>
-            <TeamsCard />
-          </Grid.Col>
-          
-          <Grid.Col xs={12} sm={4} lg={3}>
+          <Grid.Col xs={12} sm={12} lg={6}>
+            <UserTeamsCard />
             <TeamStatsStampCard />
+          </Grid.Col>
+
+          <Grid.Col xs={12} sm={12} lg={6}>
+            <AllTeamsCard />
           </Grid.Col>
 
         </Grid.Row>
