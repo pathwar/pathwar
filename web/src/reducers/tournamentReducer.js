@@ -1,6 +1,8 @@
 import { 
   GET_TOURNAMENTS_SUCCESS, 
-  SET_LEVELS_LIST 
+  SET_LEVELS_LIST, 
+  SET_DEFAULT_TOURNAMENT,
+  SET_ACTIVE_TOURNAMENT
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -22,6 +24,12 @@ export default function tournamentReducer(state = initialState.tournaments, acti
         error: null,
         allTournaments: action.payload.allTournaments
       }
+
+    case SET_ACTIVE_TOURNAMENT: 
+      return {
+        ...state,
+        activeTournament: action.payload.activeTournament
+      }  
 
     case SET_LEVELS_LIST:
       

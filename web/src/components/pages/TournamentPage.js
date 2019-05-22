@@ -7,25 +7,22 @@ import SiteWrapper from "../SiteWrapper";
 import LevelsCardPreview from "../levels/LevelCardPreview";
 import ValidationCouponStamp from "../coupon/ValidateCouponStampCard";
 
-import { fetchLevels as fetchLevelsAction } from "../../actions/tournaments";
-
 class TournamentPage extends React.Component {
 
-    componentDidMount() {
-        const { fetchLevelsAction } = this.props;
-        fetchLevelsAction();
-    }
   
     render() {
-        const { tournaments } = this.props;
+        const { tournaments: { activeTournament, activeLevels } } = this.props;
+        const name = activeTournament ? activeTournament.name : undefined;
 
         return (
             <SiteWrapper>
-              <Page.Content title="Tournament">
-                <Grid.Row cards={true}>
+              <Page.Content title="Tournament" subTitle={name}>
+                <Grid.Row>
+                </Grid.Row>
+                <Grid.Row>
                   <Grid.Col xs={12} sm={8} lg={6}>
                     <h3>Levels</h3>
-                    {tournaments.activeLevels && <LevelsCardPreview levels={tournaments.activeLevels} />}
+                    {activeLevels && <LevelsCardPreview levels={activeLevels} />}
                   </Grid.Col>
                   <Grid.Col xs={12} sm={4} lg={3}>
                     <h3>Actions</h3>
@@ -40,16 +37,14 @@ class TournamentPage extends React.Component {
 
 TournamentPage.propTypes = {
     tournaments: PropTypes.object,
-    fetchLevelsAction: PropTypes.func
+    activeTeam: PropTypes.object
 };
 
 const mapStateToProps = state => ({
     tournaments: state.tournaments
 });
 
-const mapDispatchToProps = {
-    fetchLevelsAction: () => fetchLevelsAction()
-};
+const mapDispatchToProps = {};
 
 export default connect(
 	mapStateToProps,
