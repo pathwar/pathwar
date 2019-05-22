@@ -705,7 +705,7 @@ info:
   title: Pathwar API
   version: "1.0"
 paths:
-  /authenticate:
+  /api/authenticate:
     post:
       operationId: Authenticate
       parameters:
@@ -730,7 +730,7 @@ paths:
       summary: Create a session based on credentials
       tags:
       - Server
-  /dev/generate-fake-data:
+  /api/dev/generate-fake-data:
     post:
       operationId: GenerateFakeData
       responses:
@@ -748,7 +748,7 @@ paths:
             format: string
       tags:
       - Server
-  /dev/sql-dump:
+  /api/dev/sql-dump:
     post:
       operationId: Dump
       responses:
@@ -766,7 +766,7 @@ paths:
             format: string
       tags:
       - Server
-  /levels:
+  /api/levels:
     get:
       operationId: Levels
       responses:
@@ -785,7 +785,7 @@ paths:
       summary: List levels
       tags:
       - Server
-  /ping:
+  /api/ping:
     get:
       operationId: Ping
       responses:
@@ -804,7 +804,7 @@ paths:
       summary: Verify the service is up and running
       tags:
       - Server
-  /teams:
+  /api/teams:
     get:
       operationId: Teams
       responses:
@@ -823,7 +823,7 @@ paths:
       summary: List teams
       tags:
       - Server
-  /tournaments:
+  /api/tournaments:
     get:
       operationId: Tournaments
       responses:
@@ -842,7 +842,7 @@ paths:
       summary: List tournaments
       tags:
       - Server
-  /user-session:
+  /api/user-session:
     get:
       operationId: UserSession
       responses:
@@ -861,7 +861,7 @@ paths:
       summary: Get current user's session
       tags:
       - Server
-  /users:
+  /api/users:
     get:
       operationId: Users
       responses:

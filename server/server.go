@@ -5,7 +5,10 @@ import (
 	"crypto/rand"
 	"net"
 	"net/http"
+	"time"
 
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"github.com/gogo/gateway"
 	"github.com/gogo/protobuf/gogoproto"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
@@ -35,6 +38,7 @@ func server(opts *serverOptions) error {
 }
 
 func startHTTPServer(ctx context.Context, opts *serverOptions) error {
+	// configure gateway mux
 	gwmux := runtime.NewServeMux(
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, &gateway.JSONPb{
 			EmitDefaults: false,
@@ -47,10 +51,27 @@ func startHTTPServer(ctx context.Context, opts *serverOptions) error {
 	if err := RegisterServerHandlerFromEndpoint(ctx, gwmux, opts.GRPCBind, grpcOpts); err != nil {
 		return err
 	}
+
+	// configure chi router
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+	r.Use(middleware.Timeout(5 * time.Second))
+	r.Use(middleware.RealIP)
+	r.Use(middleware.RequestID)
+	// gateway mux
+	r.Mount("/api", gwmux)
+	// static files
+	if opts.WebDir != "" {
+		fs := http.StripPrefix("/", http.FileServer(http.Dir(opts.WebDir)))
+		r.Get("/*", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			fs.ServeHTTP(w, r)
+		}))
+	}
+
+	// start HTTP server
 	zap.L().Info("starting HTTP server", zap.String("bind", opts.HTTPBind))
-	mux := http.NewServeMux()
-	mux.Handle("/", gwmux)
-	return http.ListenAndServe(opts.HTTPBind, mux)
+	return http.ListenAndServe(opts.HTTPBind, r)
 }
 
 func startGRPCServer(ctx context.Context, opts *serverOptions) error {
