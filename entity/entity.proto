@@ -99,6 +99,7 @@ message AuthMethod {
   string totp_token = 104;
   string url = 105;
   bool is_verified = 107;
+  Provider provider = 108;
 
   //
   // associations

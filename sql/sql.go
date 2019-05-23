@@ -16,7 +16,11 @@ import (
 )
 
 func FromOpts(opts *Options) (*gorm.DB, error) {
-	db, err := gorm.Open("mysql", opts.Config)
+	sqlConfig := opts.Config
+	if envConfig := os.Getenv("SQL_CONFIG"); envConfig != "" { // this should be done using viper's built-in env support
+		sqlConfig = envConfig
+	}
+	db, err := gorm.Open("mysql", sqlConfig)
 	if err != nil {
 		return nil, err
 	}

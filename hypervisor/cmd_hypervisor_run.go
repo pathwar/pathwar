@@ -23,6 +23,7 @@ import (
 	"go.uber.org/zap"
 
 	"pathwar.pw/pkg/cli"
+	"pathwar.pw/pkg/randstring"
 	pwctlconfig "pathwar.pw/pwctl/config"
 )
 
@@ -123,9 +124,9 @@ func runRun(opts runOptions) error {
 
 	pwctlConfig := pwctlconfig.Config{
 		Passphrases: []string{
-			randString(10),
-			randString(10),
-			randString(10),
+			randstring.RandString(10),
+			randstring.RandString(10),
+			randstring.RandString(10),
 		},
 	}
 	// if !pwctlConfig.Validate() ...
