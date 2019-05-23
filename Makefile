@@ -136,8 +136,10 @@ integration.build:
 .PHONY:integration.run
 integration.run:
 	docker-compose up -d --no-build server
-	docker-compose run server "./wait-for-it.sh mysql:3306 -- echo server ready"
-	docker-compose run server "pathwar.pw sql adduser --sql-config=$$SQL_CONFIG --email=integration@example.com --username=integration --password=integration"
+	docker-compose exec server ./wait-for-it.sh mysql:3306 -- echo mysql ready
+	docker-compose exec server ./wait-for-it.sh localhost:9111 -- echo gRPC ready
+	sleep 5
+	docker-compose exec server pathwar.pw sql adduser --sql-config=$$SQL_CONFIG --email=integration@example.com --username=integration --password=integration
 	docker-compose run web npm test
 
 .PHONY: lint
