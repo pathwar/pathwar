@@ -9,3 +9,5 @@ test/
 .*~
 Dockerfile
 vendor/
+.gitignore
+.dockerignore

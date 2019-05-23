@@ -32,3 +32,6 @@ services:
       - 3001:3001
     environment:
       - NODE_ENV=development
+      - API_TARGET=server:8000
+    links:
+      - server

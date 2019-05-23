@@ -95,6 +95,7 @@
     "rimraf": "2.6.2",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.0",
+    "supertest": "^3.0.0",
     "url-loader": "1.1.1",
     "webpack": "4.17.1",
     "webpack-bundle-analyzer": "2.13.1",
