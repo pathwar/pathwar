@@ -125,17 +125,18 @@ swagger.yaml: $(PROTOS)
 .PHONY: docker.build
 docker.build:
 	docker build -t pathwar/pathwar:latest .
-	docker build -t pathwar/pathwar:test ./test
-
-.PHONY: integration.run
-integration.run:
-	docker-compose -f ./docker-compose.yml -f ./test/docker-compose.yml up -d --no-build server
-	docker-compose -f ./docker-compose.yml -f ./test/docker-compose.yml run --no-deps client
-	docker-compose -f ./docker-compose.yml -f ./test/docker-compose.yml down
 
 .PHONY: integration
-integration:
-	./test/integration.sh
+integration: integration.build integration.run
+
+.PHONY: integration.build
+integration.build:
+	docker-compose build server web
+
+.PHONY:integration.run
+integration.run:
+	docker-compose up -d --no-build server
+	docker-compose run web npm test
 
 .PHONY: lint
 lint:
