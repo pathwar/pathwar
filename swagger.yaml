@@ -3,6 +3,13 @@ basePath: /
 consumes:
 - application/json
 definitions:
+  AuthMethodProvider:
+    default: Undefined
+    enum:
+    - Undefined
+    - EmailAndPassword
+    - SSHKey
+    type: string
   InventoryItemItem:
     default: Unknown
     enum:
@@ -95,6 +102,8 @@ definitions:
         $ref: '#/definitions/entityMetadata'
       password_hash:
         type: string
+      provider:
+        $ref: '#/definitions/AuthMethodProvider'
       salt:
         type: string
       totp_token:

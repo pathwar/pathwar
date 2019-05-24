@@ -65,6 +65,9 @@ func newRootCommand() *cobra.Command {
 		// setup viper
 		viper.AddConfigPath(".")
 		viper.SetConfigName(".pathwar")
+		viper.SetEnvPrefix("PATHWAR")
+		viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+		viper.AutomaticEnv()
 		if err := viper.MergeInConfig(); err != nil {
 			if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
 				return errors.Wrap(err, "failed to apply viper config")
@@ -87,7 +90,5 @@ func newRootCommand() *cobra.Command {
 		cmd.AddCommand(command.CobraCommand(commands))
 	}
 
-	viper.AutomaticEnv()
-	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 	return cmd
 }
