@@ -8,6 +8,7 @@ import {
 } from "tabler-react";
 
 import SiteWrapper from "../SiteWrapper";
+import AllTournamentsList from "../tournament/AllTournamentsList";
 import { fetchAllTournaments as fetchAllTournamentsAction } from "../../actions/tournaments"
 
 class AllTournamentsPage extends React.PureComponent {
@@ -18,12 +19,13 @@ class AllTournamentsPage extends React.PureComponent {
     }
 
     render() {
+        const { tournaments: { allTournaments } } = this.props;
         return (
             <SiteWrapper>
               <Page.Content title="All Tournaments">
                 <Grid.Row cards={true}>
                   <Grid.Col xs={12} sm={12} lg={6}>
-        
+                    { allTournaments && <AllTournamentsList tournaments={allTournaments} /> }
                   </Grid.Col>
         
                   <Grid.Col xs={12} sm={12} lg={6}>
