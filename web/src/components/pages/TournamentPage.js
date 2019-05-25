@@ -8,7 +8,6 @@ import LevelsCardPreview from "../levels/LevelCardPreview";
 import ValidationCouponStamp from "../coupon/ValidateCouponStampCard";
 
 class TournamentPage extends React.Component {
-
   
     render() {
         const { tournaments: { activeTournament, activeLevels } } = this.props;

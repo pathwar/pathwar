@@ -1,22 +1,38 @@
 import { 
-	GET_TOURNAMENTS_SUCCESS, 
-	GET_TOURNAMENTS_FAILED,
+	GET_ALL_TOURNAMENTS_SUCCESS,
+	GET_ALL_TOURNAMENTS_FAILED,
+	GET_TEAM_TOURNAMENTS_SUCCESS, 
+	GET_TEAM_TOURNAMENTS_FAILED,
 	SET_DEFAULT_TOURNAMENT,
 	SET_ACTIVE_TOURNAMENT,
 	SET_LEVELS_LIST, 
 	SET_LEVELS_LIST_FAILED 
 } from "../constants/actionTypes"
-import { getTeamTournaments, getLevels } from "../api/tournaments"
+import { getAllTournaments, getTeamTournaments, getLevels } from "../api/tournaments"
+
+export const fetchAllTournaments = () => async dispatch => {
+	try {
+		const response = await getAllTournaments();
+		const allTournaments = response.data.items;
+		
+		dispatch({
+			type: GET_ALL_TOURNAMENTS_SUCCESS,
+			payload: { allTournaments: allTournaments }
+		})
+	} catch (error) {
+		dispatch({ type: GET_ALL_TOURNAMENTS_FAILED, payload: { error } });
+	}
+}
 
 export const fetchTeamTournaments = (teamID) => async dispatch => {
 	try {
 		const response = await getTeamTournaments(teamID);
-		const allTournaments = response.data.items;
-		const defaultTournament = allTournaments.find((tournament) => tournament.is_default)
+		const allTeamTournaments = response.data.items;
+		const defaultTournament = allTeamTournaments.find((tournament) => tournament.is_default)
 		
 		dispatch({
-			type: GET_TOURNAMENTS_SUCCESS,
-			payload: { allTournaments: allTournaments }
+			type: GET_TEAM_TOURNAMENTS_SUCCESS,
+			payload: { allTeamTournaments: allTeamTournaments }
 		});
 
 		if (defaultTournament) {
@@ -35,7 +51,7 @@ export const fetchTeamTournaments = (teamID) => async dispatch => {
 
 	} catch (error) {
 		dispatch({
-			type: GET_TOURNAMENTS_FAILED,
+			type: GET_TEAM_TOURNAMENTS_FAILED,
 			payload: { error }
 		});
 	}
