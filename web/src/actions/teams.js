@@ -14,7 +14,7 @@ export const fetchUserTeams = (userID) => async dispatch => {
 	try {
 		const response = await getUserTeams(userID);
 		const teams = response.data.items;
-		const lastActiveTeam = teams.find((team) => team.lastActive);
+		const lastActiveTeam = teams.find((team) => team.last_active);
 
 		dispatch({
 			type: GET_USER_TEAMS_SUCCESS,
