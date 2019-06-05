@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage";
 import LogoutPage from "./pages/LogoutPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import TournamentPage from "./pages/TournamentPage";
+import AllTournamentsPage from "./pages/AllTournamentsPage";
 
 class App extends React.Component {
   render() {
@@ -19,6 +20,7 @@ class App extends React.Component {
           <Route exact path="/login" component={LoginPage} />
           <ProtectedRoute exact path="/dashboard" component={DashboardPage} />
           <ProtectedRoute exact path="/tournament" component={TournamentPage} />
+          <ProtectedRoute exact path="/all-tournaments" component={AllTournamentsPage} />
           <Route path="/logout" component={LogoutPage} />
           <Route component={NotFoundPage} />
         </Switch>

@@ -25,7 +25,7 @@ export function getUserTeams(userID) {
                   "name": "chartreuse",
                   "gravatar_url": "http://www.internationalmonetize.io/harness/communities",
                   "locale": "fr_FR",
-                  "lastActive": true
+                  "last_active": true
                 }
             ]
           }
