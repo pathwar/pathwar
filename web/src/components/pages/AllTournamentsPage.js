@@ -11,8 +11,7 @@ import SiteWrapper from "../SiteWrapper";
 import AllTournamentsList from "../tournament/AllTournamentsList";
 import AllTeamTournamentsList from "../tournament/AllTeamTournamentsList";
 import { 
-  fetchAllTournaments as fetchAllTournamentsAction,
-  setActiveTournament as setActiveTournamentAction
+  fetchAllTournaments as fetchAllTournamentsAction
 } from "../../actions/tournaments"
 
 class AllTournamentsPage extends React.PureComponent {
@@ -24,26 +23,20 @@ class AllTournamentsPage extends React.PureComponent {
 
     render() {
         const { 
-          tournaments: { allTournaments, allTeamTournaments, activeTournament },
+          tournaments: { allTournaments },
           activeTeam,
-          setActiveTournamentAction
         } = this.props;
         return (
             <SiteWrapper>
               <Page.Content title="All Tournaments">
                 <Grid.Row cards={true}>
                   <Grid.Col xs={12} sm={12} lg={6}>
-                    { allTournaments && <AllTournamentsList tournaments={allTournaments} /> }
+                    {activeTeam &&
+                      <AllTeamTournamentsList /> 
+                    }
                   </Grid.Col>
                   <Grid.Col xs={12} sm={12} lg={6}>
-                    { allTeamTournaments && 
-                      <AllTeamTournamentsList 
-                        teamTournaments={allTeamTournaments}
-                        activeTournament={activeTournament}
-                        setActive={setActiveTournamentAction}
-                        activeTeam={activeTeam}
-                      /> 
-                    }
+                     { allTournaments && <AllTournamentsList tournaments={allTournaments} /> }
                   </Grid.Col>
                 </Grid.Row>
               </Page.Content>
@@ -55,8 +48,7 @@ class AllTournamentsPage extends React.PureComponent {
 AllTournamentsPage.propTypes = {
     tournaments: PropTypes.object,
     activeTeam: PropTypes.object,
-    fetchAllTournamentsAction: PropTypes.func,
-    setActiveTournamentAction: PropTypes.func
+    fetchAllTournamentsAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
@@ -65,8 +57,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    fetchAllTournamentsAction: () => fetchAllTournamentsAction(),
-    setActiveTournamentAction: (teamID, tournament) => setActiveTournamentAction(teamID, tournament)
+    fetchAllTournamentsAction: () => fetchAllTournamentsAction()
 };
 
 export default connect(

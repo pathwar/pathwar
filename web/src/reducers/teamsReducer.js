@@ -1,4 +1,5 @@
 import { 
+  SET_ACTIVE_TEAM,
   GET_USER_TEAMS, 
   SET_TEAMS_LIST, 
   GET_USER_TEAMS_SUCCESS
@@ -16,6 +17,12 @@ const initialState = {
 export default function teamsReducer(state = initialState.teams, action) {
 
   switch (action.type) {
+    case SET_ACTIVE_TEAM:
+      return {
+        ...state,
+        activeTeam: action.payload.team
+      }
+
     case GET_USER_TEAMS:
       return {
         ...state,
@@ -26,8 +33,7 @@ export default function teamsReducer(state = initialState.teams, action) {
       return {
         ...state,
         fetchingUserTeams: false,
-        userTeamsList: action.payload.userTeamsList,
-        activeTeam: action.payload.lastActiveTeam
+        userTeamsList: action.payload.userTeamsList
       }
 
     case SET_TEAMS_LIST:
