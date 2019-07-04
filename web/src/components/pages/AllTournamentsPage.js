@@ -11,8 +11,7 @@ import SiteWrapper from "../SiteWrapper";
 import AllTournamentsList from "../tournament/AllTournamentsList";
 import AllTeamTournamentsList from "../tournament/AllTeamTournamentsList";
 import { 
-  fetchAllTournaments as fetchAllTournamentsAction,
-  fetchTeamTournaments as fetchTeamTournamentsAction
+  fetchAllTournaments as fetchAllTournamentsAction
 } from "../../actions/tournaments"
 
 class AllTournamentsPage extends React.PureComponent {
@@ -58,8 +57,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    fetchAllTournamentsAction: () => fetchAllTournamentsAction(),
-    fetchTeamTournamentsAction: (teamID) => fetchTeamTournamentsAction(teamID)
+    fetchAllTournamentsAction: () => fetchAllTournamentsAction()
 };
 
 export default connect(
