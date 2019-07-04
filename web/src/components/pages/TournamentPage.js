@@ -6,8 +6,14 @@ import { Page, Grid } from "tabler-react";
 import SiteWrapper from "../SiteWrapper";
 import LevelsCardPreview from "../levels/LevelCardPreview";
 import ValidationCouponStamp from "../coupon/ValidateCouponStampCard";
+import { fetchLevels as fetchLevelsAction } from "../../actions/tournaments";
 
 class TournamentPage extends React.Component {
+
+    componentDidMount() {
+      const { fetchLevelsAction, tournaments: { activeTournament } } = this.props;
+      fetchLevelsAction(activeTournament.metadata.id);
+    }
   
     render() {
         const { tournaments: { activeTournament, activeLevels } } = this.props;
@@ -36,14 +42,17 @@ class TournamentPage extends React.Component {
 
 TournamentPage.propTypes = {
     tournaments: PropTypes.object,
-    activeTeam: PropTypes.object
+    activeTeam: PropTypes.object,
+    fetchLevelsAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
     tournaments: state.tournaments
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  fetchLevelsAction: (tournamentID) => fetchLevelsAction(tournamentID),
+};
 
 export default connect(
 	mapStateToProps,

@@ -16,16 +16,14 @@ import {
 	setTournamentActive as setTournamentActiveCall
 } from "../api/tournaments"
 
-export const setActiveTournament = (teamID, tournamentData) => async dispatch => {
+export const setActiveTournament = (tournamentData) => async dispatch => {
 	try {
-		// const response = await setTournamentActiveCall(teamID, tournamentData.metadata.id)
+		// const response = await setTournamentActiveCall(tournamentData.metadata.id)
 		// if (response.status === 200) {
 			dispatch({
 				type: SET_ACTIVE_TOURNAMENT,
 				payload: { activeTournament: tournamentData }
 			});
-
-			dispatch(fetchLevels(tournamentData.metadata.id))
 		// }
 	}
 	catch(error) {
@@ -69,10 +67,10 @@ export const fetchTeamTournaments = (teamID) => async dispatch => {
 		});
 
 		if (lastActiveTournament === defaultTournament) {
-			dispatch(setActiveTournament(teamID, lastActiveTournament));
+			dispatch(setActiveTournament(lastActiveTournament));
 		} else if (!lastActiveTournament && defaultTournament) {
 			dispatch(setDefaultTournament(defaultTournament));
-			dispatch(setActiveTournament(teamID, defaultTournament));
+			dispatch(setActiveTournament(defaultTournament));
 		}
 
 	} catch (error) {

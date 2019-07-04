@@ -1,4 +1,5 @@
 import { 
+	SET_ACTIVE_TEAM,
 	GET_USER_TEAMS_SUCCESS,
 	GET_USER_TEAMS_FAILED, 
 	SET_TEAMS_LIST, 
@@ -7,24 +8,26 @@ import {
 	JOIN_TEAM_FAILED
 } from "../constants/actionTypes"
 import { getAllTeams, getUserTeams, joinTeam as joinTeamCall } from "../api/teams"
-import { fetchTeamTournaments as fetchTeamTournamentsAction } from "./tournaments";
+
+export const setActiveTeam = (teamObjData) => async dispatch => {
+	dispatch({
+		type: SET_ACTIVE_TEAM,
+		payload: { team: teamObjData }
+	});
+}
 
 export const fetchUserTeams = (userID) => async dispatch => {
 
 	try {
 		const response = await getUserTeams(userID);
 		const teams = response.data.items;
-		const lastActiveTeam = teams.find((team) => team.last_active);
 
 		dispatch({
 			type: GET_USER_TEAMS_SUCCESS,
 			payload: { 
 				userTeamsList: teams,
-				lastActiveTeam: lastActiveTeam
 			}
 		})
-
-		dispatch(fetchTeamTournamentsAction(lastActiveTeam.metadata.id))
 		
 	} catch (error) {
 		dispatch({
