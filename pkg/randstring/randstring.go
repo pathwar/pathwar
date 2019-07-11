@@ -1,4 +1,4 @@
-package randstring // import "pathwar.pw/randstring"
+package randstring // import "pathwar.pw/pkg/randstring"
 
 import "math/rand"
 
