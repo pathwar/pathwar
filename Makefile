@@ -40,33 +40,41 @@ help:
 	  sed 's/^/  $(HELP_MSG_PREFIX)make /'
 
 .PHONY: run
-run: $(BIN) mysql.up
+run: $(BIN) serverdb.up
 	$(BIN) server $(RUN_OPTS)
 
 .PHONY: install
 install: $(BIN)
 $(BIN): .proto.generated $(PWCTL_OUT_FILES) $(OUR_SOURCES)
-	go install -mod=readonly -v
+	go install -v
 
-.PHONY: mysql.up
-mysql.up:
-	docker-compose up -d mysql
-	@echo "Waiting for mysql to be ready..."
+.PHONY: serverdb.up
+serverdb.up:
+	docker-compose up -d serverdb
+	@echo "Waiting for serverdb to be ready..."
 	@while ! mysqladmin ping -h127.0.0.1 -P3306 --silent; do sleep 1; done
 	@echo "Done."
 
-.PHONY: mysql.down
-mysql.down:
-	docker-compose stop mysql || true
-	docker-compose rm -f -v mysql || true
+.PHONY: serverdb.down
+serverdb.down:
+	docker-compose stop serverdb || true
+	docker-compose rm -f -v serverdb || true
 
-.PHONY: mysql.shell
-mysql.shell:
+.PHONY: serverdb.shell
+serverdb.shell:
 	mysql -h127.0.0.1 -P3306 -uroot -puns3cur3 pathwar
 
-.PHONY: mysql.dump
-mysql.dump:
+.PHONY: serverdb.dump
+serverdb.dump:
 	mysqldump -h127.0.0.1 -P3306 -uroot -puns3cur3 pathwar
+
+.PHONY: keycloakdb.shell
+keycloakdb.shell:
+	mysql -h127.0.0.1 -P3307 -uroot -puns3cur3 keycloak
+
+.PHONY: keycloakdb.dump
+keycloakdb.dump:
+	mysqldump -h127.0.0.1 -P3307 -uroot -puns3cur3 keycloak
 
 .PHONY: clean
 clean:
@@ -136,7 +144,7 @@ integration.build:
 .PHONY:integration.run
 integration.run:
 	docker-compose up -d --no-build server
-	docker-compose exec server ./wait-for-it.sh mysql:3306 -- echo mysql ready
+	docker-compose exec server ./wait-for-it.sh serverdb:3306 -- echo serverdb ready
 	docker-compose exec server ./wait-for-it.sh localhost:9111 -- echo gRPC ready
 	sleep 5
 	docker-compose exec server pathwar.pw sql adduser --sql-config=$$SQL_CONFIG --email=integration@example.com --username=integration --password=integration
