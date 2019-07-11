@@ -46,7 +46,7 @@ run: $(BIN) mysql.up
 .PHONY: install
 install: $(BIN)
 $(BIN): .proto.generated $(PWCTL_OUT_FILES) $(OUR_SOURCES)
-	go install -v
+	go install -mod=readonly -v
 
 .PHONY: mysql.up
 mysql.up:
@@ -99,11 +99,11 @@ _proto_generate: $(GENERATED_PB_FILES) swagger.yaml
 
 $(PWCTL_OUT_FILES): $(PWCTL_SOURCES)
 	mkdir -p ./pwctl/out
-	GOOS=linux GOARCH=amd64 go build -o ./pwctl/out/pwctl-linux-amd64 ./pwctl/
+	GOOS=linux GOARCH=amd64 go build -mod=readonly -o ./pwctl/out/pwctl-linux-amd64 ./pwctl/
 
 .PHONY: test
 test: .proto.generated
-	go test -v ./...
+	go test -mod=readonly -v ./...
 
 %.pb.go: %.proto
 	protoc \
