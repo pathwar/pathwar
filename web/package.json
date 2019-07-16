@@ -36,6 +36,7 @@
     "connected-react-router": "4.4.1",
     "formik": "^1.5.4",
     "js-cookie": "^2.2.0",
+    "keycloak-js": "^6.0.1",
     "object-assign": "4.1.1",
     "react": "16.4.2",
     "react-dom": "16.4.2",

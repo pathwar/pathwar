@@ -12,8 +12,7 @@ import {
 import { 
 	getAllTournaments, 
 	getTeamTournaments, 
-	getLevels,
-	setTournamentActive as setTournamentActiveCall
+	getLevels
 } from "../api/tournaments"
 
 export const setActiveTournament = (tournamentData) => async dispatch => {
