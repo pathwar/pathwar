@@ -9,3 +9,6 @@ test/
 .*~
 Dockerfile
 vendor/
+.gitignore
+.dockerignore
+docker-compose.yml

@@ -57,8 +57,7 @@ jobs:
       - run: /tmp/retry -m 3 apk --no-cache add curl openssl make bash
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: /tmp/retry -m 3 docker build -t pathwar/pathwar .
-      - run: /tmp/retry -m 3 docker build -t pathwar/pathwar:test ./test
+      - run: /tmp/retry -m 3 make integration.build
       - run: /tmp/retry -m 3 make integration.run
       - run: /tmp/retry -m 3 make integration.run # yes, again
       - run: docker-compose logs

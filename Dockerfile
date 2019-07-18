@@ -4,7 +4,7 @@ RUN             apk --no-cache --update add nodejs-npm make gcc g++ musl-dev ope
 ENV             GO111MODULE=on GOPROXY=https://goproxy.io
 COPY            go.mod go.sum /go/src/pathwar.pw/
 WORKDIR         /go/src/pathwar.pw
-RUN             go get .
+RUN             go mod download
 COPY            . .
 RUN             touch .proto.generated && make install
 

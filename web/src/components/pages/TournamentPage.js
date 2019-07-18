@@ -6,26 +6,28 @@ import { Page, Grid } from "tabler-react";
 import SiteWrapper from "../SiteWrapper";
 import LevelsCardPreview from "../levels/LevelCardPreview";
 import ValidationCouponStamp from "../coupon/ValidateCouponStampCard";
+import { fetchLevels as fetchLevelsAction } from "../../actions/tournaments";
 
-import { fetchLevels as fetchLevelsAction } from "../../actions/competitions";
-
-class CompetitionPage extends React.Component {
+class TournamentPage extends React.Component {
 
     componentDidMount() {
-        const { fetchLevelsAction } = this.props;
-        fetchLevelsAction();
+      const { fetchLevelsAction, tournaments: { activeTournament } } = this.props;
+      fetchLevelsAction(activeTournament.metadata.id);
     }
   
     render() {
-        const { competition } = this.props;
+        const { tournaments: { activeTournament, activeLevels } } = this.props;
+        const name = activeTournament ? activeTournament.name : undefined;
 
         return (
             <SiteWrapper>
-              <Page.Content title="Competitions">
-                <Grid.Row cards={true}>
+              <Page.Content title="Tournament" subTitle={name}>
+                <Grid.Row>
+                </Grid.Row>
+                <Grid.Row>
                   <Grid.Col xs={12} sm={8} lg={6}>
                     <h3>Levels</h3>
-                    {competition.levels && <LevelsCardPreview levels={competition.levels} />}
+                    {activeLevels && <LevelsCardPreview levels={activeLevels} />}
                   </Grid.Col>
                   <Grid.Col xs={12} sm={4} lg={3}>
                     <h3>Actions</h3>
@@ -38,21 +40,22 @@ class CompetitionPage extends React.Component {
     }
 }
 
-CompetitionPage.propTypes = {
-    competition: PropTypes.object,
+TournamentPage.propTypes = {
+    tournaments: PropTypes.object,
+    activeTeam: PropTypes.object,
     fetchLevelsAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
-    competition: state.competition
+    tournaments: state.tournaments
 });
 
 const mapDispatchToProps = {
-    fetchLevelsAction: () => fetchLevelsAction()
+  fetchLevelsAction: (tournamentID) => fetchLevelsAction(tournamentID),
 };
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(CompetitionPage);
+)(TournamentPage);
 

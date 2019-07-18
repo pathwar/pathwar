@@ -1,0 +1,44 @@
+version: '3.3'
+
+services:
+  keycloak:
+    image: jboss/keycloak:6.0.1
+    restart: always
+    environment:
+      # specific to prod
+      - PROXY_ADDRESS_FORWARDING=true
+      - VIRTUAL_HOST=sso.pathwar.land
+      # common with dev
+      - VIRTUAL_PORT=8080
+      - DB_VENDOR=MYSQL
+      - DB_ADDR=keycloakdb
+      - DB_DATABASE=keycloak
+      # from .env
+      - KEYCLOAK_USER
+      - KEYCLOAK_PASSWORD
+      - DB_USER
+      - DB_PASSWORD
+    depends_on:
+      - keycloakdb
+    networks:
+      - service-proxy
+      - keycloak-internal
+
+  keycloakdb:
+    image: mariadb:10
+    restart: always
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=keycloak
+      # from .env
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+    networks:
+      - keycloak-internal
+
+networks:
+  keycloak-internal:
+  service-proxy:
+    external: true

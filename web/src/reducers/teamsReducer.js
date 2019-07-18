@@ -1,4 +1,5 @@
 import { 
+  SET_ACTIVE_TEAM,
   GET_USER_TEAMS, 
   SET_TEAMS_LIST, 
   GET_USER_TEAMS_SUCCESS
@@ -7,14 +8,21 @@ import {
 const initialState = {
   teams: {
       fetchingUserTeams: null,
-      userTeams: null,
-      teamsList: null
+      userTeamsList: null,
+      activeTeam: null,
+      allTeamsList: null
   }
 };
 
 export default function teamsReducer(state = initialState.teams, action) {
 
   switch (action.type) {
+    case SET_ACTIVE_TEAM:
+      return {
+        ...state,
+        activeTeam: action.payload.team
+      }
+
     case GET_USER_TEAMS:
       return {
         ...state,
@@ -25,13 +33,13 @@ export default function teamsReducer(state = initialState.teams, action) {
       return {
         ...state,
         fetchingUserTeams: false,
-        userTeams: action.payload.userTeams
+        userTeamsList: action.payload.userTeamsList
       }
 
     case SET_TEAMS_LIST:
       return {
         ...state,
-        teamsList: action.payload.teamsList
+        allTeamsList: action.payload.allTeamsList
       };
 
     default:

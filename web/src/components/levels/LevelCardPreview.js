@@ -32,7 +32,7 @@ const LevelCardPreview = (props) => {
     <Card title={level.name} key={level.metadata.id}
         isCollapsible
         statusColor="orange" 
-        body={<LevelBody key={level.metadata.id} author={level.author} description={level.description} locale={level.locale} />}
+        body={<LevelBody author={level.author} description={level.description} locale={level.locale} />}
     />)
 }
 

@@ -18,7 +18,7 @@
     "clean-dist": "npm run remove-dist && mkdir dist",
     "remove-dist": "rimraf ./dist",
     "prebuild": "npm run lint && npm run test && npm run clean-dist",
-    "build": "babel-node tools/build.js && npm run open:dist",
+    "build": "babel-node tools/build.js",
     "netlify": "babel-node tools/build.js",
     "test": "jest",
     "test:CI": "jest",
@@ -95,6 +95,7 @@
     "rimraf": "2.6.2",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.0",
+    "supertest": "^3.0.0",
     "url-loader": "1.1.1",
     "webpack": "4.17.1",
     "webpack-bundle-analyzer": "2.13.1",
@@ -150,7 +151,13 @@
         "plugins": [
           "@babel/plugin-proposal-class-properties",
           "@babel/plugin-transform-react-constant-elements",
-          "transform-react-remove-prop-types"
+          "transform-react-remove-prop-types",
+          [
+            "@babel/plugin-transform-runtime",
+            {
+              "regenerator": true
+            }
+          ]
         ]
       },
       "test": {
@@ -159,7 +166,13 @@
           "@babel/preset-react"
         ],
         "plugins": [
-          "@babel/plugin-proposal-class-properties"
+          "@babel/plugin-proposal-class-properties",
+          [
+            "@babel/plugin-transform-runtime",
+            {
+              "regenerator": true
+            }
+          ]
         ]
       }
     }

@@ -22,8 +22,8 @@ const navBarItems = [
     LinkComponent: withRouter(NavLink)
   },
   {
-    value: "Competition",
-    to: "/competition",
+    value: "Tournament",
+    to: "/tournament",
     icon: "flag",
     LinkComponent: withRouter(NavLink)
   }
@@ -31,16 +31,16 @@ const navBarItems = [
 
 const accountDropdownProps = ({activeUser}) => {
     const username = activeUser ? activeUser.username : "Log In?";
+
     return {
         avatarURL: `"${require('../images/pathwar-logo.png')}"`,
         name: `${username}`,
-        description: "Description",
         options: [
             { icon: "user", value: "Profile" },
             { icon: "settings", value: "Settings" },
             { isDivider: true },
             { icon: "help-circle", value: "Need help?" },
-            { icon: "log-out", value: "Sign out" },
+            { icon: "log-out", value: "Sign out", to: "/logout" },
         ],
     }
 };
@@ -49,7 +49,6 @@ class SiteWrapper extends React.Component {
 
   render() {
     const { userSession } = this.props;
-
     return (
       <Site.Wrapper
         headerProps={{
@@ -70,6 +69,7 @@ class SiteWrapper extends React.Component {
 SiteWrapper.propTypes = {
     children: PropTypes.node,
     userSession: PropTypes.object,
+    lastActiveTeam: PropTypes.object,
     performLoginAction: PropTypes.func
 };
 
