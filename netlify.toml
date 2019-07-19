@@ -1,0 +1,7 @@
+[build]
+  base = "web"
+  publish = "web/public"
+  command = "npm install && npm run build"
+[build.environment]
+  YARN_FLAGS = "--no-ignore-optional"
+  API_URL = "http://fwrz.m.42.am:8000/"
