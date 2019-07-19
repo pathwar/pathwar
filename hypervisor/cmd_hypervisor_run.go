@@ -22,9 +22,9 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	"pathwar.pw/pkg/cli"
-	"pathwar.pw/pkg/randstring"
-	pwctlconfig "pathwar.pw/pwctl/config"
+	"pathwar.land/pkg/cli"
+	"pathwar.land/pkg/randstring"
+	pwctlconfig "pathwar.land/pwctl/config"
 )
 
 type runOptions struct {

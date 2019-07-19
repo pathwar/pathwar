@@ -7,7 +7,7 @@ import (
 	"github.com/brianvoe/gofakeit"
 	"go.uber.org/zap"
 
-	"pathwar.pw/entity"
+	"pathwar.land/entity"
 )
 
 func (s *svc) GenerateFakeData(ctx context.Context, _ *Void) (*Void, error) {

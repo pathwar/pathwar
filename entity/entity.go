@@ -1,4 +1,4 @@
-package entity // import "pathwar.pw/entity"
+package entity // import "pathwar.land/entity"
 
 func ByName(name string) interface{} {
 	return AllMap()[name]

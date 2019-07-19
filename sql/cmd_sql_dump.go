@@ -10,8 +10,8 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	"pathwar.pw/entity"
-	"pathwar.pw/pkg/cli"
+	"pathwar.land/entity"
+	"pathwar.land/pkg/cli"
 )
 
 type dumpOptions struct {

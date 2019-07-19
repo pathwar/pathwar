@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"pathwar.pw/entity"
+	"pathwar.land/entity"
 )
 
 type ctxKey string

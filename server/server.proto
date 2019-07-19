@@ -8,7 +8,7 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "protoc-gen-swagger/options/annotations.proto";
 //import "google/protobuf/timestamp.proto";
 
-option go_package = "pathwar.pw/server";
+option go_package = "pathwar.land/server";
 option (gogoproto.sizer_all) = true;
 option (gogoproto.marshaler_all) = true;
 option (gogoproto.unmarshaler_all) = true;
