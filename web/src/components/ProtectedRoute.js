@@ -1,27 +1,25 @@
-import * as React from "react";
+import React from "react"
+import PropTypes from "prop-types"
 import { connect } from "react-redux";
-import { Route, Redirect } from "react-router-dom";
+import { navigate } from "gatsby"
 
 class ProtectedRoute extends React.PureComponent {
 
+  render() {
+    const { component: Component, location, userSession, ...rest } = this.props;
+    
+      if (!userSession.isAuthenticated  && location.pathname !== `/app/login`) {
+        navigate(`/app/login`)
+        return null
+      }
 
-    render() {
-        const { component: Component, userSession, ...rest } = this.props;
-        
-        return(
-            <Route {...rest} render={props => (
-                userSession.isAuthenticated 
-                ? <Component {...props}/> 
-                : <Redirect to={{
-                    pathname: "/login",
-                    state: { from: props.location }
-                }} />
-            )} />
-        
-        )
-    }
+    return <Component {...rest} />
+  }
 }
 
+ProtectedRoute.propTypes = {
+  component: PropTypes.any.isRequired,
+}
 
 const mapStateToProps = state => ({
     userSession: state.userSession
@@ -29,7 +27,7 @@ const mapStateToProps = state => ({
   
 const mapDispatchToProps = {};
   
-  export default connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-  )(ProtectedRoute);
+)(ProtectedRoute);

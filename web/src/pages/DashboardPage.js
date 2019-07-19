@@ -5,10 +5,10 @@ import {
   Grid
 } from "tabler-react";
 
-import SiteWrapper from "../SiteWrapper";
-import AllTeamsCard from "../teams/AllTeamsList";
-import UserTeamsCard from "../teams/UserTeamsList";
-import TeamStatsStampCard from "../teams/TeamsStatsStampCard";
+import SiteWrapper from "../components/SiteWrapper";
+import AllTeamsCard from "../components/teams/AllTeamsList";
+import UserTeamsCard from "../components/teams/UserTeamsList";
+import TeamStatsStampCard from "../components/teams/TeamsStatsStampCard";
 
 const Dashboard = () => {
   return (
