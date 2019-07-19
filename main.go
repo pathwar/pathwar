@@ -1,4 +1,4 @@
-package main // import "pathwar.pw"
+package main // import "pathwar.land"
 
 import (
 	"fmt"
@@ -13,10 +13,10 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"pathwar.pw/hypervisor"
-	"pathwar.pw/pkg/cli"
-	"pathwar.pw/server"
-	"pathwar.pw/sql"
+	"pathwar.land/hypervisor"
+	"pathwar.land/pkg/cli"
+	"pathwar.land/server"
+	"pathwar.land/sql"
 )
 
 func main() {
@@ -31,7 +31,7 @@ func main() {
 
 func newRootCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		// Use: "pathwar.pw",
+		// Use: "pathwar.land",
 		Use: os.Args[0],
 	}
 	cmd.PersistentFlags().BoolP("help", "h", false, "print usage")

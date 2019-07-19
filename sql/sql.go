@@ -1,4 +1,4 @@
-package sql // import "pathwar.pw/sql"
+package sql // import "pathwar.land/sql"
 
 import (
 	"encoding/base64"
@@ -12,7 +12,7 @@ import (
 	"go.uber.org/zap"
 	"moul.io/zapgorm"
 
-	"pathwar.pw/entity"
+	"pathwar.land/entity"
 )
 
 func FromOpts(opts *Options) (*gorm.DB, error) {

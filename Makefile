@@ -9,7 +9,7 @@ rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subs
 ##
 
 GOPATH ?= $(HOME)/go
-BIN = $(GOPATH)/bin/pathwar.pw
+BIN = $(GOPATH)/bin/pathwar.land
 SOURCES = $(call rwildcard, ./, *.go)
 PWCTL_SOURCES = $(call rwildcard,pwctl//,*.go)
 OUR_SOURCES = $(filter-out $(call rwildcard,vendor//,*.go),$(SOURCES))
@@ -94,8 +94,8 @@ generate: .proto.generated
 	go mod vendor
 	docker run \
 	  --user="$(shell id -u)" \
-	  --volume="$(PWD):/go/src/pathwar.pw" \
-	  --workdir="/go/src/pathwar.pw" \
+	  --volume="$(PWD):/go/src/pathwar.land" \
+	  --workdir="/go/src/pathwar.land" \
 	  --entrypoint="sh" \
 	  --rm \
 	  pathwar/protoc:v1 \
@@ -147,7 +147,7 @@ integration.run:
 	docker-compose exec server ./wait-for-it.sh serverdb:3306 -- echo serverdb ready
 	docker-compose exec server ./wait-for-it.sh localhost:9111 -- echo gRPC ready
 	sleep 5
-	docker-compose exec server pathwar.pw sql adduser --sql-config=$$SQL_CONFIG --email=integration@example.com --username=integration --password=integration
+	docker-compose exec server pathwar.land sql adduser --sql-config=$$SQL_CONFIG --email=integration@example.com --username=integration --password=integration
 	docker-compose run web npm test
 
 .PHONY: lint

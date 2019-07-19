@@ -1,4 +1,4 @@
-package config // import "pathwar.pw/pwctl/config"
+package config // import "pathwar.land/pwctl/config"
 
 import "encoding/json"
 
