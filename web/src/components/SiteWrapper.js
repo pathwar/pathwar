@@ -1,31 +1,31 @@
 import * as React from "react";
-import { withRouter, NavLink } from "react-router-dom";
-import { connect } from 'react-redux';
 import PropTypes from "prop-types";
+import { connect } from 'react-redux';
 import {
-  Site,
-  RouterContextProvider,
+  Site
 } from "tabler-react";
+// import { Link } from "gatsby";
+
+import logo from "../images/pathwar-logo.png";
 
 const navBarItems = [
   {
     value: "Dashboard",
-    to: "/dashboard",
+    to: "/app/dashboard",
     icon: "clipboard",
-    useExact: true,
-    LinkComponent: withRouter(NavLink)
+    // LinkComponent: Link
   },
   {
     value: "Statistics",
-    to: "/statistics",
+    to: "/app/statistics",
     icon: "bar-chart-2",
-    LinkComponent: withRouter(NavLink)
+    // LinkComponent: Link
   },
   {
     value: "Tournament",
-    to: "/tournament",
+    to: "/app/tournament",
     icon: "flag",
-    LinkComponent: withRouter(NavLink)
+    // LinkComponent: Link
   }
 ];
 
@@ -33,7 +33,7 @@ const accountDropdownProps = ({activeUser}) => {
     const username = activeUser ? activeUser.username : "Log In?";
 
     return {
-        avatarURL: `"${require('../images/pathwar-logo.png')}"`,
+        avatarURL: logo,
         name: `${username}`,
         options: [
             { icon: "user", value: "Profile" },
@@ -54,11 +54,10 @@ class SiteWrapper extends React.Component {
         headerProps={{
           href: "/",
           alt: "Pathwar Project",
-          imageURL: "/pathwar-logo.png",
+          imageURL: logo,
           accountDropdown: accountDropdownProps(userSession)
         }}
         navProps={{ itemsObjects: navBarItems }}
-        routerContextComponentType={withRouter(RouterContextProvider)}
       >
         {this.props.children}
       </Site.Wrapper>
@@ -74,12 +73,12 @@ SiteWrapper.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    userSession: state.userSession
+  userSession: state.userSession
 });
 
 const mapDispatchToProps = {};
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+mapStateToProps,
+mapDispatchToProps
 )(SiteWrapper);

@@ -7,12 +7,12 @@ import {
   Grid
 } from "tabler-react";
 
-import SiteWrapper from "../SiteWrapper";
-import AllTournamentsList from "../tournament/AllTournamentsList";
-import AllTeamTournamentsList from "../tournament/AllTeamTournamentsList";
+import SiteWrapper from "../components/SiteWrapper";
+import AllTournamentsList from "../components/tournament/AllTournamentsList";
+import AllTeamTournamentsList from "../components/tournament/AllTeamTournamentsList";
 import { 
   fetchAllTournaments as fetchAllTournamentsAction
-} from "../../actions/tournaments"
+} from "../actions/tournaments"
 
 class AllTournamentsPage extends React.PureComponent {
 

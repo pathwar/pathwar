@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "gatsby";
 import { StampCard } from "tabler-react";
 
 const TeamStatsStampCard = () => {
@@ -9,7 +9,7 @@ const TeamStatsStampCard = () => {
         color="red"
         icon="activity"
         header={
-          <Link to="/statistics">
+          <Link to="/app/statistics">
             <small>See Teams Stats</small>
           </Link>
         }
