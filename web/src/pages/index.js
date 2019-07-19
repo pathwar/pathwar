@@ -6,27 +6,41 @@ import { graphql } from "gatsby";
 
 import styles from "./index.module.css";
 
-const title = "Pathwar.land";
-const description = "Pathwar is an educational platform with a focus on security/cryptography, where you can go through levels (courses) to learn new things and hone your skills.";
-
 export default ({ data }) => <div className={styles.page}>
-  <Helmet defer={false}>
-    <title>{title}</title>
-    <meta name="description" content={description} />
+  <Helmet>
+    <title>{data.site.siteMetadata.title}</title>
+    <meta name="description" content={data.site.siteMetadata.description} />
+
+    <meta property="og:description" content={data.site.siteMetadata.description} />
+    <meta property="og:url" content={data.site.siteMetadata.description} />
+    <meta property="og:site_name" content={data.site.siteMetadata.title} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={data.file.childImageSharp.fixed} />
+    <meta property="og:image:width" content="200" />
+    <meta property="og:image:height" content="200" />
+
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:title" content={data.site.siteMetadata.title} />
+    <meta property="twitter:description" content={data.site.siteMetadata.description} />
+    <meta property="twitter:image" content={data.file.childImageSharp.fixed} />
   </Helmet>
 
   <div className={styles.content}>
-    <div>
-      <Img fixed={data.file.childImageSharp.fixed} alt="Pathwar Logo" />
-    </div>
-    <h1>Pathwar Land</h1>
-    <p>{description}</p>
-    <h2 className={styles.comingSoon}>Coming Soon..</h2>
+    <div><Img fixed={data.file.childImageSharp.fixed} alt="Pathwar Logo" /></div>
+    <h1>{data.site.siteMetadata.title}</h1>
+    <p>{data.site.siteMetadata.description}</p>
+    <h2>Coming Soon..</h2>
   </div>
 </div>
 
 export const query = graphql`
   query {
+    site {
+      siteMetadata {
+        title
+        description
+      }
+    }
     file(relativePath: { eq: "images/pathwar-logo.png" }) {
       childImageSharp {
         fixed(width: 200, height: 200) {
