@@ -10,6 +10,9 @@ export default ({ data }) => <div className={styles.page}>
   <Helmet>
     <title>{data.site.siteMetadata.title}</title>
     <meta name="description" content={data.site.siteMetadata.description} />
+      
+    <meta name="go-import" content="pathwar.land git https://github.com/pathwar/pathwar" />
+    <meta name="go-source" content="pathwar.land https://github.com/pathwar/pathwar https://github.com/pathwar/pathwar/tree/master{/dir} https://github.com/pathwar/pathwar/tree/master{/dir}/{file}#L{line}" />
 
     <meta property="og:description" content={data.site.siteMetadata.description} />
     <meta property="og:url" content={data.site.siteMetadata.description} />
