@@ -22,8 +22,9 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	"pathwar.pw/pkg/cli"
-	pwctlconfig "pathwar.pw/pwctl/config"
+	"pathwar.land/pkg/cli"
+	"pathwar.land/pkg/randstring"
+	pwctlconfig "pathwar.land/pwctl/config"
 )
 
 type runOptions struct {
@@ -123,9 +124,9 @@ func runRun(opts runOptions) error {
 
 	pwctlConfig := pwctlconfig.Config{
 		Passphrases: []string{
-			randString(10),
-			randString(10),
-			randString(10),
+			randstring.RandString(10),
+			randstring.RandString(10),
+			randstring.RandString(10),
 		},
 	}
 	// if !pwctlConfig.Validate() ...

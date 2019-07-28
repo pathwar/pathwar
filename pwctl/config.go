@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	pwctlconfig "pathwar.pw/pwctl/config"
+	pwctlconfig "pathwar.land/pwctl/config"
 )
 
 func getConfig() (*pwctlconfig.Config, error) {

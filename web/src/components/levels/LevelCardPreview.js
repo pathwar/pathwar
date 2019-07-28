@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "gatsby";
 import { Card, Button } from "tabler-react";
 
 const LevelBody = (props) => {

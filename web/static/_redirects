@@ -1,0 +1,11 @@
+# Redirect domain aliases to primary domain
+https://pathwar.fr/* https://www.pathwar.land/:splat 301!
+https://pathwar.info/* https://www.pathwar.land/:splat 301!
+https://pathwar.org/* https://www.pathwar.land/:splat 301!
+https://pathwar.pw/* https://www.pathwar.land/:splat 301!
+https://pathwar.net/* https://www.pathwar.land/:splat 301!
+https://www.pathwar.fr/* https://www.pathwar.land/:splat 301!
+https://www.pathwar.info/* https://www.pathwar.land/:splat 301!
+https://www.pathwar.net/* https://www.pathwar.land/:splat 301!
+https://www.pathwar.org/* https://www.pathwar.land/:splat 301!
+https://www.pathwar.pw/* https://www.pathwar.land/:splat 301!

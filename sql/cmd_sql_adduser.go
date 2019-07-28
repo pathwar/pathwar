@@ -1,6 +1,7 @@
 package sql
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -8,15 +9,22 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-	"pathwar.pw/pkg/cli"
+	"golang.org/x/crypto/bcrypt"
+
+	"pathwar.land/entity"
+	"pathwar.land/pkg/cli"
+	"pathwar.land/pkg/randstring"
 )
 
 type adduserOptions struct {
 	sql Options `mapstructure:"sql"`
 
-	email    string `mapstructure:"email"`
-	username string `mapstructure:"username"`
-	password string `mapstructure:"password"`
+	email      string `mapstructure:"email"`
+	username   string `mapstructure:"username"`
+	locale     string `mapstructure:"locale"`
+	password   string `mapstructure:"password"`
+	websiteURL string `mapstructure:"website-url"`
+	isStaff    bool   `mapstructure:"is-staff"`
 }
 
 type adduserCommand struct{ opts adduserOptions }
@@ -45,41 +53,63 @@ func (cmd *adduserCommand) ParseFlags(flags *pflag.FlagSet) {
 	flags.StringVarP(&cmd.opts.email, "email", "", "", "valid email address")
 	flags.StringVarP(&cmd.opts.username, "username", "", "", "random value if empty")
 	flags.StringVarP(&cmd.opts.password, "password", "", "", "random value if empty")
+	flags.StringVarP(&cmd.opts.locale, "locale", "", "fr_FR", "locale")
+	flags.StringVarP(&cmd.opts.websiteURL, "website-url", "", "", "website url")
+	flags.BoolVarP(&cmd.opts.isStaff, "is-staff", "", false, "is staff?")
 	if err := viper.BindPFlags(flags); err != nil {
 		zap.L().Warn("failed to bind viper flags", zap.Error(err))
 	}
 }
 
 func runAdduser(opts adduserOptions) error {
-	return fmt.Errorf("implementation is outdated and needs to be updated")
-	/*
-		db, err := FromOpts(&opts.sql)
-		if err != nil {
-			return err
-		}
+	db, err := FromOpts(&opts.sql)
+	if err != nil {
+		return err
+	}
 
-		user := entity.User{
-			Email:        opts.email,
-			Username:     opts.username,
-			PasswordSalt: "FIXME: randomize",
-		}
-		user.PasswordHash = "FIXME: generate"
+	if opts.password == "" {
+		opts.password = randstring.RandString(15)
+		zap.L().Info("password is empty, generating a new one", zap.String("password", opts.password))
+	}
+	if opts.username == "" {
+		opts.username = randstring.RandString(10)
+		zap.L().Info("username is empty, generating a new one", zap.String("username", opts.username))
+	}
+	hash, err := bcrypt.GenerateFromPassword([]byte(opts.password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
 
-		// FIXME: randomize username, password if empty
-		// FIXME: verify email address validity
-		// FIXME: verify email address spam/blacklist
-		// FIXME: user.Validate()
+	user := entity.User{
+		Username:   opts.username,
+		WebsiteURL: opts.websiteURL,
+		IsStaff:    opts.isStaff,
+		Locale:     opts.locale,
+		AuthMethods: []*entity.AuthMethod{
+			{
+				Identifier:   opts.email,
+				EmailAddress: opts.email,
+				PasswordHash: string(hash),
+				Provider:     entity.AuthMethod_EmailAndPassword,
+				IsVerified:   true,
+			},
+		},
+	}
 
-		if err := db.Create(&user).Error; err != nil {
-			return err
-		}
+	// FIXME: verify email address validity
+	// FIXME: verify email address spam/blacklist
+	// FIXME: verify email for duplicate
+	// FIXME: user.Validate()
 
-		out, err := json.MarshalIndent(user, "", "  ")
-		if err != nil {
-			return err
-		}
-		fmt.Println(string(out))
+	if err := db.Create(&user).Error; err != nil {
+		return err
+	}
 
-		return nil
-	*/
+	out, err := json.MarshalIndent(user, "", "  ")
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(out))
+
+	return nil
 }

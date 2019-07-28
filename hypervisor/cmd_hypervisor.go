@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	"pathwar.pw/pkg/cli"
+	"pathwar.land/pkg/cli"
 )
 
 type Options struct {

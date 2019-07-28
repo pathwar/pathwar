@@ -16,7 +16,7 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
 
-	"pathwar.pw/pkg/cli"
+	"pathwar.land/pkg/cli"
 )
 
 type pruneOptions struct {

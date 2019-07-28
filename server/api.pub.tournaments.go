@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	"pathwar.pw/entity"
+	"pathwar.land/entity"
 )
 
 func (s *svc) Tournaments(ctx context.Context, _ *Void) (*entity.TournamentList, error) {

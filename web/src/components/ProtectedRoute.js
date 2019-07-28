@@ -1,4 +1,5 @@
-import * as React from "react";
+import React from "react"
+import PropTypes from "prop-types"
 import { connect } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
 import Keycloak from 'keycloak-js';
@@ -43,14 +44,31 @@ class ProtectedRoute extends React.PureComponent {
             <h2>Checking auth...</h2>
         );
     }
+import { navigate } from "gatsby"
+
+class ProtectedRoute extends React.PureComponent {
+
+  render() {
+    const { component: Component, location, userSession, ...rest } = this.props;
+    
+      if (!userSession.isAuthenticated  && location.pathname !== `/app/login`) {
+        navigate(`/app/login`)
+        return null
+      }
+
+    return <Component {...rest} />
+  }
 }
 
+ProtectedRoute.propTypes = {
+  component: PropTypes.any.isRequired,
+}
 
 const mapStateToProps = state => ({});
   
 const mapDispatchToProps = {};
   
-  export default connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-  )(ProtectedRoute);
+)(ProtectedRoute);

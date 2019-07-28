@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	"pathwar.pw/entity"
+	"pathwar.land/entity"
 )
 
 func (s *svc) Levels(ctx context.Context, _ *Void) (*entity.LevelList, error) {

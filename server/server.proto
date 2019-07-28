@@ -8,7 +8,7 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "protoc-gen-swagger/options/annotations.proto";
 //import "google/protobuf/timestamp.proto";
 
-option go_package = "pathwar.pw/server";
+option go_package = "pathwar.land/server";
 option (gogoproto.sizer_all) = true;
 option (gogoproto.marshaler_all) = true;
 option (gogoproto.unmarshaler_all) = true;
@@ -93,42 +93,42 @@ service Server {
   // Create a session based on credentials
   rpc Authenticate(AuthenticateInput) returns (AuthenticateOutput) {
     option (google.api.http) = {
-      post: "/authenticate"
+      post: "/api/authenticate"
       body: "*"
     };
   };
 
   // Verify the service is up and running
   rpc Ping(Void) returns (Void) {
-    option (google.api.http) = {get: "/ping"};
+    option (google.api.http) = {get: "/api/ping"};
   };
 
   // Get current user's session
   rpc UserSession(Void) returns (pathwar.entity.UserSession) {
-    option (google.api.http) = {get: "/user-session"};
+    option (google.api.http) = {get: "/api/user-session"};
   };
 
   // List tournaments
   rpc Tournaments(Void) returns (pathwar.entity.TournamentList) {
-    option (google.api.http) = {get: "/tournaments"};
+    option (google.api.http) = {get: "/api/tournaments"};
     // FIXME: pagination & filters
   };
 
   // List users
   rpc Users(Void) returns (pathwar.entity.UserList) {
-    option (google.api.http) = {get: "/users"};
+    option (google.api.http) = {get: "/api/users"};
     // FIXME: pagination & filters
   };
 
   // List levels
   rpc Levels(Void) returns (pathwar.entity.LevelList) {
-    option (google.api.http) = {get: "/levels"};
+    option (google.api.http) = {get: "/api/levels"};
     // FIXME: pagination & filters
   };
 
   // List teams
   rpc Teams(Void) returns (pathwar.entity.TeamList) {
-    option (google.api.http) = {get: "/teams"};
+    option (google.api.http) = {get: "/api/teams"};
     // FIXME: pagination & filters
   };
 
@@ -137,11 +137,11 @@ service Server {
   //
 
   rpc GenerateFakeData(Void) returns (Void) {
-    option (google.api.http) = {post: "/dev/generate-fake-data"};
+    option (google.api.http) = {post: "/api/dev/generate-fake-data"};
   };
 
   rpc Dump(Void) returns (pathwar.entity.Dump) {
-    option (google.api.http) = {post: "/dev/sql-dump"};
+    option (google.api.http) = {post: "/api/dev/sql-dump"};
   };
 }
 
