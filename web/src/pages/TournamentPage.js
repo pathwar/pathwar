@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Page, Grid } from "tabler-react";
 
-import SiteWrapper from "../SiteWrapper";
-import LevelsCardPreview from "../levels/LevelCardPreview";
-import ValidationCouponStamp from "../coupon/ValidateCouponStampCard";
-import { fetchLevels as fetchLevelsAction } from "../../actions/tournaments";
+import SiteWrapper from "../components/SiteWrapper";
+import LevelsCardPreview from "../components/levels/LevelCardPreview";
+import ValidationCouponStamp from "../components/coupon/ValidateCouponStampCard";
+import { fetchLevels as fetchLevelsAction } from "../actions/tournaments";
 
 class TournamentPage extends React.Component {
 

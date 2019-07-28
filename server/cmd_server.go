@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	"pathwar.pw/pkg/cli"
-	"pathwar.pw/sql"
+	"pathwar.land/pkg/cli"
+	"pathwar.land/sql"
 )
 
 type serverOptions struct {

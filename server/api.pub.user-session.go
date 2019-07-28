@@ -5,7 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"pathwar.pw/entity"
+	"pathwar.land/entity"
 )
 
 func (s *svc) UserSession(ctx context.Context, _ *Void) (*entity.UserSession, error) {

@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	"pathwar.pw/entity"
+	"pathwar.land/entity"
 )
 
 func (s *svc) Users(ctx context.Context, _ *Void) (*entity.UserList, error) {

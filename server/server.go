@@ -1,4 +1,4 @@
-package server // import "pathwar.pw/server"
+package server // import "pathwar.land/server"
 
 import (
 	"context"
@@ -22,7 +22,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"pathwar.pw/sql"
+	"pathwar.land/sql"
 )
 
 var _ = gogoproto.IsStdTime

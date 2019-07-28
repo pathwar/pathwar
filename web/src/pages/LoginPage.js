@@ -1,13 +1,13 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
 import Cookies from "js-cookie";
+import { navigate } from "gatsby"
 
 import { LoginPage as TablerLoginPage } from "tabler-react";
-import { performLoginAction, pingUserAction } from "../../actions/userSession";
-import { USER_SESSION_TOKEN_NAME } from "../../constants/userSession";
+import { performLoginAction, pingUserAction } from "../actions/userSession";
+import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
 
 class LoginPage extends React.PureComponent {
 
@@ -27,10 +27,11 @@ class LoginPage extends React.PureComponent {
     const self = this;
     const { performLoginAction, userSession, location } = this.props;
     const { redirectToReferrer } = this.state;
+    // eslint-disable-next-line
     const { from } = location.state || { from: { pathname: '/' } }
 
     if (redirectToReferrer === true || userSession.isAuthenticated) {
-      return ( <Redirect to={from} /> )
+      navigate("/app/dashboard")
     }
 
     return (

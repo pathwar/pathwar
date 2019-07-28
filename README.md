@@ -6,7 +6,7 @@ Pathwar monorepo
 * SwaggerHub: https://pathwar.docs.apiary.io/
 * Protobuf file: https://github.com/pathwar/pathwar/blob/master/server/server.proto
 * Available both using gRPC and HTTP (via https://github.com/grpc-ecosystem/grpc-gateway)
-* GoDoc: [![GoDoc](https://godoc.org/pathwar.pw?status.svg)](https://godoc.org/pathwar.pw)
+* GoDoc: [![GoDoc](https://godoc.org/pathwar.land?status.svg)](https://godoc.org/pathwar.land)
 
 ## Database schemas (expected)
 

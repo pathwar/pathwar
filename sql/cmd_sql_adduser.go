@@ -11,9 +11,9 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 
-	"pathwar.pw/entity"
-	"pathwar.pw/pkg/cli"
-	"pathwar.pw/pkg/randstring"
+	"pathwar.land/entity"
+	"pathwar.land/pkg/cli"
+	"pathwar.land/pkg/randstring"
 )
 
 type adduserOptions struct {

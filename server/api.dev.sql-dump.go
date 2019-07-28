@@ -3,8 +3,8 @@ package server
 import (
 	"context"
 
-	"pathwar.pw/entity"
-	"pathwar.pw/sql"
+	"pathwar.land/entity"
+	"pathwar.land/sql"
 )
 
 func (s *svc) Dump(ctx context.Context, _ *Void) (*entity.Dump, error) {

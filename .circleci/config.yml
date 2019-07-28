@@ -30,7 +30,7 @@ jobs:
   test:
     docker:
       - image: circleci/golang:1.12.4
-    working_directory: /go/src/pathwar.pw
+    working_directory: /go/src/pathwar.land
     environment:
       GOPATH: /go
       GO111MODULE: "on"
