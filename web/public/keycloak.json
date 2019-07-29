@@ -1,0 +1,8 @@
+{
+    "realm": "Pathwar",
+    "auth-server-url": "https://sso.pathwar.land/auth",
+    "ssl-required": "external",
+    "resource": "platform-front",
+    "public-client": true,
+    "confidential-port": 0
+  }

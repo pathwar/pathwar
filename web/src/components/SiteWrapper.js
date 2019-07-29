@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   Site
 } from "tabler-react";
-// import { Link } from "gatsby";
+import { Link } from "@reach/router";
 
 import logo from "../images/pathwar-logo.png";
 
@@ -13,19 +13,19 @@ const navBarItems = [
     value: "Dashboard",
     to: "/app/dashboard",
     icon: "clipboard",
-    // LinkComponent: Link
+    LinkComponent: Link
   },
   {
     value: "Statistics",
     to: "/app/statistics",
     icon: "bar-chart-2",
-    // LinkComponent: Link
+    LinkComponent: Link
   },
   {
     value: "Tournament",
     to: "/app/tournament",
     icon: "flag",
-    // LinkComponent: Link
+    LinkComponent: Link
   }
 ];
 

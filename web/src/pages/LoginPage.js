@@ -25,10 +25,8 @@ class LoginPage extends React.PureComponent {
   
   render() {
     const self = this;
-    const { performLoginAction, userSession, location } = this.props;
+    const { performLoginAction, userSession } = this.props;
     const { redirectToReferrer } = this.state;
-    // eslint-disable-next-line
-    const { from } = location.state || { from: { pathname: '/' } }
 
     if (redirectToReferrer === true || userSession.isAuthenticated) {
       navigate("/app/dashboard")
@@ -80,7 +78,6 @@ class LoginPage extends React.PureComponent {
 
 LoginPage.propTypes = {
   userSession: PropTypes.object,
-  location: PropTypes.object,
   performLoginAction: PropTypes.func,
   pingUserAction: PropTypes.func
 };
