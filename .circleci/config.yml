@@ -1,71 +1,74 @@
-version: 2
+version: 2.1
 
-refs:
-  install_retry: &install_retry
-    run:
-      name: install retry
-      command: |
-        command -v wget &>/dev/null && wget -O /tmp/retry "https://github.com/moul/retry/releases/download/v0.5.0/retry_$(uname -s)_$(uname -m)" || true
-        if [ ! -f /tmp/retry ]; then command -v curl &>/dev/null && curl -L -o /tmp/retry "https://github.com/moul/retry/releases/download/v0.5.0/retry_$(uname -s)_$(uname -m)"; fi
-        chmod +x /tmp/retry
-        /tmp/retry --version
+orbs:
+  moul: moul/build@1.5.0  # https://github.com/moul/build/blob/master/.circleci/config.yml
+  dl: moul/dl@1.7.0       # https://github.com/moul/dl/blob/master/.circleci/config.yml
+  retry: moul/retry@0.6.0 # https://github.com/moul/retry/blob/master/.circleci/config.yml
+  tools: gotest/tools@0.0.9
 
-jobs:
-  # lint:             # various linting
-  # generate          # this job generates files ('make generate') and raise an error if the generated files are not the same as before
-  # docker.images:    # this job builds docker images
-
-  # build the project from within Docker, based on the Dockerfile
-  docker.build:
-    docker:
-      - image: docker:18.06.3-ce-git
-    steps:
-      - checkout
-      - setup_remote_docker
-      - *install_retry
-      - run: /tmp/retry -m 3 docker build -t pathwar/pathwar .
-      # FIXME: save cache
-
-  # build and unit test the project
-  test:
+executors:
+  golang:
     docker:
       - image: circleci/golang:1.12.4
     working_directory: /go/src/pathwar.land
     environment:
       GOPATH: /go
       GO111MODULE: "on"
+
+  docker:
+    docker:
+      - image: docker:18.06.3-ce-git
+
+  compose:
+    docker:
+      - image: docker/compose:1.24.0
+
+jobs:
+  # build the project from within Docker, based on the Dockerfile
+  docker_build:
+    executor: docker
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - retry/install
+      - run: retry -m 3 docker build -t pathwar/pathwar .
+      # FIXME: save cache
+
+  # build and unit test the project
+  test:
+    executor: golang
     steps:
       - checkout
       # FIXME: restore cache
       - run: go clean -modcache
-      - *install_retry
-      - run: /tmp/retry -m 3 go get
-      - run: /tmp/retry -m 3 make _ci_prepare
-      - run: /tmp/retry -m 3 make test
+      - retry/install
+      - tools/mod-download
+      - tools/mod-tidy-check
+      - run: retry -m 3 make _ci_prepare
+      - run: retry -m 3 make test
       # FIXME: setup coverage
-      - run: /tmp/retry -m 3 curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s v1.12.2
-      - run: PATH=$PATH:$(pwd)/bin /tmp/retry -m 3 make lint
+      - moul/install_golangci-lint
+      - run: . ~/.profile && retry -m 3 make lint
       # FIXME: save cache
       # FIXME: store_test_results
 
-  docker.integration:
-    docker:
-      - image: docker/compose:1.24.0
+  docker_integration:
+    executor: compose
     steps:
       - checkout
-      - *install_retry
-      - run: /tmp/retry -m 3 apk --no-cache add curl openssl make bash
+      - retry/install
+      - run: retry -m 3 apk --no-cache add curl openssl make bash
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: /tmp/retry -m 3 make integration.build
-      - run: /tmp/retry -m 3 make integration.run
-      - run: /tmp/retry -m 3 make integration.run # yes, again
+      - run: retry -m 3 make integration.build
+      - run: retry -m 3 make integration.run
+      - run: retry -m 3 make integration.run # yes, again :)
       - run: docker-compose logs
 
 workflows:
-  version: 2
-  commit:
+  main:
     jobs:
       - test
-      - docker.build
-      - docker.integration
+      - docker_build
+      - docker_integration
