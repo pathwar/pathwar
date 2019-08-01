@@ -1,5 +1,5 @@
 {
-    "realm": "Pathwar",
+    "realm": "Pathwar-Dev",
     "auth-server-url": "https://sso.pathwar.land/auth",
     "ssl-required": "external",
     "resource": "platform-front",
