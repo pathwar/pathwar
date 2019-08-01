@@ -622,3 +622,16 @@ message Dump {
   repeated UserSession user_sessions = 17;
   repeated WhoswhoAttempt whoswho_attempts = 19;
 }
+
+message Status {
+  bool everything_is_ok = 1 [(gogoproto.customname) = "EverythingIsOK"];
+  // FIXME: add more tests
+}
+
+message Info {
+  string version = 1;  // git tag
+  int32 uptime = 2;    // seconds
+  string commit = 3;   // git sha
+  string built_at = 4; // date
+  string built_by = 5; // builder
+}

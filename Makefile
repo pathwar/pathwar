@@ -46,7 +46,8 @@ run: $(BIN) serverdb.up
 .PHONY: install
 install: $(BIN)
 $(BIN): .proto.generated $(PWCTL_OUT_FILES) $(OUR_SOURCES)
-	go install -v
+	go install -v -ldflags "-s -w -X pathwar.land/version.Version=`git describe --tags --abbrev` -X pathwar.land/version.Commit=`git rev-parse HEAD` -X pathwar.land/version.Date=`date +%s` -X pathwar.land/version.BuiltBy=makefile"
+
 
 .PHONY: serverdb.up
 serverdb.up:

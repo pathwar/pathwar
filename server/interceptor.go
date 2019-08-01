@@ -21,7 +21,7 @@ var userSessionCtx ctxKey = "user-session"
 func (s *svc) AuthFuncOverride(ctx context.Context, fullMethodName string) (context.Context, error) {
 	switch fullMethodName {
 	// do not check for token for the following services
-	case "/pathwar.server.Server/Authenticate", "/pathwar.server.Server/Ping":
+	case "/pathwar.server.Server/Authenticate", "/pathwar.server.Server/Ping", "/pathwar.server.Server/Info", "/pathwar.server.Server/Status":
 		return ctx, nil
 	}
 
