@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Page, Grid } from "tabler-react";
 
-import SiteWrapper from "../components/SiteWrapper";
 import LevelsCardPreview from "../components/levels/LevelCardPreview";
 import ValidationCouponStamp from "../components/coupon/ValidateCouponStampCard";
 import { fetchLevels as fetchLevelsAction } from "../actions/tournaments";
@@ -20,8 +19,7 @@ class TournamentPage extends React.Component {
         const name = activeTournament ? activeTournament.name : undefined;
 
         return (
-            <SiteWrapper>
-              <Page.Content title="Tournament" subTitle={name}>
+            <Page.Content title="Tournament" subTitle={name}>
                 <Grid.Row>
                 </Grid.Row>
                 <Grid.Row>
@@ -35,7 +33,6 @@ class TournamentPage extends React.Component {
                   </Grid.Col>
                 </Grid.Row>
               </Page.Content>
-            </SiteWrapper>
           );
     }
 }

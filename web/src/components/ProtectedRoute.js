@@ -1,20 +1,35 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { navigate } from "gatsby"
+import Keycloak from 'keycloak-js';
+import { Dimmer } from "tabler-react";
+import { setKeycloakSession } from '../actions/userSession';
 
 class ProtectedRoute extends React.PureComponent {
 
-  render() {
-    const { component: Component, location, userSession, ...rest } = this.props;
-    
-      if (!userSession.isAuthenticated  && location.pathname !== `/app/login`) {
-        navigate(`/app/login`)
-        return null
-      }
+    async componentDidMount() {
+        const { setKeycloakSession } = this.props;
+        const keycloak = await Keycloak("/keycloak.json");
 
-    return <Component {...rest} />
-  }
+        keycloak.init({onLoad: 'login-required'}).success(authenticated => {
+          setKeycloakSession(keycloak, authenticated);
+        })
+
+    }
+
+    render() {
+        const { component: Component, location, userSession, ...rest } = this.props;
+
+        if (userSession.activeSession) {
+          if (userSession.isAuthenticated) {
+            return <Component {...rest} />
+          } else return (<h3>Auth error, please try again!</h3>)
+        }
+      
+        return (
+          <Dimmer active loader style={{ marginTop: "50px" }} />
+        );
+    }
 }
 
 ProtectedRoute.propTypes = {
@@ -22,10 +37,13 @@ ProtectedRoute.propTypes = {
 }
 
 const mapStateToProps = state => ({
-    userSession: state.userSession
+  userSession: state.userSession
 });
+
   
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setKeycloakSession: (keycloakInstance, authenticated) => setKeycloakSession(keycloakInstance, authenticated)
+};
   
 export default connect(
   mapStateToProps,

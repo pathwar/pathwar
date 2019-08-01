@@ -31,8 +31,8 @@ const TeamsRows = ({teamsList, activeTeam}) => {
 class UserTeamsList extends React.PureComponent {
 
     componentDidMount() {
-        const { fetUserTeamsListAction, activeUser } = this.props;
-        const userID = activeUser.metadata.id || "fakeID";
+        const { fetUserTeamsListAction, activeSession } = this.props;
+        const userID = activeSession.sessionId;
         fetUserTeamsListAction(userID);
     }
     
@@ -66,7 +66,7 @@ class UserTeamsList extends React.PureComponent {
 }
 
 UserTeamsList.propTypes = {
-    activeUser: PropTypes.object,
+    acactiveSessiontiveUser: PropTypes.object,
     activeTeam: PropTypes.object,
     userTeamsList: PropTypes.array,
     fetUserTeamsListAction: PropTypes.func
@@ -75,7 +75,7 @@ UserTeamsList.propTypes = {
 const mapStateToProps = state => ({
     userTeamsList: state.teams.userTeamsList,
     activeTeam: state.teams.activeTeam,
-    activeUser: state.userSession.activeUser
+    activeSession: state.userSession.activeSession
 });
 
 const mapDispatchToProps = {

@@ -7,7 +7,6 @@ import {
   Grid
 } from "tabler-react";
 
-import SiteWrapper from "../components/SiteWrapper";
 import AllTournamentsList from "../components/tournament/AllTournamentsList";
 import AllTeamTournamentsList from "../components/tournament/AllTeamTournamentsList";
 import { 
@@ -27,8 +26,7 @@ class AllTournamentsPage extends React.PureComponent {
           activeTeam,
         } = this.props;
         return (
-            <SiteWrapper>
-              <Page.Content title="All Tournaments">
+            <Page.Content title="All Tournaments">
                 <Grid.Row cards={true}>
                   <Grid.Col xs={12} sm={12} lg={6}>
                     {activeTeam &&
@@ -40,7 +38,6 @@ class AllTournamentsPage extends React.PureComponent {
                   </Grid.Col>
                 </Grid.Row>
               </Page.Content>
-            </SiteWrapper>
           );
     }
 }
