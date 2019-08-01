@@ -60,7 +60,7 @@ func startHTTPServer(ctx context.Context, opts *serverOptions) error {
 	r.Use(middleware.RealIP)
 	r.Use(middleware.RequestID)
 	// gateway mux
-	r.Mount("/api", gwmux)
+	r.Mount(opts.APIPrefix, gwmux)
 	// static files
 	if opts.WebDir != "" {
 		fs := http.StripPrefix("/", http.FileServer(http.Dir(opts.WebDir)))
