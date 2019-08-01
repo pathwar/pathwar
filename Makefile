@@ -9,22 +9,22 @@ rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subs
 ##
 
 GOPATH ?= $(HOME)/go
-BIN = $(GOPATH)/bin/pathwar.land
-SOURCES = $(call rwildcard, ./, *.go)
-PWCTL_SOURCES = $(call rwildcard,pwctl//,*.go)
-OUR_SOURCES = $(filter-out $(call rwildcard,vendor//,*.go),$(SOURCES))
-PROTOS = $(call rwildcard, ./, *.proto)
-OUR_PROTOS = $(filter-out $(call rwildcard,vendor//,*.proto),$(PROTOS))
-GENERATED_PB_FILES = \
+BIN := $(GOPATH)/bin/pathwar.land
+SOURCES := $(call rwildcard, ./, *.go)
+PWCTL_SOURCES := $(call rwildcard,pwctl//,*.go)
+OUR_SOURCES := $(filter-out $(call rwildcard,vendor//,*.go),$(SOURCES))
+PROTOS := $(call rwildcard, ./, *.proto)
+OUR_PROTOS := $(filter-out $(call rwildcard,vendor//,*.proto),$(PROTOS))
+GENERATED_PB_FILES := \
 	$(patsubst %.proto,%.pb.go,$(PROTOS)) \
 	$(call rwildcard ./, *.gen.go)
-PWCTL_OUT_FILES = \
+PWCTL_OUT_FILES := \
 	./pwctl/out/pwctl-linux-amd64
-GENERATED_FILES = \
+GENERATED_FILES := \
 	$(GENERATED_PB_FILES) \
 	$(PWCTL_OUT_FILES) \
 	swagger.yaml
-PROTOC_OPTS = -I/protobuf:vendor/github.com/grpc-ecosystem/grpc-gateway:vendor:.
+PROTOC_OPTS := -I/protobuf:vendor/github.com/grpc-ecosystem/grpc-gateway:vendor:.
 RUN_OPTS ?=
 
 ##
@@ -102,6 +102,7 @@ generate: .proto.generated
 	  pathwar/protoc:v1 \
 	  -xec "make _proto_generate"
 	touch $@
+	rm -rf vendor
 
 .PHONY: _generate
 _proto_generate: $(GENERATED_PB_FILES) swagger.yaml
