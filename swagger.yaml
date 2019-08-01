@@ -680,6 +680,26 @@ definitions:
       target_team_id:
         type: string
     type: object
+  pathwarentityInfo:
+    properties:
+      built_at:
+        type: string
+      built_by:
+        type: string
+      commit:
+        type: string
+      uptime:
+        format: int32
+        type: integer
+      version:
+        type: string
+    type: object
+  pathwarentityStatus:
+    properties:
+      everything_is_ok:
+        format: boolean
+        type: boolean
+    type: object
   serverAuthenticateInput:
     description: AuthenticateInput contains everything (credentials) to authenticate
       a user and create a new session.
@@ -775,6 +795,24 @@ paths:
             format: string
       tags:
       - Server
+  /api/info:
+    get:
+      operationId: Info
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/pathwarentityInfo'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+      tags:
+      - Server
   /api/levels:
     get:
       operationId: Levels
@@ -811,6 +849,24 @@ paths:
           schema:
             format: string
       summary: Verify the service is up and running
+      tags:
+      - Server
+  /api/status:
+    get:
+      operationId: Status
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/pathwarentityStatus'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
       tags:
       - Server
   /api/teams:

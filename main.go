@@ -17,6 +17,7 @@ import (
 	"pathwar.land/pkg/cli"
 	"pathwar.land/server"
 	"pathwar.land/sql"
+	"pathwar.land/version"
 )
 
 func main() {
@@ -36,6 +37,8 @@ func newRootCommand() *cobra.Command {
 	}
 	cmd.PersistentFlags().BoolP("help", "h", false, "print usage")
 	//cmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose mode")
+
+	cmd.Version = fmt.Sprintf("%s (commit=%q, date=%q, built-by=%q)", version.Version, version.Commit, version.Date, version.BuiltBy)
 
 	// Add commands
 	commands := cli.Commands{}

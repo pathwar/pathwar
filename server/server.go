@@ -141,7 +141,8 @@ func newSvc(opts *serverOptions) (*svc, error) {
 		}
 	}
 	return &svc{
-		jwtKey: jwtKey,
-		db:     db,
+		jwtKey:    jwtKey,
+		db:        db,
+		startedAt: time.Now(),
 	}, nil
 }

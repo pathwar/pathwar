@@ -136,6 +136,14 @@ service Server {
   // dev stuff (should be disabled in production)
   //
 
+  rpc Status(Void) returns (pathwar.entity.Status) {
+    option (google.api.http) = {get: "/api/status"};
+  }
+
+  rpc Info(Void) returns (pathwar.entity.Info) {
+    option (google.api.http) = {get: "/api/info"};
+  };
+
   rpc GenerateFakeData(Void) returns (Void) {
     option (google.api.http) = {post: "/api/dev/generate-fake-data"};
   };
