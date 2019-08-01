@@ -397,27 +397,27 @@ func RegisterServerHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 }
 
 var (
-	pattern_Server_Authenticate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "authenticate"}, ""))
+	pattern_Server_Authenticate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"authenticate"}, ""))
 
-	pattern_Server_Ping_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "ping"}, ""))
+	pattern_Server_Ping_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"ping"}, ""))
 
-	pattern_Server_UserSession_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "user-session"}, ""))
+	pattern_Server_UserSession_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"user-session"}, ""))
 
-	pattern_Server_Tournaments_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "tournaments"}, ""))
+	pattern_Server_Tournaments_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"tournaments"}, ""))
 
-	pattern_Server_Users_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "users"}, ""))
+	pattern_Server_Users_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"users"}, ""))
 
-	pattern_Server_Levels_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "levels"}, ""))
+	pattern_Server_Levels_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"levels"}, ""))
 
-	pattern_Server_Teams_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "teams"}, ""))
+	pattern_Server_Teams_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"teams"}, ""))
 
-	pattern_Server_Status_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "status"}, ""))
+	pattern_Server_Status_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"status"}, ""))
 
-	pattern_Server_Info_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "info"}, ""))
+	pattern_Server_Info_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"info"}, ""))
 
-	pattern_Server_GenerateFakeData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "dev", "generate-fake-data"}, ""))
+	pattern_Server_GenerateFakeData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"dev", "generate-fake-data"}, ""))
 
-	pattern_Server_Dump_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "dev", "sql-dump"}, ""))
+	pattern_Server_Dump_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"dev", "sql-dump"}, ""))
 )
 
 var (

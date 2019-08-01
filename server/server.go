@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"net"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/go-chi/chi"
@@ -60,7 +61,7 @@ func startHTTPServer(ctx context.Context, opts *serverOptions) error {
 	r.Use(middleware.RealIP)
 	r.Use(middleware.RequestID)
 	// gateway mux
-	r.Mount(opts.APIPrefix, gwmux)
+	r.Mount(opts.APIPrefix, http.StripPrefix(strings.TrimRight(opts.APIPrefix, "/"), gwmux))
 	// static files
 	if opts.WebDir != "" {
 		fs := http.StripPrefix("/", http.FileServer(http.Dir(opts.WebDir)))
