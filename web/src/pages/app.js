@@ -2,7 +2,6 @@ import React from "react"
 import { Router, Location } from "@reach/router"
 import ProtectedRoute from "../components/ProtectedRoute"
 import DashboardPage from "./DashboardPage"
-import LoginPage from "./LoginPage"
 import LogoutPage from "./LogoutPage";
 import TournamentPage from "./TournamentPage";
 import AllTournamentsPage from "./AllTournamentsPage";
@@ -18,7 +17,6 @@ const App = () => (
         {({ location }) => (
           <Router location={location}>
             <ProtectedRoute path="/app/dashboard" component={DashboardPage} />
-            <LoginPage path="/app/login" />
             <ProtectedRoute path="/app/tournament" component={TournamentPage} />
             <ProtectedRoute path="/app/all-tournaments" component={AllTournamentsPage} />
             <LogoutPage path="/app/logout" component={LogoutPage} />

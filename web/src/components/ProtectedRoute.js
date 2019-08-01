@@ -1,21 +1,18 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { navigate } from "gatsby"
 import { connect } from "react-redux";
 import Keycloak from 'keycloak-js';
+import { Dimmer } from "tabler-react";
+import { setKeycloakSession } from '../actions/userSession'
 
 class ProtectedRoute extends React.PureComponent {
 
-    constructor(props) {
-        super(props);
-        this.state = { keycloak: null, authenticated: false };
-    }
+    async componentDidMount() {
+        const { setKeycloakSession } = this.props;
+        const keycloak = await Keycloak("/keycloak.json");
 
-    componentDidMount() {
-        const keycloak = Keycloak("/keycloak.json");
-
-        keycloak.init({onLoad: 'login-required'}).then(authenticated => {
-          this.setState({ keycloak: keycloak, authenticated: authenticated })
+        keycloak.init({onLoad: 'login-required'}).success(authenticated => {
+          setKeycloakSession(keycloak, authenticated);
         })
 
     }
@@ -23,19 +20,14 @@ class ProtectedRoute extends React.PureComponent {
     render() {
         const { component: Component, location, userSession, ...rest } = this.props;
 
-        if (this.state.keycloak) {
-          if (this.state.authenticated) {
+        if (userSession.activeSession) {
+          if (userSession.isAuthenticated) {
             return <Component {...rest} />
-          } else return (<h2>Auth error, please try again!</h2>)
-
-        // if (!userSession.isAuthenticated  && location.pathname !== `/app/login`) {
-        //   navigate(`/app/login`)
-        //   return null
+          } else return (<h3>Auth error, please try again!</h3>)
         }
-        
+      
         return (
-          //  <Component {...rest} />
-            <h2>Checking auth...</h2>
+          <Dimmer active loader style={{ marginTop: "50px" }} />
         );
     }
 }
@@ -49,7 +41,9 @@ const mapStateToProps = state => ({
 });
 
   
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setKeycloakSession: (keycloakInstance, authenticated) => setKeycloakSession(keycloakInstance, authenticated)
+};
   
 export default connect(
   mapStateToProps,

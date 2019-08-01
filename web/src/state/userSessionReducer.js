@@ -1,5 +1,4 @@
 import { 
-  PERFORM_LOGIN, 
   LOGIN_FAILED,
   SET_USER_SESSION,
   PING_USER_SUCCESS,
@@ -10,7 +9,7 @@ const initialState = {
   session: {
     error: null,
     fetching: false,
-    activeUser: null,
+    activeSession: null,
     isAuthenticated: false
   }
 };
@@ -18,18 +17,12 @@ const initialState = {
 export default function userSessionReducer(state = initialState.session, action) {
 
   switch (action.type) {
-    case PERFORM_LOGIN:
-      return {
-        ...state,
-        error: null,
-        fetching: true
-      };
 
     case LOGIN_FAILED:
       return {
         ...state,
         fetching: false,
-        activeUser: null,
+        activeSession: null,
         isAuthenticated: false,
         error: action.payload.error
     } ;
@@ -38,15 +31,15 @@ export default function userSessionReducer(state = initialState.session, action)
       return {
         ...state,
         fetching: false,
-        activeUser: action.payload.activeUser,
-        isAuthenticated: true
+        activeSession: action.payload.activeSession,
+        isAuthenticated: action.payload.authenticated
       };
 
     case PING_USER_SUCCESS:
       return {
         ...state,
-        isAuthenticated: action.payload.isAuthenticated,
-        activeUser: action.payload.activeUser
+        isAuthenticated: action.payload.authenticated,
+        activeSession: action.payload.activeSession
       }
 
     case PING_USER_FAILED:

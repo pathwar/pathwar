@@ -2,9 +2,12 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { connect } from 'react-redux';
 import {
-  Site
+  Site,
+  Nav,
+  Button
 } from "tabler-react";
 import { Link } from "@reach/router";
+import { navigate } from "gatsby";
 
 import logo from "../images/pathwar-logo.png";
 
@@ -29,19 +32,13 @@ const navBarItems = [
   }
 ];
 
-const accountDropdownProps = ({activeUser}) => {
-    const username = activeUser ? activeUser.username : "Log In?";
+const accountDropdownProps = ({activeSession}) => {
+    const username = activeSession ? activeSession.tokenParsed.preferred_username : "Log In?"
+    const avatar = activeSession ? logo : undefined;
 
     return {
-        avatarURL: logo,
+        avatarURL: avatar,
         name: `${username}`,
-        options: [
-            { icon: "user", value: "Profile" },
-            { icon: "settings", value: "Settings" },
-            { isDivider: true },
-            { icon: "help-circle", value: "Need help?" },
-            { icon: "log-out", value: "Sign out", to: "/logout" },
-        ],
     }
 };
 
@@ -55,7 +52,19 @@ class SiteWrapper extends React.Component {
           href: "/",
           alt: "Pathwar Project",
           imageURL: logo,
-          accountDropdown: accountDropdownProps(userSession)
+          accountDropdown: accountDropdownProps(userSession),
+          navItems: (
+            <Nav.Item type="div" className="d-none d-md-flex">
+              {userSession.activeSession && (
+                <Button
+                  link
+                  onClick={() => navigate("/app/logout")}
+                >
+                Log out
+              </Button>
+              )}
+            </Nav.Item>
+          )
         }}
         navProps={{ itemsObjects: navBarItems }}
       >
