@@ -5,6 +5,8 @@ orbs:
   dl: moul/dl@1.7.0       # https://github.com/moul/dl/blob/master/.circleci/config.yml
   retry: moul/retry@0.6.0 # https://github.com/moul/retry/blob/master/.circleci/config.yml
   tools: gotest/tools@0.0.9
+  docker: circleci/docker@0.5.13
+  codecov: codecov/codecov@1.0.5
 
 executors:
   golang:
@@ -36,11 +38,10 @@ jobs:
       # FIXME: save cache
 
   # build and unit test the project
-  test:
+  go_test:
     executor: golang
     steps:
       - checkout
-      # FIXME: restore cache
       - run: go clean -modcache
       - retry/install
       - tools/mod-download
@@ -50,7 +51,9 @@ jobs:
       # FIXME: setup coverage
       - moul/install_golangci-lint
       - run: . ~/.profile && retry -m 3 make lint
-      # FIXME: save cache
+      - codecov/upload:
+          file: coverage.txt
+          flags: go_test
       # FIXME: store_test_results
 
   docker_integration:
@@ -69,6 +72,6 @@ jobs:
 workflows:
   main:
     jobs:
-      - test
+      - go_test
       - docker_build
       - docker_integration
