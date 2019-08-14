@@ -48,9 +48,9 @@ func (cmd *claimsCommand) ParseFlags(flags *pflag.FlagSet) {
 
 func runClaims(opts *claimsOptions) error {
 	// FIXME: add an option to automatically fetch the public key from
-	// https://sso.pathwar.land/auth/realms/Pathwar-Dev/protocol/openid-connect/certs
+	// https://id.pathwar.land/auth/realms/Pathwar-Dev/protocol/openid-connect/certs
 	// or
-	// https://sso.pathwar.land/auth/realms/Pathwar-Dev
+	// https://id.pathwar.land/auth/realms/Pathwar-Dev
 	tokenString := opts.client.Token
 	claims := jwt.MapClaims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
