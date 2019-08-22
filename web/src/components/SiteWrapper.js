@@ -33,12 +33,21 @@ const navBarItems = [
 ];
 
 const accountDropdownProps = ({activeSession}) => {
-    const username = activeSession ? activeSession.tokenParsed.preferred_username : "Log In?"
+    const username = activeSession ? activeSession.tokenParsed.preferred_username : "Account"
     const avatar = activeSession ? logo : undefined;
-
+    const description = activeSession ? "Team" : "Log in?";
+    const options = [];
+    if (activeSession) { options.push("profile"); }
+    if (activeSession) { options.push("divider"); }
+    options.push("help");
+    if (!activeSession) { options.push({icon: "settings", value: "Log in", to: "/app/login"}); }
+    if (activeSession) { options.push({icon: "settings", value: "Settings", to: activeSession.tokenParsed.iss+"/account"}); }
+    if (activeSession) { options.push({icon: "settings", value: "Log out", to: "/app/logout"}); }
     return {
         avatarURL: avatar,
         name: `${username}`,
+        description: description,
+        options: options,
     }
 };
 
