@@ -17,6 +17,7 @@ func Commands() cli.Commands {
 		"sql":         &sqlCommand{},
 		"sql dump":    &dumpCommand{},
 		"sql adduser": &adduserCommand{},
+		"sql info":    &infoCommand{},
 	}
 }
 
@@ -38,6 +39,7 @@ func (cmd *sqlCommand) CobraCommand(commands cli.Commands) *cobra.Command {
 		Use: "sql",
 	}
 	command.AddCommand(commands["sql dump"].CobraCommand(commands))
+	command.AddCommand(commands["sql info"].CobraCommand(commands))
 	command.AddCommand(commands["sql adduser"].CobraCommand(commands))
 	return command
 }
