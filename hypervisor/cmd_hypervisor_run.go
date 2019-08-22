@@ -31,12 +31,13 @@ import (
 )
 
 type runOptions struct {
-	target            string `mapstructure:"target"`
-	webPort           int    `mapstructure:"web-port"`
 	detach            bool   `mapstructure:"detach"`
 	nginxProxy        bool   `mapstructure:"nginx-proxy"`
-	nginxProxyNetwork string `mapstructure:"nginx-proxy-network"`
 	nginxProxyHost    string `mapstructure:"nginx-proxy-host"`
+	nginxProxyNetwork string `mapstructure:"nginx-proxy-network"`
+	override          bool   `mapstructure:"override"`
+	target            string `mapstructure:"target"`
+	webPort           int    `mapstructure:"web-port"`
 	// tcpPort, udpPort
 	// pull
 	// driver=docker
@@ -72,12 +73,13 @@ func (cmd *runCommand) CobraCommand(commands cli.Commands) *cobra.Command {
 }
 func (cmd *runCommand) LoadDefaultOptions() error { return viper.Unmarshal(&cmd.opts) }
 func (cmd *runCommand) ParseFlags(flags *pflag.FlagSet) {
-	flags.StringVarP(&cmd.opts.target, "target", "t", "", "target (image, path, etc)")
-	flags.IntVarP(&cmd.opts.webPort, "web-port", "p", -1, "web listening port (random if unset)")
 	flags.BoolVarP(&cmd.opts.detach, "detach", "d", false, "detach mode")
 	flags.BoolVarP(&cmd.opts.nginxProxy, "nginx-proxy", "", false, "use nginx-proxy instead of exposing web port")
-	flags.StringVarP(&cmd.opts.nginxProxyNetwork, "nginx-proxy-network", "", "service-proxy", "network name for nginx-proxy")
+	flags.BoolVarP(&cmd.opts.override, "override", "", false, "prune existing repo if existing")
+	flags.IntVarP(&cmd.opts.webPort, "web-port", "p", -1, "web listening port (random if unset)")
 	flags.StringVarP(&cmd.opts.nginxProxyHost, "nginx-proxy-host", "", "", "host name for nginx-proxy (use nip.io if empty)")
+	flags.StringVarP(&cmd.opts.nginxProxyNetwork, "nginx-proxy-network", "", "service-proxy", "network name for nginx-proxy")
+	flags.StringVarP(&cmd.opts.target, "target", "t", "", "target (image, path, etc)")
 	if err := viper.BindPFlags(flags); err != nil {
 		zap.L().Warn("failed to bind viper flags", zap.Error(err))
 	}
