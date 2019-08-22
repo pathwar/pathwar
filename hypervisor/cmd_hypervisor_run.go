@@ -44,8 +44,15 @@ func (cmd *runCommand) CobraCommand(commands cli.Commands) *cobra.Command {
 	cc := &cobra.Command{
 		Use: "run",
 		Args: func(_ *cobra.Command, args []string) error {
-			if cmd.opts.target == "" {
+			switch {
+			case len(args) == 0 && cmd.opts.target == "":
 				return errors.New("--target is mandatory")
+			case len(args) == 1 && cmd.opts.target == "":
+				cmd.opts.target = args[0]
+			case len(args) == 0 && cmd.opts.target != "":
+				// everything is okay!
+			default:
+				return errors.New("bad usage")
 			}
 			return nil
 		},
@@ -60,7 +67,7 @@ func (cmd *runCommand) CobraCommand(commands cli.Commands) *cobra.Command {
 func (cmd *runCommand) LoadDefaultOptions() error { return viper.Unmarshal(&cmd.opts) }
 func (cmd *runCommand) ParseFlags(flags *pflag.FlagSet) {
 	flags.StringVarP(&cmd.opts.target, "target", "t", "", "target (image, path, etc)")
-	flags.IntVarP(&cmd.opts.webPort, "web-port", "p", 8080, "web listening port")
+	flags.IntVarP(&cmd.opts.webPort, "web-port", "p", -1, "web listening port (random if unset)")
 	flags.BoolVarP(&cmd.opts.detach, "detach", "d", false, "detach mode")
 	if err := viper.BindPFlags(flags); err != nil {
 		zap.L().Warn("failed to bind viper flags", zap.Error(err))
@@ -96,10 +103,16 @@ func runRun(opts runOptions) error {
 		Cmd:        append(imageInspect.Config.Entrypoint, imageInspect.Config.Cmd...),
 		Labels:     map[string]string{createdByPathwarLabel: "true"},
 	}
+	hostPort := fmt.Sprintf("%d", opts.webPort)
+	if opts.webPort == -1 {
+		hostPort = ""
+	}
 	hostConfig := &container.HostConfig{
 		// Binds: /etc/timezone
 		PortBindings: nat.PortMap{
-			nat.Port("80/tcp"): []nat.PortBinding{{HostIP: "0.0.0.0", HostPort: fmt.Sprintf("%d", opts.webPort)}},
+			nat.Port("80/tcp"): []nat.PortBinding{
+				{HostIP: "0.0.0.0", HostPort: hostPort},
+			},
 		},
 		AutoRemove: true,
 		// RestartPolicy: "no"
