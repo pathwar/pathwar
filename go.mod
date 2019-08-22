@@ -10,7 +10,7 @@ require (
 	github.com/docker/distribution v2.7.1+incompatible // indirect
 	github.com/docker/docker v0.7.3-0.20181024220401-bc4c1c238b55
 	github.com/docker/go-connections v0.4.0
-	github.com/docker/go-units v0.3.3 // indirect
+	github.com/docker/go-units v0.3.3
 	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect
 	github.com/go-chi/chi v4.0.2+incompatible
 	github.com/go-sql-driver/mysql v1.4.1

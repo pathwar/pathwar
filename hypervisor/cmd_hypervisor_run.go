@@ -31,6 +31,7 @@ type runOptions struct {
 	target  string `mapstructure:"target"`
 	webPort int    `mapstructure:"web-port"`
 	detach  bool   `mapstructure:"detach"`
+	// pull
 	// port, other options
 	// driver=docker
 }

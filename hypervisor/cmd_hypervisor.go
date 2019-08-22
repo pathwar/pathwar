@@ -24,6 +24,8 @@ func Commands() cli.Commands {
 		"hypervisor":       &hypervisorCommand{},
 		"hypervisor run":   &runCommand{},
 		"hypervisor prune": &pruneCommand{},
+		"hypervisor ps":    &psCommand{},
+		// daemon
 	}
 }
 
@@ -41,5 +43,7 @@ func (cmd *hypervisorCommand) CobraCommand(commands cli.Commands) *cobra.Command
 	}
 	command.AddCommand(commands["hypervisor run"].CobraCommand(commands))
 	command.AddCommand(commands["hypervisor prune"].CobraCommand(commands))
+	command.AddCommand(commands["hypervisor ps"].CobraCommand(commands))
+	// daemon
 	return command
 }
