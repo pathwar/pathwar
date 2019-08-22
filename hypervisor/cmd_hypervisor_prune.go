@@ -61,14 +61,16 @@ func runPrune(opts pruneOptions) error {
 	if err != nil {
 		return err
 	}
-	log.Printf("%d container(s) stopped", len(containers))
+	log.Printf("%d container(s) to stop", len(containers))
 
 	// stop containers
 	var g errgroup.Group
 	var timeout = 5 * time.Second
 	for _, container := range containers {
+		containerID := container.ID
 		g.Go(func() error {
-			return cli.ContainerStop(ctx, container.ID, &timeout)
+			zap.L().Debug("stopping container", zap.String("container-id", container.ID), zap.Duration("timeout", timeout))
+			return cli.ContainerStop(ctx, containerID, &timeout)
 		})
 	}
 	if err := g.Wait(); err != nil {
@@ -80,8 +82,6 @@ func runPrune(opts pruneOptions) error {
 	if err != nil {
 		return err
 	}
-	if len(report.ContainersDeleted) > 0 {
-		log.Printf("%d container(s) pruned", len(report.ContainersDeleted))
-	}
+	log.Printf("%d container(s) pruned", len(report.ContainersDeleted))
 	return err
 }

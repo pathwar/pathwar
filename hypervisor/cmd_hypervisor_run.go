@@ -8,10 +8,13 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 	"time"
 
+	externalip "github.com/GlenDC/go-external-ip"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/network"
 	"github.com/docker/docker/api/types/strslice"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
@@ -28,11 +31,14 @@ import (
 )
 
 type runOptions struct {
-	target  string `mapstructure:"target"`
-	webPort int    `mapstructure:"web-port"`
-	detach  bool   `mapstructure:"detach"`
+	target            string `mapstructure:"target"`
+	webPort           int    `mapstructure:"web-port"`
+	detach            bool   `mapstructure:"detach"`
+	nginxProxy        bool   `mapstructure:"nginx-proxy"`
+	nginxProxyNetwork string `mapstructure:"nginx-proxy-network"`
+	nginxProxyHost    string `mapstructure:"nginx-proxy-host"`
+	// tcpPort, udpPort
 	// pull
-	// port, other options
 	// driver=docker
 }
 
@@ -44,8 +50,15 @@ func (cmd *runCommand) CobraCommand(commands cli.Commands) *cobra.Command {
 	cc := &cobra.Command{
 		Use: "run",
 		Args: func(_ *cobra.Command, args []string) error {
-			if cmd.opts.target == "" {
+			switch {
+			case len(args) == 0 && cmd.opts.target == "":
 				return errors.New("--target is mandatory")
+			case len(args) == 1 && cmd.opts.target == "":
+				cmd.opts.target = args[0]
+			case len(args) == 0 && cmd.opts.target != "":
+				// everything is okay!
+			default:
+				return errors.New("bad usage")
 			}
 			return nil
 		},
@@ -60,60 +73,107 @@ func (cmd *runCommand) CobraCommand(commands cli.Commands) *cobra.Command {
 func (cmd *runCommand) LoadDefaultOptions() error { return viper.Unmarshal(&cmd.opts) }
 func (cmd *runCommand) ParseFlags(flags *pflag.FlagSet) {
 	flags.StringVarP(&cmd.opts.target, "target", "t", "", "target (image, path, etc)")
-	flags.IntVarP(&cmd.opts.webPort, "web-port", "p", 8080, "web listening port")
+	flags.IntVarP(&cmd.opts.webPort, "web-port", "p", -1, "web listening port (random if unset)")
 	flags.BoolVarP(&cmd.opts.detach, "detach", "d", false, "detach mode")
+	flags.BoolVarP(&cmd.opts.nginxProxy, "nginx-proxy", "", false, "use nginx-proxy instead of exposing web port")
+	flags.StringVarP(&cmd.opts.nginxProxyNetwork, "nginx-proxy-network", "", "service-proxy", "network name for nginx-proxy")
+	flags.StringVarP(&cmd.opts.nginxProxyHost, "nginx-proxy-host", "", "", "host name for nginx-proxy (use nip.io if empty)")
 	if err := viper.BindPFlags(flags); err != nil {
 		zap.L().Warn("failed to bind viper flags", zap.Error(err))
 	}
 }
 
 func runRun(opts runOptions) error {
-	// FIXME: ensure proxy is setup with xip.io as default hostname
+	// FIXME: ensure proxy is setup with nip.io as default hostname
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		return errors.Wrap(err, "failed to create docker client")
 	}
+	zap.L().Debug("connected to Docker daemon",
+		zap.String("host", cli.DaemonHost()),
+		zap.String("version", cli.ClientVersion()),
+	)
 
 	// configure new container
+	zap.L().Debug("inspecting image", zap.String("target", opts.target))
 	imageInspect, _, err := cli.ImageInspectWithRaw(ctx, opts.target)
 	if err != nil {
 		return errors.Wrap(err, "failed to inspect image")
 	}
+	env := []string{"PATHWAR_HYPERVISOR=1"} // FIXME: use version
+	if opts.nginxProxy {
+		if opts.nginxProxyHost == "" {
+			consensus := externalip.DefaultConsensus(nil, nil)
+			ip, err := consensus.ExternalIP()
+			if err != nil {
+				return errors.Wrap(err, "failed to guess external IP, please specify --nginx-proxy-host instead")
+			}
+			opts.nginxProxyHost = fmt.Sprintf(
+				"%s.%s.nip.io",
+				strings.ToLower(randstring.RandString(10)),
+				ip.String(),
+			)
+			zap.L().Info("container is configured to use nginx-proxy",
+				zap.String("host", fmt.Sprintf("http://%s", opts.nginxProxyHost)),
+			)
+		}
+		env = append(env, fmt.Sprintf("VIRTUAL_HOST=%s", opts.nginxProxyHost))
+	}
+	containerWebPort := nat.Port("80/tcp")
+	exposedPorts := nat.PortSet{}
+	exposedPorts[containerWebPort] = struct{}{} // FIXME: autodetect source port or allow override
 	containerConfig := &container.Config{
-		Image:     opts.target,
-		Tty:       true,
-		OpenStdin: true,
-		// StdinOnce: true,
-		// AttachStdin: true,
+		Image:        opts.target,
+		Tty:          true,
+		OpenStdin:    true,
 		AttachStdout: true,
 		AttachStderr: true,
-		ExposedPorts: nat.PortSet{
-			nat.Port("80/tcp"): {},
-		},
+		ExposedPorts: exposedPorts,
+		Env:          env,
+		Entrypoint:   strslice.StrSlice{"/bin/pwctl", "entrypoint"},
+		Cmd:          append(imageInspect.Config.Entrypoint, imageInspect.Config.Cmd...),
+		Labels:       map[string]string{createdByPathwarLabel: "true"},
+		// StdinOnce: true,
+		// AttachStdin: true,
 		// Hostname: ""
-		Entrypoint: strslice.StrSlice{"/bin/pwctl", "entrypoint"},
-		Cmd:        append(imageInspect.Config.Entrypoint, imageInspect.Config.Cmd...),
-		Labels:     map[string]string{createdByPathwarLabel: "true"},
+	}
+	hostPort := fmt.Sprintf("%d", opts.webPort)
+	if opts.webPort == -1 {
+		hostPort = ""
+	}
+	portBindings := nat.PortMap{}
+	if !opts.nginxProxy {
+		portBindings[containerWebPort] = []nat.PortBinding{
+			{HostIP: "0.0.0.0", HostPort: hostPort},
+		}
 	}
 	hostConfig := &container.HostConfig{
-		// Binds: /etc/timezone
-		PortBindings: nat.PortMap{
-			nat.Port("80/tcp"): []nat.PortBinding{{HostIP: "0.0.0.0", HostPort: fmt.Sprintf("%d", opts.webPort)}},
-		},
-		AutoRemove: true,
-		// RestartPolicy: "no"
+		PortBindings: portBindings,
+		Binds:        []string{"/etc/timezone:/etc/timezone:ro"},
+		AutoRemove:   true,
 		// Dns
 		// DnsOptions
 		// DnsSearch
 	}
-	//networkingConfig := &network.NetworkingConfig{SandboxID:"XXX",SandboxKey:"XXX"}
-
+	if opts.detach {
+		hostConfig.RestartPolicy = container.RestartPolicy{Name: "unless-stopped", MaximumRetryCount: 42}
+		hostConfig.AutoRemove = false
+	}
+	networkingConfig := &network.NetworkingConfig{
+		EndpointsConfig: map[string]*network.EndpointSettings{},
+	}
+	if opts.nginxProxy {
+		networkingConfig.EndpointsConfig[opts.nginxProxyNetwork] = &network.EndpointSettings{}
+	}
 	// FIXME: create a limited network config
 	// FIXME: restrict resources (cgroups, etc.)
-	// FIXME: configure env
 
-	cont, err := cli.ContainerCreate(ctx, containerConfig, hostConfig, nil, "")
+	zap.L().Debug("creating container",
+		zap.Any("container-config", containerConfig),
+		zap.Any("host-config", hostConfig),
+	)
+	cont, err := cli.ContainerCreate(ctx, containerConfig, hostConfig, networkingConfig, "")
 	if err != nil {
 		return err
 	}
@@ -166,6 +226,7 @@ func runRun(opts runOptions) error {
 	if err := tw.Close(); err != nil {
 		return err
 	}
+	zap.L().Debug("injecting pwctl into the container", zap.String("container-id", cont.ID))
 	if err := cli.CopyToContainer(
 		ctx,
 		cont.ID,
@@ -179,6 +240,7 @@ func runRun(opts runOptions) error {
 	// start container
 	ctxCancel, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
+	zap.L().Debug("starting container", zap.String("container-id", cont.ID))
 	if err := cli.ContainerStart(ctxCancel, cont.ID, types.ContainerStartOptions{}); err != nil {
 		return err
 	}
@@ -195,6 +257,7 @@ func runRun(opts runOptions) error {
 	}*/
 
 	// read logs
+	zap.L().Debug("connecting to container logs", zap.String("container-id", cont.ID))
 	stream, err := cli.ContainerLogs(ctx, cont.ID, types.ContainerLogsOptions{
 		ShowStdout: true,
 		ShowStderr: true,
@@ -209,10 +272,12 @@ func runRun(opts runOptions) error {
 
 	// cleanup
 	duration := 50 * time.Millisecond
+	zap.L().Debug("stopping container", zap.String("container-id", cont.ID), zap.Duration("timeout", duration))
 	if err := cli.ContainerStop(ctx, cont.ID, &duration); err != nil {
 		return errors.Wrap(err, "failed to stop container")
 	}
 
+	zap.L().Debug("removing container", zap.String("container-id", cont.ID))
 	if err := cli.ContainerRemove(ctx, cont.ID, types.ContainerRemoveOptions{
 		RemoveVolumes: true,
 		RemoveLinks:   true,
