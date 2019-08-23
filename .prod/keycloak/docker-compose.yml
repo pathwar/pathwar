@@ -7,13 +7,13 @@ services:
     environment:
       # specific to prod
       - PROXY_ADDRESS_FORWARDING=true
-      - VIRTUAL_HOST=id.pathwar.land
       # common with dev
       - VIRTUAL_PORT=8080
       - DB_VENDOR=MYSQL
       - DB_ADDR=keycloakdb
       - DB_DATABASE=keycloak
       # from .env
+      - VIRTUAL_HOST
       - KEYCLOAK_USER
       - KEYCLOAK_PASSWORD
       - DB_USER
