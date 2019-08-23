@@ -6,7 +6,7 @@ COPY            go.mod go.sum /go/src/pathwar.land/
 WORKDIR         /go/src/pathwar.land
 RUN             go mod download
 COPY            . .
-RUN             touch .proto.generated && make install
+RUN             make _ci_prepare && make install
 
 # runtime
 FROM            alpine:3.8

@@ -1,13 +1,18 @@
 import * as React from "react";
-import Cookies from "js-cookie";
+import { connect } from "react-redux";
 import { navigate } from "gatsby";
-import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
+
 
 class LogoutPage extends React.PureComponent {
 
     componentDidMount() {
-        Cookies.remove(USER_SESSION_TOKEN_NAME);
-        navigate("/app/login");
+        const { userSession: { activeSession: keycloakActiveSession } } = this.props;
+
+        if (!keycloakActiveSession) {
+            navigate("/");
+        } else {
+            keycloakActiveSession.logout();
+        }
     }
 
     render() {
@@ -15,4 +20,14 @@ class LogoutPage extends React.PureComponent {
     }
 }
 
-export default LogoutPage;
+const mapStateToProps = state => ({
+    userSession: state.userSession
+});
+  
+    
+const mapDispatchToProps = {};
+    
+export default connect(
+mapStateToProps,
+mapDispatchToProps
+)(LogoutPage);

@@ -39,7 +39,7 @@ class AllTeamsCard extends React.PureComponent {
     }
     
     render() {
-        const { teams, joinTeamAction, activeUser } = this.props;
+        const { teams, joinTeamAction, activeSession } = this.props;
         return (
             <Card>
                   <Card.Header>
@@ -63,7 +63,7 @@ class AllTeamsCard extends React.PureComponent {
                             allTeamsList={teams.allTeamsList} 
                             userTeamsList={teams.userTeamsList} 
                             joinTeam={joinTeamAction} 
-                            userID={activeUser.metadata.id}
+                            userID={activeSession.sessionId}
                         />}
                     </Table.Body>
                   </Table>
@@ -74,14 +74,14 @@ class AllTeamsCard extends React.PureComponent {
 
 AllTeamsCard.propTypes = {
     teams: PropTypes.object,
-    activeUser: PropTypes.object,
+    activeSession: PropTypes.object,
     fetchTeamsListAction: PropTypes.func,
     joinTeamAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
     teams: state.teams,
-    activeUser: state.userSession.activeUser 
+    activeSession: state.userSession.activeSession 
 });
 
 const mapDispatchToProps = {

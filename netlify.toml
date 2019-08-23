@@ -2,6 +2,12 @@
   base = "web"
   publish = "web/public"
   command = "npm install && npm run build"
+
 [build.environment]
   YARN_FLAGS = "--no-ignore-optional"
-  API_URL = "http://fwrz.m.42.am:8000/"
+  API_URL = "https://api-dev.pathwar.land/"
+  KEYCLOAK_REALM = "Pathwar-Dev"
+
+[context.production.environment]
+  API_URL = "https://api.pathwar.land/"
+  KEYCLOAK_REALM = "Pathwar"

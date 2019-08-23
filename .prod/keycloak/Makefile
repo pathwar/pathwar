@@ -12,3 +12,7 @@ logs:
 .PHONY: mysql-shell
 mysql-shell:
 	. ./.env; docker-compose exec keycloakdb mysql -p$$MYSQL_ROOT_PASSWORD keycloak
+
+.PHONY: mysql-dump
+mysql-dump:
+	. ./.env; docker-compose exec keycloakdb mysqldump -p$$MYSQL_ROOT_PASSWORD keycloak

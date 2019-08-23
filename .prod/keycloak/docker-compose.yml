@@ -7,7 +7,7 @@ services:
     environment:
       # specific to prod
       - PROXY_ADDRESS_FORWARDING=true
-      - VIRTUAL_HOST=sso.pathwar.land
+      - VIRTUAL_HOST=id.pathwar.land
       # common with dev
       - VIRTUAL_PORT=8080
       - DB_VENDOR=MYSQL
@@ -23,6 +23,8 @@ services:
     networks:
       - service-proxy
       - keycloak-internal
+    volumes:
+      - ./themes/pathwar:/opt/jboss/keycloak/themes/pathwar
 
   keycloakdb:
     image: mariadb:10

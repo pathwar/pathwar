@@ -680,6 +680,26 @@ definitions:
       target_team_id:
         type: string
     type: object
+  pathwarentityInfo:
+    properties:
+      built_at:
+        type: string
+      built_by:
+        type: string
+      commit:
+        type: string
+      uptime:
+        format: int32
+        type: integer
+      version:
+        type: string
+    type: object
+  pathwarentityStatus:
+    properties:
+      everything_is_ok:
+        format: boolean
+        type: boolean
+    type: object
   serverAuthenticateInput:
     description: AuthenticateInput contains everything (credentials) to authenticate
       a user and create a new session.
@@ -714,7 +734,7 @@ info:
   title: Pathwar API
   version: "1.0"
 paths:
-  /api/authenticate:
+  /authenticate:
     post:
       operationId: Authenticate
       parameters:
@@ -739,7 +759,7 @@ paths:
       summary: Create a session based on credentials
       tags:
       - Server
-  /api/dev/generate-fake-data:
+  /dev/generate-fake-data:
     post:
       operationId: GenerateFakeData
       responses:
@@ -757,7 +777,7 @@ paths:
             format: string
       tags:
       - Server
-  /api/dev/sql-dump:
+  /dev/sql-dump:
     post:
       operationId: Dump
       responses:
@@ -775,7 +795,25 @@ paths:
             format: string
       tags:
       - Server
-  /api/levels:
+  /info:
+    get:
+      operationId: Info
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/pathwarentityInfo'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+      tags:
+      - Server
+  /levels:
     get:
       operationId: Levels
       responses:
@@ -794,7 +832,7 @@ paths:
       summary: List levels
       tags:
       - Server
-  /api/ping:
+  /ping:
     get:
       operationId: Ping
       responses:
@@ -813,7 +851,25 @@ paths:
       summary: Verify the service is up and running
       tags:
       - Server
-  /api/teams:
+  /status:
+    get:
+      operationId: Status
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/pathwarentityStatus'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+      tags:
+      - Server
+  /teams:
     get:
       operationId: Teams
       responses:
@@ -832,7 +888,7 @@ paths:
       summary: List teams
       tags:
       - Server
-  /api/tournaments:
+  /tournaments:
     get:
       operationId: Tournaments
       responses:
@@ -851,7 +907,7 @@ paths:
       summary: List tournaments
       tags:
       - Server
-  /api/user-session:
+  /user-session:
     get:
       operationId: UserSession
       responses:
@@ -870,7 +926,7 @@ paths:
       summary: Get current user's session
       tags:
       - Server
-  /api/users:
+  /users:
     get:
       operationId: Users
       responses:

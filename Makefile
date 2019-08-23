@@ -9,22 +9,22 @@ rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subs
 ##
 
 GOPATH ?= $(HOME)/go
-BIN = $(GOPATH)/bin/pathwar.land
-SOURCES = $(call rwildcard, ./, *.go)
-PWCTL_SOURCES = $(call rwildcard,pwctl//,*.go)
-OUR_SOURCES = $(filter-out $(call rwildcard,vendor//,*.go),$(SOURCES))
-PROTOS = $(call rwildcard, ./, *.proto)
-OUR_PROTOS = $(filter-out $(call rwildcard,vendor//,*.proto),$(PROTOS))
-GENERATED_PB_FILES = \
+BIN := $(GOPATH)/bin/pathwar.land
+SOURCES := $(call rwildcard, ./, *.go)
+PWCTL_SOURCES := $(call rwildcard,pwctl//,*.go)
+OUR_SOURCES := $(filter-out $(call rwildcard,vendor//,*.go),$(SOURCES))
+PROTOS := $(call rwildcard, ./, *.proto)
+OUR_PROTOS := $(filter-out $(call rwildcard,vendor//,*.proto),$(PROTOS))
+GENERATED_PB_FILES := \
 	$(patsubst %.proto,%.pb.go,$(PROTOS)) \
 	$(call rwildcard ./, *.gen.go)
-PWCTL_OUT_FILES = \
+PWCTL_OUT_FILES := \
 	./pwctl/out/pwctl-linux-amd64
-GENERATED_FILES = \
+GENERATED_FILES := \
 	$(GENERATED_PB_FILES) \
 	$(PWCTL_OUT_FILES) \
 	swagger.yaml
-PROTOC_OPTS = -I/protobuf:vendor/github.com/grpc-ecosystem/grpc-gateway:vendor:.
+PROTOC_OPTS := -I/protobuf:vendor/github.com/grpc-ecosystem/grpc-gateway:vendor:.
 RUN_OPTS ?=
 
 ##
@@ -46,7 +46,8 @@ run: $(BIN) serverdb.up
 .PHONY: install
 install: $(BIN)
 $(BIN): .proto.generated $(PWCTL_OUT_FILES) $(OUR_SOURCES)
-	go install -v
+	go install -v -ldflags "-s -w -X pathwar.land/version.Version=`git describe --tags --abbrev` -X pathwar.land/version.Commit=`git rev-parse HEAD` -X pathwar.land/version.Date=`date +%s` -X pathwar.land/version.BuiltBy=makefile"
+
 
 .PHONY: serverdb.up
 serverdb.up:
@@ -101,6 +102,7 @@ generate: .proto.generated
 	  pathwar/protoc:v1 \
 	  -xec "make _proto_generate"
 	touch $@
+	rm -rf vendor
 
 .PHONY: _generate
 _proto_generate: $(GENERATED_PB_FILES) swagger.yaml
@@ -111,7 +113,15 @@ $(PWCTL_OUT_FILES): $(PWCTL_SOURCES)
 
 .PHONY: test
 test: .proto.generated
-	go test -mod=readonly -v ./...
+	echo "" > /tmp/coverage.txt
+	set -e; for dir in `find . -type f -name "go.mod" | sed -r 's@/[^/]+$$@@' | sort | uniq`; do (set -xe; \
+	  cd $$dir; \
+	  go test -v -mod=readonly -cover -coverprofile=/tmp/profile.out -covermode=atomic -race ./...; \
+	  if [ -f /tmp/profile.out ]; then \
+	    cat /tmp/profile.out >> /tmp/coverage.txt; \
+	    rm -f /tmp/profile.out; \
+	  fi); done
+	mv /tmp/coverage.txt .
 
 %.pb.go: %.proto
 	protoc \
