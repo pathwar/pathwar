@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Cookies from "js-cookie";
-import { 
+import {
 	LOGIN_FAILED,
 	SET_USER_SESSION,
 	PING_USER_SUCCESS,
@@ -15,13 +15,13 @@ import { setActiveTournament as setActiveTournamentAction } from "./tournaments"
 export const setKeycloakSession = (keycloakInstance, authenticated) => async dispatch => {
 
 	try {
-		
+
 		dispatch({
 			type: SET_USER_SESSION,
 			payload: { activeSession: keycloakInstance, authenticated: authenticated }
 		});
 
-		// Cookies.set(USER_SESSION_TOKEN_NAME, token)
+		Cookies.set(USER_SESSION_TOKEN_NAME, keycloakInstance.token);
 
 		//TODO: Verify how we can retrieve the team and tournament to be set on first load after login.
 
@@ -64,7 +64,7 @@ export const pingUserAction = () => async dispatch => {
 		const { isAuthenticated, token, userSession, lastActiveTeam, defaultTournament } = response.data;
 		dispatch({
 			type: PING_USER_SUCCESS,
-			payload: { 
+			payload: {
 				isAuthenticated: isAuthenticated,
 				activeUser: userSession
 			}

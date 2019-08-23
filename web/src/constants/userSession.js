@@ -1,1 +1,1 @@
-export const USER_SESSION_TOKEN_NAME = "pwusT";
+export const USER_SESSION_TOKEN_NAME = "KEYCLOAK_IDENTITY";
