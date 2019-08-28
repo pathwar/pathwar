@@ -9,6 +9,7 @@ rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subs
 ##
 
 GOPATH ?= $(HOME)/go
+GO ?= go
 BIN := $(GOPATH)/bin/pathwar.land
 SOURCES := $(call rwildcard, ./, *.go)
 PWCTL_SOURCES := $(call rwildcard,pwctl//,*.go)
@@ -39,6 +40,9 @@ help:
 	  sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | grep -v / | \
 	  sed 's/^/  $(HELP_MSG_PREFIX)make /'
 
+.PHONY: test
+test: unittest lint tidy
+
 .PHONY: run
 run: $(BIN) serverdb.up
 	$(BIN) server $(RUN_OPTS)
@@ -46,7 +50,7 @@ run: $(BIN) serverdb.up
 .PHONY: install
 install: $(BIN)
 $(BIN): .proto.generated $(PWCTL_OUT_FILES) $(OUR_SOURCES)
-	go install -v -ldflags "-s -w -X pathwar.land/version.Version=`git describe --tags --abbrev` -X pathwar.land/version.Commit=`git rev-parse HEAD` -X pathwar.land/version.Date=`date +%s` -X pathwar.land/version.BuiltBy=makefile"
+	$(GO) install -v -ldflags "-s -w -X pathwar.land/version.Version=`git describe --tags --abbrev` -X pathwar.land/version.Commit=`git rev-parse HEAD` -X pathwar.land/version.Date=`date +%s` -X pathwar.land/version.BuiltBy=makefile"
 
 
 .PHONY: serverdb.up
@@ -92,7 +96,7 @@ _ci_prepare:
 generate: .proto.generated
 .proto.generated: $(OUR_PROTOS)
 	rm -f $(GENERATED_PB_FILES)
-	go mod vendor
+	$(GO) mod vendor
 	docker run \
 	  --user="$(shell id -u)" \
 	  --volume="$(PWD):/go/src/pathwar.land" \
@@ -109,14 +113,14 @@ _proto_generate: $(GENERATED_PB_FILES) swagger.yaml
 
 $(PWCTL_OUT_FILES): $(PWCTL_SOURCES)
 	mkdir -p ./pwctl/out
-	GOOS=linux GOARCH=amd64 go build -mod=readonly -o ./pwctl/out/pwctl-linux-amd64 ./pwctl/
+	GOOS=linux GOARCH=amd64 $(GO) build -mod=readonly -o ./pwctl/out/pwctl-linux-amd64 ./pwctl/
 
-.PHONY: test
-test: .proto.generated
+.PHONY: unittest
+unittest: .proto.generated
 	echo "" > /tmp/coverage.txt
 	set -e; for dir in `find . -type f -name "go.mod" | sed -r 's@/[^/]+$$@@' | sort | uniq`; do (set -xe; \
 	  cd $$dir; \
-	  go test -v -mod=readonly -cover -coverprofile=/tmp/profile.out -covermode=atomic -race ./...; \
+	  $(GO) test -v -mod=readonly -cover -coverprofile=/tmp/profile.out -covermode=atomic -race ./...; \
 	  if [ -f /tmp/profile.out ]; then \
 	    cat /tmp/profile.out >> /tmp/coverage.txt; \
 	    rm -f /tmp/profile.out; \
@@ -162,7 +166,24 @@ integration.run:
 
 .PHONY: lint
 lint:
-	golangci-lint run --verbose ./...
+	set -e; for dir in `find . -type f -name "go.mod" | sed 's@/[^/]*$$@@' | sort | uniq`; do (set -xe; \
+	  cd $$dir; \
+	  golangci-lint run --verbose ./...; \
+	); done
+
+.PHONY: tidy
+tidy:
+	set -e; for dir in `find . -type f -name "go.mod" | sed 's@/[^/]*$$@@' | sort | uniq`; do (set -xe; \
+	  cd $$dir; \
+	  $(GO) mod tidy; \
+	); done
+
+.PHONY: bump-go-deps
+bump-go-deps:
+	set -e; for dir in `find . -type f -name "go.mod" | sed 's@/[^/]*$$@@' | sort | uniq`; do (set -xe; \
+	  cd $$dir; \
+	  $(GO) get -u ./...; \
+	); done
 
 .PHONY: generate-fake-data
 generate-fake-data:

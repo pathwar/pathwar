@@ -1,63 +1,13 @@
 version: 2.1
 
 orbs:
-  moul: moul/build@1.5.0  # https://github.com/moul/build/blob/master/.circleci/config.yml
-  dl: moul/dl@1.7.0       # https://github.com/moul/dl/blob/master/.circleci/config.yml
-  retry: moul/retry@0.6.0 # https://github.com/moul/retry/blob/master/.circleci/config.yml
-  tools: gotest/tools@0.0.9
-  docker: circleci/docker@0.5.13
-  codecov: codecov/codecov@1.0.5
-
-executors:
-  golang:
-    docker:
-      - image: circleci/golang:1.12.4
-    working_directory: /go/src/pathwar.land
-    environment:
-      GOPATH: /go
-      GO111MODULE: "on"
-
-  docker:
-    docker:
-      - image: docker:18.06.3-ce-git
-
-  compose:
-    docker:
-      - image: docker/compose:1.24.0
+  moul: moul/build@1.9.0  # https://github.com/moul/build
+  retry: moul/retry@0.6.0 # https://github.com/moul/retry
 
 jobs:
-  # build the project from within Docker, based on the Dockerfile
-  docker_build:
-    executor: docker
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - retry/install
-      - run: retry -m 3 docker build -t pathwar/pathwar .
-      # FIXME: save cache
-
-  # build and unit test the project
-  go_test:
-    executor: golang
-    steps:
-      - checkout
-      - run: go clean -modcache
-      - retry/install
-      - tools/mod-download
-      - tools/mod-tidy-check
-      - run: retry -m 3 make _ci_prepare
-      - run: retry -m 3 make test
-      # FIXME: setup coverage
-      - moul/install_golangci-lint
-      - run: . ~/.profile && retry -m 3 make lint
-      - codecov/upload:
-          file: coverage.txt
-          flags: go_test
-      # FIXME: store_test_results
-
   docker_integration:
-    executor: compose
+    docker:
+      - image: docker/compose:1.24.0
     steps:
       - checkout
       - retry/install
@@ -72,6 +22,9 @@ jobs:
 workflows:
   main:
     jobs:
-      - go_test
-      - docker_build
+      - moul/golang-build:
+          gopkg: pathwar.land
+          prepare-build: make _ci_prepare
+      - moul/docker-build:
+          image: pathwar/pathwar
       - docker_integration
