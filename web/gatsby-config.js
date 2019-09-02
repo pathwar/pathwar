@@ -17,7 +17,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-favicon`,
       options: {
-        logo: `${__dirname}/src/images/new_pathwar-logo.png`,
+        logo: `${__dirname}/src/images/pathwar-favicon.png`,
 
         dir: 'auto',
         lang: 'en-US',
