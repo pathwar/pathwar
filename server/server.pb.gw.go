@@ -45,11 +45,37 @@ func request_Server_Authenticate_0(ctx context.Context, marshaler runtime.Marsha
 
 }
 
+func local_request_Server_Authenticate_0(ctx context.Context, marshaler runtime.Marshaler, server ServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq AuthenticateInput
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.Authenticate(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_Server_Ping_0(ctx context.Context, marshaler runtime.Marshaler, client ServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.Ping(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Server_Ping_0(ctx context.Context, marshaler runtime.Marshaler, server ServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Void
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.Ping(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -63,11 +89,29 @@ func request_Server_UserSession_0(ctx context.Context, marshaler runtime.Marshal
 
 }
 
+func local_request_Server_UserSession_0(ctx context.Context, marshaler runtime.Marshaler, server ServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Void
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.UserSession(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_Server_Tournaments_0(ctx context.Context, marshaler runtime.Marshaler, client ServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.Tournaments(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Server_Tournaments_0(ctx context.Context, marshaler runtime.Marshaler, server ServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Void
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.Tournaments(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -81,11 +125,29 @@ func request_Server_Users_0(ctx context.Context, marshaler runtime.Marshaler, cl
 
 }
 
+func local_request_Server_Users_0(ctx context.Context, marshaler runtime.Marshaler, server ServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Void
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.Users(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_Server_Levels_0(ctx context.Context, marshaler runtime.Marshaler, client ServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.Levels(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Server_Levels_0(ctx context.Context, marshaler runtime.Marshaler, server ServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Void
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.Levels(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -99,11 +161,29 @@ func request_Server_Teams_0(ctx context.Context, marshaler runtime.Marshaler, cl
 
 }
 
+func local_request_Server_Teams_0(ctx context.Context, marshaler runtime.Marshaler, server ServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Void
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.Teams(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_Server_Status_0(ctx context.Context, marshaler runtime.Marshaler, client ServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.Status(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Server_Status_0(ctx context.Context, marshaler runtime.Marshaler, server ServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Void
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.Status(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -117,11 +197,29 @@ func request_Server_Info_0(ctx context.Context, marshaler runtime.Marshaler, cli
 
 }
 
+func local_request_Server_Info_0(ctx context.Context, marshaler runtime.Marshaler, server ServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Void
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.Info(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_Server_GenerateFakeData_0(ctx context.Context, marshaler runtime.Marshaler, client ServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.GenerateFakeData(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Server_GenerateFakeData_0(ctx context.Context, marshaler runtime.Marshaler, server ServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Void
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.GenerateFakeData(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -133,6 +231,243 @@ func request_Server_Dump_0(ctx context.Context, marshaler runtime.Marshaler, cli
 	msg, err := client.Dump(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
+}
+
+func local_request_Server_Dump_0(ctx context.Context, marshaler runtime.Marshaler, server ServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Void
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.Dump(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+// RegisterServerHandlerServer registers the http handlers for service Server to "mux".
+// UnaryRPC     :call ServerServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+func RegisterServerHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ServerServer) error {
+
+	mux.Handle("POST", pattern_Server_Authenticate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Server_Authenticate_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Server_Authenticate_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Server_Ping_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Server_Ping_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Server_Ping_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Server_UserSession_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Server_UserSession_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Server_UserSession_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Server_Tournaments_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Server_Tournaments_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Server_Tournaments_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Server_Users_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Server_Users_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Server_Users_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Server_Levels_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Server_Levels_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Server_Levels_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Server_Teams_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Server_Teams_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Server_Teams_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Server_Status_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Server_Status_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Server_Status_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Server_Info_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Server_Info_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Server_Info_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_Server_GenerateFakeData_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Server_GenerateFakeData_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Server_GenerateFakeData_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_Server_Dump_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Server_Dump_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Server_Dump_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
 }
 
 // RegisterServerHandlerFromEndpoint is same as RegisterServerHandler but
@@ -397,27 +732,27 @@ func RegisterServerHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 }
 
 var (
-	pattern_Server_Authenticate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"authenticate"}, ""))
+	pattern_Server_Authenticate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"authenticate"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Server_Ping_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"ping"}, ""))
+	pattern_Server_Ping_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"ping"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Server_UserSession_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"user-session"}, ""))
+	pattern_Server_UserSession_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"user-session"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Server_Tournaments_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"tournaments"}, ""))
+	pattern_Server_Tournaments_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"tournaments"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Server_Users_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"users"}, ""))
+	pattern_Server_Users_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"users"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Server_Levels_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"levels"}, ""))
+	pattern_Server_Levels_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"levels"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Server_Teams_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"teams"}, ""))
+	pattern_Server_Teams_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"teams"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Server_Status_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"status"}, ""))
+	pattern_Server_Status_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"status"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Server_Info_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"info"}, ""))
+	pattern_Server_Info_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"info"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Server_GenerateFakeData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"dev", "generate-fake-data"}, ""))
+	pattern_Server_GenerateFakeData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"dev", "generate-fake-data"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Server_Dump_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"dev", "sql-dump"}, ""))
+	pattern_Server_Dump_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"dev", "sql-dump"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

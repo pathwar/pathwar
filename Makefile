@@ -112,7 +112,7 @@ generate: .proto.generated
 	  --workdir="/go/src/pathwar.land" \
 	  --entrypoint="sh" \
 	  --rm \
-	  pathwar/protoc:v1 \
+	  pathwar/protoc:v2 \
 	  -xec "make _proto_generate"
 	touch $@
 	rm -rf vendor
@@ -152,6 +152,7 @@ swagger.yaml: $(PROTOS)
 	cat server/server.swagger.json | json2yaml | grep -v 'swagger:."2.0"' >> swagger.yaml.tmp
 	rm -f server/server.swagger.json
 	mv swagger.yaml.tmp swagger.yaml
+	eclint fix swagger.yaml
 
 .PHONY: docker.build
 docker.build:

@@ -279,7 +279,7 @@ a.zocial  {
 @media (max-width: 767px) {
 
     .login-pf body {
-      background: white;
+    background: white;
     }
 
     #kc-header {
@@ -290,11 +290,11 @@ a.zocial  {
     }
 
     #kc-header-wrapper {
-      font-size: 16px;
-      font-weight: bold;
-      padding: 20px 60px 0 0;
-      color: #72767b;
-      letter-spacing: 0;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 20px 60px 0 0;
+    color: #72767b;
+    letter-spacing: 0;
     }
 
     div.kc-logo-text {
@@ -384,21 +384,21 @@ a.zocial  {
 /*tablet*/
 @media (max-width: 840px) {
     .login-pf-page .card-pf{
-      max-width: none;
-      margin-left: 20px;
-      margin-right: 20px;
-      padding: 20px 20px 30px 20px;
+    max-width: none;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 20px 20px 30px 20px;
     }
 }
 @media (max-width: 767px) {
     .login-pf-page .card-pf{
-      max-width: none;
-      margin-left: 0;
-      margin-right: 0;
-      padding-top: 0;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 0;
     }
     .card-pf.login-pf-accounts{
-      max-width: none;
+    max-width: none;
     }
 }
 

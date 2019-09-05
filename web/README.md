@@ -11,20 +11,20 @@ Make sure you have Node.js 8+.
 2. **Run develop to see it in dev mode**
 
     `npm start`
-    
-     Note: The -s flag is optional. It enables silent mode which suppresses unnecessary messages during the build.
+
+    Note: The -s flag is optional. It enables silent mode which suppresses unnecessary messages during the build.
 
 3. **Run build script to generate final files in /public folder**
 
     `npm run build`
-    
-     Note: Generates the /public folder with all the assets to final publish
+
+    Note: Generates the /public folder with all the assets to final publish
 
 4. **Run build script to generate final files in /public folder**
 
     `npm run serve`
-    
-     Note: Init a server with the latest build on localhost
+
+    Note: Init a server with the latest build on localhost
 
 
 ---

@@ -1,7 +1,7 @@
-import { 
+import {
   GET_ALL_TOURNAMENTS_SUCCESS,
-  GET_TEAM_TOURNAMENTS_SUCCESS, 
-  SET_LEVELS_LIST, 
+  GET_TEAM_TOURNAMENTS_SUCCESS,
+  SET_LEVELS_LIST,
   SET_ACTIVE_TOURNAMENT
 } from '../constants/actionTypes';
 
@@ -33,14 +33,14 @@ export default function tournamentReducer(state = initialState.tournaments, acti
         allTeamTournaments: action.payload.allTeamTournaments
       }
 
-    case SET_ACTIVE_TOURNAMENT: 
+    case SET_ACTIVE_TOURNAMENT:
       return {
         ...state,
         activeTournament: action.payload.activeTournament
-      }  
+      }
 
     case SET_LEVELS_LIST:
-      
+
       return {
         ...state,
         activeLevels: action.payload.activeLevels

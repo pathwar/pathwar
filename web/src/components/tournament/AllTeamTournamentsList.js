@@ -2,9 +2,9 @@ import * as React from "react";
 import { connect } from "react-redux"
 import { Card, Table, Button } from "tabler-react";
 import PropTypes from "prop-types";
-import { 
+import {
     setActiveTournament as setActiveTournamentAction,
-    fetchTeamTournaments as fetchTeamTournamentsAction 
+    fetchTeamTournaments as fetchTeamTournamentsAction
 } from "../../actions/tournaments"
 
 
@@ -57,10 +57,10 @@ class AllTeamTournamentsList extends React.PureComponent {
                     </Table.Header>
                     <Table.Body>
                         { allTeamTournaments && activeTournament &&
-                            <TournamentsRows 
+                            <TournamentsRows
                                 teamTournaments={allTeamTournaments}
                                 activeTournament={activeTournament}
-                                setActive={setActiveTournamentAction} 
+                                setActive={setActiveTournamentAction}
                             />
                         }
                     </Table.Body>
@@ -88,6 +88,6 @@ const mapDispatchToProps = {
 };
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(AllTeamTournamentsList);

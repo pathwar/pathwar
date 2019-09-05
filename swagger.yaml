@@ -31,24 +31,24 @@ definitions:
     type: string
   entityAchievement:
     properties:
-      argument:
+    argument:
         type: string
-      author:
+    author:
         $ref: '#/definitions/entityTournamentMember'
-      author_id:
+    author_id:
         type: string
-      comment:
+    comment:
         type: string
-      is_global:
+    is_global:
         format: boolean
         type: boolean
-      level_validation:
+    level_validation:
         $ref: '#/definitions/entityLevelValidation'
-      level_validationt_id:
+    level_validationt_id:
         type: string
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      type:
+    type:
         $ref: '#/definitions/entityAchievementType'
     type: object
   entityAchievementType:
@@ -91,179 +91,179 @@ definitions:
     type: string
   entityAuthMethod:
     properties:
-      email_address:
+    email_address:
         type: string
-      identifier:
+    identifier:
         type: string
-      is_verified:
+    is_verified:
         format: boolean
         type: boolean
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      password_hash:
+    password_hash:
         type: string
-      provider:
+    provider:
         $ref: '#/definitions/AuthMethodProvider'
-      salt:
+    salt:
         type: string
-      totp_token:
+    totp_token:
         type: string
-      url:
+    url:
         type: string
-      user:
+    user:
         $ref: '#/definitions/entityUser'
-      user_id:
+    user_id:
         type: string
     type: object
   entityCoupon:
     properties:
-      hash:
+    hash:
         title: fields
         type: string
-      max_validation_count:
+    max_validation_count:
         format: int32
         type: integer
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      tournament:
+    tournament:
         $ref: '#/definitions/entityTournament'
         title: associations
-      tournament_id:
+    tournament_id:
         type: string
-      validations:
+    validations:
         items:
-          $ref: '#/definitions/entityCouponValidation'
+        $ref: '#/definitions/entityCouponValidation'
         type: array
-      value:
+    value:
         format: int32
         type: integer
     type: object
   entityCouponValidation:
     properties:
-      author:
+    author:
         $ref: '#/definitions/entityTournamentMember'
         title: associations
-      author_id:
+    author_id:
         type: string
-      comment:
+    comment:
         title: fields
         type: string
-      coupon:
+    coupon:
         $ref: '#/definitions/entityCoupon'
-      coupon_id:
+    coupon_id:
         type: string
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
     type: object
   entityDump:
     properties:
-      achievements:
+    achievements:
         items:
-          $ref: '#/definitions/entityAchievement'
+        $ref: '#/definitions/entityAchievement'
         type: array
-      auth_methods:
+    auth_methods:
         items:
-          $ref: '#/definitions/entityAuthMethod'
+        $ref: '#/definitions/entityAuthMethod'
         type: array
-      coupon_validations:
+    coupon_validations:
         items:
-          $ref: '#/definitions/entityCouponValidation'
+        $ref: '#/definitions/entityCouponValidation'
         type: array
-      coupons:
+    coupons:
         items:
-          $ref: '#/definitions/entityCoupon'
+        $ref: '#/definitions/entityCoupon'
         type: array
-      events:
+    events:
         items:
-          $ref: '#/definitions/entityEvent'
+        $ref: '#/definitions/entityEvent'
         type: array
-      hypervisors:
+    hypervisors:
         items:
-          $ref: '#/definitions/entityHypervisor'
+        $ref: '#/definitions/entityHypervisor'
         type: array
-      inventory_items:
+    inventory_items:
         items:
-          $ref: '#/definitions/entityInventoryItem'
+        $ref: '#/definitions/entityInventoryItem'
         type: array
-      level_flavors:
+    level_flavors:
         items:
-          $ref: '#/definitions/entityLevelFlavor'
+        $ref: '#/definitions/entityLevelFlavor'
         type: array
-      level_instances:
+    level_instances:
         items:
-          $ref: '#/definitions/entityLevelInstance'
+        $ref: '#/definitions/entityLevelInstance'
         type: array
-      level_subscriptions:
+    level_subscriptions:
         items:
-          $ref: '#/definitions/entityLevelSubscription'
+        $ref: '#/definitions/entityLevelSubscription'
         type: array
-      level_validations:
+    level_validations:
         items:
-          $ref: '#/definitions/entityLevelValidation'
+        $ref: '#/definitions/entityLevelValidation'
         type: array
-      level_versions:
+    level_versions:
         items:
-          $ref: '#/definitions/entityLevelVersion'
+        $ref: '#/definitions/entityLevelVersion'
         type: array
-      levels:
+    levels:
         items:
-          $ref: '#/definitions/entityLevel'
+        $ref: '#/definitions/entityLevel'
         type: array
-      notifications:
+    notifications:
         items:
-          $ref: '#/definitions/entityNotification'
+        $ref: '#/definitions/entityNotification'
         type: array
-      team_members:
+    team_members:
         items:
-          $ref: '#/definitions/entityTeamMember'
+        $ref: '#/definitions/entityTeamMember'
         type: array
-      teams:
+    teams:
         items:
-          $ref: '#/definitions/entityTeam'
+        $ref: '#/definitions/entityTeam'
         type: array
-      tournament_members:
+    tournament_members:
         items:
-          $ref: '#/definitions/entityTournamentMember'
+        $ref: '#/definitions/entityTournamentMember'
         type: array
-      tournament_teams:
+    tournament_teams:
         items:
-          $ref: '#/definitions/entityTournamentTeam'
+        $ref: '#/definitions/entityTournamentTeam'
         type: array
-      tournaments:
+    tournaments:
         items:
-          $ref: '#/definitions/entityTournament'
+        $ref: '#/definitions/entityTournament'
         type: array
-      user_sessions:
+    user_sessions:
         items:
-          $ref: '#/definitions/entityUserSession'
+        $ref: '#/definitions/entityUserSession'
         type: array
-      users:
+    users:
         items:
-          $ref: '#/definitions/entityUser'
+        $ref: '#/definitions/entityUser'
         type: array
-      whoswho_attempts:
+    whoswho_attempts:
         items:
-          $ref: '#/definitions/entityWhoswhoAttempt'
+        $ref: '#/definitions/entityWhoswhoAttempt'
         type: array
     type: object
   entityEvent:
     properties:
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
     type: object
   entityHypervisor:
     properties:
-      address:
+    address:
         type: string
-      level_instances:
+    level_instances:
         items:
-          $ref: '#/definitions/entityLevelInstance'
+        $ref: '#/definitions/entityLevelInstance'
         type: array
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      name:
+    name:
         type: string
-      status:
+    status:
         $ref: '#/definitions/entityHypervisorStatus'
     type: object
   entityHypervisorStatus:
@@ -275,67 +275,67 @@ definitions:
     type: string
   entityInventoryItem:
     properties:
-      item:
+    item:
         $ref: '#/definitions/InventoryItemItem'
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      owner:
+    owner:
         $ref: '#/definitions/entityTournamentMember'
-      owner_id:
+    owner_id:
         type: string
     type: object
   entityLevel:
     properties:
-      author:
+    author:
         type: string
-      description:
+    description:
         type: string
-      is_draft:
+    is_draft:
         format: boolean
         type: boolean
-      locale:
+    locale:
         type: string
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      name:
+    name:
         type: string
-      preview_url:
+    preview_url:
         type: string
-      versions:
+    versions:
         items:
-          $ref: '#/definitions/entityLevelVersion'
+        $ref: '#/definitions/entityLevelVersion'
         type: array
     type: object
   entityLevelFlavor:
     properties:
-      instances:
+    instances:
         items:
-          $ref: '#/definitions/entityLevelInstance'
+        $ref: '#/definitions/entityLevelInstance'
         type: array
-      level_version:
+    level_version:
         $ref: '#/definitions/entityLevel'
-      level_version_id:
+    level_version_id:
         type: string
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      subscriptions:
+    subscriptions:
         items:
-          $ref: '#/definitions/entityLevelSubscription'
+        $ref: '#/definitions/entityLevelSubscription'
         type: array
     type: object
   entityLevelInstance:
     properties:
-      flavor:
+    flavor:
         $ref: '#/definitions/entityLevelFlavor'
-      flavor_id:
+    flavor_id:
         type: string
-      hypervisor:
+    hypervisor:
         $ref: '#/definitions/entityHypervisor'
-      hypervisor_id:
+    hypervisor_id:
         type: string
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      status:
+    status:
         $ref: '#/definitions/entityLevelInstanceStatus'
     type: object
   entityLevelInstanceStatus:
@@ -347,41 +347,41 @@ definitions:
     type: string
   entityLevelList:
     properties:
-      items:
+    items:
         items:
-          $ref: '#/definitions/entityLevel'
+        $ref: '#/definitions/entityLevel'
         type: array
     type: object
   entityLevelSubscription:
     properties:
-      level_flavor:
+    level_flavor:
         $ref: '#/definitions/entityLevelFlavor'
-      level_flavor_id:
+    level_flavor_id:
         type: string
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      tournament_team:
+    tournament_team:
         $ref: '#/definitions/entityTournamentTeam'
-      tournament_team_id:
+    tournament_team_id:
         type: string
-      validations:
+    validations:
         items:
-          $ref: '#/definitions/entityLevelValidation'
+        $ref: '#/definitions/entityLevelValidation'
         type: array
     type: object
   entityLevelValidation:
     properties:
-      author_comment:
+    author_comment:
         type: string
-      corrector_comment:
+    corrector_comment:
         type: string
-      level_subscription:
+    level_subscription:
         $ref: '#/definitions/entityLevelSubscription'
-      level_subscription_id:
+    level_subscription_id:
         type: string
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      status:
+    status:
         $ref: '#/definitions/entityLevelValidationStatus'
     type: object
   entityLevelValidationStatus:
@@ -395,103 +395,103 @@ definitions:
     type: string
   entityLevelVersion:
     properties:
-      changelog:
+    changelog:
         type: string
-      driver:
+    driver:
         $ref: '#/definitions/LevelVersionDriver'
-      flavors:
+    flavors:
         items:
-          $ref: '#/definitions/entityLevelFlavor'
+        $ref: '#/definitions/entityLevelFlavor'
         type: array
-      is_draft:
+    is_draft:
         format: boolean
         type: boolean
-      is_latest:
+    is_latest:
         format: boolean
         type: boolean
-      level:
+    level:
         $ref: '#/definitions/entityLevel'
-      level_id:
+    level_id:
         type: string
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      source_url:
+    source_url:
         type: string
-      version:
+    version:
         type: string
     type: object
   entityMetadata:
     properties:
-      created_at:
+    created_at:
         format: date-time
         type: string
-      id:
+    id:
         type: string
-      updated_at:
+    updated_at:
         format: date-time
         type: string
     type: object
   entityNotification:
     properties:
-      args:
+    args:
         type: string
-      click_url:
+    click_url:
         type: string
-      is_read:
+    is_read:
         format: boolean
         type: boolean
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      msg:
+    msg:
         type: string
-      user:
+    user:
         $ref: '#/definitions/entityUser'
-      user_id:
+    user_id:
         type: string
     type: object
   entityTeam:
     properties:
-      gravatar_url:
+    gravatar_url:
         type: string
-      locale:
+    locale:
         type: string
-      members:
+    members:
         items:
-          $ref: '#/definitions/entityTeamMember'
+        $ref: '#/definitions/entityTeamMember'
         type: array
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      name:
+    name:
         type: string
-      received_whoswho_attempts:
+    received_whoswho_attempts:
         items:
-          $ref: '#/definitions/entityWhoswhoAttempt'
+        $ref: '#/definitions/entityWhoswhoAttempt'
         type: array
-      tournament_teams:
+    tournament_teams:
         items:
-          $ref: '#/definitions/entityTournamentTeam'
+        $ref: '#/definitions/entityTournamentTeam'
         type: array
     type: object
   entityTeamList:
     properties:
-      items:
+    items:
         items:
-          $ref: '#/definitions/entityTeam'
+        $ref: '#/definitions/entityTeam'
         type: array
     type: object
   entityTeamMember:
     properties:
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      role:
+    role:
         $ref: '#/definitions/entityTeamMemberRole'
-      team:
+    team:
         $ref: '#/definitions/entityTeam'
-      team_id:
+    team_id:
         type: string
-      user:
+    user:
         $ref: '#/definitions/entityUser'
-      user_id:
+    user_id:
         type: string
     type: object
   entityTeamMemberRole:
@@ -503,66 +503,66 @@ definitions:
     type: string
   entityTournament:
     properties:
-      coupons:
+    coupons:
         items:
-          $ref: '#/definitions/entityCoupon'
+        $ref: '#/definitions/entityCoupon'
         type: array
-      is_default:
+    is_default:
         format: boolean
         type: boolean
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      name:
+    name:
         type: string
-      status:
+    status:
         $ref: '#/definitions/entityTournamentStatus'
-      teams:
+    teams:
         items:
-          $ref: '#/definitions/entityTournamentTeam'
+        $ref: '#/definitions/entityTournamentTeam'
         type: array
-      visibility:
+    visibility:
         $ref: '#/definitions/TournamentVisibility'
     type: object
   entityTournamentList:
     properties:
-      items:
+    items:
         items:
-          $ref: '#/definitions/entityTournament'
+        $ref: '#/definitions/entityTournament'
         type: array
     type: object
   entityTournamentMember:
     properties:
-      achievements:
+    achievements:
         items:
-          $ref: '#/definitions/entityAchievement'
+        $ref: '#/definitions/entityAchievement'
         type: array
-      coupons:
+    coupons:
         items:
-          $ref: '#/definitions/entityCoupon'
+        $ref: '#/definitions/entityCoupon'
         type: array
-      items:
+    items:
         items:
-          $ref: '#/definitions/entityInventoryItem'
+        $ref: '#/definitions/entityInventoryItem'
         type: array
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      received_whoswho_attempts:
+    received_whoswho_attempts:
         items:
-          $ref: '#/definitions/entityWhoswhoAttempt'
+        $ref: '#/definitions/entityWhoswhoAttempt'
         type: array
-      role:
+    role:
         $ref: '#/definitions/entityTournamentMemberRole'
-      sent_whoswho_attempts:
+    sent_whoswho_attempts:
         items:
-          $ref: '#/definitions/entityWhoswhoAttempt'
+        $ref: '#/definitions/entityWhoswhoAttempt'
         type: array
-      tournament_team:
+    tournament_team:
         $ref: '#/definitions/entityTournamentTeam'
-      tournament_team_id:
+    tournament_team_id:
         type: string
-      user:
+    user:
         $ref: '#/definitions/entityUser'
-      user_id:
+    user_id:
         type: string
     type: object
   entityTournamentMemberRole:
@@ -581,138 +581,138 @@ definitions:
     type: string
   entityTournamentTeam:
     properties:
-      is_default:
+    is_default:
         format: boolean
         type: boolean
-      level_subscriptions:
+    level_subscriptions:
         items:
-          $ref: '#/definitions/entityLevelSubscription'
+        $ref: '#/definitions/entityLevelSubscription'
         type: array
-      members:
+    members:
         items:
-          $ref: '#/definitions/entityTournamentMember'
+        $ref: '#/definitions/entityTournamentMember'
         type: array
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      team:
+    team:
         $ref: '#/definitions/entityTeam'
-      team_id:
+    team_id:
         type: string
-      tournament:
+    tournament:
         $ref: '#/definitions/entityTournament'
-      tournament_id:
+    tournament_id:
         type: string
     type: object
   entityUser:
     properties:
-      auth_methods:
+    auth_methods:
         items:
-          $ref: '#/definitions/entityAuthMethod'
+        $ref: '#/definitions/entityAuthMethod'
         type: array
-      gravatar_url:
+    gravatar_url:
         type: string
-      is_staff:
+    is_staff:
         format: boolean
         type: boolean
-      locale:
+    locale:
         type: string
-      memberships:
+    memberships:
         items:
-          $ref: '#/definitions/entityTeamMember'
+        $ref: '#/definitions/entityTeamMember'
         type: array
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      notifications:
+    notifications:
         items:
-          $ref: '#/definitions/entityNotification'
+        $ref: '#/definitions/entityNotification'
         type: array
-      sessions:
+    sessions:
         items:
-          $ref: '#/definitions/entityUserSession'
+        $ref: '#/definitions/entityUserSession'
         type: array
-      tournament_memberships:
+    tournament_memberships:
         items:
-          $ref: '#/definitions/entityTournamentMember'
+        $ref: '#/definitions/entityTournamentMember'
         type: array
-      username:
+    username:
         type: string
-      website_url:
+    website_url:
         type: string
     title: User defines a User Account / Profile
     type: object
   entityUserList:
     properties:
-      items:
+    items:
         items:
-          $ref: '#/definitions/entityUser'
+        $ref: '#/definitions/entityUser'
         type: array
     type: object
   entityUserSession:
     properties:
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      user:
+    user:
         $ref: '#/definitions/entityUser'
-      user_id:
+    user_id:
         type: string
-      username:
+    username:
         type: string
     type: object
   entityWhoswhoAttempt:
     properties:
-      author:
+    author:
         $ref: '#/definitions/entityTournamentMember'
         title: associations
-      author_id:
+    author_id:
         type: string
-      metadata:
+    metadata:
         $ref: '#/definitions/entityMetadata'
-      success:
+    success:
         format: boolean
         title: fields
         type: boolean
-      target_member:
+    target_member:
         $ref: '#/definitions/entityTournamentMember'
-      target_member_id:
+    target_member_id:
         type: string
-      target_team:
+    target_team:
         $ref: '#/definitions/entityTournamentTeam'
-      target_team_id:
+    target_team_id:
         type: string
     type: object
   pathwarentityInfo:
     properties:
-      built_at:
+    built_at:
         type: string
-      built_by:
+    built_by:
         type: string
-      commit:
+    commit:
         type: string
-      uptime:
+    uptime:
         format: int32
         type: integer
-      version:
+    version:
         type: string
     type: object
   pathwarentityStatus:
     properties:
-      everything_is_ok:
+    everything_is_ok:
         format: boolean
         type: boolean
     type: object
   serverAuthenticateInput:
     description: AuthenticateInput contains everything (credentials) to authenticate
-      a user and create a new session.
+    a user and create a new session.
     properties:
-      password:
+    password:
         type: string
-      username:
+    username:
         type: string
     type: object
   serverAuthenticateOutput:
     description: AuthenticateOutput contains a session token (JWT).
     properties:
-      token:
+    token:
         type: string
     type: object
   serverVoid:
@@ -736,215 +736,226 @@ info:
 paths:
   /authenticate:
     post:
-      operationId: Authenticate
-      parameters:
-      - in: body
+    operationId: Authenticate
+    parameters:
+    - in: body
         name: body
         required: true
         schema:
-          $ref: '#/definitions/serverAuthenticateInput'
-      responses:
+        $ref: '#/definitions/serverAuthenticateInput'
+    responses:
         "200":
-          description: A successful response.
-          schema:
+        description: A successful response.
+        schema:
             $ref: '#/definitions/serverAuthenticateOutput'
         "403":
-          description: Returned when the user does not have permission to access the
+        description: Returned when the user does not have permission to access the
             resource.
-          schema: {}
+        schema: {}
         "404":
-          description: Returned when the resource does not exist.
-          schema:
+        description: Returned when the resource does not exist.
+        schema:
             format: string
-      summary: Create a session based on credentials
-      tags:
-      - Server
+            type: string
+    summary: Create a session based on credentials
+    tags:
+    - Server
   /dev/generate-fake-data:
     post:
-      operationId: GenerateFakeData
-      responses:
+    operationId: GenerateFakeData
+    responses:
         "200":
-          description: A successful response.
-          schema:
+        description: A successful response.
+        schema:
             $ref: '#/definitions/serverVoid'
         "403":
-          description: Returned when the user does not have permission to access the
+        description: Returned when the user does not have permission to access the
             resource.
-          schema: {}
+        schema: {}
         "404":
-          description: Returned when the resource does not exist.
-          schema:
+        description: Returned when the resource does not exist.
+        schema:
             format: string
-      tags:
-      - Server
+            type: string
+    tags:
+    - Server
   /dev/sql-dump:
     post:
-      operationId: Dump
-      responses:
+    operationId: Dump
+    responses:
         "200":
-          description: A successful response.
-          schema:
+        description: A successful response.
+        schema:
             $ref: '#/definitions/entityDump'
         "403":
-          description: Returned when the user does not have permission to access the
+        description: Returned when the user does not have permission to access the
             resource.
-          schema: {}
+        schema: {}
         "404":
-          description: Returned when the resource does not exist.
-          schema:
+        description: Returned when the resource does not exist.
+        schema:
             format: string
-      tags:
-      - Server
+            type: string
+    tags:
+    - Server
   /info:
     get:
-      operationId: Info
-      responses:
+    operationId: Info
+    responses:
         "200":
-          description: A successful response.
-          schema:
+        description: A successful response.
+        schema:
             $ref: '#/definitions/pathwarentityInfo'
         "403":
-          description: Returned when the user does not have permission to access the
+        description: Returned when the user does not have permission to access the
             resource.
-          schema: {}
+        schema: {}
         "404":
-          description: Returned when the resource does not exist.
-          schema:
+        description: Returned when the resource does not exist.
+        schema:
             format: string
-      tags:
-      - Server
+            type: string
+    tags:
+    - Server
   /levels:
     get:
-      operationId: Levels
-      responses:
+    operationId: Levels
+    responses:
         "200":
-          description: A successful response.
-          schema:
+        description: A successful response.
+        schema:
             $ref: '#/definitions/entityLevelList'
         "403":
-          description: Returned when the user does not have permission to access the
+        description: Returned when the user does not have permission to access the
             resource.
-          schema: {}
+        schema: {}
         "404":
-          description: Returned when the resource does not exist.
-          schema:
+        description: Returned when the resource does not exist.
+        schema:
             format: string
-      summary: List levels
-      tags:
-      - Server
+            type: string
+    summary: List levels
+    tags:
+    - Server
   /ping:
     get:
-      operationId: Ping
-      responses:
+    operationId: Ping
+    responses:
         "200":
-          description: A successful response.
-          schema:
+        description: A successful response.
+        schema:
             $ref: '#/definitions/serverVoid'
         "403":
-          description: Returned when the user does not have permission to access the
+        description: Returned when the user does not have permission to access the
             resource.
-          schema: {}
+        schema: {}
         "404":
-          description: Returned when the resource does not exist.
-          schema:
+        description: Returned when the resource does not exist.
+        schema:
             format: string
-      summary: Verify the service is up and running
-      tags:
-      - Server
+            type: string
+    summary: Verify the service is up and running
+    tags:
+    - Server
   /status:
     get:
-      operationId: Status
-      responses:
+    operationId: Status
+    responses:
         "200":
-          description: A successful response.
-          schema:
+        description: A successful response.
+        schema:
             $ref: '#/definitions/pathwarentityStatus'
         "403":
-          description: Returned when the user does not have permission to access the
+        description: Returned when the user does not have permission to access the
             resource.
-          schema: {}
+        schema: {}
         "404":
-          description: Returned when the resource does not exist.
-          schema:
+        description: Returned when the resource does not exist.
+        schema:
             format: string
-      tags:
-      - Server
+            type: string
+    tags:
+    - Server
   /teams:
     get:
-      operationId: Teams
-      responses:
+    operationId: Teams
+    responses:
         "200":
-          description: A successful response.
-          schema:
+        description: A successful response.
+        schema:
             $ref: '#/definitions/entityTeamList'
         "403":
-          description: Returned when the user does not have permission to access the
+        description: Returned when the user does not have permission to access the
             resource.
-          schema: {}
+        schema: {}
         "404":
-          description: Returned when the resource does not exist.
-          schema:
+        description: Returned when the resource does not exist.
+        schema:
             format: string
-      summary: List teams
-      tags:
-      - Server
+            type: string
+    summary: List teams
+    tags:
+    - Server
   /tournaments:
     get:
-      operationId: Tournaments
-      responses:
+    operationId: Tournaments
+    responses:
         "200":
-          description: A successful response.
-          schema:
+        description: A successful response.
+        schema:
             $ref: '#/definitions/entityTournamentList'
         "403":
-          description: Returned when the user does not have permission to access the
+        description: Returned when the user does not have permission to access the
             resource.
-          schema: {}
+        schema: {}
         "404":
-          description: Returned when the resource does not exist.
-          schema:
+        description: Returned when the resource does not exist.
+        schema:
             format: string
-      summary: List tournaments
-      tags:
-      - Server
+            type: string
+    summary: List tournaments
+    tags:
+    - Server
   /user-session:
     get:
-      operationId: UserSession
-      responses:
+    operationId: UserSession
+    responses:
         "200":
-          description: A successful response.
-          schema:
+        description: A successful response.
+        schema:
             $ref: '#/definitions/entityUserSession'
         "403":
-          description: Returned when the user does not have permission to access the
+        description: Returned when the user does not have permission to access the
             resource.
-          schema: {}
+        schema: {}
         "404":
-          description: Returned when the resource does not exist.
-          schema:
+        description: Returned when the resource does not exist.
+        schema:
             format: string
-      summary: Get current user's session
-      tags:
-      - Server
+            type: string
+    summary: Get current user's session
+    tags:
+    - Server
   /users:
     get:
-      operationId: Users
-      responses:
+    operationId: Users
+    responses:
         "200":
-          description: A successful response.
-          schema:
+        description: A successful response.
+        schema:
             $ref: '#/definitions/entityUserList'
         "403":
-          description: Returned when the user does not have permission to access the
+        description: Returned when the user does not have permission to access the
             resource.
-          schema: {}
+        schema: {}
         "404":
-          description: Returned when the resource does not exist.
-          schema:
+        description: Returned when the resource does not exist.
+        schema:
             format: string
-      summary: List users
-      tags:
-      - Server
+            type: string
+    summary: List users
+    tags:
+    - Server
 produces:
 - application/json
 schemes:

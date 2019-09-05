@@ -9,7 +9,7 @@ import {
 
 import AllTournamentsList from "../components/tournament/AllTournamentsList";
 import AllTeamTournamentsList from "../components/tournament/AllTeamTournamentsList";
-import { 
+import {
   fetchAllTournaments as fetchAllTournamentsAction
 } from "../actions/tournaments"
 
@@ -21,7 +21,7 @@ class AllTournamentsPage extends React.PureComponent {
     }
 
     render() {
-        const { 
+        const {
           tournaments: { allTournaments },
           activeTeam,
         } = this.props;
@@ -30,11 +30,11 @@ class AllTournamentsPage extends React.PureComponent {
                 <Grid.Row cards={true}>
                   <Grid.Col xs={12} sm={12} lg={6}>
                     {activeTeam &&
-                      <AllTeamTournamentsList /> 
+                      <AllTeamTournamentsList />
                     }
                   </Grid.Col>
                   <Grid.Col xs={12} sm={12} lg={6}>
-                     { allTournaments && <AllTournamentsList tournaments={allTournaments} /> }
+                    { allTournaments && <AllTournamentsList tournaments={allTournaments} /> }
                   </Grid.Col>
                 </Grid.Row>
               </Page.Content>
@@ -58,6 +58,6 @@ const mapDispatchToProps = {
 };
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(AllTournamentsPage);

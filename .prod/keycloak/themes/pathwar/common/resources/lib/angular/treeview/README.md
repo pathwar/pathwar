@@ -39,31 +39,31 @@ Here is a simple example.
 ```html
 <div
     data-angular-treeview="true"
-	data-tree-id="abc"
-	data-tree-model="treedata"
-	data-node-id="id"
-	data-node-label="label"
-	data-node-children="children" >
+    data-tree-id="abc"
+    data-tree-model="treedata"
+    data-node-id="id"
+    data-node-label="label"
+    data-node-children="children" >
 </div>
 ```
 
 Example model:
 
 ```javascript
-$scope.treedata = 
+$scope.treedata =
 [
-	{ "label" : "User", "id" : "role1", "children" : [
-		{ "label" : "subUser1", "id" : "role11", "children" : [] },
-		{ "label" : "subUser2", "id" : "role12", "children" : [
-			{ "label" : "subUser2-1", "id" : "role121", "children" : [
-				{ "label" : "subUser2-1-1", "id" : "role1211", "children" : [] },
-				{ "label" : "subUser2-1-2", "id" : "role1212", "children" : [] }
-			]}
-		]}
-	]},
-	{ "label" : "Admin", "id" : "role2", "children" : [] },
-	{ "label" : "Guest", "id" : "role3", "children" : [] }
-];	 
+    { "label" : "User", "id" : "role1", "children" : [
+        { "label" : "subUser1", "id" : "role11", "children" : [] },
+        { "label" : "subUser2", "id" : "role12", "children" : [
+            { "label" : "subUser2-1", "id" : "role121", "children" : [
+                { "label" : "subUser2-1-1", "id" : "role1211", "children" : [] },
+                { "label" : "subUser2-1-2", "id" : "role1212", "children" : [] }
+            ]}
+        ]}
+    ]},
+    { "label" : "Admin", "id" : "role2", "children" : [] },
+    { "label" : "Guest", "id" : "role3", "children" : [] }
+];
 ```
 
 ## Selection

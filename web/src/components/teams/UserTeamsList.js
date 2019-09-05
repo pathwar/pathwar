@@ -25,7 +25,7 @@ const TeamsRows = ({teamsList, activeTeam}) => {
         </Table.Row>
         )
     })
-                    
+
 }
 
 class UserTeamsList extends React.PureComponent {
@@ -35,7 +35,7 @@ class UserTeamsList extends React.PureComponent {
         const userID = activeSession.sessionId;
         fetUserTeamsListAction(userID);
     }
-    
+
     render() {
         const { userTeamsList, activeTeam } = this.props;
         return (
@@ -83,6 +83,6 @@ const mapDispatchToProps = {
 };
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(UserTeamsList);
