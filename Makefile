@@ -1,3 +1,8 @@
+GOPKG =		pathwar.land
+GOBINS =	. ./pwctl
+DOCKER_IMAGE =	pathwar/pathwar
+#NPM_PACKAGES =	./forestadmin
+
 ##
 ## functions
 ##
@@ -32,17 +37,6 @@ SERVERDB_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
 ##
 ## rules
 ##
-
-.PHONY: help
-help:
-	@echo "Make commands:"
-	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: \
-	  '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | \
-	  sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | grep -v / | \
-	  sed 's/^/  $(HELP_MSG_PREFIX)make /'
-
-.PHONY: test
-test: unittest lint tidy
 
 .PHONY: run
 run: $(BIN) serverdb.up
@@ -154,10 +148,6 @@ swagger.yaml: $(PROTOS)
 	mv swagger.yaml.tmp swagger.yaml
 	eclint fix swagger.yaml
 
-.PHONY: docker.build
-docker.build:
-	docker build -t pathwar/pathwar:latest .
-
 .PHONY: integration
 integration: integration.build integration.run
 
@@ -200,3 +190,5 @@ generate-fake-data:
 	AUTH_TOKEN=`http --check-status :8000/authenticate username=integration | jq -r .token` && \
 	  http POST :8000/dev/generate-fake-data Authorization:$$AUTH_TOKEN && \
 	  http POST :8000/dev/sql-dump Authorization:$$AUTH_TOKEN
+
+include rules.mk  # see https://github.com/moul/rules.mk
