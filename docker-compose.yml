@@ -42,7 +42,6 @@ services:
       - DATABASE_SCHEMA=
       - DATABASE_SSL=false
       - DATABASE_ENCRYPT=false
-      - AUTH_SECRET
       - FOREST_ENV_SECRET
       - FOREST_AUTH_SECRET
     ports:
