@@ -27,6 +27,7 @@ GENERATED_FILES := \
 	swagger.yaml
 PROTOC_OPTS := -I/protobuf:vendor/github.com/grpc-ecosystem/grpc-gateway:vendor:.
 RUN_OPTS ?=
+SERVERDB_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
 
 ##
 ## rules
@@ -57,21 +58,29 @@ $(BIN): .proto.generated $(PWCTL_OUT_FILES) $(OUR_SOURCES)
 serverdb.up:
 	docker-compose up -d serverdb
 	@echo "Waiting for serverdb to be ready..."
-	@while ! mysqladmin ping -h127.0.0.1 -P3306 --silent; do sleep 1; done
+	@while ! mysqladmin ping $(SERVERDB_CONFIG) --silent; do sleep 1; done
 	@echo "Done."
+
+.PHONY: serverdb.flush
+serverdb.flush: serverdb.down
+	docker volume rm pathwarland_serverdb_data
 
 .PHONY: serverdb.down
 serverdb.down:
 	docker-compose stop serverdb || true
 	docker-compose rm -f -v serverdb || true
 
+.PHONY: serverdb.logs
+serverdb.logs:
+	docker-compose logs -f serverdb
+
 .PHONY: serverdb.shell
 serverdb.shell:
-	mysql -h127.0.0.1 -P3306 -uroot -puns3cur3 pathwar
+	mysql $(SERVERDB_CONFIG) pathwar
 
 .PHONY: serverdb.dump
 serverdb.dump:
-	mysqldump -h127.0.0.1 -P3306 -uroot -puns3cur3 pathwar
+	mysqldump $(SERVERDB_CONFIG) pathwar
 
 .PHONY: keycloakdb.shell
 keycloakdb.shell:

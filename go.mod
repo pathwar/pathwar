@@ -14,6 +14,7 @@ require (
 	github.com/docker/go-connections v0.4.0
 	github.com/docker/go-units v0.4.0
 	github.com/go-chi/chi v4.0.2+incompatible
+	github.com/go-chi/cors v1.0.0
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/gobuffalo/logger v1.0.1 // indirect
 	github.com/gobuffalo/packr/v2 v2.6.0
@@ -53,8 +54,10 @@ require (
 	moul.io/zapgorm v0.0.0-20190706070406-8138918b527b
 )
 
-replace github.com/golang/lint => golang.org/x/lint v0.0.0-20190409202823-959b441ac422
+replace (
+	github.com/golang/lint => golang.org/x/lint v0.0.0-20190409202823-959b441ac422
+	gopkg.in/jcmturner/rpc.v1 => gopkg.in/jcmturner/rpc.v1 v1.1.0
+	sourcegraph.com/sourcegraph/go-diff => github.com/sourcegraph/go-diff v0.5.1
+)
 
-replace gopkg.in/jcmturner/rpc.v1 => gopkg.in/jcmturner/rpc.v1 v1.1.0
-
-replace sourcegraph.com/sourcegraph/go-diff => github.com/sourcegraph/go-diff v0.5.1
+go 1.13

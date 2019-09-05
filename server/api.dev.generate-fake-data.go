@@ -63,7 +63,7 @@ func (s *svc) GenerateFakeData(ctx context.Context, _ *Void) (*Void, error) {
 	for i := 0; i < 5; i++ {
 		team := &entity.Team{
 			Name:        gofakeit.HipsterWord(),
-			GravatarURL: gofakeit.URL(),
+			GravatarURL: gofakeit.ImageURL(400, 400) + "?" + gofakeit.HipsterWord(),
 			Locale:      "fr_FR",
 		}
 		teams = append(teams, team)
@@ -73,7 +73,7 @@ func (s *svc) GenerateFakeData(ctx context.Context, _ *Void) (*Void, error) {
 	for i := 0; i < 10; i++ {
 		user := &entity.User{
 			Username:    gofakeit.Name(),
-			GravatarURL: gofakeit.URL(),
+			GravatarURL: gofakeit.ImageURL(400, 400) + "?" + gofakeit.HipsterWord(),
 			WebsiteURL:  gofakeit.URL(),
 			Locale:      "fr_FR",
 			IsStaff:     false,
