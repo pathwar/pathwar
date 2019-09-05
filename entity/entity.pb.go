@@ -11,6 +11,7 @@ import (
 	_ "github.com/golang/protobuf/ptypes/timestamp"
 	io "io"
 	math "math"
+	math_bits "math/bits"
 	time "time"
 )
 
@@ -24,7 +25,7 @@ var _ = time.Kitchen
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type TeamMember_Role int32
 
@@ -447,7 +448,7 @@ func (m *Metadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Metadata.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -510,7 +511,7 @@ func (m *TeamMember) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_TeamMember.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -592,7 +593,7 @@ func (m *TournamentMember) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return xxx_messageInfo_TournamentMember.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -709,7 +710,7 @@ func (m *AuthMethod) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_AuthMethod.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -827,7 +828,7 @@ func (m *User) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_User.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -934,7 +935,7 @@ func (m *UserList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_UserList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -981,7 +982,7 @@ func (m *UserSession) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_UserSession.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1045,7 +1046,7 @@ func (m *Team) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Team.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1124,7 +1125,7 @@ func (m *TeamList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_TeamList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1175,7 +1176,7 @@ func (m *Level) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Level.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1261,7 +1262,7 @@ func (m *LevelList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_LevelList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1314,7 +1315,7 @@ func (m *LevelVersion) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return xxx_messageInfo_LevelVersion.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1420,7 +1421,7 @@ func (m *Tournament) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Tournament.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1499,7 +1500,7 @@ func (m *TournamentList) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return xxx_messageInfo_TournamentList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1550,7 +1551,7 @@ func (m *TournamentTeam) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return xxx_messageInfo_TournamentTeam.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1649,7 +1650,7 @@ func (m *WhoswhoAttempt) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return xxx_messageInfo_WhoswhoAttempt.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1740,7 +1741,7 @@ func (m *LevelValidation) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return xxx_messageInfo_LevelValidation.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1817,7 +1818,7 @@ func (m *LevelSubscription) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return xxx_messageInfo_LevelSubscription.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1892,7 +1893,7 @@ func (m *InventoryItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_InventoryItem.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1954,7 +1955,7 @@ func (m *LevelFlavor) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_LevelFlavor.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2024,7 +2025,7 @@ func (m *LevelInstance) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_LevelInstance.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2100,7 +2101,7 @@ func (m *Hypervisor) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Hypervisor.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2165,7 +2166,7 @@ func (m *Event) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Event.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2208,7 +2209,7 @@ func (m *Notification) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return xxx_messageInfo_Notification.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2299,7 +2300,7 @@ func (m *Coupon) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Coupon.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2389,7 +2390,7 @@ func (m *CouponValidation) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return xxx_messageInfo_CouponValidation.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2469,7 +2470,7 @@ func (m *Achievement) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_Achievement.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2583,7 +2584,7 @@ func (m *Dump) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Dump.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2774,7 +2775,7 @@ func (m *Status) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Status.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -2822,7 +2823,7 @@ func (m *Info) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Info.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -3157,7 +3158,7 @@ var fileDescriptor_9b38ccb06a827056 = []byte{
 func (m *Metadata) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -3165,43 +3166,49 @@ func (m *Metadata) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Metadata) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Metadata) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.ID) > 0 {
-		dAtA[i] = 0xa
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.ID)))
-		i += copy(dAtA[i:], m.ID)
-	}
-	if m.CreatedAt != nil {
-		dAtA[i] = 0x12
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(github_com_gogo_protobuf_types.SizeOfStdTime(*m.CreatedAt)))
-		n1, err1 := github_com_gogo_protobuf_types.StdTimeMarshalTo(*m.CreatedAt, dAtA[i:])
+	if m.UpdatedAt != nil {
+		n1, err1 := github_com_gogo_protobuf_types.StdTimeMarshalTo(*m.UpdatedAt, dAtA[i-github_com_gogo_protobuf_types.SizeOfStdTime(*m.UpdatedAt):])
 		if err1 != nil {
 			return 0, err1
 		}
-		i += n1
-	}
-	if m.UpdatedAt != nil {
+		i -= n1
+		i = encodeVarintEntity(dAtA, i, uint64(n1))
+		i--
 		dAtA[i] = 0x1a
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(github_com_gogo_protobuf_types.SizeOfStdTime(*m.UpdatedAt)))
-		n2, err2 := github_com_gogo_protobuf_types.StdTimeMarshalTo(*m.UpdatedAt, dAtA[i:])
+	}
+	if m.CreatedAt != nil {
+		n2, err2 := github_com_gogo_protobuf_types.StdTimeMarshalTo(*m.CreatedAt, dAtA[i-github_com_gogo_protobuf_types.SizeOfStdTime(*m.CreatedAt):])
 		if err2 != nil {
 			return 0, err2
 		}
-		i += n2
+		i -= n2
+		i = encodeVarintEntity(dAtA, i, uint64(n2))
+		i--
+		dAtA[i] = 0x12
 	}
-	return i, nil
+	if len(m.ID) > 0 {
+		i -= len(m.ID)
+		copy(dAtA[i:], m.ID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.ID)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *TeamMember) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -3209,72 +3216,85 @@ func (m *TeamMember) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *TeamMember) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamMember) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n3, err3 := m.Metadata.MarshalTo(dAtA[i:])
-	if err3 != nil {
-		return 0, err3
-	}
-	i += n3
-	if m.Role != 0 {
-		dAtA[i] = 0xa0
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Role))
-	}
-	if m.User != nil {
-		dAtA[i] = 0xc2
-		i++
+	if len(m.TeamID) > 0 {
+		i -= len(m.TeamID)
+		copy(dAtA[i:], m.TeamID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.TeamID)))
+		i--
 		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.User.Size()))
-		n4, err4 := m.User.MarshalTo(dAtA[i:])
-		if err4 != nil {
-			return 0, err4
-		}
-		i += n4
-	}
-	if len(m.UserID) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.UserID)))
-		i += copy(dAtA[i:], m.UserID)
+		i--
+		dAtA[i] = 0xda
 	}
 	if m.Team != nil {
-		dAtA[i] = 0xd2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Team.Size()))
-		n5, err5 := m.Team.MarshalTo(dAtA[i:])
-		if err5 != nil {
-			return 0, err5
+		{
+			size, err := m.Team.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
 		}
-		i += n5
-	}
-	if len(m.TeamID) > 0 {
-		dAtA[i] = 0xda
-		i++
+		i--
 		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.TeamID)))
-		i += copy(dAtA[i:], m.TeamID)
+		i--
+		dAtA[i] = 0xd2
 	}
-	return i, nil
+	if len(m.UserID) > 0 {
+		i -= len(m.UserID)
+		copy(dAtA[i:], m.UserID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.UserID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
+	}
+	if m.User != nil {
+		{
+			size, err := m.User.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
+	}
+	if m.Role != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Role))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa0
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *TournamentMember) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -3282,142 +3302,165 @@ func (m *TournamentMember) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *TournamentMember) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TournamentMember) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n6, err6 := m.Metadata.MarshalTo(dAtA[i:])
-	if err6 != nil {
-		return 0, err6
-	}
-	i += n6
-	if m.Role != 0 {
-		dAtA[i] = 0xa0
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Role))
-	}
-	if m.User != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.User.Size()))
-		n7, err7 := m.User.MarshalTo(dAtA[i:])
-		if err7 != nil {
-			return 0, err7
-		}
-		i += n7
-	}
-	if len(m.UserID) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.UserID)))
-		i += copy(dAtA[i:], m.UserID)
-	}
-	if m.TournamentTeam != nil {
-		dAtA[i] = 0xd2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.TournamentTeam.Size()))
-		n8, err8 := m.TournamentTeam.MarshalTo(dAtA[i:])
-		if err8 != nil {
-			return 0, err8
-		}
-		i += n8
-	}
-	if len(m.TournamentTeamID) > 0 {
-		dAtA[i] = 0xda
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.TournamentTeamID)))
-		i += copy(dAtA[i:], m.TournamentTeamID)
-	}
-	if len(m.Coupons) > 0 {
-		for _, msg := range m.Coupons {
-			dAtA[i] = 0xe2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+	if len(m.Items) > 0 {
+		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
 			}
-			i += n
-		}
-	}
-	if len(m.Achievements) > 0 {
-		for _, msg := range m.Achievements {
-			dAtA[i] = 0xea
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.SentWhoswhoAttempts) > 0 {
-		for _, msg := range m.SentWhoswhoAttempts {
-			dAtA[i] = 0xf2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0x82
 		}
 	}
 	if len(m.ReceivedWhoswhoAttempts) > 0 {
-		for _, msg := range m.ReceivedWhoswhoAttempts {
-			dAtA[i] = 0xfa
-			i++
+		for iNdEx := len(m.ReceivedWhoswhoAttempts) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ReceivedWhoswhoAttempts[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
 			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
+			i--
+			dAtA[i] = 0xfa
+		}
+	}
+	if len(m.SentWhoswhoAttempts) > 0 {
+		for iNdEx := len(m.SentWhoswhoAttempts) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.SentWhoswhoAttempts[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xf2
+		}
+	}
+	if len(m.Achievements) > 0 {
+		for iNdEx := len(m.Achievements) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Achievements[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xea
+		}
+	}
+	if len(m.Coupons) > 0 {
+		for iNdEx := len(m.Coupons) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Coupons[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xe2
+		}
+	}
+	if len(m.TournamentTeamID) > 0 {
+		i -= len(m.TournamentTeamID)
+		copy(dAtA[i:], m.TournamentTeamID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.TournamentTeamID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xda
+	}
+	if m.TournamentTeam != nil {
+		{
+			size, err := m.TournamentTeam.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
-			i += n
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
 		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xd2
 	}
-	if len(m.Items) > 0 {
-		for _, msg := range m.Items {
-			dAtA[i] = 0x82
-			i++
-			dAtA[i] = 0xd
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
+	if len(m.UserID) > 0 {
+		i -= len(m.UserID)
+		copy(dAtA[i:], m.UserID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.UserID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
+	}
+	if m.User != nil {
+		{
+			size, err := m.User.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
-			i += n
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
 		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
 	}
-	return i, nil
+	if m.Role != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Role))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa0
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *AuthMethod) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -3425,112 +3468,128 @@ func (m *AuthMethod) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *AuthMethod) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *AuthMethod) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n9, err9 := m.Metadata.MarshalTo(dAtA[i:])
-	if err9 != nil {
-		return 0, err9
-	}
-	i += n9
-	if len(m.Identifier) > 0 {
-		dAtA[i] = 0xa2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Identifier)))
-		i += copy(dAtA[i:], m.Identifier)
-	}
-	if len(m.EmailAddress) > 0 {
-		dAtA[i] = 0xaa
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.EmailAddress)))
-		i += copy(dAtA[i:], m.EmailAddress)
-	}
-	if len(m.PasswordHash) > 0 {
-		dAtA[i] = 0xb2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.PasswordHash)))
-		i += copy(dAtA[i:], m.PasswordHash)
-	}
-	if len(m.Salt) > 0 {
-		dAtA[i] = 0xba
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Salt)))
-		i += copy(dAtA[i:], m.Salt)
-	}
-	if len(m.TotpToken) > 0 {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.TotpToken)))
-		i += copy(dAtA[i:], m.TotpToken)
-	}
-	if len(m.Url) > 0 {
+	if len(m.UserID) > 0 {
+		i -= len(m.UserID)
+		copy(dAtA[i:], m.UserID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.UserID)))
+		i--
+		dAtA[i] = 0xc
+		i--
 		dAtA[i] = 0xca
-		i++
+	}
+	if m.User != nil {
+		{
+			size, err := m.User.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
+	}
+	if m.Provider != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Provider))
+		i--
 		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Url)))
-		i += copy(dAtA[i:], m.Url)
+		i--
+		dAtA[i] = 0xe0
 	}
 	if m.IsVerified {
-		dAtA[i] = 0xd8
-		i++
-		dAtA[i] = 0x6
-		i++
+		i--
 		if m.IsVerified {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
-	}
-	if m.Provider != 0 {
-		dAtA[i] = 0xe0
-		i++
+		i--
 		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Provider))
+		i--
+		dAtA[i] = 0xd8
 	}
-	if m.User != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.User.Size()))
-		n10, err10 := m.User.MarshalTo(dAtA[i:])
-		if err10 != nil {
-			return 0, err10
-		}
-		i += n10
-	}
-	if len(m.UserID) > 0 {
+	if len(m.Url) > 0 {
+		i -= len(m.Url)
+		copy(dAtA[i:], m.Url)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Url)))
+		i--
+		dAtA[i] = 0x6
+		i--
 		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.UserID)))
-		i += copy(dAtA[i:], m.UserID)
 	}
-	return i, nil
+	if len(m.TotpToken) > 0 {
+		i -= len(m.TotpToken)
+		copy(dAtA[i:], m.TotpToken)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.TotpToken)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xc2
+	}
+	if len(m.Salt) > 0 {
+		i -= len(m.Salt)
+		copy(dAtA[i:], m.Salt)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Salt)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xba
+	}
+	if len(m.PasswordHash) > 0 {
+		i -= len(m.PasswordHash)
+		copy(dAtA[i:], m.PasswordHash)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.PasswordHash)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xb2
+	}
+	if len(m.EmailAddress) > 0 {
+		i -= len(m.EmailAddress)
+		copy(dAtA[i:], m.EmailAddress)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.EmailAddress)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xaa
+	}
+	if len(m.Identifier) > 0 {
+		i -= len(m.Identifier)
+		copy(dAtA[i:], m.Identifier)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Identifier)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa2
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *User) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -3538,139 +3597,160 @@ func (m *User) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *User) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *User) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n11, err11 := m.Metadata.MarshalTo(dAtA[i:])
-	if err11 != nil {
-		return 0, err11
+	if len(m.Memberships) > 0 {
+		for iNdEx := len(m.Memberships) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Memberships[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xe2
+		}
 	}
-	i += n11
-	if len(m.Username) > 0 {
-		dAtA[i] = 0xa2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Username)))
-		i += copy(dAtA[i:], m.Username)
+	if len(m.AuthMethods) > 0 {
+		for iNdEx := len(m.AuthMethods) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.AuthMethods[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xda
+		}
 	}
-	if len(m.GravatarURL) > 0 {
-		dAtA[i] = 0xaa
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.GravatarURL)))
-		i += copy(dAtA[i:], m.GravatarURL)
+	if len(m.Notifications) > 0 {
+		for iNdEx := len(m.Notifications) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Notifications[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xd2
+		}
 	}
-	if len(m.WebsiteURL) > 0 {
-		dAtA[i] = 0xb2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.WebsiteURL)))
-		i += copy(dAtA[i:], m.WebsiteURL)
+	if len(m.TournamentMemberships) > 0 {
+		for iNdEx := len(m.TournamentMemberships) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.TournamentMemberships[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xca
+		}
 	}
-	if len(m.Locale) > 0 {
-		dAtA[i] = 0xba
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Locale)))
-		i += copy(dAtA[i:], m.Locale)
+	if len(m.Sessions) > 0 {
+		for iNdEx := len(m.Sessions) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Sessions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xc2
+		}
 	}
 	if m.IsStaff {
-		dAtA[i] = 0xc0
-		i++
-		dAtA[i] = 0x6
-		i++
+		i--
 		if m.IsStaff {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xc0
 	}
-	if len(m.Sessions) > 0 {
-		for _, msg := range m.Sessions {
-			dAtA[i] = 0xc2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
+	if len(m.Locale) > 0 {
+		i -= len(m.Locale)
+		copy(dAtA[i:], m.Locale)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Locale)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xba
+	}
+	if len(m.WebsiteURL) > 0 {
+		i -= len(m.WebsiteURL)
+		copy(dAtA[i:], m.WebsiteURL)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.WebsiteURL)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xb2
+	}
+	if len(m.GravatarURL) > 0 {
+		i -= len(m.GravatarURL)
+		copy(dAtA[i:], m.GravatarURL)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.GravatarURL)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xaa
+	}
+	if len(m.Username) > 0 {
+		i -= len(m.Username)
+		copy(dAtA[i:], m.Username)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Username)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa2
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	if len(m.TournamentMemberships) > 0 {
-		for _, msg := range m.TournamentMemberships {
-			dAtA[i] = 0xca
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.Notifications) > 0 {
-		for _, msg := range m.Notifications {
-			dAtA[i] = 0xd2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.AuthMethods) > 0 {
-		for _, msg := range m.AuthMethods {
-			dAtA[i] = 0xda
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.Memberships) > 0 {
-		for _, msg := range m.Memberships {
-			dAtA[i] = 0xe2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	return i, nil
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *UserList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -3678,29 +3758,36 @@ func (m *UserList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *UserList) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UserList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Items) > 0 {
-		for _, msg := range m.Items {
-			dAtA[i] = 0xa
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0xa
 		}
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *UserSession) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -3708,53 +3795,64 @@ func (m *UserSession) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *UserSession) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UserSession) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n12, err12 := m.Metadata.MarshalTo(dAtA[i:])
-	if err12 != nil {
-		return 0, err12
-	}
-	i += n12
-	if len(m.Username) > 0 {
-		dAtA[i] = 0xa2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Username)))
-		i += copy(dAtA[i:], m.Username)
+	if len(m.UserID) > 0 {
+		i -= len(m.UserID)
+		copy(dAtA[i:], m.UserID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.UserID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
 	}
 	if m.User != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.User.Size()))
-		n13, err13 := m.User.MarshalTo(dAtA[i:])
-		if err13 != nil {
-			return 0, err13
+		{
+			size, err := m.User.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
 		}
-		i += n13
-	}
-	if len(m.UserID) > 0 {
-		dAtA[i] = 0xca
-		i++
+		i--
 		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.UserID)))
-		i += copy(dAtA[i:], m.UserID)
+		i--
+		dAtA[i] = 0xc2
 	}
-	return i, nil
+	if len(m.Username) > 0 {
+		i -= len(m.Username)
+		copy(dAtA[i:], m.Username)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Username)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa2
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *Team) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -3762,91 +3860,107 @@ func (m *Team) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Team) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Team) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n14, err14 := m.Metadata.MarshalTo(dAtA[i:])
-	if err14 != nil {
-		return 0, err14
-	}
-	i += n14
-	if len(m.Name) > 0 {
-		dAtA[i] = 0xa2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Name)))
-		i += copy(dAtA[i:], m.Name)
-	}
-	if len(m.GravatarURL) > 0 {
-		dAtA[i] = 0xaa
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.GravatarURL)))
-		i += copy(dAtA[i:], m.GravatarURL)
-	}
-	if len(m.Locale) > 0 {
-		dAtA[i] = 0xb2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Locale)))
-		i += copy(dAtA[i:], m.Locale)
-	}
-	if len(m.TournamentTeams) > 0 {
-		for _, msg := range m.TournamentTeams {
-			dAtA[i] = 0xc2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+	if len(m.Members) > 0 {
+		for iNdEx := len(m.Members) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Members[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xd2
 		}
 	}
 	if len(m.ReceivedWhoswhoAttempts) > 0 {
-		for _, msg := range m.ReceivedWhoswhoAttempts {
+		for iNdEx := len(m.ReceivedWhoswhoAttempts) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ReceivedWhoswhoAttempts[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
 			dAtA[i] = 0xca
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
 		}
 	}
-	if len(m.Members) > 0 {
-		for _, msg := range m.Members {
-			dAtA[i] = 0xd2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+	if len(m.TournamentTeams) > 0 {
+		for iNdEx := len(m.TournamentTeams) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.TournamentTeams[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xc2
 		}
 	}
-	return i, nil
+	if len(m.Locale) > 0 {
+		i -= len(m.Locale)
+		copy(dAtA[i:], m.Locale)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Locale)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xb2
+	}
+	if len(m.GravatarURL) > 0 {
+		i -= len(m.GravatarURL)
+		copy(dAtA[i:], m.GravatarURL)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.GravatarURL)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xaa
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa2
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *TeamList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -3854,29 +3968,36 @@ func (m *TeamList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *TeamList) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Items) > 0 {
-		for _, msg := range m.Items {
-			dAtA[i] = 0xa
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0xa
 		}
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *Level) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -3884,91 +4005,105 @@ func (m *Level) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Level) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Level) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n15, err15 := m.Metadata.MarshalTo(dAtA[i:])
-	if err15 != nil {
-		return 0, err15
+	if len(m.Versions) > 0 {
+		for iNdEx := len(m.Versions) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Versions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xc2
+		}
 	}
-	i += n15
-	if len(m.Name) > 0 {
-		dAtA[i] = 0xa2
-		i++
+	if len(m.PreviewUrl) > 0 {
+		i -= len(m.PreviewUrl)
+		copy(dAtA[i:], m.PreviewUrl)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.PreviewUrl)))
+		i--
 		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Name)))
-		i += copy(dAtA[i:], m.Name)
-	}
-	if len(m.Description) > 0 {
-		dAtA[i] = 0xaa
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Description)))
-		i += copy(dAtA[i:], m.Description)
-	}
-	if len(m.Author) > 0 {
-		dAtA[i] = 0xb2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Author)))
-		i += copy(dAtA[i:], m.Author)
-	}
-	if len(m.Locale) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Locale)))
-		i += copy(dAtA[i:], m.Locale)
+		i--
+		dAtA[i] = 0xda
 	}
 	if m.IsDraft {
-		dAtA[i] = 0xd0
-		i++
-		dAtA[i] = 0x6
-		i++
+		i--
 		if m.IsDraft {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
-	}
-	if len(m.PreviewUrl) > 0 {
-		dAtA[i] = 0xda
-		i++
+		i--
 		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.PreviewUrl)))
-		i += copy(dAtA[i:], m.PreviewUrl)
+		i--
+		dAtA[i] = 0xd0
 	}
-	if len(m.Versions) > 0 {
-		for _, msg := range m.Versions {
-			dAtA[i] = 0xc2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
+	if len(m.Locale) > 0 {
+		i -= len(m.Locale)
+		copy(dAtA[i:], m.Locale)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Locale)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xca
+	}
+	if len(m.Author) > 0 {
+		i -= len(m.Author)
+		copy(dAtA[i:], m.Author)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Author)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xb2
+	}
+	if len(m.Description) > 0 {
+		i -= len(m.Description)
+		copy(dAtA[i:], m.Description)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Description)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xaa
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa2
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	return i, nil
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *LevelList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -3976,29 +4111,36 @@ func (m *LevelList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LevelList) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *LevelList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Items) > 0 {
-		for _, msg := range m.Items {
-			dAtA[i] = 0xa
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0xa
 		}
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *LevelVersion) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4006,114 +4148,129 @@ func (m *LevelVersion) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LevelVersion) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *LevelVersion) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n16, err16 := m.Metadata.MarshalTo(dAtA[i:])
-	if err16 != nil {
-		return 0, err16
-	}
-	i += n16
-	if len(m.Version) > 0 {
-		dAtA[i] = 0xa2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Version)))
-		i += copy(dAtA[i:], m.Version)
-	}
-	if len(m.Changelog) > 0 {
-		dAtA[i] = 0xaa
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Changelog)))
-		i += copy(dAtA[i:], m.Changelog)
-	}
-	if m.IsDraft {
-		dAtA[i] = 0xb0
-		i++
-		dAtA[i] = 0x6
-		i++
-		if m.IsDraft {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
+	if len(m.Flavors) > 0 {
+		for iNdEx := len(m.Flavors) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Flavors[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xd2
 		}
-		i++
+	}
+	if len(m.LevelID) > 0 {
+		i -= len(m.LevelID)
+		copy(dAtA[i:], m.LevelID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.LevelID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
+	}
+	if m.Level != nil {
+		{
+			size, err := m.Level.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
+	}
+	if m.Driver != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Driver))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xc8
+	}
+	if len(m.SourceURL) > 0 {
+		i -= len(m.SourceURL)
+		copy(dAtA[i:], m.SourceURL)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.SourceURL)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xc2
 	}
 	if m.IsLatest {
-		dAtA[i] = 0xb8
-		i++
-		dAtA[i] = 0x6
-		i++
+		i--
 		if m.IsLatest {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
-	}
-	if len(m.SourceURL) > 0 {
-		dAtA[i] = 0xc2
-		i++
+		i--
 		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.SourceURL)))
-		i += copy(dAtA[i:], m.SourceURL)
+		i--
+		dAtA[i] = 0xb8
 	}
-	if m.Driver != 0 {
-		dAtA[i] = 0xc8
-		i++
+	if m.IsDraft {
+		i--
+		if m.IsDraft {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
 		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Driver))
+		i--
+		dAtA[i] = 0xb0
 	}
-	if m.Level != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Level.Size()))
-		n17, err17 := m.Level.MarshalTo(dAtA[i:])
-		if err17 != nil {
-			return 0, err17
+	if len(m.Changelog) > 0 {
+		i -= len(m.Changelog)
+		copy(dAtA[i:], m.Changelog)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Changelog)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xaa
+	}
+	if len(m.Version) > 0 {
+		i -= len(m.Version)
+		copy(dAtA[i:], m.Version)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Version)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa2
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
-		i += n17
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	if len(m.LevelID) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.LevelID)))
-		i += copy(dAtA[i:], m.LevelID)
-	}
-	if len(m.Flavors) > 0 {
-		for _, msg := range m.Flavors {
-			dAtA[i] = 0xd2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	return i, nil
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *Tournament) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4121,87 +4278,99 @@ func (m *Tournament) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Tournament) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Tournament) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n18, err18 := m.Metadata.MarshalTo(dAtA[i:])
-	if err18 != nil {
-		return 0, err18
+	if len(m.Coupons) > 0 {
+		for iNdEx := len(m.Coupons) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Coupons[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xca
+		}
 	}
-	i += n18
-	if len(m.Name) > 0 {
-		dAtA[i] = 0xa2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Name)))
-		i += copy(dAtA[i:], m.Name)
-	}
-	if m.Status != 0 {
-		dAtA[i] = 0xa8
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Status))
-	}
-	if m.Visibility != 0 {
-		dAtA[i] = 0xb0
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Visibility))
+	if len(m.Teams) > 0 {
+		for iNdEx := len(m.Teams) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Teams[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xc2
+		}
 	}
 	if m.IsDefault {
-		dAtA[i] = 0xb8
-		i++
-		dAtA[i] = 0x6
-		i++
+		i--
 		if m.IsDefault {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xb8
 	}
-	if len(m.Teams) > 0 {
-		for _, msg := range m.Teams {
-			dAtA[i] = 0xc2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
+	if m.Visibility != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Visibility))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.Status != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Status))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa8
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa2
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	if len(m.Coupons) > 0 {
-		for _, msg := range m.Coupons {
-			dAtA[i] = 0xca
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	return i, nil
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *TournamentList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4209,29 +4378,36 @@ func (m *TournamentList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *TournamentList) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TournamentList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Items) > 0 {
-		for _, msg := range m.Items {
-			dAtA[i] = 0xa
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0xa
 		}
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *TournamentTeam) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4239,105 +4415,122 @@ func (m *TournamentTeam) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *TournamentTeam) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TournamentTeam) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n19, err19 := m.Metadata.MarshalTo(dAtA[i:])
-	if err19 != nil {
-		return 0, err19
+	if len(m.Members) > 0 {
+		for iNdEx := len(m.Members) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Members[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xf2
+		}
 	}
-	i += n19
+	if len(m.LevelSubscriptions) > 0 {
+		for iNdEx := len(m.LevelSubscriptions) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.LevelSubscriptions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xea
+		}
+	}
+	if len(m.TeamID) > 0 {
+		i -= len(m.TeamID)
+		copy(dAtA[i:], m.TeamID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.TeamID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xda
+	}
+	if m.Team != nil {
+		{
+			size, err := m.Team.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xd2
+	}
+	if len(m.TournamentID) > 0 {
+		i -= len(m.TournamentID)
+		copy(dAtA[i:], m.TournamentID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.TournamentID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
+	}
+	if m.Tournament != nil {
+		{
+			size, err := m.Tournament.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
+	}
 	if m.IsDefault {
-		dAtA[i] = 0xa0
-		i++
-		dAtA[i] = 0x6
-		i++
+		i--
 		if m.IsDefault {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa0
 	}
-	if m.Tournament != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Tournament.Size()))
-		n20, err20 := m.Tournament.MarshalTo(dAtA[i:])
-		if err20 != nil {
-			return 0, err20
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
-		i += n20
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	if len(m.TournamentID) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.TournamentID)))
-		i += copy(dAtA[i:], m.TournamentID)
-	}
-	if m.Team != nil {
-		dAtA[i] = 0xd2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Team.Size()))
-		n21, err21 := m.Team.MarshalTo(dAtA[i:])
-		if err21 != nil {
-			return 0, err21
-		}
-		i += n21
-	}
-	if len(m.TeamID) > 0 {
-		dAtA[i] = 0xda
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.TeamID)))
-		i += copy(dAtA[i:], m.TeamID)
-	}
-	if len(m.LevelSubscriptions) > 0 {
-		for _, msg := range m.LevelSubscriptions {
-			dAtA[i] = 0xea
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.Members) > 0 {
-		for _, msg := range m.Members {
-			dAtA[i] = 0xf2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	return i, nil
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *WhoswhoAttempt) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4345,97 +4538,113 @@ func (m *WhoswhoAttempt) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *WhoswhoAttempt) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *WhoswhoAttempt) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n22, err22 := m.Metadata.MarshalTo(dAtA[i:])
-	if err22 != nil {
-		return 0, err22
+	if len(m.TargetTeamID) > 0 {
+		i -= len(m.TargetTeamID)
+		copy(dAtA[i:], m.TargetTeamID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.TargetTeamID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xea
 	}
-	i += n22
+	if m.TargetTeam != nil {
+		{
+			size, err := m.TargetTeam.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xe2
+	}
+	if len(m.TargetMemberID) > 0 {
+		i -= len(m.TargetMemberID)
+		copy(dAtA[i:], m.TargetMemberID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.TargetMemberID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xda
+	}
+	if m.TargetMember != nil {
+		{
+			size, err := m.TargetMember.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xd2
+	}
+	if len(m.AuthorID) > 0 {
+		i -= len(m.AuthorID)
+		copy(dAtA[i:], m.AuthorID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.AuthorID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
+	}
+	if m.Author != nil {
+		{
+			size, err := m.Author.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
+	}
 	if m.Success {
-		dAtA[i] = 0xa0
-		i++
-		dAtA[i] = 0x6
-		i++
+		i--
 		if m.Success {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa0
 	}
-	if m.Author != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Author.Size()))
-		n23, err23 := m.Author.MarshalTo(dAtA[i:])
-		if err23 != nil {
-			return 0, err23
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
-		i += n23
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	if len(m.AuthorID) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.AuthorID)))
-		i += copy(dAtA[i:], m.AuthorID)
-	}
-	if m.TargetMember != nil {
-		dAtA[i] = 0xd2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.TargetMember.Size()))
-		n24, err24 := m.TargetMember.MarshalTo(dAtA[i:])
-		if err24 != nil {
-			return 0, err24
-		}
-		i += n24
-	}
-	if len(m.TargetMemberID) > 0 {
-		dAtA[i] = 0xda
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.TargetMemberID)))
-		i += copy(dAtA[i:], m.TargetMemberID)
-	}
-	if m.TargetTeam != nil {
-		dAtA[i] = 0xe2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.TargetTeam.Size()))
-		n25, err25 := m.TargetTeam.MarshalTo(dAtA[i:])
-		if err25 != nil {
-			return 0, err25
-		}
-		i += n25
-	}
-	if len(m.TargetTeamID) > 0 {
-		dAtA[i] = 0xea
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.TargetTeamID)))
-		i += copy(dAtA[i:], m.TargetTeamID)
-	}
-	return i, nil
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *LevelValidation) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4443,68 +4652,80 @@ func (m *LevelValidation) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LevelValidation) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *LevelValidation) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n26, err26 := m.Metadata.MarshalTo(dAtA[i:])
-	if err26 != nil {
-		return 0, err26
-	}
-	i += n26
-	if m.Status != 0 {
-		dAtA[i] = 0xa0
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Status))
-	}
-	if len(m.AuthorComment) > 0 {
-		dAtA[i] = 0xaa
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.AuthorComment)))
-		i += copy(dAtA[i:], m.AuthorComment)
-	}
-	if len(m.CorrectorComment) > 0 {
-		dAtA[i] = 0xb2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.CorrectorComment)))
-		i += copy(dAtA[i:], m.CorrectorComment)
+	if len(m.LevelSubscriptionID) > 0 {
+		i -= len(m.LevelSubscriptionID)
+		copy(dAtA[i:], m.LevelSubscriptionID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.LevelSubscriptionID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
 	}
 	if m.LevelSubscription != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.LevelSubscription.Size()))
-		n27, err27 := m.LevelSubscription.MarshalTo(dAtA[i:])
-		if err27 != nil {
-			return 0, err27
+		{
+			size, err := m.LevelSubscription.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
 		}
-		i += n27
-	}
-	if len(m.LevelSubscriptionID) > 0 {
-		dAtA[i] = 0xca
-		i++
+		i--
 		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.LevelSubscriptionID)))
-		i += copy(dAtA[i:], m.LevelSubscriptionID)
+		i--
+		dAtA[i] = 0xc2
 	}
-	return i, nil
+	if len(m.CorrectorComment) > 0 {
+		i -= len(m.CorrectorComment)
+		copy(dAtA[i:], m.CorrectorComment)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.CorrectorComment)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xb2
+	}
+	if len(m.AuthorComment) > 0 {
+		i -= len(m.AuthorComment)
+		copy(dAtA[i:], m.AuthorComment)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.AuthorComment)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xaa
+	}
+	if m.Status != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Status))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa0
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *LevelSubscription) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4512,79 +4733,94 @@ func (m *LevelSubscription) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LevelSubscription) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *LevelSubscription) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n28, err28 := m.Metadata.MarshalTo(dAtA[i:])
-	if err28 != nil {
-		return 0, err28
-	}
-	i += n28
-	if m.TournamentTeam != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.TournamentTeam.Size()))
-		n29, err29 := m.TournamentTeam.MarshalTo(dAtA[i:])
-		if err29 != nil {
-			return 0, err29
+	if len(m.Validations) > 0 {
+		for iNdEx := len(m.Validations) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Validations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xe2
 		}
-		i += n29
-	}
-	if len(m.TournamentTeamID) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.TournamentTeamID)))
-		i += copy(dAtA[i:], m.TournamentTeamID)
-	}
-	if m.LevelFlavor != nil {
-		dAtA[i] = 0xd2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.LevelFlavor.Size()))
-		n30, err30 := m.LevelFlavor.MarshalTo(dAtA[i:])
-		if err30 != nil {
-			return 0, err30
-		}
-		i += n30
 	}
 	if len(m.LevelFlavorID) > 0 {
-		dAtA[i] = 0xda
-		i++
-		dAtA[i] = 0xc
-		i++
+		i -= len(m.LevelFlavorID)
+		copy(dAtA[i:], m.LevelFlavorID)
 		i = encodeVarintEntity(dAtA, i, uint64(len(m.LevelFlavorID)))
-		i += copy(dAtA[i:], m.LevelFlavorID)
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xda
 	}
-	if len(m.Validations) > 0 {
-		for _, msg := range m.Validations {
-			dAtA[i] = 0xe2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
+	if m.LevelFlavor != nil {
+		{
+			size, err := m.LevelFlavor.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
-			i += n
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
 		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xd2
 	}
-	return i, nil
+	if len(m.TournamentTeamID) > 0 {
+		i -= len(m.TournamentTeamID)
+		copy(dAtA[i:], m.TournamentTeamID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.TournamentTeamID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
+	}
+	if m.TournamentTeam != nil {
+		{
+			size, err := m.TournamentTeam.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *InventoryItem) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4592,52 +4828,62 @@ func (m *InventoryItem) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *InventoryItem) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *InventoryItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n31, err31 := m.Metadata.MarshalTo(dAtA[i:])
-	if err31 != nil {
-		return 0, err31
-	}
-	i += n31
-	if m.Item != 0 {
-		dAtA[i] = 0xa0
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Item))
+	if len(m.OwnerID) > 0 {
+		i -= len(m.OwnerID)
+		copy(dAtA[i:], m.OwnerID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.OwnerID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
 	}
 	if m.Owner != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Owner.Size()))
-		n32, err32 := m.Owner.MarshalTo(dAtA[i:])
-		if err32 != nil {
-			return 0, err32
+		{
+			size, err := m.Owner.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
 		}
-		i += n32
-	}
-	if len(m.OwnerID) > 0 {
-		dAtA[i] = 0xca
-		i++
+		i--
 		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.OwnerID)))
-		i += copy(dAtA[i:], m.OwnerID)
+		i--
+		dAtA[i] = 0xc2
 	}
-	return i, nil
+	if m.Item != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Item))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa0
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *LevelFlavor) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4645,73 +4891,87 @@ func (m *LevelFlavor) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LevelFlavor) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *LevelFlavor) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n33, err33 := m.Metadata.MarshalTo(dAtA[i:])
-	if err33 != nil {
-		return 0, err33
-	}
-	i += n33
-	if m.LevelVersion != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.LevelVersion.Size()))
-		n34, err34 := m.LevelVersion.MarshalTo(dAtA[i:])
-		if err34 != nil {
-			return 0, err34
+	if len(m.Subscriptions) > 0 {
+		for iNdEx := len(m.Subscriptions) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Subscriptions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xda
 		}
-		i += n34
-	}
-	if len(m.LevelVersionID) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.LevelVersionID)))
-		i += copy(dAtA[i:], m.LevelVersionID)
 	}
 	if len(m.Instances) > 0 {
-		for _, msg := range m.Instances {
+		for iNdEx := len(m.Instances) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Instances[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
 			dAtA[i] = 0xd2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
+		}
+	}
+	if len(m.LevelVersionID) > 0 {
+		i -= len(m.LevelVersionID)
+		copy(dAtA[i:], m.LevelVersionID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.LevelVersionID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
+	}
+	if m.LevelVersion != nil {
+		{
+			size, err := m.LevelVersion.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
-			i += n
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
 		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
 	}
-	if len(m.Subscriptions) > 0 {
-		for _, msg := range m.Subscriptions {
-			dAtA[i] = 0xda
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	return i, nil
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *LevelInstance) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4719,72 +4979,85 @@ func (m *LevelInstance) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *LevelInstance) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *LevelInstance) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n35, err35 := m.Metadata.MarshalTo(dAtA[i:])
-	if err35 != nil {
-		return 0, err35
-	}
-	i += n35
-	if m.Status != 0 {
-		dAtA[i] = 0xa0
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Status))
-	}
-	if m.Hypervisor != nil {
-		dAtA[i] = 0xc2
-		i++
+	if len(m.FlavorID) > 0 {
+		i -= len(m.FlavorID)
+		copy(dAtA[i:], m.FlavorID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.FlavorID)))
+		i--
 		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Hypervisor.Size()))
-		n36, err36 := m.Hypervisor.MarshalTo(dAtA[i:])
-		if err36 != nil {
-			return 0, err36
-		}
-		i += n36
-	}
-	if len(m.HypervisorID) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.HypervisorID)))
-		i += copy(dAtA[i:], m.HypervisorID)
+		i--
+		dAtA[i] = 0xda
 	}
 	if m.Flavor != nil {
-		dAtA[i] = 0xd2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Flavor.Size()))
-		n37, err37 := m.Flavor.MarshalTo(dAtA[i:])
-		if err37 != nil {
-			return 0, err37
+		{
+			size, err := m.Flavor.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
 		}
-		i += n37
-	}
-	if len(m.FlavorID) > 0 {
-		dAtA[i] = 0xda
-		i++
+		i--
 		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.FlavorID)))
-		i += copy(dAtA[i:], m.FlavorID)
+		i--
+		dAtA[i] = 0xd2
 	}
-	return i, nil
+	if len(m.HypervisorID) > 0 {
+		i -= len(m.HypervisorID)
+		copy(dAtA[i:], m.HypervisorID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.HypervisorID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
+	}
+	if m.Hypervisor != nil {
+		{
+			size, err := m.Hypervisor.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
+	}
+	if m.Status != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Status))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa0
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *Hypervisor) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4792,62 +5065,73 @@ func (m *Hypervisor) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Hypervisor) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Hypervisor) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n38, err38 := m.Metadata.MarshalTo(dAtA[i:])
-	if err38 != nil {
-		return 0, err38
-	}
-	i += n38
-	if len(m.Name) > 0 {
-		dAtA[i] = 0xa2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Name)))
-		i += copy(dAtA[i:], m.Name)
-	}
-	if len(m.Address) > 0 {
-		dAtA[i] = 0xaa
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Address)))
-		i += copy(dAtA[i:], m.Address)
-	}
-	if m.Status != 0 {
-		dAtA[i] = 0xb0
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Status))
-	}
 	if len(m.LevelInstances) > 0 {
-		for _, msg := range m.LevelInstances {
-			dAtA[i] = 0xc2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+		for iNdEx := len(m.LevelInstances) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.LevelInstances[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xc2
 		}
 	}
-	return i, nil
+	if m.Status != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Status))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xb0
+	}
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xaa
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa2
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *Event) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4855,25 +5139,32 @@ func (m *Event) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Event) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Event) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n39, err39 := m.Metadata.MarshalTo(dAtA[i:])
-	if err39 != nil {
-		return 0, err39
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	i += n39
-	return i, nil
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *Notification) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4881,81 +5172,94 @@ func (m *Notification) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Notification) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Notification) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n40, err40 := m.Metadata.MarshalTo(dAtA[i:])
-	if err40 != nil {
-		return 0, err40
+	if len(m.UserID) > 0 {
+		i -= len(m.UserID)
+		copy(dAtA[i:], m.UserID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.UserID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
 	}
-	i += n40
-	if m.IsRead {
-		dAtA[i] = 0xa0
-		i++
+	if m.User != nil {
+		{
+			size, err := m.User.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
+	}
+	if len(m.Args) > 0 {
+		i -= len(m.Args)
+		copy(dAtA[i:], m.Args)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Args)))
+		i--
 		dAtA[i] = 0x6
-		i++
+		i--
+		dAtA[i] = 0xba
+	}
+	if len(m.Msg) > 0 {
+		i -= len(m.Msg)
+		copy(dAtA[i:], m.Msg)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Msg)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xb2
+	}
+	if len(m.ClickUrl) > 0 {
+		i -= len(m.ClickUrl)
+		copy(dAtA[i:], m.ClickUrl)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.ClickUrl)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xaa
+	}
+	if m.IsRead {
+		i--
 		if m.IsRead {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
-	}
-	if len(m.ClickUrl) > 0 {
-		dAtA[i] = 0xaa
-		i++
+		i--
 		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.ClickUrl)))
-		i += copy(dAtA[i:], m.ClickUrl)
+		i--
+		dAtA[i] = 0xa0
 	}
-	if len(m.Msg) > 0 {
-		dAtA[i] = 0xb2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Msg)))
-		i += copy(dAtA[i:], m.Msg)
-	}
-	if len(m.Args) > 0 {
-		dAtA[i] = 0xba
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Args)))
-		i += copy(dAtA[i:], m.Args)
-	}
-	if m.User != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.User.Size()))
-		n41, err41 := m.User.MarshalTo(dAtA[i:])
-		if err41 != nil {
-			return 0, err41
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
-		i += n41
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	if len(m.UserID) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.UserID)))
-		i += copy(dAtA[i:], m.UserID)
-	}
-	return i, nil
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *Coupon) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -4963,81 +5267,94 @@ func (m *Coupon) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Coupon) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Coupon) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n42, err42 := m.Metadata.MarshalTo(dAtA[i:])
-	if err42 != nil {
-		return 0, err42
-	}
-	i += n42
-	if len(m.Hash) > 0 {
-		dAtA[i] = 0xa2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Hash)))
-		i += copy(dAtA[i:], m.Hash)
-	}
-	if m.Value != 0 {
-		dAtA[i] = 0xa8
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Value))
-	}
-	if m.MaxValidationCount != 0 {
-		dAtA[i] = 0xb0
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.MaxValidationCount))
-	}
-	if m.Tournament != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Tournament.Size()))
-		n43, err43 := m.Tournament.MarshalTo(dAtA[i:])
-		if err43 != nil {
-			return 0, err43
+	if len(m.Validations) > 0 {
+		for iNdEx := len(m.Validations) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Validations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xc
+			i--
+			dAtA[i] = 0xd2
 		}
-		i += n43
 	}
 	if len(m.TournamentID) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
+		i -= len(m.TournamentID)
+		copy(dAtA[i:], m.TournamentID)
 		i = encodeVarintEntity(dAtA, i, uint64(len(m.TournamentID)))
-		i += copy(dAtA[i:], m.TournamentID)
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
 	}
-	if len(m.Validations) > 0 {
-		for _, msg := range m.Validations {
-			dAtA[i] = 0xd2
-			i++
-			dAtA[i] = 0xc
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
+	if m.Tournament != nil {
+		{
+			size, err := m.Tournament.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
-			i += n
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
 		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
 	}
-	return i, nil
+	if m.MaxValidationCount != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.MaxValidationCount))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.Value != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Value))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa8
+	}
+	if len(m.Hash) > 0 {
+		i -= len(m.Hash)
+		copy(dAtA[i:], m.Hash)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Hash)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa2
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *CouponValidation) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -5045,73 +5362,87 @@ func (m *CouponValidation) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CouponValidation) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CouponValidation) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n44, err44 := m.Metadata.MarshalTo(dAtA[i:])
-	if err44 != nil {
-		return 0, err44
-	}
-	i += n44
-	if len(m.Comment) > 0 {
-		dAtA[i] = 0xa2
-		i++
-		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Comment)))
-		i += copy(dAtA[i:], m.Comment)
-	}
-	if m.Author != nil {
-		dAtA[i] = 0xc2
-		i++
+	if len(m.CouponID) > 0 {
+		i -= len(m.CouponID)
+		copy(dAtA[i:], m.CouponID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.CouponID)))
+		i--
 		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Author.Size()))
-		n45, err45 := m.Author.MarshalTo(dAtA[i:])
-		if err45 != nil {
-			return 0, err45
-		}
-		i += n45
-	}
-	if len(m.AuthorID) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.AuthorID)))
-		i += copy(dAtA[i:], m.AuthorID)
+		i--
+		dAtA[i] = 0xda
 	}
 	if m.Coupon != nil {
-		dAtA[i] = 0xd2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Coupon.Size()))
-		n46, err46 := m.Coupon.MarshalTo(dAtA[i:])
-		if err46 != nil {
-			return 0, err46
+		{
+			size, err := m.Coupon.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
 		}
-		i += n46
-	}
-	if len(m.CouponID) > 0 {
-		dAtA[i] = 0xda
-		i++
+		i--
 		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.CouponID)))
-		i += copy(dAtA[i:], m.CouponID)
+		i--
+		dAtA[i] = 0xd2
 	}
-	return i, nil
+	if len(m.AuthorID) > 0 {
+		i -= len(m.AuthorID)
+		copy(dAtA[i:], m.AuthorID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.AuthorID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
+	}
+	if m.Author != nil {
+		{
+			size, err := m.Author.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
+	}
+	if len(m.Comment) > 0 {
+		i -= len(m.Comment)
+		copy(dAtA[i:], m.Comment)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Comment)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xa2
+	}
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *Achievement) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -5119,100 +5450,115 @@ func (m *Achievement) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Achievement) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Achievement) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	dAtA[i] = 0xa
-	i++
-	i = encodeVarintEntity(dAtA, i, uint64(m.Metadata.Size()))
-	n47, err47 := m.Metadata.MarshalTo(dAtA[i:])
-	if err47 != nil {
-		return 0, err47
+	if len(m.LevelValidationID) > 0 {
+		i -= len(m.LevelValidationID)
+		copy(dAtA[i:], m.LevelValidationID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.LevelValidationID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xda
 	}
-	i += n47
-	if m.Type != 0 {
-		dAtA[i] = 0xa0
-		i++
+	if m.LevelValidation != nil {
+		{
+			size, err := m.LevelValidation.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xd2
+	}
+	if len(m.AuthorID) > 0 {
+		i -= len(m.AuthorID)
+		copy(dAtA[i:], m.AuthorID)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.AuthorID)))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
+	}
+	if m.Author != nil {
+		{
+			size, err := m.Author.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintEntity(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xc2
+	}
+	if len(m.Argument) > 0 {
+		i -= len(m.Argument)
+		copy(dAtA[i:], m.Argument)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Argument)))
+		i--
 		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Type))
+		i--
+		dAtA[i] = 0xba
+	}
+	if len(m.Comment) > 0 {
+		i -= len(m.Comment)
+		copy(dAtA[i:], m.Comment)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Comment)))
+		i--
+		dAtA[i] = 0x6
+		i--
+		dAtA[i] = 0xb2
 	}
 	if m.IsGlobal {
-		dAtA[i] = 0xa8
-		i++
-		dAtA[i] = 0x6
-		i++
+		i--
 		if m.IsGlobal {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
-	}
-	if len(m.Comment) > 0 {
-		dAtA[i] = 0xb2
-		i++
+		i--
 		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Comment)))
-		i += copy(dAtA[i:], m.Comment)
+		i--
+		dAtA[i] = 0xa8
 	}
-	if len(m.Argument) > 0 {
-		dAtA[i] = 0xba
-		i++
+	if m.Type != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Type))
+		i--
 		dAtA[i] = 0x6
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Argument)))
-		i += copy(dAtA[i:], m.Argument)
+		i--
+		dAtA[i] = 0xa0
 	}
-	if m.Author != nil {
-		dAtA[i] = 0xc2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Author.Size()))
-		n48, err48 := m.Author.MarshalTo(dAtA[i:])
-		if err48 != nil {
-			return 0, err48
+	{
+		size, err := m.Metadata.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
-		i += n48
+		i -= size
+		i = encodeVarintEntity(dAtA, i, uint64(size))
 	}
-	if len(m.AuthorID) > 0 {
-		dAtA[i] = 0xca
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.AuthorID)))
-		i += copy(dAtA[i:], m.AuthorID)
-	}
-	if m.LevelValidation != nil {
-		dAtA[i] = 0xd2
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.LevelValidation.Size()))
-		n49, err49 := m.LevelValidation.MarshalTo(dAtA[i:])
-		if err49 != nil {
-			return 0, err49
-		}
-		i += n49
-	}
-	if len(m.LevelValidationID) > 0 {
-		dAtA[i] = 0xda
-		i++
-		dAtA[i] = 0xc
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.LevelValidationID)))
-		i += copy(dAtA[i:], m.LevelValidationID)
-	}
-	return i, nil
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
 }
 
 func (m *Dump) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -5220,295 +5566,344 @@ func (m *Dump) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Dump) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Achievements) > 0 {
-		for _, msg := range m.Achievements {
-			dAtA[i] = 0xa
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+	if len(m.LevelVersions) > 0 {
+		for iNdEx := len(m.LevelVersions) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.LevelVersions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
 			}
-			i += n
-		}
-	}
-	if len(m.Coupons) > 0 {
-		for _, msg := range m.Coupons {
-			dAtA[i] = 0x12
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.Events) > 0 {
-		for _, msg := range m.Events {
-			dAtA[i] = 0x1a
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.Hypervisors) > 0 {
-		for _, msg := range m.Hypervisors {
-			dAtA[i] = 0x22
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.LevelFlavors) > 0 {
-		for _, msg := range m.LevelFlavors {
-			dAtA[i] = 0x2a
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.LevelInstances) > 0 {
-		for _, msg := range m.LevelInstances {
-			dAtA[i] = 0x32
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.LevelSubscriptions) > 0 {
-		for _, msg := range m.LevelSubscriptions {
-			dAtA[i] = 0x3a
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.LevelValidations) > 0 {
-		for _, msg := range m.LevelValidations {
-			dAtA[i] = 0x42
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.Levels) > 0 {
-		for _, msg := range m.Levels {
-			dAtA[i] = 0x4a
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.Notifications) > 0 {
-		for _, msg := range m.Notifications {
-			dAtA[i] = 0x52
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.InventoryItems) > 0 {
-		for _, msg := range m.InventoryItems {
-			dAtA[i] = 0x5a
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.TeamMembers) > 0 {
-		for _, msg := range m.TeamMembers {
-			dAtA[i] = 0x62
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.Teams) > 0 {
-		for _, msg := range m.Teams {
-			dAtA[i] = 0x6a
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.TournamentMembers) > 0 {
-		for _, msg := range m.TournamentMembers {
-			dAtA[i] = 0x72
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.TournamentTeams) > 0 {
-		for _, msg := range m.TournamentTeams {
-			dAtA[i] = 0x7a
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.Tournaments) > 0 {
-		for _, msg := range m.Tournaments {
-			dAtA[i] = 0x82
-			i++
+			i--
 			dAtA[i] = 0x1
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.UserSessions) > 0 {
-		for _, msg := range m.UserSessions {
-			dAtA[i] = 0x8a
-			i++
-			dAtA[i] = 0x1
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.Users) > 0 {
-		for _, msg := range m.Users {
-			dAtA[i] = 0x92
-			i++
-			dAtA[i] = 0x1
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.WhoswhoAttempts) > 0 {
-		for _, msg := range m.WhoswhoAttempts {
-			dAtA[i] = 0x9a
-			i++
-			dAtA[i] = 0x1
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
-		}
-	}
-	if len(m.AuthMethods) > 0 {
-		for _, msg := range m.AuthMethods {
-			dAtA[i] = 0xa2
-			i++
-			dAtA[i] = 0x1
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
+			i--
+			dAtA[i] = 0xb2
 		}
 	}
 	if len(m.CouponValidations) > 0 {
-		for _, msg := range m.CouponValidations {
+		for iNdEx := len(m.CouponValidations) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.CouponValidations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1
+			i--
 			dAtA[i] = 0xaa
-			i++
-			dAtA[i] = 0x1
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
-			}
-			i += n
 		}
 	}
-	if len(m.LevelVersions) > 0 {
-		for _, msg := range m.LevelVersions {
-			dAtA[i] = 0xb2
-			i++
-			dAtA[i] = 0x1
-			i++
-			i = encodeVarintEntity(dAtA, i, uint64(msg.Size()))
-			n, err := msg.MarshalTo(dAtA[i:])
-			if err != nil {
-				return 0, err
+	if len(m.AuthMethods) > 0 {
+		for iNdEx := len(m.AuthMethods) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.AuthMethods[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
 			}
-			i += n
+			i--
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0xa2
 		}
 	}
-	return i, nil
+	if len(m.WhoswhoAttempts) > 0 {
+		for iNdEx := len(m.WhoswhoAttempts) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.WhoswhoAttempts[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0x9a
+		}
+	}
+	if len(m.Users) > 0 {
+		for iNdEx := len(m.Users) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Users[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0x92
+		}
+	}
+	if len(m.UserSessions) > 0 {
+		for iNdEx := len(m.UserSessions) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.UserSessions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0x8a
+		}
+	}
+	if len(m.Tournaments) > 0 {
+		for iNdEx := len(m.Tournaments) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Tournaments[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0x82
+		}
+	}
+	if len(m.TournamentTeams) > 0 {
+		for iNdEx := len(m.TournamentTeams) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.TournamentTeams[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x7a
+		}
+	}
+	if len(m.TournamentMembers) > 0 {
+		for iNdEx := len(m.TournamentMembers) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.TournamentMembers[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x72
+		}
+	}
+	if len(m.Teams) > 0 {
+		for iNdEx := len(m.Teams) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Teams[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x6a
+		}
+	}
+	if len(m.TeamMembers) > 0 {
+		for iNdEx := len(m.TeamMembers) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.TeamMembers[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x62
+		}
+	}
+	if len(m.InventoryItems) > 0 {
+		for iNdEx := len(m.InventoryItems) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.InventoryItems[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x5a
+		}
+	}
+	if len(m.Notifications) > 0 {
+		for iNdEx := len(m.Notifications) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Notifications[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x52
+		}
+	}
+	if len(m.Levels) > 0 {
+		for iNdEx := len(m.Levels) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Levels[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x4a
+		}
+	}
+	if len(m.LevelValidations) > 0 {
+		for iNdEx := len(m.LevelValidations) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.LevelValidations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x42
+		}
+	}
+	if len(m.LevelSubscriptions) > 0 {
+		for iNdEx := len(m.LevelSubscriptions) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.LevelSubscriptions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x3a
+		}
+	}
+	if len(m.LevelInstances) > 0 {
+		for iNdEx := len(m.LevelInstances) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.LevelInstances[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x32
+		}
+	}
+	if len(m.LevelFlavors) > 0 {
+		for iNdEx := len(m.LevelFlavors) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.LevelFlavors[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x2a
+		}
+	}
+	if len(m.Hypervisors) > 0 {
+		for iNdEx := len(m.Hypervisors) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Hypervisors[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
+	}
+	if len(m.Events) > 0 {
+		for iNdEx := len(m.Events) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Events[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if len(m.Coupons) > 0 {
+		for iNdEx := len(m.Coupons) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Coupons[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.Achievements) > 0 {
+		for iNdEx := len(m.Achievements) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Achievements[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintEntity(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *Status) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -5516,27 +5911,32 @@ func (m *Status) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Status) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Status) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if m.EverythingIsOK {
-		dAtA[i] = 0x8
-		i++
+		i--
 		if m.EverythingIsOK {
 			dAtA[i] = 1
 		} else {
 			dAtA[i] = 0
 		}
-		i++
+		i--
+		dAtA[i] = 0x8
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *Info) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -5544,50 +5944,61 @@ func (m *Info) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Info) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Info) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Version) > 0 {
-		dAtA[i] = 0xa
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Version)))
-		i += copy(dAtA[i:], m.Version)
-	}
-	if m.Uptime != 0 {
-		dAtA[i] = 0x10
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(m.Uptime))
-	}
-	if len(m.Commit) > 0 {
-		dAtA[i] = 0x1a
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.Commit)))
-		i += copy(dAtA[i:], m.Commit)
+	if len(m.BuiltBy) > 0 {
+		i -= len(m.BuiltBy)
+		copy(dAtA[i:], m.BuiltBy)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.BuiltBy)))
+		i--
+		dAtA[i] = 0x2a
 	}
 	if len(m.BuiltAt) > 0 {
-		dAtA[i] = 0x22
-		i++
+		i -= len(m.BuiltAt)
+		copy(dAtA[i:], m.BuiltAt)
 		i = encodeVarintEntity(dAtA, i, uint64(len(m.BuiltAt)))
-		i += copy(dAtA[i:], m.BuiltAt)
+		i--
+		dAtA[i] = 0x22
 	}
-	if len(m.BuiltBy) > 0 {
-		dAtA[i] = 0x2a
-		i++
-		i = encodeVarintEntity(dAtA, i, uint64(len(m.BuiltBy)))
-		i += copy(dAtA[i:], m.BuiltBy)
+	if len(m.Commit) > 0 {
+		i -= len(m.Commit)
+		copy(dAtA[i:], m.Commit)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Commit)))
+		i--
+		dAtA[i] = 0x1a
 	}
-	return i, nil
+	if m.Uptime != 0 {
+		i = encodeVarintEntity(dAtA, i, uint64(m.Uptime))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Version) > 0 {
+		i -= len(m.Version)
+		copy(dAtA[i:], m.Version)
+		i = encodeVarintEntity(dAtA, i, uint64(len(m.Version)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintEntity(dAtA []byte, offset int, v uint64) int {
+	offset -= sovEntity(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func (m *Metadata) Size() (n int) {
 	if m == nil {
@@ -6643,14 +7054,7 @@ func (m *Info) Size() (n int) {
 }
 
 func sovEntity(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozEntity(x uint64) (n int) {
 	return sovEntity(uint64((x << 1) ^ uint64((int64(x) >> 63))))

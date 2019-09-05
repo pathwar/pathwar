@@ -19,12 +19,12 @@ require (
 	github.com/gobuffalo/logger v1.0.1 // indirect
 	github.com/gobuffalo/packr/v2 v2.6.0
 	github.com/gogo/gateway v1.1.0
-	github.com/gogo/protobuf v1.2.2-0.20190730201129-28a6bbf47e48
+	github.com/gogo/protobuf v1.3.0
 	github.com/golang/protobuf v1.3.2
 	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/gorilla/mux v1.7.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.1-0.20190104160321-4832df01553a
-	github.com/grpc-ecosystem/grpc-gateway v1.10.0
+	github.com/grpc-ecosystem/grpc-gateway v1.11.1
 	github.com/jinzhu/gorm v1.9.10
 	github.com/keycloak/kcinit v0.0.0-20181010192927-f85c3c5390ea
 	github.com/lib/pq v1.2.0 // indirect
@@ -46,9 +46,9 @@ require (
 	golang.org/x/crypto v0.0.0-20190829043050-9756ffdc2472
 	golang.org/x/net v0.0.0-20190827160401-ba9fcec4b297 // indirect
 	golang.org/x/sync v0.0.0-20190423024810-112230192c58
-	golang.org/x/sys v0.0.0-20190826190057-c7b8b68b1456 // indirect
+	golang.org/x/sys v0.0.0-20190904154756-749cb33beabd // indirect
 	google.golang.org/appengine v1.6.2 // indirect
-	google.golang.org/genproto v0.0.0-20190819201941-24fa4b261c55
+	google.golang.org/genproto v0.0.0-20190905072037-92dd089d5514
 	google.golang.org/grpc v1.23.0
 	gotest.tools v0.0.0-20181223230014-1083505acf35 // indirect
 	moul.io/zapgorm v0.0.0-20190706070406-8138918b527b

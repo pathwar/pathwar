@@ -16,7 +16,7 @@ div[angular-treeview] {
 div[tree-model] ul {
   margin: 0;
   padding: 0;
-  list-style: none; 
+  list-style: none;
   border: none;
   overflow: hidden;
 }
@@ -95,5 +95,3 @@ div[tree-model] li .cut {
     background-repeat: no-repeat;
     cursor: pointer;
 }
-
-

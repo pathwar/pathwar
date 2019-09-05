@@ -23,10 +23,10 @@ class LogoutPage extends React.PureComponent {
 const mapStateToProps = state => ({
     userSession: state.userSession
 });
-  
-    
+
+
 const mapDispatchToProps = {};
-    
+
 export default connect(
 mapStateToProps,
 mapDispatchToProps
