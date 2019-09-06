@@ -6588,11 +6588,11 @@ button.close {
 }
 /* Font Awesome */
 /*!
- *  Font Awesome 4.3.0 by @davegandy - http://fontawesome.io - @fontawesome
- *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
- */
+  *  Font Awesome 4.3.0 by @davegandy - http://fontawesome.io - @fontawesome
+  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+  */
 /* FONT PATH
- * -------------------------- */
+  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
   src: url('../../components/font-awesome/fonts/fontawesome-webfont.eot?v=4.3.0');
@@ -6756,7 +6756,7 @@ button.close {
   color: #ffffff;
 }
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
-   readers do not read off random characters that represent icons */
+    readers do not read off random characters that represent icons */
 .fa-glass:before {
   content: "\f000";
 }
@@ -8433,12 +8433,12 @@ button.close {
 }
 /* Bootstrap-Select */
 /*!
- * bootstrap-select v1.5.4
- * http://silviomoreto.github.io/bootstrap-select/
- *
- * Copyright 2013 bootstrap-select
- * Licensed under the MIT license
- */
+  * bootstrap-select v1.5.4
+  * http://silviomoreto.github.io/bootstrap-select/
+  *
+  * Copyright 2013 bootstrap-select
+  * Licensed under the MIT license
+  */
 .bootstrap-select.btn-group:not(.input-group-btn),
 .bootstrap-select.btn-group[class*="span"] {
   float: none;

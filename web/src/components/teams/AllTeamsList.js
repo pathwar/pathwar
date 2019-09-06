@@ -2,16 +2,16 @@ import * as React from "react";
 import { connect } from "react-redux"
 import { Card, Table, Avatar, Button } from "tabler-react";
 import PropTypes from "prop-types";
-import { 
+import {
     fetchTeamsList as fetchTeamsListAction,
-    joinTeam as joinTeamAction 
+    joinTeam as joinTeamAction
 } from "../../actions/teams"
 
 const TeamsRows = ({allTeamsList, userTeamsList, joinTeam, userID}) => {
     return allTeamsList.map((team) => {
 
         const isUserOnTem = userTeamsList ? userTeamsList.find((userTeam) => team.metadata.id === userTeam.metadata.id) : undefined;
-        
+
         return (
             <Table.Row key={team.metadata.id}>
             <Table.Col className="w-1">
@@ -28,7 +28,7 @@ const TeamsRows = ({allTeamsList, userTeamsList, joinTeam, userID}) => {
         </Table.Row>
         )
     })
-                    
+
 }
 
 class AllTeamsCard extends React.PureComponent {
@@ -37,7 +37,7 @@ class AllTeamsCard extends React.PureComponent {
         const { fetchTeamsListAction } = this.props;
         fetchTeamsListAction();
     }
-    
+
     render() {
         const { teams, joinTeamAction, activeSession } = this.props;
         return (
@@ -59,10 +59,10 @@ class AllTeamsCard extends React.PureComponent {
                       </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {teams.allTeamsList && <TeamsRows 
-                            allTeamsList={teams.allTeamsList} 
-                            userTeamsList={teams.userTeamsList} 
-                            joinTeam={joinTeamAction} 
+                        {teams.allTeamsList && <TeamsRows
+                            allTeamsList={teams.allTeamsList}
+                            userTeamsList={teams.userTeamsList}
+                            joinTeam={joinTeamAction}
                             userID={activeSession.sessionId}
                         />}
                     </Table.Body>
@@ -81,7 +81,7 @@ AllTeamsCard.propTypes = {
 
 const mapStateToProps = state => ({
     teams: state.teams,
-    activeSession: state.userSession.activeSession 
+    activeSession: state.userSession.activeSession
 });
 
 const mapDispatchToProps = {
@@ -90,6 +90,6 @@ const mapDispatchToProps = {
 };
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(AllTeamsCard);

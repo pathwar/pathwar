@@ -1,3 +1,8 @@
+GOPKG =		pathwar.land
+GOBINS =	. ./pwctl
+DOCKER_IMAGE =	pathwar/pathwar
+#NPM_PACKAGES =	./forestadmin
+
 ##
 ## functions
 ##
@@ -9,6 +14,7 @@ rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subs
 ##
 
 GOPATH ?= $(HOME)/go
+GO ?= go
 BIN := $(GOPATH)/bin/pathwar.land
 SOURCES := $(call rwildcard, ./, *.go)
 PWCTL_SOURCES := $(call rwildcard,pwctl//,*.go)
@@ -26,18 +32,11 @@ GENERATED_FILES := \
 	swagger.yaml
 PROTOC_OPTS := -I/protobuf:vendor/github.com/grpc-ecosystem/grpc-gateway:vendor:.
 RUN_OPTS ?=
+SERVERDB_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
 
 ##
 ## rules
 ##
-
-.PHONY: help
-help:
-	@echo "Make commands:"
-	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: \
-	  '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | \
-	  sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | grep -v / | \
-	  sed 's/^/  $(HELP_MSG_PREFIX)make /'
 
 .PHONY: run
 run: $(BIN) serverdb.up
@@ -46,28 +45,36 @@ run: $(BIN) serverdb.up
 .PHONY: install
 install: $(BIN)
 $(BIN): .proto.generated $(PWCTL_OUT_FILES) $(OUR_SOURCES)
-	go install -v -ldflags "-s -w -X pathwar.land/version.Version=`git describe --tags --abbrev` -X pathwar.land/version.Commit=`git rev-parse HEAD` -X pathwar.land/version.Date=`date +%s` -X pathwar.land/version.BuiltBy=makefile"
+	$(GO) install -v -ldflags "-s -w -X pathwar.land/version.Version=`git describe --tags --abbrev` -X pathwar.land/version.Commit=`git rev-parse HEAD` -X pathwar.land/version.Date=`date +%s` -X pathwar.land/version.BuiltBy=makefile"
 
 
 .PHONY: serverdb.up
 serverdb.up:
 	docker-compose up -d serverdb
 	@echo "Waiting for serverdb to be ready..."
-	@while ! mysqladmin ping -h127.0.0.1 -P3306 --silent; do sleep 1; done
+	@while ! mysqladmin ping $(SERVERDB_CONFIG) --silent; do sleep 1; done
 	@echo "Done."
+
+.PHONY: serverdb.flush
+serverdb.flush: serverdb.down
+	docker volume rm pathwarland_serverdb_data
 
 .PHONY: serverdb.down
 serverdb.down:
 	docker-compose stop serverdb || true
 	docker-compose rm -f -v serverdb || true
 
+.PHONY: serverdb.logs
+serverdb.logs:
+	docker-compose logs -f serverdb
+
 .PHONY: serverdb.shell
 serverdb.shell:
-	mysql -h127.0.0.1 -P3306 -uroot -puns3cur3 pathwar
+	mysql $(SERVERDB_CONFIG) pathwar
 
 .PHONY: serverdb.dump
 serverdb.dump:
-	mysqldump -h127.0.0.1 -P3306 -uroot -puns3cur3 pathwar
+	mysqldump $(SERVERDB_CONFIG) pathwar
 
 .PHONY: keycloakdb.shell
 keycloakdb.shell:
@@ -92,14 +99,14 @@ _ci_prepare:
 generate: .proto.generated
 .proto.generated: $(OUR_PROTOS)
 	rm -f $(GENERATED_PB_FILES)
-	go mod vendor
+	$(GO) mod vendor
 	docker run \
 	  --user="$(shell id -u)" \
 	  --volume="$(PWD):/go/src/pathwar.land" \
 	  --workdir="/go/src/pathwar.land" \
 	  --entrypoint="sh" \
 	  --rm \
-	  pathwar/protoc:v1 \
+	  pathwar/protoc:v2 \
 	  -xec "make _proto_generate"
 	touch $@
 	rm -rf vendor
@@ -109,14 +116,14 @@ _proto_generate: $(GENERATED_PB_FILES) swagger.yaml
 
 $(PWCTL_OUT_FILES): $(PWCTL_SOURCES)
 	mkdir -p ./pwctl/out
-	GOOS=linux GOARCH=amd64 go build -mod=readonly -o ./pwctl/out/pwctl-linux-amd64 ./pwctl/
+	GOOS=linux GOARCH=amd64 $(GO) build -mod=readonly -o ./pwctl/out/pwctl-linux-amd64 ./pwctl/
 
-.PHONY: test
-test: .proto.generated
+.PHONY: unittest
+unittest: .proto.generated
 	echo "" > /tmp/coverage.txt
 	set -e; for dir in `find . -type f -name "go.mod" | sed -r 's@/[^/]+$$@@' | sort | uniq`; do (set -xe; \
 	  cd $$dir; \
-	  go test -v -mod=readonly -cover -coverprofile=/tmp/profile.out -covermode=atomic -race ./...; \
+	  $(GO) test -v -mod=readonly -cover -coverprofile=/tmp/profile.out -covermode=atomic -race ./...; \
 	  if [ -f /tmp/profile.out ]; then \
 	    cat /tmp/profile.out >> /tmp/coverage.txt; \
 	    rm -f /tmp/profile.out; \
@@ -139,10 +146,7 @@ swagger.yaml: $(PROTOS)
 	cat server/server.swagger.json | json2yaml | grep -v 'swagger:."2.0"' >> swagger.yaml.tmp
 	rm -f server/server.swagger.json
 	mv swagger.yaml.tmp swagger.yaml
-
-.PHONY: docker.build
-docker.build:
-	docker build -t pathwar/pathwar:latest .
+	eclint fix swagger.yaml
 
 .PHONY: integration
 integration: integration.build integration.run
@@ -162,10 +166,29 @@ integration.run:
 
 .PHONY: lint
 lint:
-	golangci-lint run --verbose ./...
+	set -e; for dir in `find . -type f -name "go.mod" | sed 's@/[^/]*$$@@' | sort | uniq`; do (set -xe; \
+	  cd $$dir; \
+	  golangci-lint run --verbose ./...; \
+	); done
+
+.PHONY: tidy
+tidy:
+	set -e; for dir in `find . -type f -name "go.mod" | sed 's@/[^/]*$$@@' | sort | uniq`; do (set -xe; \
+	  cd $$dir; \
+	  $(GO) mod tidy; \
+	); done
+
+.PHONY: bump-go-deps
+bump-go-deps:
+	set -e; for dir in `find . -type f -name "go.mod" | sed 's@/[^/]*$$@@' | sort | uniq`; do (set -xe; \
+	  cd $$dir; \
+	  $(GO) get -u ./...; \
+	); done
 
 .PHONY: generate-fake-data
 generate-fake-data:
 	AUTH_TOKEN=`http --check-status :8000/authenticate username=integration | jq -r .token` && \
 	  http POST :8000/dev/generate-fake-data Authorization:$$AUTH_TOKEN && \
 	  http POST :8000/dev/sql-dump Authorization:$$AUTH_TOKEN
+
+include rules.mk  # see https://github.com/moul/rules.mk

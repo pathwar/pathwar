@@ -28,7 +28,7 @@ header .navbar {
 }
 
 .navbar-pf .navbar-utility {
-	right: 20px;
+    right: 20px;
     top: -34px;
     font-size: 12px;
 }
@@ -101,7 +101,7 @@ header .navbar {
 }
 
 .bs-sidebar ul li.active a:hover {
-	border-right: none;
+    border-right: none;
 }
 
 

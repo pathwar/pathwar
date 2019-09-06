@@ -506,7 +506,7 @@ message Coupon {
 }
 
 message CouponValidation {
- Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
+  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
 
   //
   // fields

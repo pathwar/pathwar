@@ -13,7 +13,7 @@ class TournamentPage extends React.Component {
       const { fetchLevelsAction, tournaments: { activeTournament } } = this.props;
       fetchLevelsAction(activeTournament.metadata.id);
     }
-  
+
     render() {
         const { tournaments: { activeTournament, activeLevels } } = this.props;
         const name = activeTournament ? activeTournament.name : undefined;
@@ -52,7 +52,6 @@ const mapDispatchToProps = {
 };
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(TournamentPage);
-

@@ -2,7 +2,7 @@
 ## Lightpaper v0
 
 Pathwar est une plateforme de formation à la cybersécurité.
-À travers un univers graphique ludique, elle permet aux utilisateurs d’apprendre pas à pas les bases de sécurité, tant offensives que défensives, et de se familiariser avec toutes les formes de failles. 
+À travers un univers graphique ludique, elle permet aux utilisateurs d’apprendre pas à pas les bases de sécurité, tant offensives que défensives, et de se familiariser avec toutes les formes de failles.
 
 Par son approche gamifiée, la plateforme permet une montée en compétences progressive des participants depuis un niveau de programmation basique jusqu’à un niveau expert.
 Composée de challenges et de thématiques variées, la plateforme a pour ambition de délivrer une formation la plus complète possible à toutes les problématiques passées, actuelles, et futures de la sécurité.
@@ -20,9 +20,9 @@ Une entreprise peut par exemple disposer d’une île dédiée à ses challenges
 ---
 
 Un service spécifique de formation “Pathwar” pour les entreprises :
-* Les entreprises souhaitant former leurs salariés peuvent disposer d’un support spécifique (coaching, formation…) sur mesure, permettant par exemple : 
+* Les entreprises souhaitant former leurs salariés peuvent disposer d’un support spécifique (coaching, formation…) sur mesure, permettant par exemple :
 bénéficier d’une formation spécifique et adaptée au contexte de l’entreprise
-* de disposer de statistiques sur les résultats de leurs salariés 
+* de disposer de statistiques sur les résultats de leurs salariés
 * de disposer d’exercices spécifiques à leurs contraintes et leur activité
 
 Parallèlement aux offres sur mesure, la plateforme publique met à disposition :

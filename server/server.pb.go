@@ -11,8 +11,11 @@ import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	io "io"
 	math "math"
+	math_bits "math/bits"
 	entity "pathwar.land/entity"
 )
 
@@ -25,7 +28,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // Void is an empty message
 type Void struct {
@@ -45,7 +48,7 @@ func (m *Void) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Void.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -84,7 +87,7 @@ func (m *AuthenticateInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return xxx_messageInfo_AuthenticateInput.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -136,7 +139,7 @@ func (m *AuthenticateOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return xxx_messageInfo_AuthenticateOutput.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalTo(b)
+		n, err := m.MarshalToSizedBuffer(b)
 		if err != nil {
 			return nil, err
 		}
@@ -386,6 +389,44 @@ type ServerServer interface {
 	Info(context.Context, *Void) (*entity.Info, error)
 	GenerateFakeData(context.Context, *Void) (*Void, error)
 	Dump(context.Context, *Void) (*entity.Dump, error)
+}
+
+// UnimplementedServerServer can be embedded to have forward compatible implementations.
+type UnimplementedServerServer struct {
+}
+
+func (*UnimplementedServerServer) Authenticate(ctx context.Context, req *AuthenticateInput) (*AuthenticateOutput, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Authenticate not implemented")
+}
+func (*UnimplementedServerServer) Ping(ctx context.Context, req *Void) (*Void, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
+func (*UnimplementedServerServer) UserSession(ctx context.Context, req *Void) (*entity.UserSession, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserSession not implemented")
+}
+func (*UnimplementedServerServer) Tournaments(ctx context.Context, req *Void) (*entity.TournamentList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Tournaments not implemented")
+}
+func (*UnimplementedServerServer) Users(ctx context.Context, req *Void) (*entity.UserList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Users not implemented")
+}
+func (*UnimplementedServerServer) Levels(ctx context.Context, req *Void) (*entity.LevelList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Levels not implemented")
+}
+func (*UnimplementedServerServer) Teams(ctx context.Context, req *Void) (*entity.TeamList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Teams not implemented")
+}
+func (*UnimplementedServerServer) Status(ctx context.Context, req *Void) (*entity.Status, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Status not implemented")
+}
+func (*UnimplementedServerServer) Info(ctx context.Context, req *Void) (*entity.Info, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Info not implemented")
+}
+func (*UnimplementedServerServer) GenerateFakeData(ctx context.Context, req *Void) (*Void, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateFakeData not implemented")
+}
+func (*UnimplementedServerServer) Dump(ctx context.Context, req *Void) (*entity.Dump, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Dump not implemented")
 }
 
 func RegisterServerServer(s *grpc.Server, srv ServerServer) {
@@ -646,7 +687,7 @@ var _Server_serviceDesc = grpc.ServiceDesc{
 func (m *Void) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -654,17 +695,22 @@ func (m *Void) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Void) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Void) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func (m *AuthenticateInput) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -672,29 +718,36 @@ func (m *AuthenticateInput) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *AuthenticateInput) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *AuthenticateInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Username) > 0 {
-		dAtA[i] = 0xa
-		i++
-		i = encodeVarintServer(dAtA, i, uint64(len(m.Username)))
-		i += copy(dAtA[i:], m.Username)
-	}
 	if len(m.Password) > 0 {
-		dAtA[i] = 0x12
-		i++
+		i -= len(m.Password)
+		copy(dAtA[i:], m.Password)
 		i = encodeVarintServer(dAtA, i, uint64(len(m.Password)))
-		i += copy(dAtA[i:], m.Password)
+		i--
+		dAtA[i] = 0x12
 	}
-	return i, nil
+	if len(m.Username) > 0 {
+		i -= len(m.Username)
+		copy(dAtA[i:], m.Username)
+		i = encodeVarintServer(dAtA, i, uint64(len(m.Username)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *AuthenticateOutput) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
 	if err != nil {
 		return nil, err
 	}
@@ -702,27 +755,35 @@ func (m *AuthenticateOutput) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *AuthenticateOutput) MarshalTo(dAtA []byte) (int, error) {
-	var i int
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *AuthenticateOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if len(m.Token) > 0 {
-		dAtA[i] = 0xa
-		i++
+		i -= len(m.Token)
+		copy(dAtA[i:], m.Token)
 		i = encodeVarintServer(dAtA, i, uint64(len(m.Token)))
-		i += copy(dAtA[i:], m.Token)
+		i--
+		dAtA[i] = 0xa
 	}
-	return i, nil
+	return len(dAtA) - i, nil
 }
 
 func encodeVarintServer(dAtA []byte, offset int, v uint64) int {
+	offset -= sovServer(v)
+	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return offset + 1
+	return base
 }
 func (m *Void) Size() (n int) {
 	if m == nil {
@@ -764,14 +825,7 @@ func (m *AuthenticateOutput) Size() (n int) {
 }
 
 func sovServer(x uint64) (n int) {
-	for {
-		n++
-		x >>= 7
-		if x == 0 {
-			break
-		}
-	}
-	return n
+	return (math_bits.Len64(x|1) + 6) / 7
 }
 func sozServer(x uint64) (n int) {
 	return sovServer(uint64((x << 1) ^ uint64((int64(x) >> 63))))

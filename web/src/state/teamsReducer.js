@@ -1,7 +1,7 @@
-import { 
+import {
   SET_ACTIVE_TEAM,
-  GET_USER_TEAMS, 
-  SET_TEAMS_LIST, 
+  GET_USER_TEAMS,
+  SET_TEAMS_LIST,
   GET_USER_TEAMS_SUCCESS
 } from '../constants/actionTypes';
 

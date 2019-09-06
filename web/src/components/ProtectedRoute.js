@@ -25,7 +25,7 @@ class ProtectedRoute extends React.PureComponent {
             return <Component {...rest} />
           } else return (<h3>Auth error, please try again!</h3>)
         }
-      
+
         return (
           <Dimmer active loader style={{ marginTop: "50px" }} />
         );
@@ -40,11 +40,11 @@ const mapStateToProps = state => ({
   userSession: state.userSession
 });
 
-  
+
 const mapDispatchToProps = {
   setKeycloakSession: (keycloakInstance, authenticated) => setKeycloakSession(keycloakInstance, authenticated)
 };
-  
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

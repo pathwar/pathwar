@@ -1,4 +1,4 @@
-IMAGE ?= pathwar/protoc:v1
+IMAGE ?= pathwar/protoc:v2
 
 .PHONY: release
 build:

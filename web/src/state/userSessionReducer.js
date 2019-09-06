@@ -1,4 +1,4 @@
-import { 
+import {
   LOGIN_FAILED,
   SET_USER_SESSION,
   PING_USER_SUCCESS,

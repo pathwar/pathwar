@@ -52,7 +52,6 @@ const accountDropdownProps = ({activeSession}) => {
 };
 
 class SiteWrapper extends React.Component {
-
   render() {
     const { userSession } = this.props;
     return (
@@ -87,16 +86,15 @@ SiteWrapper.propTypes = {
     children: PropTypes.node,
     userSession: PropTypes.object,
     lastActiveTeam: PropTypes.object,
-    performLoginAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
-  userSession: state.userSession
+    userSession: state.userSession
 });
 
 const mapDispatchToProps = {};
 
 export default connect(
-mapStateToProps,
-mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(SiteWrapper);

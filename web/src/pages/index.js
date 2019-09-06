@@ -36,9 +36,8 @@ export default ({ data }) => {
 
       <div className={styles.content}>
         <div><Img fixed={logo} alt="Pathwar Logo" /></div>
-        <h1>{title}</h1>
         <p>{description}</p>
-        <h2>Coming Soon..</h2>
+        <h2>COMING SOON..</h2>
       </div>
     </div>
   )
@@ -53,7 +52,7 @@ export const query = graphql`
         baseUrl
       }
     }
-    file(relativePath: { eq: "images/pathwar-logo.png" }) {
+    file(relativePath: { eq: "images/new_pathwar-logo.png" }) {
       childImageSharp {
         fixed(width: 200, height: 200) {
           ...GatsbyImageSharpFixed

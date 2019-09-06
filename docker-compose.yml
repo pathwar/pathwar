@@ -34,6 +34,23 @@ services:
     links:
       - server
 
+  forestadmin:
+    build: ./forestadmin
+    environment:
+      - APPLICATION_PORT=3000
+      - DATABASE_URL=mysql://pathwar:uns3cur3@serverdb:3306/pathwar
+      - DATABASE_SCHEMA=
+      - DATABASE_SSL=false
+      - DATABASE_ENCRYPT=false
+      - FOREST_ENV_SECRET
+      - FOREST_AUTH_SECRET
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./forestadmin/:/usr/src/app
+    depends_on:
+      - serverdb
+
   keycloak:
     image: jboss/keycloak:6.0.1
     restart: always
