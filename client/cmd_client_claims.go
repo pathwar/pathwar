@@ -46,15 +46,14 @@ func (cmd *claimsCommand) ParseFlags(flags *pflag.FlagSet) {
 	}
 }
 
-func runClaims(opts *claimsOptions) error {
+func TokenWithClaims(bearer string, opts Options) (*jwt.Token, jwt.MapClaims, error) {
 	// FIXME: add an option to automatically fetch the public key from
 	// https://id.pathwar.land/auth/realms/Pathwar-Dev/protocol/openid-connect/certs
 	// or
 	// https://id.pathwar.land/auth/realms/Pathwar-Dev
-	tokenString := opts.client.Token
 	claims := jwt.MapClaims{}
-	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		key := []byte(fmt.Sprintf("-----BEGIN PUBLIC KEY-----\n%s\n-----END PUBLIC KEY-----\n", opts.client.PublicKey))
+	token, err := jwt.ParseWithClaims(bearer, claims, func(token *jwt.Token) (interface{}, error) {
+		key := []byte(fmt.Sprintf("-----BEGIN PUBLIC KEY-----\n%s\n-----END PUBLIC KEY-----\n", opts.PublicKey))
 		pubPem, _ := pem.Decode(key)
 		if pubPem == nil {
 			return nil, errors.New("invalid pubkey")
@@ -63,11 +62,19 @@ func runClaims(opts *claimsOptions) error {
 		return parsedKey, err
 	})
 	if err != nil {
+		return nil, nil, err
+	}
+	return token, claims, nil
+}
+
+func runClaims(opts *claimsOptions) error {
+	token, _, err := TokenWithClaims(opts.client.Token, opts.client)
+	if err != nil {
 		return err
 	}
 
-	out, _ := json.MarshalIndent(token, "", "  ")
-	fmt.Println(string(out))
+	tokenOut, _ := json.MarshalIndent(token, "", "  ")
+	fmt.Println("token", string(tokenOut))
 	// FIXME: handle --format with text/template
 	return nil
 }
