@@ -71,43 +71,9 @@ message TournamentMember {
   repeated WhoswhoAttempt sent_whoswho_attempts = 206 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated WhoswhoAttempt received_whoswho_attempts = 207 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated InventoryItem items = 208 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated LevelValidation level_validations = 209 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
-message AuthMethod {
-  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
-
-  //
-  // fields
-  //
-
-  enum Provider {
-    Undefined = 0;
-    EmailAndPassword = 1;
-    SSHKey = 2;
-    // GitHub
-    // Google
-    // Facebook
-    // PasswordLess
-    // Phone
-    // ...
-  }
-
-  string identifier = 100;
-  string email_address = 101;
-  string password_hash = 102;
-  string salt = 103;
-  string totp_token = 104;
-  string url = 105;
-  bool is_verified = 107;
-  Provider provider = 108;
-
-  //
-  // associations
-  //
-
-  User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
-  string user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
-}
 
 // User defines a User Account / Profile
 message User {
@@ -118,40 +84,24 @@ message User {
   //
 
   string username = 100;
-  string gravatar_url = 101 [(gogoproto.customname) = "GravatarURL"];
-  string website_url = 102 [(gogoproto.customname) = "WebsiteURL"];
-  string locale = 103;
-  bool is_staff = 104;
+  string email = 101;
+  string gravatar_url = 102 [(gogoproto.customname) = "GravatarURL"];
+  string website_url = 103 [(gogoproto.customname) = "WebsiteURL"];
+  string locale = 104;
+  string oauth_subject = 105 [(gogoproto.moretags) = "gorm:\"index\""]; // FIXME: gorm:"index"
 
   //
   // associations
   //
 
-  repeated UserSession sessions = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
-  repeated TournamentMember tournament_memberships = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
-  repeated Notification notifications = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
-  repeated AuthMethod auth_methods = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
-  repeated TeamMember memberships = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated TournamentMember tournament_memberships = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated Notification notifications = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated TeamMember memberships = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  TournamentMember active_tournament_member = 203 [(gogoproto.moretags) = "gorm:\"foreignkey:ActiveTournamentMemberID\""];
+  string active_tournament_member_id = 204 [(gogoproto.customname) = "ActiveTournamentMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message UserList { repeated User items = 1; }
-
-message UserSession {
-  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
-
-  //
-  // fields
-  //
-
-  string username = 100 [(gogoproto.moretags) = "gorm:\"-\""];
-
-  //
-  // associations
-  //
-
-  User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
-  string user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
-}
 
 message Team {
   Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
@@ -185,10 +135,12 @@ message Level {
   string name = 100;
   string description = 101;
   string author = 102;
+  // AuthorProfile
   string locale = 105;
   bool is_draft = 106;
   string preview_url = 107;
   // repeated string tags = ;
+  string homepage = 108;
 
   //
   // associations
@@ -209,6 +161,7 @@ message LevelVersion {
   enum Driver {
     Unknown = 0;
     Docker = 1;
+    DockerCompose = 2;
     // Kubernetes
     // Static
   }
@@ -339,6 +292,8 @@ message LevelValidation {
 
   LevelSubscription level_subscription = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelSubscriptionID\""];
   string level_subscription_id = 201 [(gogoproto.customname) = "LevelSubscriptionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  TournamentMember tournament_member = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentMemberID\""];
+  string tournament_member_id = 203 [(gogoproto.customname) = "TournamentMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message LevelSubscription {
@@ -448,20 +403,6 @@ message Hypervisor {
   //
 
   repeated LevelInstance level_instances = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
-}
-
-message Event {
-  Metadata metadata = 1 [(gogoproto.nullable) = false, (gogoproto.embed) = true];
-
-  // FIXME: to be defined! (event-sourcing)
-
-  //
-  // fields
-  //
-
-  //
-  // associations
-  //
 }
 
 message Notification {
@@ -600,27 +541,24 @@ message Dump {
   //
 
   repeated Achievement achievements = 1;
-  repeated AuthMethod auth_methods = 20;
-  repeated Coupon coupons = 2;
-  repeated CouponValidation coupon_validations = 21;
-  repeated Event events = 3;
-  repeated Hypervisor hypervisors = 4;
-  repeated InventoryItem inventory_items = 11;
-  repeated Level levels = 9;
-  repeated LevelFlavor level_flavors = 5;
-  repeated LevelInstance level_instances = 6;
-  repeated LevelSubscription level_subscriptions = 7;
-  repeated LevelValidation level_validations = 8;
-  repeated LevelVersion level_versions = 22;
-  repeated Notification notifications = 10;
-  repeated Team teams = 13;
-  repeated TeamMember team_members = 12;
+  repeated Coupon coupons = 3;
+  repeated CouponValidation coupon_validations = 4;
+  repeated Hypervisor hypervisors = 5;
+  repeated InventoryItem inventory_items = 6;
+  repeated Level levels = 7;
+  repeated LevelFlavor level_flavors = 8;
+  repeated LevelInstance level_instances = 9;
+  repeated LevelSubscription level_subscriptions = 10;
+  repeated LevelValidation level_validations = 11;
+  repeated LevelVersion level_versions = 12;
+  repeated Notification notifications = 13;
+  repeated Team teams = 14;
+  repeated TeamMember team_members = 15;
   repeated Tournament tournaments = 16;
-  repeated TournamentMember tournament_members = 14;
-  repeated TournamentTeam tournament_teams = 15;
-  repeated User users = 18;
-  repeated UserSession user_sessions = 17;
-  repeated WhoswhoAttempt whoswho_attempts = 19;
+  repeated TournamentMember tournament_members = 17;
+  repeated TournamentTeam tournament_teams = 18;
+  repeated User users = 19;
+  repeated WhoswhoAttempt whoswho_attempts = 20;
 }
 
 message Status {

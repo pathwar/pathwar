@@ -7,10 +7,8 @@ func ByName(name string) interface{} {
 func AllMap() map[string]interface{} {
 	return map[string]interface{}{
 		"Achievement":       Achievement{},
-		"AuthMethod":        AuthMethod{},
 		"Coupon":            Coupon{},
 		"CouponValidation":  CouponValidation{},
-		"Event":             Event{},
 		"Hypervisor":        Hypervisor{},
 		"InventoryItem":     InventoryItem{},
 		"Level":             Level{},
@@ -26,7 +24,6 @@ func AllMap() map[string]interface{} {
 		"TournamentMember":  TournamentMember{},
 		"TournamentTeam":    TournamentTeam{},
 		"User":              User{},
-		"UserSession":       UserSession{},
 		"WhoswhoAttempt":    WhoswhoAttempt{},
 	}
 }
@@ -43,7 +40,6 @@ func ForeignKeys() [][3]string {
 	return [][3]string{
 		{"Achievement", "author_id", "tournament_member(id)"},
 		{"Achievement", "level_validation_id", "level_validation(id)"},
-		{"AuthMethod", "user_id", "user(id)"},
 		{"Coupon", "tournament_id", "tournament(id)"},
 		{"CouponValidation", "author_id", "tournament_member(id)"},
 		{"CouponValidation", "coupon_id", "coupon(id)"},
@@ -54,6 +50,7 @@ func ForeignKeys() [][3]string {
 		{"LevelSubscription", "level_flavor_id", "level_flavor(id)"},
 		{"LevelSubscription", "tournament_team_id", "tournament_team(id)"},
 		{"LevelValidation", "level_subscription_id", "level_subscription(id)"},
+		{"LevelValidation", "tournament_member_id", "tournament_member(id)"},
 		{"LevelVersion", "level_id", "level(id)"},
 		{"Notification", "user_id", "user(id)"},
 		{"TeamMember", "team_id", "team(id)"},
@@ -62,7 +59,7 @@ func ForeignKeys() [][3]string {
 		{"TournamentMember", "user_id", "user(id)"},
 		{"TournamentTeam", "team_id", "team(id)"},
 		{"TournamentTeam", "tournament_id", "tournament(id)"},
-		{"UserSession", "user_id", "user(id)"},
+		// {"User", "active_tournament_member_id", "tournament_member(id)"}, // FIXME: check why this cause an error!?
 		{"WhoswhoAttempt", "author_id", "tournament_member(id)"},
 		{"WhoswhoAttempt", "target_member_id", "tournament_member(id)"},
 		{"WhoswhoAttempt", "target_team_id", "tournament_team(id)"},
