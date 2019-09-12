@@ -11,8 +11,6 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"go.uber.org/zap"
 	"moul.io/zapgorm"
-
-	"pathwar.land/entity"
 )
 
 func FromOpts(opts *Options) (*gorm.DB, error) {
@@ -38,16 +36,10 @@ func FromOpts(opts *Options) (*gorm.DB, error) {
 	db.BlockGlobalUpdate(true)
 	db.SingularTable(true)
 	db.LogMode(true)
-	if err := db.AutoMigrate(entity.All()...).Error; err != nil {
+
+	if err := migrate(db); err != nil {
 		return nil, err
 	}
-	for _, fk := range entity.ForeignKeys() {
-		e := entity.ByName(fk[0])
-		if err := db.Model(e).AddForeignKey(fk[1], fk[2], "RESTRICT", "RESTRICT").Error; err != nil {
-			return nil, err
-		}
-	}
-	// FIXME: use gormigrate
 
 	return db, nil
 }

@@ -11,7 +11,6 @@ import (
 var _ = options.E_Openapiv2Swagger
 
 type svc struct {
-	jwtKey    []byte
 	db        *gorm.DB
 	client    client.Options
 	startedAt time.Time

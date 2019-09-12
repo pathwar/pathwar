@@ -60,9 +60,6 @@ func DoDump(db *gorm.DB) (*entity.Dump, error) {
 	if err := db.Find(&dump.Hypervisors).Error; err != nil {
 		return nil, err
 	}
-	if err := db.Find(&dump.UserSessions).Error; err != nil {
-		return nil, err
-	}
 	if err := db.Find(&dump.Users).Error; err != nil {
 		return nil, err
 	}
@@ -82,9 +79,6 @@ func DoDump(db *gorm.DB) (*entity.Dump, error) {
 		return nil, err
 	}
 	if err := db.Find(&dump.Coupons).Error; err != nil {
-		return nil, err
-	}
-	if err := db.Find(&dump.Events).Error; err != nil {
 		return nil, err
 	}
 	return &dump, nil
