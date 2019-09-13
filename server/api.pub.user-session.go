@@ -22,36 +22,50 @@ func (s *svc) UserSession(ctx context.Context, _ *Void) (*UserSessionOutput, err
 	output := &UserSessionOutput{}
 	output.Claims = client.ClaimsFromToken(token)
 
-	var user entity.User
-	err = s.db.Where(entity.User{OauthSubject: output.Claims.ActionToken.Sub}).First(&user).Error
+	// try loading it from database
+	output.User, err = s.loadOauthUser(output.Claims.ActionToken.Sub)
 	if err != nil && !gorm.IsRecordNotFoundError(err) {
-		return output, err
+		// internal error
+		return nil, err
 	}
 
+	// new user
 	if gorm.IsRecordNotFoundError(err) {
 		output.IsNewUser = true
-		output.User, err = s.newUser(output.Claims)
-		if err != nil {
-			return output, err
+		if _, err = s.newUserFromClaims(output.Claims); err != nil {
+			return nil, err
 		}
-		// FIXME: reload the user with all the preloads? or recursive call
-	} else {
-		output.User = &user
-		if output.User.Username != output.Claims.PreferredUsername {
-			return output, fmt.Errorf("username differs from JWT token and database")
+		if output.User, err = s.loadOauthUser(output.Claims.ActionToken.Sub); err != nil {
+			return nil, err
 		}
 	}
 
-	// FIXME: ActiveTournamentTeam: ...
-	// FIXME: ActiveTeam: ...
-	// FIXME: ActiveTournament: ...
+	if output.User.Username != output.Claims.PreferredUsername {
+		return nil, fmt.Errorf("username differs from JWT token and database")
+	}
 
-	// FIXME: Notifications: 0,
+	// FIXME: output.Notifications = COUNT
+	output.Notifications = 42
 
 	return output, nil
 }
 
-func (s *svc) newUser(claims *client.Claims) (*entity.User, error) {
+func (s *svc) loadOauthUser(subject string) (*entity.User, error) {
+	var user entity.User
+	if err := s.db.
+		Preload("ActiveTournamentMember").
+		Preload("ActiveTournamentMember.TournamentTeam").
+		Preload("ActiveTournamentMember.TournamentTeam.Tournament").
+		Preload("ActiveTournamentMember.TournamentTeam.Team").
+		Where(entity.User{OauthSubject: subject}).
+		First(&user).
+		Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (s *svc) newUserFromClaims(claims *client.Claims) (*entity.User, error) {
 	if claims.EmailVerified == false {
 		return nil, fmt.Errorf("you need to verify your email address")
 	}
@@ -98,7 +112,6 @@ func (s *svc) newUser(claims *client.Claims) (*entity.User, error) {
 
 	tx := s.db.Begin()
 	tx.Create(&tournamentMember)
-	tx.Create(&user)
 
 	// FIXME: create a "welcome" notification
 
@@ -107,7 +120,10 @@ func (s *svc) newUser(claims *client.Claims) (*entity.User, error) {
 	}
 
 	// set active tournament
-	if err := s.db.Model(&user).Updates(entity.User{ActiveTournamentMemberID: tournamentMember.Metadata.ID}).Error; err != nil {
+	if err := s.db.
+		Model(&user).
+		Updates(entity.User{ActiveTournamentMemberID: tournamentMember.Metadata.ID}).
+		Error; err != nil {
 		return nil, err
 	}
 

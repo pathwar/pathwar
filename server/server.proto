@@ -157,12 +157,9 @@ message Void {
 
 message UserSessionOutput {
   entity.User user = 1;
-  entity.TournamentTeam active_tournament_team = 2;
-  entity.Tournament active_tournament = 3;
-
   bool is_new_user = 99;
   client.Claims claims = 100;
-  int32 Notifications = 200;
+  int32 notifications = 200;
 }
 
 message TournamentsOutput {

@@ -88,7 +88,7 @@ message User {
   string gravatar_url = 102 [(gogoproto.customname) = "GravatarURL"];
   string website_url = 103 [(gogoproto.customname) = "WebsiteURL"];
   string locale = 104;
-  string oauth_subject = 105 [(gogoproto.moretags) = "gorm:\"index\""]; // FIXME: gorm:"index"
+  string oauth_subject = 105 [(gogoproto.moretags) = "gorm:\"unique_index\""];
 
   //
   // associations
@@ -97,7 +97,7 @@ message User {
   repeated TournamentMember tournament_memberships = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated Notification notifications = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated TeamMember memberships = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
-  TournamentMember active_tournament_member = 203 [(gogoproto.moretags) = "gorm:\"foreignkey:ActiveTournamentMemberID\""];
+  TournamentMember active_tournament_member = 203 [(gogoproto.moretags) = "gorm:\"foreignkey:ActiveTournamentMemberID;PRELOAD:false\""];
   string active_tournament_member_id = 204 [(gogoproto.customname) = "ActiveTournamentMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
