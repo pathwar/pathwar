@@ -711,18 +711,14 @@ definitions:
     type: object
   serverUserSessionOutput:
     properties:
-      Notifications:
-        format: int32
-        type: integer
-      active_tournament:
-        $ref: '#/definitions/pathwarentityTournament'
-      active_tournament_team:
-        $ref: '#/definitions/entityTournamentTeam'
       claims:
         $ref: '#/definitions/clientClaims'
       is_new_user:
         format: boolean
         type: boolean
+      notifications:
+        format: int32
+        type: integer
       user:
         $ref: '#/definitions/entityUser'
     type: object
