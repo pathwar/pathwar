@@ -45,3 +45,11 @@ func keyFunc(opts Options) jwt.Keyfunc {
 		return parsedKey, err
 	}
 }
+
+func SubjectFromToken(token *jwt.Token) string {
+	mc := token.Claims.(jwt.MapClaims)
+	if v := mc["sub"]; v != nil {
+		return v.(string)
+	}
+	return ""
+}
