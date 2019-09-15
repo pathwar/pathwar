@@ -45,6 +45,10 @@ func FromOpts(opts *Options) (*gorm.DB, error) {
 }
 
 func beforeCreate(scope *gorm.Scope) {
+	switch scope.TableName() {
+	case "user":
+		return
+	}
 	id, err := uuid.NewV4().MarshalBinary()
 	if err != nil {
 		panic(err)

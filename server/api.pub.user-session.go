@@ -57,7 +57,7 @@ func (s *svc) loadOauthUser(subject string) (*entity.User, error) {
 		Preload("ActiveTournamentMember.TournamentTeam").
 		Preload("ActiveTournamentMember.TournamentTeam.Tournament").
 		Preload("ActiveTournamentMember.TournamentTeam.Team").
-		Where(entity.User{OauthSubject: subject}).
+		Where(entity.User{Metadata: entity.Metadata{ID: subject}}).
 		First(&user).
 		Error; err != nil {
 		return nil, err
@@ -70,28 +70,30 @@ func (s *svc) newUserFromClaims(claims *client.Claims) (*entity.User, error) {
 		return nil, fmt.Errorf("you need to verify your email address")
 	}
 
-	gravatarURL := fmt.Sprintf("https://www.gravatar.com/avatar/%x?s=%d", md5.Sum([]byte(claims.Email)), 200) // FIXME: remove size and handle it on the fly
+	gravatarURL := fmt.Sprintf("https://www.gravatar.com/avatar/%x", md5.Sum([]byte(claims.Email)))
 
 	var tournament entity.Tournament
 	if err := s.db.Where(entity.Tournament{IsDefault: true}).First(&tournament).Error; err != nil {
 		return nil, err
 	}
 
-	team := entity.Team{
-		Name:        claims.PreferredUsername,
-		GravatarURL: gravatarURL,
-		// Locale
-	}
 	user := entity.User{
-		OauthSubject: claims.ActionToken.Sub,
-		Username:     claims.PreferredUsername,
-		Email:        claims.Email,
-		GravatarURL:  gravatarURL,
+		Metadata: entity.Metadata{
+			ID: claims.ActionToken.Sub,
+		},
+		Username:    claims.PreferredUsername,
+		Email:       claims.Email,
+		GravatarURL: gravatarURL,
 		// WebsiteURL
 		// Locale
 
 		TournamentMemberships: []*entity.TournamentMember{},
 		Memberships:           []*entity.TeamMember{},
+	}
+	team := entity.Team{
+		Name:        claims.PreferredUsername,
+		GravatarURL: gravatarURL,
+		// Locale
 	}
 	teamMember := entity.TeamMember{
 		//User: &user,
@@ -111,6 +113,7 @@ func (s *svc) newUserFromClaims(claims *client.Claims) (*entity.User, error) {
 	user.Memberships = []*entity.TeamMember{&teamMember}
 
 	tx := s.db.Begin()
+	tx.Create(&user)
 	tx.Create(&tournamentMember)
 
 	// FIXME: create a "welcome" notification

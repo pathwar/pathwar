@@ -54,16 +54,21 @@ func authFunc(ctx context.Context) (context.Context, error) {
 	return nil, fmt.Errorf("should not happen")
 }
 
-/* temporarily useless
-func userSessionFromContext(ctx context.Context) (entity.UserSession, error) {
+// func claimsFromContext(ctx context.Context) (*client.Claims, error) {}
+
+func subjectFromContext(ctx context.Context) (string, error) {
 	token, err := userTokenFromContext(ctx)
 	if err != nil {
-		return entity.UserSession{}, err
+		return "", err
 	}
 
-	return client.UserSessionFromToken(token)
+	sub := client.SubjectFromToken(token)
+	if sub == "" {
+		return "", errors.New("no such subject in the token")
+	}
+
+	return sub, nil
 }
-*/
 
 func userTokenFromContext(ctx context.Context) (*jwt.Token, error) {
 	token := ctx.Value(userTokenCtx)

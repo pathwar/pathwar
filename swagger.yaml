@@ -612,8 +612,6 @@ definitions:
         items:
           $ref: '#/definitions/entityNotification'
         type: array
-      oauth_subject:
-        type: string
       tournament_memberships:
         items:
           $ref: '#/definitions/entityTournamentMember'

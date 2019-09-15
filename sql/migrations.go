@@ -54,8 +54,15 @@ func firstEntities() []interface{} {
 		Visibility: entity.Tournament_Public,
 		IsDefault:  true,
 	}
+	testTournament := &entity.Tournament{
+		Name:       "Test Tournament",
+		Status:     entity.Tournament_Started,
+		Visibility: entity.Tournament_Public,
+	}
 	m1ch3l := &entity.User{
-		// ID:       "m1ch3l-user",
+		Metadata: entity.Metadata{
+			ID: "m1ch3l",
+		},
 		Username: "m1ch3l",
 		// State: special
 	}
@@ -88,5 +95,5 @@ func firstEntities() []interface{} {
 		Driver:    entity.LevelVersion_DockerCompose,
 	}
 
-	return []interface{}{solo, m1ch3l, staff, soloStaff, localhost, helloWorld, helloWorldLatest}
+	return []interface{}{solo, testTournament, m1ch3l, staff, soloStaff, localhost, helloWorld, helloWorldLatest}
 }
