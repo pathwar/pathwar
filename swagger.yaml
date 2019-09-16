@@ -693,20 +693,6 @@ definitions:
       visibility:
         $ref: '#/definitions/TournamentVisibility'
     type: object
-  serverTournamentsOutput:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/serverTournamentsOutputTournament'
-        type: array
-    type: object
-  serverTournamentsOutputTournament:
-    properties:
-      team:
-        $ref: '#/definitions/entityTournamentTeam'
-      tournament:
-        $ref: '#/definitions/pathwarentityTournament'
-    type: object
   serverUserSessionOutput:
     properties:
       claims:
@@ -717,8 +703,19 @@ definitions:
       notifications:
         format: int32
         type: integer
+      tournaments:
+        items:
+          $ref: '#/definitions/serverUserSessionOutputTournament'
+        type: array
       user:
         $ref: '#/definitions/entityUser'
+    type: object
+  serverUserSessionOutputTournament:
+    properties:
+      team:
+        $ref: '#/definitions/entityTournamentTeam'
+      tournament:
+        $ref: '#/definitions/pathwarentityTournament'
     type: object
   serverVoid:
     example: {}
@@ -873,26 +870,6 @@ paths:
             format: string
             type: string
       summary: List teams
-      tags:
-      - Server
-  /tournaments:
-    get:
-      operationId: Tournaments
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/serverTournamentsOutput'
-        "403":
-          description: Returned when the user does not have permission to access the
-            resource.
-          schema: {}
-        "404":
-          description: Returned when the resource does not exist.
-          schema:
-            format: string
-            type: string
-      summary: List tournaments
       tags:
       - Server
   /user-session:

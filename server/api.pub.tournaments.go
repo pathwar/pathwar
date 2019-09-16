@@ -7,7 +7,7 @@ import (
 	"pathwar.land/entity"
 )
 
-func (s *svc) Tournaments(ctx context.Context, _ *Void) (*TournamentsOutput, error) {
+func (s *svc) tournaments(ctx context.Context, _ *Void) ([]*UserSessionOutput_Tournament, error) {
 	var tournaments []*entity.Tournament
 	var memberships []*entity.TournamentMember
 
@@ -33,12 +33,10 @@ func (s *svc) Tournaments(ctx context.Context, _ *Void) (*TournamentsOutput, err
 		return nil, err
 	}
 
-	output := &TournamentsOutput{
-		Items: []*TournamentsOutput_Tournament{},
-	}
+	output := []*UserSessionOutput_Tournament{}
 
 	for _, tournament := range tournaments {
-		item := &TournamentsOutput_Tournament{
+		item := &UserSessionOutput_Tournament{
 			Tournament: tournament,
 		}
 
@@ -49,7 +47,7 @@ func (s *svc) Tournaments(ctx context.Context, _ *Void) (*TournamentsOutput, err
 			}
 		}
 
-		output.Items = append(output.Items, item)
+		output = append(output, item)
 	}
 
 	return output, nil

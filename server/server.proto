@@ -100,13 +100,6 @@ service Server {
     option (google.api.http) = {get: "/user-session"};
   };
 
-  // List tournaments
-  rpc Tournaments(Void) returns (TournamentsOutput) {
-    // FIXME: should be available for unauthenticated AND authenticated people
-    option (google.api.http) = {get: "/tournaments"};
-    // FIXME: pagination & filters
-  };
-
   // List users
   rpc Users(Void) returns (pathwar.entity.UserList) {
     // FIXME: only for authenticated users
@@ -156,16 +149,14 @@ message Void {
 }
 
 message UserSessionOutput {
-  entity.User user = 1;
-  bool is_new_user = 99;
-  client.Claims claims = 100;
-  int32 notifications = 200;
-}
-
-message TournamentsOutput {
   message Tournament {
     entity.Tournament tournament = 1;
     entity.TournamentTeam team = 2;
   }
-  repeated Tournament items = 1;
+
+  entity.User user = 1;
+  bool is_new_user = 2;
+  client.Claims claims = 3;
+  int32 notifications = 4;
+  repeated Tournament tournaments = 5;
 }
