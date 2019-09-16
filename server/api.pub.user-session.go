@@ -47,6 +47,11 @@ func (s *svc) UserSession(ctx context.Context, _ *Void) (*UserSessionOutput, err
 	// FIXME: output.Notifications = COUNT
 	output.Notifications = 42
 
+	output.Tournaments, err = s.tournaments(ctx, &Void{})
+	if err != nil {
+		return nil, err
+	}
+
 	return output, nil
 }
 
