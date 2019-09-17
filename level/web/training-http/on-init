@@ -1,11 +1,10 @@
-#!/bin/bash
+#!/bin/sh -e
 
-. /pathwar/scripts/functions.sh
-pass1=$(get_passphrase 0)
-pass2=$(get_passphrase 1)
-pass3=$(get_passphrase 2)
-pass4=$(get_passphrase 3)
-pass5=$(get_passphrase 5)
+pass1=$(pwctl passphrase 0)
+pass2=$(pwctl passphrase 1)
+pass3=$(pwctl passphrase 2)
+pass4=$(pwctl passphrase 3)
+pass5=$(pwctl passphrase 4)
 sed -i -e "s/__PASSPHRASE1__/$pass1/" /var/www/html/post.php;
 sed -i -e "s/__PASSPHRASE2__/$pass2/" /var/www/html/step2.php;
 sed -i -e "s/__PASSPHRASE3__/$pass3/" /var/www/html/step2.php;

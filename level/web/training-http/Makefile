@@ -1,6 +1,4 @@
-## Core (https://github.com/pathwar/core)
-all:	pathwar-level.mk
-pathwar-level.mk:
-	wget -qO - https://raw.githubusercontent.com/pathwar/core/master/mk/install.sh | bash
--include pathwar-level.mk
-## Here you can add custom commands and overrides
+dev:
+	docker build -t pathwar/level-training-http .
+	pathwar.land hypervisor prune
+	pathwar.land hypervisor run --web-port=8899 pathwar/level-training-http

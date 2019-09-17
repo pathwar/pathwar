@@ -1,2 +1,3 @@
-FROM pathwar/apache-php:onbuild
-MAINTAINER Pathwar Team <team@pathwar.net> (@pathwar_net)
+FROM php:7-apache
+COPY on-init /pathwar-hooks/
+COPY www/ /var/www/html
