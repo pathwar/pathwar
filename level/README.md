@@ -1,3 +1,3 @@
 # Levels
 
-See the [Level Maintainers](https://github.com/pathwar/pathwar/blob/master/level/example/hello-world/Makefile) page on the Wiki.
+See the [Level Maintainers](https://github.com/pathwar/pathwar/wiki/Level-Maintainers) page on the Wiki.
