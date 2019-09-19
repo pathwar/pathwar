@@ -1,5 +1,7 @@
 # Node-Pathwar: CLI + node client
 
+## Deprecated! Go to the Pathwar monorepo: https://github.com/pathwar/pathwar
+
 [![Travis](https://img.shields.io/travis/scaleway/image-ubuntu.svg)](https://travis-ci.org/scaleway/image-ubuntu)
 [![Dependency Status](https://img.shields.io/david/pathwar/node-pathwar.svg)](https://david-dm.org/pathwar/node-pathwar)
 
