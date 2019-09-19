@@ -1,0 +1,4 @@
+hello:
+  build: .
+  expose:
+  - "80"
