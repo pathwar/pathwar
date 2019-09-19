@@ -1,6 +1,8 @@
 python-pathwar
 ==============
 
+## Deprecated! Go to the Pathwar monorepo: https://github.com/pathwar/pathwar
+
 :warning: THIS IS JUST A PLACEHOLDER, THE CODE IS NOT YET WORKING :warning:
 
 Pathwar API client in Python
