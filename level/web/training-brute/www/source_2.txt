@@ -1,0 +1,11 @@
+<?php if (isset($_GET['pass'])) : ?>
+<p>
+  <center>
+  <?php if ($_GET['pass'] == md5("XXX" /* XXX == a number between 0 et 1000 */)) : ?>
+    Congratz! The passphrase is <b>XXX</b>
+    <?php else : ?>
+    Invalid password.
+    <?php endif ?>
+  </center>
+</p>
+<?php endif ?>
