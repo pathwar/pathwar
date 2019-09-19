@@ -1,0 +1,9 @@
+$password = $_POST['password'];
+$query="SELECT * FROM users2 WHERE username='user' AND password='$password'";
+$result = $mysqli->query($query) or die($mysqli->error);
+if ($result->num_rows > 0) { // login successful
+	$data = $result->fetch_row();
+	if ($data[1] === 'admin') {
+            ...
+        }
+}
