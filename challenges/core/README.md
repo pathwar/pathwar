@@ -1,6 +1,8 @@
 Pathwar Core [![Build Status](https://travis-ci.org/pathwar/core.svg?branch=master)](https://travis-ci.org/pathwar/core)
 ============
 
+## Deprecated! Go to the Pathwar monorepo: https://github.com/pathwar/pathwar
+
 Set of tools to create levels on Pathwar.
 
 We worked hard to make the levels runnable on any machine running docker
