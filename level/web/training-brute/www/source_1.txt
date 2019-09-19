@@ -1,0 +1,4 @@
+<form name="bruteforce" action="index.php" method="GET">
+  Password: <input type="text" name="pass" /></br>
+  <input type="submit" value="go" />
+</form>

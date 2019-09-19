@@ -1,0 +1,14 @@
+level:
+  name: Level training bruteforce
+  version: 1.0
+  author: Pathwar team
+  passphrases: 1
+  description: This level will teach you how to bruteforce.
+  rootable: false
+  cpu_shares: 1/10
+  memory_limit: 16M
+  tags:
+    - tutorial
+    - include
+    redump: 600
+    lang: en
