@@ -1,0 +1,5 @@
+pathwar-level.mk
+*.tar
+*~
+*#
+.#*
