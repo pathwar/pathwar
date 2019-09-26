@@ -31,7 +31,7 @@ GENERATED_FILES := \
 	$(PWCTL_OUT_FILES) \
 	swagger.yaml
 PROTOC_OPTS := -I/protobuf:vendor/github.com/grpc-ecosystem/grpc-gateway:vendor:.
-RUN_OPTS ?=
+RUN_OPTS ?= --client-unsafe
 SERVERDB_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
 
 ##
@@ -57,7 +57,7 @@ serverdb.up:
 
 .PHONY: serverdb.flush
 serverdb.flush: serverdb.down
-	docker volume rm pathwarland_serverdb_data
+	docker volume rm -f pathwarland_serverdb_data
 
 .PHONY: serverdb.down
 serverdb.down:
@@ -161,7 +161,7 @@ integration.run:
 	docker-compose exec server ./wait-for-it.sh serverdb:3306 -- echo serverdb ready
 	docker-compose exec server ./wait-for-it.sh localhost:9111 -- echo gRPC ready
 	sleep 5
-	docker-compose exec server pathwar.land sql adduser --sql-config=$$SQL_CONFIG --email=integration@example.com --username=integration --password=integration
+	#docker-compose exec server pathwar.land sql adduser --sql-config=$$SQL_CONFIG --email=integration@example.com --username=integration --password=integration
 	docker-compose run web npm test
 
 .PHONY: lint

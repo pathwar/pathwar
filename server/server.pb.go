@@ -16,6 +16,7 @@ import (
 	io "io"
 	math "math"
 	math_bits "math/bits"
+	client "pathwar.land/client"
 	entity "pathwar.land/entity"
 )
 
@@ -67,24 +68,26 @@ func (m *Void) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Void proto.InternalMessageInfo
 
-// AuthenticateInput contains everything (credentials) to authenticate a user and create a new session.
-type AuthenticateInput struct {
-	Username string `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
-	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+type UserSessionOutput struct {
+	User          *entity.User                    `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	IsNewUser     bool                            `protobuf:"varint,2,opt,name=is_new_user,json=isNewUser,proto3" json:"is_new_user,omitempty"`
+	Claims        *client.Claims                  `protobuf:"bytes,3,opt,name=claims,proto3" json:"claims,omitempty"`
+	Notifications int32                           `protobuf:"varint,4,opt,name=notifications,proto3" json:"notifications,omitempty"`
+	Tournaments   []*UserSessionOutput_Tournament `protobuf:"bytes,5,rep,name=tournaments,proto3" json:"tournaments,omitempty"`
 }
 
-func (m *AuthenticateInput) Reset()         { *m = AuthenticateInput{} }
-func (m *AuthenticateInput) String() string { return proto.CompactTextString(m) }
-func (*AuthenticateInput) ProtoMessage()    {}
-func (*AuthenticateInput) Descriptor() ([]byte, []int) {
+func (m *UserSessionOutput) Reset()         { *m = UserSessionOutput{} }
+func (m *UserSessionOutput) String() string { return proto.CompactTextString(m) }
+func (*UserSessionOutput) ProtoMessage()    {}
+func (*UserSessionOutput) Descriptor() ([]byte, []int) {
 	return fileDescriptor_fde5b5d7aefe7c04, []int{1}
 }
-func (m *AuthenticateInput) XXX_Unmarshal(b []byte) error {
+func (m *UserSessionOutput) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *AuthenticateInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *UserSessionOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_AuthenticateInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_UserSessionOutput.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -94,49 +97,70 @@ func (m *AuthenticateInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *AuthenticateInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_AuthenticateInput.Merge(m, src)
+func (m *UserSessionOutput) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserSessionOutput.Merge(m, src)
 }
-func (m *AuthenticateInput) XXX_Size() int {
+func (m *UserSessionOutput) XXX_Size() int {
 	return m.Size()
 }
-func (m *AuthenticateInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_AuthenticateInput.DiscardUnknown(m)
+func (m *UserSessionOutput) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserSessionOutput.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_AuthenticateInput proto.InternalMessageInfo
+var xxx_messageInfo_UserSessionOutput proto.InternalMessageInfo
 
-func (m *AuthenticateInput) GetUsername() string {
+func (m *UserSessionOutput) GetUser() *entity.User {
 	if m != nil {
-		return m.Username
+		return m.User
 	}
-	return ""
+	return nil
 }
 
-func (m *AuthenticateInput) GetPassword() string {
+func (m *UserSessionOutput) GetIsNewUser() bool {
 	if m != nil {
-		return m.Password
+		return m.IsNewUser
 	}
-	return ""
+	return false
 }
 
-// AuthenticateOutput contains a session token (JWT).
-type AuthenticateOutput struct {
-	Token string `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+func (m *UserSessionOutput) GetClaims() *client.Claims {
+	if m != nil {
+		return m.Claims
+	}
+	return nil
 }
 
-func (m *AuthenticateOutput) Reset()         { *m = AuthenticateOutput{} }
-func (m *AuthenticateOutput) String() string { return proto.CompactTextString(m) }
-func (*AuthenticateOutput) ProtoMessage()    {}
-func (*AuthenticateOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fde5b5d7aefe7c04, []int{2}
+func (m *UserSessionOutput) GetNotifications() int32 {
+	if m != nil {
+		return m.Notifications
+	}
+	return 0
 }
-func (m *AuthenticateOutput) XXX_Unmarshal(b []byte) error {
+
+func (m *UserSessionOutput) GetTournaments() []*UserSessionOutput_Tournament {
+	if m != nil {
+		return m.Tournaments
+	}
+	return nil
+}
+
+type UserSessionOutput_Tournament struct {
+	Tournament *entity.Tournament     `protobuf:"bytes,1,opt,name=tournament,proto3" json:"tournament,omitempty"`
+	Team       *entity.TournamentTeam `protobuf:"bytes,2,opt,name=team,proto3" json:"team,omitempty"`
+}
+
+func (m *UserSessionOutput_Tournament) Reset()         { *m = UserSessionOutput_Tournament{} }
+func (m *UserSessionOutput_Tournament) String() string { return proto.CompactTextString(m) }
+func (*UserSessionOutput_Tournament) ProtoMessage()    {}
+func (*UserSessionOutput_Tournament) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fde5b5d7aefe7c04, []int{1, 0}
+}
+func (m *UserSessionOutput_Tournament) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *AuthenticateOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *UserSessionOutput_Tournament) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_AuthenticateOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_UserSessionOutput_Tournament.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -146,88 +170,98 @@ func (m *AuthenticateOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *AuthenticateOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_AuthenticateOutput.Merge(m, src)
+func (m *UserSessionOutput_Tournament) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserSessionOutput_Tournament.Merge(m, src)
 }
-func (m *AuthenticateOutput) XXX_Size() int {
+func (m *UserSessionOutput_Tournament) XXX_Size() int {
 	return m.Size()
 }
-func (m *AuthenticateOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_AuthenticateOutput.DiscardUnknown(m)
+func (m *UserSessionOutput_Tournament) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserSessionOutput_Tournament.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_AuthenticateOutput proto.InternalMessageInfo
+var xxx_messageInfo_UserSessionOutput_Tournament proto.InternalMessageInfo
 
-func (m *AuthenticateOutput) GetToken() string {
+func (m *UserSessionOutput_Tournament) GetTournament() *entity.Tournament {
 	if m != nil {
-		return m.Token
+		return m.Tournament
 	}
-	return ""
+	return nil
+}
+
+func (m *UserSessionOutput_Tournament) GetTeam() *entity.TournamentTeam {
+	if m != nil {
+		return m.Team
+	}
+	return nil
 }
 
 func init() {
 	proto.RegisterType((*Void)(nil), "pathwar.server.Void")
-	proto.RegisterType((*AuthenticateInput)(nil), "pathwar.server.AuthenticateInput")
-	proto.RegisterType((*AuthenticateOutput)(nil), "pathwar.server.AuthenticateOutput")
+	proto.RegisterType((*UserSessionOutput)(nil), "pathwar.server.UserSessionOutput")
+	proto.RegisterType((*UserSessionOutput_Tournament)(nil), "pathwar.server.UserSessionOutput.Tournament")
 }
 
 func init() { proto.RegisterFile("server/server.proto", fileDescriptor_fde5b5d7aefe7c04) }
 
 var fileDescriptor_fde5b5d7aefe7c04 = []byte{
-	// 847 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x95, 0xcf, 0x6f, 0xe3, 0x44,
-	0x14, 0xc7, 0x63, 0x37, 0x4d, 0x9b, 0xd7, 0xa6, 0xd9, 0x4e, 0x0b, 0x74, 0x03, 0x64, 0x8d, 0x4f,
-	0x28, 0xc2, 0x9e, 0x92, 0xad, 0x10, 0x2a, 0x17, 0xb2, 0xb4, 0x44, 0xa1, 0x05, 0xa2, 0x76, 0xf9,
-	0xb5, 0x17, 0x34, 0x49, 0x5e, 0x1c, 0xd3, 0x64, 0xc6, 0x78, 0xc6, 0x2d, 0x15, 0xe2, 0xc2, 0x81,
-	0x33, 0x5a, 0x6e, 0x5c, 0xf8, 0x03, 0xf8, 0x47, 0x38, 0xae, 0xc4, 0x85, 0x23, 0x6a, 0xf9, 0x2b,
-	0x38, 0xa1, 0x19, 0x3b, 0xbb, 0xde, 0x64, 0xc3, 0x76, 0x4f, 0xe3, 0xf7, 0xe6, 0xfb, 0x3e, 0xf3,
-	0xd5, 0x9b, 0x67, 0x1b, 0xb6, 0x24, 0xc6, 0xe7, 0x18, 0xd3, 0x74, 0xf1, 0xa3, 0x58, 0x28, 0x41,
-	0x36, 0x22, 0xa6, 0x46, 0x17, 0x2c, 0xf6, 0xd3, 0x6c, 0xed, 0xb5, 0x40, 0x88, 0x60, 0x8c, 0x94,
-	0x45, 0x21, 0x65, 0x9c, 0x0b, 0xc5, 0x54, 0x28, 0xb8, 0x4c, 0xd5, 0xb5, 0x2d, 0xe4, 0x2a, 0x54,
-	0x97, 0x34, 0x5d, 0xb2, 0xa4, 0x17, 0x84, 0x6a, 0x94, 0xf4, 0xfc, 0xbe, 0x98, 0xd0, 0x40, 0x04,
-	0x82, 0x9a, 0x74, 0x2f, 0x19, 0x9a, 0xc8, 0x04, 0xe6, 0x29, 0x93, 0xbf, 0x65, 0x96, 0xbe, 0x17,
-	0x20, 0xf7, 0xe4, 0x05, 0x0b, 0x02, 0x8c, 0xa9, 0x88, 0xcc, 0x29, 0xf3, 0x27, 0xba, 0x9b, 0x50,
-	0xfc, 0x5c, 0x84, 0x83, 0xfd, 0xf2, 0xc3, 0x56, 0xa9, 0x59, 0x24, 0xf6, 0xf7, 0x3f, 0xb8, 0x47,
-	0xb0, 0xd9, 0x4a, 0xd4, 0x48, 0x7b, 0xe8, 0x33, 0x85, 0x1d, 0x1e, 0x25, 0x8a, 0xd4, 0x60, 0x35,
-	0x91, 0x18, 0x73, 0x36, 0xc1, 0x1d, 0xcb, 0xb1, 0xde, 0x2c, 0x9f, 0x3c, 0x8e, 0xf5, 0x5e, 0xc4,
-	0xa4, 0xbc, 0x10, 0xf1, 0x60, 0xc7, 0x4e, 0xf7, 0xa6, 0xb1, 0xdb, 0x00, 0x92, 0x87, 0x7d, 0x9a,
-	0x28, 0x4d, 0xdb, 0x86, 0x65, 0x25, 0xce, 0x90, 0x67, 0xa8, 0x34, 0x68, 0xfe, 0xb4, 0x02, 0xa5,
-	0x53, 0xd3, 0x26, 0x22, 0x60, 0x3d, 0x5f, 0x46, 0xde, 0xf0, 0x9f, 0xee, 0xa3, 0x3f, 0xe7, 0xb0,
-	0xe6, 0xfe, 0x9f, 0x24, 0x3d, 0xd7, 0xdd, 0xf9, 0xf1, 0xcf, 0x7f, 0x7e, 0xb1, 0x89, 0x5b, 0xa1,
-	0x2c, 0xb7, 0xb9, 0x6f, 0x35, 0x48, 0x0b, 0x8a, 0xdd, 0x90, 0x07, 0x64, 0x7b, 0x96, 0xa2, 0xbb,
-	0x53, 0x7b, 0x66, 0xd6, 0xad, 0x18, 0xda, 0x0a, 0x59, 0xa6, 0x91, 0x2e, 0xfd, 0x02, 0xd6, 0x3e,
-	0x93, 0x18, 0x9f, 0xa2, 0x94, 0xa1, 0xe0, 0x0b, 0x48, 0xaf, 0x3e, 0xce, 0x66, 0x77, 0x9c, 0x2b,
-	0x71, 0x5f, 0x32, 0xc0, 0x2a, 0xa9, 0x50, 0xdd, 0x5b, 0x4f, 0x66, 0xa4, 0xaf, 0x60, 0xed, 0xbe,
-	0x48, 0x4c, 0xaf, 0xb9, 0x92, 0x0b, 0xc0, 0xf5, 0x59, 0xf0, 0x93, 0x92, 0xe3, 0x50, 0x2a, 0x77,
-	0xdb, 0xb0, 0x37, 0xc8, 0x3a, 0x55, 0x39, 0x56, 0x1b, 0x96, 0xb5, 0x81, 0x45, 0xd0, 0x9d, 0x67,
-	0xb9, 0x35, 0xb8, 0x0d, 0x83, 0x5b, 0x25, 0x25, 0x63, 0x55, 0x92, 0x8f, 0xa0, 0x74, 0x8c, 0xe7,
-	0x38, 0x5e, 0x44, 0xba, 0x3d, 0x4b, 0x32, 0x6a, 0x83, 0xaa, 0x1a, 0x54, 0x99, 0xac, 0xd0, 0x71,
-	0x4a, 0x68, 0xc3, 0xf2, 0x7d, 0x64, 0x93, 0x1b, 0x9b, 0xd2, 0xe2, 0x19, 0x53, 0xca, 0xd4, 0xb7,
-	0xa1, 0x74, 0xaa, 0x98, 0x4a, 0x16, 0x91, 0x5e, 0x9e, 0x25, 0xa5, 0xea, 0x9c, 0x23, 0x99, 0x96,
-	0xb7, 0xa0, 0xd8, 0xe1, 0x43, 0xf1, 0xdc, 0xe9, 0xc8, 0x30, 0x5a, 0x9b, 0x9b, 0x8e, 0x50, 0x97,
-	0x7e, 0x0d, 0xb7, 0xda, 0xc8, 0x31, 0x66, 0x0a, 0x3f, 0x64, 0x67, 0x78, 0xc0, 0x14, 0x7b, 0xa1,
-	0x61, 0xbb, 0x63, 0x70, 0xb7, 0xdd, 0x57, 0xe8, 0x00, 0xcf, 0x69, 0x90, 0xa1, 0xbc, 0x21, 0x3b,
-	0x43, 0x6f, 0xa0, 0x61, 0x1d, 0x28, 0x1e, 0x24, 0x93, 0xe8, 0xa6, 0x1e, 0xb5, 0x76, 0x3a, 0x70,
-	0x6e, 0xc5, 0x40, 0xe5, 0xb7, 0x63, 0x6f, 0x90, 0x4c, 0xa2, 0x7b, 0xbf, 0x17, 0x1f, 0xb6, 0xfe,
-	0x5d, 0x22, 0xbf, 0x59, 0xb0, 0xd6, 0x4d, 0xab, 0x9c, 0x56, 0xb7, 0xe3, 0x1e, 0xc2, 0xfa, 0x34,
-	0xd4, 0x2d, 0x27, 0xee, 0x48, 0xa9, 0x48, 0xee, 0x53, 0x9a, 0xfb, 0x40, 0x65, 0xa7, 0x4c, 0xd7,
-	0xda, 0xa6, 0x54, 0x6c, 0x38, 0x7c, 0x7f, 0x7a, 0x38, 0x47, 0xd5, 0x38, 0x00, 0x68, 0x45, 0xac,
-	0x3f, 0x42, 0xaf, 0xe9, 0xef, 0x92, 0x77, 0x9e, 0x0f, 0xa1, 0xbd, 0xb1, 0xe8, 0xd1, 0x09, 0x93,
-	0x0a, 0x63, 0x7a, 0xdc, 0xf9, 0xe0, 0xf0, 0x93, 0xd3, 0xc3, 0xe6, 0xd2, 0xdb, 0xfe, 0x6e, 0xad,
-	0xca, 0xa2, 0xd0, 0xcf, 0xb1, 0x5d, 0x8b, 0x36, 0x6c, 0xbb, 0xd8, 0xbc, 0xc5, 0xa2, 0x68, 0xac,
-	0xdf, 0xed, 0x50, 0x70, 0xfa, 0x8d, 0x14, 0x7c, 0x7f, 0x2e, 0x73, 0xd2, 0x85, 0xa5, 0xbd, 0xdd,
-	0xbb, 0xa4, 0x03, 0xed, 0x13, 0x54, 0x49, 0xcc, 0x71, 0xe0, 0x5c, 0x8c, 0x90, 0x3b, 0x6a, 0x84,
-	0x8e, 0x9e, 0x69, 0x67, 0x20, 0x50, 0x3a, 0x5c, 0x28, 0x67, 0xc4, 0xce, 0xd1, 0x89, 0x30, 0x9e,
-	0x84, 0xe6, 0x7d, 0x74, 0x94, 0x70, 0x58, 0xbf, 0x8f, 0x52, 0x1a, 0x6d, 0x8c, 0x52, 0x24, 0x71,
-	0x1f, 0xfd, 0x93, 0xf7, 0x34, 0x71, 0x8f, 0xec, 0x41, 0x63, 0x9e, 0x38, 0x55, 0x3d, 0xa1, 0xe2,
-	0x77, 0xa1, 0x54, 0x3e, 0x29, 0x41, 0xf1, 0x57, 0xdb, 0x5a, 0x79, 0xb0, 0x0b, 0x55, 0x28, 0xdf,
-	0x63, 0x32, 0xec, 0xeb, 0xef, 0x16, 0xb1, 0x57, 0x2d, 0x78, 0x5d, 0x37, 0x2a, 0x3c, 0xc2, 0x4b,
-	0x93, 0xa9, 0xae, 0xda, 0xb5, 0xf2, 0x97, 0x5e, 0xab, 0xdb, 0xf1, 0x8e, 0xf0, 0xd2, 0xb1, 0x7b,
-	0x77, 0xa0, 0x92, 0xaf, 0x28, 0xc0, 0xc6, 0x53, 0xfa, 0x42, 0xfc, 0x2e, 0x90, 0x8f, 0x45, 0x8c,
-	0x0e, 0xeb, 0x89, 0x44, 0x39, 0xd9, 0xd5, 0xdd, 0xe4, 0xd6, 0xfe, 0xb8, 0xaa, 0x5b, 0x8f, 0xae,
-	0xea, 0xd6, 0xdf, 0x57, 0x75, 0xeb, 0xe7, 0xeb, 0x7a, 0xe1, 0xd1, 0x75, 0xbd, 0xf0, 0xd7, 0x75,
-	0xbd, 0xf0, 0x60, 0x6b, 0xda, 0xeb, 0x31, 0xe3, 0x83, 0xec, 0x47, 0xd7, 0x2b, 0x99, 0x3f, 0xc9,
-	0xdd, 0xff, 0x02, 0x00, 0x00, 0xff, 0xff, 0xb1, 0x23, 0x2e, 0x73, 0x00, 0x07, 0x00, 0x00,
+	// 896 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x95, 0x4f, 0x6f, 0xe3, 0x44,
+	0x18, 0xc6, 0xe3, 0xc4, 0x49, 0x9b, 0x09, 0x69, 0xb6, 0xd3, 0x65, 0xc9, 0x46, 0x90, 0x35, 0x16,
+	0x87, 0xa8, 0x5a, 0x7b, 0x4a, 0xb6, 0x42, 0xa8, 0x5c, 0xc8, 0x6e, 0x4b, 0x14, 0xb6, 0x94, 0x28,
+	0x5d, 0x10, 0x5a, 0x09, 0x55, 0x13, 0xe7, 0x8d, 0x33, 0x6c, 0x32, 0x63, 0x3c, 0xe3, 0x86, 0x0a,
+	0x38, 0xc0, 0x27, 0x40, 0xcb, 0x8d, 0x0b, 0x1f, 0x80, 0x2f, 0xc1, 0x91, 0xe3, 0x4a, 0x5c, 0x38,
+	0xa2, 0x96, 0x4f, 0xc1, 0x09, 0x79, 0xec, 0xb4, 0x69, 0xda, 0xa8, 0xe5, 0x34, 0xf1, 0x3b, 0xcf,
+	0xf3, 0x9b, 0xf7, 0xcf, 0xc4, 0x46, 0x1b, 0x12, 0xc2, 0x63, 0x08, 0x49, 0xb2, 0xb8, 0x41, 0x28,
+	0x94, 0xc0, 0x6b, 0x01, 0x55, 0xa3, 0x29, 0x0d, 0xdd, 0x24, 0x5a, 0x7b, 0xd3, 0x17, 0xc2, 0x1f,
+	0x03, 0xa1, 0x01, 0x23, 0x94, 0x73, 0xa1, 0xa8, 0x62, 0x82, 0xcb, 0x44, 0x5d, 0x73, 0x7c, 0xa6,
+	0x46, 0x51, 0xdf, 0xf5, 0xc4, 0x84, 0xf8, 0xc2, 0x17, 0x44, 0x87, 0xfb, 0xd1, 0x50, 0x3f, 0xe9,
+	0x07, 0xfd, 0x2b, 0x95, 0x3f, 0xd4, 0x8b, 0xe7, 0xf8, 0xc0, 0x1d, 0x39, 0xa5, 0xbe, 0x0f, 0x21,
+	0x11, 0x81, 0x06, 0x5e, 0x03, 0xdf, 0x00, 0xae, 0x98, 0x3a, 0x21, 0xc9, 0x32, 0x0b, 0x7a, 0x63,
+	0x06, 0x5c, 0x91, 0x64, 0x49, 0x82, 0xf6, 0x3a, 0x32, 0x3f, 0x17, 0x6c, 0xb0, 0x53, 0x7c, 0xd9,
+	0x2a, 0x34, 0x4d, 0x9c, 0xfd, 0xf6, 0x7b, 0xfb, 0x87, 0x1c, 0x5a, 0xff, 0x4c, 0x42, 0x78, 0x08,
+	0x52, 0x32, 0xc1, 0x3f, 0x8d, 0x54, 0x10, 0x29, 0xdc, 0x40, 0x66, 0x24, 0x21, 0xac, 0x1a, 0x96,
+	0xd1, 0x28, 0x35, 0xef, 0xba, 0xb3, 0x62, 0xd3, 0x23, 0x62, 0x43, 0x4f, 0x2b, 0x70, 0x1d, 0x95,
+	0x98, 0x3c, 0xe2, 0x30, 0x3d, 0xd2, 0x86, 0xac, 0x65, 0x34, 0x56, 0x7b, 0x45, 0x26, 0x0f, 0x60,
+	0x1a, 0xab, 0xb0, 0x8b, 0x0a, 0xde, 0x98, 0xb2, 0x89, 0xac, 0xe6, 0x34, 0xeb, 0xde, 0x39, 0x2b,
+	0xcd, 0xec, 0x89, 0xde, 0xed, 0xa5, 0x2a, 0xfc, 0x0e, 0x2a, 0x73, 0xa1, 0xd8, 0x90, 0x79, 0x49,
+	0x8d, 0x55, 0xd3, 0x32, 0x1a, 0xf9, 0xde, 0xe5, 0x20, 0x3e, 0x40, 0x25, 0x25, 0xa2, 0x90, 0xd3,
+	0x09, 0x70, 0x25, 0xab, 0x79, 0x2b, 0xd7, 0x28, 0x35, 0x1f, 0xba, 0x97, 0x67, 0xe2, 0x5e, 0xa9,
+	0xcb, 0x7d, 0x76, 0x6e, 0xea, 0xcd, 0x03, 0x6a, 0xdf, 0x21, 0x74, 0xb1, 0x85, 0x77, 0x10, 0xba,
+	0xd8, 0x4c, 0x7b, 0x50, 0x5b, 0xec, 0xc1, 0x1c, 0x6a, 0x4e, 0x8d, 0x9b, 0xc8, 0x54, 0x40, 0x27,
+	0xba, 0x11, 0xa5, 0x66, 0x7d, 0xb9, 0xeb, 0x19, 0xd0, 0x49, 0x4f, 0x6b, 0x9b, 0xbf, 0xe7, 0x51,
+	0xe1, 0x50, 0xa7, 0x8c, 0x5b, 0xc8, 0xec, 0x32, 0xee, 0xe3, 0xbb, 0x8b, 0xb5, 0xc4, 0x73, 0xab,
+	0x5d, 0x1b, 0xb5, 0xcb, 0x3f, 0xfe, 0xf9, 0xcf, 0xcf, 0xd9, 0x15, 0x9c, 0x27, 0x41, 0x6c, 0xfd,
+	0x12, 0x95, 0xe6, 0x0a, 0x5f, 0x42, 0x7a, 0xfb, 0xc6, 0x5e, 0xd9, 0xaf, 0x6b, 0x6c, 0x05, 0x97,
+	0x49, 0x3c, 0x59, 0x47, 0xa6, 0xbc, 0x36, 0xca, 0xc7, 0x5a, 0xb9, 0x04, 0x5c, 0xbd, 0xee, 0xae,
+	0xec, 0x33, 0xa9, 0xec, 0x35, 0xcd, 0x5b, 0xc5, 0x05, 0xcd, 0x93, 0xf8, 0x63, 0x54, 0xd8, 0x87,
+	0x63, 0x18, 0x2f, 0x23, 0xdd, 0x5f, 0x24, 0x69, 0xb5, 0x46, 0x55, 0x34, 0xaa, 0x88, 0x57, 0xc8,
+	0x38, 0x21, 0xb4, 0x51, 0x3e, 0xee, 0xe7, 0xad, 0x93, 0x8a, 0xc5, 0x0b, 0x49, 0x29, 0xed, 0x6f,
+	0xa3, 0xc2, 0xa1, 0xa2, 0x2a, 0x5a, 0x46, 0xba, 0xb7, 0x48, 0x4a, 0xd4, 0x73, 0x19, 0xc9, 0xc4,
+	0xde, 0x42, 0x66, 0x87, 0x0f, 0xc5, 0x8d, 0x83, 0x4c, 0x31, 0xb1, 0x76, 0x6e, 0x90, 0x2c, 0xb6,
+	0x1e, 0xa1, 0x3b, 0x6d, 0xe0, 0x10, 0x52, 0x05, 0x1f, 0xd1, 0x17, 0xb0, 0x4b, 0x15, 0xfd, 0x5f,
+	0xf7, 0xe2, 0x81, 0xc6, 0xdd, 0xb7, 0xdf, 0x20, 0x03, 0x38, 0x26, 0x7e, 0x8a, 0x72, 0x86, 0xf4,
+	0x05, 0x38, 0x83, 0x18, 0xd6, 0x41, 0xe6, 0x6e, 0x34, 0x09, 0x6e, 0x9b, 0x63, 0xac, 0x9d, 0xdd,
+	0x0a, 0xbb, 0xac, 0xa1, 0xf2, 0xeb, 0xb1, 0x33, 0x88, 0x26, 0xc1, 0xe3, 0xdf, 0xcc, 0x97, 0xad,
+	0x7f, 0x73, 0xf8, 0x57, 0x03, 0x95, 0xba, 0x89, 0xcb, 0x6a, 0x75, 0x3b, 0xf6, 0x1e, 0x7a, 0x6d,
+	0xf6, 0x18, 0xb7, 0x1c, 0xdb, 0x23, 0xa5, 0x02, 0xb9, 0x43, 0xc8, 0xdc, 0xfb, 0x30, 0x3d, 0x65,
+	0xb6, 0xd6, 0xd6, 0xa5, 0xa2, 0xc3, 0xe1, 0x87, 0xb3, 0xc3, 0x39, 0xa8, 0xcd, 0x5d, 0x84, 0x5a,
+	0x01, 0xf5, 0x46, 0xe0, 0x34, 0xdd, 0x2d, 0xfc, 0xde, 0xcd, 0x10, 0xd2, 0x1f, 0x8b, 0x3e, 0x99,
+	0x50, 0xa9, 0x20, 0x24, 0xfb, 0x9d, 0x27, 0x7b, 0x07, 0x87, 0x7b, 0xcd, 0xdc, 0xbb, 0xee, 0x56,
+	0xad, 0x42, 0x03, 0xe6, 0xce, 0xb1, 0x6d, 0x83, 0x6c, 0x66, 0xb3, 0x66, 0xf3, 0x0e, 0x0d, 0x82,
+	0x71, 0xfa, 0x7e, 0x21, 0x5f, 0x49, 0xc1, 0x77, 0xae, 0x44, 0x7a, 0x5d, 0x94, 0xdb, 0xde, 0x7a,
+	0x84, 0x3b, 0xa8, 0xdd, 0x03, 0x15, 0x85, 0x1c, 0x06, 0xd6, 0x74, 0x04, 0xdc, 0x52, 0x23, 0xb0,
+	0xe2, 0x3b, 0x6d, 0x0d, 0x04, 0x48, 0x8b, 0x0b, 0x65, 0x8d, 0xe8, 0x31, 0x58, 0x01, 0x84, 0x13,
+	0xa6, 0xff, 0x34, 0x96, 0x12, 0x16, 0xf5, 0x3c, 0x90, 0x52, 0x6b, 0x43, 0x90, 0x22, 0x0a, 0x3d,
+	0x70, 0x7b, 0x1f, 0xc4, 0xc4, 0x6d, 0xbc, 0x8d, 0x36, 0xaf, 0x12, 0x67, 0xaa, 0x0b, 0x2a, 0x7c,
+	0xc3, 0xa4, 0x72, 0x71, 0x01, 0x99, 0xbf, 0x64, 0x8d, 0x95, 0xe7, 0x5b, 0xa8, 0x82, 0x8a, 0x8f,
+	0xa9, 0x64, 0x5e, 0x2b, 0x52, 0x23, 0x9c, 0x5d, 0x35, 0xd0, 0x5b, 0x71, 0xa3, 0xd8, 0x53, 0x38,
+	0xd1, 0x91, 0xca, 0x6a, 0xb6, 0x56, 0xfc, 0xc2, 0x69, 0x75, 0x3b, 0xce, 0x53, 0x38, 0xb1, 0xb2,
+	0xfd, 0x07, 0xa8, 0x3c, 0xef, 0xc8, 0xa0, 0xb5, 0x4b, 0xfa, 0x4c, 0xf8, 0x3e, 0xc2, 0x9f, 0x88,
+	0x10, 0x2c, 0xda, 0x17, 0x91, 0xb2, 0xd2, 0xd1, 0xdd, 0x66, 0x6a, 0x7f, 0x9c, 0xd6, 0x8d, 0x57,
+	0xa7, 0x75, 0xe3, 0xef, 0xd3, 0xba, 0xf1, 0xd3, 0x59, 0x3d, 0xf3, 0xea, 0xac, 0x9e, 0xf9, 0xeb,
+	0xac, 0x9e, 0x79, 0xbe, 0x31, 0xeb, 0xf5, 0x98, 0xf2, 0x41, 0xfa, 0x09, 0xed, 0x17, 0xf4, 0xe7,
+	0xe8, 0xd1, 0x7f, 0x01, 0x00, 0x00, 0xff, 0xff, 0xb9, 0x5d, 0x58, 0xba, 0x5a, 0x07, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -242,14 +276,10 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ServerClient interface {
-	// Create a session based on credentials
-	Authenticate(ctx context.Context, in *AuthenticateInput, opts ...grpc.CallOption) (*AuthenticateOutput, error)
 	// Verify the service is up and running
 	Ping(ctx context.Context, in *Void, opts ...grpc.CallOption) (*Void, error)
-	// Get current user's session
-	UserSession(ctx context.Context, in *Void, opts ...grpc.CallOption) (*entity.UserSession, error)
-	// List tournaments
-	Tournaments(ctx context.Context, in *Void, opts ...grpc.CallOption) (*entity.TournamentList, error)
+	// Get current user session, based on JWT token
+	UserSession(ctx context.Context, in *Void, opts ...grpc.CallOption) (*UserSessionOutput, error)
 	// List users
 	Users(ctx context.Context, in *Void, opts ...grpc.CallOption) (*entity.UserList, error)
 	// List levels
@@ -270,15 +300,6 @@ func NewServerClient(cc *grpc.ClientConn) ServerClient {
 	return &serverClient{cc}
 }
 
-func (c *serverClient) Authenticate(ctx context.Context, in *AuthenticateInput, opts ...grpc.CallOption) (*AuthenticateOutput, error) {
-	out := new(AuthenticateOutput)
-	err := c.cc.Invoke(ctx, "/pathwar.server.Server/Authenticate", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *serverClient) Ping(ctx context.Context, in *Void, opts ...grpc.CallOption) (*Void, error) {
 	out := new(Void)
 	err := c.cc.Invoke(ctx, "/pathwar.server.Server/Ping", in, out, opts...)
@@ -288,18 +309,9 @@ func (c *serverClient) Ping(ctx context.Context, in *Void, opts ...grpc.CallOpti
 	return out, nil
 }
 
-func (c *serverClient) UserSession(ctx context.Context, in *Void, opts ...grpc.CallOption) (*entity.UserSession, error) {
-	out := new(entity.UserSession)
+func (c *serverClient) UserSession(ctx context.Context, in *Void, opts ...grpc.CallOption) (*UserSessionOutput, error) {
+	out := new(UserSessionOutput)
 	err := c.cc.Invoke(ctx, "/pathwar.server.Server/UserSession", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *serverClient) Tournaments(ctx context.Context, in *Void, opts ...grpc.CallOption) (*entity.TournamentList, error) {
-	out := new(entity.TournamentList)
-	err := c.cc.Invoke(ctx, "/pathwar.server.Server/Tournaments", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -371,14 +383,10 @@ func (c *serverClient) Dump(ctx context.Context, in *Void, opts ...grpc.CallOpti
 
 // ServerServer is the server API for Server service.
 type ServerServer interface {
-	// Create a session based on credentials
-	Authenticate(context.Context, *AuthenticateInput) (*AuthenticateOutput, error)
 	// Verify the service is up and running
 	Ping(context.Context, *Void) (*Void, error)
-	// Get current user's session
-	UserSession(context.Context, *Void) (*entity.UserSession, error)
-	// List tournaments
-	Tournaments(context.Context, *Void) (*entity.TournamentList, error)
+	// Get current user session, based on JWT token
+	UserSession(context.Context, *Void) (*UserSessionOutput, error)
 	// List users
 	Users(context.Context, *Void) (*entity.UserList, error)
 	// List levels
@@ -395,17 +403,11 @@ type ServerServer interface {
 type UnimplementedServerServer struct {
 }
 
-func (*UnimplementedServerServer) Authenticate(ctx context.Context, req *AuthenticateInput) (*AuthenticateOutput, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Authenticate not implemented")
-}
 func (*UnimplementedServerServer) Ping(ctx context.Context, req *Void) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
-func (*UnimplementedServerServer) UserSession(ctx context.Context, req *Void) (*entity.UserSession, error) {
+func (*UnimplementedServerServer) UserSession(ctx context.Context, req *Void) (*UserSessionOutput, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserSession not implemented")
-}
-func (*UnimplementedServerServer) Tournaments(ctx context.Context, req *Void) (*entity.TournamentList, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Tournaments not implemented")
 }
 func (*UnimplementedServerServer) Users(ctx context.Context, req *Void) (*entity.UserList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Users not implemented")
@@ -431,24 +433,6 @@ func (*UnimplementedServerServer) Dump(ctx context.Context, req *Void) (*entity.
 
 func RegisterServerServer(s *grpc.Server, srv ServerServer) {
 	s.RegisterService(&_Server_serviceDesc, srv)
-}
-
-func _Server_Authenticate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AuthenticateInput)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ServerServer).Authenticate(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/pathwar.server.Server/Authenticate",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServerServer).Authenticate(ctx, req.(*AuthenticateInput))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _Server_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -483,24 +467,6 @@ func _Server_UserSession_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServerServer).UserSession(ctx, req.(*Void))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Server_Tournaments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Void)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ServerServer).Tournaments(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/pathwar.server.Server/Tournaments",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServerServer).Tournaments(ctx, req.(*Void))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -636,20 +602,12 @@ var _Server_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*ServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Authenticate",
-			Handler:    _Server_Authenticate_Handler,
-		},
-		{
 			MethodName: "Ping",
 			Handler:    _Server_Ping_Handler,
 		},
 		{
 			MethodName: "UserSession",
 			Handler:    _Server_UserSession_Handler,
-		},
-		{
-			MethodName: "Tournaments",
-			Handler:    _Server_Tournaments_Handler,
 		},
 		{
 			MethodName: "Users",
@@ -707,7 +665,7 @@ func (m *Void) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *AuthenticateInput) Marshal() (dAtA []byte, err error) {
+func (m *UserSessionOutput) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -717,34 +675,73 @@ func (m *AuthenticateInput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *AuthenticateInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *UserSessionOutput) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *AuthenticateInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *UserSessionOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Password) > 0 {
-		i -= len(m.Password)
-		copy(dAtA[i:], m.Password)
-		i = encodeVarintServer(dAtA, i, uint64(len(m.Password)))
-		i--
-		dAtA[i] = 0x12
+	if len(m.Tournaments) > 0 {
+		for iNdEx := len(m.Tournaments) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Tournaments[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintServer(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x2a
+		}
 	}
-	if len(m.Username) > 0 {
-		i -= len(m.Username)
-		copy(dAtA[i:], m.Username)
-		i = encodeVarintServer(dAtA, i, uint64(len(m.Username)))
+	if m.Notifications != 0 {
+		i = encodeVarintServer(dAtA, i, uint64(m.Notifications))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.Claims != nil {
+		{
+			size, err := m.Claims.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintServer(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.IsNewUser {
+		i--
+		if m.IsNewUser {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.User != nil {
+		{
+			size, err := m.User.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintServer(dAtA, i, uint64(size))
+		}
 		i--
 		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *AuthenticateOutput) Marshal() (dAtA []byte, err error) {
+func (m *UserSessionOutput_Tournament) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -754,20 +751,37 @@ func (m *AuthenticateOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *AuthenticateOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *UserSessionOutput_Tournament) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *AuthenticateOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *UserSessionOutput_Tournament) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Token) > 0 {
-		i -= len(m.Token)
-		copy(dAtA[i:], m.Token)
-		i = encodeVarintServer(dAtA, i, uint64(len(m.Token)))
+	if m.Team != nil {
+		{
+			size, err := m.Team.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintServer(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Tournament != nil {
+		{
+			size, err := m.Tournament.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintServer(dAtA, i, uint64(size))
+		}
 		i--
 		dAtA[i] = 0xa
 	}
@@ -794,31 +808,47 @@ func (m *Void) Size() (n int) {
 	return n
 }
 
-func (m *AuthenticateInput) Size() (n int) {
+func (m *UserSessionOutput) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.Username)
-	if l > 0 {
+	if m.User != nil {
+		l = m.User.Size()
 		n += 1 + l + sovServer(uint64(l))
 	}
-	l = len(m.Password)
-	if l > 0 {
+	if m.IsNewUser {
+		n += 2
+	}
+	if m.Claims != nil {
+		l = m.Claims.Size()
 		n += 1 + l + sovServer(uint64(l))
+	}
+	if m.Notifications != 0 {
+		n += 1 + sovServer(uint64(m.Notifications))
+	}
+	if len(m.Tournaments) > 0 {
+		for _, e := range m.Tournaments {
+			l = e.Size()
+			n += 1 + l + sovServer(uint64(l))
+		}
 	}
 	return n
 }
 
-func (m *AuthenticateOutput) Size() (n int) {
+func (m *UserSessionOutput_Tournament) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.Token)
-	if l > 0 {
+	if m.Tournament != nil {
+		l = m.Tournament.Size()
+		n += 1 + l + sovServer(uint64(l))
+	}
+	if m.Team != nil {
+		l = m.Team.Size()
 		n += 1 + l + sovServer(uint64(l))
 	}
 	return n
@@ -883,7 +913,7 @@ func (m *Void) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *AuthenticateInput) Unmarshal(dAtA []byte) error {
+func (m *UserSessionOutput) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -906,17 +936,17 @@ func (m *AuthenticateInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: AuthenticateInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: UserSessionOutput: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: AuthenticateInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: UserSessionOutput: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Username", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field User", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowServer
@@ -926,29 +956,33 @@ func (m *AuthenticateInput) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthServer
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthServer
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Username = string(dAtA[iNdEx:postIndex])
+			if m.User == nil {
+				m.User = &entity.User{}
+			}
+			if err := m.User.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Password", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsNewUser", wireType)
 			}
-			var stringLen uint64
+			var v int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowServer
@@ -958,23 +992,100 @@ func (m *AuthenticateInput) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				v |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			m.IsNewUser = bool(v != 0)
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Claims", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
 				return ErrInvalidLengthServer
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthServer
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Password = string(dAtA[iNdEx:postIndex])
+			if m.Claims == nil {
+				m.Claims = &client.Claims{}
+			}
+			if err := m.Claims.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Notifications", wireType)
+			}
+			m.Notifications = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Notifications |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Tournaments", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServer
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServer
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Tournaments = append(m.Tournaments, &UserSessionOutput_Tournament{})
+			if err := m.Tournaments[len(m.Tournaments)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1000,7 +1111,7 @@ func (m *AuthenticateInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *AuthenticateOutput) Unmarshal(dAtA []byte) error {
+func (m *UserSessionOutput_Tournament) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1023,17 +1134,17 @@ func (m *AuthenticateOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: AuthenticateOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Tournament: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: AuthenticateOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Tournament: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Token", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Tournament", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowServer
@@ -1043,23 +1154,63 @@ func (m *AuthenticateOutput) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthServer
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthServer
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Token = string(dAtA[iNdEx:postIndex])
+			if m.Tournament == nil {
+				m.Tournament = &entity.Tournament{}
+			}
+			if err := m.Tournament.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Team", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServer
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServer
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Team == nil {
+				m.Team = &entity.TournamentTeam{}
+			}
+			if err := m.Team.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

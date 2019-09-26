@@ -11,19 +11,16 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"pathwar.land/entity"
+	"pathwar.land/client"
 )
 
 type ctxKey string
 
-var userSessionCtx ctxKey = "user-session"
+var (
+	userTokenCtx ctxKey = "user-token"
+)
 
 func (s *svc) AuthFuncOverride(ctx context.Context, fullMethodName string) (context.Context, error) {
-
-	// TMP: temporarily disabling authentication (jwt + oauth coming soon)
-	return ctx, nil
-	// end-of-TMP
-
 	switch fullMethodName {
 	// do not check for token for the following services
 	case "/pathwar.server.Server/Authenticate", "/pathwar.server.Server/Ping", "/pathwar.server.Server/Info", "/pathwar.server.Server/Status":
@@ -42,24 +39,12 @@ func (s *svc) AuthFuncOverride(ctx context.Context, fullMethodName string) (cont
 		auth[0] = auth[0][7:]
 	}
 
-	token, err := jwt.Parse(auth[0], func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, status.Errorf(codes.Unauthenticated, "there was an error")
-		}
-		return s.jwtKey, nil
-	})
+	token, _, err := client.TokenWithClaims(auth[0], s.client)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, err.Error())
 	}
 
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok || !token.Valid {
-		return nil, status.Errorf(codes.Unauthenticated, "invalid token")
-	}
-	ctx = context.WithValue(ctx, userSessionCtx, entity.UserSession{
-		// FIXME: use mapstructure
-		Username: claims["username"].(string),
-	})
+	ctx = context.WithValue(ctx, userTokenCtx, token)
 
 	return ctx, nil
 }
@@ -69,11 +54,26 @@ func authFunc(ctx context.Context) (context.Context, error) {
 	return nil, fmt.Errorf("should not happen")
 }
 
-func userSessionFromContext(ctx context.Context) (entity.UserSession, error) {
-	sess := ctx.Value(userSessionCtx)
-	if sess == nil {
-		return entity.UserSession{}, errors.New("context does not contain a session")
+// func claimsFromContext(ctx context.Context) (*client.Claims, error) {}
+
+func subjectFromContext(ctx context.Context) (string, error) {
+	token, err := userTokenFromContext(ctx)
+	if err != nil {
+		return "", err
 	}
 
-	return sess.(entity.UserSession), nil
+	sub := client.SubjectFromToken(token)
+	if sub == "" {
+		return "", errors.New("no such subject in the token")
+	}
+
+	return sub, nil
+}
+
+func userTokenFromContext(ctx context.Context) (*jwt.Token, error) {
+	token := ctx.Value(userTokenCtx)
+	if token == nil {
+		return nil, errors.New("context does not contain a session")
+	}
+	return token.(*jwt.Token), nil
 }

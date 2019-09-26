@@ -2,7 +2,6 @@ package server // import "pathwar.land/server"
 
 import (
 	"context"
-	"crypto/rand"
 	"net"
 	"net/http"
 	"strings"
@@ -139,21 +138,14 @@ func startGRPCServer(ctx context.Context, opts *serverOptions) error {
 }
 
 func newSvc(opts *serverOptions) (*svc, error) {
-	db, err := sql.FromOpts(&opts.sql)
+	db, err := sql.FromOpts(&opts.SQL)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to initialize database")
 	}
 
-	jwtKey := []byte(opts.JWTKey)
-	if len(jwtKey) == 0 { // generate random JWT key
-		jwtKey = make([]byte, 128)
-		if _, err := rand.Read(jwtKey); err != nil {
-			return nil, errors.Wrap(err, "failed to generate random JWT token")
-		}
-	}
 	return &svc{
-		jwtKey:    jwtKey,
 		db:        db,
+		client:    opts.Client,
 		startedAt: time.Now(),
 	}, nil
 }

@@ -1,0 +1,16 @@
+level:
+  name: UNIX1-NEEDNAME
+  version: 1.0
+  author: Pathwar team
+  passphrases: 1
+  description: >
+    You need to get the contents of a .txt file
+  rootable: true
+  cpu_shares: 1/10
+  memory_limit: 16M
+  tags:
+    - scripts
+  redump: 3600
+  lang: en
+  price: 42
+  reward: 500

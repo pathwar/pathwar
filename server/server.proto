@@ -3,10 +3,11 @@ syntax = "proto3";
 package pathwar.server;
 
 import "google/api/annotations.proto";
-import "entity/entity.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "protoc-gen-swagger/options/annotations.proto";
-//import "google/protobuf/timestamp.proto";
+
+import "entity/entity.proto";
+import "client/client.proto";
 
 option go_package = "pathwar.land/server";
 option (gogoproto.sizer_all) = true;
@@ -85,43 +86,30 @@ option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
 };
 
 service Server {
-
   //
   // public stuff
   //
-
-  // Create a session based on credentials
-  rpc Authenticate(AuthenticateInput) returns (AuthenticateOutput) {
-    option (google.api.http) = {
-      post: "/authenticate"
-      body: "*"
-    };
-  };
 
   // Verify the service is up and running
   rpc Ping(Void) returns (Void) {
     option (google.api.http) = {get: "/ping"};
   };
 
-  // Get current user's session
-  rpc UserSession(Void) returns (pathwar.entity.UserSession) {
+  // Get current user session, based on JWT token
+  rpc UserSession(Void) returns (UserSessionOutput) {
     option (google.api.http) = {get: "/user-session"};
-  };
-
-  // List tournaments
-  rpc Tournaments(Void) returns (pathwar.entity.TournamentList) {
-    option (google.api.http) = {get: "/tournaments"};
-    // FIXME: pagination & filters
   };
 
   // List users
   rpc Users(Void) returns (pathwar.entity.UserList) {
+    // FIXME: only for authenticated users
     option (google.api.http) = {get: "/users"};
     // FIXME: pagination & filters
   };
 
   // List levels
   rpc Levels(Void) returns (pathwar.entity.LevelList) {
+    // FIXME: should be available for unauthenticated AND authenticated people
     option (google.api.http) = {get: "/levels"};
     // FIXME: pagination & filters
   };
@@ -160,13 +148,15 @@ message Void {
   };
 }
 
-// AuthenticateInput contains everything (credentials) to authenticate a user and create a new session.
-message AuthenticateInput {
-  string username = 1;
-  string password = 2;
-}
+message UserSessionOutput {
+  message Tournament {
+    entity.Tournament tournament = 1;
+    entity.TournamentTeam team = 2;
+  }
 
-// AuthenticateOutput contains a session token (JWT).
-message AuthenticateOutput {
-  string token = 1;
+  entity.User user = 1;
+  bool is_new_user = 2;
+  client.Claims claims = 3;
+  int32 notifications = 4;
+  repeated Tournament tournaments = 5;
 }

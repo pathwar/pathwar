@@ -1,0 +1,9 @@
+trainingsqli:
+  build: .
+  ports:
+    - 80
+  links:
+    - mysql
+
+mysql:
+  image: orchardup/mysql

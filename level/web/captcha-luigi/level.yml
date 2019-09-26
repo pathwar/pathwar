@@ -1,0 +1,14 @@
+level:
+  name: Captcha
+  version: 1.0
+  author: Pathwar team
+  passphrases: 1
+  description: Resolve 1000 captchas
+  rootable: false
+  cpu_shares: 3/10
+  memory_limit: 64M
+  tags:
+    - captcha
+    - php
+  redump: 3600
+  lang: en

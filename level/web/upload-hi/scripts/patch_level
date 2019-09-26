@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. /pathwar/scripts/functions.sh
+UUID=$(cat /proc/sys/kernel/random/uuid)
+echo -n "$(get_passphrase 0)" > $UUID.txt

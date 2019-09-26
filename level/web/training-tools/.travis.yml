@@ -1,0 +1,5 @@
+install:
+- make travis_install
+
+script:
+- make travis_run

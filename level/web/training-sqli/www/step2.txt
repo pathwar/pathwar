@@ -1,0 +1,8 @@
+$query="SELECT * FROM users2 WHERE username='user' AND password='$password'";
+$res = mysql_query($query) or die(mysql_error());
+if (mysql_num_rows($res) > 0) { //login successful
+	$data = mysql_fetch_row($res);
+	if ($data[1] === 'admin') {
+	   ...
+	}
+}

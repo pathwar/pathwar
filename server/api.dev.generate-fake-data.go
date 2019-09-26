@@ -76,7 +76,6 @@ func (s *svc) GenerateFakeData(ctx context.Context, _ *Void) (*Void, error) {
 			GravatarURL: gofakeit.ImageURL(400, 400) + "?" + gofakeit.HipsterWord(),
 			WebsiteURL:  gofakeit.URL(),
 			Locale:      "fr_FR",
-			IsStaff:     false,
 			Memberships: []*entity.TeamMember{},
 		}
 		users = append(users, user)
