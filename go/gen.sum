@@ -1,0 +1,7 @@
+03acd307b08ec4c03ccfb8c4c0620f573612a5b2  ../api/pwlevel.proto
+30302d31bca0924719daf9e95a0ea15dfbcfb131  ../api/pwhypervisor.proto
+58eb4b1d9b5be40a69ffdab1a13b9fb90b669839  ../api/pwsso.proto
+5d333f98cfbafd36ddc97b3c7c364bf94b898384  ../api/pwcompose.proto
+6de212ad63b45da5e9d57a1b293a0ec8b73b7b35  ../api/pwdb.proto
+8a27b6e5aac7ffa15f686c6c1b9b741659f0acfd  ../api/pwengine.proto
+ddfce445bab91ac60acbcda4fe9f2524e0b2e50d  Makefile
