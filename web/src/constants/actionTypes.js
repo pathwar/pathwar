@@ -3,6 +3,7 @@
 export const LOGIN_FAILED = "LOGIN_FAILED";
 export const SET_USER_SESSION = "SET_USER_SESSION";
 export const SET_KEYCLOAK_SESSION = "SET_KEYCLOAK_SESSION";
+export const LOGOUT = "LOGOUT";
 
 //Teams
 export const SET_ACTIVE_TEAM = "SET_ACTIVE_TEAM";

@@ -1,4 +1,5 @@
 import {
+  LOGOUT,
   LOGIN_FAILED,
   SET_USER_SESSION,
   SET_KEYCLOAK_SESSION
@@ -25,6 +26,16 @@ export default function userSessionReducer(state = initialState.session, action)
         activeKeycloakSession: null,
         isAuthenticated: false,
         error: action.payload.error
+    } ;
+
+    case LOGOUT:
+      return {
+        ...state,
+        fetching: false,
+        activeKeycloakSession: null,
+        activeUserSession: null,
+        isAuthenticated: false,
+        error: null
     } ;
 
     case SET_KEYCLOAK_SESSION:

@@ -5,12 +5,19 @@ import {
   SET_USER_SESSION,
   SET_KEYCLOAK_SESSION,
   PING_USER_SUCCESS,
-  PING_USER_FAILED
+  PING_USER_FAILED,
+  LOGOUT
 } from "../constants/actionTypes"
 import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
 import { getUserSession } from "../api/userSession"
 import { setActiveTeam as setActiveTeamAction } from "./teams";
 import { setActiveTournament as setActiveTournamentAction } from "./tournaments"
+
+export const logoutUser = () => async dispatch => {
+  dispatch({
+    type: LOGOUT
+  })
+}
 
 export const setUserSession = (activeUserSession) => async dispatch => {
   dispatch({

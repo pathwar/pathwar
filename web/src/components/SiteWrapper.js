@@ -44,7 +44,6 @@ const accountDropdownProps = ({activeUserSession, activeKeycloakSession}) => {
     options.push("help");
     if (!activeUserSession && !activeKeycloakSession) { options.push({icon: "settings", value: "Log in", to: "/app/login"}); }
     if (activeUserSession && activeKeycloakSession) { options.push({icon: "settings", value: "Settings", to: activeKeycloakSession.tokenParsed.iss+"/account"}); }
-    if (activeUserSession && activeKeycloakSession) { options.push({icon: "settings", value: "Log out", to: "/app/logout"}); }
     return {
         avatarURL: avatar,
         name: `${username}`,
@@ -65,7 +64,7 @@ class SiteWrapper extends React.Component {
           accountDropdown: accountDropdownProps(userSession),
           navItems: (
             <Nav.Item type="div" className="d-none d-md-flex">
-              {userSession.activeSession && (
+              {userSession.activeKeycloakSession && (
                 <Button
                   link
                   onClick={() => navigate("/app/logout")}
