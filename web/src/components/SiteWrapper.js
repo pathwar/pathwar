@@ -32,17 +32,18 @@ const navBarItems = [
   }
 ];
 
-const accountDropdownProps = ({activeSession}) => {
-    const username = activeSession ? activeSession.tokenParsed.preferred_username : "Account"
-    const avatar = activeSession ? logo : undefined;
-    const description = activeSession ? "Team" : "Log in?";
+const accountDropdownProps = ({activeUserSession, activeKeycloakSession}) => {
+    const { user, claims } =  activeUserSession || {};
+
+    const username = claims && claims.preferred_username ? claims.preferred_username : "Account"
+    const avatar = user && user.gravatar_url ? user.gravatar_url : logo;
+    const description = claims && claims.email ? claims.email : "Log in?";
     const options = [];
-    if (activeSession) { options.push("profile"); }
-    if (activeSession) { options.push("divider"); }
+    if (activeUserSession) { options.push("profile"); }
+    if (activeUserSession) { options.push("divider"); }
     options.push("help");
-    if (!activeSession) { options.push({icon: "settings", value: "Log in", to: "/app/login"}); }
-    if (activeSession) { options.push({icon: "settings", value: "Settings", to: activeSession.tokenParsed.iss+"/account"}); }
-    if (activeSession) { options.push({icon: "settings", value: "Log out", to: "/app/logout"}); }
+    if (!activeUserSession && !activeKeycloakSession) { options.push({icon: "settings", value: "Log in", to: "/app/login"}); }
+    if (activeUserSession && activeKeycloakSession) { options.push({icon: "settings", value: "Settings", to: activeKeycloakSession.tokenParsed.iss+"/account"}); }
     return {
         avatarURL: avatar,
         name: `${username}`,
@@ -63,7 +64,7 @@ class SiteWrapper extends React.Component {
           accountDropdown: accountDropdownProps(userSession),
           navItems: (
             <Nav.Item type="div" className="d-none d-md-flex">
-              {userSession.activeSession && (
+              {userSession.activeKeycloakSession && (
                 <Button
                   link
                   onClick={() => navigate("/app/logout")}

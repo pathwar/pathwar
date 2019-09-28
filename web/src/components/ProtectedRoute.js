@@ -20,7 +20,7 @@ class ProtectedRoute extends React.PureComponent {
     render() {
         const { component: Component, location, userSession, ...rest } = this.props;
 
-        if (userSession.activeSession) {
+        if (userSession.activeKeycloakSession) {
           if (userSession.isAuthenticated) {
             return <Component {...rest} />
           } else return (<h3>Auth error, please try again!</h3>)

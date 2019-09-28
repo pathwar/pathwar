@@ -7,7 +7,7 @@ import {
     joinTeam as joinTeamAction
 } from "../../actions/teams"
 
-const TeamsRows = ({allTeamsList, userTeamsList, joinTeam, userID}) => {
+const TeamsRows = ({allTeamsList, userTeamsList, joinTeam}) => {
     return allTeamsList.map((team) => {
 
         const isUserOnTem = userTeamsList ? userTeamsList.find((userTeam) => team.metadata.id === userTeam.metadata.id) : undefined;
@@ -23,7 +23,7 @@ const TeamsRows = ({allTeamsList, userTeamsList, joinTeam, userID}) => {
                 Joined
             </Table.Col>}
             {!isUserOnTem && <Table.Col>
-                <Button color="info" size="sm" onClick={() => joinTeam(userID, team.metadata.id)}>Join</Button>
+                <Button color="info" size="sm" onClick={() => joinTeam(team.metadata.id)}>Join</Button>
             </Table.Col>}
         </Table.Row>
         )
@@ -39,7 +39,7 @@ class AllTeamsCard extends React.PureComponent {
     }
 
     render() {
-        const { teams, joinTeamAction, activeSession } = this.props;
+        const { teams, joinTeamAction } = this.props;
         return (
             <Card>
                   <Card.Header>
@@ -63,7 +63,6 @@ class AllTeamsCard extends React.PureComponent {
                             allTeamsList={teams.allTeamsList}
                             userTeamsList={teams.userTeamsList}
                             joinTeam={joinTeamAction}
-                            userID={activeSession.sessionId}
                         />}
                     </Table.Body>
                   </Table>
@@ -74,19 +73,17 @@ class AllTeamsCard extends React.PureComponent {
 
 AllTeamsCard.propTypes = {
     teams: PropTypes.object,
-    activeSession: PropTypes.object,
     fetchTeamsListAction: PropTypes.func,
     joinTeamAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
     teams: state.teams,
-    activeSession: state.userSession.activeSession
 });
 
 const mapDispatchToProps = {
     fetchTeamsListAction: () => fetchTeamsListAction(),
-    joinTeamAction: (userID, teamID) => joinTeamAction(userID, teamID)
+    joinTeamAction: (teamID) => joinTeamAction(teamID)
 };
 
 export default connect(
