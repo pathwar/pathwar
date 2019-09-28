@@ -2,8 +2,7 @@
 //Login / Session
 export const LOGIN_FAILED = "LOGIN_FAILED";
 export const SET_USER_SESSION = "SET_USER_SESSION";
-export const PING_USER_SUCCESS = "PING_USER_SUCCESS";
-export const PING_USER_FAILED = "PING_USER_FAILED";
+export const SET_KEYCLOAK_SESSION = "SET_KEYCLOAK_SESSION";
 
 //Teams
 export const SET_ACTIVE_TEAM = "SET_ACTIVE_TEAM";
