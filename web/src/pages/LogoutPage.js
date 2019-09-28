@@ -6,12 +6,12 @@ import { navigate } from "gatsby";
 class LogoutPage extends React.PureComponent {
 
     componentDidMount() {
-        const { userSession: { activeSession: keycloakActiveSession } } = this.props;
+        const { userSession: { activeKeycloakSession } } = this.props;
 
-        if (!keycloakActiveSession) {
+        if (!activeKeycloakSession) {
             navigate("/");
         } else {
-            keycloakActiveSession.logout();
+          activeKeycloakSession.logout();
         }
     }
 
