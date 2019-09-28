@@ -38,39 +38,14 @@ export const setKeycloakSession = (keycloakInstance, authenticated) => async dis
     Cookies.set(USER_SESSION_TOKEN_NAME, keycloakInstance.token);
 
     const userSessionResponse = await getUserSession();
+    const userSessionData = userSessionResponse.data;
+    const activeTournament = userSessionData.user.active_tournament_member
+    const activeTournamentTeam = activeTournament.tournament_team
 
-    dispatch(setUserSession(userSessionResponse.data))
+    dispatch(setUserSession(userSessionData))
 
-    console.log("AI ELA >>>", userSessionResponse)
-
-    // dispatch(setActiveTeamAction(lastActiveTeam))
-    // dispatch(setActiveTournamentAction(defaultTournament));
-
-
-    //TODO: Verify how we can retrieve the team and tournament to be set on first load after login.
-
-    // const lastActiveTeam = {
-    //   "metadata": {
-    //     "id": "2dNuq9SuRvKcVHDOfNJSFQ==",
-    //     "created_at": "2019-04-25T11:41:24Z",
-    //     "updated_at": "2019-04-25T11:41:24Z"
-    //   },
-    //   "name": "chartreuse",
-    //   "gravatar_url": "http://www.internationalmonetize.io/harness/communities",
-    //   "locale": "fr_FR",
-    //   "last_active": true
-    //   }
-    // const defaultTournament = {
-    //   "metadata": {
-    //     "id": "6ugtOJHGRrumcmufKZmTTQ==",
-    //     "created_at": "2019-04-25T12:32:36Z",
-    //     "updated_at": "2019-04-25T12:32:36Z"
-    //   },
-    //   "name": "tumblr",
-    //   "status": "Started",
-    //   "visibility": "Public",
-    //   "is_default": true
-    // }
+    dispatch(setActiveTournamentAction(activeTournament));
+    dispatch(setActiveTeamAction(activeTournamentTeam))
 
   } catch (error) {
     dispatch({ type: LOGIN_FAILED, payload: { error } });
