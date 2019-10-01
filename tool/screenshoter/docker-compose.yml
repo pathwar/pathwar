@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  chrome-debugger:
+    image: chromedp/headless-shell:latest
+    ports:
+      - 9222
+
+  app:
+    image: golang:1.12-alpine
+    build: .
+    working_dir: /app
