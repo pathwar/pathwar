@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package pathwar.level;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option go_package = "pathwar.land/go/pkg/pwlevel";
+option (gogoproto.sizer_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+
+message InitConfig {
+  repeated string passphrases = 1;
+}

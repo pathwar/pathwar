@@ -1,0 +1,11 @@
+# This file is used to coalesce together commits by the same person,
+# where their name and/or email address was spelled differently.
+#
+# See `man git-shortlog` for more info.
+
+Manfred Touron <m@42.am> <41326355+moul-sudo@users.noreply.github.com>
+<qperez42@gmail.com> <qperez@ocs.online.net>
+Sébastien Rannou <mxs@sbrk.org> <srannou@ocs.online.net>
+Martin Lequeux <martin.lequeux.gruninger@gmail.com>
+Manfred Touron <m@42.am>
+Sébastien Rannou <mxs@sbrk.org>
