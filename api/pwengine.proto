@@ -91,6 +91,7 @@ service Engine {
   rpc Ping(Void) returns (Void) { option (google.api.http) = {get: "/ping"}; };
   // Get current user session, based on JWT token
   rpc GetUserSession(Void) returns (UserSessionOutput) { option (google.api.http) = {get: "/user-session"}; };
+  rpc SetPreferences(SetPreferencesInput) returns (Void) { option (google.api.http) = {post: "/preferences"}; };
   rpc ListLevels(Void) returns (pathwar.db.LevelList) { option (google.api.http) = {get: "/levels"}; };
   rpc ListTeams(Void) returns (pathwar.db.TeamList) { option (google.api.http) = {get: "/teams"}; };
   rpc GetStatus(Void) returns (Status) { option (google.api.http) = {get: "/status"}; }
@@ -110,10 +111,16 @@ message Void {
   };
 }
 
+message SetPreferencesInput {
+  string active_tournament_id = 1 [(gogoproto.customname) = "ActiveTournamentID"];
+  // bool dark_mode
+}
+
 message UserSessionOutput {
   message TournamentAndTeam {
     pathwar.db.Tournament tournament = 1;
     pathwar.db.TournamentTeam team = 2;
+    bool is_active = 3;
   }
 
   pathwar.db.User user = 1;
