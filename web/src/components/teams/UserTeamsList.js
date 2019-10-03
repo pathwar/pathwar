@@ -7,10 +7,10 @@ import { fetchUserTeams as fetUserTeamsListAction } from "../../actions/teams"
 const TeamsRows = ({teamsList, activeTeam}) => {
     return teamsList.map((team) => {
 
-        const isActive = team.metadata.id === activeTeam.metadata.id;
+        const isActive = team.id === activeTeam.id;
 
         return (
-            <Table.Row key={team.metadata.id}>
+            <Table.Row key={team.id}>
             <Table.Col className="w-1">
                 <Avatar imageURL={team.gravatar_url} />
             </Table.Col>

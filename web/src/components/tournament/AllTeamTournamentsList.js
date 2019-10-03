@@ -10,9 +10,9 @@ import {
 
 const TournamentsRows = ({ teamTournaments, setActive, activeTournament }) => {
     return teamTournaments.map((tournament) => {
-        const isActive = activeTournament ? tournament.metadata.id === activeTournament.metadata.id : false;
+        const isActive = activeTournament ? tournament.id === activeTournament.id : false;
         return (
-            <Table.Row key={tournament.metadata.id}>
+            <Table.Row key={tournament.id}>
                 <Table.Col colSpan={2}>{tournament.name}</Table.Col>
                 <Table.Col>{tournament.status}</Table.Col>
                 <Table.Col>{tournament.visibility}</Table.Col>
@@ -31,7 +31,7 @@ class AllTeamTournamentsList extends React.PureComponent {
 
     componentDidMount() {
         const { fetchTeamTournamentsAction, activeTeam } = this.props;
-        fetchTeamTournamentsAction(activeTeam.metadata.id)
+        fetchTeamTournamentsAction(activeTeam.id)
     }
 
     render() {
