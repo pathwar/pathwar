@@ -1,3 +1,5 @@
+bazel-*
+/*/**/BUILD.bazel
 out/
 *#
 *.dll

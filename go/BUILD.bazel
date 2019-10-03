@@ -1,0 +1,8 @@
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix pathwar.land/go
+# gazelle:proto disable_global
+gazelle(
+    name = "gazelle",
+    external = "vendored",
+)
