@@ -1,12 +1,21 @@
 version: '3.7'
 
 services:
+  screenshoter:
+    build: .
+    depends_on:
+      - chrome-debugger
+    volumes:
+      - ./out:/out
+    working_dir: /out
+    entrypoint: ["/bin/bash"]
+    entrypoint:
+      - screenshoter
+      - -host=chrome-debugger
+      - -port=9222
+      - -img-quality=90
+
   chrome-debugger:
     image: chromedp/headless-shell:latest
     ports:
       - 9222
-
-  app:
-    image: golang:1.12-alpine
-    build: .
-    working_dir: /app

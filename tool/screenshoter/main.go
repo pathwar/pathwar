@@ -16,6 +16,7 @@ import (
 	"io/ioutil"
 	"log"
 	"math"
+	"net"
 	"net/http"
 	"strconv"
 
@@ -38,7 +39,11 @@ func main() {
 	flag.Parse()
 
 	// Retrieve ws url
-	resp, err := http.Get("http://" + host + ":" + port + "/json")
+	ipaddr, err := net.ResolveIPAddr("ip", host)
+	if err != nil {
+		log.Fatal(err)
+	}
+	resp, err := http.Get("http://" + ipaddr.IP.String() + ":" + port + "/json")
 	if err != nil {
 		log.Fatal(err)
 	}
