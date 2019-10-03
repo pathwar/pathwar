@@ -10,10 +10,10 @@ import {
 const TeamsRows = ({allTeamsList, userTeamsList, joinTeam}) => {
     return allTeamsList.map((team) => {
 
-        const isUserOnTem = userTeamsList ? userTeamsList.find((userTeam) => team.metadata.id === userTeam.metadata.id) : undefined;
+        const isUserOnTem = userTeamsList ? userTeamsList.find((userTeam) => team.id === userTeam.id) : undefined;
 
         return (
-            <Table.Row key={team.metadata.id}>
+            <Table.Row key={team.id}>
             <Table.Col className="w-1">
                 <Avatar imageURL={team.gravatar_url} />
             </Table.Col>
@@ -23,7 +23,7 @@ const TeamsRows = ({allTeamsList, userTeamsList, joinTeam}) => {
                 Joined
             </Table.Col>}
             {!isUserOnTem && <Table.Col>
-                <Button color="info" size="sm" onClick={() => joinTeam(team.metadata.id)}>Join</Button>
+                <Button color="info" size="sm" onClick={() => joinTeam(team.id)}>Join</Button>
             </Table.Col>}
         </Table.Row>
         )

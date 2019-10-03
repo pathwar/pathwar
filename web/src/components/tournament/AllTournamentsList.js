@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const TournamentsRows = ({allTournaments}) => {
     return allTournaments.map((tournament) => {
         return (
-            <Table.Row key={tournament.metadata.id}>
+            <Table.Row key={tournament.id}>
                 <Table.Col colSpan={2}>{tournament.name}</Table.Col>
                 <Table.Col>{tournament.status}</Table.Col>
                 <Table.Col>{tournament.visibility}</Table.Col>
