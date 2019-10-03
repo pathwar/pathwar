@@ -91,9 +91,8 @@ service Engine {
   rpc Ping(Void) returns (Void) { option (google.api.http) = {get: "/ping"}; };
   // Get current user session, based on JWT token
   rpc GetUserSession(Void) returns (UserSessionOutput) { option (google.api.http) = {get: "/user-session"}; };
-  // List users
   rpc ListLevels(Void) returns (pathwar.db.LevelList) { option (google.api.http) = {get: "/levels"}; };
-  // List teams
+  rpc ListTeams(Void) returns (pathwar.db.TeamList) { option (google.api.http) = {get: "/teams"}; };
   rpc GetStatus(Void) returns (Status) { option (google.api.http) = {get: "/status"}; }
 
   //

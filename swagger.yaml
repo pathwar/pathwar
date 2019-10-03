@@ -501,6 +501,13 @@ definitions:
         format: date-time
         type: string
     type: object
+  dbTeamList:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbTeam'
+        type: array
+    type: object
   dbTeamMember:
     properties:
       created_at:
@@ -896,7 +903,6 @@ paths:
           schema:
             format: string
             type: string
-      summary: List users
       tags:
       - Engine
   /ping:
@@ -936,7 +942,25 @@ paths:
           schema:
             format: string
             type: string
-      summary: List teams
+      tags:
+      - Engine
+  /teams:
+    get:
+      operationId: ListTeams
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/dbTeamList'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
       tags:
       - Engine
   /user-session:

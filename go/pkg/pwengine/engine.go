@@ -5,7 +5,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
-	pwsso "pathwar.land/go/pkg/pwsso"
+	"pathwar.land/go/pkg/pwsso"
 )
 
 var _ Client = (*client)(nil)
