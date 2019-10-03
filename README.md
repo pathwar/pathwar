@@ -7,7 +7,7 @@
   <br>
 </h1>
 
-<h3 align="center">🤝 Dathwar is an educational platform with a focus on security/cryptography, where you can go through levels (courses) to learn new things and hone your skills.</h3>
+<h3 align="center">🤝 Pathwar is an educational platform with a focus on security/cryptography, where you can go through levels (courses) to learn new things and hone your skills.</h3>
 
 <p align="center">
   <a href="https://circleci.com/gh/pathwar/pathwar"><img src="https://circleci.com/gh/pathwar/pathwar.svg?style=shield" alt="Build Status"></a>
@@ -29,6 +29,7 @@
 
 * [API](https://github.com/pathwar/pathwar/wiki/API)
 * [Level Maintainers](https://github.com/pathwar/pathwar/wiki/Level-Maintainers)
+* [CLI](https://github.com/pathwar/pathwar/wiki/CLI)
 * [Under the Hood](https://github.com/pathwar/pathwar/wiki/Under-the-Hood)
 
 ## Licensing
