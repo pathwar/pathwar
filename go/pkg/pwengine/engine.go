@@ -8,31 +8,28 @@ import (
 	"pathwar.land/go/pkg/pwsso"
 )
 
-var _ Client = (*client)(nil)
+var _ Engine = (*engine)(nil)
 
-type Client interface {
+type Engine interface {
 	EngineServer
 
 	Close() error
 }
 
-type client struct {
+type engine struct {
 	db        *gorm.DB
 	opts      Opts
 	sso       pwsso.Client
 	startedAt time.Time
 	logger    *zap.Logger
-
-	// implemented interfaces
-	EngineServer
 }
 
 type Opts struct {
 	Logger *zap.Logger
 }
 
-func New(db *gorm.DB, sso pwsso.Client, opts Opts) (Client, error) {
-	return &client{
+func New(db *gorm.DB, sso pwsso.Client, opts Opts) (Engine, error) {
+	return &engine{
 		logger:    opts.Logger,
 		db:        db,
 		opts:      opts,
@@ -41,9 +38,9 @@ func New(db *gorm.DB, sso pwsso.Client, opts Opts) (Client, error) {
 	}, nil
 }
 
-func (c *client) Close() error {
+func (e *engine) Close() error {
 	// Note: everything passed in the New() should be closed by the parent of engine.
 	// Here you need to close everything started by the engine itself.
-	c.opts.Logger.Debug("closed client")
+	e.opts.Logger.Debug("closed engine")
 	return nil
 }

@@ -12,7 +12,7 @@ import (
 	"pathwar.land/go/pkg/pwsso"
 )
 
-func (c *client) GetUserSession(ctx context.Context, _ *Void) (*UserSessionOutput, error) {
+func (e *engine) GetUserSession(ctx context.Context, _ *Void) (*UserSessionOutput, error) {
 	token, err := tokenFromContext(ctx)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get token from context")
@@ -23,7 +23,7 @@ func (c *client) GetUserSession(ctx context.Context, _ *Void) (*UserSessionOutpu
 	output.Claims = pwsso.ClaimsFromToken(token)
 
 	// try loading it from database
-	output.User, err = c.loadOAuthUser(output.Claims.ActionToken.Sub)
+	output.User, err = e.loadOAuthUser(output.Claims.ActionToken.Sub)
 	if err != nil && !gorm.IsRecordNotFoundError(err) {
 		// internal error
 		return nil, err
@@ -32,10 +32,10 @@ func (c *client) GetUserSession(ctx context.Context, _ *Void) (*UserSessionOutpu
 	// new user
 	if gorm.IsRecordNotFoundError(err) {
 		output.IsNewUser = true
-		if _, err = c.newUserFromClaims(output.Claims); err != nil {
+		if _, err = e.newUserFromClaims(output.Claims); err != nil {
 			return nil, err
 		}
-		if output.User, err = c.loadOAuthUser(output.Claims.ActionToken.Sub); err != nil {
+		if output.User, err = e.loadOAuthUser(output.Claims.ActionToken.Sub); err != nil {
 			return nil, err
 		}
 	}
@@ -47,7 +47,7 @@ func (c *client) GetUserSession(ctx context.Context, _ *Void) (*UserSessionOutpu
 	// FIXME: output.Notifications = COUNT
 	output.Notifications = 42
 
-	output.Tournaments, err = c.tournaments(ctx)
+	output.Tournaments, err = e.tournaments(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (c *client) GetUserSession(ctx context.Context, _ *Void) (*UserSessionOutpu
 	return output, nil
 }
 
-func (c *client) tournaments(ctx context.Context) ([]*UserSessionOutput_TournamentAndTeam, error) {
+func (e *engine) tournaments(ctx context.Context) ([]*UserSessionOutput_TournamentAndTeam, error) {
 	var (
 		tournaments []*pwdb.Tournament
 		memberships []*pwdb.TournamentMember
@@ -66,7 +66,7 @@ func (c *client) tournaments(ctx context.Context) ([]*UserSessionOutput_Tourname
 		return nil, err
 	}
 
-	if err := c.db.
+	if err := e.db.
 		Where(pwdb.Tournament{Visibility: pwdb.Tournament_Public}). // FIXME: admin can see everything
 		Find(&tournaments).
 		Error; err != nil {
@@ -74,7 +74,7 @@ func (c *client) tournaments(ctx context.Context) ([]*UserSessionOutput_Tourname
 	}
 
 	// FIXME: should be doable in a unique request with LEFT joining
-	if err := c.db.
+	if err := e.db.
 		Preload("TournamentTeam").
 		Preload("TournamentTeam.Team").
 		Where(pwdb.TournamentMember{UserID: userID}).
@@ -103,9 +103,9 @@ func (c *client) tournaments(ctx context.Context) ([]*UserSessionOutput_Tourname
 	return output, nil
 }
 
-func (c *client) loadOAuthUser(subject string) (*pwdb.User, error) {
+func (e *engine) loadOAuthUser(subject string) (*pwdb.User, error) {
 	var user pwdb.User
-	if err := c.db.
+	if err := e.db.
 		Preload("ActiveTournamentMember").
 		Preload("ActiveTournamentMember.TournamentTeam").
 		Preload("ActiveTournamentMember.TournamentTeam.Tournament").
@@ -118,7 +118,7 @@ func (c *client) loadOAuthUser(subject string) (*pwdb.User, error) {
 	return &user, nil
 }
 
-func (c *client) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
+func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 	if claims.EmailVerified == false {
 		return nil, fmt.Errorf("you need to verify your email address")
 	}
@@ -126,7 +126,7 @@ func (c *client) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 	gravatarURL := fmt.Sprintf("https://www.gravatar.com/avatar/%x", md5.Sum([]byte(claims.Email)))
 
 	var tournament pwdb.Tournament
-	if err := c.db.Where(pwdb.Tournament{IsDefault: true}).First(&tournament).Error; err != nil {
+	if err := e.db.Where(pwdb.Tournament{IsDefault: true}).First(&tournament).Error; err != nil {
 		return nil, err
 	}
 
@@ -163,7 +163,7 @@ func (c *client) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 	}
 	user.Memberships = []*pwdb.TeamMember{&teamMember}
 
-	tx := c.db.Begin()
+	tx := e.db.Begin()
 	tx.Create(&user)
 	tx.Create(&tournamentMember)
 
@@ -174,7 +174,7 @@ func (c *client) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 	}
 
 	// set active tournament
-	if err := c.db.
+	if err := e.db.
 		Model(&user).
 		Updates(pwdb.User{ActiveTournamentMemberID: tournamentMember.ID}).
 		Error; err != nil {

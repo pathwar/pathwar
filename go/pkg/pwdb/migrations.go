@@ -5,7 +5,7 @@ import (
 	"gopkg.in/gormigrate.v1"
 )
 
-func migrate(db *gorm.DB) error {
+func migrate(db *gorm.DB, opts Opts) error {
 	m := gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{})
 
 	// only called on fresh database
@@ -14,11 +14,13 @@ func migrate(db *gorm.DB) error {
 			tx.Rollback()
 			return err
 		}
-		for _, fk := range ForeignKeys() {
-			e := ByName(fk[0])
-			if err := tx.Model(e).AddForeignKey(fk[1], fk[2], "RESTRICT", "RESTRICT").Error; err != nil {
-				tx.Rollback()
-				return err
+		if !opts.skipFK {
+			for _, fk := range ForeignKeys() {
+				e := ByName(fk[0])
+				if err := tx.Model(e).AddForeignKey(fk[1], fk[2], "RESTRICT", "RESTRICT").Error; err != nil {
+					tx.Rollback()
+					return err
+				}
 			}
 		}
 

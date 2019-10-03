@@ -6,9 +6,9 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (c *client) ListTeams(context.Context, *Void) (*pwdb.TeamList, error) {
+func (e *engine) ListTeams(context.Context, *Void) (*pwdb.TeamList, error) {
 	var teams pwdb.TeamList
-	if err := c.db.Set("gorm:auto_preload", true).Find(&teams.Items).Error; err != nil {
+	if err := e.db.Set("gorm:auto_preload", true).Find(&teams.Items).Error; err != nil {
 		return nil, err
 	}
 

@@ -26,7 +26,7 @@ include ../rules.mk  # see https://github.com/moul/rules.mk
 MYSQL_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
 
 .PHONY: run
-run: mysql.up install
+run: install mysql.up
 	pathwar --debug engine --sso-unsafe server
 
 .PHONY: mysql.up

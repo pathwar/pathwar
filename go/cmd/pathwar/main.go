@@ -8,35 +8,21 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
-	"net"
-	"net/http"
 	"os"
 	"os/signal"
-	"strings"
 	"time"
 
-	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
 	_ "github.com/go-sql-driver/mysql" // required by gorm
-	"github.com/gogo/gateway"
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
-	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
-	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
-	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/jinzhu/gorm"
 	"github.com/oklog/run"
 	"github.com/peterbourgon/ff"
 	"github.com/peterbourgon/ff/ffcli"
-	"github.com/rs/cors"
-	chilogger "github.com/treastech/logger"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"google.golang.org/grpc"
 	"pathwar.land/go/pkg/pwdb"
 	"pathwar.land/go/pkg/pwengine"
 	"pathwar.land/go/pkg/pwlevel"
+	"pathwar.land/go/pkg/pwserver"
 	"pathwar.land/go/pkg/pwsso"
 	"pathwar.land/go/pkg/pwversion"
 )
@@ -76,11 +62,12 @@ var (
 	hypervisorFlags = flag.NewFlagSet("hypervisor", flag.ExitOnError)
 
 	// server flags
-	serverFlags             = flag.NewFlagSet("server", flag.ExitOnError)
-	serverHTTPBind          = serverFlags.String("http-bind", ":8000", "HTTP server address")
-	serverGRPCBind          = serverFlags.String("grpc-bind", ":9111", "gRPC server address")
-	serverShutdownTimeout   = serverFlags.Duration("shutdown-timeout", 5*time.Second, "shutdown timeout")
-	serverCORSAllowedOrigin = serverFlags.String("cors-allowed-origins", "*", "allowed CORS origins")
+	serverFlags              = flag.NewFlagSet("server", flag.ExitOnError)
+	serverHTTPBind           = serverFlags.String("http-bind", ":8000", "HTTP server address")
+	serverGRPCBind           = serverFlags.String("grpc-bind", ":9111", "gRPC server address")
+	serverRequestTimeout     = serverFlags.Duration("request-timeout", 5*time.Second, "request timeout")
+	serverShutdownTimeout    = serverFlags.Duration("shutdown-timeout", 6*time.Second, "shutdown timeout")
+	serverCORSAllowedOrigins = serverFlags.String("cors-allowed-origins", "*", "allowed CORS origins")
 
 	// misc flags
 	miscFlags = flag.NewFlagSet("misc", flag.ExitOnError)
@@ -155,93 +142,23 @@ func main() {
 				ctx = context.Background()
 				g   run.Group
 			)
-			{ // gRPC server
-				ln, err := net.Listen("tcp", *serverGRPCBind)
+			{ // server
+				opts := pwserver.Opts{
+					Logger:             logger.Named("server"),
+					GRPCBind:           *serverGRPCBind,
+					HTTPBind:           *serverHTTPBind,
+					CORSAllowedOrigins: *serverCORSAllowedOrigins,
+					RequestTimeout:     *serverRequestTimeout,
+					ShutdownTimeout:    *serverShutdownTimeout,
+				}
+				start, cleanup, err := pwserver.Start(ctx, engine, opts)
 				if err != nil {
-					return fmt.Errorf("failed to start gRPC listener: %w", err)
+					return fmt.Errorf("failed to initialize server: %w", err)
 				}
-				defer func() {
-					if err := ln.Close(); err != nil {
-						logger.Warn("failed to close gRPC listener", zap.Error(err))
-					}
-				}()
-				grpcLogger := logger.Named("grpc")
-				authFunc := func(context.Context) (context.Context, error) {
-					// we use svc.AuthFuncOverride to manage authentication
-					//
-					// this code should never be reached
-					return nil, pwengine.ErrNotImplemented
-				}
-				serverStreamOpts := []grpc.StreamServerInterceptor{
-					grpc_recovery.StreamServerInterceptor(),
-					grpc_auth.StreamServerInterceptor(authFunc),
-					grpc_ctxtags.StreamServerInterceptor(),
-					grpc_zap.StreamServerInterceptor(grpcLogger),
-					grpc_recovery.StreamServerInterceptor(),
-				}
-				serverUnaryOpts := []grpc.UnaryServerInterceptor{
-					grpc_recovery.UnaryServerInterceptor(),
-					grpc_auth.UnaryServerInterceptor(authFunc),
-					grpc_ctxtags.UnaryServerInterceptor(),
-					grpc_zap.UnaryServerInterceptor(grpcLogger),
-					grpc_recovery.UnaryServerInterceptor(),
-				}
-				grpcServer := grpc.NewServer(
-					grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(serverStreamOpts...)),
-					grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(serverUnaryOpts...)),
+				g.Add(
+					start,
+					func(error) { cleanup() },
 				)
-				pwengine.RegisterEngineServer(grpcServer, engine)
-				g.Add(func() error {
-					logger.Debug("starting gRPC server", zap.String("bind", *serverGRPCBind))
-					return grpcServer.Serve(ln)
-				}, func(error) {
-					grpcServer.GracefulStop()
-				})
-			}
-			{ // HTTP server
-				r := chi.NewRouter()
-				cors := cors.New(cors.Options{
-					AllowedOrigins:   strings.Split(*serverCORSAllowedOrigin, ","),
-					AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-					AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
-					ExposedHeaders:   []string{"Link"},
-					AllowCredentials: true,
-					MaxAge:           300,
-				})
-				r.Use(cors.Handler)
-				r.Use(chilogger.Logger(logger.Named("http")))
-				//r.Use(middleware.Logger)
-				r.Use(middleware.Recoverer)
-				r.Use(middleware.Timeout(5 * time.Second))
-				r.Use(middleware.RealIP)
-				r.Use(middleware.RequestID)
-				gwmux := runtime.NewServeMux(
-					runtime.WithMarshalerOption(runtime.MIMEWildcard, &gateway.JSONPb{
-						EmitDefaults: false,
-						Indent:       "  ",
-						OrigName:     true,
-					}),
-					runtime.WithProtoErrorHandler(runtime.DefaultHTTPProtoErrorHandler),
-				)
-				grpcOpts := []grpc.DialOption{grpc.WithInsecure()}
-				if err := pwengine.RegisterEngineHandlerFromEndpoint(ctx, gwmux, *serverGRPCBind, grpcOpts); err != nil {
-					return fmt.Errorf("failed to register service on gateway: %w", err)
-				}
-				r.Mount("/", gwmux)
-				srv := http.Server{
-					Addr:    *serverHTTPBind,
-					Handler: r,
-				}
-				g.Add(func() error {
-					logger.Debug("starting HTTP server", zap.String("bind", *serverHTTPBind))
-					return srv.ListenAndServe()
-				}, func(error) {
-					ctx, cancel := context.WithTimeout(ctx, *serverShutdownTimeout)
-					defer cancel()
-					if err := srv.Shutdown(ctx); err != nil {
-						logger.Warn("failed to shutdown HTTP server", zap.Error(err))
-					}
-				})
 			}
 			{ // signal handling and cancellation
 				ctx, cancel := context.WithCancel(ctx)
@@ -474,13 +391,16 @@ func main() {
 	}
 }
 
-func engineFromFlags() (pwengine.Client, *gorm.DB, pwsso.Client, func(), error) {
+func engineFromFlags() (pwengine.Engine, *gorm.DB, pwsso.Client, func(), error) {
 	// initialize database
 	db, err := gorm.Open("mysql", *engineDBURN)
 	if err != nil {
 		return nil, nil, nil, nil, fmt.Errorf("failed to initialize database: %w", err)
 	}
-	db, err = pwdb.Configure(db, logger.Named("gorm"))
+	dbOpts := pwdb.Opts{
+		Logger: logger.Named("gorm"),
+	}
+	db, err = pwdb.Configure(db, dbOpts)
 	if err != nil {
 		return nil, nil, nil, nil, fmt.Errorf("failed to configure database: %w", err)
 	}
@@ -499,7 +419,7 @@ func engineFromFlags() (pwengine.Client, *gorm.DB, pwsso.Client, func(), error) 
 		return nil, nil, nil, nil, fmt.Errorf("failed to initialize SSO client: %w", err)
 	}
 
-	// initialize client
+	// initialize engine
 	engineOpts := pwengine.Opts{
 		Logger: logger.Named("engine"),
 	}
