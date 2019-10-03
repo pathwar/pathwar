@@ -22,7 +22,7 @@ var (
 // AuthFuncOverride implements the grpc_auth.ServiceAuthFuncOverride interface
 //
 // see https://github.com/grpc-ecosystem/go-grpc-middleware/blob/master/auth/auth.go
-func (c *client) AuthFuncOverride(ctx context.Context, path string) (context.Context, error) {
+func (e *engine) AuthFuncOverride(ctx context.Context, path string) (context.Context, error) {
 	switch path { // always allow public endpoints
 	case "/pathwar.engine.Engine/Ping",
 		"/pathwar.engine.Engine/GetStatus",
@@ -45,7 +45,7 @@ func (c *client) AuthFuncOverride(ctx context.Context, path string) (context.Con
 		auth[0] = auth[0][7:]
 	}
 
-	token, _, err := c.sso.TokenWithClaims(auth[0])
+	token, _, err := e.sso.TokenWithClaims(auth[0])
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, err.Error())
 	}

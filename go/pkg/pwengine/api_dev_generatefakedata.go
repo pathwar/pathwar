@@ -6,6 +6,6 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (c *client) GenerateFakeData(context.Context, *Void) (*Void, error) {
-	return &Void{}, pwdb.GenerateFakeData(c.db, c.logger.Named("generate-fake-data"))
+func (e *engine) GenerateFakeData(context.Context, *Void) (*Void, error) {
+	return &Void{}, pwdb.GenerateFakeData(e.db, e.logger.Named("generate-fake-data"))
 }

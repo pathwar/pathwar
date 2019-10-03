@@ -1,8 +1,8 @@
 run:
   deadline: 1m
   tests: false
-  #skip-files:
-  #  - ".*\\.gen\\.go"
+  skip-files:
+    - "testing.go"
 
 linters-settings:
   golint:
