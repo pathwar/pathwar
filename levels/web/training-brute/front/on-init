@@ -1,0 +1,3 @@
+#!/bin/sh -e
+
+sed -i "s/{passhphrase}/$(pwctl passphrase 0)/g" /var/www/html/index.php
