@@ -31,6 +31,7 @@ services:
       - server
       - --http-bind=0.0.0.0:8000
       - --grpc-bind=0.0.0.0:9111
+      # - --cors-allowed-origins=https://www.pathwar.land ## FIXME: enable in production
     depends_on:
       - db
       - mailserver

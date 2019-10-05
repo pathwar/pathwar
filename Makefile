@@ -18,6 +18,11 @@ recursive_test:
 recursive_bumpdeps:
 	cd go; make bumpdeps
 
+.PHONY: clean
+clean:
+	cd go; make clean
+	cd docs; make clean
+
 .PHONY: recursive_generate
 recursive_generate:
 	cd go; make generate

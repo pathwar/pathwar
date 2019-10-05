@@ -244,6 +244,8 @@ message User {
   repeated TeamMember memberships = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   TournamentMember active_tournament_member = 203 [(gogoproto.moretags) = "gorm:\"foreignkey:ActiveTournamentMemberID;PRELOAD:false\""];
   string active_tournament_member_id = 204 [(gogoproto.customname) = "ActiveTournamentMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  TournamentMember active_tournament = 205 [(gogoproto.moretags) = "gorm:\"foreignkey:ActiveTournamentID;PRELOAD:false\""];
+  string active_tournament_id = 206 [(gogoproto.customname) = "ActiveTournamentID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message UserList { repeated User items = 1; }

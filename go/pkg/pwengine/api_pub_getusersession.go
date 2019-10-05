@@ -176,7 +176,10 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 	// set active tournament
 	if err := e.db.
 		Model(&user).
-		Updates(pwdb.User{ActiveTournamentMemberID: tournamentMember.ID}).
+		Updates(pwdb.User{
+			ActiveTournamentMemberID: tournamentMember.ID,
+			ActiveTournamentID:       tournament.ID,
+		}).
 		Error; err != nil {
 		return nil, err
 	}
