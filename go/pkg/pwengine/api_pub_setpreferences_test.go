@@ -2,9 +2,8 @@ package pwengine
 
 import (
 	"context"
+	"errors"
 	"testing"
-
-	"github.com/go-errors/errors"
 )
 
 func TestEngine_SetPreferences(t *testing.T) {

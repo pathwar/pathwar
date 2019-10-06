@@ -656,6 +656,13 @@ definitions:
         format: date-time
         type: string
     type: object
+  dbTournamentTeamList:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbTournamentTeam'
+        type: array
+    type: object
   dbUser:
     properties:
       active_tournament:
@@ -978,6 +985,30 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/dbTeamList'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /tournament/teams:
+    get:
+      operationId: ListTournamentTeams
+      parameters:
+      - in: query
+        name: tournament_id
+        required: false
+        type: string
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/dbTournamentTeamList'
         "403":
           description: Returned when the user does not have permission to access the
             resource.

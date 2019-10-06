@@ -344,6 +344,8 @@ message TournamentTeam {
   repeated TournamentMember members = 206 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
+message TournamentTeamList { repeated TournamentTeam items = 1; }
+
 message WhoswhoAttempt {
   string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
