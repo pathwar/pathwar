@@ -26,7 +26,7 @@ func (e *engine) SetPreferences(ctx context.Context, in *SetPreferencesInput) (*
 		var tournamentIDs []string
 		err := e.db.
 			Table("tournament").
-			Where("ID = ?", in.ActiveTournamentID).
+			Where("id = ?", in.ActiveTournamentID).
 			Pluck("id", &tournamentIDs).
 			Error
 		switch {
