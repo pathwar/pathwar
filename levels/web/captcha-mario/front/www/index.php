@@ -38,7 +38,7 @@
   echo '<p>Score: ', $_SESSION['score'], '/1000';
 
   if ($_SESSION['score'] >= 1000) {
-    echo "<p>The passphrase is: ", file_get_contents('/tmp/passphrase.txt'), "</p>";
+    echo "<p>The passphrase is: {passphrase}</p>";
   }
 
 $_SESSION['password'] = make_password();
