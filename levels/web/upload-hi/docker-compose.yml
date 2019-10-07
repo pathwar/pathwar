@@ -1,6 +1,7 @@
-level:
-  build: .
-  ports:
-    - 80
-#  environment:
-#    PATHWAR_DEBUG: true
+version: '3.7'
+
+services:
+  front:
+    build: front
+    ports:
+      - 80
