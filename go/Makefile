@@ -1,4 +1,5 @@
 ## moul/rules.mk
+GOPATH ?= $(HOME)/go
 GOPKG =		pathwar.land/go
 GOBINS =	./cmd/pathwar ./cmd/pwlevel
 DOCKER_IMAGE =	pathwar/pathwar
