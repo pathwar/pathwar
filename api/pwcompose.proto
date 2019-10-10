@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package pathwar.compose;
+
+//import "github.com/golang/protobuf/ptypes/timestamp/timestamp.proto";
+import "google/api/annotations.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options/annotations.proto";
+
+option go_package = "pathwar.land/go/pkg/pwcompose";
+option (gogoproto.sizer_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+
+service Composer {
+  // Verify the service is up and running
+  rpc Up(UpRequest) returns (UpReply) {
+    option (google.api.http) = {get: "/ping"};
+  };
+}
+
+message UpRequest {}
+message UpReply {}

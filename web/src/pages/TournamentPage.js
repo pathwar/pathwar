@@ -11,7 +11,7 @@ class TournamentPage extends React.Component {
 
     componentDidMount() {
       const { fetchLevelsAction, tournaments: { activeTournament } } = this.props;
-      fetchLevelsAction(activeTournament.metadata.id);
+      fetchLevelsAction(activeTournament.id);
     }
 
     render() {

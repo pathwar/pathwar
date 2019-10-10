@@ -29,7 +29,7 @@ const LevelCardPreview = (props) => {
     const { levels } = props;
 
     return levels.map((level) =>
-    <Card title={level.name} key={level.metadata.id}
+    <Card title={level.name} key={level.id}
         isCollapsible
         statusColor="orange"
         body={<LevelBody author={level.author} description={level.description} locale={level.locale} />}

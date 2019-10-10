@@ -17,7 +17,7 @@ import {
 
 export const setActiveTournament = (tournamentData) => async dispatch => {
   try {
-    // const response = await setTournamentActiveCall(tournamentData.metadata.id)
+    // const response = await setTournamentActiveCall(tournamentData.id)
     // if (response.status === 200) {
       dispatch({
         type: SET_ACTIVE_TOURNAMENT,

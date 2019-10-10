@@ -9,6 +9,9 @@ vendor/* linguist-vendored
 *.gen.graphql linguist-generated
 *.pb.go linguist-generated
 *.swagger.json linguist-generated
+swagger.yaml linguist-generated
+go.sum linguist-generated
+gen.sum linguist-generated
 
 # Reduce conflicts on markdown files
 *.md merge=union

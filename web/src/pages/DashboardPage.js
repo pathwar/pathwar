@@ -6,7 +6,7 @@ import {
 } from "tabler-react";
 
 import AllTeamsCard from "../components/teams/AllTeamsList";
-import UserTeamsCard from "../components/teams/UserTeamsList";
+// import UserTeamsCard from "../components/teams/UserTeamsList";
 import TeamStatsStampCard from "../components/teams/TeamsStatsStampCard";
 
 const Dashboard = () => {
@@ -14,7 +14,7 @@ const Dashboard = () => {
     <Page.Content title="Dashboard">
         <Grid.Row cards={true}>
           <Grid.Col xs={12} sm={12} lg={6}>
-            <UserTeamsCard />
+            {/* <UserTeamsCard /> */}
             <TeamStatsStampCard />
           </Grid.Col>
 

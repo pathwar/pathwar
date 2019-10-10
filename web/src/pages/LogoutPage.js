@@ -1,17 +1,20 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { navigate } from "gatsby";
+import { logoutUser as logoutUserAction } from "../actions/userSession"
 
 
 class LogoutPage extends React.PureComponent {
 
     componentDidMount() {
-        const { userSession: { activeSession: keycloakActiveSession } } = this.props;
+        const { userSession, logoutUserAction } = this.props;
 
-        if (!keycloakActiveSession) {
+        if (!userSession.activeKeycloakSession) {
+          debugger
             navigate("/");
         } else {
-            keycloakActiveSession.logout();
+          userSession.activeKeycloakSession.logout();
+          logoutUserAction();
         }
     }
 
@@ -25,7 +28,9 @@ const mapStateToProps = state => ({
 });
 
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  logoutUserAction: () => logoutUserAction()
+};
 
 export default connect(
 mapStateToProps,

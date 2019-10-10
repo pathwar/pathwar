@@ -1,30 +1,76 @@
 version: 2.1
 
 orbs:
-  moul: moul/build@1.9.0  # https://github.com/moul/build
-  retry: moul/retry@0.6.0 # https://github.com/moul/retry
+  moul: moul/build@1.13.0        # https://github.com/moul/build
+  retry: moul/retry@0.6.0        # https://github.com/moul/retry
+  codecov: codecov/codecov@1.0.5
+  docker: circleci/docker@0.5.13
+  gotools: gotest/tools@0.0.10
 
 jobs:
-  docker_integration:
+  go-docker:
+    working_directory: /go/src/pathwar.land/go
     docker:
-      - image: docker/compose:1.24.0
+      - image: docker:18.06.3-ce-git
     steps:
-      - checkout
-      - retry/install
-      - run: retry -m 3 apk --no-cache add curl openssl make bash
+      - checkout:
+          path: /go/src/pathwar.land
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: retry -m 3 make integration.build
-      - run: retry -m 3 make integration.run
-      - run: retry -m 3 make integration.run # yes, again :)
-      - run: docker-compose logs
+      - docker/build:
+          image: pathwar/pathwar
+
+  go-build:
+    working_directory: /go/src/pathwar.land/go
+    docker:
+      - image: circleci/golang:1.13
+    steps:
+      - checkout:
+          path: /go/src/pathwar.land
+      - moul/mod-download
+      - gotools/mod-tidy-check
+      - run: make install
+      - run: make unittest
+      - moul/install_golangci-lint
+      - run: PATH=$PATH:$(pwd)/bin make lint
+      - codecov/upload:
+          file: coverage.txt
+
+  go-generate:
+    working_directory: /go/src/pathwar.land
+    docker:
+      - image: pathwar/protoc:4
+    steps:
+      - checkout
+      - run: find . -name gen.sum -delete
+      - run: cd go && go mod vendor && make generate_local && make tidy
+      - run: cd docs && make generate_local
+      - run: |
+          git status | cat
+          git diff -w | cat
+          git diff-index -w --quiet HEAD --
+
+  #githooks:
+
+  #docker-integration:
+  #  docker:
+  #    - image: docker/compose:1.24.0
+  #  steps:
+  #    - checkout
+  #    - retry/install
+  #    - run: retry -m 3 apk --no-cache add curl openssl make bash
+  #    - setup_remote_docker:
+  #        docker_layer_caching: true
+  #    - run: retry -m 3 make integration.build
+  #    - run: retry -m 3 make integration.run
+  #    - run: retry -m 3 make integration.run # yes, again :)
+  #    - run: docker-compose logs
 
 workflows:
   main:
     jobs:
-      - moul/golang-build:
-          gopkg: pathwar.land
-          prepare-build: make _ci_prepare
-      - moul/docker-build:
-          image: pathwar/pathwar
-      - docker_integration
+      - go-build
+      - go-docker
+      - go-generate
+      #- githooks
+      #- docker-integration

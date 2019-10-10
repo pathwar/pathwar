@@ -1,0 +1,93 @@
+version: '3.7'
+
+services:
+  watchtower:
+    image: containrrr/watchtower
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    restart: on-failure
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    command: --interval 60 --label-enable
+
+  pathwar:
+    image: pathwar/pathwar:latest
+    entrypoint:
+      - ./wait-for-it.sh
+      - db:3306
+      - "--"
+    environment:
+      # specific to prod
+      - VIRTUAL_HOST=api.pathwar.land,api-dev.pathwar.land
+      - VIRTUAL_PORT=8000
+      # loaded from .env
+      - ENGINE_URN
+    command:
+      - pathwar
+      - engine
+      - --urn=$ENGINE_URN
+      - server
+      - --http-bind=0.0.0.0:8000
+      - --grpc-bind=0.0.0.0:9111
+      # - --cors-allowed-origins=https://www.pathwar.land ## FIXME: enable in production
+    depends_on:
+      - db
+      - mailserver
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    networks:
+      - service-proxy
+      - internal
+
+  mailserver:
+    image: fgribreau/smtp-to-sendgrid-gateway
+    ports:
+      - 25:25
+    environment:
+      - SENDGRID_API
+    networks:
+      - internal
+
+  db:
+    image: mariadb:10
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_PASSWORD
+      - MYSQL_USER
+      - MYSQL_DATABASE
+    networks:
+      - internal
+
+  forestadmin:
+    image: pathwar/forestadmin:latest
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    environment:
+      # specific to prod
+      - VIRTUAL_HOST=admin-dev.pathwar.land
+      - VIRTUAL_PORT=3000
+      # loaded from .env
+      - APPLICATION_HOST
+      - APPLICATION_PORT
+      - DATABASE_URL
+      - FOREST_ENV_SECRET
+      - FOREST_AUTH_SECRET
+    depends_on:
+      - db
+    networks:
+      - service-proxy
+      - internal
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  service-proxy:
+    external: true
+  internal:
