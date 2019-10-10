@@ -1,4 +1,7 @@
-example:
-  build: .
-  ports:
-    - 80
+version: '3.7'
+
+services:
+  front:
+    build: front
+    ports:
+      - 80

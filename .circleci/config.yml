@@ -15,8 +15,7 @@ jobs:
     steps:
       - checkout:
           path: /go/src/pathwar.land
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
       - docker/build:
           image: pathwar/pathwar
 
@@ -59,8 +58,7 @@ jobs:
   #    - checkout
   #    - retry/install
   #    - run: retry -m 3 apk --no-cache add curl openssl make bash
-  #    - setup_remote_docker:
-  #        docker_layer_caching: true
+  #    - setup_remote_docker
   #    - run: retry -m 3 make integration.build
   #    - run: retry -m 3 make integration.run
   #    - run: retry -m 3 make integration.run # yes, again :)
