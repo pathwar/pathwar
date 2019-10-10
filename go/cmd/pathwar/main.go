@@ -19,9 +19,9 @@ import (
 	"github.com/peterbourgon/ff/ffcli"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"pathwar.land/go/pkg/pwchallenge"
 	"pathwar.land/go/pkg/pwdb"
 	"pathwar.land/go/pkg/pwengine"
-	"pathwar.land/go/pkg/pwlevel"
 	"pathwar.land/go/pkg/pwserver"
 	"pathwar.land/go/pkg/pwsso"
 	"pathwar.land/go/pkg/pwversion"
@@ -248,11 +248,11 @@ func main() {
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
 
-	pwlevelBinary := &ffcli.Command{
-		Name:  "pwlevel-binary",
-		Usage: "pathwar [global flags] misc [misc flags] pwlevel-binary",
+	pwchallengeBinary := &ffcli.Command{
+		Name:  "pwchallenge-binary",
+		Usage: "pathwar [global flags] misc [misc flags] pwchallenge-binary",
 		Exec: func([]string) error {
-			binary, err := pwlevel.Binary()
+			binary, err := pwchallenge.Binary()
 			if err != nil {
 				return err
 			}
@@ -265,7 +265,7 @@ func main() {
 		Name:        "misc",
 		Usage:       "pathwar [global flags] misc [misc flags] <subcommand> [flags] [args...]",
 		ShortHelp:   "misc contains advanced commands",
-		Subcommands: []*ffcli.Command{pwlevelBinary},
+		Subcommands: []*ffcli.Command{pwchallengeBinary},
 		FlagSet:     miscFlags,
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
@@ -360,7 +360,7 @@ func main() {
 		Name:        "compose",
 		Usage:       "pathwar [global flags] compose [sso flags] <subcommand> [flags] [args...]",
 		Subcommands: []*ffcli.Command{},
-		ShortHelp:   "manage a level",
+		ShortHelp:   "manage a challenge",
 		FlagSet:     composeFlags,
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
@@ -368,7 +368,7 @@ func main() {
 	hypervisor := &ffcli.Command{
 		Name:        "hypervisor",
 		Usage:       "pathwar [global flags] hypervisor [sso flags] <subcommand> [flags] [args...]",
-		ShortHelp:   "manage an hypervisor node (multiple levels)",
+		ShortHelp:   "manage an hypervisor node (multiple challenges)",
 		Subcommands: []*ffcli.Command{},
 		FlagSet:     hypervisorFlags,
 		Exec:        func([]string) error { return flag.ErrHelp },

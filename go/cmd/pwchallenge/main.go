@@ -13,7 +13,7 @@ import (
 	"syscall"
 
 	"github.com/peterbourgon/ff/ffcli"
-	"pathwar.land/go/pkg/pwlevel"
+	"pathwar.land/go/pkg/pwchallenge"
 )
 
 func main() {
@@ -21,12 +21,12 @@ func main() {
 
 	entrypoint := &ffcli.Command{
 		Name:  "entrypoint",
-		Usage: "pwlevel entrypoint [args...]",
+		Usage: "pwchallenge entrypoint [args...]",
 		Exec: func(args []string) error {
 			// FIXME: lock to block other commands
 
-			// prepare the level
-			cmd := exec.Command("/pwlevel/on-init")
+			// prepare the challenge
+			cmd := exec.Command("/pwchallenge/on-init")
 			if err := cmd.Run(); err != nil {
 				return err
 			}
@@ -49,7 +49,7 @@ func main() {
 
 	env := &ffcli.Command{
 		Name:  "env",
-		Usage: "pwlevel entrypoint [args...]",
+		Usage: "pwchallenge entrypoint [args...]",
 		Exec: func([]string) error {
 			for _, line := range os.Environ() {
 				fmt.Println(line)
@@ -60,7 +60,7 @@ func main() {
 
 	config := &ffcli.Command{
 		Name:  "config",
-		Usage: "pwlevel config [args...]",
+		Usage: "pwchallenge config [args...]",
 		Exec: func([]string) error {
 			config, err := getConfig()
 			if err != nil {
@@ -74,7 +74,7 @@ func main() {
 
 	passphrase := &ffcli.Command{
 		Name:  "passphrase",
-		Usage: "pwlevel passphrase ID",
+		Usage: "pwchallenge passphrase ID",
 		Exec: func(args []string) error {
 			if len(args) != 1 {
 				return flag.ErrHelp
@@ -95,8 +95,8 @@ func main() {
 	}
 
 	root := &ffcli.Command{
-		Usage:       "pwlevel <subcommand> [flags] [args...]",
-		LongHelp:    "More info here: https://github.com/pathwar/pathwar/wiki/CLI#pwlevel",
+		Usage:       "pwchallenge <subcommand> [flags] [args...]",
+		LongHelp:    "More info here: https://github.com/pathwar/pathwar/wiki/CLI#pwchallenge",
 		Subcommands: []*ffcli.Command{entrypoint, env, config, passphrase},
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
@@ -113,12 +113,12 @@ func main() {
 	}
 }
 
-func getConfig() (*pwlevel.InitConfig, error) {
-	configJSON, err := ioutil.ReadFile("/pwlevel/config.json")
+func getConfig() (*pwchallenge.InitConfig, error) {
+	configJSON, err := ioutil.ReadFile("/pwchallenge/config.json")
 	if err != nil {
 		return nil, err
 	}
-	var config pwlevel.InitConfig
+	var config pwchallenge.InitConfig
 	if err := json.Unmarshal(configJSON, &config); err != nil {
 		return nil, err
 	}

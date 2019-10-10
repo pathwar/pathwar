@@ -30,59 +30,59 @@ var _ = time.Kitchen
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type LevelVersion_Driver int32
+type ChallengeVersion_Driver int32
 
 const (
-	LevelVersion_Unknown       LevelVersion_Driver = 0
-	LevelVersion_Docker        LevelVersion_Driver = 1
-	LevelVersion_DockerCompose LevelVersion_Driver = 2
+	ChallengeVersion_Unknown       ChallengeVersion_Driver = 0
+	ChallengeVersion_Docker        ChallengeVersion_Driver = 1
+	ChallengeVersion_DockerCompose ChallengeVersion_Driver = 2
 )
 
-var LevelVersion_Driver_name = map[int32]string{
+var ChallengeVersion_Driver_name = map[int32]string{
 	0: "Unknown",
 	1: "Docker",
 	2: "DockerCompose",
 }
 
-var LevelVersion_Driver_value = map[string]int32{
+var ChallengeVersion_Driver_value = map[string]int32{
 	"Unknown":       0,
 	"Docker":        1,
 	"DockerCompose": 2,
 }
 
-func (x LevelVersion_Driver) String() string {
-	return proto.EnumName(LevelVersion_Driver_name, int32(x))
+func (x ChallengeVersion_Driver) String() string {
+	return proto.EnumName(ChallengeVersion_Driver_name, int32(x))
 }
 
-func (LevelVersion_Driver) EnumDescriptor() ([]byte, []int) {
+func (ChallengeVersion_Driver) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{2, 0}
 }
 
-type LevelInstance_Status int32
+type ChallengeInstance_Status int32
 
 const (
-	LevelInstance_Unknown  LevelInstance_Status = 0
-	LevelInstance_Active   LevelInstance_Status = 1
-	LevelInstance_Inactive LevelInstance_Status = 2
+	ChallengeInstance_Unknown  ChallengeInstance_Status = 0
+	ChallengeInstance_Active   ChallengeInstance_Status = 1
+	ChallengeInstance_Inactive ChallengeInstance_Status = 2
 )
 
-var LevelInstance_Status_name = map[int32]string{
+var ChallengeInstance_Status_name = map[int32]string{
 	0: "Unknown",
 	1: "Active",
 	2: "Inactive",
 }
 
-var LevelInstance_Status_value = map[string]int32{
+var ChallengeInstance_Status_value = map[string]int32{
 	"Unknown":  0,
 	"Active":   1,
 	"Inactive": 2,
 }
 
-func (x LevelInstance_Status) String() string {
-	return proto.EnumName(LevelInstance_Status_name, int32(x))
+func (x ChallengeInstance_Status) String() string {
+	return proto.EnumName(ChallengeInstance_Status_name, int32(x))
 }
 
-func (LevelInstance_Status) EnumDescriptor() ([]byte, []int) {
+func (ChallengeInstance_Status) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{4, 0}
 }
 
@@ -229,17 +229,17 @@ func (Tournament_Visibility) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{12, 1}
 }
 
-type LevelValidation_Status int32
+type ChallengeValidation_Status int32
 
 const (
-	LevelValidation_Unknown      LevelValidation_Status = 0
-	LevelValidation_Sent         LevelValidation_Status = 1
-	LevelValidation_Accepted     LevelValidation_Status = 2
-	LevelValidation_Refused      LevelValidation_Status = 3
-	LevelValidation_AutoAccepted LevelValidation_Status = 4
+	ChallengeValidation_Unknown      ChallengeValidation_Status = 0
+	ChallengeValidation_Sent         ChallengeValidation_Status = 1
+	ChallengeValidation_Accepted     ChallengeValidation_Status = 2
+	ChallengeValidation_Refused      ChallengeValidation_Status = 3
+	ChallengeValidation_AutoAccepted ChallengeValidation_Status = 4
 )
 
-var LevelValidation_Status_name = map[int32]string{
+var ChallengeValidation_Status_name = map[int32]string{
 	0: "Unknown",
 	1: "Sent",
 	2: "Accepted",
@@ -247,7 +247,7 @@ var LevelValidation_Status_name = map[int32]string{
 	4: "AutoAccepted",
 }
 
-var LevelValidation_Status_value = map[string]int32{
+var ChallengeValidation_Status_value = map[string]int32{
 	"Unknown":      0,
 	"Sent":         1,
 	"Accepted":     2,
@@ -255,11 +255,11 @@ var LevelValidation_Status_value = map[string]int32{
 	"AutoAccepted": 4,
 }
 
-func (x LevelValidation_Status) String() string {
-	return proto.EnumName(LevelValidation_Status_name, int32(x))
+func (x ChallengeValidation_Status) String() string {
+	return proto.EnumName(ChallengeValidation_Status_name, int32(x))
 }
 
-func (LevelValidation_Status) EnumDescriptor() ([]byte, []int) {
+func (ChallengeValidation_Status) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{17, 0}
 }
 
@@ -291,63 +291,63 @@ func (InventoryItem_Item) EnumDescriptor() ([]byte, []int) {
 type Achievement_Type int32
 
 const (
-	Achievement_Undefined           Achievement_Type = 0
-	Achievement_Buy1Level           Achievement_Type = 1
-	Achievement_Buy5Levels          Achievement_Type = 2
-	Achievement_Buy10Levels         Achievement_Type = 3
-	Achievement_Buy20Levels         Achievement_Type = 4
-	Achievement_Buy50Levels         Achievement_Type = 5
-	Achievement_Validate1Level      Achievement_Type = 10
-	Achievement_Validate5Levels     Achievement_Type = 11
-	Achievement_Validate10Levels    Achievement_Type = 12
-	Achievement_Validate20Levels    Achievement_Type = 13
-	Achievement_Validate50Levels    Achievement_Type = 14
-	Achievement_Validate1Coupon     Achievement_Type = 20
-	Achievement_Validate5Coupons    Achievement_Type = 21
-	Achievement_Validate10Coupons   Achievement_Type = 22
-	Achievement_Validate20Coupons   Achievement_Type = 23
-	Achievement_Validate50Coupons   Achievement_Type = 24
-	Achievement_Validate100Coupons  Achievement_Type = 25
-	Achievement_Author1Level        Achievement_Type = 30
-	Achievement_Author2Levels       Achievement_Type = 31
-	Achievement_Author5Levels       Achievement_Type = 32
-	Achievement_Author10Levels      Achievement_Type = 33
-	Achievement_EarlyAdopterTop100  Achievement_Type = 40
-	Achievement_EarlyAdopterTop1000 Achievement_Type = 41
-	Achievement_Old1Year            Achievement_Type = 50
-	Achievement_Send1PullRequest    Achievement_Type = 90
-	Achievement_Send2PullRequests   Achievement_Type = 91
-	Achievement_Send5PullRequests   Achievement_Type = 92
-	Achievement_Send10Pullrequests  Achievement_Type = 93
-	Achievement_Staff               Achievement_Type = 100
-	Achievement_Contributor         Achievement_Type = 101
-	Achievement_BugHunter           Achievement_Type = 102
-	Achievement_Moderator           Achievement_Type = 103
-	Achievement_HackThePlatform     Achievement_Type = 104
+	Achievement_Undefined            Achievement_Type = 0
+	Achievement_Buy1Challenge        Achievement_Type = 1
+	Achievement_Buy5Challenges       Achievement_Type = 2
+	Achievement_Buy10Challenges      Achievement_Type = 3
+	Achievement_Buy20Challenges      Achievement_Type = 4
+	Achievement_Buy50Challenges      Achievement_Type = 5
+	Achievement_Validate1Challenge   Achievement_Type = 10
+	Achievement_Validate5Challenges  Achievement_Type = 11
+	Achievement_Validate10Challenges Achievement_Type = 12
+	Achievement_Validate20Challenges Achievement_Type = 13
+	Achievement_Validate50Challenges Achievement_Type = 14
+	Achievement_Validate1Coupon      Achievement_Type = 20
+	Achievement_Validate5Coupons     Achievement_Type = 21
+	Achievement_Validate10Coupons    Achievement_Type = 22
+	Achievement_Validate20Coupons    Achievement_Type = 23
+	Achievement_Validate50Coupons    Achievement_Type = 24
+	Achievement_Validate100Coupons   Achievement_Type = 25
+	Achievement_Author1Challenge     Achievement_Type = 30
+	Achievement_Author2Challenges    Achievement_Type = 31
+	Achievement_Author5Challenges    Achievement_Type = 32
+	Achievement_Author10Challenges   Achievement_Type = 33
+	Achievement_EarlyAdopterTop100   Achievement_Type = 40
+	Achievement_EarlyAdopterTop1000  Achievement_Type = 41
+	Achievement_Old1Year             Achievement_Type = 50
+	Achievement_Send1PullRequest     Achievement_Type = 90
+	Achievement_Send2PullRequests    Achievement_Type = 91
+	Achievement_Send5PullRequests    Achievement_Type = 92
+	Achievement_Send10Pullrequests   Achievement_Type = 93
+	Achievement_Staff                Achievement_Type = 100
+	Achievement_Contributor          Achievement_Type = 101
+	Achievement_BugHunter            Achievement_Type = 102
+	Achievement_Moderator            Achievement_Type = 103
+	Achievement_HackThePlatform      Achievement_Type = 104
 )
 
 var Achievement_Type_name = map[int32]string{
 	0:   "Undefined",
-	1:   "Buy1Level",
-	2:   "Buy5Levels",
-	3:   "Buy10Levels",
-	4:   "Buy20Levels",
-	5:   "Buy50Levels",
-	10:  "Validate1Level",
-	11:  "Validate5Levels",
-	12:  "Validate10Levels",
-	13:  "Validate20Levels",
-	14:  "Validate50Levels",
+	1:   "Buy1Challenge",
+	2:   "Buy5Challenges",
+	3:   "Buy10Challenges",
+	4:   "Buy20Challenges",
+	5:   "Buy50Challenges",
+	10:  "Validate1Challenge",
+	11:  "Validate5Challenges",
+	12:  "Validate10Challenges",
+	13:  "Validate20Challenges",
+	14:  "Validate50Challenges",
 	20:  "Validate1Coupon",
 	21:  "Validate5Coupons",
 	22:  "Validate10Coupons",
 	23:  "Validate20Coupons",
 	24:  "Validate50Coupons",
 	25:  "Validate100Coupons",
-	30:  "Author1Level",
-	31:  "Author2Levels",
-	32:  "Author5Levels",
-	33:  "Author10Levels",
+	30:  "Author1Challenge",
+	31:  "Author2Challenges",
+	32:  "Author5Challenges",
+	33:  "Author10Challenges",
 	40:  "EarlyAdopterTop100",
 	41:  "EarlyAdopterTop1000",
 	50:  "Old1Year",
@@ -363,39 +363,39 @@ var Achievement_Type_name = map[int32]string{
 }
 
 var Achievement_Type_value = map[string]int32{
-	"Undefined":           0,
-	"Buy1Level":           1,
-	"Buy5Levels":          2,
-	"Buy10Levels":         3,
-	"Buy20Levels":         4,
-	"Buy50Levels":         5,
-	"Validate1Level":      10,
-	"Validate5Levels":     11,
-	"Validate10Levels":    12,
-	"Validate20Levels":    13,
-	"Validate50Levels":    14,
-	"Validate1Coupon":     20,
-	"Validate5Coupons":    21,
-	"Validate10Coupons":   22,
-	"Validate20Coupons":   23,
-	"Validate50Coupons":   24,
-	"Validate100Coupons":  25,
-	"Author1Level":        30,
-	"Author2Levels":       31,
-	"Author5Levels":       32,
-	"Author10Levels":      33,
-	"EarlyAdopterTop100":  40,
-	"EarlyAdopterTop1000": 41,
-	"Old1Year":            50,
-	"Send1PullRequest":    90,
-	"Send2PullRequests":   91,
-	"Send5PullRequests":   92,
-	"Send10Pullrequests":  93,
-	"Staff":               100,
-	"Contributor":         101,
-	"BugHunter":           102,
-	"Moderator":           103,
-	"HackThePlatform":     104,
+	"Undefined":            0,
+	"Buy1Challenge":        1,
+	"Buy5Challenges":       2,
+	"Buy10Challenges":      3,
+	"Buy20Challenges":      4,
+	"Buy50Challenges":      5,
+	"Validate1Challenge":   10,
+	"Validate5Challenges":  11,
+	"Validate10Challenges": 12,
+	"Validate20Challenges": 13,
+	"Validate50Challenges": 14,
+	"Validate1Coupon":      20,
+	"Validate5Coupons":     21,
+	"Validate10Coupons":    22,
+	"Validate20Coupons":    23,
+	"Validate50Coupons":    24,
+	"Validate100Coupons":   25,
+	"Author1Challenge":     30,
+	"Author2Challenges":    31,
+	"Author5Challenges":    32,
+	"Author10Challenges":   33,
+	"EarlyAdopterTop100":   40,
+	"EarlyAdopterTop1000":  41,
+	"Old1Year":             50,
+	"Send1PullRequest":     90,
+	"Send2PullRequests":    91,
+	"Send5PullRequests":    92,
+	"Send10Pullrequests":   93,
+	"Staff":                100,
+	"Contributor":          101,
+	"BugHunter":            102,
+	"Moderator":            103,
+	"HackThePlatform":      104,
 }
 
 func (x Achievement_Type) String() string {
@@ -406,7 +406,7 @@ func (Achievement_Type) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{23, 0}
 }
 
-type Level struct {
+type Challenge struct {
 	ID          string     `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
 	CreatedAt   *time.Time `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
 	UpdatedAt   *time.Time `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
@@ -418,22 +418,22 @@ type Level struct {
 	IsDraft    bool   `protobuf:"varint,106,opt,name=is_draft,json=isDraft,proto3" json:"is_draft,omitempty"`
 	PreviewUrl string `protobuf:"bytes,107,opt,name=preview_url,json=previewUrl,proto3" json:"preview_url,omitempty"`
 	// repeated string tags = ;
-	Homepage string          `protobuf:"bytes,108,opt,name=homepage,proto3" json:"homepage,omitempty"`
-	Versions []*LevelVersion `protobuf:"bytes,200,rep,name=versions,proto3" json:"versions,omitempty" gorm:"PRELOAD:false"`
+	Homepage string              `protobuf:"bytes,108,opt,name=homepage,proto3" json:"homepage,omitempty"`
+	Versions []*ChallengeVersion `protobuf:"bytes,200,rep,name=versions,proto3" json:"versions,omitempty" gorm:"PRELOAD:false"`
 }
 
-func (m *Level) Reset()         { *m = Level{} }
-func (m *Level) String() string { return proto.CompactTextString(m) }
-func (*Level) ProtoMessage()    {}
-func (*Level) Descriptor() ([]byte, []int) {
+func (m *Challenge) Reset()         { *m = Challenge{} }
+func (m *Challenge) String() string { return proto.CompactTextString(m) }
+func (*Challenge) ProtoMessage()    {}
+func (*Challenge) Descriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{0}
 }
-func (m *Level) XXX_Unmarshal(b []byte) error {
+func (m *Challenge) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Level) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *Challenge) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Level.Marshal(b, m, deterministic)
+		return xxx_messageInfo_Challenge.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -443,111 +443,111 @@ func (m *Level) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Level) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Level.Merge(m, src)
+func (m *Challenge) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Challenge.Merge(m, src)
 }
-func (m *Level) XXX_Size() int {
+func (m *Challenge) XXX_Size() int {
 	return m.Size()
 }
-func (m *Level) XXX_DiscardUnknown() {
-	xxx_messageInfo_Level.DiscardUnknown(m)
+func (m *Challenge) XXX_DiscardUnknown() {
+	xxx_messageInfo_Challenge.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Level proto.InternalMessageInfo
+var xxx_messageInfo_Challenge proto.InternalMessageInfo
 
-func (m *Level) GetID() string {
+func (m *Challenge) GetID() string {
 	if m != nil {
 		return m.ID
 	}
 	return ""
 }
 
-func (m *Level) GetCreatedAt() *time.Time {
+func (m *Challenge) GetCreatedAt() *time.Time {
 	if m != nil {
 		return m.CreatedAt
 	}
 	return nil
 }
 
-func (m *Level) GetUpdatedAt() *time.Time {
+func (m *Challenge) GetUpdatedAt() *time.Time {
 	if m != nil {
 		return m.UpdatedAt
 	}
 	return nil
 }
 
-func (m *Level) GetName() string {
+func (m *Challenge) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *Level) GetDescription() string {
+func (m *Challenge) GetDescription() string {
 	if m != nil {
 		return m.Description
 	}
 	return ""
 }
 
-func (m *Level) GetAuthor() string {
+func (m *Challenge) GetAuthor() string {
 	if m != nil {
 		return m.Author
 	}
 	return ""
 }
 
-func (m *Level) GetLocale() string {
+func (m *Challenge) GetLocale() string {
 	if m != nil {
 		return m.Locale
 	}
 	return ""
 }
 
-func (m *Level) GetIsDraft() bool {
+func (m *Challenge) GetIsDraft() bool {
 	if m != nil {
 		return m.IsDraft
 	}
 	return false
 }
 
-func (m *Level) GetPreviewUrl() string {
+func (m *Challenge) GetPreviewUrl() string {
 	if m != nil {
 		return m.PreviewUrl
 	}
 	return ""
 }
 
-func (m *Level) GetHomepage() string {
+func (m *Challenge) GetHomepage() string {
 	if m != nil {
 		return m.Homepage
 	}
 	return ""
 }
 
-func (m *Level) GetVersions() []*LevelVersion {
+func (m *Challenge) GetVersions() []*ChallengeVersion {
 	if m != nil {
 		return m.Versions
 	}
 	return nil
 }
 
-type LevelList struct {
-	Items []*Level `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+type ChallengeList struct {
+	Items []*Challenge `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 }
 
-func (m *LevelList) Reset()         { *m = LevelList{} }
-func (m *LevelList) String() string { return proto.CompactTextString(m) }
-func (*LevelList) ProtoMessage()    {}
-func (*LevelList) Descriptor() ([]byte, []int) {
+func (m *ChallengeList) Reset()         { *m = ChallengeList{} }
+func (m *ChallengeList) String() string { return proto.CompactTextString(m) }
+func (*ChallengeList) ProtoMessage()    {}
+func (*ChallengeList) Descriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{1}
 }
-func (m *LevelList) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *LevelList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_LevelList.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -557,52 +557,52 @@ func (m *LevelList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *LevelList) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LevelList.Merge(m, src)
+func (m *ChallengeList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeList.Merge(m, src)
 }
-func (m *LevelList) XXX_Size() int {
+func (m *ChallengeList) XXX_Size() int {
 	return m.Size()
 }
-func (m *LevelList) XXX_DiscardUnknown() {
-	xxx_messageInfo_LevelList.DiscardUnknown(m)
+func (m *ChallengeList) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeList.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_LevelList proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeList proto.InternalMessageInfo
 
-func (m *LevelList) GetItems() []*Level {
+func (m *ChallengeList) GetItems() []*Challenge {
 	if m != nil {
 		return m.Items
 	}
 	return nil
 }
 
-type LevelVersion struct {
-	ID        string              `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt *time.Time          `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt *time.Time          `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	Version   string              `protobuf:"bytes,100,opt,name=version,proto3" json:"version,omitempty"`
-	Changelog string              `protobuf:"bytes,101,opt,name=changelog,proto3" json:"changelog,omitempty"`
-	IsDraft   bool                `protobuf:"varint,102,opt,name=is_draft,json=isDraft,proto3" json:"is_draft,omitempty"`
-	IsLatest  bool                `protobuf:"varint,103,opt,name=is_latest,json=isLatest,proto3" json:"is_latest,omitempty"`
-	SourceURL string              `protobuf:"bytes,104,opt,name=source_url,json=sourceUrl,proto3" json:"source_url,omitempty"`
-	Driver    LevelVersion_Driver `protobuf:"varint,105,opt,name=driver,proto3,enum=pathwar.db.LevelVersion_Driver" json:"driver,omitempty"`
-	Level     *Level              `protobuf:"bytes,200,opt,name=level,proto3" json:"level,omitempty" gorm:"foreignkey:LevelID"`
-	LevelID   string              `protobuf:"bytes,201,opt,name=level_id,json=levelId,proto3" json:"level_id,omitempty" sql:"not null" gorm:"index"`
-	Flavors   []*LevelFlavor      `protobuf:"bytes,202,rep,name=flavors,proto3" json:"flavors,omitempty" gorm:"PRELOAD:false"`
+type ChallengeVersion struct {
+	ID          string                  `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt   *time.Time              `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt   *time.Time              `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	Version     string                  `protobuf:"bytes,100,opt,name=version,proto3" json:"version,omitempty"`
+	Changelog   string                  `protobuf:"bytes,101,opt,name=changelog,proto3" json:"changelog,omitempty"`
+	IsDraft     bool                    `protobuf:"varint,102,opt,name=is_draft,json=isDraft,proto3" json:"is_draft,omitempty"`
+	IsLatest    bool                    `protobuf:"varint,103,opt,name=is_latest,json=isLatest,proto3" json:"is_latest,omitempty"`
+	SourceURL   string                  `protobuf:"bytes,104,opt,name=source_url,json=sourceUrl,proto3" json:"source_url,omitempty"`
+	Driver      ChallengeVersion_Driver `protobuf:"varint,105,opt,name=driver,proto3,enum=pathwar.db.ChallengeVersion_Driver" json:"driver,omitempty"`
+	Challenge   *Challenge              `protobuf:"bytes,200,opt,name=challenge,proto3" json:"challenge,omitempty" gorm:"foreignkey:ChallengeID"`
+	ChallengeID string                  `protobuf:"bytes,201,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty" sql:"not null" gorm:"index"`
+	Flavors     []*ChallengeFlavor      `protobuf:"bytes,202,rep,name=flavors,proto3" json:"flavors,omitempty" gorm:"PRELOAD:false"`
 }
 
-func (m *LevelVersion) Reset()         { *m = LevelVersion{} }
-func (m *LevelVersion) String() string { return proto.CompactTextString(m) }
-func (*LevelVersion) ProtoMessage()    {}
-func (*LevelVersion) Descriptor() ([]byte, []int) {
+func (m *ChallengeVersion) Reset()         { *m = ChallengeVersion{} }
+func (m *ChallengeVersion) String() string { return proto.CompactTextString(m) }
+func (*ChallengeVersion) ProtoMessage()    {}
+func (*ChallengeVersion) Descriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{2}
 }
-func (m *LevelVersion) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeVersion) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *LevelVersion) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeVersion) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_LevelVersion.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeVersion.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -612,123 +612,123 @@ func (m *LevelVersion) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return b[:n], nil
 	}
 }
-func (m *LevelVersion) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LevelVersion.Merge(m, src)
+func (m *ChallengeVersion) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeVersion.Merge(m, src)
 }
-func (m *LevelVersion) XXX_Size() int {
+func (m *ChallengeVersion) XXX_Size() int {
 	return m.Size()
 }
-func (m *LevelVersion) XXX_DiscardUnknown() {
-	xxx_messageInfo_LevelVersion.DiscardUnknown(m)
+func (m *ChallengeVersion) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeVersion.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_LevelVersion proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeVersion proto.InternalMessageInfo
 
-func (m *LevelVersion) GetID() string {
+func (m *ChallengeVersion) GetID() string {
 	if m != nil {
 		return m.ID
 	}
 	return ""
 }
 
-func (m *LevelVersion) GetCreatedAt() *time.Time {
+func (m *ChallengeVersion) GetCreatedAt() *time.Time {
 	if m != nil {
 		return m.CreatedAt
 	}
 	return nil
 }
 
-func (m *LevelVersion) GetUpdatedAt() *time.Time {
+func (m *ChallengeVersion) GetUpdatedAt() *time.Time {
 	if m != nil {
 		return m.UpdatedAt
 	}
 	return nil
 }
 
-func (m *LevelVersion) GetVersion() string {
+func (m *ChallengeVersion) GetVersion() string {
 	if m != nil {
 		return m.Version
 	}
 	return ""
 }
 
-func (m *LevelVersion) GetChangelog() string {
+func (m *ChallengeVersion) GetChangelog() string {
 	if m != nil {
 		return m.Changelog
 	}
 	return ""
 }
 
-func (m *LevelVersion) GetIsDraft() bool {
+func (m *ChallengeVersion) GetIsDraft() bool {
 	if m != nil {
 		return m.IsDraft
 	}
 	return false
 }
 
-func (m *LevelVersion) GetIsLatest() bool {
+func (m *ChallengeVersion) GetIsLatest() bool {
 	if m != nil {
 		return m.IsLatest
 	}
 	return false
 }
 
-func (m *LevelVersion) GetSourceURL() string {
+func (m *ChallengeVersion) GetSourceURL() string {
 	if m != nil {
 		return m.SourceURL
 	}
 	return ""
 }
 
-func (m *LevelVersion) GetDriver() LevelVersion_Driver {
+func (m *ChallengeVersion) GetDriver() ChallengeVersion_Driver {
 	if m != nil {
 		return m.Driver
 	}
-	return LevelVersion_Unknown
+	return ChallengeVersion_Unknown
 }
 
-func (m *LevelVersion) GetLevel() *Level {
+func (m *ChallengeVersion) GetChallenge() *Challenge {
 	if m != nil {
-		return m.Level
+		return m.Challenge
 	}
 	return nil
 }
 
-func (m *LevelVersion) GetLevelID() string {
+func (m *ChallengeVersion) GetChallengeID() string {
 	if m != nil {
-		return m.LevelID
+		return m.ChallengeID
 	}
 	return ""
 }
 
-func (m *LevelVersion) GetFlavors() []*LevelFlavor {
+func (m *ChallengeVersion) GetFlavors() []*ChallengeFlavor {
 	if m != nil {
 		return m.Flavors
 	}
 	return nil
 }
 
-type LevelFlavor struct {
-	ID             string           `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt      *time.Time       `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt      *time.Time       `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	LevelVersion   *Level           `protobuf:"bytes,200,opt,name=level_version,json=levelVersion,proto3" json:"level_version,omitempty" gorm:"foreignkey:LevelVersionID"`
-	LevelVersionID string           `protobuf:"bytes,201,opt,name=level_version_id,json=levelVersionId,proto3" json:"level_version_id,omitempty" sql:"not null" gorm:"index"`
-	Instances      []*LevelInstance `protobuf:"bytes,202,rep,name=instances,proto3" json:"instances,omitempty" gorm:"PRELOAD:false"`
+type ChallengeFlavor struct {
+	ID                 string               `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt          *time.Time           `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt          *time.Time           `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	ChallengeVersion   *Challenge           `protobuf:"bytes,200,opt,name=challenge_version,json=challengeVersion,proto3" json:"challenge_version,omitempty" gorm:"foreignkey:ChallengeVersionID"`
+	ChallengeVersionID string               `protobuf:"bytes,201,opt,name=challenge_version_id,json=challengeVersionId,proto3" json:"challenge_version_id,omitempty" sql:"not null" gorm:"index"`
+	Instances          []*ChallengeInstance `protobuf:"bytes,202,rep,name=instances,proto3" json:"instances,omitempty" gorm:"PRELOAD:false"`
 }
 
-func (m *LevelFlavor) Reset()         { *m = LevelFlavor{} }
-func (m *LevelFlavor) String() string { return proto.CompactTextString(m) }
-func (*LevelFlavor) ProtoMessage()    {}
-func (*LevelFlavor) Descriptor() ([]byte, []int) {
+func (m *ChallengeFlavor) Reset()         { *m = ChallengeFlavor{} }
+func (m *ChallengeFlavor) String() string { return proto.CompactTextString(m) }
+func (*ChallengeFlavor) ProtoMessage()    {}
+func (*ChallengeFlavor) Descriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{3}
 }
-func (m *LevelFlavor) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeFlavor) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *LevelFlavor) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeFlavor) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_LevelFlavor.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeFlavor.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -738,83 +738,83 @@ func (m *LevelFlavor) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return b[:n], nil
 	}
 }
-func (m *LevelFlavor) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LevelFlavor.Merge(m, src)
+func (m *ChallengeFlavor) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeFlavor.Merge(m, src)
 }
-func (m *LevelFlavor) XXX_Size() int {
+func (m *ChallengeFlavor) XXX_Size() int {
 	return m.Size()
 }
-func (m *LevelFlavor) XXX_DiscardUnknown() {
-	xxx_messageInfo_LevelFlavor.DiscardUnknown(m)
+func (m *ChallengeFlavor) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeFlavor.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_LevelFlavor proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeFlavor proto.InternalMessageInfo
 
-func (m *LevelFlavor) GetID() string {
+func (m *ChallengeFlavor) GetID() string {
 	if m != nil {
 		return m.ID
 	}
 	return ""
 }
 
-func (m *LevelFlavor) GetCreatedAt() *time.Time {
+func (m *ChallengeFlavor) GetCreatedAt() *time.Time {
 	if m != nil {
 		return m.CreatedAt
 	}
 	return nil
 }
 
-func (m *LevelFlavor) GetUpdatedAt() *time.Time {
+func (m *ChallengeFlavor) GetUpdatedAt() *time.Time {
 	if m != nil {
 		return m.UpdatedAt
 	}
 	return nil
 }
 
-func (m *LevelFlavor) GetLevelVersion() *Level {
+func (m *ChallengeFlavor) GetChallengeVersion() *Challenge {
 	if m != nil {
-		return m.LevelVersion
+		return m.ChallengeVersion
 	}
 	return nil
 }
 
-func (m *LevelFlavor) GetLevelVersionID() string {
+func (m *ChallengeFlavor) GetChallengeVersionID() string {
 	if m != nil {
-		return m.LevelVersionID
+		return m.ChallengeVersionID
 	}
 	return ""
 }
 
-func (m *LevelFlavor) GetInstances() []*LevelInstance {
+func (m *ChallengeFlavor) GetInstances() []*ChallengeInstance {
 	if m != nil {
 		return m.Instances
 	}
 	return nil
 }
 
-type LevelInstance struct {
-	ID           string               `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt    *time.Time           `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt    *time.Time           `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	Status       LevelInstance_Status `protobuf:"varint,100,opt,name=status,proto3,enum=pathwar.db.LevelInstance_Status" json:"status,omitempty"`
-	Hypervisor   *Hypervisor          `protobuf:"bytes,200,opt,name=hypervisor,proto3" json:"hypervisor,omitempty" gorm:"foreignkey:HypervisorID"`
-	HypervisorID string               `protobuf:"bytes,201,opt,name=hypervisor_id,json=hypervisorId,proto3" json:"hypervisor_id,omitempty" sql:"not null" gorm:"index"`
-	Flavor       *LevelFlavor         `protobuf:"bytes,202,opt,name=flavor,proto3" json:"flavor,omitempty" gorm:"foreignkey:FlavorID"`
-	FlavorID     string               `protobuf:"bytes,203,opt,name=flavor_id,json=flavorId,proto3" json:"flavor_id,omitempty" sql:"not null" gorm:"index"`
+type ChallengeInstance struct {
+	ID           string                   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt    *time.Time               `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt    *time.Time               `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	Status       ChallengeInstance_Status `protobuf:"varint,100,opt,name=status,proto3,enum=pathwar.db.ChallengeInstance_Status" json:"status,omitempty"`
+	Hypervisor   *Hypervisor              `protobuf:"bytes,200,opt,name=hypervisor,proto3" json:"hypervisor,omitempty" gorm:"foreignkey:HypervisorID"`
+	HypervisorID string                   `protobuf:"bytes,201,opt,name=hypervisor_id,json=hypervisorId,proto3" json:"hypervisor_id,omitempty" sql:"not null" gorm:"index"`
+	Flavor       *ChallengeFlavor         `protobuf:"bytes,202,opt,name=flavor,proto3" json:"flavor,omitempty" gorm:"foreignkey:FlavorID"`
+	FlavorID     string                   `protobuf:"bytes,203,opt,name=flavor_id,json=flavorId,proto3" json:"flavor_id,omitempty" sql:"not null" gorm:"index"`
 }
 
-func (m *LevelInstance) Reset()         { *m = LevelInstance{} }
-func (m *LevelInstance) String() string { return proto.CompactTextString(m) }
-func (*LevelInstance) ProtoMessage()    {}
-func (*LevelInstance) Descriptor() ([]byte, []int) {
+func (m *ChallengeInstance) Reset()         { *m = ChallengeInstance{} }
+func (m *ChallengeInstance) String() string { return proto.CompactTextString(m) }
+func (*ChallengeInstance) ProtoMessage()    {}
+func (*ChallengeInstance) Descriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{4}
 }
-func (m *LevelInstance) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeInstance) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *LevelInstance) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeInstance) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_LevelInstance.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeInstance.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -824,68 +824,68 @@ func (m *LevelInstance) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return b[:n], nil
 	}
 }
-func (m *LevelInstance) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LevelInstance.Merge(m, src)
+func (m *ChallengeInstance) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeInstance.Merge(m, src)
 }
-func (m *LevelInstance) XXX_Size() int {
+func (m *ChallengeInstance) XXX_Size() int {
 	return m.Size()
 }
-func (m *LevelInstance) XXX_DiscardUnknown() {
-	xxx_messageInfo_LevelInstance.DiscardUnknown(m)
+func (m *ChallengeInstance) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeInstance.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_LevelInstance proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeInstance proto.InternalMessageInfo
 
-func (m *LevelInstance) GetID() string {
+func (m *ChallengeInstance) GetID() string {
 	if m != nil {
 		return m.ID
 	}
 	return ""
 }
 
-func (m *LevelInstance) GetCreatedAt() *time.Time {
+func (m *ChallengeInstance) GetCreatedAt() *time.Time {
 	if m != nil {
 		return m.CreatedAt
 	}
 	return nil
 }
 
-func (m *LevelInstance) GetUpdatedAt() *time.Time {
+func (m *ChallengeInstance) GetUpdatedAt() *time.Time {
 	if m != nil {
 		return m.UpdatedAt
 	}
 	return nil
 }
 
-func (m *LevelInstance) GetStatus() LevelInstance_Status {
+func (m *ChallengeInstance) GetStatus() ChallengeInstance_Status {
 	if m != nil {
 		return m.Status
 	}
-	return LevelInstance_Unknown
+	return ChallengeInstance_Unknown
 }
 
-func (m *LevelInstance) GetHypervisor() *Hypervisor {
+func (m *ChallengeInstance) GetHypervisor() *Hypervisor {
 	if m != nil {
 		return m.Hypervisor
 	}
 	return nil
 }
 
-func (m *LevelInstance) GetHypervisorID() string {
+func (m *ChallengeInstance) GetHypervisorID() string {
 	if m != nil {
 		return m.HypervisorID
 	}
 	return ""
 }
 
-func (m *LevelInstance) GetFlavor() *LevelFlavor {
+func (m *ChallengeInstance) GetFlavor() *ChallengeFlavor {
 	if m != nil {
 		return m.Flavor
 	}
 	return nil
 }
 
-func (m *LevelInstance) GetFlavorID() string {
+func (m *ChallengeInstance) GetFlavorID() string {
 	if m != nil {
 		return m.FlavorID
 	}
@@ -893,13 +893,13 @@ func (m *LevelInstance) GetFlavorID() string {
 }
 
 type Hypervisor struct {
-	ID             string            `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt      *time.Time        `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt      *time.Time        `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	Name           string            `protobuf:"bytes,100,opt,name=name,proto3" json:"name,omitempty"`
-	Address        string            `protobuf:"bytes,101,opt,name=address,proto3" json:"address,omitempty"`
-	Status         Hypervisor_Status `protobuf:"varint,102,opt,name=status,proto3,enum=pathwar.db.Hypervisor_Status" json:"status,omitempty"`
-	LevelInstances []*LevelInstance  `protobuf:"bytes,200,rep,name=level_instances,json=levelInstances,proto3" json:"level_instances,omitempty" gorm:"PRELOAD:false"`
+	ID                 string               `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt          *time.Time           `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt          *time.Time           `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	Name               string               `protobuf:"bytes,100,opt,name=name,proto3" json:"name,omitempty"`
+	Address            string               `protobuf:"bytes,101,opt,name=address,proto3" json:"address,omitempty"`
+	Status             Hypervisor_Status    `protobuf:"varint,102,opt,name=status,proto3,enum=pathwar.db.Hypervisor_Status" json:"status,omitempty"`
+	ChallengeInstances []*ChallengeInstance `protobuf:"bytes,200,rep,name=challenge_instances,json=challengeInstances,proto3" json:"challenge_instances,omitempty" gorm:"PRELOAD:false"`
 }
 
 func (m *Hypervisor) Reset()         { *m = Hypervisor{} }
@@ -977,9 +977,9 @@ func (m *Hypervisor) GetStatus() Hypervisor_Status {
 	return Hypervisor_Unknown
 }
 
-func (m *Hypervisor) GetLevelInstances() []*LevelInstance {
+func (m *Hypervisor) GetChallengeInstances() []*ChallengeInstance {
 	if m != nil {
-		return m.LevelInstances
+		return m.ChallengeInstances
 	}
 	return nil
 }
@@ -1085,20 +1085,20 @@ func (m *TeamMember) GetTeamID() string {
 }
 
 type TournamentMember struct {
-	ID                      string                `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt               *time.Time            `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt               *time.Time            `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	Role                    TournamentMember_Role `protobuf:"varint,100,opt,name=role,proto3,enum=pathwar.db.TournamentMember_Role" json:"role,omitempty"`
-	User                    *User                 `protobuf:"bytes,200,opt,name=user,proto3" json:"user,omitempty" gorm:"foreignkey:UserID"`
-	UserID                  string                `protobuf:"bytes,201,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty" sql:"not null" gorm:"index"`
-	TournamentTeam          *TournamentTeam       `protobuf:"bytes,202,opt,name=tournament_team,json=tournamentTeam,proto3" json:"tournament_team,omitempty" gorm:"foreignkey:TournamentTeamID"`
-	TournamentTeamID        string                `protobuf:"bytes,203,opt,name=tournament_team_id,json=tournamentTeamId,proto3" json:"tournament_team_id,omitempty" sql:"not null" gorm:"index"`
-	Coupons                 []*Coupon             `protobuf:"bytes,204,rep,name=coupons,proto3" json:"coupons,omitempty" gorm:"PRELOAD:false"`
-	Achievements            []*Achievement        `protobuf:"bytes,205,rep,name=achievements,proto3" json:"achievements,omitempty" gorm:"PRELOAD:false"`
-	SentWhoswhoAttempts     []*WhoswhoAttempt     `protobuf:"bytes,206,rep,name=sent_whoswho_attempts,json=sentWhoswhoAttempts,proto3" json:"sent_whoswho_attempts,omitempty" gorm:"PRELOAD:false"`
-	ReceivedWhoswhoAttempts []*WhoswhoAttempt     `protobuf:"bytes,207,rep,name=received_whoswho_attempts,json=receivedWhoswhoAttempts,proto3" json:"received_whoswho_attempts,omitempty" gorm:"PRELOAD:false"`
-	Items                   []*InventoryItem      `protobuf:"bytes,208,rep,name=items,proto3" json:"items,omitempty" gorm:"PRELOAD:false"`
-	LevelValidations        []*LevelValidation    `protobuf:"bytes,209,rep,name=level_validations,json=levelValidations,proto3" json:"level_validations,omitempty" gorm:"PRELOAD:false"`
+	ID                      string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt               *time.Time             `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt               *time.Time             `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	Role                    TournamentMember_Role  `protobuf:"varint,100,opt,name=role,proto3,enum=pathwar.db.TournamentMember_Role" json:"role,omitempty"`
+	User                    *User                  `protobuf:"bytes,200,opt,name=user,proto3" json:"user,omitempty" gorm:"foreignkey:UserID"`
+	UserID                  string                 `protobuf:"bytes,201,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty" sql:"not null" gorm:"index"`
+	TournamentTeam          *TournamentTeam        `protobuf:"bytes,202,opt,name=tournament_team,json=tournamentTeam,proto3" json:"tournament_team,omitempty" gorm:"foreignkey:TournamentTeamID"`
+	TournamentTeamID        string                 `protobuf:"bytes,203,opt,name=tournament_team_id,json=tournamentTeamId,proto3" json:"tournament_team_id,omitempty" sql:"not null" gorm:"index"`
+	Coupons                 []*Coupon              `protobuf:"bytes,204,rep,name=coupons,proto3" json:"coupons,omitempty" gorm:"PRELOAD:false"`
+	Achievements            []*Achievement         `protobuf:"bytes,205,rep,name=achievements,proto3" json:"achievements,omitempty" gorm:"PRELOAD:false"`
+	SentWhoswhoAttempts     []*WhoswhoAttempt      `protobuf:"bytes,206,rep,name=sent_whoswho_attempts,json=sentWhoswhoAttempts,proto3" json:"sent_whoswho_attempts,omitempty" gorm:"PRELOAD:false"`
+	ReceivedWhoswhoAttempts []*WhoswhoAttempt      `protobuf:"bytes,207,rep,name=received_whoswho_attempts,json=receivedWhoswhoAttempts,proto3" json:"received_whoswho_attempts,omitempty" gorm:"PRELOAD:false"`
+	Items                   []*InventoryItem       `protobuf:"bytes,208,rep,name=items,proto3" json:"items,omitempty" gorm:"PRELOAD:false"`
+	ChallengeValidations    []*ChallengeValidation `protobuf:"bytes,209,rep,name=challenge_validations,json=challengeValidations,proto3" json:"challenge_validations,omitempty" gorm:"PRELOAD:false"`
 }
 
 func (m *TournamentMember) Reset()         { *m = TournamentMember{} }
@@ -1225,9 +1225,9 @@ func (m *TournamentMember) GetItems() []*InventoryItem {
 	return nil
 }
 
-func (m *TournamentMember) GetLevelValidations() []*LevelValidation {
+func (m *TournamentMember) GetChallengeValidations() []*ChallengeValidation {
 	if m != nil {
-		return m.LevelValidations
+		return m.ChallengeValidations
 	}
 	return nil
 }
@@ -1738,16 +1738,16 @@ func (m *TournamentList) GetItems() []*Tournament {
 }
 
 type TournamentTeam struct {
-	ID                 string               `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt          *time.Time           `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt          *time.Time           `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	IsDefault          bool                 `protobuf:"varint,100,opt,name=is_default,json=isDefault,proto3" json:"is_default,omitempty"`
-	Tournament         *Tournament          `protobuf:"bytes,200,opt,name=tournament,proto3" json:"tournament,omitempty" gorm:"foreignkey:TournamentID"`
-	TournamentID       string               `protobuf:"bytes,201,opt,name=tournament_id,json=tournamentId,proto3" json:"tournament_id,omitempty" sql:"not null" gorm:"index"`
-	Team               *Team                `protobuf:"bytes,202,opt,name=team,proto3" json:"team,omitempty" gorm:"foreignkey:TeamID"`
-	TeamID             string               `protobuf:"bytes,203,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty" sql:"not null" gorm:"index"`
-	LevelSubscriptions []*LevelSubscription `protobuf:"bytes,205,rep,name=level_subscriptions,json=levelSubscriptions,proto3" json:"level_subscriptions,omitempty" gorm:"PRELOAD:false"`
-	Members            []*TournamentMember  `protobuf:"bytes,206,rep,name=members,proto3" json:"members,omitempty" gorm:"PRELOAD:false"`
+	ID                     string                   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt              *time.Time               `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt              *time.Time               `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	IsDefault              bool                     `protobuf:"varint,100,opt,name=is_default,json=isDefault,proto3" json:"is_default,omitempty"`
+	Tournament             *Tournament              `protobuf:"bytes,200,opt,name=tournament,proto3" json:"tournament,omitempty" gorm:"foreignkey:TournamentID"`
+	TournamentID           string                   `protobuf:"bytes,201,opt,name=tournament_id,json=tournamentId,proto3" json:"tournament_id,omitempty" sql:"not null" gorm:"index"`
+	Team                   *Team                    `protobuf:"bytes,202,opt,name=team,proto3" json:"team,omitempty" gorm:"foreignkey:TeamID"`
+	TeamID                 string                   `protobuf:"bytes,203,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty" sql:"not null" gorm:"index"`
+	ChallengeSubscriptions []*ChallengeSubscription `protobuf:"bytes,205,rep,name=challenge_subscriptions,json=challengeSubscriptions,proto3" json:"challenge_subscriptions,omitempty" gorm:"PRELOAD:false"`
+	Members                []*TournamentMember      `protobuf:"bytes,206,rep,name=members,proto3" json:"members,omitempty" gorm:"PRELOAD:false"`
 }
 
 func (m *TournamentTeam) Reset()         { *m = TournamentTeam{} }
@@ -1839,9 +1839,9 @@ func (m *TournamentTeam) GetTeamID() string {
 	return ""
 }
 
-func (m *TournamentTeam) GetLevelSubscriptions() []*LevelSubscription {
+func (m *TournamentTeam) GetChallengeSubscriptions() []*ChallengeSubscription {
 	if m != nil {
-		return m.LevelSubscriptions
+		return m.ChallengeSubscriptions
 	}
 	return nil
 }
@@ -2019,31 +2019,31 @@ func (m *WhoswhoAttempt) GetTargetTeamID() string {
 	return ""
 }
 
-type LevelValidation struct {
-	ID                  string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt           *time.Time             `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt           *time.Time             `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	Status              LevelValidation_Status `protobuf:"varint,100,opt,name=status,proto3,enum=pathwar.db.LevelValidation_Status" json:"status,omitempty"`
-	AuthorComment       string                 `protobuf:"bytes,101,opt,name=author_comment,json=authorComment,proto3" json:"author_comment,omitempty"`
-	CorrectorComment    string                 `protobuf:"bytes,102,opt,name=corrector_comment,json=correctorComment,proto3" json:"corrector_comment,omitempty"`
-	LevelSubscription   *LevelSubscription     `protobuf:"bytes,200,opt,name=level_subscription,json=levelSubscription,proto3" json:"level_subscription,omitempty" gorm:"foreignkey:LevelSubscriptionID"`
-	LevelSubscriptionID string                 `protobuf:"bytes,201,opt,name=level_subscription_id,json=levelSubscriptionId,proto3" json:"level_subscription_id,omitempty" sql:"not null" gorm:"index"`
-	TournamentMember    *TournamentMember      `protobuf:"bytes,202,opt,name=tournament_member,json=tournamentMember,proto3" json:"tournament_member,omitempty" gorm:"foreignkey:TournamentMemberID"`
-	TournamentMemberID  string                 `protobuf:"bytes,203,opt,name=tournament_member_id,json=tournamentMemberId,proto3" json:"tournament_member_id,omitempty" sql:"not null" gorm:"index"`
+type ChallengeValidation struct {
+	ID                      string                     `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt               *time.Time                 `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt               *time.Time                 `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	Status                  ChallengeValidation_Status `protobuf:"varint,100,opt,name=status,proto3,enum=pathwar.db.ChallengeValidation_Status" json:"status,omitempty"`
+	AuthorComment           string                     `protobuf:"bytes,101,opt,name=author_comment,json=authorComment,proto3" json:"author_comment,omitempty"`
+	CorrectorComment        string                     `protobuf:"bytes,102,opt,name=corrector_comment,json=correctorComment,proto3" json:"corrector_comment,omitempty"`
+	ChallengeSubscription   *ChallengeSubscription     `protobuf:"bytes,200,opt,name=challenge_subscription,json=challengeSubscription,proto3" json:"challenge_subscription,omitempty" gorm:"foreignkey:ChallengeSubscriptionID"`
+	ChallengeSubscriptionID string                     `protobuf:"bytes,201,opt,name=challenge_subscription_id,json=challengeSubscriptionId,proto3" json:"challenge_subscription_id,omitempty" sql:"not null" gorm:"index"`
+	TournamentMember        *TournamentMember          `protobuf:"bytes,202,opt,name=tournament_member,json=tournamentMember,proto3" json:"tournament_member,omitempty" gorm:"foreignkey:TournamentMemberID"`
+	TournamentMemberID      string                     `protobuf:"bytes,203,opt,name=tournament_member_id,json=tournamentMemberId,proto3" json:"tournament_member_id,omitempty" sql:"not null" gorm:"index"`
 }
 
-func (m *LevelValidation) Reset()         { *m = LevelValidation{} }
-func (m *LevelValidation) String() string { return proto.CompactTextString(m) }
-func (*LevelValidation) ProtoMessage()    {}
-func (*LevelValidation) Descriptor() ([]byte, []int) {
+func (m *ChallengeValidation) Reset()         { *m = ChallengeValidation{} }
+func (m *ChallengeValidation) String() string { return proto.CompactTextString(m) }
+func (*ChallengeValidation) ProtoMessage()    {}
+func (*ChallengeValidation) Descriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{17}
 }
-func (m *LevelValidation) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeValidation) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *LevelValidation) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeValidation) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_LevelValidation.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeValidation.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -2053,111 +2053,111 @@ func (m *LevelValidation) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return b[:n], nil
 	}
 }
-func (m *LevelValidation) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LevelValidation.Merge(m, src)
+func (m *ChallengeValidation) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeValidation.Merge(m, src)
 }
-func (m *LevelValidation) XXX_Size() int {
+func (m *ChallengeValidation) XXX_Size() int {
 	return m.Size()
 }
-func (m *LevelValidation) XXX_DiscardUnknown() {
-	xxx_messageInfo_LevelValidation.DiscardUnknown(m)
+func (m *ChallengeValidation) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeValidation.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_LevelValidation proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeValidation proto.InternalMessageInfo
 
-func (m *LevelValidation) GetID() string {
+func (m *ChallengeValidation) GetID() string {
 	if m != nil {
 		return m.ID
 	}
 	return ""
 }
 
-func (m *LevelValidation) GetCreatedAt() *time.Time {
+func (m *ChallengeValidation) GetCreatedAt() *time.Time {
 	if m != nil {
 		return m.CreatedAt
 	}
 	return nil
 }
 
-func (m *LevelValidation) GetUpdatedAt() *time.Time {
+func (m *ChallengeValidation) GetUpdatedAt() *time.Time {
 	if m != nil {
 		return m.UpdatedAt
 	}
 	return nil
 }
 
-func (m *LevelValidation) GetStatus() LevelValidation_Status {
+func (m *ChallengeValidation) GetStatus() ChallengeValidation_Status {
 	if m != nil {
 		return m.Status
 	}
-	return LevelValidation_Unknown
+	return ChallengeValidation_Unknown
 }
 
-func (m *LevelValidation) GetAuthorComment() string {
+func (m *ChallengeValidation) GetAuthorComment() string {
 	if m != nil {
 		return m.AuthorComment
 	}
 	return ""
 }
 
-func (m *LevelValidation) GetCorrectorComment() string {
+func (m *ChallengeValidation) GetCorrectorComment() string {
 	if m != nil {
 		return m.CorrectorComment
 	}
 	return ""
 }
 
-func (m *LevelValidation) GetLevelSubscription() *LevelSubscription {
+func (m *ChallengeValidation) GetChallengeSubscription() *ChallengeSubscription {
 	if m != nil {
-		return m.LevelSubscription
+		return m.ChallengeSubscription
 	}
 	return nil
 }
 
-func (m *LevelValidation) GetLevelSubscriptionID() string {
+func (m *ChallengeValidation) GetChallengeSubscriptionID() string {
 	if m != nil {
-		return m.LevelSubscriptionID
+		return m.ChallengeSubscriptionID
 	}
 	return ""
 }
 
-func (m *LevelValidation) GetTournamentMember() *TournamentMember {
+func (m *ChallengeValidation) GetTournamentMember() *TournamentMember {
 	if m != nil {
 		return m.TournamentMember
 	}
 	return nil
 }
 
-func (m *LevelValidation) GetTournamentMemberID() string {
+func (m *ChallengeValidation) GetTournamentMemberID() string {
 	if m != nil {
 		return m.TournamentMemberID
 	}
 	return ""
 }
 
-type LevelSubscription struct {
-	ID               string             `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt        *time.Time         `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt        *time.Time         `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	TournamentTeam   *TournamentTeam    `protobuf:"bytes,200,opt,name=tournament_team,json=tournamentTeam,proto3" json:"tournament_team,omitempty" gorm:"foreignkey:TournamentTeamID"`
-	TournamentTeamID string             `protobuf:"bytes,201,opt,name=tournament_team_id,json=tournamentTeamId,proto3" json:"tournament_team_id,omitempty" sql:"not null" gorm:"index"`
-	LevelFlavor      *LevelFlavor       `protobuf:"bytes,202,opt,name=level_flavor,json=levelFlavor,proto3" json:"level_flavor,omitempty" gorm:"foreignkey:LevelFlavorID"`
-	LevelFlavorID    string             `protobuf:"bytes,203,opt,name=level_flavor_id,json=levelFlavorId,proto3" json:"level_flavor_id,omitempty" sql:"not null" gorm:"index"`
-	Validations      []*LevelValidation `protobuf:"bytes,204,rep,name=validations,proto3" json:"validations,omitempty" gorm:"PRELOAD:false"`
+type ChallengeSubscription struct {
+	ID                string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt         *time.Time             `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt         *time.Time             `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	TournamentTeam    *TournamentTeam        `protobuf:"bytes,200,opt,name=tournament_team,json=tournamentTeam,proto3" json:"tournament_team,omitempty" gorm:"foreignkey:TournamentTeamID"`
+	TournamentTeamID  string                 `protobuf:"bytes,201,opt,name=tournament_team_id,json=tournamentTeamId,proto3" json:"tournament_team_id,omitempty" sql:"not null" gorm:"index"`
+	ChallengeFlavor   *ChallengeFlavor       `protobuf:"bytes,202,opt,name=challenge_flavor,json=challengeFlavor,proto3" json:"challenge_flavor,omitempty" gorm:"foreignkey:ChallengeFlavorID"`
+	ChallengeFlavorID string                 `protobuf:"bytes,203,opt,name=challenge_flavor_id,json=challengeFlavorId,proto3" json:"challenge_flavor_id,omitempty" sql:"not null" gorm:"index"`
+	Validations       []*ChallengeValidation `protobuf:"bytes,204,rep,name=validations,proto3" json:"validations,omitempty" gorm:"PRELOAD:false"`
 }
 
-func (m *LevelSubscription) Reset()         { *m = LevelSubscription{} }
-func (m *LevelSubscription) String() string { return proto.CompactTextString(m) }
-func (*LevelSubscription) ProtoMessage()    {}
-func (*LevelSubscription) Descriptor() ([]byte, []int) {
+func (m *ChallengeSubscription) Reset()         { *m = ChallengeSubscription{} }
+func (m *ChallengeSubscription) String() string { return proto.CompactTextString(m) }
+func (*ChallengeSubscription) ProtoMessage()    {}
+func (*ChallengeSubscription) Descriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{18}
 }
-func (m *LevelSubscription) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeSubscription) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *LevelSubscription) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeSubscription) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_LevelSubscription.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeSubscription.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -2167,68 +2167,68 @@ func (m *LevelSubscription) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *LevelSubscription) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LevelSubscription.Merge(m, src)
+func (m *ChallengeSubscription) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeSubscription.Merge(m, src)
 }
-func (m *LevelSubscription) XXX_Size() int {
+func (m *ChallengeSubscription) XXX_Size() int {
 	return m.Size()
 }
-func (m *LevelSubscription) XXX_DiscardUnknown() {
-	xxx_messageInfo_LevelSubscription.DiscardUnknown(m)
+func (m *ChallengeSubscription) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeSubscription.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_LevelSubscription proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeSubscription proto.InternalMessageInfo
 
-func (m *LevelSubscription) GetID() string {
+func (m *ChallengeSubscription) GetID() string {
 	if m != nil {
 		return m.ID
 	}
 	return ""
 }
 
-func (m *LevelSubscription) GetCreatedAt() *time.Time {
+func (m *ChallengeSubscription) GetCreatedAt() *time.Time {
 	if m != nil {
 		return m.CreatedAt
 	}
 	return nil
 }
 
-func (m *LevelSubscription) GetUpdatedAt() *time.Time {
+func (m *ChallengeSubscription) GetUpdatedAt() *time.Time {
 	if m != nil {
 		return m.UpdatedAt
 	}
 	return nil
 }
 
-func (m *LevelSubscription) GetTournamentTeam() *TournamentTeam {
+func (m *ChallengeSubscription) GetTournamentTeam() *TournamentTeam {
 	if m != nil {
 		return m.TournamentTeam
 	}
 	return nil
 }
 
-func (m *LevelSubscription) GetTournamentTeamID() string {
+func (m *ChallengeSubscription) GetTournamentTeamID() string {
 	if m != nil {
 		return m.TournamentTeamID
 	}
 	return ""
 }
 
-func (m *LevelSubscription) GetLevelFlavor() *LevelFlavor {
+func (m *ChallengeSubscription) GetChallengeFlavor() *ChallengeFlavor {
 	if m != nil {
-		return m.LevelFlavor
+		return m.ChallengeFlavor
 	}
 	return nil
 }
 
-func (m *LevelSubscription) GetLevelFlavorID() string {
+func (m *ChallengeSubscription) GetChallengeFlavorID() string {
 	if m != nil {
-		return m.LevelFlavorID
+		return m.ChallengeFlavorID
 	}
 	return ""
 }
 
-func (m *LevelSubscription) GetValidations() []*LevelValidation {
+func (m *ChallengeSubscription) GetValidations() []*ChallengeValidation {
 	if m != nil {
 		return m.Validations
 	}
@@ -2648,17 +2648,17 @@ func (m *CouponValidation) GetCouponID() string {
 }
 
 type Achievement struct {
-	ID                string            `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt         *time.Time        `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt         *time.Time        `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	Type              Achievement_Type  `protobuf:"varint,100,opt,name=type,proto3,enum=pathwar.db.Achievement_Type" json:"type,omitempty"`
-	IsGlobal          bool              `protobuf:"varint,101,opt,name=is_global,json=isGlobal,proto3" json:"is_global,omitempty"`
-	Comment           string            `protobuf:"bytes,102,opt,name=comment,proto3" json:"comment,omitempty"`
-	Argument          string            `protobuf:"bytes,103,opt,name=argument,proto3" json:"argument,omitempty"`
-	Author            *TournamentMember `protobuf:"bytes,200,opt,name=author,proto3" json:"author,omitempty" gorm:"foreignkey:AuthorID"`
-	AuthorID          string            `protobuf:"bytes,201,opt,name=author_id,json=authorId,proto3" json:"author_id,omitempty" sql:"not null" gorm:"index"`
-	LevelValidation   *LevelValidation  `protobuf:"bytes,202,opt,name=level_validation,json=levelValidation,proto3" json:"level_validation,omitempty" gorm:"foreignkey:LevelValidationID"`
-	LevelValidationID string            `protobuf:"bytes,203,opt,name=level_validation_id,json=levelValidationId,proto3" json:"level_validation_id,omitempty" sql:"not null" gorm:"index"`
+	ID                    string               `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt             *time.Time           `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt             *time.Time           `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	Type                  Achievement_Type     `protobuf:"varint,100,opt,name=type,proto3,enum=pathwar.db.Achievement_Type" json:"type,omitempty"`
+	IsGlobal              bool                 `protobuf:"varint,101,opt,name=is_global,json=isGlobal,proto3" json:"is_global,omitempty"`
+	Comment               string               `protobuf:"bytes,102,opt,name=comment,proto3" json:"comment,omitempty"`
+	Argument              string               `protobuf:"bytes,103,opt,name=argument,proto3" json:"argument,omitempty"`
+	Author                *TournamentMember    `protobuf:"bytes,200,opt,name=author,proto3" json:"author,omitempty" gorm:"foreignkey:AuthorID"`
+	AuthorID              string               `protobuf:"bytes,201,opt,name=author_id,json=authorId,proto3" json:"author_id,omitempty" sql:"not null" gorm:"index"`
+	ChallengeValidation   *ChallengeValidation `protobuf:"bytes,202,opt,name=challenge_validation,json=challengeValidation,proto3" json:"challenge_validation,omitempty" gorm:"foreignkey:ChallengeValidationID"`
+	ChallengeValidationID string               `protobuf:"bytes,203,opt,name=challenge_validation_id,json=challengeValidationId,proto3" json:"challenge_validation_id,omitempty" sql:"not null" gorm:"index"`
 }
 
 func (m *Achievement) Reset()         { *m = Achievement{} }
@@ -2757,40 +2757,40 @@ func (m *Achievement) GetAuthorID() string {
 	return ""
 }
 
-func (m *Achievement) GetLevelValidation() *LevelValidation {
+func (m *Achievement) GetChallengeValidation() *ChallengeValidation {
 	if m != nil {
-		return m.LevelValidation
+		return m.ChallengeValidation
 	}
 	return nil
 }
 
-func (m *Achievement) GetLevelValidationID() string {
+func (m *Achievement) GetChallengeValidationID() string {
 	if m != nil {
-		return m.LevelValidationID
+		return m.ChallengeValidationID
 	}
 	return ""
 }
 
 type Dump struct {
-	Achievements       []*Achievement       `protobuf:"bytes,1,rep,name=achievements,proto3" json:"achievements,omitempty"`
-	Coupons            []*Coupon            `protobuf:"bytes,3,rep,name=coupons,proto3" json:"coupons,omitempty"`
-	CouponValidations  []*CouponValidation  `protobuf:"bytes,4,rep,name=coupon_validations,json=couponValidations,proto3" json:"coupon_validations,omitempty"`
-	Hypervisors        []*Hypervisor        `protobuf:"bytes,5,rep,name=hypervisors,proto3" json:"hypervisors,omitempty"`
-	InventoryItems     []*InventoryItem     `protobuf:"bytes,6,rep,name=inventory_items,json=inventoryItems,proto3" json:"inventory_items,omitempty"`
-	Levels             []*Level             `protobuf:"bytes,7,rep,name=levels,proto3" json:"levels,omitempty"`
-	LevelFlavors       []*LevelFlavor       `protobuf:"bytes,8,rep,name=level_flavors,json=levelFlavors,proto3" json:"level_flavors,omitempty"`
-	LevelInstances     []*LevelInstance     `protobuf:"bytes,9,rep,name=level_instances,json=levelInstances,proto3" json:"level_instances,omitempty"`
-	LevelSubscriptions []*LevelSubscription `protobuf:"bytes,10,rep,name=level_subscriptions,json=levelSubscriptions,proto3" json:"level_subscriptions,omitempty"`
-	LevelValidations   []*LevelValidation   `protobuf:"bytes,11,rep,name=level_validations,json=levelValidations,proto3" json:"level_validations,omitempty"`
-	LevelVersions      []*LevelVersion      `protobuf:"bytes,12,rep,name=level_versions,json=levelVersions,proto3" json:"level_versions,omitempty"`
-	Notifications      []*Notification      `protobuf:"bytes,13,rep,name=notifications,proto3" json:"notifications,omitempty"`
-	Teams              []*Team              `protobuf:"bytes,14,rep,name=teams,proto3" json:"teams,omitempty"`
-	TeamMembers        []*TeamMember        `protobuf:"bytes,15,rep,name=team_members,json=teamMembers,proto3" json:"team_members,omitempty"`
-	Tournaments        []*Tournament        `protobuf:"bytes,16,rep,name=tournaments,proto3" json:"tournaments,omitempty"`
-	TournamentMembers  []*TournamentMember  `protobuf:"bytes,17,rep,name=tournament_members,json=tournamentMembers,proto3" json:"tournament_members,omitempty"`
-	TournamentTeams    []*TournamentTeam    `protobuf:"bytes,18,rep,name=tournament_teams,json=tournamentTeams,proto3" json:"tournament_teams,omitempty"`
-	Users              []*User              `protobuf:"bytes,19,rep,name=users,proto3" json:"users,omitempty"`
-	WhoswhoAttempts    []*WhoswhoAttempt    `protobuf:"bytes,20,rep,name=whoswho_attempts,json=whoswhoAttempts,proto3" json:"whoswho_attempts,omitempty"`
+	Achievements           []*Achievement           `protobuf:"bytes,1,rep,name=achievements,proto3" json:"achievements,omitempty"`
+	Coupons                []*Coupon                `protobuf:"bytes,3,rep,name=coupons,proto3" json:"coupons,omitempty"`
+	CouponValidations      []*CouponValidation      `protobuf:"bytes,4,rep,name=coupon_validations,json=couponValidations,proto3" json:"coupon_validations,omitempty"`
+	Hypervisors            []*Hypervisor            `protobuf:"bytes,5,rep,name=hypervisors,proto3" json:"hypervisors,omitempty"`
+	InventoryItems         []*InventoryItem         `protobuf:"bytes,6,rep,name=inventory_items,json=inventoryItems,proto3" json:"inventory_items,omitempty"`
+	Challenges             []*Challenge             `protobuf:"bytes,7,rep,name=challenges,proto3" json:"challenges,omitempty"`
+	ChallengeFlavors       []*ChallengeFlavor       `protobuf:"bytes,8,rep,name=challenge_flavors,json=challengeFlavors,proto3" json:"challenge_flavors,omitempty"`
+	ChallengeInstances     []*ChallengeInstance     `protobuf:"bytes,9,rep,name=challenge_instances,json=challengeInstances,proto3" json:"challenge_instances,omitempty"`
+	ChallengeSubscriptions []*ChallengeSubscription `protobuf:"bytes,10,rep,name=challenge_subscriptions,json=challengeSubscriptions,proto3" json:"challenge_subscriptions,omitempty"`
+	ChallengeValidations   []*ChallengeValidation   `protobuf:"bytes,11,rep,name=challenge_validations,json=challengeValidations,proto3" json:"challenge_validations,omitempty"`
+	ChallengeVersions      []*ChallengeVersion      `protobuf:"bytes,12,rep,name=challenge_versions,json=challengeVersions,proto3" json:"challenge_versions,omitempty"`
+	Notifications          []*Notification          `protobuf:"bytes,13,rep,name=notifications,proto3" json:"notifications,omitempty"`
+	Teams                  []*Team                  `protobuf:"bytes,14,rep,name=teams,proto3" json:"teams,omitempty"`
+	TeamMembers            []*TeamMember            `protobuf:"bytes,15,rep,name=team_members,json=teamMembers,proto3" json:"team_members,omitempty"`
+	Tournaments            []*Tournament            `protobuf:"bytes,16,rep,name=tournaments,proto3" json:"tournaments,omitempty"`
+	TournamentMembers      []*TournamentMember      `protobuf:"bytes,17,rep,name=tournament_members,json=tournamentMembers,proto3" json:"tournament_members,omitempty"`
+	TournamentTeams        []*TournamentTeam        `protobuf:"bytes,18,rep,name=tournament_teams,json=tournamentTeams,proto3" json:"tournament_teams,omitempty"`
+	Users                  []*User                  `protobuf:"bytes,19,rep,name=users,proto3" json:"users,omitempty"`
+	WhoswhoAttempts        []*WhoswhoAttempt        `protobuf:"bytes,20,rep,name=whoswho_attempts,json=whoswhoAttempts,proto3" json:"whoswho_attempts,omitempty"`
 }
 
 func (m *Dump) Reset()         { *m = Dump{} }
@@ -2861,44 +2861,44 @@ func (m *Dump) GetInventoryItems() []*InventoryItem {
 	return nil
 }
 
-func (m *Dump) GetLevels() []*Level {
+func (m *Dump) GetChallenges() []*Challenge {
 	if m != nil {
-		return m.Levels
+		return m.Challenges
 	}
 	return nil
 }
 
-func (m *Dump) GetLevelFlavors() []*LevelFlavor {
+func (m *Dump) GetChallengeFlavors() []*ChallengeFlavor {
 	if m != nil {
-		return m.LevelFlavors
+		return m.ChallengeFlavors
 	}
 	return nil
 }
 
-func (m *Dump) GetLevelInstances() []*LevelInstance {
+func (m *Dump) GetChallengeInstances() []*ChallengeInstance {
 	if m != nil {
-		return m.LevelInstances
+		return m.ChallengeInstances
 	}
 	return nil
 }
 
-func (m *Dump) GetLevelSubscriptions() []*LevelSubscription {
+func (m *Dump) GetChallengeSubscriptions() []*ChallengeSubscription {
 	if m != nil {
-		return m.LevelSubscriptions
+		return m.ChallengeSubscriptions
 	}
 	return nil
 }
 
-func (m *Dump) GetLevelValidations() []*LevelValidation {
+func (m *Dump) GetChallengeValidations() []*ChallengeValidation {
 	if m != nil {
-		return m.LevelValidations
+		return m.ChallengeValidations
 	}
 	return nil
 }
 
-func (m *Dump) GetLevelVersions() []*LevelVersion {
+func (m *Dump) GetChallengeVersions() []*ChallengeVersion {
 	if m != nil {
-		return m.LevelVersions
+		return m.ChallengeVersions
 	}
 	return nil
 }
@@ -3004,21 +3004,21 @@ func (m *Info) GetTableRows() map[string]uint32 {
 }
 
 func init() {
-	proto.RegisterEnum("pathwar.db.LevelVersion_Driver", LevelVersion_Driver_name, LevelVersion_Driver_value)
-	proto.RegisterEnum("pathwar.db.LevelInstance_Status", LevelInstance_Status_name, LevelInstance_Status_value)
+	proto.RegisterEnum("pathwar.db.ChallengeVersion_Driver", ChallengeVersion_Driver_name, ChallengeVersion_Driver_value)
+	proto.RegisterEnum("pathwar.db.ChallengeInstance_Status", ChallengeInstance_Status_name, ChallengeInstance_Status_value)
 	proto.RegisterEnum("pathwar.db.Hypervisor_Status", Hypervisor_Status_name, Hypervisor_Status_value)
 	proto.RegisterEnum("pathwar.db.TeamMember_Role", TeamMember_Role_name, TeamMember_Role_value)
 	proto.RegisterEnum("pathwar.db.TournamentMember_Role", TournamentMember_Role_name, TournamentMember_Role_value)
 	proto.RegisterEnum("pathwar.db.Tournament_Status", Tournament_Status_name, Tournament_Status_value)
 	proto.RegisterEnum("pathwar.db.Tournament_Visibility", Tournament_Visibility_name, Tournament_Visibility_value)
-	proto.RegisterEnum("pathwar.db.LevelValidation_Status", LevelValidation_Status_name, LevelValidation_Status_value)
+	proto.RegisterEnum("pathwar.db.ChallengeValidation_Status", ChallengeValidation_Status_name, ChallengeValidation_Status_value)
 	proto.RegisterEnum("pathwar.db.InventoryItem_Item", InventoryItem_Item_name, InventoryItem_Item_value)
 	proto.RegisterEnum("pathwar.db.Achievement_Type", Achievement_Type_name, Achievement_Type_value)
-	proto.RegisterType((*Level)(nil), "pathwar.db.Level")
-	proto.RegisterType((*LevelList)(nil), "pathwar.db.LevelList")
-	proto.RegisterType((*LevelVersion)(nil), "pathwar.db.LevelVersion")
-	proto.RegisterType((*LevelFlavor)(nil), "pathwar.db.LevelFlavor")
-	proto.RegisterType((*LevelInstance)(nil), "pathwar.db.LevelInstance")
+	proto.RegisterType((*Challenge)(nil), "pathwar.db.Challenge")
+	proto.RegisterType((*ChallengeList)(nil), "pathwar.db.ChallengeList")
+	proto.RegisterType((*ChallengeVersion)(nil), "pathwar.db.ChallengeVersion")
+	proto.RegisterType((*ChallengeFlavor)(nil), "pathwar.db.ChallengeFlavor")
+	proto.RegisterType((*ChallengeInstance)(nil), "pathwar.db.ChallengeInstance")
 	proto.RegisterType((*Hypervisor)(nil), "pathwar.db.Hypervisor")
 	proto.RegisterType((*TeamMember)(nil), "pathwar.db.TeamMember")
 	proto.RegisterType((*TournamentMember)(nil), "pathwar.db.TournamentMember")
@@ -3031,8 +3031,8 @@ func init() {
 	proto.RegisterType((*TournamentTeam)(nil), "pathwar.db.TournamentTeam")
 	proto.RegisterType((*TournamentTeamList)(nil), "pathwar.db.TournamentTeamList")
 	proto.RegisterType((*WhoswhoAttempt)(nil), "pathwar.db.WhoswhoAttempt")
-	proto.RegisterType((*LevelValidation)(nil), "pathwar.db.LevelValidation")
-	proto.RegisterType((*LevelSubscription)(nil), "pathwar.db.LevelSubscription")
+	proto.RegisterType((*ChallengeValidation)(nil), "pathwar.db.ChallengeValidation")
+	proto.RegisterType((*ChallengeSubscription)(nil), "pathwar.db.ChallengeSubscription")
 	proto.RegisterType((*InventoryItem)(nil), "pathwar.db.InventoryItem")
 	proto.RegisterType((*Notification)(nil), "pathwar.db.Notification")
 	proto.RegisterType((*Coupon)(nil), "pathwar.db.Coupon")
@@ -3046,232 +3046,233 @@ func init() {
 func init() { proto.RegisterFile("pwdb.proto", fileDescriptor_debbe06253822cef) }
 
 var fileDescriptor_debbe06253822cef = []byte{
-	// 3544 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x3b, 0x4d, 0x77, 0x1b, 0x47,
-	0x72, 0x02, 0x09, 0x80, 0x40, 0x81, 0x00, 0x07, 0x4d, 0x7d, 0x8c, 0x28, 0x99, 0xc3, 0x9d, 0xdd,
-	0xf5, 0x4a, 0xb1, 0x44, 0x52, 0xb4, 0xb5, 0x71, 0x64, 0x3f, 0xe7, 0x91, 0xa2, 0x65, 0x63, 0xad,
-	0x5d, 0x2b, 0x43, 0xd1, 0x1b, 0xaf, 0xed, 0xc7, 0x1d, 0x62, 0x1a, 0xc0, 0x84, 0x83, 0x19, 0x78,
-	0x7a, 0x40, 0x1a, 0x2f, 0xb7, 0x24, 0xa7, 0x9c, 0x9c, 0x43, 0xae, 0x39, 0xe5, 0x98, 0x53, 0x3e,
-	0x5e, 0x5e, 0x5e, 0x2e, 0x39, 0x4a, 0x5e, 0xaf, 0xe3, 0x5c, 0xf2, 0xf6, 0x34, 0xc9, 0x83, 0xee,
-	0x39, 0xe0, 0x17, 0xe4, 0x75, 0xf7, 0x7c, 0xf4, 0xcc, 0xe0, 0x83, 0x8a, 0xec, 0x3c, 0xc3, 0x17,
-	0x72, 0xba, 0xba, 0xaa, 0xba, 0xba, 0xbb, 0xba, 0xba, 0xaa, 0xba, 0x00, 0xd0, 0x3b, 0x33, 0x8e,
-	0x37, 0x7b, 0xae, 0xe3, 0x39, 0x08, 0x7a, 0xba, 0xd7, 0x39, 0xd3, 0xdd, 0x4d, 0xe3, 0x78, 0xed,
-	0x8d, 0xb6, 0xe9, 0x75, 0xfa, 0xc7, 0x9b, 0x4d, 0xa7, 0xbb, 0xd5, 0x76, 0x2c, 0xdd, 0x6e, 0x6f,
-	0x31, 0xa4, 0xe3, 0x7e, 0x6b, 0xab, 0xe7, 0x0d, 0x7a, 0x98, 0x6c, 0x79, 0x66, 0x17, 0x13, 0x4f,
-	0xef, 0xf6, 0xe2, 0x2f, 0xce, 0x68, 0xed, 0x7a, 0xdb, 0x71, 0xda, 0x16, 0xde, 0xd2, 0x7b, 0xe6,
-	0x96, 0x6e, 0xdb, 0x8e, 0xa7, 0x7b, 0xa6, 0x63, 0x93, 0xa0, 0xf7, 0x76, 0x82, 0x75, 0xdb, 0x89,
-	0x19, 0xd3, 0x16, 0x6b, 0xb0, 0xaf, 0x00, 0xfd, 0x40, 0x44, 0x77, 0x7b, 0xcd, 0xdb, 0xb8, 0xe9,
-	0x90, 0x01, 0xf1, 0x70, 0xd0, 0x6c, 0xeb, 0x1e, 0x3e, 0xd3, 0x07, 0x9c, 0x4b, 0xf3, 0x76, 0x1b,
-	0xdb, 0xb7, 0xc9, 0x99, 0xde, 0x6e, 0x63, 0x77, 0xcb, 0xe9, 0xb1, 0x71, 0xb3, 0x32, 0xa8, 0x5f,
-	0x2d, 0x42, 0xe1, 0x21, 0x3e, 0xc5, 0x16, 0xba, 0x05, 0x0b, 0xa6, 0x21, 0xe7, 0x36, 0x72, 0x37,
-	0xca, 0x7b, 0xd7, 0x87, 0xbe, 0xb2, 0xd0, 0xd8, 0x1f, 0xf9, 0x0a, 0x6a, 0x3b, 0x6e, 0xf7, 0x9e,
-	0xda, 0x73, 0xcd, 0xae, 0xee, 0x0e, 0x8e, 0x4e, 0xf0, 0x40, 0xd5, 0x16, 0x4c, 0x03, 0xdd, 0x07,
-	0x68, 0xba, 0x58, 0xf7, 0xb0, 0x71, 0xa4, 0x7b, 0xf2, 0xc2, 0x46, 0xee, 0x46, 0x65, 0x67, 0x6d,
-	0x93, 0x4f, 0x77, 0x33, 0x9c, 0xc7, 0xe6, 0xe3, 0x70, 0x3d, 0xf6, 0x4a, 0x4f, 0x7c, 0x25, 0xf7,
-	0xf9, 0x7f, 0x29, 0x39, 0xad, 0x1c, 0xd0, 0xed, 0x7a, 0x94, 0x49, 0xbf, 0x67, 0x84, 0x4c, 0x16,
-	0x9f, 0x87, 0x49, 0x40, 0xb7, 0xeb, 0x21, 0x04, 0x79, 0x5b, 0xef, 0x62, 0xd9, 0xa0, 0x92, 0x6b,
-	0xec, 0x1b, 0x6d, 0x40, 0xc5, 0xc0, 0xa4, 0xe9, 0x9a, 0x6c, 0xde, 0x32, 0x66, 0x5d, 0x22, 0x08,
-	0x5d, 0x86, 0xa2, 0xde, 0xf7, 0x3a, 0x8e, 0x2b, 0xb7, 0x58, 0x67, 0xd0, 0xa2, 0x70, 0xcb, 0x69,
-	0xea, 0x16, 0x96, 0x4d, 0x0e, 0xe7, 0x2d, 0x74, 0x15, 0x4a, 0x26, 0x39, 0x32, 0x5c, 0xbd, 0xe5,
-	0xc9, 0x7f, 0xb2, 0x91, 0xbb, 0x51, 0xd2, 0x96, 0x4c, 0xb2, 0x4f, 0x9b, 0x48, 0x81, 0x4a, 0xcf,
-	0xc5, 0xa7, 0x26, 0x3e, 0x3b, 0xea, 0xbb, 0x96, 0x7c, 0xc2, 0xe8, 0x20, 0x00, 0x1d, 0xba, 0x16,
-	0x5a, 0x83, 0x52, 0xc7, 0xe9, 0xe2, 0x9e, 0xde, 0xc6, 0xb2, 0xc5, 0x7a, 0xa3, 0x36, 0x7a, 0x1f,
-	0x4a, 0xa7, 0xd8, 0x25, 0x74, 0x47, 0xe4, 0x27, 0xb9, 0x8d, 0xc5, 0x1b, 0x95, 0x1d, 0x79, 0x33,
-	0x56, 0xbf, 0x4d, 0xb6, 0x37, 0x1f, 0x70, 0x8c, 0x3d, 0x79, 0xe4, 0x2b, 0x17, 0xf9, 0x86, 0x3c,
-	0xd2, 0xde, 0x7e, 0xf8, 0xfe, 0xee, 0xfe, 0xbd, 0x96, 0x6e, 0x11, 0xac, 0x6a, 0x11, 0x13, 0xf5,
-	0x35, 0x28, 0x33, 0x9a, 0x87, 0x26, 0xf1, 0xd0, 0x4f, 0xa0, 0x60, 0x7a, 0xb8, 0x4b, 0x64, 0xce,
-	0xb9, 0x9e, 0xe1, 0xac, 0xf1, 0x7e, 0xf5, 0xef, 0x0b, 0xb0, 0x2c, 0x0e, 0x35, 0xb7, 0xda, 0x20,
-	0xc3, 0x52, 0xb0, 0x14, 0x81, 0x42, 0x84, 0x4d, 0x74, 0x1d, 0xca, 0xcd, 0x8e, 0x6e, 0xb7, 0xb1,
-	0xe5, 0xb4, 0x03, 0x8d, 0x88, 0x01, 0x89, 0xfd, 0x6d, 0x25, 0xf7, 0xf7, 0x1a, 0x94, 0x4d, 0x72,
-	0x64, 0xe9, 0x1e, 0x26, 0x9e, 0xdc, 0x66, 0x7d, 0x25, 0x93, 0x3c, 0x64, 0x6d, 0x74, 0x0b, 0x80,
-	0x38, 0x7d, 0xb7, 0x89, 0xd9, 0xde, 0x77, 0xd8, 0x7a, 0x55, 0x87, 0xbe, 0x52, 0x3e, 0x60, 0xd0,
-	0x43, 0xed, 0xa1, 0x56, 0xe6, 0x08, 0x54, 0x13, 0x7e, 0x1f, 0x8a, 0x86, 0x6b, 0x9e, 0x62, 0x97,
-	0x69, 0x57, 0x6d, 0x47, 0x99, 0xb4, 0xd5, 0x9b, 0xfb, 0x0c, 0x4d, 0x0b, 0xd0, 0xd1, 0x3b, 0x50,
-	0xb0, 0x68, 0x37, 0xd5, 0x91, 0xdc, 0xd8, 0x9d, 0xdc, 0x7b, 0x69, 0xe4, 0x2b, 0x57, 0xf9, 0xfe,
-	0xb4, 0x1c, 0x17, 0x9b, 0x6d, 0xfb, 0x04, 0x0f, 0xee, 0xb1, 0xbe, 0xc6, 0xbe, 0xaa, 0x71, 0x7a,
-	0xf4, 0x00, 0x4a, 0xec, 0xe3, 0xc8, 0x34, 0xe4, 0xa7, 0x7c, 0x7b, 0x7f, 0x6f, 0xe8, 0x2b, 0x4b,
-	0x01, 0xde, 0xc8, 0x57, 0xae, 0x91, 0x4f, 0xad, 0x7b, 0xaa, 0xed, 0x78, 0x1b, 0x76, 0xdf, 0xb2,
-	0xd4, 0x0d, 0xce, 0xd2, 0xb4, 0x0d, 0xfc, 0x99, 0xaa, 0x2d, 0x31, 0xe2, 0x86, 0x81, 0x1e, 0xc2,
-	0x52, 0xcb, 0xd2, 0x4f, 0x1d, 0x97, 0xc8, 0x5f, 0x70, 0xe5, 0xba, 0x92, 0x11, 0xe9, 0x01, 0x43,
-	0x98, 0xa2, 0xb5, 0x21, 0x0b, 0xf5, 0x35, 0x28, 0xf2, 0x09, 0xa3, 0x0a, 0x2c, 0x1d, 0xda, 0x27,
-	0xb6, 0x73, 0x66, 0x4b, 0x17, 0x10, 0x40, 0x71, 0xdf, 0x69, 0x9e, 0x60, 0x57, 0xca, 0xa1, 0x3a,
-	0x54, 0xf9, 0xf7, 0x7d, 0xa7, 0xdb, 0x73, 0x08, 0x96, 0x16, 0xd4, 0xff, 0x5c, 0x84, 0x8a, 0x30,
-	0xd0, 0xdc, 0xea, 0xec, 0x27, 0x50, 0xe5, 0x7b, 0x12, 0x6a, 0xee, 0xe4, 0x4d, 0xfe, 0xd1, 0xc8,
-	0x57, 0x36, 0xc6, 0x6f, 0x72, 0xa0, 0x39, 0x74, 0xaf, 0x97, 0x2d, 0xf1, 0x28, 0x7f, 0x0c, 0x52,
-	0x82, 0xbd, 0xb0, 0xf5, 0x77, 0x86, 0xbe, 0x52, 0x4b, 0x52, 0xcf, 0xd2, 0x80, 0x9a, 0xc8, 0xbb,
-	0x61, 0x20, 0x0d, 0xca, 0xa6, 0x4d, 0x3c, 0xdd, 0x6e, 0xe2, 0x48, 0x15, 0xae, 0x66, 0x04, 0x6f,
-	0x04, 0x28, 0x53, 0x94, 0x21, 0x66, 0xa3, 0xfe, 0x79, 0x01, 0xaa, 0x09, 0xb2, 0xb9, 0xdd, 0xda,
-	0xd7, 0xa1, 0x48, 0x3c, 0xdd, 0xeb, 0x13, 0x66, 0x8d, 0x6a, 0x3b, 0x1b, 0x13, 0x57, 0x66, 0xf3,
-	0x80, 0xe1, 0x69, 0x01, 0x3e, 0xfa, 0x08, 0xa0, 0x33, 0xe8, 0x61, 0xf7, 0xd4, 0x24, 0x8e, 0x1b,
-	0x6a, 0xc4, 0x65, 0x91, 0xfc, 0xdd, 0xa8, 0x7b, 0x4f, 0x1d, 0xf9, 0xca, 0x7a, 0x46, 0x2d, 0x62,
-	0x04, 0xaa, 0x14, 0x02, 0x3b, 0x74, 0x08, 0xd5, 0xb8, 0x25, 0xe8, 0xc3, 0xd6, 0xd0, 0x57, 0x96,
-	0x45, 0xb2, 0x59, 0xda, 0xb0, 0x1c, 0xb3, 0x69, 0x18, 0xe8, 0x11, 0x14, 0xf9, 0x89, 0xa6, 0x8a,
-	0x90, 0x9b, 0x66, 0x13, 0xd6, 0x47, 0xbe, 0xb2, 0x96, 0x11, 0x98, 0x77, 0x52, 0x61, 0x03, 0x3e,
-	0xa8, 0x01, 0x65, 0xfe, 0x45, 0x85, 0xfc, 0x0d, 0x17, 0xf2, 0x95, 0xa1, 0xaf, 0x94, 0x42, 0xd4,
-	0x59, 0x02, 0x96, 0x38, 0x79, 0xc3, 0x50, 0xb7, 0xa0, 0xc8, 0x97, 0x38, 0x63, 0x63, 0x76, 0x9b,
-	0x9e, 0x79, 0x8a, 0xa5, 0x1c, 0x5a, 0x86, 0x52, 0xc3, 0xd6, 0x79, 0x6b, 0x41, 0xfd, 0x97, 0x45,
-	0x80, 0x78, 0x2d, 0xbe, 0x57, 0xfe, 0x91, 0x0c, 0x4b, 0xba, 0x61, 0xb8, 0x98, 0x90, 0xe0, 0x26,
-	0x0c, 0x9b, 0xe8, 0x6e, 0xa4, 0xb0, 0x2d, 0xa6, 0xb0, 0x2f, 0x8d, 0xd7, 0xb8, 0xb4, 0xb6, 0x7e,
-	0x02, 0x2b, 0xc1, 0xb5, 0x12, 0xd9, 0x82, 0x27, 0x2f, 0x60, 0x0b, 0xb8, 0x91, 0x69, 0x44, 0x06,
-	0xe1, 0xb9, 0xf7, 0xee, 0x9f, 0xf3, 0x00, 0x8f, 0xb1, 0xde, 0xfd, 0x39, 0xee, 0x1e, 0xe3, 0xf9,
-	0xdd, 0xbb, 0x2d, 0xc8, 0xbb, 0x8e, 0x85, 0x03, 0xe3, 0x71, 0x4d, 0x5c, 0xca, 0x78, 0x76, 0x9b,
-	0x9a, 0x63, 0x61, 0x8d, 0x21, 0xa2, 0xfb, 0x90, 0xef, 0x13, 0x1c, 0xd9, 0x0b, 0x49, 0xa4, 0x38,
-	0x24, 0xd8, 0xdd, 0xbb, 0x3e, 0xf2, 0x15, 0x39, 0x73, 0xf0, 0x68, 0x17, 0x3d, 0x76, 0x8c, 0x18,
-	0xdd, 0x87, 0x25, 0xfa, 0x5f, 0xb0, 0x0b, 0x37, 0x87, 0xbe, 0x52, 0xe4, 0x48, 0xb3, 0x0e, 0x5c,
-	0x91, 0x92, 0x36, 0xe8, 0x22, 0xe6, 0x3d, 0xac, 0x77, 0x43, 0x4b, 0x20, 0xa5, 0x65, 0x9f, 0x20,
-	0x09, 0xed, 0x62, 0x92, 0x50, 0x62, 0x2a, 0x09, 0xfd, 0x2f, 0x1c, 0x7e, 0x26, 0x09, 0x47, 0x9a,
-	0x29, 0x09, 0x25, 0x6d, 0x18, 0xea, 0x2d, 0xc8, 0xd3, 0x15, 0x42, 0x55, 0x28, 0x1f, 0xda, 0x06,
-	0x6e, 0x99, 0x36, 0x36, 0xa4, 0x0b, 0xa8, 0x0c, 0x85, 0xf7, 0xcf, 0x6c, 0xe6, 0x5b, 0x00, 0x14,
-	0xf9, 0x52, 0x4a, 0x0b, 0xea, 0xbf, 0x96, 0x41, 0x7a, 0xec, 0xf4, 0x5d, 0x7a, 0x4e, 0x6c, 0x6f,
-	0xce, 0xf5, 0xe7, 0x6e, 0x42, 0x7f, 0x7e, 0x90, 0xd8, 0x83, 0xd4, 0x1c, 0xbf, 0x9b, 0x5a, 0x64,
-	0xc1, 0x8a, 0x17, 0x09, 0x7a, 0x24, 0x2a, 0xd4, 0xda, 0xf8, 0xc9, 0x30, 0xd5, 0x7a, 0x79, 0xe4,
-	0x2b, 0x6a, 0x56, 0xb5, 0x12, 0x48, 0x54, 0xd0, 0x9a, 0x97, 0x00, 0xa1, 0x63, 0x40, 0xa9, 0xd1,
-	0x04, 0xcd, 0x7b, 0x75, 0xe8, 0x2b, 0x52, 0x9a, 0xc7, 0xac, 0x79, 0x48, 0xc9, 0x11, 0x1a, 0x06,
-	0x7a, 0x07, 0x96, 0x9a, 0x4e, 0xbf, 0x47, 0xe3, 0xbd, 0x2f, 0xb9, 0x85, 0x44, 0xe2, 0x4c, 0xee,
-	0xb3, 0xbe, 0x69, 0x3e, 0x73, 0x40, 0x8d, 0x3e, 0x80, 0x65, 0xbd, 0xd9, 0x31, 0xf1, 0x29, 0xa6,
-	0xdc, 0x89, 0xfc, 0xdb, 0x31, 0x6e, 0xf8, 0x6e, 0x8c, 0x30, 0x85, 0x65, 0x82, 0x0f, 0x32, 0xe1,
-	0x12, 0xa1, 0xd3, 0x3f, 0xeb, 0x38, 0xe4, 0xac, 0xe3, 0x1c, 0xe9, 0x9e, 0x87, 0xbb, 0x3d, 0x8f,
-	0xc8, 0x5f, 0xf1, 0x01, 0x12, 0x0b, 0xff, 0x4b, 0x8e, 0xb4, 0xcb, 0x71, 0xa6, 0x8c, 0xb1, 0x4a,
-	0x79, 0x26, 0xb1, 0x09, 0xfa, 0x14, 0xae, 0xba, 0xb8, 0x89, 0xcd, 0x53, 0x6c, 0x64, 0x87, 0xfb,
-	0xf7, 0x17, 0x19, 0xee, 0x4a, 0xc8, 0x37, 0x3d, 0xe4, 0xcf, 0xc2, 0x88, 0xf8, 0xeb, 0x31, 0xd7,
-	0x53, 0xc3, 0x3e, 0xc5, 0xb6, 0xe7, 0xb8, 0x83, 0x86, 0x87, 0xbb, 0x53, 0xb8, 0x73, 0x16, 0xa8,
-	0x09, 0xf5, 0xc0, 0xb1, 0xd6, 0x2d, 0xd3, 0xe0, 0x69, 0x15, 0xf9, 0x3f, 0x38, 0xdf, 0x6b, 0xd9,
-	0xc8, 0x2e, 0x42, 0x9a, 0xc2, 0x99, 0x7b, 0xea, 0x31, 0x2a, 0x79, 0x4e, 0xeb, 0xf5, 0x57, 0x65,
-	0xc8, 0xd3, 0x13, 0x36, 0xb7, 0x16, 0x6b, 0x0d, 0x4a, 0xf4, 0xe8, 0x0b, 0x1e, 0x4b, 0xd4, 0x46,
-	0x17, 0xa1, 0x80, 0xbb, 0xba, 0x69, 0x05, 0x3e, 0x0b, 0x6f, 0xa0, 0x1d, 0x58, 0x6e, 0xbb, 0xfa,
-	0xa9, 0xee, 0xe9, 0x2e, 0x8b, 0xc1, 0x59, 0x3e, 0x67, 0x6f, 0x65, 0xe8, 0x2b, 0x95, 0x77, 0x02,
-	0x38, 0x8d, 0xc2, 0x2b, 0x21, 0x12, 0x8d, 0xc3, 0xb7, 0xa0, 0x72, 0x86, 0x8f, 0x89, 0xe9, 0xf1,
-	0xb0, 0xbd, 0xcd, 0x48, 0x6a, 0x43, 0x5f, 0x81, 0x5f, 0x72, 0x30, 0xa5, 0x80, 0x00, 0x85, 0x12,
-	0xc4, 0x69, 0xa1, 0x4e, 0x22, 0x2d, 0x64, 0xc3, 0x65, 0xc1, 0x62, 0x74, 0xd9, 0x36, 0x90, 0x8e,
-	0xd9, 0x8b, 0xdc, 0x9f, 0xeb, 0xd3, 0x6c, 0xee, 0x14, 0x45, 0xb8, 0xe4, 0xa5, 0x70, 0x19, 0x57,
-	0xf4, 0x21, 0x54, 0x6d, 0xc7, 0x33, 0x5b, 0x66, 0x33, 0x50, 0xb7, 0xa7, 0x63, 0x72, 0x46, 0xbf,
-	0x10, 0x30, 0xa6, 0x0c, 0x91, 0xe4, 0x84, 0x0e, 0xa0, 0x22, 0xca, 0x1f, 0x84, 0x72, 0x97, 0xc7,
-	0xfb, 0x1c, 0x53, 0xd8, 0x8a, 0x5c, 0xd0, 0x5f, 0xe7, 0x40, 0xe6, 0x4e, 0xd9, 0x51, 0x66, 0x9d,
-	0xb8, 0x61, 0x9d, 0xb5, 0x44, 0x6f, 0x8e, 0x7c, 0xe5, 0xf5, 0x8c, 0x2d, 0xe7, 0x6e, 0x5f, 0x1a,
-	0xb9, 0xb1, 0xff, 0x46, 0x4a, 0x98, 0xcb, 0xfa, 0x58, 0x44, 0xf4, 0xa7, 0x70, 0x6d, 0x92, 0x58,
-	0xd4, 0xe4, 0x7f, 0xc9, 0x0f, 0xce, 0x1b, 0x43, 0x5f, 0x91, 0x27, 0x0d, 0x35, 0xcb, 0xf4, 0xcb,
-	0xe3, 0x87, 0x6e, 0x18, 0xe8, 0xcf, 0x72, 0x50, 0xcf, 0x8c, 0x4e, 0xed, 0xf7, 0xec, 0xd5, 0xf8,
-	0xe9, 0xc8, 0x57, 0x76, 0x66, 0xae, 0x46, 0x76, 0x1d, 0xa4, 0xb4, 0x30, 0xa8, 0x03, 0x17, 0xb3,
-	0x2b, 0x60, 0x1a, 0xd4, 0xca, 0xd3, 0xa9, 0xdf, 0x1d, 0xfa, 0x0a, 0xca, 0xf2, 0x9d, 0x35, 0x69,
-	0x94, 0x1e, 0xa7, 0x61, 0xa8, 0x3b, 0x50, 0xa2, 0x26, 0x89, 0x25, 0x24, 0x5f, 0x4e, 0x26, 0x24,
-	0x33, 0x9e, 0x45, 0x98, 0x8f, 0xfc, 0xb7, 0x3c, 0xe4, 0xd9, 0x95, 0xfc, 0x7d, 0x8a, 0xba, 0xd2,
-	0x96, 0x0a, 0x9f, 0xc3, 0x52, 0xc5, 0x86, 0xa7, 0x95, 0x30, 0x3c, 0xbf, 0x06, 0x29, 0xe5, 0xaa,
-	0x44, 0x26, 0x67, 0x9a, 0x67, 0x34, 0xf9, 0xd8, 0xae, 0x24, 0x3d, 0x95, 0x19, 0x97, 0xf3, 0xd3,
-	0x6f, 0xe5, 0x72, 0x7e, 0x0f, 0x96, 0x02, 0xe3, 0xf1, 0x7f, 0x37, 0x3f, 0x21, 0x07, 0xaa, 0x76,
-	0x94, 0x60, 0xa6, 0xda, 0x51, 0xa4, 0x50, 0xed, 0xfe, 0xb2, 0x00, 0x20, 0x9c, 0x91, 0xef, 0x93,
-	0xf2, 0xc5, 0x81, 0x3d, 0xce, 0x06, 0xf6, 0xf1, 0x9c, 0xd3, 0x81, 0xfd, 0x2e, 0xc0, 0xa9, 0x49,
-	0xcc, 0x63, 0xd3, 0x32, 0xbd, 0x41, 0x90, 0x13, 0x98, 0x10, 0x47, 0x6c, 0x7e, 0x10, 0x21, 0x6a,
-	0x02, 0x11, 0x7a, 0x09, 0xc0, 0x24, 0x47, 0x06, 0x6e, 0xe9, 0x7d, 0x2b, 0x4c, 0xa0, 0x97, 0x4d,
-	0xb2, 0xcf, 0x01, 0xe8, 0x3d, 0x28, 0x7c, 0x03, 0xea, 0xcb, 0x79, 0x88, 0xde, 0xf5, 0xd3, 0x17,
-	0xf1, 0xae, 0xd5, 0xbb, 0x51, 0xc6, 0xa1, 0x0e, 0xd5, 0x20, 0xe3, 0xc0, 0x01, 0xd2, 0x05, 0x54,
-	0x81, 0xa5, 0x03, 0x4f, 0x77, 0x3d, 0x6c, 0x48, 0x39, 0xde, 0x70, 0x7a, 0x3d, 0x6c, 0x48, 0x0b,
-	0xea, 0xcf, 0x00, 0xe2, 0x55, 0x40, 0x97, 0xa0, 0x1e, 0x90, 0xc6, 0x40, 0x4e, 0xfe, 0xc8, 0x35,
-	0x4f, 0x75, 0x2f, 0xc8, 0x5b, 0x1c, 0xda, 0x96, 0x49, 0x28, 0xb3, 0x05, 0xea, 0xcb, 0x3d, 0xea,
-	0x1f, 0x5b, 0x66, 0x53, 0x5a, 0x54, 0xdf, 0x82, 0x5a, 0x3c, 0x7d, 0xa6, 0xc6, 0xb7, 0x92, 0x6a,
-	0x7c, 0x79, 0xfc, 0x4a, 0x85, 0xca, 0xfc, 0xac, 0x20, 0x32, 0x98, 0x6b, 0x6b, 0x9a, 0x54, 0x21,
-	0x23, 0xad, 0x42, 0x1f, 0x01, 0x08, 0x17, 0xe9, 0xb8, 0x5c, 0x69, 0xbc, 0x0e, 0x13, 0x72, 0xa5,
-	0xe2, 0x25, 0xa7, 0x6a, 0x02, 0x3b, 0x74, 0x08, 0xd5, 0xe4, 0x0d, 0x29, 0xe6, 0x4a, 0x9f, 0xe7,
-	0x6e, 0x5c, 0xf6, 0x84, 0x5b, 0xf1, 0xbb, 0x93, 0x1f, 0x41, 0x26, 0xac, 0xf2, 0x30, 0x86, 0xf4,
-	0x8f, 0xa3, 0x07, 0xd2, 0x28, 0x9e, 0x7c, 0x29, 0x13, 0xc8, 0x1c, 0x08, 0x68, 0x53, 0x8e, 0x12,
-	0xb2, 0xd2, 0xc8, 0x04, 0xfd, 0x51, 0x6c, 0xe0, 0xbf, 0x7a, 0x31, 0xff, 0x38, 0x32, 0xf3, 0x0f,
-	0x00, 0x25, 0x95, 0x9c, 0x9d, 0x94, 0xed, 0xe4, 0x49, 0x99, 0x62, 0x53, 0xc2, 0xd3, 0xf2, 0x0f,
-	0x45, 0xa8, 0x25, 0xef, 0xa3, 0x79, 0x7e, 0x03, 0x25, 0xfd, 0x66, 0x13, 0x13, 0x12, 0x1c, 0x95,
-	0xb0, 0x89, 0x8c, 0xe8, 0xd5, 0xfb, 0xc9, 0x79, 0xbc, 0xcd, 0xdb, 0x23, 0x5f, 0xb9, 0x39, 0x56,
-	0x85, 0x44, 0xe7, 0x93, 0x31, 0x64, 0x49, 0xfb, 0xe0, 0x0d, 0xbd, 0x01, 0x65, 0xfe, 0x25, 0x9c,
-	0x16, 0x96, 0xb4, 0x0f, 0x51, 0x67, 0x26, 0xed, 0x39, 0x79, 0xc3, 0x40, 0x67, 0x50, 0xf5, 0x74,
-	0xb7, 0x8d, 0xa3, 0x98, 0xe1, 0x8b, 0xf3, 0xc8, 0xfd, 0xea, 0xc8, 0x57, 0xb6, 0x66, 0xc9, 0xfd,
-	0x98, 0xf1, 0x0d, 0xbd, 0x79, 0x7a, 0x3c, 0x05, 0x00, 0xfa, 0x18, 0xa4, 0xc4, 0xc0, 0xc2, 0x11,
-	0x63, 0x8f, 0x66, 0x49, 0xea, 0x99, 0x8f, 0x66, 0x22, 0xef, 0x86, 0x81, 0x1c, 0xa8, 0x04, 0xdc,
-	0x99, 0x0d, 0xf8, 0x72, 0x76, 0x4a, 0xeb, 0xce, 0xc8, 0x57, 0x6e, 0x9f, 0x6f, 0x4a, 0xa1, 0x89,
-	0x00, 0x2f, 0x6a, 0xa2, 0x0f, 0xa0, 0x26, 0x0c, 0x48, 0x27, 0xf3, 0x5b, 0xd1, 0x8a, 0x09, 0x74,
-	0xb3, 0xad, 0x58, 0x8c, 0x6c, 0xa8, 0xff, 0x53, 0x84, 0x95, 0x54, 0x76, 0x63, 0x6e, 0x8f, 0xcd,
-	0xbd, 0xd4, 0x5b, 0x9d, 0x3a, 0x25, 0x85, 0x93, 0x76, 0x93, 0x7e, 0x0c, 0xb5, 0x40, 0xe5, 0x9b,
-	0x4e, 0x97, 0xdd, 0x42, 0x3c, 0x47, 0x51, 0xe5, 0xd0, 0xfb, 0x1c, 0x88, 0x5e, 0x81, 0x7a, 0xd3,
-	0x71, 0x5d, 0xdc, 0xf4, 0x04, 0x4c, 0xee, 0xd8, 0x4b, 0x51, 0x47, 0x88, 0xfc, 0x19, 0xa0, 0xac,
-	0x5d, 0x0e, 0x0f, 0xee, 0x0c, 0xb3, 0x7c, 0x73, 0xe4, 0x2b, 0x3f, 0x1e, 0xff, 0x4e, 0x2c, 0xe2,
-	0x51, 0x35, 0xa9, 0x67, 0xec, 0x34, 0x3a, 0x81, 0x4b, 0xd9, 0x91, 0x85, 0xc3, 0xfc, 0xd3, 0xa1,
-	0xaf, 0xac, 0x8e, 0x61, 0x36, 0x4b, 0x77, 0x56, 0x33, 0x43, 0x35, 0x0c, 0xe4, 0x41, 0x3d, 0x9b,
-	0x1a, 0x38, 0xd7, 0x31, 0xbf, 0x31, 0xf2, 0x95, 0x1f, 0x4d, 0xb9, 0xc9, 0xe3, 0xb3, 0x2d, 0xa5,
-	0xb3, 0x29, 0x34, 0xfc, 0x1d, 0x1b, 0xf9, 0xff, 0x46, 0x08, 0x7f, 0x9f, 0x3f, 0xe6, 0x47, 0x5e,
-	0x26, 0xda, 0x57, 0x1f, 0x8e, 0x7f, 0xbb, 0x2a, 0x41, 0xfe, 0x00, 0xdb, 0x1e, 0xf7, 0x00, 0x77,
-	0x9b, 0x4d, 0xdc, 0xe3, 0x1e, 0x60, 0x05, 0x96, 0x34, 0xdc, 0xea, 0x13, 0x6c, 0x48, 0x8b, 0x48,
-	0x82, 0xe5, 0xdd, 0xbe, 0xe7, 0x44, 0xdd, 0x79, 0xf5, 0x1f, 0x0b, 0x50, 0xcf, 0xac, 0xfc, 0xdc,
-	0x1e, 0xb9, 0x31, 0xe9, 0xfd, 0x27, 0xff, 0xdf, 0xe9, 0xfd, 0xa7, 0xdf, 0x68, 0x7a, 0xff, 0xd7,
-	0xc0, 0x8b, 0x2f, 0x8e, 0xce, 0xf9, 0x10, 0xfe, 0xc3, 0x91, 0xaf, 0x28, 0xe3, 0x0f, 0x6a, 0xfc,
-	0x1a, 0x5e, 0xb1, 0x84, 0x2a, 0x97, 0x0f, 0xc3, 0xa7, 0xd6, 0xcc, 0xc3, 0xf8, 0xf6, 0xd0, 0x57,
-	0xaa, 0x09, 0xd2, 0x59, 0xf2, 0x57, 0x05, 0xc6, 0x0d, 0x03, 0xfd, 0x31, 0x54, 0xc4, 0x54, 0xf6,
-	0x97, 0x2f, 0x94, 0xca, 0x16, 0x59, 0xa9, 0x7f, 0xb7, 0x08, 0xd5, 0x44, 0x76, 0x7d, 0x6e, 0x55,
-	0x76, 0x07, 0xf2, 0xd4, 0x61, 0x0c, 0xee, 0x88, 0xf5, 0x89, 0xcf, 0x07, 0x9b, 0xf4, 0x8f, 0xc6,
-	0x70, 0x91, 0x06, 0x05, 0xe7, 0xcc, 0xc6, 0xe7, 0xf4, 0xba, 0xc6, 0x17, 0x72, 0xb1, 0x6c, 0x3f,
-	0x2b, 0xe4, 0x62, 0xac, 0xd0, 0x03, 0x28, 0xb1, 0x8f, 0x74, 0x21, 0x57, 0x80, 0x37, 0xb3, 0x90,
-	0x8b, 0x11, 0x37, 0x0c, 0x75, 0x15, 0xf2, 0x6c, 0x3f, 0x44, 0xe3, 0x44, 0xb7, 0x6b, 0x59, 0xcc,
-	0x22, 0xcf, 0xed, 0x6e, 0x5d, 0x81, 0x25, 0x93, 0x1c, 0xb9, 0x58, 0x37, 0x02, 0x57, 0xb8, 0x68,
-	0x12, 0x0d, 0xeb, 0x06, 0xba, 0x06, 0xe5, 0xa6, 0x65, 0x36, 0x4f, 0xe2, 0x44, 0x9c, 0x56, 0x62,
-	0x80, 0x43, 0xd7, 0x42, 0x12, 0x2c, 0x76, 0x49, 0x3b, 0xb8, 0x98, 0xe9, 0x27, 0x42, 0x90, 0xd7,
-	0xdd, 0x36, 0xe1, 0x2f, 0x05, 0x1a, 0xfb, 0xfe, 0xee, 0xbc, 0x92, 0xaa, 0xff, 0x94, 0x87, 0x22,
-	0x4f, 0x6d, 0xcc, 0xed, 0x46, 0xbd, 0x02, 0xf9, 0x8e, 0x4e, 0x3a, 0x3c, 0x65, 0xb5, 0x77, 0x65,
-	0xe4, 0x2b, 0xab, 0x5c, 0xe6, 0xbe, 0x6d, 0x7e, 0xda, 0xc7, 0x47, 0xc1, 0x8c, 0x19, 0x12, 0xba,
-	0x08, 0x85, 0x53, 0xdd, 0xea, 0x63, 0xb6, 0x71, 0x05, 0x8d, 0x37, 0xd0, 0x36, 0x5c, 0xec, 0xea,
-	0x9f, 0x09, 0x8f, 0x71, 0x47, 0x4d, 0xa7, 0x1f, 0xf8, 0x57, 0x05, 0x0d, 0x75, 0xf5, 0xcf, 0x62,
-	0xbb, 0x75, 0x9f, 0xf6, 0x7c, 0xbb, 0x79, 0x83, 0x07, 0x13, 0xf2, 0x06, 0x1b, 0x63, 0xf2, 0x06,
-	0xcb, 0x53, 0x12, 0x05, 0x1f, 0x26, 0x8d, 0xf2, 0x17, 0x63, 0xe2, 0x66, 0xbe, 0xf7, 0xcf, 0x6f,
-	0x95, 0xff, 0x26, 0x0f, 0x52, 0x9a, 0x76, 0x9e, 0xa3, 0xde, 0xd0, 0xa3, 0x0e, 0x2a, 0x7f, 0x83,
-	0x26, 0x3a, 0x7c, 0xbe, 0xa8, 0x77, 0x7c, 0x6d, 0xda, 0xb7, 0x1a, 0xe6, 0xbe, 0x07, 0x45, 0x9e,
-	0x78, 0x0c, 0xfd, 0x85, 0x71, 0x59, 0xcb, 0xf1, 0x72, 0xf1, 0x4e, 0x26, 0x17, 0x67, 0x41, 0xe5,
-	0xe2, 0x5f, 0xe9, 0x9a, 0xb9, 0x10, 0x75, 0xa6, 0x5c, 0x9c, 0xbc, 0x61, 0xa8, 0xbf, 0x03, 0xa8,
-	0x08, 0x35, 0x04, 0x73, 0xab, 0x1b, 0xdb, 0x90, 0xf7, 0x06, 0xbd, 0xb0, 0x0e, 0xe6, 0xfa, 0x84,
-	0x12, 0x89, 0xcd, 0xc7, 0x83, 0x1e, 0xd6, 0x18, 0x66, 0x50, 0xf4, 0xdd, 0xb6, 0x9c, 0x63, 0x9d,
-	0xdf, 0x0f, 0xac, 0xe8, 0xfb, 0x1d, 0xd6, 0x16, 0x55, 0xad, 0x95, 0x54, 0xb5, 0x35, 0x28, 0xe9,
-	0x6e, 0xbb, 0xcf, 0xba, 0xf8, 0x5d, 0x11, 0xb5, 0xe7, 0x40, 0x0d, 0x7b, 0x51, 0xa5, 0x70, 0x64,
-	0x0e, 0x42, 0x85, 0x9c, 0xea, 0x04, 0xfe, 0x64, 0xe4, 0x2b, 0x3f, 0x9c, 0x50, 0x95, 0x1c, 0x61,
-	0x51, 0x99, 0x57, 0x52, 0xe5, 0x0d, 0x08, 0x87, 0xb9, 0x47, 0xc1, 0x6a, 0xc7, 0x5a, 0xfb, 0xda,
-	0xd0, 0x57, 0xea, 0x19, 0x36, 0xb3, 0xe6, 0x53, 0x4f, 0x0d, 0xd2, 0x30, 0xd4, 0xcf, 0x0b, 0x90,
-	0xa7, 0x9b, 0x9b, 0xae, 0xa2, 0xa8, 0x42, 0x79, 0xaf, 0x3f, 0xb8, 0xc3, 0x86, 0x90, 0x72, 0xa8,
-	0x06, 0xb0, 0xd7, 0x1f, 0xdc, 0x65, 0x4d, 0x22, 0x2d, 0xa0, 0x15, 0xa8, 0xd0, 0xee, 0xed, 0x00,
-	0xb0, 0x18, 0x00, 0x76, 0x42, 0x40, 0x3e, 0x00, 0xdc, 0x0d, 0x01, 0x05, 0x84, 0xa0, 0x16, 0x8c,
-	0x8c, 0x03, 0xb6, 0x80, 0x56, 0x61, 0x25, 0x84, 0x85, 0xbc, 0x2b, 0xe8, 0x22, 0x48, 0x11, 0x62,
-	0x48, 0xbe, 0x2c, 0x42, 0xa3, 0x51, 0xaa, 0x22, 0x34, 0x1a, 0xaa, 0x26, 0xb2, 0xbd, 0xc3, 0x8f,
-	0xb6, 0x74, 0x31, 0x81, 0xca, 0x81, 0x44, 0xba, 0x84, 0x2e, 0x41, 0x3d, 0x1e, 0x2c, 0x04, 0x5f,
-	0x16, 0xc1, 0x3b, 0x11, 0xf8, 0x8a, 0x08, 0xbe, 0x1b, 0x81, 0x65, 0x74, 0x19, 0x50, 0xcc, 0x24,
-	0x82, 0x5f, 0x0d, 0x82, 0xd4, 0x8e, 0xe3, 0x06, 0x13, 0x5e, 0x47, 0x75, 0xa8, 0x72, 0xc8, 0x4e,
-	0x20, 0xac, 0x12, 0x83, 0xc2, 0x15, 0xd8, 0xa0, 0x4b, 0x15, 0xd0, 0x85, 0x73, 0xfa, 0x01, 0x1d,
-	0xe3, 0x6d, 0xdd, 0xb5, 0x06, 0xbb, 0x86, 0xd3, 0xf3, 0xb0, 0xfb, 0xd8, 0xe9, 0xdd, 0xd9, 0xde,
-	0x96, 0x6e, 0xa0, 0x2b, 0xb0, 0x9a, 0x85, 0x6f, 0x4b, 0x37, 0x69, 0xf0, 0xfc, 0xbe, 0x65, 0xdc,
-	0xf9, 0x10, 0xeb, 0xae, 0xb4, 0x43, 0x67, 0x7f, 0x80, 0x6d, 0xe3, 0xce, 0xa3, 0xbe, 0x65, 0x69,
-	0xf8, 0xd3, 0x3e, 0x26, 0x9e, 0xf4, 0x2b, 0x3a, 0x1f, 0x0a, 0xdd, 0x11, 0xa0, 0x44, 0xfa, 0x28,
-	0x04, 0xdf, 0x4d, 0x80, 0x3f, 0xa6, 0x22, 0x30, 0x1e, 0xdb, 0x14, 0xee, 0x86, 0xf0, 0x4f, 0x50,
-	0x19, 0x0a, 0x07, 0x9e, 0xde, 0x6a, 0x49, 0x06, 0xdd, 0xf5, 0xfb, 0x8e, 0xed, 0xb9, 0xe6, 0x71,
-	0xdf, 0x73, 0x5c, 0x09, 0x73, 0x3d, 0x6a, 0xbf, 0xdb, 0xb7, 0x3d, 0xec, 0x4a, 0x2d, 0xda, 0xfc,
-	0xb9, 0x63, 0x60, 0x57, 0xa7, 0xbd, 0x6d, 0xba, 0x51, 0xef, 0xea, 0xcd, 0x93, 0xc7, 0x1d, 0xfc,
-	0xc8, 0xd2, 0xbd, 0x96, 0xe3, 0x76, 0xa5, 0x8e, 0xfa, 0xb7, 0x65, 0xc8, 0xef, 0xf7, 0xbb, 0x3d,
-	0xf4, 0x46, 0xaa, 0x8e, 0x6b, 0x7a, 0x19, 0x57, 0xaa, 0x58, 0xeb, 0x56, 0xfc, 0xde, 0xb5, 0x38,
-	0xe9, 0xb9, 0x2b, 0x2e, 0x19, 0x7b, 0x0f, 0x50, 0x70, 0x33, 0x88, 0x1e, 0x45, 0x7e, 0xb6, 0x43,
-	0xa1, 0xd5, 0x9b, 0x29, 0x08, 0x41, 0xaf, 0x43, 0x25, 0x2e, 0xfe, 0x26, 0x72, 0x21, 0xfb, 0x24,
-	0x15, 0x97, 0x0b, 0x6b, 0x22, 0x2a, 0xda, 0x83, 0x15, 0x33, 0x0c, 0x95, 0x8e, 0x78, 0x9a, 0xbe,
-	0x38, 0xa3, 0x18, 0x4b, 0xab, 0x99, 0x62, 0x93, 0xa0, 0x9b, 0x50, 0x64, 0xc7, 0x9c, 0xc8, 0x4b,
-	0x93, 0x7e, 0xda, 0x14, 0x20, 0xa0, 0x37, 0xc3, 0x9f, 0x57, 0x84, 0x3f, 0x58, 0x29, 0x4d, 0xfd,
-	0xbd, 0x4a, 0xf0, 0xeb, 0x09, 0xde, 0x60, 0xc2, 0xa6, 0x2b, 0x9b, 0xcb, 0x33, 0x0a, 0x9b, 0xd3,
-	0xe5, 0xcb, 0xe8, 0x17, 0xe3, 0x5f, 0x58, 0xe0, 0x1c, 0x0f, 0x2c, 0x63, 0x9f, 0x51, 0xde, 0x1d,
-	0x57, 0x78, 0x56, 0x99, 0x19, 0xac, 0x67, 0xab, 0xcb, 0xd0, 0x1f, 0x42, 0x2d, 0xf1, 0xdb, 0x10,
-	0x22, 0x2f, 0x4f, 0xff, 0x0d, 0x5a, 0x90, 0x32, 0x08, 0x5a, 0x04, 0xbd, 0x95, 0x2e, 0x48, 0xaa,
-	0x4e, 0xaf, 0x47, 0x4a, 0x57, 0x1d, 0xbd, 0x1c, 0xbe, 0xfe, 0xd6, 0x26, 0xbd, 0xcc, 0xf3, 0x87,
-	0xdd, 0x3f, 0x80, 0x65, 0x96, 0xb0, 0x09, 0x9f, 0x8f, 0x56, 0xa6, 0x95, 0x07, 0x68, 0x15, 0x2f,
-	0xfa, 0x66, 0x8a, 0x1a, 0x3b, 0xd4, 0x44, 0x96, 0xa6, 0xbe, 0x9d, 0x8a, 0xa8, 0xf4, 0xbc, 0x64,
-	0xab, 0xbb, 0xe4, 0xfa, 0xec, 0x87, 0x2b, 0xad, 0x9e, 0x29, 0xdf, 0x42, 0x6f, 0x8f, 0xa9, 0xd8,
-	0x40, 0x33, 0x5f, 0xa7, 0x32, 0x65, 0x19, 0x2f, 0x43, 0x81, 0x46, 0x7d, 0x44, 0x5e, 0x9d, 0x54,
-	0x41, 0xc3, 0xba, 0xe9, 0x70, 0x99, 0xaa, 0x8d, 0x8b, 0xb3, 0x8a, 0x36, 0xb4, 0x95, 0xb3, 0x64,
-	0x49, 0x86, 0xfa, 0x17, 0x39, 0xc8, 0x37, 0xec, 0x96, 0x83, 0xde, 0x02, 0xf0, 0xf4, 0x63, 0x0b,
-	0x1f, 0xb9, 0xce, 0x59, 0x68, 0xa4, 0x94, 0xe4, 0x79, 0x6d, 0x39, 0x9b, 0x8f, 0x29, 0x8a, 0xe6,
-	0x9c, 0x91, 0xb7, 0x6d, 0xcf, 0x1d, 0x68, 0x65, 0x2f, 0x6c, 0xaf, 0xbd, 0x09, 0xb5, 0x64, 0x27,
-	0x8d, 0xb2, 0x4f, 0xf0, 0x80, 0x7b, 0x93, 0x1a, 0xfd, 0x8c, 0xe3, 0x3a, 0xea, 0x2b, 0x56, 0x83,
-	0xb8, 0xee, 0xde, 0xc2, 0xeb, 0xb9, 0xbd, 0x9d, 0x27, 0xc3, 0xf5, 0xdc, 0xd7, 0xc3, 0xf5, 0xdc,
-	0x7f, 0x0f, 0xd7, 0x73, 0x9f, 0x3f, 0x5b, 0xbf, 0xf0, 0xf5, 0xb3, 0xf5, 0x0b, 0xbf, 0x7b, 0xb6,
-	0x7e, 0xe1, 0x57, 0x72, 0x28, 0x82, 0xa5, 0xdb, 0xc6, 0x56, 0xdb, 0xd9, 0xea, 0x9d, 0xb4, 0xb7,
-	0x7a, 0x67, 0xc6, 0xf1, 0x71, 0x91, 0x79, 0x87, 0xaf, 0xfe, 0x6f, 0x00, 0x00, 0x00, 0xff, 0xff,
-	0x0b, 0xae, 0xf5, 0xa4, 0xda, 0x3b, 0x00, 0x00,
+	// 3567 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x5b, 0xcd, 0x6f, 0x1c, 0x47,
+	0x76, 0xd7, 0x90, 0x33, 0x24, 0xe7, 0x0d, 0x3f, 0x9a, 0xc5, 0xaf, 0x16, 0x25, 0xb1, 0xe9, 0xde,
+	0x8d, 0x56, 0x8e, 0x24, 0x92, 0xa2, 0x97, 0x81, 0x23, 0x19, 0x06, 0x48, 0xd1, 0x1f, 0xb3, 0xd6,
+	0xae, 0x95, 0x26, 0x29, 0xc3, 0x1f, 0x01, 0xd3, 0x9c, 0xae, 0x99, 0xe9, 0xb0, 0xa7, 0x7b, 0xd4,
+	0xd5, 0xc3, 0x31, 0x91, 0x4b, 0x10, 0xe4, 0x10, 0xe4, 0x92, 0x0d, 0x82, 0x5c, 0xf3, 0x17, 0x24,
+	0xa7, 0x20, 0xc8, 0x35, 0x97, 0x20, 0x92, 0xd7, 0xbb, 0x71, 0x2e, 0xc1, 0x22, 0x87, 0x4e, 0x30,
+	0xbe, 0x06, 0x08, 0x30, 0xc7, 0x9c, 0x82, 0xaa, 0xea, 0x8f, 0xea, 0x9e, 0x9e, 0x69, 0x32, 0xb2,
+	0x17, 0xa6, 0x2f, 0x64, 0xd7, 0xab, 0x57, 0xef, 0xd5, 0xc7, 0xaf, 0x5e, 0xbd, 0x7a, 0xf5, 0x06,
+	0xa0, 0xdd, 0x35, 0x4e, 0x36, 0xda, 0xae, 0xe3, 0x39, 0x08, 0xda, 0xba, 0xd7, 0xec, 0xea, 0xee,
+	0x86, 0x71, 0xb2, 0xfa, 0xa8, 0x61, 0x7a, 0xcd, 0xce, 0xc9, 0x46, 0xcd, 0x69, 0x6d, 0x36, 0x1c,
+	0x4b, 0xb7, 0x1b, 0x9b, 0x8c, 0xe9, 0xa4, 0x53, 0xdf, 0x6c, 0x7b, 0xe7, 0x6d, 0x4c, 0x36, 0x3d,
+	0xb3, 0x85, 0x89, 0xa7, 0xb7, 0xda, 0xf1, 0x17, 0x17, 0xb4, 0x7a, 0xb3, 0xe1, 0x38, 0x0d, 0x0b,
+	0x6f, 0xea, 0x6d, 0x73, 0x53, 0xb7, 0x6d, 0xc7, 0xd3, 0x3d, 0xd3, 0xb1, 0x49, 0x50, 0x7b, 0x3f,
+	0x21, 0xba, 0xe1, 0xc4, 0x82, 0x69, 0x89, 0x15, 0xd8, 0x57, 0xc0, 0x7e, 0x20, 0xb2, 0xbb, 0xed,
+	0xda, 0x7d, 0x5c, 0x73, 0xc8, 0x39, 0xf1, 0x70, 0x50, 0x6c, 0xe8, 0x1e, 0xee, 0xea, 0xe7, 0x5c,
+	0x4a, 0xed, 0x7e, 0x03, 0xdb, 0xf7, 0x49, 0x57, 0x6f, 0x34, 0xb0, 0xbb, 0xe9, 0xb4, 0x99, 0xde,
+	0xc1, 0x3e, 0xa8, 0xff, 0x3e, 0x0e, 0xe5, 0xc7, 0x4d, 0xdd, 0xb2, 0xb0, 0xdd, 0xc0, 0xe8, 0x1e,
+	0x8c, 0x99, 0x86, 0x5c, 0x58, 0x2f, 0xdc, 0x29, 0xef, 0xdd, 0xec, 0xf9, 0xca, 0x58, 0x75, 0xbf,
+	0xef, 0x2b, 0xa8, 0xe1, 0xb8, 0xad, 0x87, 0x6a, 0xdb, 0x35, 0x5b, 0xba, 0x7b, 0x7e, 0x7c, 0x8a,
+	0xcf, 0x55, 0x6d, 0xcc, 0x34, 0xd0, 0x63, 0x80, 0x9a, 0x8b, 0x75, 0x0f, 0x1b, 0xc7, 0xba, 0x27,
+	0x8f, 0xad, 0x17, 0xee, 0x54, 0xb6, 0x57, 0x37, 0xf8, 0x90, 0x37, 0xc2, 0xb1, 0x6c, 0x1c, 0x86,
+	0x73, 0xb2, 0x37, 0xf5, 0xc2, 0x57, 0x0a, 0x3f, 0xff, 0x4f, 0xa5, 0xa0, 0x95, 0x83, 0x76, 0xbb,
+	0x1e, 0x15, 0xd2, 0x69, 0x1b, 0xa1, 0x90, 0xf1, 0xcb, 0x08, 0x09, 0xda, 0xed, 0x7a, 0x08, 0x41,
+	0xd1, 0xd6, 0x5b, 0x58, 0x36, 0x68, 0xcf, 0x35, 0xf6, 0x8d, 0xd6, 0xa1, 0x62, 0x60, 0x52, 0x73,
+	0x4d, 0x36, 0x76, 0x19, 0xb3, 0x2a, 0x91, 0x84, 0x96, 0x61, 0x42, 0xef, 0x78, 0x4d, 0xc7, 0x95,
+	0xeb, 0xac, 0x32, 0x28, 0x51, 0xba, 0xe5, 0xd4, 0x74, 0x0b, 0xcb, 0x26, 0xa7, 0xf3, 0x12, 0xba,
+	0x0e, 0x53, 0x26, 0x39, 0x36, 0x5c, 0xbd, 0xee, 0xc9, 0x7f, 0xb8, 0x5e, 0xb8, 0x33, 0xa5, 0x4d,
+	0x9a, 0x64, 0x9f, 0x16, 0x91, 0x02, 0x95, 0xb6, 0x8b, 0xcf, 0x4c, 0xdc, 0x3d, 0xee, 0xb8, 0x96,
+	0x7c, 0xca, 0xda, 0x41, 0x40, 0x3a, 0x72, 0x2d, 0xb4, 0x0a, 0x53, 0x4d, 0xa7, 0x85, 0xdb, 0x7a,
+	0x03, 0xcb, 0x16, 0xab, 0x8d, 0xca, 0xe8, 0x00, 0xa6, 0xce, 0xb0, 0x4b, 0xe8, 0xaa, 0xc8, 0x2f,
+	0x0a, 0xeb, 0xe3, 0x77, 0x2a, 0xdb, 0x37, 0x37, 0x62, 0x08, 0x6e, 0x44, 0xeb, 0xf3, 0x8c, 0x73,
+	0xed, 0xc9, 0x7d, 0x5f, 0x59, 0xe4, 0x8b, 0xf2, 0x54, 0x7b, 0xe7, 0xc9, 0x87, 0xbb, 0xfb, 0x0f,
+	0xeb, 0xba, 0x45, 0xb0, 0xaa, 0x45, 0x82, 0xd4, 0xb7, 0x60, 0x26, 0x6a, 0xf7, 0xc4, 0x24, 0x1e,
+	0xba, 0x0b, 0x25, 0xd3, 0xc3, 0x2d, 0x22, 0x73, 0x0d, 0x4b, 0x99, 0x1a, 0x34, 0xce, 0xa3, 0xfe,
+	0x47, 0x09, 0xa4, 0xb4, 0xda, 0x2b, 0x8b, 0x0e, 0x19, 0x26, 0x83, 0x69, 0x09, 0x00, 0x12, 0x16,
+	0xd1, 0x4d, 0x28, 0xd7, 0x9a, 0xba, 0xdd, 0xc0, 0x96, 0xd3, 0x08, 0x10, 0x12, 0x13, 0x12, 0xeb,
+	0x5d, 0x4f, 0xae, 0xf7, 0x0d, 0x28, 0x9b, 0xe4, 0xd8, 0xd2, 0x3d, 0x4c, 0x3c, 0xb9, 0xc1, 0xea,
+	0xa6, 0x4c, 0xf2, 0x84, 0x95, 0xd1, 0x3d, 0x00, 0xe2, 0x74, 0xdc, 0x1a, 0x66, 0x58, 0x68, 0xb2,
+	0xf9, 0x9a, 0xe9, 0xf9, 0x4a, 0xf9, 0x80, 0x51, 0x8f, 0xb4, 0x27, 0x5a, 0x99, 0x33, 0x50, 0x64,
+	0x3c, 0x82, 0x09, 0xc3, 0x35, 0xcf, 0xb0, 0xcb, 0xd0, 0x36, 0xbb, 0xfd, 0x83, 0x51, 0x4b, 0xbf,
+	0xb1, 0xcf, 0x58, 0xb5, 0xa0, 0x09, 0xfa, 0x88, 0x0d, 0x80, 0xb3, 0x50, 0xec, 0x14, 0x86, 0xae,
+	0xec, 0xde, 0x6b, 0x7d, 0x5f, 0xb9, 0xc5, 0xd7, 0xaa, 0xee, 0xb8, 0xd8, 0x6c, 0xd8, 0xa7, 0xf8,
+	0xfc, 0x61, 0x54, 0x5f, 0xdd, 0x57, 0xb5, 0x58, 0x16, 0xd2, 0x60, 0x3a, 0x2a, 0x1c, 0x9b, 0x86,
+	0xfc, 0x92, 0x2f, 0xfb, 0x46, 0xcf, 0x57, 0x2a, 0x42, 0x9b, 0xbe, 0xaf, 0xdc, 0x20, 0xcf, 0xad,
+	0x87, 0xaa, 0xed, 0x78, 0xeb, 0x76, 0xc7, 0xb2, 0xd4, 0x75, 0xae, 0xc2, 0xb4, 0x0d, 0xfc, 0xb9,
+	0xaa, 0x55, 0x22, 0x21, 0x55, 0x03, 0x3d, 0x85, 0xc9, 0xba, 0xa5, 0x9f, 0x39, 0x2e, 0x91, 0xbf,
+	0xe0, 0x20, 0xbc, 0x91, 0xd9, 0xd5, 0x77, 0x19, 0xd3, 0x08, 0x94, 0x87, 0x62, 0xd4, 0x1f, 0xc3,
+	0x04, 0x9f, 0x10, 0x54, 0x81, 0xc9, 0x23, 0xfb, 0xd4, 0x76, 0xba, 0xb6, 0x74, 0x0d, 0x01, 0x4c,
+	0xec, 0x3b, 0xb5, 0x53, 0xec, 0x4a, 0x05, 0x34, 0x0f, 0x33, 0xfc, 0xfb, 0xb1, 0xd3, 0x6a, 0x3b,
+	0x04, 0x4b, 0x63, 0xea, 0xff, 0x8e, 0xc3, 0x5c, 0x4a, 0xd9, 0x95, 0xc5, 0x76, 0x0b, 0xe6, 0xe3,
+	0x75, 0x0a, 0x51, 0x3e, 0x1a, 0x08, 0x77, 0xfa, 0xbe, 0xf2, 0xc3, 0xe1, 0x40, 0x08, 0x90, 0x46,
+	0xf1, 0x20, 0xd5, 0xd2, 0x26, 0xa0, 0x09, 0x8b, 0x03, 0xea, 0x04, 0x78, 0xec, 0xf4, 0x7c, 0x05,
+	0x0d, 0x4a, 0xca, 0x43, 0x09, 0x4a, 0xeb, 0xa9, 0x1a, 0xe8, 0x19, 0x94, 0x4d, 0x9b, 0x78, 0xba,
+	0x5d, 0xc3, 0x11, 0x5c, 0x6e, 0x65, 0x0e, 0xa8, 0x1a, 0xb0, 0x8d, 0x00, 0x4c, 0x2c, 0x4a, 0xfd,
+	0x8b, 0x12, 0xcc, 0x0f, 0x34, 0xbd, 0xb2, 0xcb, 0xff, 0x16, 0x4c, 0x10, 0x4f, 0xf7, 0x3a, 0x84,
+	0x59, 0xb6, 0xd9, 0xed, 0x1f, 0x8e, 0x9c, 0xa1, 0x8d, 0x03, 0xc6, 0xab, 0x05, 0x6d, 0xd0, 0xa7,
+	0x00, 0xcd, 0xf3, 0x36, 0x76, 0xcf, 0x4c, 0xe2, 0xb8, 0x21, 0x6a, 0x96, 0x45, 0x11, 0xef, 0x47,
+	0xd5, 0x7b, 0x6a, 0xdf, 0x57, 0xd6, 0x06, 0x60, 0x13, 0x33, 0x50, 0xc0, 0x08, 0xe2, 0xd0, 0x11,
+	0xcc, 0xc4, 0x25, 0x01, 0x23, 0x9b, 0x3d, 0x5f, 0x99, 0x16, 0x9b, 0xe5, 0xa1, 0x63, 0x3a, 0x16,
+	0x53, 0x35, 0xd0, 0x21, 0x4c, 0xf0, 0xdd, 0x4f, 0x41, 0x51, 0xc8, 0xb3, 0x21, 0x6b, 0x7d, 0x5f,
+	0x59, 0x1d, 0xe8, 0x34, 0xaf, 0xa4, 0x1d, 0x0e, 0x64, 0xa1, 0x2a, 0x94, 0xf9, 0x17, 0xed, 0xe8,
+	0x2f, 0x78, 0x47, 0xef, 0xf6, 0x7c, 0x65, 0x2a, 0x64, 0xcd, 0xeb, 0xe4, 0x14, 0x6f, 0x5e, 0x35,
+	0xd4, 0x4d, 0x98, 0xe0, 0xd3, 0x3c, 0x60, 0x93, 0x76, 0x6b, 0x9e, 0x79, 0x86, 0xa5, 0x02, 0x9a,
+	0x86, 0xa9, 0xaa, 0xad, 0xf3, 0xd2, 0x98, 0xfa, 0xcf, 0xe3, 0x00, 0xf1, 0x7c, 0x7c, 0xaf, 0x7c,
+	0x30, 0x19, 0x26, 0x75, 0xc3, 0x70, 0x31, 0x21, 0xc1, 0xe9, 0x1a, 0x16, 0xd1, 0x4e, 0x04, 0xdc,
+	0x3a, 0x03, 0xee, 0xad, 0x6c, 0xd4, 0xa5, 0x11, 0x6b, 0xc2, 0x82, 0x70, 0x2c, 0x45, 0xf6, 0xe1,
+	0xc5, 0x2b, 0xda, 0x87, 0xd8, 0x00, 0x55, 0x23, 0x43, 0x71, 0xe9, 0x75, 0xfc, 0xc7, 0x22, 0xc0,
+	0x21, 0xd6, 0x5b, 0x3f, 0xc5, 0xad, 0x13, 0x7c, 0x75, 0xd7, 0x71, 0x13, 0x8a, 0xae, 0x63, 0xe1,
+	0xc0, 0xa0, 0x24, 0x76, 0x57, 0x3c, 0xba, 0x0d, 0xcd, 0xb1, 0xb0, 0xc6, 0x18, 0xd1, 0x63, 0x28,
+	0x76, 0x08, 0x8e, 0xec, 0x87, 0x24, 0xb6, 0x38, 0x22, 0xd8, 0xdd, 0xbb, 0xd9, 0xf7, 0x15, 0x79,
+	0x60, 0x13, 0xd2, 0x2a, 0xba, 0x05, 0x59, 0x63, 0xf4, 0x18, 0x26, 0xe9, 0x7f, 0xc1, 0x4e, 0xbc,
+	0xde, 0xf3, 0x95, 0x09, 0xce, 0x94, 0xb7, 0xf9, 0x26, 0x68, 0xd3, 0x2a, 0x9d, 0xc4, 0xa2, 0x87,
+	0xf5, 0x56, 0x68, 0x19, 0xa4, 0x74, 0xdf, 0x87, 0xf4, 0x84, 0x56, 0xb1, 0x9e, 0xd0, 0xc6, 0xb4,
+	0x27, 0xf4, 0xbf, 0x60, 0x08, 0x58, 0x4f, 0x38, 0x53, 0x6e, 0x4f, 0x68, 0xd3, 0xaa, 0xa1, 0xde,
+	0x83, 0x22, 0x9d, 0x21, 0x34, 0x03, 0xe5, 0x23, 0xdb, 0xc0, 0x75, 0xd3, 0xc6, 0x86, 0x74, 0x0d,
+	0x95, 0xa1, 0xf4, 0x61, 0xd7, 0x66, 0x7e, 0x09, 0xc0, 0x04, 0x9f, 0x4a, 0x69, 0x4c, 0xfd, 0x97,
+	0x32, 0x48, 0x87, 0x4e, 0xc7, 0xa5, 0x7b, 0xc6, 0xf6, 0xae, 0x38, 0x7e, 0x76, 0x12, 0xf8, 0x79,
+	0x2d, 0xb1, 0x06, 0xa9, 0x31, 0x7e, 0x37, 0x51, 0x64, 0xc1, 0x9c, 0x17, 0x75, 0xf4, 0x58, 0x04,
+	0xd4, 0x6a, 0xf6, 0x60, 0x18, 0xb4, 0x6e, 0xf7, 0x7d, 0x45, 0x1d, 0x84, 0x56, 0x82, 0x89, 0x76,
+	0x74, 0xd6, 0x4b, 0x90, 0xd0, 0x09, 0xa0, 0x94, 0x36, 0x01, 0x79, 0x6f, 0xf4, 0x7c, 0x45, 0x4a,
+	0xcb, 0xc8, 0x1b, 0x87, 0x94, 0xd4, 0x50, 0x35, 0xd0, 0x7b, 0x30, 0x59, 0x73, 0x3a, 0x6d, 0x7a,
+	0xbf, 0xfc, 0x92, 0x5b, 0x4a, 0x94, 0xb0, 0x94, 0xac, 0x6e, 0x94, 0xbf, 0x1d, 0xb4, 0x46, 0xcf,
+	0x60, 0x5a, 0xaf, 0x35, 0x4d, 0x7c, 0x86, 0xa9, 0x74, 0x22, 0xff, 0x92, 0x4b, 0x5b, 0x11, 0xa5,
+	0xed, 0xc6, 0x0c, 0x23, 0x44, 0x26, 0xe4, 0x20, 0x13, 0x96, 0x08, 0x1d, 0x7e, 0xb7, 0xe9, 0x90,
+	0x6e, 0xd3, 0x39, 0xd6, 0x3d, 0x0f, 0xb7, 0xda, 0x1e, 0x91, 0x7f, 0xc5, 0x15, 0x24, 0x26, 0xfe,
+	0x23, 0xce, 0xb4, 0xcb, 0x79, 0x46, 0xe8, 0x58, 0xa0, 0x32, 0x93, 0xdc, 0x04, 0x3d, 0x87, 0xeb,
+	0x2e, 0xae, 0x61, 0xf3, 0x0c, 0x1b, 0x83, 0xea, 0xfe, 0xf5, 0x55, 0xd4, 0xad, 0x84, 0x72, 0xd3,
+	0x2a, 0x7f, 0x12, 0xde, 0xbc, 0xbf, 0xe2, 0xe2, 0xaf, 0x8b, 0xe2, 0xab, 0xf6, 0x19, 0xb6, 0x3d,
+	0xc7, 0x3d, 0xaf, 0x7a, 0xb8, 0x35, 0x42, 0x3a, 0x17, 0x81, 0x1c, 0x58, 0x12, 0x1c, 0x70, 0xdd,
+	0x32, 0x0d, 0x1e, 0xce, 0x91, 0xff, 0x8d, 0xcb, 0x56, 0xb2, 0x6f, 0x8f, 0x11, 0xe3, 0x08, 0x0d,
+	0xb1, 0x67, 0x1f, 0xb3, 0x93, 0x4b, 0x5a, 0xb2, 0xbf, 0x2c, 0x43, 0x91, 0xee, 0xb6, 0x2b, 0x6b,
+	0xbd, 0x56, 0x61, 0x8a, 0x9a, 0x01, 0xc1, 0x93, 0x89, 0xca, 0x68, 0x11, 0x4a, 0xb8, 0xa5, 0x9b,
+	0x56, 0xe0, 0xcb, 0xf0, 0x02, 0xda, 0x86, 0xe9, 0x86, 0xab, 0x9f, 0xe9, 0x9e, 0xee, 0xb2, 0xfb,
+	0x3e, 0x8b, 0x25, 0xed, 0xcd, 0xd1, 0x8b, 0xf2, 0x7b, 0x01, 0x9d, 0xde, 0xf8, 0x2b, 0x21, 0x13,
+	0xbd, 0xf3, 0x6f, 0x42, 0xa5, 0x8b, 0x4f, 0x88, 0xe9, 0xf1, 0x10, 0x41, 0x83, 0x35, 0x99, 0xed,
+	0xf9, 0x0a, 0x7c, 0xc4, 0xc9, 0xb4, 0x05, 0x04, 0x2c, 0xb4, 0x41, 0x1c, 0x92, 0x6a, 0x26, 0x42,
+	0x52, 0x36, 0x2c, 0x0b, 0xd6, 0xa3, 0xc5, 0x96, 0x81, 0x34, 0xcd, 0x76, 0x76, 0x20, 0x29, 0x6d,
+	0x7f, 0x47, 0x80, 0x61, 0xc9, 0x4b, 0xf1, 0x32, 0xa9, 0xe8, 0x63, 0x98, 0xb1, 0x1d, 0xcf, 0xac,
+	0x9b, 0xb5, 0x00, 0x76, 0x2f, 0xb9, 0x1a, 0x59, 0x54, 0xf3, 0x33, 0x81, 0x63, 0x84, 0x8a, 0xa4,
+	0x24, 0x74, 0x00, 0x15, 0xb1, 0xff, 0xc1, 0x95, 0x6f, 0x39, 0xdb, 0xff, 0x18, 0x21, 0x56, 0x94,
+	0x82, 0xfe, 0xba, 0x00, 0x32, 0x77, 0xd0, 0x8e, 0x07, 0xe6, 0x89, 0x1b, 0xd9, 0xbc, 0x29, 0x7a,
+	0xab, 0xef, 0x2b, 0x6f, 0x0e, 0xd8, 0x75, 0xee, 0x02, 0xa6, 0x99, 0xab, 0xfb, 0x8f, 0x52, 0x9d,
+	0x59, 0xd6, 0x33, 0x19, 0xd1, 0x1f, 0xc1, 0x8d, 0x61, 0xdd, 0xa2, 0xe6, 0xff, 0x4b, 0xbe, 0x71,
+	0x1e, 0xf5, 0x7c, 0x45, 0x1e, 0xa6, 0x2a, 0xef, 0x18, 0x90, 0xb3, 0x55, 0x57, 0x0d, 0xf4, 0x27,
+	0x05, 0x98, 0x1f, 0xd0, 0x4e, 0x6d, 0x79, 0xfe, 0x6c, 0xfc, 0x4e, 0xdf, 0x57, 0xb6, 0x73, 0x67,
+	0x63, 0x70, 0x1e, 0xa4, 0x74, 0x67, 0x50, 0x13, 0x16, 0x07, 0x67, 0xc0, 0x34, 0xa8, 0xc5, 0x8f,
+	0x22, 0x09, 0x83, 0x72, 0x73, 0x23, 0x09, 0x69, 0x3d, 0x55, 0x43, 0xdd, 0x86, 0x29, 0x6a, 0x92,
+	0x58, 0x10, 0xf4, 0x76, 0x32, 0x08, 0x3a, 0xe0, 0x65, 0x84, 0xf1, 0xcf, 0x7f, 0x2a, 0x42, 0x91,
+	0x1d, 0xcf, 0xdf, 0xa7, 0xdb, 0x58, 0xda, 0x52, 0xe1, 0x0b, 0x58, 0xaa, 0xd8, 0xf0, 0xd4, 0x13,
+	0x86, 0xe7, 0x0f, 0x40, 0x4a, 0xb9, 0x2d, 0x91, 0xc9, 0x19, 0xe5, 0x25, 0x0d, 0xdf, 0xb6, 0x73,
+	0x49, 0xaf, 0x25, 0xe7, 0xa0, 0x7e, 0xf9, 0xad, 0x1c, 0xd4, 0x1f, 0xc0, 0x64, 0x60, 0x3c, 0xfe,
+	0xff, 0xe6, 0x27, 0x94, 0x40, 0x61, 0x47, 0x1b, 0xe4, 0xc2, 0x8e, 0x32, 0x85, 0xb0, 0xfb, 0xf3,
+	0x12, 0x80, 0xb0, 0x47, 0xbe, 0x4f, 0xe0, 0x8b, 0x2f, 0xfc, 0x78, 0xf0, 0xc2, 0x1f, 0x8f, 0x39,
+	0x7d, 0xe1, 0xdf, 0x05, 0x38, 0x33, 0x89, 0x79, 0x62, 0x5a, 0xa6, 0x77, 0x1e, 0xc4, 0x0a, 0x86,
+	0xdc, 0x29, 0x36, 0x9e, 0x45, 0x8c, 0x9a, 0xd0, 0x08, 0xdd, 0x02, 0x30, 0xc9, 0xb1, 0x81, 0xeb,
+	0x7a, 0xc7, 0x0a, 0x83, 0xf5, 0x65, 0x93, 0xec, 0x73, 0x02, 0xfa, 0x00, 0x4a, 0xdf, 0x00, 0x7c,
+	0xb9, 0x0c, 0xd1, 0xd3, 0x7e, 0xf9, 0x2a, 0x9e, 0xb6, 0xba, 0x13, 0x45, 0x1f, 0xe6, 0x61, 0x26,
+	0x88, 0x3e, 0x70, 0x82, 0x74, 0x0d, 0x55, 0x60, 0xf2, 0xc0, 0xd3, 0x5d, 0x0f, 0x1b, 0x52, 0x81,
+	0x17, 0x9c, 0x76, 0x1b, 0x1b, 0xd2, 0x98, 0xfa, 0x13, 0x80, 0x78, 0x16, 0xd0, 0x12, 0xcc, 0x07,
+	0x4d, 0x63, 0x22, 0x6f, 0xfe, 0xd4, 0x35, 0xcf, 0x74, 0x2f, 0x88, 0x61, 0x1c, 0xd9, 0x96, 0x49,
+	0xa8, 0xb0, 0x31, 0xea, 0xcb, 0x3d, 0xed, 0x9c, 0x58, 0x66, 0x4d, 0x1a, 0x57, 0xdf, 0x86, 0xd9,
+	0x78, 0xf8, 0x0c, 0xc6, 0xf7, 0x92, 0x30, 0x5e, 0xce, 0x9e, 0xa9, 0x10, 0xcc, 0xff, 0x53, 0x12,
+	0x05, 0x5c, 0x69, 0x6b, 0x9a, 0x84, 0x90, 0x91, 0x86, 0xd0, 0xa7, 0x00, 0xc2, 0x41, 0x9a, 0x15,
+	0x47, 0x8d, 0xe7, 0x61, 0x48, 0x1c, 0x55, 0x3c, 0xe4, 0x54, 0x4d, 0x10, 0x87, 0x8e, 0x60, 0x26,
+	0x79, 0x42, 0x8a, 0x71, 0xd4, 0xcb, 0x9c, 0x8d, 0xd3, 0x9e, 0x70, 0x2a, 0x7e, 0x77, 0x62, 0x25,
+	0xa8, 0x03, 0x2b, 0xf1, 0x95, 0x86, 0x74, 0x4e, 0xa2, 0x07, 0xda, 0xe8, 0x7e, 0xf9, 0x5a, 0xe6,
+	0xa5, 0xe6, 0x40, 0x60, 0x1d, 0xb1, 0xa5, 0x96, 0x6b, 0x59, 0x0d, 0x08, 0xfa, 0xbd, 0xd8, 0xd8,
+	0xff, 0xea, 0xd5, 0x7c, 0xe5, 0xc8, 0xe4, 0xbf, 0x0b, 0x28, 0x09, 0x78, 0xb6, 0x6b, 0xb6, 0x92,
+	0xbb, 0x66, 0x84, 0x7d, 0x09, 0x77, 0xce, 0xdf, 0x4f, 0xc0, 0x6c, 0xf2, 0x6c, 0xba, 0xca, 0x6f,
+	0xaf, 0xa4, 0x53, 0xab, 0x61, 0x42, 0x82, 0x6d, 0x13, 0x16, 0x91, 0x11, 0xbd, 0xbe, 0xbf, 0xb8,
+	0x88, 0xe7, 0x79, 0xbf, 0xef, 0x2b, 0xaf, 0x67, 0xc2, 0x49, 0x74, 0x44, 0x99, 0x40, 0x16, 0xd8,
+	0x0f, 0xde, 0xf2, 0xab, 0x50, 0xe6, 0x5f, 0xc2, 0xce, 0x61, 0x81, 0xfd, 0x90, 0x35, 0x37, 0xb0,
+	0xcf, 0x9b, 0x57, 0x0d, 0xd4, 0x85, 0x19, 0x4f, 0x77, 0x1b, 0x38, 0xba, 0x3f, 0x7c, 0x71, 0x91,
+	0x7e, 0xbf, 0xd1, 0xf7, 0x95, 0xcd, 0xbc, 0x7e, 0x1f, 0x32, 0xb9, 0xa1, 0x67, 0x4f, 0xb7, 0xaa,
+	0x40, 0x40, 0x9f, 0x81, 0x94, 0x50, 0x2c, 0x6c, 0xb7, 0x07, 0x3d, 0x5f, 0x99, 0x4d, 0xb6, 0xce,
+	0x1b, 0xd0, 0xac, 0x28, 0xbb, 0x6a, 0x20, 0x07, 0x2a, 0x81, 0x74, 0x66, 0x0f, 0xbe, 0xcc, 0x0f,
+	0x75, 0x3d, 0xe8, 0xfb, 0xca, 0xfd, 0x8b, 0x0d, 0x29, 0x34, 0x17, 0xe0, 0x45, 0x45, 0xf4, 0x0c,
+	0x66, 0x05, 0x85, 0x74, 0x30, 0xbf, 0x14, 0x2d, 0x9a, 0xd0, 0x2e, 0xdf, 0xa2, 0xc5, 0xcc, 0x86,
+	0xfa, 0x57, 0x93, 0xb0, 0x90, 0x11, 0xf1, 0xb8, 0xb2, 0x5b, 0xe7, 0xed, 0xd4, 0xdb, 0xde, 0xed,
+	0x9c, 0xd0, 0x4e, 0xda, 0x75, 0xfa, 0x2d, 0x98, 0x0d, 0xa0, 0x5f, 0x73, 0x5a, 0xec, 0x64, 0xe2,
+	0x71, 0x8b, 0x19, 0x4e, 0x7d, 0xcc, 0x89, 0xe8, 0x2e, 0xcc, 0xd7, 0x1c, 0xd7, 0xc5, 0x35, 0x4f,
+	0xe0, 0xe4, 0xce, 0xbe, 0x14, 0x55, 0x84, 0xcc, 0x7f, 0x56, 0x80, 0xe5, 0x6c, 0x63, 0x1d, 0xee,
+	0xe2, 0x0b, 0xd8, 0x6a, 0xb6, 0x95, 0x87, 0x3f, 0x40, 0x8b, 0xbc, 0x14, 0x3b, 0x4b, 0x99, 0x06,
+	0x1c, 0x75, 0xe1, 0x7a, 0x76, 0x4f, 0x84, 0x9d, 0xfe, 0xb0, 0xe7, 0x2b, 0x2b, 0x43, 0x04, 0xe7,
+	0x81, 0x6b, 0x25, 0x53, 0x6d, 0xd5, 0x40, 0x1e, 0xcc, 0x0f, 0xc6, 0x12, 0x2e, 0x64, 0x0b, 0xb2,
+	0x5f, 0xde, 0x07, 0xaf, 0xf6, 0x89, 0x18, 0x6e, 0x60, 0x04, 0x9a, 0xb0, 0x98, 0x19, 0x2a, 0xf8,
+	0x85, 0x70, 0x5f, 0xbe, 0x7c, 0x90, 0x00, 0x79, 0x03, 0xe1, 0x01, 0xf5, 0x49, 0xf6, 0xc3, 0xd7,
+	0x14, 0x14, 0x0f, 0xb0, 0xed, 0x71, 0x97, 0x71, 0xb7, 0x56, 0xc3, 0x6d, 0xee, 0x32, 0x56, 0x60,
+	0x52, 0xc3, 0xf5, 0x0e, 0xc1, 0x86, 0x34, 0x8e, 0x24, 0x98, 0xde, 0xed, 0x78, 0x4e, 0x54, 0x5d,
+	0x54, 0x7f, 0x5d, 0x82, 0xa5, 0xcc, 0x15, 0xb8, 0xb2, 0xfb, 0x32, 0xe3, 0x7d, 0xe0, 0xc5, 0x6f,
+	0xfa, 0x7d, 0xe0, 0xe5, 0x37, 0xfa, 0x3e, 0xd0, 0x86, 0x38, 0xd3, 0xe3, 0xf8, 0x12, 0xaf, 0xeb,
+	0x3f, 0xea, 0xfb, 0xca, 0x0f, 0x86, 0x6f, 0xe4, 0xf8, 0x99, 0x7d, 0xae, 0x96, 0x4a, 0xb7, 0xc1,
+	0xe2, 0x3b, 0xee, 0xc0, 0xcb, 0xfb, 0x8f, 0x7b, 0xbe, 0x32, 0x3f, 0x20, 0x26, 0x6f, 0x5c, 0xf3,
+	0x29, 0x25, 0x55, 0x03, 0x7d, 0x06, 0x15, 0x31, 0x46, 0xfe, 0xe5, 0x2b, 0xc7, 0xc8, 0x45, 0x71,
+	0xea, 0xdf, 0x8e, 0xc3, 0x4c, 0x22, 0x7c, 0x7f, 0x65, 0x21, 0xbd, 0x0d, 0x45, 0xea, 0x79, 0x06,
+	0x07, 0xcd, 0xda, 0xd0, 0xf7, 0x89, 0x0d, 0xfa, 0x47, 0x63, 0xbc, 0x48, 0x83, 0x92, 0xd3, 0xb5,
+	0xf1, 0x05, 0xdd, 0xb7, 0x5b, 0x7d, 0x5f, 0xb9, 0x3e, 0x00, 0x15, 0xf6, 0x84, 0x40, 0x01, 0xc2,
+	0x45, 0xa1, 0x77, 0x61, 0x8a, 0x7d, 0x08, 0x10, 0xff, 0xed, 0x9e, 0xaf, 0x4c, 0x06, 0x7c, 0x79,
+	0x08, 0x98, 0x64, 0x8d, 0xab, 0x86, 0xba, 0x00, 0x45, 0xb6, 0x1e, 0xa2, 0x01, 0xa3, 0xcb, 0x35,
+	0x2d, 0x86, 0xa6, 0xaf, 0xec, 0x6a, 0xad, 0xc0, 0xa4, 0x49, 0x8e, 0x5d, 0xac, 0x1b, 0x81, 0x4f,
+	0x3d, 0x61, 0x12, 0x0d, 0xeb, 0x06, 0xba, 0x01, 0xe5, 0x9a, 0x65, 0xd6, 0x4e, 0xe3, 0xe8, 0x9e,
+	0x36, 0xc5, 0x08, 0x47, 0xae, 0x85, 0x24, 0x18, 0x6f, 0x91, 0x46, 0x70, 0xb2, 0xd3, 0x4f, 0x84,
+	0xa0, 0xa8, 0xbb, 0x0d, 0xc2, 0x9f, 0x1f, 0x34, 0xf6, 0xfd, 0xdd, 0x79, 0x86, 0x55, 0xff, 0xa1,
+	0x08, 0x13, 0x3c, 0x5e, 0x72, 0x65, 0x17, 0xea, 0x2e, 0x14, 0x9b, 0x3a, 0x69, 0xf2, 0x38, 0xd8,
+	0xde, 0x4a, 0xdf, 0x57, 0x16, 0x78, 0x9f, 0x3b, 0xb6, 0xf9, 0xbc, 0x83, 0x8f, 0x83, 0x11, 0x33,
+	0x26, 0xb4, 0x08, 0xa5, 0x33, 0xdd, 0xea, 0x60, 0xb6, 0x70, 0x25, 0x8d, 0x17, 0xd0, 0x16, 0x2c,
+	0xb6, 0xf4, 0xcf, 0x85, 0x97, 0xbe, 0xe3, 0x9a, 0xd3, 0x09, 0x1c, 0xb4, 0x92, 0x86, 0x5a, 0xfa,
+	0xe7, 0xb1, 0xdd, 0x7a, 0x4c, 0x6b, 0xbe, 0xdd, 0x60, 0xc4, 0xbb, 0x43, 0x82, 0x11, 0xeb, 0x19,
+	0xc1, 0x88, 0xe9, 0x11, 0xd1, 0x87, 0x8f, 0x93, 0x86, 0xf9, 0x8b, 0xac, 0xac, 0x67, 0xb6, 0xf6,
+	0x97, 0xb7, 0xca, 0x7f, 0x53, 0x04, 0x29, 0xdd, 0xf6, 0x2a, 0x5f, 0x9f, 0x43, 0x97, 0x3c, 0x48,
+	0x5d, 0x0e, 0x8a, 0xe8, 0xe8, 0x72, 0xd7, 0xe7, 0xec, 0x44, 0xb8, 0x6f, 0xf5, 0xbe, 0xfc, 0x01,
+	0x4c, 0xf0, 0x68, 0x66, 0xe8, 0x4b, 0x64, 0x85, 0x42, 0xb3, 0xfb, 0xc5, 0x2b, 0x59, 0xbf, 0xb8,
+	0x08, 0xda, 0x2f, 0xfe, 0x95, 0x4e, 0xd0, 0x0b, 0x59, 0x73, 0xfb, 0xc5, 0x9b, 0x57, 0x0d, 0xf5,
+	0xef, 0x2a, 0x50, 0x11, 0x92, 0x14, 0xae, 0x2c, 0x36, 0xb6, 0xa0, 0xe8, 0x9d, 0xb7, 0xc3, 0x44,
+	0x9b, 0x9b, 0x43, 0x72, 0x30, 0x36, 0x0e, 0xcf, 0xdb, 0x58, 0x63, 0x9c, 0x41, 0xd6, 0x7a, 0xc3,
+	0x72, 0x4e, 0x74, 0x7e, 0x3e, 0xb0, 0xac, 0xf5, 0xf7, 0x58, 0x59, 0x84, 0x5a, 0x3d, 0x09, 0xb5,
+	0x55, 0x98, 0xd2, 0xdd, 0x46, 0x87, 0x55, 0xf1, 0xb3, 0x22, 0x2a, 0x5f, 0x01, 0x18, 0xfe, 0x71,
+	0x21, 0x91, 0xb3, 0x1c, 0xd9, 0x84, 0x10, 0x95, 0xb9, 0xde, 0xe0, 0xdd, 0xbe, 0xaf, 0xfc, 0x68,
+	0x44, 0xbe, 0x74, 0xc4, 0x49, 0x07, 0xb0, 0x90, 0x91, 0x44, 0x81, 0x9e, 0x8b, 0x11, 0x4e, 0xc1,
+	0x94, 0xc7, 0x50, 0x7e, 0xb3, 0xe7, 0x2b, 0x4b, 0x99, 0x22, 0xf3, 0x06, 0xba, 0x94, 0xa1, 0xb0,
+	0x6a, 0xa8, 0x2f, 0x4a, 0x50, 0xa4, 0x2b, 0x9f, 0xce, 0xdb, 0x98, 0x87, 0x99, 0xbd, 0xce, 0xf9,
+	0x83, 0x48, 0x95, 0x54, 0x40, 0x08, 0x66, 0xf7, 0x3a, 0xe7, 0x3b, 0x11, 0x89, 0x48, 0x63, 0x68,
+	0x01, 0xe6, 0x28, 0xdb, 0x96, 0x40, 0x1c, 0x0f, 0x88, 0xdb, 0x22, 0xb1, 0x18, 0x10, 0x77, 0x44,
+	0x62, 0x09, 0x2d, 0x03, 0x0a, 0x7a, 0x83, 0x05, 0x55, 0x80, 0x56, 0x60, 0x21, 0xa4, 0x8b, 0xfa,
+	0x2a, 0x48, 0x86, 0xc5, 0xa8, 0x81, 0x28, 0x6a, 0x5a, 0xac, 0x49, 0x68, 0x9e, 0x11, 0x6b, 0x12,
+	0xea, 0x67, 0x69, 0x9f, 0x62, 0xf5, 0x6c, 0xdb, 0x4b, 0x8b, 0x68, 0x11, 0xa4, 0x58, 0x37, 0x7f,
+	0x65, 0x91, 0x96, 0xd0, 0x12, 0xcc, 0x0b, 0x8a, 0x03, 0xf2, 0xb2, 0x48, 0xde, 0x8e, 0xc8, 0x2b,
+	0x22, 0x79, 0x27, 0x22, 0xcb, 0x89, 0xe1, 0x6e, 0x45, 0xf4, 0xeb, 0x54, 0x25, 0xc7, 0xab, 0x30,
+	0x09, 0x6b, 0x54, 0x08, 0xa7, 0x6e, 0x0b, 0x9d, 0x56, 0x62, 0xb2, 0x38, 0x33, 0xeb, 0x54, 0x76,
+	0x20, 0x43, 0x1c, 0xe3, 0x6b, 0x94, 0xfe, 0x8e, 0xee, 0x5a, 0xe7, 0xbb, 0x86, 0xd3, 0xf6, 0xb0,
+	0x7b, 0xe8, 0xb4, 0x1f, 0x6c, 0x6d, 0x49, 0x77, 0xe8, 0x14, 0x0f, 0xd2, 0xb7, 0xa4, 0xd7, 0xe9,
+	0xad, 0xfd, 0x43, 0xcb, 0x78, 0xf0, 0x31, 0xd6, 0x5d, 0x69, 0x9b, 0x76, 0xed, 0x00, 0xdb, 0xc6,
+	0x83, 0xa7, 0x1d, 0xcb, 0xd2, 0xf0, 0xf3, 0x0e, 0x26, 0x9e, 0xf4, 0x09, 0xed, 0x03, 0xa5, 0x6e,
+	0x0b, 0x54, 0x22, 0x7d, 0x1a, 0x92, 0x77, 0x12, 0xe4, 0xcf, 0x68, 0x17, 0x98, 0x8c, 0x2d, 0x4a,
+	0x77, 0x43, 0xfa, 0xef, 0xa3, 0x32, 0x94, 0x0e, 0x3c, 0xbd, 0x5e, 0x97, 0x0c, 0x34, 0x07, 0x95,
+	0xc7, 0x8e, 0xed, 0xb9, 0xe6, 0x49, 0xc7, 0x73, 0x5c, 0x89, 0xc1, 0x71, 0xaf, 0xd3, 0x78, 0xbf,
+	0x63, 0x7b, 0xd8, 0x95, 0xea, 0xb4, 0xf8, 0x53, 0xc7, 0xc0, 0xae, 0x4e, 0x6b, 0x1b, 0x74, 0xe1,
+	0xde, 0xd7, 0x6b, 0xa7, 0x87, 0x4d, 0xfc, 0xd4, 0xd2, 0xbd, 0xba, 0xe3, 0xb6, 0xa4, 0xa6, 0xfa,
+	0xdf, 0x65, 0x28, 0xee, 0x77, 0x5a, 0x6d, 0xf4, 0x28, 0x95, 0x7d, 0x36, 0x3a, 0xf9, 0x2c, 0x95,
+	0x62, 0x76, 0x2f, 0x7e, 0x99, 0x1b, 0x1f, 0xf6, 0x30, 0x17, 0x27, 0xba, 0x7d, 0x00, 0x28, 0x38,
+	0x6e, 0x44, 0x37, 0xa5, 0x98, 0xef, 0xa5, 0x68, 0xf3, 0xb5, 0x14, 0x85, 0xa0, 0x37, 0xa1, 0x12,
+	0xa7, 0xb0, 0x13, 0xb9, 0x34, 0xf8, 0x78, 0x16, 0x27, 0x3c, 0x6b, 0x22, 0x2b, 0xda, 0x83, 0x39,
+	0x33, 0xbc, 0x7f, 0x1d, 0xf3, 0x47, 0x84, 0x89, 0x9c, 0x14, 0x32, 0x6d, 0xd6, 0x14, 0x8b, 0x04,
+	0xed, 0x00, 0x44, 0x26, 0x82, 0xc8, 0x93, 0xa3, 0x7e, 0xfc, 0x25, 0x30, 0xa2, 0xf7, 0xc5, 0x1f,
+	0x96, 0x84, 0x3f, 0xdb, 0x99, 0xca, 0xfd, 0xd5, 0x8e, 0xf0, 0x9b, 0x11, 0x4e, 0x20, 0xe8, 0x67,
+	0xd9, 0x39, 0xdb, 0xe5, 0x0b, 0xa4, 0x6c, 0x67, 0x25, 0x66, 0xa3, 0x4f, 0x86, 0xbf, 0x17, 0xc1,
+	0x05, 0x9f, 0x8b, 0x86, 0x3e, 0x0a, 0x1d, 0x0e, 0x4b, 0xaf, 0xab, 0x5c, 0x28, 0x72, 0x90, 0x9d,
+	0x43, 0xc7, 0xd0, 0x94, 0xfe, 0xd5, 0x0c, 0x91, 0xa7, 0xf3, 0x7f, 0xe9, 0x27, 0xc4, 0x34, 0x02,
+	0x0a, 0x41, 0x6f, 0xa7, 0x53, 0xb0, 0x66, 0x46, 0x67, 0x60, 0xa5, 0xf3, 0xac, 0x6e, 0x87, 0xef,
+	0xdd, 0xb3, 0xc3, 0x72, 0x11, 0xf8, 0x53, 0xf6, 0xef, 0xc2, 0x34, 0x8b, 0x36, 0x85, 0x8f, 0x64,
+	0x73, 0xa3, 0x12, 0x22, 0xb4, 0x8a, 0x17, 0x7d, 0x33, 0xc0, 0xc7, 0xde, 0x3e, 0x91, 0xa5, 0x91,
+	0xaf, 0xc5, 0x22, 0x2b, 0x9d, 0xa9, 0xc1, 0x7c, 0x36, 0x79, 0x3e, 0xff, 0x79, 0x4e, 0x9b, 0x1f,
+	0x48, 0x58, 0x43, 0xef, 0x64, 0xe4, 0xa8, 0xa0, 0xdc, 0x37, 0xb8, 0x81, 0x44, 0x94, 0xdb, 0x50,
+	0xa2, 0x57, 0x52, 0x22, 0x2f, 0x0c, 0xcb, 0x19, 0x62, 0xd5, 0x54, 0xdd, 0x40, 0x9e, 0xca, 0x62,
+	0x5e, 0x9a, 0x8a, 0x36, 0xd7, 0x4d, 0x26, 0xa1, 0xa8, 0x7f, 0x5a, 0x80, 0x62, 0xd5, 0xae, 0x3b,
+	0xe8, 0x6d, 0x00, 0x4f, 0x3f, 0xb1, 0xf0, 0xb1, 0xeb, 0x74, 0x43, 0x63, 0xa7, 0x24, 0xf7, 0x7d,
+	0xdd, 0xd9, 0x38, 0xa4, 0x2c, 0x9a, 0xd3, 0x25, 0xef, 0xd8, 0x9e, 0x7b, 0xae, 0x95, 0xbd, 0xb0,
+	0xbc, 0xfa, 0x16, 0xcc, 0x26, 0x2b, 0x91, 0x04, 0xe3, 0xa7, 0xf8, 0x9c, 0xbb, 0xba, 0x1a, 0xfd,
+	0x8c, 0x2f, 0x9d, 0xd4, 0x91, 0x9d, 0x09, 0x2e, 0x9d, 0x0f, 0xc7, 0xde, 0x2c, 0xec, 0x6d, 0xbf,
+	0xe8, 0xad, 0x15, 0xbe, 0xea, 0xad, 0x15, 0xfe, 0xab, 0xb7, 0x56, 0xf8, 0xf9, 0xd7, 0x6b, 0xd7,
+	0xbe, 0xfa, 0x7a, 0xed, 0xda, 0xaf, 0xbf, 0x5e, 0xbb, 0xf6, 0x89, 0x1c, 0x76, 0xc1, 0xd2, 0x6d,
+	0x63, 0xb3, 0xe1, 0x6c, 0xb6, 0x4f, 0x1b, 0x9b, 0xed, 0xae, 0x71, 0x72, 0x32, 0xc1, 0x5c, 0xd7,
+	0x37, 0xfe, 0x2f, 0x00, 0x00, 0xff, 0xff, 0x06, 0x71, 0xb3, 0x40, 0x4c, 0x3d, 0x00, 0x00,
 }
 
-func (m *Level) Marshal() (dAtA []byte, err error) {
+func (m *Challenge) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3281,12 +3282,12 @@ func (m *Level) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Level) MarshalTo(dAtA []byte) (int, error) {
+func (m *Challenge) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Level) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Challenge) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3403,7 +3404,7 @@ func (m *Level) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *LevelList) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3413,12 +3414,12 @@ func (m *LevelList) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *LevelList) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeList) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *LevelList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3440,7 +3441,7 @@ func (m *LevelList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *LevelVersion) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeVersion) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3450,12 +3451,12 @@ func (m *LevelVersion) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *LevelVersion) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeVersion) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *LevelVersion) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeVersion) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3476,18 +3477,18 @@ func (m *LevelVersion) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0xd2
 		}
 	}
-	if len(m.LevelID) > 0 {
-		i -= len(m.LevelID)
-		copy(dAtA[i:], m.LevelID)
-		i = encodeVarintPwdb(dAtA, i, uint64(len(m.LevelID)))
+	if len(m.ChallengeID) > 0 {
+		i -= len(m.ChallengeID)
+		copy(dAtA[i:], m.ChallengeID)
+		i = encodeVarintPwdb(dAtA, i, uint64(len(m.ChallengeID)))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xca
 	}
-	if m.Level != nil {
+	if m.Challenge != nil {
 		{
-			size, err := m.Level.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Challenge.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -3587,7 +3588,7 @@ func (m *LevelVersion) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *LevelFlavor) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeFlavor) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3597,12 +3598,12 @@ func (m *LevelFlavor) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *LevelFlavor) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeFlavor) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *LevelFlavor) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeFlavor) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3623,18 +3624,18 @@ func (m *LevelFlavor) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0xd2
 		}
 	}
-	if len(m.LevelVersionID) > 0 {
-		i -= len(m.LevelVersionID)
-		copy(dAtA[i:], m.LevelVersionID)
-		i = encodeVarintPwdb(dAtA, i, uint64(len(m.LevelVersionID)))
+	if len(m.ChallengeVersionID) > 0 {
+		i -= len(m.ChallengeVersionID)
+		copy(dAtA[i:], m.ChallengeVersionID)
+		i = encodeVarintPwdb(dAtA, i, uint64(len(m.ChallengeVersionID)))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xca
 	}
-	if m.LevelVersion != nil {
+	if m.ChallengeVersion != nil {
 		{
-			size, err := m.LevelVersion.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.ChallengeVersion.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -3676,7 +3677,7 @@ func (m *LevelFlavor) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *LevelInstance) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeInstance) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3686,12 +3687,12 @@ func (m *LevelInstance) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *LevelInstance) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeInstance) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *LevelInstance) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeInstance) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3799,10 +3800,10 @@ func (m *Hypervisor) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.LevelInstances) > 0 {
-		for iNdEx := len(m.LevelInstances) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.ChallengeInstances) > 0 {
+		for iNdEx := len(m.ChallengeInstances) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.LevelInstances[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.ChallengeInstances[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -3993,10 +3994,10 @@ func (m *TournamentMember) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.LevelValidations) > 0 {
-		for iNdEx := len(m.LevelValidations) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.ChallengeValidations) > 0 {
+		for iNdEx := len(m.ChallengeValidations) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.LevelValidations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.ChallengeValidations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -4750,10 +4751,10 @@ func (m *TournamentTeam) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0xf2
 		}
 	}
-	if len(m.LevelSubscriptions) > 0 {
-		for iNdEx := len(m.LevelSubscriptions) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.ChallengeSubscriptions) > 0 {
+		for iNdEx := len(m.ChallengeSubscriptions) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.LevelSubscriptions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.ChallengeSubscriptions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -5022,7 +5023,7 @@ func (m *WhoswhoAttempt) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *LevelValidation) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeValidation) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -5032,12 +5033,12 @@ func (m *LevelValidation) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *LevelValidation) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeValidation) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *LevelValidation) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeValidation) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -5065,18 +5066,18 @@ func (m *LevelValidation) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0xd2
 	}
-	if len(m.LevelSubscriptionID) > 0 {
-		i -= len(m.LevelSubscriptionID)
-		copy(dAtA[i:], m.LevelSubscriptionID)
-		i = encodeVarintPwdb(dAtA, i, uint64(len(m.LevelSubscriptionID)))
+	if len(m.ChallengeSubscriptionID) > 0 {
+		i -= len(m.ChallengeSubscriptionID)
+		copy(dAtA[i:], m.ChallengeSubscriptionID)
+		i = encodeVarintPwdb(dAtA, i, uint64(len(m.ChallengeSubscriptionID)))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xca
 	}
-	if m.LevelSubscription != nil {
+	if m.ChallengeSubscription != nil {
 		{
-			size, err := m.LevelSubscription.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.ChallengeSubscription.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -5143,7 +5144,7 @@ func (m *LevelValidation) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *LevelSubscription) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeSubscription) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -5153,12 +5154,12 @@ func (m *LevelSubscription) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *LevelSubscription) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeSubscription) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *LevelSubscription) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeSubscription) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -5179,18 +5180,18 @@ func (m *LevelSubscription) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0xe2
 		}
 	}
-	if len(m.LevelFlavorID) > 0 {
-		i -= len(m.LevelFlavorID)
-		copy(dAtA[i:], m.LevelFlavorID)
-		i = encodeVarintPwdb(dAtA, i, uint64(len(m.LevelFlavorID)))
+	if len(m.ChallengeFlavorID) > 0 {
+		i -= len(m.ChallengeFlavorID)
+		copy(dAtA[i:], m.ChallengeFlavorID)
+		i = encodeVarintPwdb(dAtA, i, uint64(len(m.ChallengeFlavorID)))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xda
 	}
-	if m.LevelFlavor != nil {
+	if m.ChallengeFlavor != nil {
 		{
-			size, err := m.LevelFlavor.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.ChallengeFlavor.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -5684,18 +5685,18 @@ func (m *Achievement) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.LevelValidationID) > 0 {
-		i -= len(m.LevelValidationID)
-		copy(dAtA[i:], m.LevelValidationID)
-		i = encodeVarintPwdb(dAtA, i, uint64(len(m.LevelValidationID)))
+	if len(m.ChallengeValidationID) > 0 {
+		i -= len(m.ChallengeValidationID)
+		copy(dAtA[i:], m.ChallengeValidationID)
+		i = encodeVarintPwdb(dAtA, i, uint64(len(m.ChallengeValidationID)))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xda
 	}
-	if m.LevelValidation != nil {
+	if m.ChallengeValidation != nil {
 		{
-			size, err := m.LevelValidation.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.ChallengeValidation.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -5939,10 +5940,10 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0x6a
 		}
 	}
-	if len(m.LevelVersions) > 0 {
-		for iNdEx := len(m.LevelVersions) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.ChallengeVersions) > 0 {
+		for iNdEx := len(m.ChallengeVersions) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.LevelVersions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.ChallengeVersions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -5953,10 +5954,10 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0x62
 		}
 	}
-	if len(m.LevelValidations) > 0 {
-		for iNdEx := len(m.LevelValidations) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.ChallengeValidations) > 0 {
+		for iNdEx := len(m.ChallengeValidations) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.LevelValidations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.ChallengeValidations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -5967,10 +5968,10 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0x5a
 		}
 	}
-	if len(m.LevelSubscriptions) > 0 {
-		for iNdEx := len(m.LevelSubscriptions) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.ChallengeSubscriptions) > 0 {
+		for iNdEx := len(m.ChallengeSubscriptions) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.LevelSubscriptions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.ChallengeSubscriptions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -5981,10 +5982,10 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0x52
 		}
 	}
-	if len(m.LevelInstances) > 0 {
-		for iNdEx := len(m.LevelInstances) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.ChallengeInstances) > 0 {
+		for iNdEx := len(m.ChallengeInstances) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.LevelInstances[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.ChallengeInstances[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -5995,10 +5996,10 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0x4a
 		}
 	}
-	if len(m.LevelFlavors) > 0 {
-		for iNdEx := len(m.LevelFlavors) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.ChallengeFlavors) > 0 {
+		for iNdEx := len(m.ChallengeFlavors) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.LevelFlavors[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.ChallengeFlavors[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -6009,10 +6010,10 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0x42
 		}
 	}
-	if len(m.Levels) > 0 {
-		for iNdEx := len(m.Levels) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.Challenges) > 0 {
+		for iNdEx := len(m.Challenges) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.Levels[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.Challenges[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -6147,7 +6148,7 @@ func encodeVarintPwdb(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *Level) Size() (n int) {
+func (m *Challenge) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -6201,7 +6202,7 @@ func (m *Level) Size() (n int) {
 	return n
 }
 
-func (m *LevelList) Size() (n int) {
+func (m *ChallengeList) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -6216,7 +6217,7 @@ func (m *LevelList) Size() (n int) {
 	return n
 }
 
-func (m *LevelVersion) Size() (n int) {
+func (m *ChallengeVersion) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -6255,11 +6256,11 @@ func (m *LevelVersion) Size() (n int) {
 	if m.Driver != 0 {
 		n += 2 + sovPwdb(uint64(m.Driver))
 	}
-	if m.Level != nil {
-		l = m.Level.Size()
+	if m.Challenge != nil {
+		l = m.Challenge.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	l = len(m.LevelID)
+	l = len(m.ChallengeID)
 	if l > 0 {
 		n += 2 + l + sovPwdb(uint64(l))
 	}
@@ -6272,7 +6273,7 @@ func (m *LevelVersion) Size() (n int) {
 	return n
 }
 
-func (m *LevelFlavor) Size() (n int) {
+func (m *ChallengeFlavor) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -6290,11 +6291,11 @@ func (m *LevelFlavor) Size() (n int) {
 		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.UpdatedAt)
 		n += 1 + l + sovPwdb(uint64(l))
 	}
-	if m.LevelVersion != nil {
-		l = m.LevelVersion.Size()
+	if m.ChallengeVersion != nil {
+		l = m.ChallengeVersion.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	l = len(m.LevelVersionID)
+	l = len(m.ChallengeVersionID)
 	if l > 0 {
 		n += 2 + l + sovPwdb(uint64(l))
 	}
@@ -6307,7 +6308,7 @@ func (m *LevelFlavor) Size() (n int) {
 	return n
 }
 
-func (m *LevelInstance) Size() (n int) {
+func (m *ChallengeInstance) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -6376,8 +6377,8 @@ func (m *Hypervisor) Size() (n int) {
 	if m.Status != 0 {
 		n += 2 + sovPwdb(uint64(m.Status))
 	}
-	if len(m.LevelInstances) > 0 {
-		for _, e := range m.LevelInstances {
+	if len(m.ChallengeInstances) > 0 {
+		for _, e := range m.ChallengeInstances {
 			l = e.Size()
 			n += 2 + l + sovPwdb(uint64(l))
 		}
@@ -6492,8 +6493,8 @@ func (m *TournamentMember) Size() (n int) {
 			n += 2 + l + sovPwdb(uint64(l))
 		}
 	}
-	if len(m.LevelValidations) > 0 {
-		for _, e := range m.LevelValidations {
+	if len(m.ChallengeValidations) > 0 {
+		for _, e := range m.ChallengeValidations {
 			l = e.Size()
 			n += 2 + l + sovPwdb(uint64(l))
 		}
@@ -6755,8 +6756,8 @@ func (m *TournamentTeam) Size() (n int) {
 	if l > 0 {
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if len(m.LevelSubscriptions) > 0 {
-		for _, e := range m.LevelSubscriptions {
+	if len(m.ChallengeSubscriptions) > 0 {
+		for _, e := range m.ChallengeSubscriptions {
 			l = e.Size()
 			n += 2 + l + sovPwdb(uint64(l))
 		}
@@ -6833,7 +6834,7 @@ func (m *WhoswhoAttempt) Size() (n int) {
 	return n
 }
 
-func (m *LevelValidation) Size() (n int) {
+func (m *ChallengeValidation) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -6862,11 +6863,11 @@ func (m *LevelValidation) Size() (n int) {
 	if l > 0 {
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if m.LevelSubscription != nil {
-		l = m.LevelSubscription.Size()
+	if m.ChallengeSubscription != nil {
+		l = m.ChallengeSubscription.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	l = len(m.LevelSubscriptionID)
+	l = len(m.ChallengeSubscriptionID)
 	if l > 0 {
 		n += 2 + l + sovPwdb(uint64(l))
 	}
@@ -6881,7 +6882,7 @@ func (m *LevelValidation) Size() (n int) {
 	return n
 }
 
-func (m *LevelSubscription) Size() (n int) {
+func (m *ChallengeSubscription) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -6907,11 +6908,11 @@ func (m *LevelSubscription) Size() (n int) {
 	if l > 0 {
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if m.LevelFlavor != nil {
-		l = m.LevelFlavor.Size()
+	if m.ChallengeFlavor != nil {
+		l = m.ChallengeFlavor.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	l = len(m.LevelFlavorID)
+	l = len(m.ChallengeFlavorID)
 	if l > 0 {
 		n += 2 + l + sovPwdb(uint64(l))
 	}
@@ -7126,11 +7127,11 @@ func (m *Achievement) Size() (n int) {
 	if l > 0 {
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if m.LevelValidation != nil {
-		l = m.LevelValidation.Size()
+	if m.ChallengeValidation != nil {
+		l = m.ChallengeValidation.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	l = len(m.LevelValidationID)
+	l = len(m.ChallengeValidationID)
 	if l > 0 {
 		n += 2 + l + sovPwdb(uint64(l))
 	}
@@ -7173,38 +7174,38 @@ func (m *Dump) Size() (n int) {
 			n += 1 + l + sovPwdb(uint64(l))
 		}
 	}
-	if len(m.Levels) > 0 {
-		for _, e := range m.Levels {
+	if len(m.Challenges) > 0 {
+		for _, e := range m.Challenges {
 			l = e.Size()
 			n += 1 + l + sovPwdb(uint64(l))
 		}
 	}
-	if len(m.LevelFlavors) > 0 {
-		for _, e := range m.LevelFlavors {
+	if len(m.ChallengeFlavors) > 0 {
+		for _, e := range m.ChallengeFlavors {
 			l = e.Size()
 			n += 1 + l + sovPwdb(uint64(l))
 		}
 	}
-	if len(m.LevelInstances) > 0 {
-		for _, e := range m.LevelInstances {
+	if len(m.ChallengeInstances) > 0 {
+		for _, e := range m.ChallengeInstances {
 			l = e.Size()
 			n += 1 + l + sovPwdb(uint64(l))
 		}
 	}
-	if len(m.LevelSubscriptions) > 0 {
-		for _, e := range m.LevelSubscriptions {
+	if len(m.ChallengeSubscriptions) > 0 {
+		for _, e := range m.ChallengeSubscriptions {
 			l = e.Size()
 			n += 1 + l + sovPwdb(uint64(l))
 		}
 	}
-	if len(m.LevelValidations) > 0 {
-		for _, e := range m.LevelValidations {
+	if len(m.ChallengeValidations) > 0 {
+		for _, e := range m.ChallengeValidations {
 			l = e.Size()
 			n += 1 + l + sovPwdb(uint64(l))
 		}
 	}
-	if len(m.LevelVersions) > 0 {
-		for _, e := range m.LevelVersions {
+	if len(m.ChallengeVersions) > 0 {
+		for _, e := range m.ChallengeVersions {
 			l = e.Size()
 			n += 1 + l + sovPwdb(uint64(l))
 		}
@@ -7283,7 +7284,7 @@ func sovPwdb(x uint64) (n int) {
 func sozPwdb(x uint64) (n int) {
 	return sovPwdb(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *Level) Unmarshal(dAtA []byte) error {
+func (m *Challenge) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -7306,10 +7307,10 @@ func (m *Level) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Level: wiretype end group for non-group")
+			return fmt.Errorf("proto: Challenge: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Level: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Challenge: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -7657,7 +7658,7 @@ func (m *Level) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Versions = append(m.Versions, &LevelVersion{})
+			m.Versions = append(m.Versions, &ChallengeVersion{})
 			if err := m.Versions[len(m.Versions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7686,7 +7687,7 @@ func (m *Level) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *LevelList) Unmarshal(dAtA []byte) error {
+func (m *ChallengeList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -7709,10 +7710,10 @@ func (m *LevelList) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: LevelList: wiretype end group for non-group")
+			return fmt.Errorf("proto: ChallengeList: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: LevelList: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ChallengeList: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -7744,7 +7745,7 @@ func (m *LevelList) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Items = append(m.Items, &Level{})
+			m.Items = append(m.Items, &Challenge{})
 			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -7773,7 +7774,7 @@ func (m *LevelList) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *LevelVersion) Unmarshal(dAtA []byte) error {
+func (m *ChallengeVersion) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -7796,10 +7797,10 @@ func (m *LevelVersion) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: LevelVersion: wiretype end group for non-group")
+			return fmt.Errorf("proto: ChallengeVersion: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: LevelVersion: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ChallengeVersion: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -8056,14 +8057,14 @@ func (m *LevelVersion) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Driver |= LevelVersion_Driver(b&0x7F) << shift
+				m.Driver |= ChallengeVersion_Driver(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 200:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Level", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Challenge", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -8090,16 +8091,16 @@ func (m *LevelVersion) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Level == nil {
-				m.Level = &Level{}
+			if m.Challenge == nil {
+				m.Challenge = &Challenge{}
 			}
-			if err := m.Level.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Challenge.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 201:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeID", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -8127,7 +8128,7 @@ func (m *LevelVersion) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelID = string(dAtA[iNdEx:postIndex])
+			m.ChallengeID = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 202:
 			if wireType != 2 {
@@ -8158,7 +8159,7 @@ func (m *LevelVersion) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Flavors = append(m.Flavors, &LevelFlavor{})
+			m.Flavors = append(m.Flavors, &ChallengeFlavor{})
 			if err := m.Flavors[len(m.Flavors)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8187,7 +8188,7 @@ func (m *LevelVersion) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *LevelFlavor) Unmarshal(dAtA []byte) error {
+func (m *ChallengeFlavor) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -8210,10 +8211,10 @@ func (m *LevelFlavor) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: LevelFlavor: wiretype end group for non-group")
+			return fmt.Errorf("proto: ChallengeFlavor: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: LevelFlavor: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ChallengeFlavor: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -8322,7 +8323,7 @@ func (m *LevelFlavor) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 200:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelVersion", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeVersion", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -8349,16 +8350,16 @@ func (m *LevelFlavor) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.LevelVersion == nil {
-				m.LevelVersion = &Level{}
+			if m.ChallengeVersion == nil {
+				m.ChallengeVersion = &Challenge{}
 			}
-			if err := m.LevelVersion.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.ChallengeVersion.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 201:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelVersionID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeVersionID", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -8386,7 +8387,7 @@ func (m *LevelFlavor) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelVersionID = string(dAtA[iNdEx:postIndex])
+			m.ChallengeVersionID = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 202:
 			if wireType != 2 {
@@ -8417,7 +8418,7 @@ func (m *LevelFlavor) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Instances = append(m.Instances, &LevelInstance{})
+			m.Instances = append(m.Instances, &ChallengeInstance{})
 			if err := m.Instances[len(m.Instances)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -8446,7 +8447,7 @@ func (m *LevelFlavor) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *LevelInstance) Unmarshal(dAtA []byte) error {
+func (m *ChallengeInstance) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -8469,10 +8470,10 @@ func (m *LevelInstance) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: LevelInstance: wiretype end group for non-group")
+			return fmt.Errorf("proto: ChallengeInstance: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: LevelInstance: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ChallengeInstance: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -8593,7 +8594,7 @@ func (m *LevelInstance) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Status |= LevelInstance_Status(b&0x7F) << shift
+				m.Status |= ChallengeInstance_Status(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -8696,7 +8697,7 @@ func (m *LevelInstance) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Flavor == nil {
-				m.Flavor = &LevelFlavor{}
+				m.Flavor = &ChallengeFlavor{}
 			}
 			if err := m.Flavor.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -8976,7 +8977,7 @@ func (m *Hypervisor) Unmarshal(dAtA []byte) error {
 			}
 		case 200:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelInstances", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeInstances", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -9003,8 +9004,8 @@ func (m *Hypervisor) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelInstances = append(m.LevelInstances, &LevelInstance{})
-			if err := m.LevelInstances[len(m.LevelInstances)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.ChallengeInstances = append(m.ChallengeInstances, &ChallengeInstance{})
+			if err := m.ChallengeInstances[len(m.ChallengeInstances)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -9804,7 +9805,7 @@ func (m *TournamentMember) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 209:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelValidations", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeValidations", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -9831,8 +9832,8 @@ func (m *TournamentMember) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelValidations = append(m.LevelValidations, &LevelValidation{})
-			if err := m.LevelValidations[len(m.LevelValidations)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.ChallengeValidations = append(m.ChallengeValidations, &ChallengeValidation{})
+			if err := m.ChallengeValidations[len(m.ChallengeValidations)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -11637,7 +11638,7 @@ func (m *TournamentTeam) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 205:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelSubscriptions", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeSubscriptions", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -11664,8 +11665,8 @@ func (m *TournamentTeam) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelSubscriptions = append(m.LevelSubscriptions, &LevelSubscription{})
-			if err := m.LevelSubscriptions[len(m.LevelSubscriptions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.ChallengeSubscriptions = append(m.ChallengeSubscriptions, &ChallengeSubscription{})
+			if err := m.ChallengeSubscriptions[len(m.ChallengeSubscriptions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -12195,7 +12196,7 @@ func (m *WhoswhoAttempt) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *LevelValidation) Unmarshal(dAtA []byte) error {
+func (m *ChallengeValidation) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -12218,10 +12219,10 @@ func (m *LevelValidation) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: LevelValidation: wiretype end group for non-group")
+			return fmt.Errorf("proto: ChallengeValidation: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: LevelValidation: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ChallengeValidation: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -12342,7 +12343,7 @@ func (m *LevelValidation) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Status |= LevelValidation_Status(b&0x7F) << shift
+				m.Status |= ChallengeValidation_Status(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -12413,7 +12414,7 @@ func (m *LevelValidation) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 200:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelSubscription", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeSubscription", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -12440,16 +12441,16 @@ func (m *LevelValidation) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.LevelSubscription == nil {
-				m.LevelSubscription = &LevelSubscription{}
+			if m.ChallengeSubscription == nil {
+				m.ChallengeSubscription = &ChallengeSubscription{}
 			}
-			if err := m.LevelSubscription.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.ChallengeSubscription.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 201:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelSubscriptionID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeSubscriptionID", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -12477,7 +12478,7 @@ func (m *LevelValidation) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelSubscriptionID = string(dAtA[iNdEx:postIndex])
+			m.ChallengeSubscriptionID = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 202:
 			if wireType != 2 {
@@ -12571,7 +12572,7 @@ func (m *LevelValidation) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *LevelSubscription) Unmarshal(dAtA []byte) error {
+func (m *ChallengeSubscription) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -12594,10 +12595,10 @@ func (m *LevelSubscription) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: LevelSubscription: wiretype end group for non-group")
+			return fmt.Errorf("proto: ChallengeSubscription: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: LevelSubscription: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ChallengeSubscription: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -12774,7 +12775,7 @@ func (m *LevelSubscription) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 202:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelFlavor", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeFlavor", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -12801,16 +12802,16 @@ func (m *LevelSubscription) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.LevelFlavor == nil {
-				m.LevelFlavor = &LevelFlavor{}
+			if m.ChallengeFlavor == nil {
+				m.ChallengeFlavor = &ChallengeFlavor{}
 			}
-			if err := m.LevelFlavor.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.ChallengeFlavor.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 203:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelFlavorID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeFlavorID", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -12838,7 +12839,7 @@ func (m *LevelSubscription) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelFlavorID = string(dAtA[iNdEx:postIndex])
+			m.ChallengeFlavorID = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 204:
 			if wireType != 2 {
@@ -12869,7 +12870,7 @@ func (m *LevelSubscription) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Validations = append(m.Validations, &LevelValidation{})
+			m.Validations = append(m.Validations, &ChallengeValidation{})
 			if err := m.Validations[len(m.Validations)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -14443,7 +14444,7 @@ func (m *Achievement) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 202:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelValidation", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeValidation", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -14470,16 +14471,16 @@ func (m *Achievement) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.LevelValidation == nil {
-				m.LevelValidation = &LevelValidation{}
+			if m.ChallengeValidation == nil {
+				m.ChallengeValidation = &ChallengeValidation{}
 			}
-			if err := m.LevelValidation.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.ChallengeValidation.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 203:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelValidationID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeValidationID", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -14507,7 +14508,7 @@ func (m *Achievement) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelValidationID = string(dAtA[iNdEx:postIndex])
+			m.ChallengeValidationID = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -14734,7 +14735,7 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Levels", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Challenges", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -14761,14 +14762,14 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Levels = append(m.Levels, &Level{})
-			if err := m.Levels[len(m.Levels)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.Challenges = append(m.Challenges, &Challenge{})
+			if err := m.Challenges[len(m.Challenges)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 8:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelFlavors", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeFlavors", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -14795,14 +14796,14 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelFlavors = append(m.LevelFlavors, &LevelFlavor{})
-			if err := m.LevelFlavors[len(m.LevelFlavors)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.ChallengeFlavors = append(m.ChallengeFlavors, &ChallengeFlavor{})
+			if err := m.ChallengeFlavors[len(m.ChallengeFlavors)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 9:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelInstances", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeInstances", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -14829,14 +14830,14 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelInstances = append(m.LevelInstances, &LevelInstance{})
-			if err := m.LevelInstances[len(m.LevelInstances)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.ChallengeInstances = append(m.ChallengeInstances, &ChallengeInstance{})
+			if err := m.ChallengeInstances[len(m.ChallengeInstances)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 10:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelSubscriptions", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeSubscriptions", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -14863,14 +14864,14 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelSubscriptions = append(m.LevelSubscriptions, &LevelSubscription{})
-			if err := m.LevelSubscriptions[len(m.LevelSubscriptions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.ChallengeSubscriptions = append(m.ChallengeSubscriptions, &ChallengeSubscription{})
+			if err := m.ChallengeSubscriptions[len(m.ChallengeSubscriptions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 11:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelValidations", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeValidations", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -14897,14 +14898,14 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelValidations = append(m.LevelValidations, &LevelValidation{})
-			if err := m.LevelValidations[len(m.LevelValidations)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.ChallengeValidations = append(m.ChallengeValidations, &ChallengeValidation{})
+			if err := m.ChallengeValidations[len(m.ChallengeValidations)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 12:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LevelVersions", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeVersions", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -14931,8 +14932,8 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.LevelVersions = append(m.LevelVersions, &LevelVersion{})
-			if err := m.LevelVersions[len(m.LevelVersions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.ChallengeVersions = append(m.ChallengeVersions, &ChallengeVersion{})
+			if err := m.ChallengeVersions[len(m.ChallengeVersions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
