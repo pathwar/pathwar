@@ -3,17 +3,17 @@ basePath: /
 consumes:
 - application/json
 definitions:
-  InventoryItemItem:
-    default: Unknown
-    enum:
-    - Unknown
-    type: string
-  LevelVersionDriver:
+  ChallengeVersionDriver:
     default: Unknown
     enum:
     - Unknown
     - Docker
     - DockerCompose
+    type: string
+  InventoryItemItem:
+    default: Unknown
+    enum:
+    - Unknown
     type: string
   TournamentVisibility:
     default: UnknownVisibility
@@ -41,6 +41,10 @@ definitions:
         $ref: '#/definitions/dbTournamentMember'
       author_id:
         type: string
+      challenge_validation:
+        $ref: '#/definitions/dbChallengeValidation'
+      challenge_validation_id:
+        type: string
       comment:
         type: string
       created_at:
@@ -51,10 +55,6 @@ definitions:
       is_global:
         format: boolean
         type: boolean
-      level_validation:
-        $ref: '#/definitions/dbLevelValidation'
-      level_validation_id:
-        type: string
       type:
         $ref: '#/definitions/dbAchievementType'
       updated_at:
@@ -65,26 +65,26 @@ definitions:
     default: Undefined
     enum:
     - Undefined
-    - Buy1Level
-    - Buy5Levels
-    - Buy10Levels
-    - Buy20Levels
-    - Buy50Levels
-    - Validate1Level
-    - Validate5Levels
-    - Validate10Levels
-    - Validate20Levels
-    - Validate50Levels
+    - Buy1Challenge
+    - Buy5Challenges
+    - Buy10Challenges
+    - Buy20Challenges
+    - Buy50Challenges
+    - Validate1Challenge
+    - Validate5Challenges
+    - Validate10Challenges
+    - Validate20Challenges
+    - Validate50Challenges
     - Validate1Coupon
     - Validate5Coupons
     - Validate10Coupons
     - Validate20Coupons
     - Validate50Coupons
     - Validate100Coupons
-    - Author1Level
-    - Author2Levels
-    - Author5Levels
-    - Author10Levels
+    - Author1Challenge
+    - Author2Challenges
+    - Author5Challenges
+    - Author10Challenges
     - EarlyAdopterTop100
     - EarlyAdopterTop1000
     - Old1Year
@@ -99,6 +99,182 @@ definitions:
     - HackThePlatform
     title: fields
     type: string
+  dbChallenge:
+    properties:
+      author:
+        type: string
+      created_at:
+        format: date-time
+        type: string
+      description:
+        type: string
+      homepage:
+        title: repeated string tags = ;
+        type: string
+      id:
+        type: string
+      is_draft:
+        format: boolean
+        type: boolean
+      locale:
+        title: AuthorProfile
+        type: string
+      name:
+        type: string
+      preview_url:
+        type: string
+      updated_at:
+        format: date-time
+        type: string
+      versions:
+        items:
+          $ref: '#/definitions/dbChallengeVersion'
+        type: array
+    type: object
+  dbChallengeFlavor:
+    properties:
+      challenge_version:
+        $ref: '#/definitions/dbChallenge'
+      challenge_version_id:
+        type: string
+      created_at:
+        format: date-time
+        type: string
+      id:
+        type: string
+      instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
+      updated_at:
+        format: date-time
+        type: string
+    type: object
+  dbChallengeInstance:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+      flavor:
+        $ref: '#/definitions/dbChallengeFlavor'
+      flavor_id:
+        type: string
+      hypervisor:
+        $ref: '#/definitions/dbHypervisor'
+      hypervisor_id:
+        type: string
+      id:
+        type: string
+      status:
+        $ref: '#/definitions/dbChallengeInstanceStatus'
+      updated_at:
+        format: date-time
+        type: string
+    type: object
+  dbChallengeInstanceStatus:
+    default: Unknown
+    enum:
+    - Unknown
+    - Active
+    - Inactive
+    type: string
+  dbChallengeList:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbChallenge'
+        type: array
+    type: object
+  dbChallengeSubscription:
+    properties:
+      challenge_flavor:
+        $ref: '#/definitions/dbChallengeFlavor'
+      challenge_flavor_id:
+        type: string
+      created_at:
+        format: date-time
+        type: string
+      id:
+        type: string
+      tournament_team:
+        $ref: '#/definitions/dbTournamentTeam'
+      tournament_team_id:
+        type: string
+      updated_at:
+        format: date-time
+        type: string
+      validations:
+        items:
+          $ref: '#/definitions/dbChallengeValidation'
+        type: array
+    type: object
+  dbChallengeValidation:
+    properties:
+      author_comment:
+        type: string
+      challenge_subscription:
+        $ref: '#/definitions/dbChallengeSubscription'
+      challenge_subscription_id:
+        type: string
+      corrector_comment:
+        type: string
+      created_at:
+        format: date-time
+        type: string
+      id:
+        type: string
+      status:
+        $ref: '#/definitions/dbChallengeValidationStatus'
+      tournament_member:
+        $ref: '#/definitions/dbTournamentMember'
+      tournament_member_id:
+        type: string
+      updated_at:
+        format: date-time
+        type: string
+    type: object
+  dbChallengeValidationStatus:
+    default: Unknown
+    enum:
+    - Unknown
+    - Sent
+    - Accepted
+    - Refused
+    - AutoAccepted
+    type: string
+  dbChallengeVersion:
+    properties:
+      challenge:
+        $ref: '#/definitions/dbChallenge'
+      challenge_id:
+        type: string
+      changelog:
+        type: string
+      created_at:
+        format: date-time
+        type: string
+      driver:
+        $ref: '#/definitions/ChallengeVersionDriver'
+      flavors:
+        items:
+          $ref: '#/definitions/dbChallengeFlavor'
+        type: array
+      id:
+        type: string
+      is_draft:
+        format: boolean
+        type: boolean
+      is_latest:
+        format: boolean
+        type: boolean
+      source_url:
+        type: string
+      updated_at:
+        format: date-time
+        type: string
+      version:
+        type: string
+    type: object
   dbCoupon:
     properties:
       created_at:
@@ -157,6 +333,30 @@ definitions:
         items:
           $ref: '#/definitions/dbAchievement'
         type: array
+      challenge_flavors:
+        items:
+          $ref: '#/definitions/dbChallengeFlavor'
+        type: array
+      challenge_instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
+      challenge_subscriptions:
+        items:
+          $ref: '#/definitions/dbChallengeSubscription'
+        type: array
+      challenge_validations:
+        items:
+          $ref: '#/definitions/dbChallengeValidation'
+        type: array
+      challenge_versions:
+        items:
+          $ref: '#/definitions/dbChallengeVersion'
+        type: array
+      challenges:
+        items:
+          $ref: '#/definitions/dbChallenge'
+        type: array
       coupon_validations:
         items:
           $ref: '#/definitions/dbCouponValidation'
@@ -172,30 +372,6 @@ definitions:
       inventory_items:
         items:
           $ref: '#/definitions/dbInventoryItem'
-        type: array
-      level_flavors:
-        items:
-          $ref: '#/definitions/dbLevelFlavor'
-        type: array
-      level_instances:
-        items:
-          $ref: '#/definitions/dbLevelInstance'
-        type: array
-      level_subscriptions:
-        items:
-          $ref: '#/definitions/dbLevelSubscription'
-        type: array
-      level_validations:
-        items:
-          $ref: '#/definitions/dbLevelValidation'
-        type: array
-      level_versions:
-        items:
-          $ref: '#/definitions/dbLevelVersion'
-        type: array
-      levels:
-        items:
-          $ref: '#/definitions/dbLevel'
         type: array
       notifications:
         items:
@@ -234,15 +410,15 @@ definitions:
     properties:
       address:
         type: string
+      challenge_instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
       created_at:
         format: date-time
         type: string
       id:
         type: string
-      level_instances:
-        items:
-          $ref: '#/definitions/dbLevelInstance'
-        type: array
       name:
         type: string
       status:
@@ -273,182 +449,6 @@ definitions:
         type: string
       updated_at:
         format: date-time
-        type: string
-    type: object
-  dbLevel:
-    properties:
-      author:
-        type: string
-      created_at:
-        format: date-time
-        type: string
-      description:
-        type: string
-      homepage:
-        title: repeated string tags = ;
-        type: string
-      id:
-        type: string
-      is_draft:
-        format: boolean
-        type: boolean
-      locale:
-        title: AuthorProfile
-        type: string
-      name:
-        type: string
-      preview_url:
-        type: string
-      updated_at:
-        format: date-time
-        type: string
-      versions:
-        items:
-          $ref: '#/definitions/dbLevelVersion'
-        type: array
-    type: object
-  dbLevelFlavor:
-    properties:
-      created_at:
-        format: date-time
-        type: string
-      id:
-        type: string
-      instances:
-        items:
-          $ref: '#/definitions/dbLevelInstance'
-        type: array
-      level_version:
-        $ref: '#/definitions/dbLevel'
-      level_version_id:
-        type: string
-      updated_at:
-        format: date-time
-        type: string
-    type: object
-  dbLevelInstance:
-    properties:
-      created_at:
-        format: date-time
-        type: string
-      flavor:
-        $ref: '#/definitions/dbLevelFlavor'
-      flavor_id:
-        type: string
-      hypervisor:
-        $ref: '#/definitions/dbHypervisor'
-      hypervisor_id:
-        type: string
-      id:
-        type: string
-      status:
-        $ref: '#/definitions/dbLevelInstanceStatus'
-      updated_at:
-        format: date-time
-        type: string
-    type: object
-  dbLevelInstanceStatus:
-    default: Unknown
-    enum:
-    - Unknown
-    - Active
-    - Inactive
-    type: string
-  dbLevelList:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/dbLevel'
-        type: array
-    type: object
-  dbLevelSubscription:
-    properties:
-      created_at:
-        format: date-time
-        type: string
-      id:
-        type: string
-      level_flavor:
-        $ref: '#/definitions/dbLevelFlavor'
-      level_flavor_id:
-        type: string
-      tournament_team:
-        $ref: '#/definitions/dbTournamentTeam'
-      tournament_team_id:
-        type: string
-      updated_at:
-        format: date-time
-        type: string
-      validations:
-        items:
-          $ref: '#/definitions/dbLevelValidation'
-        type: array
-    type: object
-  dbLevelValidation:
-    properties:
-      author_comment:
-        type: string
-      corrector_comment:
-        type: string
-      created_at:
-        format: date-time
-        type: string
-      id:
-        type: string
-      level_subscription:
-        $ref: '#/definitions/dbLevelSubscription'
-      level_subscription_id:
-        type: string
-      status:
-        $ref: '#/definitions/dbLevelValidationStatus'
-      tournament_member:
-        $ref: '#/definitions/dbTournamentMember'
-      tournament_member_id:
-        type: string
-      updated_at:
-        format: date-time
-        type: string
-    type: object
-  dbLevelValidationStatus:
-    default: Unknown
-    enum:
-    - Unknown
-    - Sent
-    - Accepted
-    - Refused
-    - AutoAccepted
-    type: string
-  dbLevelVersion:
-    properties:
-      changelog:
-        type: string
-      created_at:
-        format: date-time
-        type: string
-      driver:
-        $ref: '#/definitions/LevelVersionDriver'
-      flavors:
-        items:
-          $ref: '#/definitions/dbLevelFlavor'
-        type: array
-      id:
-        type: string
-      is_draft:
-        format: boolean
-        type: boolean
-      is_latest:
-        format: boolean
-        type: boolean
-      level:
-        $ref: '#/definitions/dbLevel'
-      level_id:
-        type: string
-      source_url:
-        type: string
-      updated_at:
-        format: date-time
-        type: string
-      version:
         type: string
     type: object
   dbNotification:
@@ -573,6 +573,10 @@ definitions:
         items:
           $ref: '#/definitions/dbAchievement'
         type: array
+      challenge_validations:
+        items:
+          $ref: '#/definitions/dbChallengeValidation'
+        type: array
       coupons:
         items:
           $ref: '#/definitions/dbCoupon'
@@ -585,10 +589,6 @@ definitions:
       items:
         items:
           $ref: '#/definitions/dbInventoryItem'
-        type: array
-      level_validations:
-        items:
-          $ref: '#/definitions/dbLevelValidation'
         type: array
       received_whoswho_attempts:
         items:
@@ -628,6 +628,10 @@ definitions:
     type: string
   dbTournamentTeam:
     properties:
+      challenge_subscriptions:
+        items:
+          $ref: '#/definitions/dbChallengeSubscription'
+        type: array
       created_at:
         format: date-time
         type: string
@@ -636,10 +640,6 @@ definitions:
       is_default:
         format: boolean
         type: boolean
-      level_subscriptions:
-        items:
-          $ref: '#/definitions/dbLevelSubscription'
-        type: array
       members:
         items:
           $ref: '#/definitions/dbTournamentMember'
@@ -842,6 +842,25 @@ info:
   title: Pathwar API
   version: "1.0"
 paths:
+  /challenges:
+    get:
+      operationId: ListChallenges
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/dbChallengeList'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
   /dev/generate-fake-data:
     post:
       operationId: GenerateFakeData
@@ -898,25 +917,6 @@ paths:
             format: string
             type: string
       summary: dev helpers
-      tags:
-      - Engine
-  /levels:
-    get:
-      operationId: ListLevels
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/dbLevelList'
-        "403":
-          description: Returned when the user does not have permission to access the
-            resource.
-          schema: {}
-        "404":
-          description: Returned when the resource does not exist.
-          schema:
-            format: string
-            type: string
       tags:
       - Engine
   /ping:

@@ -6,13 +6,13 @@ import {
   SET_DEFAULT_TOURNAMENT,
   SET_ACTIVE_TOURNAMENT,
   SET_ACTIVE_TOURNAMENT_FAILED,
-  SET_LEVELS_LIST,
-  SET_LEVELS_LIST_FAILED
+  SET_CHALLENGES_LIST,
+  SET_CHALLENGES_LIST_FAILED
 } from "../constants/actionTypes"
 import {
   getAllTournaments,
   getTeamTournaments,
-  getLevels
+  getChallenges
 } from "../api/tournaments"
 
 export const setActiveTournament = (tournamentData) => async dispatch => {
@@ -80,14 +80,14 @@ export const fetchTeamTournaments = (teamID) => async dispatch => {
   }
 }
 
-export const fetchLevels = (tournamentID) => async dispatch => {
+export const fetchChallenges = (tournamentID) => async dispatch => {
   try {
-    const response = await getLevels(tournamentID);
+    const response = await getChallenges(tournamentID);
     dispatch({
-      type: SET_LEVELS_LIST,
-      payload: { activeLevels: response.data.items }
+      type: SET_CHALLENGES_LIST,
+      payload: { activeChallenges: response.data.items }
     });
   } catch (error) {
-    dispatch({ type: SET_LEVELS_LIST_FAILED, payload: { error } });
+    dispatch({ type: SET_CHALLENGES_LIST_FAILED, payload: { error } });
   }
 };

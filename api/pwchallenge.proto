@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package pathwar.level;
+package pathwar.challenge;
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 
-option go_package = "pathwar.land/go/pkg/pwlevel";
+option go_package = "pathwar.land/go/pkg/pwchallenge";
 option (gogoproto.sizer_all) = true;
 option (gogoproto.marshaler_all) = true;
 option (gogoproto.unmarshaler_all) = true;

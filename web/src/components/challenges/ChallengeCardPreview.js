@@ -3,7 +3,7 @@ import * as React from "react";
 import { Link } from "gatsby";
 import { Card, Button } from "tabler-react";
 
-const LevelBody = (props) => {
+const ChallengeBody = (props) => {
     const { author, description, locale, key } = props;
 
     return (
@@ -15,26 +15,26 @@ const LevelBody = (props) => {
             <p>{description}</p>
             <Button.List>
                 <Button RootComponent={Link} to="/" color="info" size="sm">
-                    View level
+                    View challenge
                 </Button>
                 <Button RootComponent={Link} to="/" color="success" size="sm">
-                    Validate level
+                    Validate challenge
                 </Button>
             </Button.List>
         </React.Fragment>
     )
 }
 
-const LevelCardPreview = (props) => {
-    const { levels } = props;
+const ChallengeCardPreview = (props) => {
+    const { challenges } = props;
 
-    return levels.map((level) =>
-    <Card title={level.name} key={level.id}
+    return challenges.map((challenge) =>
+    <Card title={challenge.name} key={challenge.id}
         isCollapsible
         statusColor="orange"
-        body={<LevelBody author={level.author} description={level.description} locale={level.locale} />}
+        body={<ChallengeBody author={challenge.author} description={challenge.description} locale={challenge.locale} />}
     />)
 }
 
 
-export default LevelCardPreview;
+export default ChallengeCardPreview;

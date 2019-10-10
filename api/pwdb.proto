@@ -12,7 +12,7 @@ option (gogoproto.sizer_all) = true;
 option (gogoproto.marshaler_all) = true;
 option (gogoproto.unmarshaler_all) = true;
 
-message Level {
+message Challenge {
   string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
@@ -36,12 +36,12 @@ message Level {
   // associations
   //
 
-  repeated LevelVersion versions = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated ChallengeVersion versions = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
-message LevelList { repeated Level items = 1; }
+message ChallengeList { repeated Challenge items = 1; }
 
-message LevelVersion {
+message ChallengeVersion {
   string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
@@ -69,13 +69,13 @@ message LevelVersion {
   // associations
   //
 
-  Level level = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelID\""];
-  string level_id = 201 [(gogoproto.customname) = "LevelID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
+  string challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  repeated LevelFlavor flavors = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated ChallengeFlavor flavors = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
-message LevelFlavor {
+message ChallengeFlavor {
   string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
@@ -89,14 +89,14 @@ message LevelFlavor {
   // associations
   //
 
-  Level level_version = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelVersionID\""];
-  string level_version_id = 201 [(gogoproto.customname) = "LevelVersionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Challenge challenge_version = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeVersionID\""];
+  string challenge_version_id = 201 [(gogoproto.customname) = "ChallengeVersionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  repeated LevelInstance instances = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
-  //repeated LevelSubscription subscriptions = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated ChallengeInstance instances = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  //repeated ChallengeSubscription subscriptions = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
-message LevelInstance {
+message ChallengeInstance {
   string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
@@ -121,7 +121,7 @@ message LevelInstance {
   Hypervisor hypervisor = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:HypervisorID\""];
   string hypervisor_id = 201 [(gogoproto.customname) = "HypervisorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  LevelFlavor flavor = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:FlavorID\""];
+  ChallengeFlavor flavor = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:FlavorID\""];
   string flavor_id = 203 [(gogoproto.customname) = "FlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
@@ -149,7 +149,7 @@ message Hypervisor {
   // associations
   //
 
-  repeated LevelInstance level_instances = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated ChallengeInstance challenge_instances = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message TeamMember {
@@ -213,7 +213,7 @@ message TournamentMember {
   repeated WhoswhoAttempt sent_whoswho_attempts = 206 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated WhoswhoAttempt received_whoswho_attempts = 207 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated InventoryItem items = 208 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
-  repeated LevelValidation level_validations = 209 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated ChallengeValidation challenge_validations = 209 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 
@@ -340,7 +340,7 @@ message TournamentTeam {
   Team team = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamID\""];
   string team_id = 203 [(gogoproto.customname) = "TeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  repeated LevelSubscription level_subscriptions = 205 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated ChallengeSubscription challenge_subscriptions = 205 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated TournamentMember members = 206 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
@@ -370,7 +370,7 @@ message WhoswhoAttempt {
   string target_team_id = 205 [(gogoproto.customname) = "TargetTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
-message LevelValidation {
+message ChallengeValidation {
   string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
@@ -397,13 +397,13 @@ message LevelValidation {
   // associations
   //
 
-  LevelSubscription level_subscription = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelSubscriptionID\""];
-  string level_subscription_id = 201 [(gogoproto.customname) = "LevelSubscriptionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  ChallengeSubscription challenge_subscription = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeSubscriptionID\""];
+  string challenge_subscription_id = 201 [(gogoproto.customname) = "ChallengeSubscriptionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   TournamentMember tournament_member = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentMemberID\""];
   string tournament_member_id = 203 [(gogoproto.customname) = "TournamentMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
-message LevelSubscription {
+message ChallengeSubscription {
   string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
@@ -420,10 +420,10 @@ message LevelSubscription {
   TournamentTeam tournament_team = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentTeamID\""];
   string tournament_team_id = 201 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  LevelFlavor level_flavor = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelFlavorID\""];
-  string level_flavor_id = 203 [(gogoproto.customname) = "LevelFlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  ChallengeFlavor challenge_flavor = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeFlavorID\""];
+  string challenge_flavor_id = 203 [(gogoproto.customname) = "ChallengeFlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  repeated LevelValidation validations = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated ChallengeValidation validations = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message InventoryItem {
@@ -532,17 +532,17 @@ message Achievement {
   enum Type {
     Undefined = 0;
 
-    Buy1Level = 1;
-    Buy5Levels = 2;
-    Buy10Levels = 3;
-    Buy20Levels = 4;
-    Buy50Levels = 5;
+    Buy1Challenge = 1;
+    Buy5Challenges = 2;
+    Buy10Challenges = 3;
+    Buy20Challenges = 4;
+    Buy50Challenges = 5;
 
-    Validate1Level = 10;
-    Validate5Levels = 11;
-    Validate10Levels = 12;
-    Validate20Levels = 13;
-    Validate50Levels = 14;
+    Validate1Challenge = 10;
+    Validate5Challenges = 11;
+    Validate10Challenges = 12;
+    Validate20Challenges = 13;
+    Validate50Challenges = 14;
 
     Validate1Coupon = 20;
     Validate5Coupons = 21;
@@ -551,10 +551,10 @@ message Achievement {
     Validate50Coupons = 24;
     Validate100Coupons = 25;
 
-    Author1Level = 30;
-    Author2Levels = 31;
-    Author5Levels = 32;
-    Author10Levels = 33;
+    Author1Challenge = 30;
+    Author2Challenges = 31;
+    Author5Challenges = 32;
+    Author10Challenges = 33;
 
     EarlyAdopterTop100 = 40;
     EarlyAdopterTop1000 = 41;
@@ -587,8 +587,8 @@ message Achievement {
   TournamentMember author = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:AuthorID\""];
   string author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  LevelValidation level_validation = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:LevelValidationID\""];
-  string level_validation_id = 203 [(gogoproto.customname) = "LevelValidationID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  ChallengeValidation challenge_validation = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeValidationID\""];
+  string challenge_validation_id = 203 [(gogoproto.customname) = "ChallengeValidationID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message Dump {
@@ -601,12 +601,12 @@ message Dump {
   repeated CouponValidation coupon_validations = 4;
   repeated Hypervisor hypervisors = 5;
   repeated InventoryItem inventory_items = 6;
-  repeated Level levels = 7;
-  repeated LevelFlavor level_flavors = 8;
-  repeated LevelInstance level_instances = 9;
-  repeated LevelSubscription level_subscriptions = 10;
-  repeated LevelValidation level_validations = 11;
-  repeated LevelVersion level_versions = 12;
+  repeated Challenge challenges = 7;
+  repeated ChallengeFlavor challenge_flavors = 8;
+  repeated ChallengeInstance challenge_instances = 9;
+  repeated ChallengeSubscription challenge_subscriptions = 10;
+  repeated ChallengeValidation challenge_validations = 11;
+  repeated ChallengeVersion challenge_versions = 12;
   repeated Notification notifications = 13;
   repeated Team teams = 14;
   repeated TeamMember team_members = 15;

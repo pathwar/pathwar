@@ -12,6 +12,6 @@ export function getTeamTournaments(teamID) {
     return baseApi.get(`/team-tournaments`, { teamID });
 }
 
-export function getLevels(tournamentID) {
-    return baseApi.get(`/levels`, { id: tournamentID });
+export function getChallenges(tournamentID) {
+    return baseApi.get(`/challenges`, { id: tournamentID });
 }
