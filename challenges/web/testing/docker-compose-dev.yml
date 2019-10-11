@@ -1,9 +1,0 @@
-testing:
-  build: .
-  ports:
-  - 80
-  - 22
-  volumes:
-  - www:/var/www/html/
-  environment:
-  - PATHWAR_DEBUG=true
