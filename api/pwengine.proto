@@ -91,7 +91,7 @@ service Engine {
   rpc Ping(Void) returns (Void) { option (google.api.http) = {get: "/ping"}; };
   // Get current user session, based on JWT token
   rpc GetUserSession(Void) returns (UserSessionOutput) { option (google.api.http) = {get: "/user-session"}; };
-  rpc SetPreferences(SetPreferencesInput) returns (Void) { option (google.api.http) = {post: "/preferences"}; };
+  rpc SetPreferences(SetPreferencesInput) returns (Void) { option (google.api.http) = {post: "/preferences"; body: "*"}; };
   rpc ListChallenges(Void) returns (pathwar.db.ChallengeList) { option (google.api.http) = {get: "/challenges"}; };
   rpc ListTeams(Void) returns (pathwar.db.TeamList) { option (google.api.http) = {get: "/teams"}; };
   rpc ListTournamentTeams(ListTournamentTeamsInput) returns (pathwar.db.TournamentTeamList) { option (google.api.http) = {get: "/tournament/teams"}; };
