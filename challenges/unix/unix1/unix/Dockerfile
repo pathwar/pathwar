@@ -1,5 +1,8 @@
-FROM pathwar/unix:onbuild
-MAINTAINER Pathwar Team <team@pathwar.net> (@pathwar_net)
+FROM alpine:latest
+RUN apk add build-base
+
+RUN addgroup -S bobby && adduser -S bobby -G bobby
+RUN addgroup -S super-bobby && adduser -S super-bobby -G super-bobby
 
 COPY level.c /home/super-bobby/level.c
 RUN touch /home/super-bobby/.passwd                          \
@@ -11,3 +14,5 @@ RUN touch /home/super-bobby/.passwd                          \
  && chmod u+s /home/super-bobby/level                        \
  && ln -s /home/super-bobby/level* /home/bobby               \
  && chown -R bobby:bobby /home/bobby
+
+COPY on-init /pathwar-hooks/
