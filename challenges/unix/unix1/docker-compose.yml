@@ -1,4 +1,5 @@
-unix:
-  build: .
-  environment:
-    PATHWAR_DEBUG: true
+version: '3.7'
+
+services:
+  unix:
+    build: unix
