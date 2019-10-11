@@ -1,4 +1,4 @@
-19731e6389785b980ef2ef6acb0118c1d7728077  ../api/pwengine.proto
+09f59024ff101848f270b514de148cc2695ef37d  ../api/pwengine.proto
 2912d78bbf9b4b06f60eb5346ee1123a53d398e9  Makefile
 30302d31bca0924719daf9e95a0ea15dfbcfb131  ../api/pwhypervisor.proto
 58eb4b1d9b5be40a69ffdab1a13b9fb90b669839  ../api/pwsso.proto

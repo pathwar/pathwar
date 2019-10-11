@@ -733,6 +733,11 @@ definitions:
         format: date-time
         type: string
     type: object
+  engineSetPreferencesInput:
+    properties:
+      active_tournament_id:
+        type: string
+    type: object
   engineUserSessionOutput:
     properties:
       claims:
@@ -942,6 +947,12 @@ paths:
   /preferences:
     post:
       operationId: SetPreferences
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineSetPreferencesInput'
       responses:
         "200":
           description: A successful response.
