@@ -1,6 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { baseApi } from "./index";
 
+export function postPreferences(tournamentID) {
+  return baseApi.post(`/preferences`, {"active_tournament_id": tournamentID});
+}
+
 export function setTournamentActive(tournamentID) {
     // return baseApi.post(`/user-tournaments`, { tournamentID });
 }

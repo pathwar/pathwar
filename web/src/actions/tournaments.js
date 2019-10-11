@@ -7,13 +7,32 @@ import {
   SET_ACTIVE_TOURNAMENT,
   SET_ACTIVE_TOURNAMENT_FAILED,
   SET_LEVELS_LIST,
-  SET_LEVELS_LIST_FAILED
+  SET_LEVELS_LIST_FAILED,
+  FETCH_PREFERENCES_SUCCESS,
+  FETCH_PREFERENCES_FAILED
 } from "../constants/actionTypes"
 import {
   getAllTournaments,
   getTeamTournaments,
-  getLevels
+  getLevels,
+  postPreferences
 } from "../api/tournaments"
+
+export const fetchPreferences = (tournamentID) => async dispatch => {
+  try {
+    await postPreferences(tournamentID)
+
+    dispatch({
+      type: FETCH_PREFERENCES_SUCCESS
+    });
+
+  } catch(error) {
+    dispatch({
+      type: FETCH_PREFERENCES_FAILED,
+      payload: { error }
+    });
+  }
+}
 
 export const setActiveTournament = (tournamentData) => async dispatch => {
   try {

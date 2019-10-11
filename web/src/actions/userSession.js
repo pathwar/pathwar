@@ -11,7 +11,10 @@ import {
 import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
 import { getUserSession } from "../api/userSession"
 import { setActiveTeam as setActiveTeamAction } from "./teams";
-import { setActiveTournament as setActiveTournamentAction } from "./tournaments"
+import {
+  setActiveTournament as setActiveTournamentAction,
+  fetchPreferences as fetchPreferencesAction
+} from "./tournaments"
 
 export const logoutUser = () => async dispatch => {
   dispatch({
@@ -26,6 +29,26 @@ export const setUserSession = (activeUserSession) => async dispatch => {
   })
 }
 
+export const fetchUserSession = () => async dispatch => {
+
+  try {
+    const userSessionResponse = await getUserSession();
+    const userSessionData = userSessionResponse.data;
+    const defaultTournamentSet = userSessionData.tournaments.find((item) => item.tournament.is_default);
+    const defaultTournament = defaultTournamentSet.tournament;
+    const defaultTeam = defaultTournamentSet.team;
+
+    dispatch(setUserSession(userSessionData))
+    dispatch(fetchPreferencesAction(defaultTournament.id))
+
+    // dispatch(setActiveTournamentAction(defaultTournament));
+    // dispatch(setActiveTeamAction(defaultTeam))
+  }
+  catch(error) {
+
+  }
+}
+
 export const setKeycloakSession = (keycloakInstance, authenticated) => async dispatch => {
 
   try {
@@ -36,16 +59,7 @@ export const setKeycloakSession = (keycloakInstance, authenticated) => async dis
     });
 
     Cookies.set(USER_SESSION_TOKEN_NAME, keycloakInstance.token);
-
-    const userSessionResponse = await getUserSession();
-    const userSessionData = userSessionResponse.data;
-    const activeTournament = userSessionData.user.active_tournament_member
-    const activeTournamentTeam = activeTournament.tournament_team
-
-    dispatch(setUserSession(userSessionData))
-
-    dispatch(setActiveTournamentAction(activeTournament));
-    dispatch(setActiveTeamAction(activeTournamentTeam))
+    dispatch(fetchUserSession())
 
   } catch (error) {
     dispatch({ type: LOGIN_FAILED, payload: { error } });
