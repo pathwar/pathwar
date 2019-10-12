@@ -1,4 +1,0 @@
-#!/usr/bin/env node
-
-var program = require('../lib/program');
-program.run();
