@@ -1,4 +1,0 @@
-example:
-  build: .
-  environment:
-    PATHWAR_DEBUG: true

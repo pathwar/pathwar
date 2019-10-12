@@ -1,5 +1,0 @@
-level:
-  name: sshd-hello
-  version: 1.0
-  author: Pathwar team
-  description: Run hello using sshd

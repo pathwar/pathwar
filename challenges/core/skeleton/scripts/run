@@ -1,5 +1,0 @@
-#!/bin/sh
-
-echo "[-] This file needs to be replaced"
-echo "[-] Usually it contains the inherited Dockerfile's entrypoint"
-exit 42

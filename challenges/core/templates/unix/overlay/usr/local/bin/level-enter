@@ -1,5 +1,0 @@
-#!/bin/sh
-
-cd
-cat /etc/motd
-exec /bin/bash

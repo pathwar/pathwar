@@ -1,4 +1,0 @@
-Flask==0.10
-flask-debugtoolbar
-flask-sqlalchemy
-flask-script

@@ -1,5 +1,0 @@
-level:
-  name: supervisord-sshd
-  version: 1.0
-  author: Pathwar team
-  description: Run sshd using supervisord

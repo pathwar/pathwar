@@ -1,8 +1,0 @@
-hello:
-  build: .
-  expose:
-    - 22
-  ports:
-    - 22
-  environment:
-    PATHWAR_DEBUG: true
