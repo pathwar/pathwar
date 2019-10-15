@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo -n "$(pwctl passphrase 0)" > /var/www/html/passphrase.txt

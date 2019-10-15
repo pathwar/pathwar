@@ -8,6 +8,7 @@ out/
 *.so
 *.swagger.json
 *.test
+*.swp
 *~
 .#*
 .DS_Store

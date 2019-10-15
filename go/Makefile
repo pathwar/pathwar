@@ -1,6 +1,7 @@
 ## moul/rules.mk
+GOPATH ?= $(HOME)/go
 GOPKG =		pathwar.land/go
-GOBINS =	./cmd/pathwar ./cmd/pwlevel
+GOBINS =	./cmd/pathwar ./cmd/pwchallenge
 DOCKER_IMAGE =	pathwar/pathwar
 
 GO_INSTALL_OPTS = -v -ldflags "-s -w -X pathwar.land/go/pkg/pwversion.Version=`git describe --tags --abbrev` -X pathwar.land/go/pkg/pwversion.Commit=`git rev-parse HEAD` -X pathwar.land/go/pkg/pwversion.Date=`date +%s` -X pathwar.land/go/pkg/pwversion.BuiltBy=makefile"
@@ -10,14 +11,14 @@ PRE_BUILD_STEPS += generate
 PRE_LINT_STEPS += generate
 PRE_TIDY_STEPS += generate
 PRE_BUMPDEPS_STEPS += generate
-PRE_INSTALL_STEPS += ./out/pwlevel-linux-amd64
+PRE_INSTALL_STEPS += ./out/pwchallenge-linux-amd64
 include ../rules.mk  # see https://github.com/moul/rules.mk
 ##
 
-.PHONY: ./out/pwlevel-linux-amd64
-./out/pwlevel-linux-amd64:
+.PHONY: ./out/pwchallenge-linux-amd64
+./out/pwchallenge-linux-amd64:
 	mkdir -p out
-	GOOS=linux GOARCH=amd64 $(GO) build -mod=readonly -o $@ ./cmd/pwlevel
+	GOOS=linux GOARCH=amd64 $(GO) build -mod=readonly -o $@ ./cmd/pwchallenge
 
 ##
 ## mysql

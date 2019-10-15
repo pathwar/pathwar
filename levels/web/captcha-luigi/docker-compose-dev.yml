@@ -1,8 +1,0 @@
-web:
-  build: .
-  ports:
-    - 80
-  volumes:
-    - www:/var/www/html/
-  environment:
-    PATHWAR_DEBUG: true
