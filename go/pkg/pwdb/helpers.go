@@ -30,16 +30,16 @@ func GetInfo(db *gorm.DB, logger *zap.Logger) (*Info, error) {
 
 func GetDump(db *gorm.DB) (*Dump, error) {
 	dump := Dump{}
-	if err := db.Find(&dump.Levels).Error; err != nil {
+	if err := db.Find(&dump.Challenges).Error; err != nil {
 		return nil, err
 	}
-	if err := db.Find(&dump.LevelVersions).Error; err != nil {
+	if err := db.Find(&dump.ChallengeVersions).Error; err != nil {
 		return nil, err
 	}
-	if err := db.Find(&dump.LevelFlavors).Error; err != nil {
+	if err := db.Find(&dump.ChallengeFlavors).Error; err != nil {
 		return nil, err
 	}
-	if err := db.Find(&dump.LevelInstances).Error; err != nil {
+	if err := db.Find(&dump.ChallengeInstances).Error; err != nil {
 		return nil, err
 	}
 	if err := db.Find(&dump.Hypervisors).Error; err != nil {
@@ -80,42 +80,42 @@ func GenerateFakeData(db *gorm.DB, logger *zap.Logger) error {
 		hypervisors = append(hypervisors, hypervisor)
 	}
 
-	levels := []*Level{}
+	challenges := []*Challenge{}
 	for i := 0; i < 5; i++ {
-		level := &Level{
+		challenge := &Challenge{
 			Name:        gofakeit.HipsterWord(),
 			Description: gofakeit.HipsterSentence(10),
 			Author:      gofakeit.Name(),
 			Locale:      "fr_FR",
 			IsDraft:     false,
-			Versions:    []*LevelVersion{},
+			Versions:    []*ChallengeVersion{},
 		}
 		for i := 0; i < 2; i++ {
-			version := &LevelVersion{
-				Driver:    LevelVersion_Docker,
+			version := &ChallengeVersion{
+				Driver:    ChallengeVersion_Docker,
 				Version:   gofakeit.IPv4Address(),
 				Changelog: gofakeit.HipsterSentence(5),
 				IsDraft:   false,
 				IsLatest:  i == 0,
 				SourceURL: gofakeit.URL(),
-				Flavors:   []*LevelFlavor{},
+				Flavors:   []*ChallengeFlavor{},
 			}
 			for j := 0; j < 2; j++ {
-				flavor := &LevelFlavor{
-					Instances: []*LevelInstance{},
+				flavor := &ChallengeFlavor{
+					Instances: []*ChallengeInstance{},
 				}
 				for k := 0; k < 2; k++ {
-					instance := &LevelInstance{
+					instance := &ChallengeInstance{
 						HypervisorID: hypervisors[rand.Int()%len(hypervisors)].ID,
-						Status:       LevelInstance_Active,
+						Status:       ChallengeInstance_Active,
 					}
 					flavor.Instances = append(flavor.Instances, instance)
 				}
 				version.Flavors = append(version.Flavors, flavor)
 			}
-			level.Versions = append(level.Versions, version)
+			challenge.Versions = append(challenge.Versions, version)
 		}
-		levels = append(levels, level)
+		challenges = append(challenges, challenge)
 	}
 
 	teams := []*Team{}
@@ -170,10 +170,10 @@ func GenerateFakeData(db *gorm.DB, logger *zap.Logger) error {
 			return fmt.Errorf("failed to create users: %w", err)
 		}
 	}
-	logger.Debug("Generating levels")
-	for _, entity := range levels {
+	logger.Debug("Generating challenges")
+	for _, entity := range challenges {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("failed to create levels: %w", err)
+			return fmt.Errorf("failed to create challenges: %w", err)
 		}
 	}
 	logger.Debug("Generating tournaments")

@@ -1,8 +1,9 @@
 import {
   GET_ALL_TOURNAMENTS_SUCCESS,
-  SET_LEVELS_LIST,
   SET_ACTIVE_TOURNAMENT,
-  GET_ALL_TOURNAMENT_TEAMS_SUCCESS
+  GET_ALL_TOURNAMENT_TEAMS_SUCCESS,
+  SET_CHALLENGES_LIST,
+  SET_ACTIVE_TOURNAMENT
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -11,8 +12,8 @@ const initialState = {
     allTournaments: null,
     allTeamTournaments: null,
     activeTournament: null,
-    activeLevels: null,
-    allTeamsOnTournament: null
+    allTeamsOnTournament: null,
+    activeChallenges: null
   }
 };
 
@@ -38,11 +39,11 @@ export default function tournamentReducer(state = initialState.tournaments, acti
         activeTournament: action.payload.activeTournament
       }
 
-    case SET_LEVELS_LIST:
+    case SET_CHALLENGES_LIST:
 
       return {
         ...state,
-        activeLevels: action.payload.activeLevels
+        activeChallenges: action.payload.activeChallenges
       };
 
     default:

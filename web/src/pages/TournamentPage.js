@@ -4,19 +4,19 @@ import PropTypes from "prop-types";
 import { Page, Grid } from "tabler-react";
 
 import AllTeamsOnTournamentList from "../components/tournament/AllTeamsOnTournamentList"
-import LevelsCardPreview from "../components/levels/LevelCardPreview";
+import ChallengesCardPreview from "../components/challenges/ChallengeCardPreview";
 import ValidationCouponStamp from "../components/coupon/ValidateCouponStampCard";
-import { fetchLevels as fetchLevelsAction } from "../actions/tournaments";
+import { fetchChallenges as fetchChallengesAction } from "../actions/tournaments";
 
 class TournamentPage extends React.Component {
 
     componentDidMount() {
-      const { fetchLevelsAction, tournaments: { activeTournament } } = this.props;
-      // fetchLevelsAction(activeTournament.id);
+      const { fetchChallengesAction, tournaments: { activeTournament } } = this.props;
+      fetchChallengesAction(activeTournament.id);
     }
 
     render() {
-        const { tournaments: { activeTournament, activeLevels } } = this.props;
+        const { tournaments: { activeTournament, activeChallenges } } = this.props;
         const name = activeTournament ? activeTournament.name : undefined;
 
         return (
@@ -27,8 +27,8 @@ class TournamentPage extends React.Component {
                     {activeTournament && <AllTeamsOnTournamentList />}
                   </Grid.Col>
                   <Grid.Col xs={12} sm={6} lg={6}>
-                    <h3>Levels</h3>
-                    {activeLevels && <LevelsCardPreview levels={activeLevels} />}
+                    <h3>Challenges</h3>
+                    {activeChallenges && <ChallengesCardPreview challenges={activeChallenges} />}
                     <h3>Actions</h3>
                     <ValidationCouponStamp />
                   </Grid.Col>
@@ -41,7 +41,7 @@ class TournamentPage extends React.Component {
 TournamentPage.propTypes = {
     tournaments: PropTypes.object,
     activeTeam: PropTypes.object,
-    fetchLevelsAction: PropTypes.func
+    fetchChallengesAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
@@ -49,7 +49,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  fetchLevelsAction: (tournamentID) => fetchLevelsAction(tournamentID),
+  fetchChallengesAction: (tournamentID) => fetchChallengesAction(tournamentID),
 };
 
 export default connect(

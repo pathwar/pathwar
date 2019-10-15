@@ -1,3 +1,0 @@
-#!/bin/sh -e
-
-sed -i "s/THE_PASSPHRASE/$(pwctl passphrase 0)/g" /usr/share/nginx/html/index.html

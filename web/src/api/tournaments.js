@@ -12,6 +12,6 @@ export function getAllTournaments() {
     return baseApi.get(`/tournaments`);
 }
 
-export function getLevels(tournamentID) {
-    return baseApi.get(`/levels`, { id: tournamentID });
+export function getChallenges(tournamentID) {
+    return baseApi.get(`/challenges`, { id: tournamentID });
 }

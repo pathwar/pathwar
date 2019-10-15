@@ -78,20 +78,20 @@ func firstEntities() []interface{} {
 		Address: "127.0.0.1",
 		Status:  Hypervisor_Active, // only useful during dev
 	}
-	helloWorld := &Level{
+	helloWorld := &Challenge{
 		Name:     "Hello World (test)",
 		IsDraft:  false,
 		Author:   "m1ch3l",
-		Homepage: "https://github.com/pathwar/pathwar/tree/master/level/example/hello-world",
+		Homepage: "https://github.com/pathwar/pathwar/tree/master/challenge/example/hello-world",
 	}
-	helloWorldLatest := &LevelVersion{
-		Level:     helloWorld,
-		SourceURL: "https://github.com/pathwar/pathwar/tree/master/level/example/hello-world",
+	helloWorldLatest := &ChallengeVersion{
+		Challenge: helloWorld,
+		SourceURL: "https://github.com/pathwar/pathwar/tree/master/challenge/example/hello-world",
 		IsLatest:  true,
 		IsDraft:   false,
 		Changelog: "Lorem Ipsum",
 		Version:   "latest",
-		Driver:    LevelVersion_DockerCompose,
+		Driver:    ChallengeVersion_DockerCompose,
 	}
 
 	return []interface{}{

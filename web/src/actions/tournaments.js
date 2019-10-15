@@ -4,18 +4,18 @@ import {
   SET_DEFAULT_TOURNAMENT,
   SET_ACTIVE_TOURNAMENT,
   SET_ACTIVE_TOURNAMENT_FAILED,
-  SET_LEVELS_LIST,
-  SET_LEVELS_LIST_FAILED,
   FETCH_PREFERENCES_SUCCESS,
   FETCH_PREFERENCES_FAILED,
-  GET_ALL_TOURNAMENT_TEAMS_SUCCESS,
-  GET_ALL_TOURNAMENT_TEAMS_FAILED
+  SET_CHALLENGES_LIST,
+  SET_CHALLENGES_LIST_FAILED
 } from "../constants/actionTypes"
+
 import {
   getAllTournaments,
-  getLevels,
   postPreferences,
-  getAllTournamentTeams
+  getAllTournaments,
+  getTeamTournaments,
+  getChallenges
 } from "../api/tournaments"
 
 import { fetchUserSession as fetchUserSessionAction } from "./userSession";
@@ -52,21 +52,6 @@ export const setActiveTournament = (tournamentData) => async dispatch => {
   }
 }
 
-export const fetchAllTournamentTeams = (tournamentID) => async dispatch => {
-  try {
-    const response = await getAllTournamentTeams(tournamentID);
-    debugger
-    const allTeams = response.data;
-
-    dispatch({
-      type: GET_ALL_TOURNAMENT_TEAMS_SUCCESS,
-      payload: { allTeams: allTeams }
-    })
-  } catch (error) {
-    dispatch({ type: GET_ALL_TOURNAMENT_TEAMS_FAILED, payload: { error } });
-  }
-}
-
 export const setDefaultTournament = (tournamentData) => async dispatch => {
   dispatch({
     type: SET_DEFAULT_TOURNAMENT,
@@ -88,14 +73,41 @@ export const fetchAllTournaments = () => async dispatch => {
   }
 }
 
-export const fetchLevels = (tournamentID) => async dispatch => {
+export const fetchTeamTournaments = (teamID) => async dispatch => {
   try {
-    const response = await getLevels(tournamentID);
+    const response = await getTeamTournaments(teamID);
+    const allTeamTournaments = response.data.items;
+    const lastActiveTournament = allTeamTournaments.find((tournament) => tournament.last_active)
+    const defaultTournament = allTeamTournaments.find((tournament) => tournament.is_default)
+
     dispatch({
-      type: SET_LEVELS_LIST,
-      payload: { activeLevels: response.data.items }
+      type: GET_TEAM_TOURNAMENTS_SUCCESS,
+      payload: { allTeamTournaments: allTeamTournaments }
+    });
+
+    if (lastActiveTournament === defaultTournament) {
+      dispatch(setActiveTournament(lastActiveTournament));
+    } else if (!lastActiveTournament && defaultTournament) {
+      dispatch(setDefaultTournament(defaultTournament));
+      dispatch(setActiveTournament(defaultTournament));
+    }
+
+  } catch (error) {
+    dispatch({
+      type: GET_TEAM_TOURNAMENTS_FAILED,
+      payload: { error }
+    });
+  }
+}
+
+export const fetchChallenges = (tournamentID) => async dispatch => {
+  try {
+    const response = await getChallenges(tournamentID);
+    dispatch({
+      type: SET_CHALLENGES_LIST,
+      payload: { activeChallenges: response.data.items }
     });
   } catch (error) {
-    dispatch({ type: SET_LEVELS_LIST_FAILED, payload: { error } });
+    dispatch({ type: SET_CHALLENGES_LIST_FAILED, payload: { error } });
   }
 };
