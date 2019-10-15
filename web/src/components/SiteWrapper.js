@@ -13,15 +13,15 @@ import logo from "../images/pathwar-logo.png";
 
 const navBarItems = [
   {
-    value: "Dashboard",
+    value: "Home",
     to: "/app/dashboard",
-    icon: "clipboard",
+    icon: "home",
     LinkComponent: Link
   },
   {
-    value: "Statistics",
-    to: "/app/statistics",
-    icon: "bar-chart-2",
+    value: "Solo",
+    to: "/app/solo",
+    icon: "user",
     LinkComponent: Link
   },
   {
