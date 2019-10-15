@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"net/http/pprof"
 	"strings"
 	"time"
 
@@ -32,6 +33,7 @@ type Opts struct {
 	CORSAllowedOrigins string
 	RequestTimeout     time.Duration
 	ShutdownTimeout    time.Duration
+	WithPprof          bool
 }
 
 func Start(ctx context.Context, engine pwengine.Engine, opts Opts) (func() error, func(), error) {
@@ -127,6 +129,14 @@ func Start(ctx context.Context, engine pwengine.Engine, opts Opts) (func() error
 			return nil, nil, fmt.Errorf("failed to register service on gateway: %w", err)
 		}
 		r.Mount("/", gwmux)
+		if opts.WithPprof {
+			r.HandleFunc("/debug/pprof/*", pprof.Index)
+			r.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
+			r.HandleFunc("/debug/pprof/profile", pprof.Profile)
+			r.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+			r.HandleFunc("/debug/pprof/trace", pprof.Trace)
+		}
+		http.DefaultServeMux = http.NewServeMux() // disables default handlers registere by importing net/http/pprof for security reasons
 		srv := http.Server{
 			Addr:    opts.HTTPBind,
 			Handler: r,

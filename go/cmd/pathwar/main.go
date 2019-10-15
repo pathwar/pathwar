@@ -68,6 +68,7 @@ var (
 	serverRequestTimeout     = serverFlags.Duration("request-timeout", 5*time.Second, "request timeout")
 	serverShutdownTimeout    = serverFlags.Duration("shutdown-timeout", 6*time.Second, "shutdown timeout")
 	serverCORSAllowedOrigins = serverFlags.String("cors-allowed-origins", "*", "allowed CORS origins")
+	serverWithPprof          = serverFlags.Bool("with-pprof", false, "enable pprof server")
 
 	// misc flags
 	miscFlags = flag.NewFlagSet("misc", flag.ExitOnError)
@@ -150,6 +151,7 @@ func main() {
 					CORSAllowedOrigins: *serverCORSAllowedOrigins,
 					RequestTimeout:     *serverRequestTimeout,
 					ShutdownTimeout:    *serverShutdownTimeout,
+					WithPprof:          *serverWithPprof,
 				}
 				start, cleanup, err := pwserver.Start(ctx, engine, opts)
 				if err != nil {
