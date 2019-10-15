@@ -28,7 +28,7 @@ MYSQL_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
 
 .PHONY: run
 run: install mysql.up
-	pathwar --debug engine --sso-unsafe server
+	pathwar --debug engine --sso-unsafe server --with-pprof
 
 .PHONY: mysql.up
 mysql.up:
