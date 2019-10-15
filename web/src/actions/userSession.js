@@ -3,14 +3,13 @@ import Cookies from "js-cookie";
 import {
   LOGIN_FAILED,
   SET_USER_SESSION,
+  SET_USER_SESSION_FAILED,
   SET_KEYCLOAK_SESSION,
-  PING_USER_SUCCESS,
-  PING_USER_FAILED,
   LOGOUT
 } from "../constants/actionTypes"
 import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
 import { getUserSession } from "../api/userSession"
-import { setActiveTeam as setActiveTeamAction } from "./teams";
+// import { setActiveTeam as setActiveTeamAction } from "./teams";
 import {
   setActiveTournament as setActiveTournamentAction,
   fetchPreferences as fetchPreferencesAction
@@ -29,23 +28,31 @@ export const setUserSession = (activeUserSession) => async dispatch => {
   })
 }
 
-export const fetchUserSession = () => async dispatch => {
+export const fetchUserSession = (postPreferences) => async dispatch => {
 
   try {
     const userSessionResponse = await getUserSession();
     const userSessionData = userSessionResponse.data;
     const defaultTournamentSet = userSessionData.tournaments.find((item) => item.tournament.is_default);
     const defaultTournament = defaultTournamentSet.tournament;
-    const defaultTeam = defaultTournamentSet.team;
+
+    const activeTournamentId = userSessionData.user.active_tournament_id
 
     dispatch(setUserSession(userSessionData))
-    dispatch(fetchPreferencesAction(defaultTournament.id))
 
-    // dispatch(setActiveTournamentAction(defaultTournament));
+    if (postPreferences) {
+      dispatch(fetchPreferencesAction(defaultTournament.id))
+    }
+
+    if (activeTournamentId) {
+      const activeTournament = userSessionData.tournaments.find((item) => item.tournament.id === activeTournamentId);
+      dispatch(setActiveTournamentAction(activeTournament.tournament));
+    }
+
     // dispatch(setActiveTeamAction(defaultTeam))
   }
   catch(error) {
-
+    dispatch({ type: SET_USER_SESSION_FAILED, payload: { error } });
   }
 }
 
@@ -59,7 +66,7 @@ export const setKeycloakSession = (keycloakInstance, authenticated) => async dis
     });
 
     Cookies.set(USER_SESSION_TOKEN_NAME, keycloakInstance.token);
-    dispatch(fetchUserSession())
+    dispatch(fetchUserSession(true))
 
   } catch (error) {
     dispatch({ type: LOGIN_FAILED, payload: { error } });
