@@ -3,15 +3,17 @@ import Cookies from "js-cookie";
 import {
   LOGIN_FAILED,
   SET_USER_SESSION,
+  SET_USER_SESSION_FAILED,
   SET_KEYCLOAK_SESSION,
-  PING_USER_SUCCESS,
-  PING_USER_FAILED,
   LOGOUT
 } from "../constants/actionTypes"
 import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
 import { getUserSession } from "../api/userSession"
-import { setActiveTeam as setActiveTeamAction } from "./teams";
-import { setActiveTournament as setActiveTournamentAction } from "./tournaments"
+// import { setActiveTeam as setActiveTeamAction } from "./teams";
+import {
+  setActiveTournament as setActiveTournamentAction,
+  fetchPreferences as fetchPreferencesAction
+} from "./tournaments"
 
 export const logoutUser = () => async dispatch => {
   dispatch({
@@ -26,6 +28,34 @@ export const setUserSession = (activeUserSession) => async dispatch => {
   })
 }
 
+export const fetchUserSession = (postPreferences) => async dispatch => {
+
+  try {
+    const userSessionResponse = await getUserSession();
+    const userSessionData = userSessionResponse.data;
+    const defaultTournamentSet = userSessionData.tournaments.find((item) => item.tournament.is_default);
+    const defaultTournament = defaultTournamentSet.tournament;
+
+    const activeTournamentId = userSessionData.user.active_tournament_id
+
+    dispatch(setUserSession(userSessionData))
+
+    if (postPreferences) {
+      dispatch(fetchPreferencesAction(defaultTournament.id))
+    }
+
+    if (activeTournamentId) {
+      const activeTournament = userSessionData.tournaments.find((item) => item.tournament.id === activeTournamentId);
+      dispatch(setActiveTournamentAction(activeTournament.tournament));
+    }
+
+    // dispatch(setActiveTeamAction(defaultTeam))
+  }
+  catch(error) {
+    dispatch({ type: SET_USER_SESSION_FAILED, payload: { error } });
+  }
+}
+
 export const setKeycloakSession = (keycloakInstance, authenticated) => async dispatch => {
 
   try {
@@ -36,16 +66,7 @@ export const setKeycloakSession = (keycloakInstance, authenticated) => async dis
     });
 
     Cookies.set(USER_SESSION_TOKEN_NAME, keycloakInstance.token);
-
-    const userSessionResponse = await getUserSession();
-    const userSessionData = userSessionResponse.data;
-    const activeTournament = userSessionData.user.active_tournament_member
-    const activeTournamentTeam = activeTournament.tournament_team
-
-    dispatch(setUserSession(userSessionData))
-
-    dispatch(setActiveTournamentAction(activeTournament));
-    dispatch(setActiveTeamAction(activeTournamentTeam))
+    dispatch(fetchUserSession(true))
 
   } catch (error) {
     dispatch({ type: LOGIN_FAILED, payload: { error } });

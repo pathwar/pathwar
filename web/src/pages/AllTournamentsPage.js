@@ -8,7 +8,6 @@ import {
 } from "tabler-react";
 
 import AllTournamentsList from "../components/tournament/AllTournamentsList";
-import AllTeamTournamentsList from "../components/tournament/AllTeamTournamentsList";
 import {
   fetchAllTournaments as fetchAllTournamentsAction
 } from "../actions/tournaments"
@@ -23,15 +22,12 @@ class AllTournamentsPage extends React.PureComponent {
     render() {
         const {
           tournaments: { allTournaments },
-          activeTeam,
         } = this.props;
         return (
             <Page.Content title="All Tournaments">
                 <Grid.Row cards={true}>
                   <Grid.Col xs={12} sm={12} lg={6}>
-                    {activeTeam &&
-                      <AllTeamTournamentsList />
-                    }
+
                   </Grid.Col>
                   <Grid.Col xs={12} sm={12} lg={6}>
                     { allTournaments && <AllTournamentsList tournaments={allTournaments} /> }
@@ -44,13 +40,11 @@ class AllTournamentsPage extends React.PureComponent {
 
 AllTournamentsPage.propTypes = {
     tournaments: PropTypes.object,
-    activeTeam: PropTypes.object,
     fetchAllTournamentsAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
     tournaments: state.tournaments,
-    activeTeam: state.teams.activeTeam
 });
 
 const mapDispatchToProps = {

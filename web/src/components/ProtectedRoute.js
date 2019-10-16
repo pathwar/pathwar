@@ -27,7 +27,7 @@ class ProtectedRoute extends React.PureComponent {
         }
 
         return (
-          <Dimmer active loader style={{ marginTop: "50px" }} />
+          <Dimmer active loader />
         );
     }
 }
