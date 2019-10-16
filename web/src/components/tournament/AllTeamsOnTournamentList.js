@@ -8,10 +8,10 @@ import {
 
 
 const TeamsRows = ({ teams }) => {
-    return teams.map((team) => {
+    return teams.map((item) => {
         return (
-            <Table.Row key={team.id}>
-                <Table.Col colSpan={2}>{team.name}</Table.Col>
+            <Table.Row key={item.team.id}>
+                <Table.Col colSpan={2}>{item.team.name}</Table.Col>
                 {/* <Table.Col>{tournament.status}</Table.Col>
                 <Table.Col>{tournament.visibility}</Table.Col> */}
             </Table.Row>
@@ -39,9 +39,6 @@ class AllTeamsOnTournamentList extends React.PureComponent {
                     <Table.Header>
                         <Table.Row>
                             <Table.ColHeader colSpan={2}>Name</Table.ColHeader>
-                            <Table.ColHeader>Status</Table.ColHeader>
-                            <Table.ColHeader>Visibility</Table.ColHeader>
-                            <Table.ColHeader></Table.ColHeader>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>

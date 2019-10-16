@@ -5,7 +5,8 @@ export function postPreferences(tournamentID) {
 }
 
 export function getAllTournamentTeams(tournamentID) {
-  return baseApi.get(`/tournament/teams?tournament_id=${tournamentID}`)
+  const urlIdParam = encodeURIComponent(tournamentID);
+  return baseApi.get(`/tournament/teams?tournament_id=${urlIdParam}`)
 }
 
 export function getAllTournaments() {
