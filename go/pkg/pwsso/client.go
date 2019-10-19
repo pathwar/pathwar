@@ -50,7 +50,7 @@ func New(publicKey string, realm string, opts Opts) (Client, error) {
 		}
 		parsedKey, err := x509.ParsePKIXPublicKey(pubPem.Bytes)
 		if err != nil {
-			return nil, fmt.Errorf("failed to parse public key: %w", err)
+			return nil, fmt.Errorf("parse public key: %w", err)
 		}
 		c.publicKey = parsedKey
 	}

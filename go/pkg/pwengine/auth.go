@@ -2,14 +2,16 @@ package pwengine
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/pkg/errors"
+	"github.com/jinzhu/gorm"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"pathwar.land/go/pkg/pwdb"
 	"pathwar.land/go/pkg/pwsso"
 )
 
@@ -65,7 +67,7 @@ func tokenFromContext(ctx context.Context) (*jwt.Token, error) {
 func subjectFromContext(ctx context.Context) (string, error) {
 	token, err := tokenFromContext(ctx)
 	if err != nil {
-		return "", fmt.Errorf("failed to get token from contact: %w", err)
+		return "", fmt.Errorf("get token from contact: %w", err)
 	}
 
 	sub := pwsso.SubjectFromToken(token)
@@ -74,4 +76,27 @@ func subjectFromContext(ctx context.Context) (string, error) {
 	}
 
 	return sub, nil
+}
+
+func userIDFromContext(ctx context.Context, db *gorm.DB) (int64, error) {
+	oauthSubject, err := subjectFromContext(ctx)
+	if err != nil {
+		return 0, fmt.Errorf("get OAuth subject from context: %w", err)
+	}
+
+	// FIXME: only fetch the ID instead of the whole user
+	var user pwdb.User
+	err = db.
+		Where(pwdb.User{OAuthSubject: oauthSubject}).
+		Find(&user).
+		Error
+
+	switch {
+	case err != nil && !pwdb.IsRecordNotFoundError(err):
+		return 0, fmt.Errorf("get user by OAuth subject: %w", err)
+	case pwdb.IsRecordNotFoundError(err):
+		return 0, errors.New("no such user with oauth subject")
+	}
+
+	return user.ID, nil
 }

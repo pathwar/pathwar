@@ -4,10 +4,12 @@ import (
 	"context"
 	"reflect"
 	"testing"
+
+	"pathwar.land/go/internal/testutil"
 )
 
 func TestEngine_GetInfo(t *testing.T) {
-	engine, cleanup := TestingEngine(t, Opts{})
+	engine, cleanup := TestingEngine(t, Opts{Logger: testutil.Logger(t)})
 	defer cleanup()
 	ctx := context.Background()
 

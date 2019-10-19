@@ -25,7 +25,7 @@ func TestingToken(t *testing.T) *jwt.Token {
 	t.Helper()
 	token, _, err := TokenWithClaims(testingToken, testingPubKey, true)
 	if err != nil {
-		t.Fatalf("failed to parse token: %v", err)
+		t.Fatalf("parse token: %v", err)
 	}
 	return token
 }
@@ -39,7 +39,7 @@ func TestingSSO(t *testing.T, logger *zap.Logger) Client {
 	}
 	sso, err := New(testingPubKey, testingRealm, ssoOpts)
 	if err != nil {
-		t.Fatalf("failed to initialize SSO: %v", err)
+		t.Fatalf("init SSO: %v", err)
 	}
 
 	return sso

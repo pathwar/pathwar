@@ -113,11 +113,11 @@ message Void {
 }
 
 message ListTournamentTeamsInput {
-  string tournament_id = 1 [(gogoproto.customname) = "TournamentID"];
+  int64 tournament_id = 1 [(gogoproto.customname) = "TournamentID"];
 }
 
 message SetPreferencesInput {
-  string active_tournament_id = 1 [(gogoproto.customname) = "ActiveTournamentID"];
+  int64 active_tournament_id = 1 [(gogoproto.customname) = "ActiveTournamentID"];
   // bool dark_mode
 }
 
