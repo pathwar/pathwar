@@ -1,14 +1,14 @@
 package pwdb
 
 import (
-	"encoding/base64"
-	fmt "fmt"
+	"fmt"
 	"math/rand"
 
 	"github.com/brianvoe/gofakeit"
+	"github.com/bwmarrin/snowflake"
 	"github.com/jinzhu/gorm"
-	uuid "github.com/satori/go.uuid"
 	"go.uber.org/zap"
+	"pathwar.land/go/internal/randstring"
 )
 
 func GetInfo(db *gorm.DB, logger *zap.Logger) (*Info, error) {
@@ -19,7 +19,7 @@ func GetInfo(db *gorm.DB, logger *zap.Logger) (*Info, error) {
 		var count uint32
 		tableName := db.NewScope(model).TableName()
 		if err := db.Model(model).Count(&count).Error; err != nil {
-			logger.Warn("failed to get table rows", zap.String("table", tableName), zap.Error(err))
+			logger.Warn("get table rows", zap.String("table", tableName), zap.Error(err))
 			continue
 		}
 		info.TableRows[tableName] = count
@@ -69,7 +69,7 @@ func GetDump(db *gorm.DB) (*Dump, error) {
 	return &dump, nil
 }
 
-func GenerateFakeData(db *gorm.DB, logger *zap.Logger) error {
+func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) error {
 	hypervisors := []*Hypervisor{}
 	for i := 0; i < 3; i++ {
 		hypervisor := &Hypervisor{
@@ -130,18 +130,13 @@ func GenerateFakeData(db *gorm.DB, logger *zap.Logger) error {
 
 	users := []*User{}
 	for i := 0; i < 10; i++ {
-		id, err := uuid.NewV4().MarshalBinary()
-		if err != nil {
-			return fmt.Errorf("failed to generate uuid: %w", err)
-		}
-		out := base64.StdEncoding.EncodeToString(id)
 		user := &User{
-			ID:          out,
-			Username:    gofakeit.Name(),
-			GravatarURL: gofakeit.ImageURL(400, 400) + "?" + gofakeit.HipsterWord(),
-			WebsiteURL:  gofakeit.URL(),
-			Locale:      "fr_FR",
-			Memberships: []*TeamMember{},
+			Username:     gofakeit.Name(),
+			GravatarURL:  gofakeit.ImageURL(400, 400) + "?" + gofakeit.HipsterWord(),
+			WebsiteURL:   gofakeit.URL(),
+			Locale:       "fr_FR",
+			Memberships:  []*TeamMember{},
+			OAuthSubject: randstring.RandString(10),
 		}
 		users = append(users, user)
 	}
@@ -161,31 +156,31 @@ func GenerateFakeData(db *gorm.DB, logger *zap.Logger) error {
 	logger.Debug("Generating hypervisors")
 	for _, entity := range hypervisors {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("failed to create hypervisors: %w", err)
+			return fmt.Errorf("create hypervisors: %w", err)
 		}
 	}
 	logger.Debug("Generating users")
 	for _, entity := range users {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("failed to create users: %w", err)
+			return fmt.Errorf("create users: %w", err)
 		}
 	}
 	logger.Debug("Generating challenges")
 	for _, entity := range challenges {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("failed to create challenges: %w", err)
+			return fmt.Errorf("create challenges: %w", err)
 		}
 	}
 	logger.Debug("Generating tournaments")
 	for _, entity := range tournaments {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("failed to create tournaments: %w", err)
+			return fmt.Errorf("create tournaments: %w", err)
 		}
 	}
 	logger.Debug("Generating teams")
 	for _, entity := range teams {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("failed to create teams: %w", err)
+			return fmt.Errorf("create teams: %w", err)
 		}
 	}
 
@@ -217,13 +212,13 @@ func GenerateFakeData(db *gorm.DB, logger *zap.Logger) error {
 	logger.Debug("Generating memberships")
 	for _, entity := range memberships {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("failed to create memberships: %w", err)
+			return fmt.Errorf("create memberships: %w", err)
 		}
 	}
 	logger.Debug("Generating coupons")
 	for _, entity := range coupons {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("failed to create coupons: %w", err)
+			return fmt.Errorf("create coupons: %w", err)
 		}
 	}
 	return nil

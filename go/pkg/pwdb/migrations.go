@@ -1,11 +1,12 @@
 package pwdb
 
 import (
+	"github.com/bwmarrin/snowflake"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/gormigrate.v1"
 )
 
-func migrate(db *gorm.DB, opts Opts) error {
+func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 	m := gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{})
 
 	// only called on fresh database
@@ -24,7 +25,7 @@ func migrate(db *gorm.DB, opts Opts) error {
 			}
 		}
 
-		for _, entity := range firstEntities() {
+		for _, entity := range firstEntities(sfn) {
 			if err := tx.Create(entity).Error; err != nil {
 				tx.Rollback()
 				return err
@@ -47,7 +48,7 @@ func migrate(db *gorm.DB, opts Opts) error {
 	return nil
 }
 
-func firstEntities() []interface{} {
+func firstEntities(sfn *snowflake.Node) []interface{} {
 	solo := &Tournament{
 		// ID:         "solo-tournament",
 		Name:       "Solo Mode",
@@ -61,8 +62,8 @@ func firstEntities() []interface{} {
 		Visibility: Tournament_Public,
 	}
 	m1ch3l := &User{
-		ID:       "m1ch3l",
-		Username: "m1ch3l",
+		Username:     "m1ch3l",
+		OAuthSubject: "m1ch3l",
 		// State: special
 	}
 	staff := &Team{

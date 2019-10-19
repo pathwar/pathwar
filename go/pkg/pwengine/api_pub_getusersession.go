@@ -5,8 +5,6 @@ import (
 	"crypto/md5"
 	"fmt"
 
-	"github.com/jinzhu/gorm"
-	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"pathwar.land/go/pkg/pwdb"
 	"pathwar.land/go/pkg/pwsso"
@@ -15,7 +13,7 @@ import (
 func (e *engine) GetUserSession(ctx context.Context, _ *Void) (*UserSessionOutput, error) {
 	token, err := tokenFromContext(ctx)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get token from context")
+		return nil, fmt.Errorf("get token from context: %w", err)
 	}
 	zap.L().Debug("token", zap.Any("token", token))
 
@@ -24,19 +22,19 @@ func (e *engine) GetUserSession(ctx context.Context, _ *Void) (*UserSessionOutpu
 
 	// try loading it from database
 	output.User, err = e.loadOAuthUser(output.Claims.ActionToken.Sub)
-	if err != nil && !gorm.IsRecordNotFoundError(err) {
+	if err != nil && !pwdb.IsRecordNotFoundError(err) {
 		// internal error
-		return nil, err
+		return nil, fmt.Errorf("load oauth user: %w", err)
 	}
 
 	// new user
-	if gorm.IsRecordNotFoundError(err) {
+	if pwdb.IsRecordNotFoundError(err) {
 		output.IsNewUser = true
 		if _, err = e.newUserFromClaims(output.Claims); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("new user from claims: %w", err)
 		}
 		if output.User, err = e.loadOAuthUser(output.Claims.ActionToken.Sub); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("load oauth user: %w", err)
 		}
 	}
 
@@ -49,7 +47,7 @@ func (e *engine) GetUserSession(ctx context.Context, _ *Void) (*UserSessionOutpu
 
 	output.Tournaments, err = e.tournaments(ctx)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("get tournaments: %w", err)
 	}
 
 	return output, nil
@@ -61,30 +59,33 @@ func (e *engine) tournaments(ctx context.Context) ([]*UserSessionOutput_Tourname
 		memberships []*pwdb.TournamentMember
 	)
 
-	userID, err := subjectFromContext(ctx)
+	userID, err := userIDFromContext(ctx, e.db)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("get userid from context: %w", err)
 	}
 
-	if err := e.db.
-		Where(pwdb.Tournament{Visibility: pwdb.Tournament_Public}). // FIXME: admin can see everything
-		Find(&tournaments).
-		Error; err != nil {
-		return nil, err
-	}
-
-	// FIXME: should be doable in a unique request with LEFT joining
-	if err := e.db.
+	// get tournament teams for user
+	err = e.db.
 		Preload("TournamentTeam").
 		Preload("TournamentTeam.Team").
 		Where(pwdb.TournamentMember{UserID: userID}).
 		Find(&memberships).
-		Error; err != nil && !gorm.IsRecordNotFoundError(err) {
-		return nil, err
+		Error
+	if err != nil && !pwdb.IsRecordNotFoundError(err) {
+		return nil, fmt.Errorf("fetch tournament teams: %w", err)
+	}
+
+	// get all available tournaments
+	err = e.db.
+		Where(pwdb.Tournament{Visibility: pwdb.Tournament_Public}).
+		// FIXME: admins can see everything
+		Find(&tournaments).
+		Error
+	if err != nil {
+		return nil, fmt.Errorf("fetch tournaments: %w", err)
 	}
 
 	output := []*UserSessionOutput_TournamentAndTeam{}
-
 	for _, tournament := range tournaments {
 		item := &UserSessionOutput_TournamentAndTeam{
 			Tournament: tournament,
@@ -105,16 +106,19 @@ func (e *engine) tournaments(ctx context.Context) ([]*UserSessionOutput_Tourname
 
 func (e *engine) loadOAuthUser(subject string) (*pwdb.User, error) {
 	var user pwdb.User
-	if err := e.db.
+	err := e.db.
 		Preload("ActiveTournamentMember").
 		Preload("ActiveTournamentMember.TournamentTeam").
 		Preload("ActiveTournamentMember.TournamentTeam.Tournament").
 		Preload("ActiveTournamentMember.TournamentTeam.Team").
-		Where(pwdb.User{ID: subject}).
+		Where(pwdb.User{OAuthSubject: subject}).
 		First(&user).
-		Error; err != nil {
-		return nil, err
+		Error
+
+	if err != nil {
+		return nil, fmt.Errorf("fetch user from subject %q: %w", subject, err)
 	}
+
 	return &user, nil
 }
 
@@ -131,10 +135,10 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 	}
 
 	user := pwdb.User{
-		ID:          claims.ActionToken.Sub,
-		Username:    claims.PreferredUsername,
-		Email:       claims.Email,
-		GravatarURL: gravatarURL,
+		Username:     claims.PreferredUsername,
+		Email:        claims.Email,
+		GravatarURL:  gravatarURL,
+		OAuthSubject: claims.ActionToken.Sub,
 		// WebsiteURL
 		// Locale
 

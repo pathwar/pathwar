@@ -1,10 +1,10 @@
 package pwdb
 
 import (
-	"encoding/base64"
+	"fmt"
 
+	"github.com/bwmarrin/snowflake"
 	"github.com/jinzhu/gorm"
-	uuid "github.com/satori/go.uuid"
 	"go.uber.org/zap"
 	"moul.io/zapgorm"
 )
@@ -16,33 +16,27 @@ type Opts struct {
 	skipFK bool
 }
 
-func Configure(db *gorm.DB, opts Opts) (*gorm.DB, error) {
+func Configure(db *gorm.DB, sfn *snowflake.Node, opts Opts) (*gorm.DB, error) {
 	db.SetLogger(zapgorm.New(opts.Logger))
 	//db.Callback().Create().Remove("gorm:update_time_stamp")
 	//db.Callback().Update().Remove("gorm:update_time_stamp")
-	db.Callback().Create().Before("gorm:create").Register("pathwar_before_create", beforeCreate)
+	db.Callback().Create().Before("gorm:create").Register("pathwar_before_create", beforeCreate(sfn))
 	db = db.Set("gorm:auto_preload", false)
 	db = db.Set("gorm:association_autoupdate", false)
 	db.BlockGlobalUpdate(true)
 	db.SingularTable(true)
 	db.LogMode(true)
-	if err := migrate(db, opts); err != nil {
-		return nil, err
+	if err := migrate(db, sfn, opts); err != nil {
+		return nil, fmt.Errorf("run db migrations: %w", err)
 	}
 	return db, nil
 }
 
-func beforeCreate(scope *gorm.Scope) {
-	switch scope.TableName() {
-	case "user":
-		return
-	}
-	id, err := uuid.NewV4().MarshalBinary()
-	if err != nil {
-		panic(err)
-	}
-	out := base64.StdEncoding.EncodeToString(id)
-	if err := scope.SetColumn("ID", out); err != nil {
-		panic(err)
+func beforeCreate(sfn *snowflake.Node) func(*gorm.Scope) {
+	return func(scope *gorm.Scope) {
+		id := sfn.Generate().Int64()
+		if err := scope.SetColumn("ID", id); err != nil {
+			panic(err)
+		}
 	}
 }

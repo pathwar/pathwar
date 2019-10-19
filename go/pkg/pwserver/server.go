@@ -65,7 +65,7 @@ func Start(ctx context.Context, engine pwengine.Engine, opts Opts) (func() error
 
 	grpcListener, err := net.Listen("tcp", opts.GRPCBind)
 	if err != nil {
-		return nil, nil, fmt.Errorf("failed to start gRPC listener: %w", err)
+		return nil, nil, fmt.Errorf("start gRPC listener: %w", err)
 	}
 	{ // gRPC server
 		authFunc := func(context.Context) (context.Context, error) {
@@ -126,7 +126,7 @@ func Start(ctx context.Context, engine pwengine.Engine, opts Opts) (func() error
 		)
 		grpcOpts := []grpc.DialOption{grpc.WithInsecure()}
 		if err := pwengine.RegisterEngineHandlerFromEndpoint(ctx, gwmux, opts.GRPCBind, grpcOpts); err != nil {
-			return nil, nil, fmt.Errorf("failed to register service on gateway: %w", err)
+			return nil, nil, fmt.Errorf("register service on gateway: %w", err)
 		}
 		r.Mount("/", gwmux)
 		if opts.WithPprof {
@@ -148,14 +148,14 @@ func Start(ctx context.Context, engine pwengine.Engine, opts Opts) (func() error
 			ctx, cancel := context.WithTimeout(ctx, opts.ShutdownTimeout)
 			defer cancel()
 			if err := srv.Shutdown(ctx); err != nil {
-				httpLogger.Warn("failed to shutdown HTTP server", zap.Error(err))
+				httpLogger.Warn("shutdown HTTP server", zap.Error(err))
 			}
 		})
 	}
 
 	cleaner := func() {
 		if err := grpcListener.Close(); err != nil {
-			grpcLogger.Warn("failed to close gRPC listener", zap.Error(err))
+			grpcLogger.Warn("close gRPC listener", zap.Error(err))
 		}
 	}
 

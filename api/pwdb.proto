@@ -13,7 +13,7 @@ option (gogoproto.marshaler_all) = true;
 option (gogoproto.unmarshaler_all) = true;
 
 message Challenge {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -42,7 +42,7 @@ message Challenge {
 message ChallengeList { repeated Challenge items = 1; }
 
 message ChallengeVersion {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -70,13 +70,13 @@ message ChallengeVersion {
   //
 
   Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
-  string challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   repeated ChallengeFlavor flavors = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message ChallengeFlavor {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -89,15 +89,15 @@ message ChallengeFlavor {
   // associations
   //
 
-  Challenge challenge_version = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeVersionID\""];
-  string challenge_version_id = 201 [(gogoproto.customname) = "ChallengeVersionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  ChallengeVersion challenge_version = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeVersionID\""];
+  int64 challenge_version_id = 201 [(gogoproto.customname) = "ChallengeVersionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   repeated ChallengeInstance instances = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   //repeated ChallengeSubscription subscriptions = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message ChallengeInstance {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -119,14 +119,14 @@ message ChallengeInstance {
   //
 
   Hypervisor hypervisor = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:HypervisorID\""];
-  string hypervisor_id = 201 [(gogoproto.customname) = "HypervisorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 hypervisor_id = 201 [(gogoproto.customname) = "HypervisorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   ChallengeFlavor flavor = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:FlavorID\""];
-  string flavor_id = 203 [(gogoproto.customname) = "FlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 flavor_id = 203 [(gogoproto.customname) = "FlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message Hypervisor {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -153,7 +153,7 @@ message Hypervisor {
 }
 
 message TeamMember {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -175,14 +175,14 @@ message TeamMember {
   //
 
   User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
-  string user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   Team team = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamID\""];
-  string team_id = 203 [(gogoproto.customname) = "TeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 team_id = 203 [(gogoproto.customname) = "TeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message TournamentMember {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -203,10 +203,10 @@ message TournamentMember {
   //
 
   User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
-  string user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   TournamentTeam tournament_team = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentTeamID\""];
-  string tournament_team_id = 203 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 tournament_team_id = 203 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   repeated Coupon coupons = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated Achievement achievements = 205 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
@@ -219,7 +219,7 @@ message TournamentMember {
 
 // User defines a User Account / Profile
 message User {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -233,7 +233,7 @@ message User {
   string gravatar_url = 102 [(gogoproto.customname) = "GravatarURL"];
   string website_url = 103 [(gogoproto.customname) = "WebsiteURL"];
   string locale = 104;
-  //string oauth_subject = 105 [(gogoproto.moretags) = "gorm:\"unique_index\""];
+  string oauth_subject = 105 [(gogoproto.customname) = "OAuthSubject", (gogoproto.moretags) = "gorm:\"unique_index\""];
 
   //
   // associations
@@ -243,15 +243,15 @@ message User {
   repeated Notification notifications = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated TeamMember memberships = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   TournamentMember active_tournament_member = 203 [(gogoproto.moretags) = "gorm:\"foreignkey:ActiveTournamentMemberID;PRELOAD:false\""];
-  string active_tournament_member_id = 204 [(gogoproto.customname) = "ActiveTournamentMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 active_tournament_member_id = 204 [(gogoproto.customname) = "ActiveTournamentMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   TournamentMember active_tournament = 205 [(gogoproto.moretags) = "gorm:\"foreignkey:ActiveTournamentID;PRELOAD:false\""];
-  string active_tournament_id = 206 [(gogoproto.customname) = "ActiveTournamentID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 active_tournament_id = 206 [(gogoproto.customname) = "ActiveTournamentID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message UserList { repeated User items = 1; }
 
 message Team {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -276,7 +276,7 @@ message Team {
 message TeamList { repeated Team items = 1; }
 
 message Tournament {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -314,7 +314,7 @@ message Tournament {
 message TournamentList { repeated Tournament items = 1; }
 
 message TournamentTeam {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -335,10 +335,10 @@ message TournamentTeam {
   //
 
   Tournament tournament = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentID\""];
-  string tournament_id = 201 [(gogoproto.customname) = "TournamentID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 tournament_id = 201 [(gogoproto.customname) = "TournamentID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   Team team = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamID\""];
-  string team_id = 203 [(gogoproto.customname) = "TeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 team_id = 203 [(gogoproto.customname) = "TeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   repeated ChallengeSubscription challenge_subscriptions = 205 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated TournamentMember members = 206 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
@@ -347,7 +347,7 @@ message TournamentTeam {
 message TournamentTeamList { repeated TournamentTeam items = 1; }
 
 message WhoswhoAttempt {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -361,17 +361,17 @@ message WhoswhoAttempt {
   // associations
   //
   TournamentMember author = 200 [(gogoproto.moretags) = "sql:\"not null\" gorm:\"foreignkey:AuthorID\""];
-  string author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   TournamentMember target_member = 202 [(gogoproto.moretags) = "sql:\"not null\" gorm:\"foreignkey:TargetMemberID\""];
-  string target_member_id = 203 [(gogoproto.customname) = "TargetMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 target_member_id = 203 [(gogoproto.customname) = "TargetMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   TournamentTeam target_team = 204 [(gogoproto.moretags) = "sql:\"not null\" gorm:\"foreignkey:TargetTeamID\""];
-  string target_team_id = 205 [(gogoproto.customname) = "TargetTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 target_team_id = 205 [(gogoproto.customname) = "TargetTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message ChallengeValidation {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -398,13 +398,13 @@ message ChallengeValidation {
   //
 
   ChallengeSubscription challenge_subscription = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeSubscriptionID\""];
-  string challenge_subscription_id = 201 [(gogoproto.customname) = "ChallengeSubscriptionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 challenge_subscription_id = 201 [(gogoproto.customname) = "ChallengeSubscriptionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   TournamentMember tournament_member = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentMemberID\""];
-  string tournament_member_id = 203 [(gogoproto.customname) = "TournamentMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 tournament_member_id = 203 [(gogoproto.customname) = "TournamentMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message ChallengeSubscription {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -418,16 +418,16 @@ message ChallengeSubscription {
   //
 
   TournamentTeam tournament_team = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentTeamID\""];
-  string tournament_team_id = 201 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 tournament_team_id = 201 [(gogoproto.customname) = "TournamentTeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   ChallengeFlavor challenge_flavor = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeFlavorID\""];
-  string challenge_flavor_id = 203 [(gogoproto.customname) = "ChallengeFlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 challenge_flavor_id = 203 [(gogoproto.customname) = "ChallengeFlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   repeated ChallengeValidation validations = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message InventoryItem {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -447,12 +447,12 @@ message InventoryItem {
   //
 
   TournamentMember owner = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:OwnerID\""];
-  string owner_id = 201 [(gogoproto.customname) = "OwnerID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 owner_id = 201 [(gogoproto.customname) = "OwnerID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 
 message Notification {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -473,11 +473,11 @@ message Notification {
   //
 
   User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
-  string user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message Coupon {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -493,13 +493,13 @@ message Coupon {
   // associations
   //
   Tournament tournament = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TournamentID\""];
-  string tournament_id = 201 [(gogoproto.customname) = "TournamentID", (gogoproto.moretags) = "gorm:\"index\""];
+  int64 tournament_id = 201 [(gogoproto.customname) = "TournamentID", (gogoproto.moretags) = "gorm:\"index\""];
 
   repeated CouponValidation validations = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message CouponValidation {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -513,15 +513,15 @@ message CouponValidation {
   // associations
   //
   TournamentMember author = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:AuthorID\""];
-  string author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   Coupon coupon = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:CouponID\""];
-  string coupon_id = 203 [(gogoproto.customname) = "CouponID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 coupon_id = 203 [(gogoproto.customname) = "CouponID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 
 message Achievement {
-  string id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
@@ -585,10 +585,10 @@ message Achievement {
   //
 
   TournamentMember author = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:AuthorID\""];
-  string author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   ChallengeValidation challenge_validation = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeValidationID\""];
-  string challenge_validation_id = 203 [(gogoproto.customname) = "ChallengeValidationID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 challenge_validation_id = 203 [(gogoproto.customname) = "ChallengeValidationID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message Dump {

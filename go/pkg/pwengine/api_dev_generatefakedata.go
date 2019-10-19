@@ -7,5 +7,5 @@ import (
 )
 
 func (e *engine) GenerateFakeData(context.Context, *Void) (*Void, error) {
-	return &Void{}, pwdb.GenerateFakeData(e.db, e.logger.Named("generate-fake-data"))
+	return &Void{}, pwdb.GenerateFakeData(e.db, e.snowflake, e.logger.Named("generate-fake-data"))
 }
