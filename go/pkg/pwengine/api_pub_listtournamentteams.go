@@ -7,7 +7,7 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) ListTournamentTeams(ctx context.Context, in *ListTournamentTeamsInput) (*pwdb.TournamentTeamList, error) {
+func (e *engine) ListTournamentTeams(ctx context.Context, in *ListTournamentTeamsInput) (*ListTournamentTeamsOutput, error) {
 	{ // validation
 		if in.TournamentID == 0 {
 			return nil, ErrMissingArgument
@@ -28,7 +28,7 @@ func (e *engine) ListTournamentTeams(ctx context.Context, in *ListTournamentTeam
 		}
 	}
 
-	var ret pwdb.TournamentTeamList
+	var ret ListTournamentTeamsOutput
 	err := e.db.
 		Set("gorm:auto_preload", true).
 		Where(pwdb.TournamentTeam{TournamentID: in.TournamentID}).
