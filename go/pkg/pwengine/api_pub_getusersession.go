@@ -131,7 +131,7 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 
 	var tournament pwdb.Tournament
 	if err := e.db.Where(pwdb.Tournament{IsDefault: true}).First(&tournament).Error; err != nil {
-		return nil, err
+		return nil, fmt.Errorf("get default tournament: %w", err)
 	}
 
 	user := pwdb.User{
@@ -174,18 +174,19 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 	// FIXME: create a "welcome" notification
 
 	if err := tx.Commit().Error; err != nil {
-		return nil, err
+		return nil, fmt.Errorf("commit transaction: %w", err)
 	}
 
 	// set active tournament
-	if err := e.db.
+	err := e.db.
 		Model(&user).
 		Updates(pwdb.User{
 			ActiveTournamentMemberID: tournamentMember.ID,
 			ActiveTournamentID:       tournament.ID,
 		}).
-		Error; err != nil {
-		return nil, err
+		Error
+	if err != nil {
+		return nil, fmt.Errorf("update active tournament: %w", err)
 	}
 
 	return &user, nil
