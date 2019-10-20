@@ -1,7 +1,7 @@
+064aff6603db55c5d9a7cdf255de85d2eaef60bd  ../api/pwengine.proto
 30302d31bca0924719daf9e95a0ea15dfbcfb131  ../api/pwhypervisor.proto
 58eb4b1d9b5be40a69ffdab1a13b9fb90b669839  ../api/pwsso.proto
 5b457e13e87038fcd3124378fdcef56a458b889b  ../api/pwdb.proto
 5d333f98cfbafd36ddc97b3c7c364bf94b898384  ../api/pwcompose.proto
-6e179dde55f9904efd32e5506a30cb0a0b9c0afd  ../api/pwengine.proto
 d08a504114b6e1cc86c0b72d6603fcc1bd8fa179  Makefile
 fb5070d4099e2c7384c026e38f49d73396bcb489  ../api/pwchallenge.proto
