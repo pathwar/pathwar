@@ -187,13 +187,6 @@ definitions:
     - Active
     - Inactive
     type: string
-  dbChallengeList:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/dbChallenge'
-        type: array
-    type: object
   dbChallengeSubscription:
     properties:
       challenge_flavor:
@@ -532,13 +525,6 @@ definitions:
         format: date-time
         type: string
     type: object
-  dbTeamList:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/dbTeam'
-        type: array
-    type: object
   dbTeamMember:
     properties:
       created_at:
@@ -694,13 +680,6 @@ definitions:
         format: date-time
         type: string
     type: object
-  dbTournamentTeamList:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/dbTournamentTeam'
-        type: array
-    type: object
   dbUser:
     properties:
       active_tournament:
@@ -779,6 +758,27 @@ definitions:
       updated_at:
         format: date-time
         type: string
+    type: object
+  engineListChallengesOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbChallenge'
+        type: array
+    type: object
+  engineListTeamsOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbTeam'
+        type: array
+    type: object
+  engineListTournamentTeamsOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbTournamentTeam'
+        type: array
     type: object
   engineSetPreferencesInput:
     properties:
@@ -902,7 +902,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/dbChallengeList'
+            $ref: '#/definitions/engineListChallengesOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1043,7 +1043,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/dbTeamList'
+            $ref: '#/definitions/engineListTeamsOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1068,7 +1068,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/dbTournamentTeamList'
+            $ref: '#/definitions/engineListTournamentTeamsOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
