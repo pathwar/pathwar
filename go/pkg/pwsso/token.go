@@ -1,6 +1,7 @@
 package pwsso
 
 import (
+	"fmt"
 	time "time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -32,7 +33,7 @@ func TokenWithClaims(bearer string, pubkey interface{}, allowUnsafe bool) (*jwt.
 			token, _, err := parser.ParseUnverified(bearer, claims)
 			return token, claims, err
 		}
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("parse bearer: %w", err)
 	}
 	return token, claims, nil
 }
