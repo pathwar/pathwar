@@ -7,5 +7,8 @@ import (
 )
 
 func IsRecordNotFoundError(err error) bool {
-	return gorm.IsRecordNotFoundError(errors.Unwrap(err))
+	if unwrapped := errors.Unwrap(err); unwrapped != nil {
+		err = unwrapped
+	}
+	return gorm.IsRecordNotFoundError(err)
 }

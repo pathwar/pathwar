@@ -95,6 +95,7 @@ service Engine {
   rpc ListChallenges(Void) returns (ListChallengesOutput) { option (google.api.http) = {get: "/challenges"}; };
   rpc ListTeams(Void) returns (ListTeamsOutput) { option (google.api.http) = {get: "/teams"}; };
   rpc ListTournamentTeams(ListTournamentTeamsInput) returns (ListTournamentTeamsOutput) { option (google.api.http) = {get: "/tournament/teams"}; };
+  rpc GetTournamentTeam(GetTournamentTeamInput) returns (GetTournamentTeamOutput) { option (google.api.http) = {get: "/tournament/team"}; };
   rpc GetStatus(Void) returns (Status) { option (google.api.http) = {get: "/status"}; }
 
   //
@@ -110,6 +111,15 @@ message Void {
   option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
     example: { value: '{}' };
   };
+}
+
+
+message GetTournamentTeamInput {
+  int64 tournament_team_id = 1 [(gogoproto.customname) = "TournamentTeamID"];
+}
+
+message GetTournamentTeamOutput {
+  pathwar.db.TournamentTeam item = 1;
 }
 
 message ListTournamentTeamsInput {

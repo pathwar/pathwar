@@ -14,9 +14,22 @@ func testingTournaments(t *testing.T, e Engine) *pwdb.TournamentList {
 
 	db := testingEngineDB(t, e)
 	var list pwdb.TournamentList
-	err := db.Find(&list.Items).Error
+	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
 	if err != nil {
 		t.Fatalf("list tournaments: %v", err)
+	}
+
+	return &list
+}
+
+func testingTournamentTeams(t *testing.T, e Engine) *pwdb.TournamentTeamList {
+	t.Helper()
+
+	db := testingEngineDB(t, e)
+	var list pwdb.TournamentTeamList
+	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
+	if err != nil {
+		t.Fatalf("list tournament teams: %v", err)
 	}
 
 	return &list

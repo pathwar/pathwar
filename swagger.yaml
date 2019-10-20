@@ -759,6 +759,11 @@ definitions:
         format: date-time
         type: string
     type: object
+  engineGetTournamentTeamOutput:
+    properties:
+      item:
+        $ref: '#/definitions/dbTournamentTeam'
+    type: object
   engineListChallengesOutput:
     properties:
       items:
@@ -1044,6 +1049,31 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/engineListTeamsOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /tournament/team:
+    get:
+      operationId: GetTournamentTeam
+      parameters:
+      - format: int64
+        in: query
+        name: tournament_team_id
+        required: false
+        type: string
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineGetTournamentTeamOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
