@@ -1,15 +1,16 @@
-/* eslint-disable no-unused-vars */
 import { baseApi } from "./index";
 
-export function setTournamentActive(tournamentID) {
-    // return baseApi.post(`/user-tournaments`, { tournamentID });
-}
-export function getAllTournaments() {
-    return baseApi.get(`/tournaments`);
+export function postPreferences(tournamentID) {
+  return baseApi.post(`/preferences`, {"active_tournament_id": tournamentID});
 }
 
-export function getTeamTournaments(teamID) {
-    return baseApi.get(`/team-tournaments`, { teamID });
+export function getAllTournamentTeams(tournamentID) {
+  const urlIdParam = encodeURIComponent(tournamentID);
+  return baseApi.get(`/tournament/teams?tournament_id=${urlIdParam}`)
+}
+
+export function getAllTournaments() {
+    return baseApi.get(`/tournaments`);
 }
 
 export function getChallenges(tournamentID) {

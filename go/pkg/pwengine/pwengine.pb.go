@@ -69,15 +69,191 @@ func (m *Void) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Void proto.InternalMessageInfo
 
+type GetTournamentTeamInput struct {
+	TournamentTeamID int64 `protobuf:"varint,1,opt,name=tournament_team_id,json=tournamentTeamId,proto3" json:"tournament_team_id,omitempty"`
+}
+
+func (m *GetTournamentTeamInput) Reset()         { *m = GetTournamentTeamInput{} }
+func (m *GetTournamentTeamInput) String() string { return proto.CompactTextString(m) }
+func (*GetTournamentTeamInput) ProtoMessage()    {}
+func (*GetTournamentTeamInput) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{1}
+}
+func (m *GetTournamentTeamInput) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetTournamentTeamInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetTournamentTeamInput.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetTournamentTeamInput) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetTournamentTeamInput.Merge(m, src)
+}
+func (m *GetTournamentTeamInput) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetTournamentTeamInput) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetTournamentTeamInput.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetTournamentTeamInput proto.InternalMessageInfo
+
+func (m *GetTournamentTeamInput) GetTournamentTeamID() int64 {
+	if m != nil {
+		return m.TournamentTeamID
+	}
+	return 0
+}
+
+type GetTournamentTeamOutput struct {
+	Item *pwdb.TournamentTeam `protobuf:"bytes,1,opt,name=item,proto3" json:"item,omitempty"`
+}
+
+func (m *GetTournamentTeamOutput) Reset()         { *m = GetTournamentTeamOutput{} }
+func (m *GetTournamentTeamOutput) String() string { return proto.CompactTextString(m) }
+func (*GetTournamentTeamOutput) ProtoMessage()    {}
+func (*GetTournamentTeamOutput) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{2}
+}
+func (m *GetTournamentTeamOutput) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetTournamentTeamOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetTournamentTeamOutput.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetTournamentTeamOutput) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetTournamentTeamOutput.Merge(m, src)
+}
+func (m *GetTournamentTeamOutput) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetTournamentTeamOutput) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetTournamentTeamOutput.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetTournamentTeamOutput proto.InternalMessageInfo
+
+func (m *GetTournamentTeamOutput) GetItem() *pwdb.TournamentTeam {
+	if m != nil {
+		return m.Item
+	}
+	return nil
+}
+
+type GetChallengeInput struct {
+	ChallengeID int64 `protobuf:"varint,1,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty"`
+}
+
+func (m *GetChallengeInput) Reset()         { *m = GetChallengeInput{} }
+func (m *GetChallengeInput) String() string { return proto.CompactTextString(m) }
+func (*GetChallengeInput) ProtoMessage()    {}
+func (*GetChallengeInput) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{3}
+}
+func (m *GetChallengeInput) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetChallengeInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetChallengeInput.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetChallengeInput) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetChallengeInput.Merge(m, src)
+}
+func (m *GetChallengeInput) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetChallengeInput) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetChallengeInput.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetChallengeInput proto.InternalMessageInfo
+
+func (m *GetChallengeInput) GetChallengeID() int64 {
+	if m != nil {
+		return m.ChallengeID
+	}
+	return 0
+}
+
+type GetChallengeOutput struct {
+	Item *pwdb.Challenge `protobuf:"bytes,1,opt,name=item,proto3" json:"item,omitempty"`
+}
+
+func (m *GetChallengeOutput) Reset()         { *m = GetChallengeOutput{} }
+func (m *GetChallengeOutput) String() string { return proto.CompactTextString(m) }
+func (*GetChallengeOutput) ProtoMessage()    {}
+func (*GetChallengeOutput) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{4}
+}
+func (m *GetChallengeOutput) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetChallengeOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetChallengeOutput.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetChallengeOutput) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetChallengeOutput.Merge(m, src)
+}
+func (m *GetChallengeOutput) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetChallengeOutput) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetChallengeOutput.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetChallengeOutput proto.InternalMessageInfo
+
+func (m *GetChallengeOutput) GetItem() *pwdb.Challenge {
+	if m != nil {
+		return m.Item
+	}
+	return nil
+}
+
 type ListTournamentTeamsInput struct {
-	TournamentID string `protobuf:"bytes,1,opt,name=tournament_id,json=tournamentId,proto3" json:"tournament_id,omitempty"`
+	TournamentID int64 `protobuf:"varint,1,opt,name=tournament_id,json=tournamentId,proto3" json:"tournament_id,omitempty"`
 }
 
 func (m *ListTournamentTeamsInput) Reset()         { *m = ListTournamentTeamsInput{} }
 func (m *ListTournamentTeamsInput) String() string { return proto.CompactTextString(m) }
 func (*ListTournamentTeamsInput) ProtoMessage()    {}
 func (*ListTournamentTeamsInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{1}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{5}
 }
 func (m *ListTournamentTeamsInput) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -106,22 +282,22 @@ func (m *ListTournamentTeamsInput) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ListTournamentTeamsInput proto.InternalMessageInfo
 
-func (m *ListTournamentTeamsInput) GetTournamentID() string {
+func (m *ListTournamentTeamsInput) GetTournamentID() int64 {
 	if m != nil {
 		return m.TournamentID
 	}
-	return ""
+	return 0
 }
 
 type SetPreferencesInput struct {
-	ActiveTournamentID string `protobuf:"bytes,1,opt,name=active_tournament_id,json=activeTournamentId,proto3" json:"active_tournament_id,omitempty"`
+	ActiveTournamentID int64 `protobuf:"varint,1,opt,name=active_tournament_id,json=activeTournamentId,proto3" json:"active_tournament_id,omitempty"`
 }
 
 func (m *SetPreferencesInput) Reset()         { *m = SetPreferencesInput{} }
 func (m *SetPreferencesInput) String() string { return proto.CompactTextString(m) }
 func (*SetPreferencesInput) ProtoMessage()    {}
 func (*SetPreferencesInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{2}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{6}
 }
 func (m *SetPreferencesInput) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -150,11 +326,143 @@ func (m *SetPreferencesInput) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SetPreferencesInput proto.InternalMessageInfo
 
-func (m *SetPreferencesInput) GetActiveTournamentID() string {
+func (m *SetPreferencesInput) GetActiveTournamentID() int64 {
 	if m != nil {
 		return m.ActiveTournamentID
 	}
-	return ""
+	return 0
+}
+
+type ListTournamentTeamsOutput struct {
+	Items []*pwdb.TournamentTeam `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+}
+
+func (m *ListTournamentTeamsOutput) Reset()         { *m = ListTournamentTeamsOutput{} }
+func (m *ListTournamentTeamsOutput) String() string { return proto.CompactTextString(m) }
+func (*ListTournamentTeamsOutput) ProtoMessage()    {}
+func (*ListTournamentTeamsOutput) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{7}
+}
+func (m *ListTournamentTeamsOutput) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListTournamentTeamsOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListTournamentTeamsOutput.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListTournamentTeamsOutput) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListTournamentTeamsOutput.Merge(m, src)
+}
+func (m *ListTournamentTeamsOutput) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListTournamentTeamsOutput) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListTournamentTeamsOutput.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListTournamentTeamsOutput proto.InternalMessageInfo
+
+func (m *ListTournamentTeamsOutput) GetItems() []*pwdb.TournamentTeam {
+	if m != nil {
+		return m.Items
+	}
+	return nil
+}
+
+type ListTeamsOutput struct {
+	Items []*pwdb.Team `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+}
+
+func (m *ListTeamsOutput) Reset()         { *m = ListTeamsOutput{} }
+func (m *ListTeamsOutput) String() string { return proto.CompactTextString(m) }
+func (*ListTeamsOutput) ProtoMessage()    {}
+func (*ListTeamsOutput) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{8}
+}
+func (m *ListTeamsOutput) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListTeamsOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListTeamsOutput.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListTeamsOutput) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListTeamsOutput.Merge(m, src)
+}
+func (m *ListTeamsOutput) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListTeamsOutput) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListTeamsOutput.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListTeamsOutput proto.InternalMessageInfo
+
+func (m *ListTeamsOutput) GetItems() []*pwdb.Team {
+	if m != nil {
+		return m.Items
+	}
+	return nil
+}
+
+type ListChallengesOutput struct {
+	Items []*pwdb.Challenge `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+}
+
+func (m *ListChallengesOutput) Reset()         { *m = ListChallengesOutput{} }
+func (m *ListChallengesOutput) String() string { return proto.CompactTextString(m) }
+func (*ListChallengesOutput) ProtoMessage()    {}
+func (*ListChallengesOutput) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{9}
+}
+func (m *ListChallengesOutput) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListChallengesOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListChallengesOutput.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListChallengesOutput) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListChallengesOutput.Merge(m, src)
+}
+func (m *ListChallengesOutput) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListChallengesOutput) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListChallengesOutput.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListChallengesOutput proto.InternalMessageInfo
+
+func (m *ListChallengesOutput) GetItems() []*pwdb.Challenge {
+	if m != nil {
+		return m.Items
+	}
+	return nil
 }
 
 type UserSessionOutput struct {
@@ -169,7 +477,7 @@ func (m *UserSessionOutput) Reset()         { *m = UserSessionOutput{} }
 func (m *UserSessionOutput) String() string { return proto.CompactTextString(m) }
 func (*UserSessionOutput) ProtoMessage()    {}
 func (*UserSessionOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{3}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{10}
 }
 func (m *UserSessionOutput) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -243,7 +551,7 @@ func (m *UserSessionOutput_TournamentAndTeam) Reset()         { *m = UserSession
 func (m *UserSessionOutput_TournamentAndTeam) String() string { return proto.CompactTextString(m) }
 func (*UserSessionOutput_TournamentAndTeam) ProtoMessage()    {}
 func (*UserSessionOutput_TournamentAndTeam) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{3, 0}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{10, 0}
 }
 func (m *UserSessionOutput_TournamentAndTeam) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -301,7 +609,7 @@ func (m *Status) Reset()         { *m = Status{} }
 func (m *Status) String() string { return proto.CompactTextString(m) }
 func (*Status) ProtoMessage()    {}
 func (*Status) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{4}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{11}
 }
 func (m *Status) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -349,7 +657,7 @@ func (m *Info) Reset()         { *m = Info{} }
 func (m *Info) String() string { return proto.CompactTextString(m) }
 func (*Info) ProtoMessage()    {}
 func (*Info) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{5}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{12}
 }
 func (m *Info) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -415,8 +723,15 @@ func (m *Info) GetBuiltBy() string {
 
 func init() {
 	proto.RegisterType((*Void)(nil), "pathwar.engine.Void")
+	proto.RegisterType((*GetTournamentTeamInput)(nil), "pathwar.engine.GetTournamentTeamInput")
+	proto.RegisterType((*GetTournamentTeamOutput)(nil), "pathwar.engine.GetTournamentTeamOutput")
+	proto.RegisterType((*GetChallengeInput)(nil), "pathwar.engine.GetChallengeInput")
+	proto.RegisterType((*GetChallengeOutput)(nil), "pathwar.engine.GetChallengeOutput")
 	proto.RegisterType((*ListTournamentTeamsInput)(nil), "pathwar.engine.ListTournamentTeamsInput")
 	proto.RegisterType((*SetPreferencesInput)(nil), "pathwar.engine.SetPreferencesInput")
+	proto.RegisterType((*ListTournamentTeamsOutput)(nil), "pathwar.engine.ListTournamentTeamsOutput")
+	proto.RegisterType((*ListTeamsOutput)(nil), "pathwar.engine.ListTeamsOutput")
+	proto.RegisterType((*ListChallengesOutput)(nil), "pathwar.engine.ListChallengesOutput")
 	proto.RegisterType((*UserSessionOutput)(nil), "pathwar.engine.UserSessionOutput")
 	proto.RegisterType((*UserSessionOutput_TournamentAndTeam)(nil), "pathwar.engine.UserSessionOutput.TournamentAndTeam")
 	proto.RegisterType((*Status)(nil), "pathwar.engine.Status")
@@ -426,83 +741,95 @@ func init() {
 func init() { proto.RegisterFile("pwengine.proto", fileDescriptor_02cf22bbbf1a21c2) }
 
 var fileDescriptor_02cf22bbbf1a21c2 = []byte{
-	// 1202 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x56, 0x4f, 0x73, 0xdb, 0x44,
-	0x14, 0x8f, 0x1c, 0xc7, 0xb1, 0xd7, 0xb5, 0x93, 0x6c, 0x4a, 0xea, 0x98, 0xe2, 0x08, 0xd1, 0x43,
-	0x08, 0x63, 0x29, 0xb8, 0x85, 0xe9, 0x04, 0x0e, 0x38, 0x4d, 0xeb, 0x9a, 0x52, 0x62, 0x94, 0xb4,
-	0x03, 0xbd, 0x98, 0xb5, 0xf4, 0x2c, 0x2f, 0xb1, 0xb4, 0x42, 0xbb, 0x8a, 0x31, 0x0c, 0x17, 0x0e,
-	0x0c, 0x47, 0xa6, 0x5c, 0x18, 0x0e, 0x7c, 0x02, 0x3e, 0x05, 0x27, 0x8e, 0x9d, 0xe1, 0xc2, 0xa9,
-	0xc3, 0xa4, 0x1c, 0xf9, 0x10, 0x8c, 0xd6, 0x72, 0xac, 0x24, 0xf6, 0xa4, 0x9c, 0xec, 0xf7, 0xf6,
-	0xf7, 0x7e, 0xef, 0xed, 0xfb, 0xa7, 0x45, 0x45, 0x7f, 0x00, 0x9e, 0x43, 0x3d, 0xd0, 0xfd, 0x80,
-	0x09, 0x86, 0x8b, 0x3e, 0x11, 0xbd, 0x01, 0x09, 0xf4, 0x91, 0xb6, 0x7c, 0xdd, 0x61, 0xcc, 0xe9,
-	0x83, 0x41, 0x7c, 0x6a, 0x10, 0xcf, 0x63, 0x82, 0x08, 0xca, 0x3c, 0x3e, 0x42, 0x97, 0xab, 0x0e,
-	0x15, 0xbd, 0xb0, 0xa3, 0x5b, 0xcc, 0x35, 0x1c, 0xe6, 0x30, 0x43, 0xaa, 0x3b, 0x61, 0x57, 0x4a,
-	0x52, 0x90, 0xff, 0x62, 0xf8, 0x41, 0x12, 0x1e, 0xf8, 0x56, 0x15, 0x2c, 0xc6, 0x87, 0x5c, 0x40,
-	0x2c, 0x3a, 0x44, 0xc0, 0x80, 0x0c, 0x47, 0x2c, 0x56, 0xd5, 0x01, 0xaf, 0xca, 0x07, 0xc4, 0x71,
-	0x20, 0x30, 0x98, 0x2f, 0xfd, 0x4e, 0x89, 0x21, 0xef, 0x0f, 0x38, 0x1f, 0x7b, 0x40, 0xfe, 0xc0,
-	0xee, 0x8c, 0xfe, 0x6b, 0x2b, 0x28, 0xfd, 0x98, 0x51, 0x7b, 0x27, 0xf7, 0xb4, 0x9e, 0xa9, 0xa5,
-	0x71, 0xea, 0x9b, 0x6f, 0xb5, 0x4f, 0x50, 0xe9, 0x23, 0xca, 0xc5, 0x21, 0x0b, 0x03, 0x8f, 0xb8,
-	0xe0, 0x89, 0x43, 0x20, 0x2e, 0x6f, 0x7a, 0x7e, 0x28, 0xf0, 0x3b, 0xa8, 0x20, 0x4e, 0xf5, 0x6d,
-	0x6a, 0x97, 0x14, 0x55, 0xd9, 0xcc, 0xed, 0x2e, 0x9f, 0x3c, 0xdf, 0xb8, 0x32, 0x31, 0x68, 0xee,
-	0x99, 0x57, 0x26, 0xb0, 0xa6, 0xad, 0xb5, 0xd1, 0xea, 0x01, 0x88, 0x56, 0x00, 0x5d, 0x08, 0xc0,
-	0xb3, 0x20, 0x66, 0xbb, 0x8f, 0xae, 0x12, 0x4b, 0xd0, 0x63, 0x68, 0x4f, 0x23, 0x5d, 0x3b, 0x79,
-	0xbe, 0x81, 0xeb, 0xf2, 0xfc, 0x0c, 0x35, 0x26, 0xe7, 0x75, 0xb6, 0xf6, 0xeb, 0x3c, 0x5a, 0x79,
-	0xc4, 0x21, 0x38, 0x00, 0xce, 0x29, 0xf3, 0xf6, 0x43, 0x11, 0xf1, 0xdf, 0x40, 0xe9, 0x90, 0x43,
-	0x20, 0xf9, 0xf2, 0xb5, 0x65, 0x7d, 0x5c, 0x36, 0xbb, 0xa3, 0x47, 0x60, 0x53, 0x9e, 0xe2, 0x0a,
-	0xca, 0x53, 0xde, 0xf6, 0x60, 0xd0, 0x96, 0xe0, 0x94, 0xaa, 0x6c, 0x66, 0xcd, 0x1c, 0xe5, 0x1f,
-	0xc3, 0x20, 0x42, 0xe1, 0xb7, 0x50, 0xc6, 0xea, 0x13, 0xea, 0xf2, 0xd2, 0xbc, 0xe4, 0x59, 0x3d,
-	0xe5, 0x89, 0x52, 0x7a, 0x47, 0x1e, 0x99, 0x31, 0x04, 0xdf, 0x40, 0x05, 0x8f, 0x09, 0xda, 0xa5,
-	0xd6, 0x28, 0xff, 0xa5, 0xb4, 0xaa, 0x6c, 0x2e, 0x98, 0x67, 0x95, 0xf8, 0x11, 0xca, 0x4f, 0x6e,
-	0xcc, 0x4b, 0x0b, 0xea, 0xfc, 0x66, 0xbe, 0x76, 0x53, 0x3f, 0xdb, 0x56, 0xfa, 0x85, 0x0b, 0xe9,
-	0x93, 0x3b, 0xd7, 0x3d, 0x3b, 0x2a, 0x8b, 0x99, 0xe4, 0x29, 0xff, 0xac, 0xa0, 0x95, 0x0b, 0x10,
-	0xfc, 0x2e, 0x42, 0x13, 0x50, 0x9c, 0x8b, 0xb5, 0x64, 0x2e, 0x26, 0x26, 0x66, 0x02, 0x89, 0x75,
-	0x94, 0x16, 0x40, 0x5c, 0x99, 0x90, 0x7c, 0xad, 0x3c, 0xdd, 0x42, 0x06, 0x21, 0x71, 0xf8, 0x55,
-	0x94, 0xa3, 0xbc, 0x3d, 0x2a, 0x8e, 0x4c, 0x55, 0xd6, 0xcc, 0x52, 0x3e, 0x2a, 0xa0, 0x76, 0x0f,
-	0x65, 0x0e, 0x04, 0x11, 0x21, 0xc7, 0xef, 0xa3, 0x65, 0x38, 0x86, 0x60, 0x28, 0x7a, 0xd4, 0x73,
-	0xda, 0x94, 0xb7, 0xd9, 0x91, 0x0c, 0x2a, 0xbb, 0x8b, 0x4f, 0x9e, 0x6f, 0x14, 0xef, 0x9e, 0x9e,
-	0x35, 0xf9, 0xfe, 0x03, 0xb3, 0x08, 0x49, 0xf9, 0x48, 0xfb, 0x5e, 0x41, 0xe9, 0xa6, 0xd7, 0x65,
-	0xb8, 0x84, 0x16, 0x8f, 0x21, 0x88, 0x72, 0x33, 0x6a, 0x17, 0x73, 0x2c, 0xe2, 0x35, 0x94, 0x09,
-	0x7d, 0x41, 0x5d, 0x90, 0x91, 0x2f, 0x98, 0xb1, 0x14, 0xe9, 0x2d, 0xe6, 0xba, 0x54, 0xc8, 0xe0,
-	0x72, 0x66, 0x2c, 0xe1, 0x75, 0x94, 0xed, 0x84, 0xb4, 0x2f, 0xda, 0x44, 0xc8, 0x6a, 0xe5, 0xcc,
-	0x45, 0x29, 0xd7, 0x13, 0x47, 0x9d, 0x61, 0x69, 0x21, 0x71, 0xb4, 0x3b, 0xac, 0xfd, 0x9b, 0x41,
-	0x99, 0xbb, 0xb2, 0x4e, 0xb8, 0x8e, 0xd2, 0x2d, 0xea, 0x39, 0xf8, 0xea, 0xf9, 0x02, 0x46, 0x93,
-	0x55, 0x9e, 0xaa, 0xd5, 0x0a, 0xdf, 0xfd, 0xf9, 0xcf, 0x4f, 0xa9, 0x45, 0xbc, 0x60, 0xf8, 0x91,
-	0xe9, 0xe7, 0xa8, 0xd8, 0x00, 0x91, 0x28, 0xf8, 0x0c, 0xb2, 0xd7, 0x2f, 0xed, 0x11, 0xed, 0x15,
-	0xc9, 0xbc, 0x84, 0x0b, 0x46, 0xd4, 0xce, 0x55, 0x1e, 0xf3, 0xd9, 0xa8, 0x78, 0x76, 0x04, 0xf1,
-	0x1b, 0xe7, 0xb9, 0xa6, 0x8c, 0xe8, 0x8c, 0xe8, 0xaf, 0x49, 0x1f, 0x2b, 0xda, 0x15, 0xc3, 0x9f,
-	0x18, 0xec, 0x28, 0x5b, 0xf8, 0x31, 0x2a, 0x46, 0xbb, 0xe3, 0x4e, 0x8f, 0xf4, 0xfb, 0xe0, 0x39,
-	0xc0, 0x67, 0xdc, 0x63, 0x3d, 0xd9, 0x4d, 0xa7, 0xe8, 0xc8, 0x54, 0x5b, 0x95, 0xdc, 0x05, 0x9c,
-	0x37, 0xac, 0x09, 0x4b, 0x03, 0xe5, 0xe4, 0x4e, 0x8a, 0x36, 0xd1, 0xa5, 0x79, 0x8e, 0x1a, 0x14,
-	0x88, 0x2b, 0xd9, 0x8a, 0x92, 0x2d, 0x8b, 0x33, 0x86, 0x90, 0xb6, 0x5f, 0xa3, 0xd5, 0x29, 0xcb,
-	0x0d, 0x6f, 0x9e, 0xa7, 0x9c, 0xb5, 0x01, 0xcb, 0x95, 0xd9, 0x73, 0x20, 0x1d, 0xae, 0x4b, 0x87,
-	0xab, 0x78, 0xc5, 0x98, 0x8c, 0x52, 0xec, 0xfb, 0x43, 0x94, 0x6b, 0x80, 0x88, 0xc7, 0x60, 0xfa,
-	0x25, 0xd6, 0x2e, 0xd4, 0x44, 0xa2, 0xb5, 0x25, 0xc9, 0x9a, 0xc3, 0x8b, 0x06, 0x1f, 0x99, 0xef,
-	0xa1, 0xc5, 0x06, 0x08, 0x39, 0x09, 0x2f, 0xd9, 0x76, 0x11, 0x36, 0xd1, 0x76, 0x34, 0x32, 0x6d,
-	0xa3, 0xe5, 0x06, 0x78, 0x10, 0x10, 0x01, 0xf7, 0xc8, 0x11, 0xec, 0x11, 0x41, 0xfe, 0x57, 0x17,
-	0x6f, 0x48, 0xba, 0x75, 0xed, 0x9a, 0x61, 0xc3, 0xb1, 0xe1, 0xc4, 0x54, 0xd5, 0x2e, 0x39, 0x82,
-	0xaa, 0x1d, 0x91, 0x35, 0x50, 0x66, 0x6f, 0x77, 0x2f, 0x74, 0xfd, 0x19, 0xb4, 0x67, 0x76, 0x72,
-	0x84, 0x4b, 0xb4, 0x6f, 0x44, 0xc9, 0xbf, 0xec, 0x57, 0xed, 0xd0, 0xf5, 0x77, 0x7f, 0x4f, 0x3f,
-	0xad, 0xff, 0x90, 0xc6, 0xbf, 0x29, 0x28, 0xdf, 0x1a, 0x59, 0xa8, 0xf5, 0x56, 0x53, 0x6b, 0xa0,
-	0xc2, 0x58, 0x3c, 0x10, 0xa4, 0xdb, 0xc5, 0x5a, 0x4f, 0x08, 0x9f, 0xef, 0x18, 0x46, 0xe2, 0x2b,
-	0x1a, 0xbb, 0x18, 0xff, 0x96, 0x31, 0x8f, 0xa0, 0x1f, 0x8c, 0x3d, 0xf7, 0x89, 0x67, 0x6f, 0xed,
-	0xa3, 0xd5, 0xcd, 0xba, 0x4f, 0xac, 0x1e, 0x54, 0x6b, 0xfa, 0xb6, 0xba, 0x6f, 0xaa, 0x0f, 0x9b,
-	0x87, 0x6f, 0xe2, 0xdb, 0x97, 0xd3, 0x19, 0x9d, 0x3e, 0xeb, 0x18, 0x2e, 0xe1, 0x02, 0x02, 0xe3,
-	0xce, 0x7e, 0xeb, 0x33, 0xb3, 0xd9, 0xb8, 0x7f, 0x58, 0x9b, 0x7f, 0x5b, 0xdf, 0x2e, 0x2f, 0x13,
-	0x9f, 0xea, 0x49, 0x3f, 0x9a, 0x62, 0x6c, 0xa5, 0x52, 0xe9, 0xda, 0x32, 0xf1, 0xfd, 0x7e, 0xfc,
-	0x39, 0x30, 0xbe, 0xe0, 0xcc, 0xdb, 0xb9, 0xa0, 0x31, 0x5b, 0x68, 0xfe, 0xd6, 0xf6, 0x4d, 0xdc,
-	0x44, 0x0d, 0x13, 0x44, 0x18, 0x78, 0x60, 0xab, 0x83, 0x1e, 0x78, 0xaa, 0xe8, 0x81, 0x1a, 0x8d,
-	0xb6, 0x6a, 0x33, 0xe0, 0xaa, 0xc7, 0x84, 0xda, 0x23, 0xc7, 0xa0, 0xfa, 0x10, 0xb8, 0x54, 0xce,
-	0xba, 0x2a, 0x98, 0x4a, 0x2c, 0x0b, 0x38, 0x97, 0xd8, 0x00, 0x38, 0x0b, 0x03, 0x0b, 0x74, 0xf3,
-	0xbd, 0x88, 0xf1, 0x16, 0xbe, 0x85, 0xb6, 0x2e, 0x32, 0x8e, 0x51, 0x13, 0x56, 0xf8, 0x8a, 0x72,
-	0xa1, 0xe3, 0x0c, 0x4a, 0xff, 0x92, 0x52, 0x16, 0x9f, 0x6c, 0xa3, 0x25, 0x94, 0xdb, 0x25, 0x9c,
-	0x5a, 0xf5, 0x50, 0xf4, 0x70, 0x2a, 0xab, 0xa0, 0xd7, 0x10, 0xaa, 0xfb, 0xf4, 0x01, 0x0c, 0xa5,
-	0x66, 0x29, 0x9b, 0x2a, 0xe7, 0x3e, 0xad, 0xd6, 0x5b, 0xcd, 0xea, 0x03, 0x18, 0xaa, 0xa9, 0xce,
-	0x06, 0x2a, 0x24, 0x2d, 0xe6, 0x50, 0xf1, 0x0c, 0x7e, 0x2e, 0xb8, 0x8d, 0xf0, 0x43, 0x16, 0x80,
-	0x4a, 0x3a, 0x2c, 0x14, 0x6a, 0x5c, 0xc8, 0x97, 0x29, 0xe1, 0x1f, 0x27, 0x15, 0xe5, 0xd9, 0x49,
-	0x45, 0xf9, 0xfb, 0xa4, 0xa2, 0xfc, 0xf8, 0xa2, 0x32, 0xf7, 0xec, 0x45, 0x65, 0xee, 0xaf, 0x17,
-	0x95, 0xb9, 0x27, 0xd7, 0x93, 0xc9, 0x36, 0xa2, 0xb7, 0xd6, 0x91, 0x63, 0x8c, 0x5f, 0x6f, 0x9d,
-	0x8c, 0x7c, 0xf3, 0xdc, 0xfc, 0x2f, 0x00, 0x00, 0xff, 0xff, 0x34, 0x1b, 0x04, 0x7a, 0xd0, 0x09,
-	0x00, 0x00,
+	// 1399 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x57, 0xc1, 0x6f, 0x1b, 0x45,
+	0x17, 0xcf, 0x3a, 0x8e, 0x63, 0x3f, 0x27, 0x8e, 0x33, 0x49, 0x53, 0xc7, 0x5f, 0xbf, 0x78, 0xbf,
+	0xfd, 0xaa, 0x92, 0xa6, 0xb2, 0x37, 0xa4, 0x05, 0x95, 0x80, 0x04, 0x4e, 0xd2, 0xba, 0xa6, 0x94,
+	0x84, 0x4d, 0x8a, 0xa0, 0x42, 0x32, 0xe3, 0xdd, 0xc9, 0x7a, 0x88, 0xbd, 0xbb, 0xec, 0xcc, 0xc6,
+	0x44, 0x08, 0x0e, 0x48, 0x20, 0x8e, 0xa8, 0x5c, 0x10, 0x07, 0xfe, 0x02, 0xfe, 0x0a, 0x4e, 0x1c,
+	0x2b, 0x71, 0xe1, 0x14, 0x21, 0x97, 0x7f, 0x82, 0x1b, 0xda, 0xf1, 0xda, 0xde, 0xb5, 0x37, 0xa4,
+	0x9c, 0x92, 0x79, 0xf3, 0x7b, 0xbf, 0xf7, 0x9b, 0xf7, 0xe6, 0xbd, 0xf1, 0x42, 0xce, 0xe9, 0x12,
+	0xcb, 0xa4, 0x16, 0xa9, 0x38, 0xae, 0xcd, 0x6d, 0x94, 0x73, 0x30, 0x6f, 0x75, 0xb1, 0x5b, 0xe9,
+	0x5b, 0x8b, 0xd7, 0x4c, 0xdb, 0x36, 0xdb, 0x44, 0xc5, 0x0e, 0x55, 0xb1, 0x65, 0xd9, 0x1c, 0x73,
+	0x6a, 0x5b, 0xac, 0x8f, 0x2e, 0x96, 0x4d, 0xca, 0x5b, 0x5e, 0xb3, 0xa2, 0xdb, 0x1d, 0xd5, 0xb4,
+	0x4d, 0x5b, 0x15, 0xe6, 0xa6, 0x77, 0x2c, 0x56, 0x62, 0x21, 0xfe, 0x0b, 0xe0, 0x87, 0x61, 0xb8,
+	0xeb, 0xe8, 0x65, 0xa2, 0xdb, 0xec, 0x8c, 0x71, 0x12, 0x2c, 0x4d, 0xcc, 0x49, 0x17, 0x9f, 0xf5,
+	0x59, 0xf4, 0xb2, 0x49, 0xac, 0x32, 0xeb, 0x62, 0xd3, 0x24, 0xae, 0x6a, 0x3b, 0x22, 0x6e, 0x8c,
+	0x86, 0xac, 0xd3, 0x65, 0x6c, 0x10, 0x01, 0x9c, 0xae, 0xd1, 0xec, 0xff, 0xaf, 0x2c, 0x42, 0xf2,
+	0x7d, 0x9b, 0x1a, 0xdb, 0x99, 0xa7, 0xd5, 0xd4, 0x56, 0x12, 0x25, 0x3e, 0xff, 0x42, 0xf9, 0x08,
+	0x56, 0x6a, 0x84, 0x1f, 0xd9, 0x9e, 0x6b, 0xe1, 0x0e, 0xb1, 0xf8, 0x11, 0xc1, 0x9d, 0xba, 0xe5,
+	0x78, 0x1c, 0xed, 0x00, 0xe2, 0x43, 0x73, 0x83, 0x13, 0xdc, 0x69, 0x50, 0xa3, 0x20, 0xc9, 0xd2,
+	0xfa, 0xf4, 0xce, 0x72, 0xef, 0xbc, 0x94, 0x1f, 0x73, 0xda, 0xd3, 0xf2, 0x3c, 0x6a, 0x31, 0x94,
+	0x3a, 0x5c, 0x9d, 0x60, 0xdf, 0xf7, 0xb8, 0x4f, 0x5f, 0x81, 0x24, 0xe5, 0xa4, 0x23, 0x08, 0xb3,
+	0x5b, 0xc5, 0xca, 0x20, 0xcb, 0x46, 0xb3, 0x12, 0xc5, 0x6b, 0x02, 0xa7, 0xd4, 0x60, 0xb1, 0x46,
+	0xf8, 0x6e, 0x0b, 0xb7, 0xdb, 0xc4, 0x32, 0x49, 0x5f, 0xe3, 0x16, 0xcc, 0xe9, 0x03, 0xcb, 0x48,
+	0xdd, 0x42, 0xef, 0xbc, 0x94, 0x1d, 0x21, 0xf7, 0xb4, 0xec, 0x10, 0x54, 0x37, 0x94, 0x37, 0x01,
+	0x85, 0x89, 0x02, 0x39, 0x37, 0x23, 0x72, 0xae, 0x84, 0xe5, 0x0c, 0xa1, 0x81, 0x92, 0xf7, 0xa0,
+	0xf0, 0x0e, 0x65, 0x63, 0xa7, 0x62, 0x7d, 0x41, 0xaf, 0xc0, 0x7c, 0x28, 0x69, 0x43, 0x45, 0xf9,
+	0xde, 0x79, 0x69, 0x6e, 0xe4, 0x50, 0xdf, 0xd3, 0xe6, 0x46, 0xb0, 0xba, 0xa1, 0x34, 0x60, 0xe9,
+	0x90, 0xf0, 0x03, 0x97, 0x1c, 0x13, 0x97, 0x58, 0x3a, 0x09, 0xd8, 0x1e, 0xc0, 0x32, 0xd6, 0x39,
+	0x3d, 0x25, 0x8d, 0x38, 0xd2, 0x95, 0xde, 0x79, 0x09, 0x55, 0xc5, 0x7e, 0x84, 0x1a, 0xe1, 0x71,
+	0x9b, 0xa1, 0x3c, 0x82, 0xd5, 0x18, 0xcd, 0xc1, 0xd9, 0x37, 0x61, 0xc6, 0x3f, 0x18, 0x2b, 0x48,
+	0xf2, 0xf4, 0x25, 0xb5, 0xe8, 0x03, 0x95, 0xd7, 0x60, 0x41, 0xd0, 0x85, 0x48, 0x6e, 0x44, 0x49,
+	0xf2, 0x11, 0x92, 0x90, 0xeb, 0x2e, 0x2c, 0xfb, 0xae, 0xc3, 0xa4, 0x0e, 0xfc, 0x6f, 0x45, 0xfd,
+	0x2f, 0xa8, 0x40, 0x40, 0xf2, 0xd3, 0x34, 0x2c, 0x3e, 0x66, 0xc4, 0x3d, 0x24, 0x8c, 0x51, 0xdb,
+	0x0a, 0x28, 0xae, 0x43, 0xd2, 0x63, 0xc4, 0x0d, 0x6a, 0x18, 0x51, 0xe0, 0x83, 0x35, 0xb1, 0x8b,
+	0xd6, 0x20, 0x4b, 0x59, 0xc3, 0x22, 0xdd, 0x86, 0x00, 0x27, 0x64, 0x69, 0x3d, 0xad, 0x65, 0x28,
+	0x7b, 0x97, 0x74, 0x7d, 0x14, 0xba, 0x05, 0x29, 0xbd, 0x8d, 0x69, 0x87, 0x15, 0xa6, 0x05, 0xcf,
+	0xd2, 0x90, 0xc7, 0x6f, 0xaa, 0x5d, 0xb1, 0xa5, 0x05, 0x10, 0x74, 0x1d, 0xe6, 0x2d, 0x9b, 0xd3,
+	0x63, 0xaa, 0xf7, 0x3b, 0xb0, 0x90, 0x94, 0xa5, 0xf5, 0x19, 0x2d, 0x6a, 0x44, 0x8f, 0x21, 0x3b,
+	0x2a, 0x20, 0x2b, 0xcc, 0x88, 0x13, 0xde, 0xae, 0x44, 0x07, 0x4b, 0x65, 0xe2, 0x40, 0xa1, 0xe4,
+	0x57, 0x2d, 0x43, 0x24, 0x31, 0xcc, 0x53, 0xfc, 0x41, 0x82, 0xc5, 0x09, 0x08, 0x7a, 0x15, 0x60,
+	0x04, 0x0a, 0x72, 0xb1, 0x12, 0x5f, 0x52, 0x2d, 0x84, 0xf4, 0x1b, 0xd2, 0x6f, 0x72, 0x91, 0x90,
+	0x4b, 0x1a, 0xd2, 0xc7, 0xa1, 0xff, 0x40, 0x86, 0xb2, 0x46, 0xff, 0xae, 0x89, 0x54, 0xa5, 0xb5,
+	0x34, 0x65, 0xfd, 0xfb, 0xa8, 0xdc, 0x87, 0xd4, 0x21, 0xc7, 0xdc, 0x63, 0xe8, 0x0d, 0xc8, 0x93,
+	0x53, 0xe2, 0x9e, 0xf1, 0x16, 0xb5, 0xcc, 0x06, 0x65, 0x0d, 0xfb, 0x44, 0x88, 0x4a, 0xef, 0xa0,
+	0xde, 0x79, 0x29, 0x77, 0x6f, 0xb8, 0x57, 0x67, 0xfb, 0x0f, 0xb5, 0x1c, 0x09, 0xaf, 0x4f, 0x94,
+	0x6f, 0x24, 0x48, 0xd6, 0xad, 0x63, 0x1b, 0x15, 0x60, 0xf6, 0x94, 0xb8, 0x7e, 0x6e, 0x84, 0x77,
+	0x46, 0x1b, 0x2c, 0xd1, 0x0a, 0xa4, 0x3c, 0x87, 0xd3, 0x0e, 0x11, 0xca, 0x67, 0xb4, 0x60, 0xe5,
+	0xdb, 0x75, 0xbb, 0xd3, 0xa1, 0x5c, 0x88, 0xcb, 0x68, 0xc1, 0x0a, 0xad, 0x42, 0xba, 0xe9, 0xd1,
+	0x36, 0x6f, 0x60, 0x2e, 0xaa, 0x95, 0xd1, 0x66, 0xc5, 0xba, 0x1a, 0xda, 0x6a, 0x9e, 0x15, 0x66,
+	0x42, 0x5b, 0x3b, 0x67, 0x5b, 0x7f, 0xa5, 0x21, 0x75, 0x4f, 0xd4, 0x09, 0x55, 0x21, 0x79, 0x40,
+	0x2d, 0x13, 0x2d, 0x8f, 0x17, 0xd0, 0x9f, 0xad, 0xc5, 0x58, 0xab, 0x32, 0xff, 0xd5, 0x6f, 0x7f,
+	0x7e, 0x9f, 0x98, 0x45, 0x33, 0xaa, 0xe3, 0xbb, 0x7e, 0x0c, 0xb9, 0x1a, 0xe1, 0xa1, 0x82, 0x5f,
+	0x40, 0xf6, 0xbf, 0x4b, 0xef, 0x88, 0x72, 0x45, 0x30, 0x2f, 0xa0, 0x79, 0xd5, 0xbf, 0xce, 0x65,
+	0x16, 0xf0, 0x19, 0x90, 0x8b, 0x4e, 0x14, 0xf4, 0xff, 0x71, 0xae, 0x98, 0x89, 0x73, 0x81, 0xfa,
+	0xab, 0x22, 0xc6, 0xa2, 0x32, 0xa7, 0x3a, 0x23, 0x87, 0x6d, 0x69, 0x03, 0x61, 0xc8, 0x45, 0x9b,
+	0xf9, 0x82, 0x73, 0x5c, 0x1f, 0xb7, 0xc6, 0x8d, 0x00, 0x65, 0x49, 0x84, 0x99, 0x47, 0x59, 0x55,
+	0x1f, 0x11, 0x52, 0x98, 0x0b, 0x8f, 0x6b, 0x34, 0x91, 0x92, 0x89, 0x57, 0xa1, 0xa8, 0xfc, 0x13,
+	0x24, 0x88, 0x85, 0x44, 0xac, 0x39, 0x04, 0xa3, 0x58, 0x48, 0x83, 0xcc, 0x70, 0xaa, 0x5d, 0x70,
+	0x90, 0x52, 0xdc, 0x41, 0x42, 0x63, 0x50, 0xc9, 0x09, 0xde, 0x34, 0x4a, 0xa9, 0x5c, 0xd0, 0x7c,
+	0x2d, 0xc1, 0x52, 0xcc, 0xe4, 0x45, 0xeb, 0xb1, 0x44, 0x31, 0x4f, 0x4a, 0xf1, 0xe6, 0x0b, 0x20,
+	0x83, 0xe0, 0xab, 0x22, 0xf8, 0x12, 0x5a, 0x54, 0x47, 0x7d, 0x1d, 0xe8, 0xf8, 0x52, 0x3c, 0x9f,
+	0x51, 0x37, 0x74, 0x23, 0x26, 0x51, 0x31, 0x3f, 0x05, 0x8a, 0x2f, 0x5d, 0x8a, 0x0b, 0x04, 0x14,
+	0x84, 0x00, 0x84, 0xf2, 0xe3, 0x02, 0xd0, 0xdb, 0x90, 0xa9, 0x11, 0x1e, 0xcc, 0x84, 0xf8, 0xdc,
+	0xae, 0x4c, 0x5c, 0x50, 0x81, 0x56, 0x16, 0x04, 0x69, 0x06, 0xcd, 0xaa, 0xac, 0xef, 0xbe, 0x07,
+	0xb3, 0x35, 0xc2, 0xc5, 0x58, 0x78, 0xc1, 0x1e, 0xf4, 0xb1, 0xa1, 0x1e, 0xa4, 0xbe, 0x6b, 0x03,
+	0xf2, 0x35, 0x62, 0x11, 0x17, 0x73, 0x72, 0x1f, 0x9f, 0x90, 0x3d, 0xcc, 0xf1, 0xbf, 0x6a, 0xe9,
+	0x92, 0xa0, 0x5b, 0x55, 0xae, 0xaa, 0x06, 0x39, 0x55, 0xcd, 0x80, 0xaa, 0x7c, 0x8c, 0x4f, 0x48,
+	0xd9, 0xf0, 0xc9, 0x6a, 0x90, 0xda, 0xdb, 0xd9, 0xf3, 0x3a, 0xce, 0x05, 0xb4, 0x91, 0x07, 0xca,
+	0xc7, 0x85, 0x7a, 0xd9, 0xa7, 0x64, 0x9f, 0xb6, 0xcb, 0x86, 0xd7, 0x71, 0x76, 0x7e, 0x49, 0x3e,
+	0xad, 0x7e, 0x9b, 0x44, 0x3f, 0x4b, 0x90, 0x3d, 0xe8, 0x7b, 0xc8, 0xd5, 0x83, 0xba, 0x52, 0x83,
+	0xf9, 0xc1, 0xf2, 0x90, 0xe3, 0xe3, 0x63, 0xa4, 0xb4, 0x38, 0x77, 0xd8, 0xb6, 0xaa, 0x86, 0x7e,
+	0x54, 0x06, 0x21, 0x06, 0x7f, 0x8b, 0x88, 0xf9, 0xd0, 0xb7, 0x06, 0x91, 0xdb, 0xd8, 0x32, 0x36,
+	0xf6, 0x61, 0x69, 0xbd, 0xea, 0x60, 0xbd, 0x45, 0xca, 0x5b, 0x95, 0x4d, 0x79, 0x5f, 0x93, 0x1f,
+	0xd5, 0x8f, 0x6e, 0xa2, 0xbb, 0x97, 0xd3, 0xa9, 0xcd, 0xb6, 0xdd, 0x54, 0x3b, 0x98, 0x71, 0xe2,
+	0xaa, 0xbb, 0xfb, 0x07, 0x1f, 0x6a, 0xf5, 0xda, 0x83, 0xa3, 0xad, 0xe9, 0x97, 0x2b, 0x9b, 0xc5,
+	0x3c, 0x76, 0x68, 0x25, 0x1c, 0x47, 0x91, 0xd4, 0x8d, 0x44, 0x22, 0xb9, 0x95, 0xc7, 0x8e, 0xd3,
+	0x0e, 0xde, 0x46, 0xf5, 0x13, 0x66, 0x5b, 0xdb, 0x13, 0x16, 0xed, 0x00, 0xa6, 0xef, 0x6c, 0xde,
+	0x46, 0x75, 0xa8, 0x69, 0x84, 0x7b, 0xae, 0x45, 0x0c, 0xb9, 0xdb, 0x22, 0x96, 0xcc, 0x5b, 0x44,
+	0xf6, 0xe7, 0x9c, 0x6c, 0xd8, 0x84, 0xc9, 0x96, 0xcd, 0xe5, 0x16, 0x3e, 0x25, 0xb2, 0x43, 0xdc,
+	0x0e, 0x15, 0x83, 0x4f, 0xe6, 0xb6, 0x8c, 0x75, 0x9d, 0x30, 0x26, 0xb0, 0x2e, 0x61, 0xb6, 0xe7,
+	0xea, 0xa4, 0xa2, 0xbd, 0xee, 0x33, 0xde, 0x41, 0x77, 0x60, 0x63, 0x92, 0x71, 0x80, 0x1a, 0xb1,
+	0x92, 0xcf, 0x28, 0xe3, 0x15, 0x94, 0x82, 0xe4, 0x8f, 0x09, 0x69, 0xf6, 0xc9, 0x26, 0x2c, 0x40,
+	0x66, 0x07, 0x33, 0xaa, 0x57, 0x3d, 0xde, 0x42, 0x89, 0xb4, 0x04, 0xff, 0x05, 0xa8, 0x3a, 0xf4,
+	0x21, 0x39, 0x13, 0x96, 0x85, 0x74, 0xa2, 0x98, 0xf9, 0xa0, 0x5c, 0x3d, 0xa8, 0x97, 0x1f, 0x92,
+	0x33, 0x39, 0xd1, 0x2c, 0xc1, 0x7c, 0xd8, 0x63, 0x0a, 0x72, 0x11, 0xfc, 0x94, 0x7b, 0x17, 0xd0,
+	0x23, 0xdb, 0x25, 0x32, 0x6e, 0xda, 0x1e, 0x97, 0x83, 0x42, 0xbe, 0x48, 0x09, 0x7f, 0xed, 0xad,
+	0x49, 0xcf, 0x7a, 0x6b, 0xd2, 0x1f, 0xbd, 0x35, 0xe9, 0xbb, 0xe7, 0x6b, 0x53, 0xcf, 0x9e, 0xaf,
+	0x4d, 0xfd, 0xfe, 0x7c, 0x6d, 0xea, 0xc9, 0xb5, 0x70, 0xb2, 0x55, 0xff, 0xd3, 0xe3, 0xc4, 0x54,
+	0x07, 0x1f, 0x33, 0xcd, 0x94, 0xf8, 0x04, 0xb8, 0xfd, 0x77, 0x00, 0x00, 0x00, 0xff, 0xff, 0x4c,
+	0x48, 0x36, 0xd5, 0xdf, 0x0c, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -522,9 +849,11 @@ type EngineClient interface {
 	// Get current user session, based on JWT token
 	GetUserSession(ctx context.Context, in *Void, opts ...grpc.CallOption) (*UserSessionOutput, error)
 	SetPreferences(ctx context.Context, in *SetPreferencesInput, opts ...grpc.CallOption) (*Void, error)
-	ListChallenges(ctx context.Context, in *Void, opts ...grpc.CallOption) (*pwdb.ChallengeList, error)
-	ListTeams(ctx context.Context, in *Void, opts ...grpc.CallOption) (*pwdb.TeamList, error)
-	ListTournamentTeams(ctx context.Context, in *ListTournamentTeamsInput, opts ...grpc.CallOption) (*pwdb.TournamentTeamList, error)
+	ListChallenges(ctx context.Context, in *Void, opts ...grpc.CallOption) (*ListChallengesOutput, error)
+	GetChallenge(ctx context.Context, in *GetChallengeInput, opts ...grpc.CallOption) (*GetChallengeOutput, error)
+	ListTeams(ctx context.Context, in *Void, opts ...grpc.CallOption) (*ListTeamsOutput, error)
+	ListTournamentTeams(ctx context.Context, in *ListTournamentTeamsInput, opts ...grpc.CallOption) (*ListTournamentTeamsOutput, error)
+	GetTournamentTeam(ctx context.Context, in *GetTournamentTeamInput, opts ...grpc.CallOption) (*GetTournamentTeamOutput, error)
 	GetStatus(ctx context.Context, in *Void, opts ...grpc.CallOption) (*Status, error)
 	//
 	// dev helpers
@@ -569,8 +898,8 @@ func (c *engineClient) SetPreferences(ctx context.Context, in *SetPreferencesInp
 	return out, nil
 }
 
-func (c *engineClient) ListChallenges(ctx context.Context, in *Void, opts ...grpc.CallOption) (*pwdb.ChallengeList, error) {
-	out := new(pwdb.ChallengeList)
+func (c *engineClient) ListChallenges(ctx context.Context, in *Void, opts ...grpc.CallOption) (*ListChallengesOutput, error) {
+	out := new(ListChallengesOutput)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/ListChallenges", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -578,8 +907,17 @@ func (c *engineClient) ListChallenges(ctx context.Context, in *Void, opts ...grp
 	return out, nil
 }
 
-func (c *engineClient) ListTeams(ctx context.Context, in *Void, opts ...grpc.CallOption) (*pwdb.TeamList, error) {
-	out := new(pwdb.TeamList)
+func (c *engineClient) GetChallenge(ctx context.Context, in *GetChallengeInput, opts ...grpc.CallOption) (*GetChallengeOutput, error) {
+	out := new(GetChallengeOutput)
+	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/GetChallenge", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *engineClient) ListTeams(ctx context.Context, in *Void, opts ...grpc.CallOption) (*ListTeamsOutput, error) {
+	out := new(ListTeamsOutput)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/ListTeams", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -587,9 +925,18 @@ func (c *engineClient) ListTeams(ctx context.Context, in *Void, opts ...grpc.Cal
 	return out, nil
 }
 
-func (c *engineClient) ListTournamentTeams(ctx context.Context, in *ListTournamentTeamsInput, opts ...grpc.CallOption) (*pwdb.TournamentTeamList, error) {
-	out := new(pwdb.TournamentTeamList)
+func (c *engineClient) ListTournamentTeams(ctx context.Context, in *ListTournamentTeamsInput, opts ...grpc.CallOption) (*ListTournamentTeamsOutput, error) {
+	out := new(ListTournamentTeamsOutput)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/ListTournamentTeams", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *engineClient) GetTournamentTeam(ctx context.Context, in *GetTournamentTeamInput, opts ...grpc.CallOption) (*GetTournamentTeamOutput, error) {
+	out := new(GetTournamentTeamOutput)
+	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/GetTournamentTeam", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -639,9 +986,11 @@ type EngineServer interface {
 	// Get current user session, based on JWT token
 	GetUserSession(context.Context, *Void) (*UserSessionOutput, error)
 	SetPreferences(context.Context, *SetPreferencesInput) (*Void, error)
-	ListChallenges(context.Context, *Void) (*pwdb.ChallengeList, error)
-	ListTeams(context.Context, *Void) (*pwdb.TeamList, error)
-	ListTournamentTeams(context.Context, *ListTournamentTeamsInput) (*pwdb.TournamentTeamList, error)
+	ListChallenges(context.Context, *Void) (*ListChallengesOutput, error)
+	GetChallenge(context.Context, *GetChallengeInput) (*GetChallengeOutput, error)
+	ListTeams(context.Context, *Void) (*ListTeamsOutput, error)
+	ListTournamentTeams(context.Context, *ListTournamentTeamsInput) (*ListTournamentTeamsOutput, error)
+	GetTournamentTeam(context.Context, *GetTournamentTeamInput) (*GetTournamentTeamOutput, error)
 	GetStatus(context.Context, *Void) (*Status, error)
 	//
 	// dev helpers
@@ -664,14 +1013,20 @@ func (*UnimplementedEngineServer) GetUserSession(ctx context.Context, req *Void)
 func (*UnimplementedEngineServer) SetPreferences(ctx context.Context, req *SetPreferencesInput) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetPreferences not implemented")
 }
-func (*UnimplementedEngineServer) ListChallenges(ctx context.Context, req *Void) (*pwdb.ChallengeList, error) {
+func (*UnimplementedEngineServer) ListChallenges(ctx context.Context, req *Void) (*ListChallengesOutput, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListChallenges not implemented")
 }
-func (*UnimplementedEngineServer) ListTeams(ctx context.Context, req *Void) (*pwdb.TeamList, error) {
+func (*UnimplementedEngineServer) GetChallenge(ctx context.Context, req *GetChallengeInput) (*GetChallengeOutput, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetChallenge not implemented")
+}
+func (*UnimplementedEngineServer) ListTeams(ctx context.Context, req *Void) (*ListTeamsOutput, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListTeams not implemented")
 }
-func (*UnimplementedEngineServer) ListTournamentTeams(ctx context.Context, req *ListTournamentTeamsInput) (*pwdb.TournamentTeamList, error) {
+func (*UnimplementedEngineServer) ListTournamentTeams(ctx context.Context, req *ListTournamentTeamsInput) (*ListTournamentTeamsOutput, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListTournamentTeams not implemented")
+}
+func (*UnimplementedEngineServer) GetTournamentTeam(ctx context.Context, req *GetTournamentTeamInput) (*GetTournamentTeamOutput, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTournamentTeam not implemented")
 }
 func (*UnimplementedEngineServer) GetStatus(ctx context.Context, req *Void) (*Status, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStatus not implemented")
@@ -762,6 +1117,24 @@ func _Engine_ListChallenges_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Engine_GetChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetChallengeInput)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EngineServer).GetChallenge(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pathwar.engine.Engine/GetChallenge",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EngineServer).GetChallenge(ctx, req.(*GetChallengeInput))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Engine_ListTeams_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Void)
 	if err := dec(in); err != nil {
@@ -794,6 +1167,24 @@ func _Engine_ListTournamentTeams_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EngineServer).ListTournamentTeams(ctx, req.(*ListTournamentTeamsInput))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Engine_GetTournamentTeam_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTournamentTeamInput)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EngineServer).GetTournamentTeam(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pathwar.engine.Engine/GetTournamentTeam",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EngineServer).GetTournamentTeam(ctx, req.(*GetTournamentTeamInput))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -891,12 +1282,20 @@ var _Engine_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Engine_ListChallenges_Handler,
 		},
 		{
+			MethodName: "GetChallenge",
+			Handler:    _Engine_GetChallenge_Handler,
+		},
+		{
 			MethodName: "ListTeams",
 			Handler:    _Engine_ListTeams_Handler,
 		},
 		{
 			MethodName: "ListTournamentTeams",
 			Handler:    _Engine_ListTournamentTeams_Handler,
+		},
+		{
+			MethodName: "GetTournamentTeam",
+			Handler:    _Engine_GetTournamentTeam_Handler,
 		},
 		{
 			MethodName: "GetStatus",
@@ -942,6 +1341,132 @@ func (m *Void) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *GetTournamentTeamInput) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetTournamentTeamInput) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetTournamentTeamInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.TournamentTeamID != 0 {
+		i = encodeVarintPwengine(dAtA, i, uint64(m.TournamentTeamID))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetTournamentTeamOutput) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetTournamentTeamOutput) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetTournamentTeamOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Item != nil {
+		{
+			size, err := m.Item.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPwengine(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetChallengeInput) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetChallengeInput) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetChallengeInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.ChallengeID != 0 {
+		i = encodeVarintPwengine(dAtA, i, uint64(m.ChallengeID))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetChallengeOutput) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetChallengeOutput) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetChallengeOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Item != nil {
+		{
+			size, err := m.Item.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPwengine(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *ListTournamentTeamsInput) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -962,12 +1487,10 @@ func (m *ListTournamentTeamsInput) MarshalToSizedBuffer(dAtA []byte) (int, error
 	_ = i
 	var l int
 	_ = l
-	if len(m.TournamentID) > 0 {
-		i -= len(m.TournamentID)
-		copy(dAtA[i:], m.TournamentID)
-		i = encodeVarintPwengine(dAtA, i, uint64(len(m.TournamentID)))
+	if m.TournamentID != 0 {
+		i = encodeVarintPwengine(dAtA, i, uint64(m.TournamentID))
 		i--
-		dAtA[i] = 0xa
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
@@ -992,12 +1515,121 @@ func (m *SetPreferencesInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.ActiveTournamentID) > 0 {
-		i -= len(m.ActiveTournamentID)
-		copy(dAtA[i:], m.ActiveTournamentID)
-		i = encodeVarintPwengine(dAtA, i, uint64(len(m.ActiveTournamentID)))
+	if m.ActiveTournamentID != 0 {
+		i = encodeVarintPwengine(dAtA, i, uint64(m.ActiveTournamentID))
 		i--
-		dAtA[i] = 0xa
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListTournamentTeamsOutput) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListTournamentTeamsOutput) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListTournamentTeamsOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwengine(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListTeamsOutput) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListTeamsOutput) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListTeamsOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwengine(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListChallengesOutput) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListChallengesOutput) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListChallengesOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwengine(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
 	}
 	return len(dAtA) - i, nil
 }
@@ -1244,15 +1876,64 @@ func (m *Void) Size() (n int) {
 	return n
 }
 
+func (m *GetTournamentTeamInput) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.TournamentTeamID != 0 {
+		n += 1 + sovPwengine(uint64(m.TournamentTeamID))
+	}
+	return n
+}
+
+func (m *GetTournamentTeamOutput) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Item != nil {
+		l = m.Item.Size()
+		n += 1 + l + sovPwengine(uint64(l))
+	}
+	return n
+}
+
+func (m *GetChallengeInput) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ChallengeID != 0 {
+		n += 1 + sovPwengine(uint64(m.ChallengeID))
+	}
+	return n
+}
+
+func (m *GetChallengeOutput) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Item != nil {
+		l = m.Item.Size()
+		n += 1 + l + sovPwengine(uint64(l))
+	}
+	return n
+}
+
 func (m *ListTournamentTeamsInput) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.TournamentID)
-	if l > 0 {
-		n += 1 + l + sovPwengine(uint64(l))
+	if m.TournamentID != 0 {
+		n += 1 + sovPwengine(uint64(m.TournamentID))
 	}
 	return n
 }
@@ -1263,9 +1944,53 @@ func (m *SetPreferencesInput) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.ActiveTournamentID)
-	if l > 0 {
-		n += 1 + l + sovPwengine(uint64(l))
+	if m.ActiveTournamentID != 0 {
+		n += 1 + sovPwengine(uint64(m.ActiveTournamentID))
+	}
+	return n
+}
+
+func (m *ListTournamentTeamsOutput) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for _, e := range m.Items {
+			l = e.Size()
+			n += 1 + l + sovPwengine(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *ListTeamsOutput) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for _, e := range m.Items {
+			l = e.Size()
+			n += 1 + l + sovPwengine(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *ListChallengesOutput) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for _, e := range m.Items {
+			l = e.Size()
+			n += 1 + l + sovPwengine(uint64(l))
+		}
 	}
 	return n
 }
@@ -1418,6 +2143,328 @@ func (m *Void) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *GetTournamentTeamInput) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetTournamentTeamInput: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetTournamentTeamInput: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TournamentTeamID", wireType)
+			}
+			m.TournamentTeamID = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.TournamentTeamID |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetTournamentTeamOutput) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetTournamentTeamOutput: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetTournamentTeamOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Item", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Item == nil {
+				m.Item = &pwdb.TournamentTeam{}
+			}
+			if err := m.Item.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetChallengeInput) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetChallengeInput: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetChallengeInput: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeID", wireType)
+			}
+			m.ChallengeID = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ChallengeID |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetChallengeOutput) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetChallengeOutput: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetChallengeOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Item", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Item == nil {
+				m.Item = &pwdb.Challenge{}
+			}
+			if err := m.Item.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *ListTournamentTeamsInput) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1448,10 +2495,10 @@ func (m *ListTournamentTeamsInput) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 2 {
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TournamentID", wireType)
 			}
-			var stringLen uint64
+			m.TournamentID = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowPwengine
@@ -1461,24 +2508,11 @@ func (m *ListTournamentTeamsInput) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.TournamentID |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthPwengine
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwengine
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.TournamentID = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipPwengine(dAtA[iNdEx:])
@@ -1533,10 +2567,10 @@ func (m *SetPreferencesInput) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 2 {
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ActiveTournamentID", wireType)
 			}
-			var stringLen uint64
+			m.ActiveTournamentID = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowPwengine
@@ -1546,23 +2580,271 @@ func (m *SetPreferencesInput) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.ActiveTournamentID |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
 				return ErrInvalidLengthPwengine
 			}
-			postIndex := iNdEx + intStringLen
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListTournamentTeamsOutput) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListTournamentTeamsOutput: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListTournamentTeamsOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Items", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthPwengine
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ActiveTournamentID = string(dAtA[iNdEx:postIndex])
+			m.Items = append(m.Items, &pwdb.TournamentTeam{})
+			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListTeamsOutput) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListTeamsOutput: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListTeamsOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Items", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Items = append(m.Items, &pwdb.Team{})
+			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListChallengesOutput) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListChallengesOutput: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListChallengesOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Items", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Items = append(m.Items, &pwdb.Challenge{})
+			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

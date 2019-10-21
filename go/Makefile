@@ -28,7 +28,7 @@ MYSQL_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
 
 .PHONY: run
 run: install mysql.up
-	pathwar --debug engine --sso-unsafe server
+	pathwar --debug engine --sso-unsafe server --with-pprof
 
 .PHONY: mysql.up
 mysql.up:
@@ -39,7 +39,7 @@ mysql.up:
 
 .PHONY: mysql.flush
 mysql.flush: mysql.down
-	docker volume rm -f pathwarland_mysql_data
+	docker volume rm -f go_mysql_data
 
 .PHONY: mysql.down
 mysql.down:

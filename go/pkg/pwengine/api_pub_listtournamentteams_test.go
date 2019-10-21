@@ -4,16 +4,18 @@ import (
 	"context"
 	"errors"
 	"testing"
+
+	"pathwar.land/go/internal/testutil"
 )
 
 func TestEngine_ListTournamentTeams(t *testing.T) {
-	engine, cleanup := TestingEngine(t, Opts{})
+	engine, cleanup := TestingEngine(t, Opts{Logger: testutil.Logger(t)})
 	defer cleanup()
-	ctx := testSetContextToken(t, context.Background())
+	ctx := testingSetContextToken(context.Background(), t)
 
 	// FIXME: check for permissions
 
-	tournaments := map[string]string{}
+	tournaments := map[string]int64{}
 	for _, tournament := range testingTournaments(t, engine).Items {
 		tournaments[tournament.Name] = tournament.ID
 	}
@@ -32,7 +34,7 @@ func TestEngine_ListTournamentTeams(t *testing.T) {
 			0,
 		}, {
 			"unknown-tournament-id",
-			&ListTournamentTeamsInput{TournamentID: "does not exist"},
+			&ListTournamentTeamsInput{TournamentID: -42}, // -42 should not exists
 			ErrInvalidArgument,
 			0,
 		}, {

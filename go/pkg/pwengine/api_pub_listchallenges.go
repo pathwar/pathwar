@@ -2,14 +2,16 @@ package pwengine
 
 import (
 	"context"
-
-	"pathwar.land/go/pkg/pwdb"
+	"fmt"
 )
 
-func (e *engine) ListChallenges(context.Context, *Void) (*pwdb.ChallengeList, error) {
-	var challenges pwdb.ChallengeList
-	if err := e.db.Set("gorm:auto_preload", true).Find(&challenges.Items).Error; err != nil {
-		return nil, err
+func (e *engine) ListChallenges(context.Context, *Void) (*ListChallengesOutput, error) {
+	var challenges ListChallengesOutput
+	err := e.db.
+		Set("gorm:auto_preload", true). // FIXME: explicit preloading
+		Find(&challenges.Items).Error
+	if err != nil {
+		return nil, fmt.Errorf("query challenges: %w", err)
 	}
 
 	return &challenges, nil

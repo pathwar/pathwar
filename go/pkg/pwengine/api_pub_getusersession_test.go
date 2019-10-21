@@ -5,13 +5,14 @@ import (
 	"testing"
 
 	"moul.io/godev"
+	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/pwsso"
 )
 
 func TestEngine_GetUserSession(t *testing.T) {
-	engine, cleanup := TestingEngine(t, Opts{})
+	engine, cleanup := TestingEngine(t, Opts{Logger: testutil.Logger(t)})
 	defer cleanup()
-	ctx := testSetContextToken(t, context.Background())
+	ctx := testingSetContextToken(context.Background(), t)
 
 	session, err := engine.GetUserSession(ctx, nil)
 	if err != nil {

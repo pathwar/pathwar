@@ -92,9 +92,11 @@ service Engine {
   // Get current user session, based on JWT token
   rpc GetUserSession(Void) returns (UserSessionOutput) { option (google.api.http) = {get: "/user-session"}; };
   rpc SetPreferences(SetPreferencesInput) returns (Void) { option (google.api.http) = {post: "/preferences"; body: "*"}; };
-  rpc ListChallenges(Void) returns (pathwar.db.ChallengeList) { option (google.api.http) = {get: "/challenges"}; };
-  rpc ListTeams(Void) returns (pathwar.db.TeamList) { option (google.api.http) = {get: "/teams"}; };
-  rpc ListTournamentTeams(ListTournamentTeamsInput) returns (pathwar.db.TournamentTeamList) { option (google.api.http) = {get: "/tournament/teams"}; };
+  rpc ListChallenges(Void) returns (ListChallengesOutput) { option (google.api.http) = {get: "/challenges"}; };
+  rpc GetChallenge(GetChallengeInput) returns (GetChallengeOutput) { option (google.api.http) = {get: "/challenge"}; };
+  rpc ListTeams(Void) returns (ListTeamsOutput) { option (google.api.http) = {get: "/teams"}; };
+  rpc ListTournamentTeams(ListTournamentTeamsInput) returns (ListTournamentTeamsOutput) { option (google.api.http) = {get: "/tournament/teams"}; };
+  rpc GetTournamentTeam(GetTournamentTeamInput) returns (GetTournamentTeamOutput) { option (google.api.http) = {get: "/tournament/team"}; };
   rpc GetStatus(Void) returns (Status) { option (google.api.http) = {get: "/status"}; }
 
   //
@@ -112,13 +114,41 @@ message Void {
   };
 }
 
+message GetTournamentTeamInput {
+  int64 tournament_team_id = 1 [(gogoproto.customname) = "TournamentTeamID"];
+}
+
+message GetTournamentTeamOutput {
+  pathwar.db.TournamentTeam item = 1;
+}
+
+message GetChallengeInput {
+  int64 challenge_id = 1 [(gogoproto.customname) = "ChallengeID"];
+}
+
+message GetChallengeOutput {
+  pathwar.db.Challenge item = 1;
+}
+
 message ListTournamentTeamsInput {
-  string tournament_id = 1 [(gogoproto.customname) = "TournamentID"];
+  int64 tournament_id = 1 [(gogoproto.customname) = "TournamentID"];
 }
 
 message SetPreferencesInput {
-  string active_tournament_id = 1 [(gogoproto.customname) = "ActiveTournamentID"];
+  int64 active_tournament_id = 1 [(gogoproto.customname) = "ActiveTournamentID"];
   // bool dark_mode
+}
+
+message ListTournamentTeamsOutput {
+  repeated pathwar.db.TournamentTeam items = 1;
+}
+
+message ListTeamsOutput {
+  repeated pathwar.db.Team items = 1;
+}
+
+message ListChallengesOutput {
+  repeated pathwar.db.Challenge items = 1;
 }
 
 message UserSessionOutput {

@@ -12,6 +12,7 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/bwmarrin/snowflake"
 	_ "github.com/go-sql-driver/mysql" // required by gorm
 	"github.com/jinzhu/gorm"
 	"github.com/oklog/run"
@@ -68,6 +69,7 @@ var (
 	serverRequestTimeout     = serverFlags.Duration("request-timeout", 5*time.Second, "request timeout")
 	serverShutdownTimeout    = serverFlags.Duration("shutdown-timeout", 6*time.Second, "shutdown timeout")
 	serverCORSAllowedOrigins = serverFlags.String("cors-allowed-origins", "*", "allowed CORS origins")
+	serverWithPprof          = serverFlags.Bool("with-pprof", false, "enable pprof server")
 
 	// misc flags
 	miscFlags = flag.NewFlagSet("misc", flag.ExitOnError)
@@ -92,7 +94,7 @@ func main() {
 			var err error
 			logger, err = config.Build()
 			if err != nil {
-				return fmt.Errorf("failed to initialize logger: %w", err)
+				return fmt.Errorf("init logger: %w", err)
 			}
 		} else {
 			config := zap.NewDevelopmentConfig()
@@ -102,7 +104,7 @@ func main() {
 			var err error
 			logger, err = config.Build()
 			if err != nil {
-				return fmt.Errorf("failed to initialize logger: %w", err)
+				return fmt.Errorf("init logger: %w", err)
 			}
 		}
 		return nil
@@ -131,10 +133,10 @@ func main() {
 				return err
 			}
 
-			// initialize engine
+			// init engine
 			engine, _, _, closer, err := engineFromFlags()
 			if err != nil {
-				return fmt.Errorf("failed to start engine: %w", err)
+				return fmt.Errorf("start engine: %w", err)
 			}
 			defer closer()
 
@@ -150,10 +152,11 @@ func main() {
 					CORSAllowedOrigins: *serverCORSAllowedOrigins,
 					RequestTimeout:     *serverRequestTimeout,
 					ShutdownTimeout:    *serverShutdownTimeout,
+					WithPprof:          *serverWithPprof,
 				}
 				start, cleanup, err := pwserver.Start(ctx, engine, opts)
 				if err != nil {
-					return fmt.Errorf("failed to initialize server: %w", err)
+					return fmt.Errorf("init server: %w", err)
 				}
 				g.Add(
 					start,
@@ -195,16 +198,16 @@ func main() {
 				return err
 			}
 
-			// initialize engine
+			// init engine
 			_, db, _, closer, err := engineFromFlags()
 			if err != nil {
-				return fmt.Errorf("failed to start engine: %w", err)
+				return fmt.Errorf("start engine: %w", err)
 			}
 			defer closer()
 
 			dump, err := pwdb.GetDump(db)
 			if err != nil {
-				return fmt.Errorf("failed to dump database: %w", err)
+				return fmt.Errorf("dump database: %w", err)
 			}
 
 			out, _ := json.MarshalIndent(dump, "", "  ")
@@ -221,16 +224,16 @@ func main() {
 				return err
 			}
 
-			// initialize engine
+			// init engine
 			_, db, _, closer, err := engineFromFlags()
 			if err != nil {
-				return fmt.Errorf("failed to start engine: %w", err)
+				return fmt.Errorf("start engine: %w", err)
 			}
 			defer closer()
 
 			info, err := pwdb.GetInfo(db, logger)
 			if err != nil {
-				return fmt.Errorf("failed to get database info: %w", err)
+				return fmt.Errorf("get database info: %w", err)
 			}
 
 			out, _ := json.MarshalIndent(info, "", "  ")
@@ -282,13 +285,13 @@ func main() {
 			}
 			sso, err := ssoFromFlags()
 			if err != nil {
-				return fmt.Errorf("failed to get sso client from flags: %w", err)
+				return fmt.Errorf("get sso client from flags: %w", err)
 			}
 
 			// whoami
 			info, err := sso.Whoami(args[0])
 			if err != nil {
-				return fmt.Errorf("failed to get 'whoami' from SSO: %w", err)
+				return fmt.Errorf("get 'whoami' from SSO: %w", err)
 			}
 			for k, v := range info {
 				fmt.Printf("- %s: %v\n", k, v)
@@ -309,12 +312,12 @@ func main() {
 			}
 			sso, err := ssoFromFlags()
 			if err != nil {
-				return fmt.Errorf("failed to get sso client from flags: %w", err)
+				return fmt.Errorf("get sso client from flags: %w", err)
 			}
 
 			// logout
 			if err := sso.Logout(args[0]); err != nil {
-				return fmt.Errorf("failed to logout from SSO: %w", err)
+				return fmt.Errorf("logout from SSO: %w", err)
 			}
 			return nil
 		},
@@ -332,13 +335,13 @@ func main() {
 			}
 			sso, err := ssoFromFlags()
 			if err != nil {
-				return fmt.Errorf("failed to get sso client from flags: %w", err)
+				return fmt.Errorf("get sso client from flags: %w", err)
 			}
 
 			// token
 			token, _, err := sso.TokenWithClaims(args[0])
 			if err != nil {
-				return fmt.Errorf("failed to get claims: %w", err)
+				return fmt.Errorf("get claims: %w", err)
 			}
 			out, _ := json.MarshalIndent(token, "", "  ")
 			fmt.Println(string(out))
@@ -392,20 +395,24 @@ func main() {
 }
 
 func engineFromFlags() (pwengine.Engine, *gorm.DB, pwsso.Client, func(), error) {
-	// initialize database
+	// init database
 	db, err := gorm.Open("mysql", *engineDBURN)
 	if err != nil {
-		return nil, nil, nil, nil, fmt.Errorf("failed to initialize database: %w", err)
+		return nil, nil, nil, nil, fmt.Errorf("init database: %w", err)
+	}
+	sfn, err := snowflake.NewNode(1)
+	if err != nil {
+		return nil, nil, nil, nil, fmt.Errorf("init snowflake: %w", err)
 	}
 	dbOpts := pwdb.Opts{
 		Logger: logger.Named("gorm"),
 	}
-	db, err = pwdb.Configure(db, dbOpts)
+	db, err = pwdb.Configure(db, sfn, dbOpts)
 	if err != nil {
-		return nil, nil, nil, nil, fmt.Errorf("failed to configure database: %w", err)
+		return nil, nil, nil, nil, fmt.Errorf("configure database: %w", err)
 	}
 
-	// initialize SSO
+	// init SSO
 	ssoOpts := pwsso.Opts{
 		AllowUnsafe: *engineSSOAllowUnsafe,
 		Logger:      logger.Named("sso"),
@@ -416,29 +423,29 @@ func engineFromFlags() (pwengine.Engine, *gorm.DB, pwsso.Client, func(), error) 
 	}
 	sso, err := pwsso.New(*engineSSOPubkey, *engineSSORealm, ssoOpts)
 	if err != nil {
-		return nil, nil, nil, nil, fmt.Errorf("failed to initialize SSO client: %w", err)
+		return nil, nil, nil, nil, fmt.Errorf("init SSO client: %w", err)
 	}
 
-	// initialize engine
+	// init engine
 	engineOpts := pwengine.Opts{
 		Logger: logger.Named("engine"),
 	}
 
 	engine, err := pwengine.New(db, sso, engineOpts)
 	if err != nil {
-		return nil, nil, nil, nil, fmt.Errorf("failed to initialize engine: %w", err)
+		return nil, nil, nil, nil, fmt.Errorf("init engine: %w", err)
 	}
 
 	closeFunc := func() {
 		if err := engine.Close(); err != nil {
-			logger.Warn("failed to close engine", zap.Error(err))
+			logger.Warn("close engine", zap.Error(err))
 		}
 		if err := db.Close(); err != nil {
-			logger.Warn("failed to closed database", zap.Error(err))
+			logger.Warn("closed database", zap.Error(err))
 		}
 	}
 
-	logger.Debug("engine initialized", zap.Any("db", db), zap.Any("opts", engineOpts))
+	logger.Debug("engine initd", zap.Any("db", db), zap.Any("opts", engineOpts))
 	return engine, db, sso, closeFunc, nil
 }
 
@@ -453,7 +460,7 @@ func ssoFromFlags() (pwsso.Client, error) {
 	}
 	sso, err := pwsso.New(*ssoPubkey, *ssoRealm, ssoOpts)
 	if err != nil {
-		return nil, fmt.Errorf("failed to initialize SSO client: %w", err)
+		return nil, fmt.Errorf("init SSO client: %w", err)
 	}
 	return sso, nil
 }

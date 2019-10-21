@@ -4,19 +4,21 @@ import (
 	"context"
 	"errors"
 	"testing"
+
+	"pathwar.land/go/internal/testutil"
 )
 
 func TestEngine_SetPreferences(t *testing.T) {
-	engine, cleanup := TestingEngine(t, Opts{})
+	engine, cleanup := TestingEngine(t, Opts{Logger: testutil.Logger(t)})
 	defer cleanup()
-	ctx := testSetContextToken(t, context.Background())
+	ctx := testingSetContextToken(context.Background(), t)
 
 	// get user session before setting preferences
 	beforeSession, err := engine.GetUserSession(ctx, nil)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
-	tournaments := map[string]string{}
+	tournaments := map[string]int64{}
 	for _, tournament := range beforeSession.Tournaments {
 		tournaments[tournament.Tournament.Name] = tournament.Tournament.ID
 	}
@@ -25,8 +27,8 @@ func TestEngine_SetPreferences(t *testing.T) {
 		name                       string
 		input                      *SetPreferencesInput
 		expectedErr                error
-		expectedTournamentID       string
-		expectedTournamentMemberID string
+		expectedTournamentID       int64
+		expectedTournamentMemberID int64
 	}{
 		{
 			"empty",
@@ -36,7 +38,7 @@ func TestEngine_SetPreferences(t *testing.T) {
 			beforeSession.User.ActiveTournamentMemberID,
 		}, {
 			"unknown-tournament-id",
-			&SetPreferencesInput{ActiveTournamentID: "does not exist"},
+			&SetPreferencesInput{ActiveTournamentID: -42}, // should not exists
 			ErrInvalidArgument,
 			tournaments["Solo Mode"],
 			beforeSession.User.ActiveTournamentMemberID,
@@ -51,9 +53,9 @@ func TestEngine_SetPreferences(t *testing.T) {
 			&SetPreferencesInput{ActiveTournamentID: tournaments["Test Tournament"]},
 			nil,
 			tournaments["Test Tournament"],
-			"",
+			0,
 		}, {
-			"solo-mode",
+			"solo-mode-again",
 			&SetPreferencesInput{ActiveTournamentID: tournaments["Solo Mode"]},
 			nil,
 			tournaments["Solo Mode"],
@@ -62,23 +64,21 @@ func TestEngine_SetPreferences(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			_, err := engine.SetPreferences(ctx, test.input)
-			if !errors.Is(err, test.expectedErr) {
-				t.Fatalf("Expected %#v, got %#v.", test.expectedErr, err)
-			}
+		_, err := engine.SetPreferences(ctx, test.input)
+		if !errors.Is(err, test.expectedErr) {
+			t.Fatalf("%s: Expected %#v, got %#v.", test.name, test.expectedErr, err)
+		}
 
-			session, err := engine.GetUserSession(ctx, nil)
-			if err != nil {
-				t.Fatalf("err: %v", err)
-			}
+		session, err := engine.GetUserSession(ctx, nil)
+		if err != nil {
+			t.Fatalf("%s: err: %v", test.name, err)
+		}
 
-			if session.User.ActiveTournamentID != test.expectedTournamentID {
-				t.Fatalf("Expected %s, got %s.", test.expectedTournamentID, session.User.ActiveTournamentID)
-			}
-			if session.User.ActiveTournamentMemberID != test.expectedTournamentMemberID {
-				t.Fatalf("Expected %s, got %s.", test.expectedTournamentMemberID, session.User.ActiveTournamentMemberID)
-			}
-		})
+		if session.User.ActiveTournamentID != test.expectedTournamentID {
+			t.Fatalf("%s: Expected %d, got %d.", test.name, test.expectedTournamentID, session.User.ActiveTournamentID)
+		}
+		if session.User.ActiveTournamentMemberID != test.expectedTournamentMemberID {
+			t.Fatalf("%s: Expected %d, got %d.", test.name, test.expectedTournamentMemberID, session.User.ActiveTournamentMemberID)
+		}
 	}
 }

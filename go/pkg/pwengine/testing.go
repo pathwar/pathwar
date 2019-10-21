@@ -21,7 +21,7 @@ func TestingEngine(t *testing.T, opts Opts) (Engine, func()) {
 
 	engine, err := New(db, sso, opts)
 	if err != nil {
-		t.Fatalf("failed to initialize engine: %v", err)
+		t.Fatalf("init engine: %v", err)
 	}
 
 	cleanup := func() {

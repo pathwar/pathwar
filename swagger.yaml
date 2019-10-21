@@ -40,10 +40,12 @@ definitions:
       author:
         $ref: '#/definitions/dbTournamentMember'
       author_id:
+        format: int64
         type: string
       challenge_validation:
         $ref: '#/definitions/dbChallengeValidation'
       challenge_validation_id:
+        format: int64
         type: string
       comment:
         type: string
@@ -51,6 +53,7 @@ definitions:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       is_global:
         format: boolean
@@ -112,6 +115,7 @@ definitions:
         title: repeated string tags = ;
         type: string
       id:
+        format: int64
         type: string
       is_draft:
         format: boolean
@@ -134,13 +138,15 @@ definitions:
   dbChallengeFlavor:
     properties:
       challenge_version:
-        $ref: '#/definitions/dbChallenge'
+        $ref: '#/definitions/dbChallengeVersion'
       challenge_version_id:
+        format: int64
         type: string
       created_at:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       instances:
         items:
@@ -158,12 +164,15 @@ definitions:
       flavor:
         $ref: '#/definitions/dbChallengeFlavor'
       flavor_id:
+        format: int64
         type: string
       hypervisor:
         $ref: '#/definitions/dbHypervisor'
       hypervisor_id:
+        format: int64
         type: string
       id:
+        format: int64
         type: string
       status:
         $ref: '#/definitions/dbChallengeInstanceStatus'
@@ -178,27 +187,23 @@ definitions:
     - Active
     - Inactive
     type: string
-  dbChallengeList:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/dbChallenge'
-        type: array
-    type: object
   dbChallengeSubscription:
     properties:
       challenge_flavor:
         $ref: '#/definitions/dbChallengeFlavor'
       challenge_flavor_id:
+        format: int64
         type: string
       created_at:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       tournament_team:
         $ref: '#/definitions/dbTournamentTeam'
       tournament_team_id:
+        format: int64
         type: string
       updated_at:
         format: date-time
@@ -215,6 +220,7 @@ definitions:
       challenge_subscription:
         $ref: '#/definitions/dbChallengeSubscription'
       challenge_subscription_id:
+        format: int64
         type: string
       corrector_comment:
         type: string
@@ -222,12 +228,14 @@ definitions:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       status:
         $ref: '#/definitions/dbChallengeValidationStatus'
       tournament_member:
         $ref: '#/definitions/dbTournamentMember'
       tournament_member_id:
+        format: int64
         type: string
       updated_at:
         format: date-time
@@ -247,6 +255,7 @@ definitions:
       challenge:
         $ref: '#/definitions/dbChallenge'
       challenge_id:
+        format: int64
         type: string
       changelog:
         type: string
@@ -260,6 +269,7 @@ definitions:
           $ref: '#/definitions/dbChallengeFlavor'
         type: array
       id:
+        format: int64
         type: string
       is_draft:
         format: boolean
@@ -284,6 +294,7 @@ definitions:
         title: fields
         type: string
       id:
+        format: int64
         type: string
       max_validation_count:
         format: int32
@@ -292,6 +303,7 @@ definitions:
         $ref: '#/definitions/dbTournament'
         title: associations
       tournament_id:
+        format: int64
         type: string
       updated_at:
         format: date-time
@@ -310,6 +322,7 @@ definitions:
         $ref: '#/definitions/dbTournamentMember'
         title: associations
       author_id:
+        format: int64
         type: string
       comment:
         title: fields
@@ -317,11 +330,13 @@ definitions:
       coupon:
         $ref: '#/definitions/dbCoupon'
       coupon_id:
+        format: int64
         type: string
       created_at:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       updated_at:
         format: date-time
@@ -418,6 +433,7 @@ definitions:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       name:
         type: string
@@ -440,12 +456,14 @@ definitions:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       item:
         $ref: '#/definitions/InventoryItemItem'
       owner:
         $ref: '#/definitions/dbTournamentMember'
       owner_id:
+        format: int64
         type: string
       updated_at:
         format: date-time
@@ -461,6 +479,7 @@ definitions:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       is_read:
         format: boolean
@@ -473,6 +492,7 @@ definitions:
       user:
         $ref: '#/definitions/dbUser'
       user_id:
+        format: int64
         type: string
     type: object
   dbTeam:
@@ -483,6 +503,7 @@ definitions:
       gravatar_url:
         type: string
       id:
+        format: int64
         type: string
       locale:
         type: string
@@ -504,25 +525,20 @@ definitions:
         format: date-time
         type: string
     type: object
-  dbTeamList:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/dbTeam'
-        type: array
-    type: object
   dbTeamMember:
     properties:
       created_at:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       role:
         $ref: '#/definitions/dbTeamMemberRole'
       team:
         $ref: '#/definitions/dbTeam'
       team_id:
+        format: int64
         type: string
       updated_at:
         format: date-time
@@ -530,6 +546,7 @@ definitions:
       user:
         $ref: '#/definitions/dbUser'
       user_id:
+        format: int64
         type: string
     type: object
   dbTeamMemberRole:
@@ -549,6 +566,7 @@ definitions:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       is_default:
         format: boolean
@@ -585,6 +603,7 @@ definitions:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       items:
         items:
@@ -603,6 +622,7 @@ definitions:
       tournament_team:
         $ref: '#/definitions/dbTournamentTeam'
       tournament_team_id:
+        format: int64
         type: string
       updated_at:
         format: date-time
@@ -610,6 +630,7 @@ definitions:
       user:
         $ref: '#/definitions/dbUser'
       user_id:
+        format: int64
         type: string
     type: object
   dbTournamentMemberRole:
@@ -636,6 +657,7 @@ definitions:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       is_default:
         format: boolean
@@ -647,31 +669,28 @@ definitions:
       team:
         $ref: '#/definitions/dbTeam'
       team_id:
+        format: int64
         type: string
       tournament:
         $ref: '#/definitions/dbTournament'
       tournament_id:
+        format: int64
         type: string
       updated_at:
         format: date-time
         type: string
-    type: object
-  dbTournamentTeamList:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/dbTournamentTeam'
-        type: array
     type: object
   dbUser:
     properties:
       active_tournament:
         $ref: '#/definitions/dbTournamentMember'
       active_tournament_id:
+        format: int64
         type: string
       active_tournament_member:
         $ref: '#/definitions/dbTournamentMember'
       active_tournament_member_id:
+        format: int64
         type: string
       created_at:
         format: date-time
@@ -681,6 +700,7 @@ definitions:
       gravatar_url:
         type: string
       id:
+        format: int64
         type: string
       locale:
         type: string
@@ -692,6 +712,8 @@ definitions:
         items:
           $ref: '#/definitions/dbNotification'
         type: array
+      oauth_subject:
+        type: string
       tournament_memberships:
         items:
           $ref: '#/definitions/dbTournamentMember'
@@ -711,11 +733,13 @@ definitions:
         $ref: '#/definitions/dbTournamentMember'
         title: associations
       author_id:
+        format: int64
         type: string
       created_at:
         format: date-time
         type: string
       id:
+        format: int64
         type: string
       success:
         format: boolean
@@ -724,18 +748,52 @@ definitions:
       target_member:
         $ref: '#/definitions/dbTournamentMember'
       target_member_id:
+        format: int64
         type: string
       target_team:
         $ref: '#/definitions/dbTournamentTeam'
       target_team_id:
+        format: int64
         type: string
       updated_at:
         format: date-time
         type: string
     type: object
+  engineGetChallengeOutput:
+    properties:
+      item:
+        $ref: '#/definitions/dbChallenge'
+    type: object
+  engineGetTournamentTeamOutput:
+    properties:
+      item:
+        $ref: '#/definitions/dbTournamentTeam'
+    type: object
+  engineListChallengesOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbChallenge'
+        type: array
+    type: object
+  engineListTeamsOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbTeam'
+        type: array
+    type: object
+  engineListTournamentTeamsOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbTournamentTeam'
+        type: array
+    type: object
   engineSetPreferencesInput:
     properties:
       active_tournament_id:
+        format: int64
         type: string
     type: object
   engineUserSessionOutput:
@@ -847,6 +905,31 @@ info:
   title: Pathwar API
   version: "1.0"
 paths:
+  /challenge:
+    get:
+      operationId: GetChallenge
+      parameters:
+      - format: int64
+        in: query
+        name: challenge_id
+        required: false
+        type: string
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineGetChallengeOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
   /challenges:
     get:
       operationId: ListChallenges
@@ -854,7 +937,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/dbChallengeList'
+            $ref: '#/definitions/engineListChallengesOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -995,7 +1078,32 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/dbTeamList'
+            $ref: '#/definitions/engineListTeamsOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /tournament/team:
+    get:
+      operationId: GetTournamentTeam
+      parameters:
+      - format: int64
+        in: query
+        name: tournament_team_id
+        required: false
+        type: string
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineGetTournamentTeamOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1011,7 +1119,8 @@ paths:
     get:
       operationId: ListTournamentTeams
       parameters:
-      - in: query
+      - format: int64
+        in: query
         name: tournament_id
         required: false
         type: string
@@ -1019,7 +1128,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/dbTournamentTeamList'
+            $ref: '#/definitions/engineListTournamentTeamsOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
