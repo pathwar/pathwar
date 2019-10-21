@@ -1,0 +1,13 @@
+DROP DATABASE IF EXISTS imageboard;
+CREATE DATABASE imageboard;
+GRANT ALL PRIVILEGES ON imageboard.* to 'imageboard'@'%';
+USE imageboard;
+CREATE TABLE posts (id INTEGER AUTO_INCREMENT PRIMARY KEY, image_id INTEGER, author TEXT, ts  TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE comments (id INTEGER AUTO_INCREMENT PRIMARY KEY, content TEXT, post_id INTEGER);
+CREATE TABLE images (id INTEGER AUTO_INCREMENT PRIMARY KEY, path TEXT);
+INSERT INTO posts (image_id, author) VALUES (1, 'admin');
+INSERT INTO posts (image_id, author) VALUES (1, 'admin');
+INSERT INTO comments (content, post_id) VALUES ('Test comment, please ignore', 1);
+INSERT INTO comments (content, post_id) VALUES ('lakdsfj;la;sdkjf<sc>', 1);
+INSERT INTO comments (content, post_id) VALUES ('ffufufufufufuf', 2);
+INSERT INTO images (path) VALUES ('test.jpg');

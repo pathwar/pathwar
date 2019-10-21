@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  front:
+    build: front
+    ports:
+      - 80
+    depends_on:
+      - mysql
+
+  mysql:
+    build: mysql
+    expose:
+      - 3306
