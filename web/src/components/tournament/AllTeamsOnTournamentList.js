@@ -1,5 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux"
+import { Link } from "@reach/router";
 import { Card, Table } from "tabler-react";
 import PropTypes from "prop-types";
 import {
@@ -11,9 +12,7 @@ const TeamsRows = ({ teams }) => {
     return teams.map((item) => {
         return (
             <Table.Row key={item.team.id}>
-                <Table.Col colSpan={2}>{item.team.name}</Table.Col>
-                {/* <Table.Col>{tournament.status}</Table.Col>
-                <Table.Col>{tournament.visibility}</Table.Col> */}
+                <Table.Col colSpan={2}><Link to={`/app/team/${item.team.id}`}>{item.team.name}</Link></Table.Col>
             </Table.Row>
         )
     })

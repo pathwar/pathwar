@@ -5,9 +5,16 @@ import {
   SET_TEAMS_LIST,
   SET_TEAMS_LIST_FAILED,
   JOIN_TEAM_SUCCESS,
-  JOIN_TEAM_FAILED
+  JOIN_TEAM_FAILED,
+  GET_TEAM_DETAILS_SUCCESS,
+  GET_TEAM_DETAILS_FAILED
 } from "../constants/actionTypes"
-import { getAllTeams, getUserTeams, joinTeam as joinTeamCall } from "../api/teams"
+import {
+  getAllTeams,
+  getUserTeams,
+  getTeamDetails,
+  joinTeam as joinTeamCall,
+  } from "../api/teams"
 
 export const setActiveTeam = (teamObjData) => async dispatch => {
   dispatch({
@@ -15,6 +22,30 @@ export const setActiveTeam = (teamObjData) => async dispatch => {
     payload: { team: teamObjData }
   });
 }
+
+
+export const fetchTeamDetails = (teamID) => async dispatch => {
+  try {
+    const response = await getTeamDetails(teamID);
+    const detailsResponse = response.data.items;
+
+    console.log("AI RESPONSE SAFADO >>>", response.data);
+
+    dispatch({
+      type: GET_TEAM_DETAILS_SUCCESS,
+      payload: {
+        details: detailsResponse,
+      }
+    })
+
+  } catch (error) {
+    dispatch({
+      type: GET_TEAM_DETAILS_FAILED,
+      payload: { error }
+    })
+  }
+}
+
 
 export const fetchUserTeams = (userID) => async dispatch => {
 

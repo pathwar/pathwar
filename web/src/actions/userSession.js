@@ -9,7 +9,7 @@ import {
 } from "../constants/actionTypes"
 import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
 import { getUserSession } from "../api/userSession"
-// import { setActiveTeam as setActiveTeamAction } from "./teams";
+import { setActiveTeam as setActiveTeamAction } from "./teams";
 import {
   setActiveTournament as setActiveTournamentAction,
   fetchPreferences as fetchPreferencesAction
@@ -34,7 +34,10 @@ export const fetchUserSession = (postPreferences) => async dispatch => {
     const userSessionResponse = await getUserSession();
     const userSessionData = userSessionResponse.data;
     const defaultTournamentSet = userSessionData.tournaments.find((item) => item.tournament.is_default);
+    const defaultTeamSet = userSessionData.tournaments.find((item) => item.team.is_default);
+
     const defaultTournament = defaultTournamentSet.tournament;
+    const defaultTeam = defaultTeamSet.team;
 
     const activeTournamentId = userSessionData.user.active_tournament_id
 
@@ -47,9 +50,9 @@ export const fetchUserSession = (postPreferences) => async dispatch => {
     if (activeTournamentId) {
       const activeTournament = userSessionData.tournaments.find((item) => item.tournament.id === activeTournamentId);
       dispatch(setActiveTournamentAction(activeTournament.tournament));
+      dispatch(setActiveTeamAction(defaultTeam));
     }
 
-    // dispatch(setActiveTeamAction(defaultTeam))
   }
   catch(error) {
     dispatch({ type: SET_USER_SESSION_FAILED, payload: { error } });

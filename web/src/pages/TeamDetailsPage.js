@@ -7,19 +7,24 @@ import {
   Grid
 } from "tabler-react";
 
+import {
+  fetchTeamDetails as fetchTeamDetailsAction
+} from "../actions/teams"
+
 class TeamDetailsPage extends React.PureComponent {
 
     componentDidMount() {
-
+        const { fetchTeamDetailsAction, uri } = this.props;
+        const teamID = uri.split("/")[3];
+        fetchTeamDetailsAction(teamID);
     }
 
     render() {
-        const {} = this.props;
         return (
-            <Page.Content title="Team XYZ">
+            <Page.Content title="TEAM XYZ">
                 <Grid.Row cards={true}>
                   <Grid.Col xs={12} sm={12} lg={6}>
-                    <h3>Teste</h3>
+
                   </Grid.Col>
                 </Grid.Row>
               </Page.Content>
@@ -28,13 +33,14 @@ class TeamDetailsPage extends React.PureComponent {
 }
 
 TeamDetailsPage.propTypes = {
-
+    fetchTeamDetailsAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
+  fetchTeamDetailsAction: (teamID) => fetchTeamDetailsAction(teamID)
 };
 
 export default connect(
