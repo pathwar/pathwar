@@ -7,6 +7,7 @@ import LogoutPage from "./LogoutPage";
 import TournamentPage from "./TournamentPage";
 import AllTournamentsPage from "./AllTournamentsPage";
 import SiteWrapper from "../components/SiteWrapper";
+import TeamDetailsPage from "./TeamDetailsPage";
 const ProtectedRoute = loadable(() => import('../components/ProtectedRoute'))
 
 import "tabler-react/dist/Tabler.css";
@@ -22,6 +23,7 @@ const App = () => (
             <ProtectedRoute path="/app/dashboard" component={DashboardPage} />
             <ProtectedRoute path="/app/tournament" component={TournamentPage} />
             <ProtectedRoute path="/app/all-tournaments" component={AllTournamentsPage} />
+            <ProtectedRoute path="/app/team/:teamId" component={TeamDetailsPage} />
             <LogoutPage path="/app/logout" component={LogoutPage} />
           </Router>
         )}
