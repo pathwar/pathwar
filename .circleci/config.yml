@@ -51,12 +51,13 @@ jobs:
 
   challenge-build:
     working_directory: /go/src/pathwar.land
-    machine:
-      image: docker:18.06.3-ce-git
+    docker:
+      - image: docker/compose:1.24.1
     steps:
       - checkout
       - setup_remote_docker
-      - run: make build
+      - run: apk add --no-cache make
+      - run: cd challenges && make build
 
   #githooks:
 
