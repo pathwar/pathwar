@@ -6,6 +6,7 @@ import DashboardPage from "./DashboardPage"
 import LogoutPage from "./LogoutPage";
 import TournamentPage from "./TournamentPage";
 import AllTournamentsPage from "./AllTournamentsPage";
+import ChallengeDetailsPage from "./ChallengeDetailsPage";
 import SiteWrapper from "../components/SiteWrapper";
 const ProtectedRoute = loadable(() => import('../components/ProtectedRoute'))
 
@@ -22,6 +23,7 @@ const App = () => (
             <ProtectedRoute path="/app/dashboard" component={DashboardPage} />
             <ProtectedRoute path="/app/tournament" component={TournamentPage} />
             <ProtectedRoute path="/app/all-tournaments" component={AllTournamentsPage} />
+            <ProtectedRoute path="/app/challenge/:challengeId" component={ChallengeDetailsPage} />
             <LogoutPage path="/app/logout" component={LogoutPage} />
           </Router>
         )}
