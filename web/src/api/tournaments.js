@@ -16,3 +16,8 @@ export function getAllTournaments() {
 export function getChallenges(tournamentID) {
     return baseApi.get(`/challenges`, { id: tournamentID });
 }
+
+export function getChallengeDetails(challengeID) {
+  const urlIdParam = encodeURIComponent(challengeID);
+  return baseApi.get(`/challenge?challenge_id=${urlIdParam}`);
+}
