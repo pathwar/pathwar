@@ -1,0 +1,174 @@
+syntax = "proto3";
+
+package pathwar.event;
+
+import "github.com/golang/protobuf/ptypes/timestamp/timestamp.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option go_package = "pathwar.land/go/pkg/pwdb";
+option (gogoproto.sizer_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+
+message Event {
+  int64 global_id = 1; // global sequence number
+  int64 batch_id = 2; //
+  string aggregate_id = 3;
+  string aggregate_name = 4;
+  string data
+  string metadata
+  int64 aggregate_seq
+}
+
+message Event {
+  string aggregate_id = 1;   // reusable uuid
+  string aggregate_type = 2; // entity-name
+  string event_id = 3;       // unique uuid
+  string event_type = 4;     // verb
+  string event_data = 5;     // JSON data
+}
+
+
+---
+
+ID (auto inc)
+aggregate_id
+event_type (enum) OR oneof!!!
+data (json)
+metadata (json)
+created_at xxx
+
+
+---
+
+db.Raw("EXEC proc_name ?, ? ", 123, "abc")
+
+---
+
+Account
+* Register
+* Login
+* UpdatePreferences (change active tournament)
+
+Team
+
+
+TournamentTeam
+* Create
+* SendInvite
+* AcceptInvitation
+*
+
+---
+
+type Event interface {
+  // EventType returns the type of the event.
+  EventType() EventType
+    // The data attached to the event.
+    Data() EventData
+    // Timestamp of when the event was created.
+    Timestamp() time.Time
+
+    // AggregateType returns the type of the aggregate that the event can be
+    // applied to.
+    AggregateType() AggregateType
+    // AggregateID returns the ID of the aggregate that the event should be
+    // applied to.
+    AggregateID() uuid.UUID
+    // Version of the aggregate for this event (after it has been applied).
+    Version() int
+
+    // A string representation of the event.
+    String() string
+    }
+
+// NewEvent creates a new event with a type and data, setting its timestamp.
+func NewEvent(eventType EventType, data EventData, timestamp time.Time) Event {
+  return event{
+    eventType: eventType,
+      data:      data,
+      timestamp: timestamp,
+      }
+}
+
+// NewEventForAggregate creates a new event with a type and data, setting its
+// timestamp. It also sets the aggregate data on it.
+func NewEventForAggregate(eventType EventType, data EventData, timestamp time.Time,
+                          aggregateType AggregateType, aggregateID uuid.UUID, version int) Event {
+  return event{
+    eventType:     eventType,
+      data:          data,
+      timestamp:     timestamp,
+      aggregateType: aggregateType,
+      aggregateID:   aggregateID,
+      version:       version,
+      }
+}
+
+// event is an internal representation of an event, returned when the aggregate
+// uses NewEvent to create a new event. The events loaded from the db is
+// represented by each DBs internal event type, implementing Event.
+type event struct {
+  eventType     EventType
+    data          EventData
+    timestamp     time.Time
+    aggregateType AggregateType
+    aggregateID   uuid.UUID
+    version       int
+    }
+
+---
+
+CREATE TABLE [dbo].[EventFlow](
+ [GlobalSequenceNumber] [bigint] IDENTITY(1,1) NOT NULL,
+ [BatchId] [uniqueidentifier] NOT NULL,
+ [AggregateId] [nvarchar](255) NOT NULL,
+ [AggregateName] [nvarchar](255) NOT NULL,
+ [Data] [nvarchar](max) NOT NULL,
+ [Metadata] [nvarchar](max) NOT NULL,
+ [AggregateSequenceNumber] [int] NOT NULL,
+  CONSTRAINT [PK_EventFlow] PRIMARY KEY CLUSTERED
+ (
+      [GlobalSequenceNumber] ASC
+  )
+ /*
+GlobalSequenceNumber: Simple global identification, may be used for ordering or identifying the missing events when you create your projection (readmodel).
+BatchId: An identification of the group of events that where inserted atomically (TBH, have no idea why this would be usefull)
+AggregateId: Identification of the aggregate
+Data: Serialized event
+Metadata: Other usefull information from event (e.g. event type used for deserialize, timestamp, originator id from command, etc.)
+AggregateSequenceNumber: Sequence number within the same aggregate (this is usefull if you cannot have writes happening out of order, so you use this field to for optimistic concurrency)
+However, if you are creating from scratch I would recomend following the YAGNI principle, and creating with the minimal required fields for your use case.
+*/
+
+ ---
+
+
+> describe event_store;
++-------------------+--------------+------+-----+---------+----------------+
+| Field             | Type         | Null | Key | Default | Extra          |
++-------------------+--------------+------+-----+---------+----------------+
+| timestamp_us      | bigint(20)   | NO   | PRI | NULL    | auto_increment |
+| aggregate_uuid    | binary(16)   | NO   | PRI | NULL    |                |
+| aggregate_version | mediumint(9) | NO   | PRI | NULL    |                |
+| event_type_id     | smallint(6)  | NO   |     | NULL    |                |
+| event_data        | longtext     | NO   |     | NULL    |                |
+| event_meta        | text         | NO   |     | NULL    |                |
++-------------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+
+ ---
+
+Events Table
+* AggregateID Guid
+* Data Blob
+* Version Int
+Aggregates Table
+* AggregateID Guid
+* Type Varchar
+* Version int
+Snapshots Table
+* AggregteID Guid
+* SerializedData Blob
+* Version int
