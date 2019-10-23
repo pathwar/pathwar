@@ -3,8 +3,8 @@ import * as React from "react";
 import { Link } from "gatsby";
 import { Card, Button } from "tabler-react";
 
-const ChallengeBody = (props) => {
-    const { author, description, locale, key } = props;
+const ChallengeBody = ({ challenge }) => {
+    const { author, description, locale, key, id } = challenge;
 
     return (
         <React.Fragment key={key}>
@@ -14,7 +14,7 @@ const ChallengeBody = (props) => {
             <br />
             <p>{description}</p>
             <Button.List>
-                <Button RootComponent={Link} to="/" color="info" size="sm">
+                <Button RootComponent={Link} to={`/app/challenge/${id}`} color="info" size="sm">
                     View challenge
                 </Button>
                 <Button RootComponent={Link} to="/" color="success" size="sm">
@@ -32,7 +32,7 @@ const ChallengeCardPreview = (props) => {
     <Card title={challenge.name} key={challenge.id}
         isCollapsible
         statusColor="orange"
-        body={<ChallengeBody author={challenge.author} description={challenge.description} locale={challenge.locale} />}
+        body={<ChallengeBody challenge={challenge} />}
     />)
 }
 
