@@ -2,7 +2,8 @@
 import { baseApi } from "./index";
 
 export function getTeamDetails(teamID) {
-  return baseApi.get(`/tournament/team?tournament_team_id=${teamID}`);
+  const urlIdParam = encodeURIComponent(teamID);
+  return baseApi.get(`/tournament/team?tournament_team_id=${urlIdParam}`);
 }
 
 export function getAllTeams() {
