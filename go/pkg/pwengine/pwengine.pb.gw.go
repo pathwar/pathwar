@@ -845,7 +845,7 @@ var (
 
 	pattern_Engine_OrganizationList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"organizations"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_TeamList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"taems"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_TeamList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"teams"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Engine_TeamGet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"team"}, "", runtime.AssumeColonVerbOpt(true)))
 
