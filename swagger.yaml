@@ -15,7 +15,7 @@ definitions:
     enum:
     - Unknown
     type: string
-  TournamentVisibility:
+  SeasonVisibility:
     default: UnknownVisibility
     enum:
     - UnknownVisibility
@@ -23,22 +23,22 @@ definitions:
     - Unlisted
     - Public
     type: string
-  UserSessionOutputTournamentAndTeam:
+  UserGetSessionOutputSeasonAndTeam:
     properties:
       is_active:
         format: boolean
         type: boolean
+      season:
+        $ref: '#/definitions/dbSeason'
       team:
-        $ref: '#/definitions/dbTournamentTeam'
-      tournament:
-        $ref: '#/definitions/dbTournament'
+        $ref: '#/definitions/dbTeam'
     type: object
   dbAchievement:
     properties:
       argument:
         type: string
       author:
-        $ref: '#/definitions/dbTournamentMember'
+        $ref: '#/definitions/dbTeamMember'
       author_id:
         format: int64
         type: string
@@ -200,9 +200,9 @@ definitions:
       id:
         format: int64
         type: string
-      tournament_team:
-        $ref: '#/definitions/dbTournamentTeam'
-      tournament_team_id:
+      team:
+        $ref: '#/definitions/dbTeam'
+      team_id:
         format: int64
         type: string
       updated_at:
@@ -232,9 +232,9 @@ definitions:
         type: string
       status:
         $ref: '#/definitions/dbChallengeValidationStatus'
-      tournament_member:
-        $ref: '#/definitions/dbTournamentMember'
-      tournament_member_id:
+      team_member:
+        $ref: '#/definitions/dbTeamMember'
+      team_member_id:
         format: int64
         type: string
       updated_at:
@@ -299,10 +299,10 @@ definitions:
       max_validation_count:
         format: int32
         type: integer
-      tournament:
-        $ref: '#/definitions/dbTournament'
+      season:
+        $ref: '#/definitions/dbSeason'
         title: associations
-      tournament_id:
+      season_id:
         format: int64
         type: string
       updated_at:
@@ -319,7 +319,7 @@ definitions:
   dbCouponValidation:
     properties:
       author:
-        $ref: '#/definitions/dbTournamentMember'
+        $ref: '#/definitions/dbTeamMember'
         title: associations
       author_id:
         format: int64
@@ -392,6 +392,18 @@ definitions:
         items:
           $ref: '#/definitions/dbNotification'
         type: array
+      organization_members:
+        items:
+          $ref: '#/definitions/dbOrganizationMember'
+        type: array
+      organizations:
+        items:
+          $ref: '#/definitions/dbOrganization'
+        type: array
+      seasons:
+        items:
+          $ref: '#/definitions/dbSeason'
+        type: array
       team_members:
         items:
           $ref: '#/definitions/dbTeamMember'
@@ -399,18 +411,6 @@ definitions:
       teams:
         items:
           $ref: '#/definitions/dbTeam'
-        type: array
-      tournament_members:
-        items:
-          $ref: '#/definitions/dbTournamentMember'
-        type: array
-      tournament_teams:
-        items:
-          $ref: '#/definitions/dbTournamentTeam'
-        type: array
-      tournaments:
-        items:
-          $ref: '#/definitions/dbTournament'
         type: array
       users:
         items:
@@ -461,7 +461,7 @@ definitions:
       item:
         $ref: '#/definitions/InventoryItemItem'
       owner:
-        $ref: '#/definitions/dbTournamentMember'
+        $ref: '#/definitions/dbTeamMember'
       owner_id:
         format: int64
         type: string
@@ -495,7 +495,7 @@ definitions:
         format: int64
         type: string
     type: object
-  dbTeam:
+  dbOrganization:
     properties:
       created_at:
         format: date-time
@@ -509,7 +509,7 @@ definitions:
         type: string
       members:
         items:
-          $ref: '#/definitions/dbTeamMember'
+          $ref: '#/definitions/dbOrganizationMember'
         type: array
       name:
         type: string
@@ -517,15 +517,15 @@ definitions:
         items:
           $ref: '#/definitions/dbWhoswhoAttempt'
         type: array
-      tournament_teams:
+      teams:
         items:
-          $ref: '#/definitions/dbTournamentTeam'
+          $ref: '#/definitions/dbTeam'
         type: array
       updated_at:
         format: date-time
         type: string
     type: object
-  dbTeamMember:
+  dbOrganizationMember:
     properties:
       created_at:
         format: date-time
@@ -533,13 +533,13 @@ definitions:
       id:
         format: int64
         type: string
-      role:
-        $ref: '#/definitions/dbTeamMemberRole'
-      team:
-        $ref: '#/definitions/dbTeam'
-      team_id:
+      organization:
+        $ref: '#/definitions/dbOrganization'
+      organization_id:
         format: int64
         type: string
+      role:
+        $ref: '#/definitions/dbOrganizationMemberRole'
       updated_at:
         format: date-time
         type: string
@@ -549,14 +549,14 @@ definitions:
         format: int64
         type: string
     type: object
-  dbTeamMemberRole:
+  dbOrganizationMemberRole:
     default: Undefined
     enum:
     - Undefined
     - Owner
     - Member
     type: string
-  dbTournament:
+  dbSeason:
     properties:
       coupons:
         items:
@@ -573,19 +573,59 @@ definitions:
         type: boolean
       name:
         type: string
-      status:
-        $ref: '#/definitions/dbTournamentStatus'
-      teams:
+      organizations:
         items:
-          $ref: '#/definitions/dbTournamentTeam'
+          $ref: '#/definitions/dbTeam'
         type: array
+      status:
+        $ref: '#/definitions/dbSeasonStatus'
       updated_at:
         format: date-time
         type: string
       visibility:
-        $ref: '#/definitions/TournamentVisibility'
+        $ref: '#/definitions/SeasonVisibility'
     type: object
-  dbTournamentMember:
+  dbSeasonStatus:
+    default: UnknownStatus
+    enum:
+    - UnknownStatus
+    - Started
+    - Stopped
+    type: string
+  dbTeam:
+    properties:
+      challenge_subscriptions:
+        items:
+          $ref: '#/definitions/dbChallengeSubscription'
+        type: array
+      created_at:
+        format: date-time
+        type: string
+      id:
+        format: int64
+        type: string
+      is_default:
+        format: boolean
+        type: boolean
+      members:
+        items:
+          $ref: '#/definitions/dbTeamMember'
+        type: array
+      organization:
+        $ref: '#/definitions/dbOrganization'
+      organization_id:
+        format: int64
+        type: string
+      season:
+        $ref: '#/definitions/dbSeason'
+      season_id:
+        format: int64
+        type: string
+      updated_at:
+        format: date-time
+        type: string
+    type: object
+  dbTeamMember:
     properties:
       achievements:
         items:
@@ -614,14 +654,14 @@ definitions:
           $ref: '#/definitions/dbWhoswhoAttempt'
         type: array
       role:
-        $ref: '#/definitions/dbTournamentMemberRole'
+        $ref: '#/definitions/dbTeamMemberRole'
       sent_whoswho_attempts:
         items:
           $ref: '#/definitions/dbWhoswhoAttempt'
         type: array
-      tournament_team:
-        $ref: '#/definitions/dbTournamentTeam'
-      tournament_team_id:
+      team:
+        $ref: '#/definitions/dbTeam'
+      team_id:
         format: int64
         type: string
       updated_at:
@@ -633,63 +673,23 @@ definitions:
         format: int64
         type: string
     type: object
-  dbTournamentMemberRole:
+  dbTeamMemberRole:
     default: Undefined
     enum:
     - Undefined
     - Owner
     - Member
     type: string
-  dbTournamentStatus:
-    default: UnknownStatus
-    enum:
-    - UnknownStatus
-    - Started
-    - Stopped
-    type: string
-  dbTournamentTeam:
-    properties:
-      challenge_subscriptions:
-        items:
-          $ref: '#/definitions/dbChallengeSubscription'
-        type: array
-      created_at:
-        format: date-time
-        type: string
-      id:
-        format: int64
-        type: string
-      is_default:
-        format: boolean
-        type: boolean
-      members:
-        items:
-          $ref: '#/definitions/dbTournamentMember'
-        type: array
-      team:
-        $ref: '#/definitions/dbTeam'
-      team_id:
-        format: int64
-        type: string
-      tournament:
-        $ref: '#/definitions/dbTournament'
-      tournament_id:
-        format: int64
-        type: string
-      updated_at:
-        format: date-time
-        type: string
-    type: object
   dbUser:
     properties:
-      active_tournament:
-        $ref: '#/definitions/dbTournamentMember'
-      active_tournament_id:
+      active_season:
+        $ref: '#/definitions/dbTeamMember'
+      active_season_id:
         format: int64
         type: string
-      active_tournament_member:
-        $ref: '#/definitions/dbTournamentMember'
-      active_tournament_member_id:
+      active_team_member:
+        $ref: '#/definitions/dbTeamMember'
+      active_team_member_id:
         format: int64
         type: string
       created_at:
@@ -706,7 +706,7 @@ definitions:
         type: string
       memberships:
         items:
-          $ref: '#/definitions/dbTeamMember'
+          $ref: '#/definitions/dbOrganizationMember'
         type: array
       notifications:
         items:
@@ -714,9 +714,9 @@ definitions:
         type: array
       oauth_subject:
         type: string
-      tournament_memberships:
+      team_memberships:
         items:
-          $ref: '#/definitions/dbTournamentMember'
+          $ref: '#/definitions/dbTeamMember'
         type: array
       updated_at:
         format: date-time
@@ -730,7 +730,7 @@ definitions:
   dbWhoswhoAttempt:
     properties:
       author:
-        $ref: '#/definitions/dbTournamentMember'
+        $ref: '#/definitions/dbTeamMember'
         title: associations
       author_id:
         format: int64
@@ -746,57 +746,51 @@ definitions:
         title: fields
         type: boolean
       target_member:
-        $ref: '#/definitions/dbTournamentMember'
+        $ref: '#/definitions/dbTeamMember'
       target_member_id:
         format: int64
         type: string
-      target_team:
-        $ref: '#/definitions/dbTournamentTeam'
-      target_team_id:
+      target_organization:
+        $ref: '#/definitions/dbTeam'
+      target_organization_id:
         format: int64
         type: string
       updated_at:
         format: date-time
         type: string
     type: object
-  engineGetChallengeOutput:
+  engineChallengeGetOutput:
     properties:
       item:
         $ref: '#/definitions/dbChallenge'
     type: object
-  engineGetTournamentTeamOutput:
-    properties:
-      item:
-        $ref: '#/definitions/dbTournamentTeam'
-    type: object
-  engineListChallengesOutput:
+  engineChallengeListOutput:
     properties:
       items:
         items:
           $ref: '#/definitions/dbChallenge'
         type: array
     type: object
-  engineListTeamsOutput:
+  engineOrganizationListOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbOrganization'
+        type: array
+    type: object
+  engineTeamGetOutput:
+    properties:
+      item:
+        $ref: '#/definitions/dbTeam'
+    type: object
+  engineTeamListOutput:
     properties:
       items:
         items:
           $ref: '#/definitions/dbTeam'
         type: array
     type: object
-  engineListTournamentTeamsOutput:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/dbTournamentTeam'
-        type: array
-    type: object
-  engineSetPreferencesInput:
-    properties:
-      active_tournament_id:
-        format: int64
-        type: string
-    type: object
-  engineUserSessionOutput:
+  engineUserGetSessionOutput:
     properties:
       claims:
         $ref: '#/definitions/ssoClaims'
@@ -806,12 +800,18 @@ definitions:
       notifications:
         format: int32
         type: integer
-      tournaments:
+      seasons:
         items:
-          $ref: '#/definitions/UserSessionOutputTournamentAndTeam'
+          $ref: '#/definitions/UserGetSessionOutputSeasonAndTeam'
         type: array
       user:
         $ref: '#/definitions/dbUser'
+    type: object
+  engineUserSetPreferencesInput:
+    properties:
+      active_season_id:
+        format: int64
+        type: string
     type: object
   engineVoid:
     example: {}
@@ -907,7 +907,7 @@ info:
 paths:
   /challenge:
     get:
-      operationId: GetChallenge
+      operationId: ChallengeGet
       parameters:
       - format: int64
         in: query
@@ -918,7 +918,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineGetChallengeOutput'
+            $ref: '#/definitions/engineChallengeGetOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -932,50 +932,12 @@ paths:
       - Engine
   /challenges:
     get:
-      operationId: ListChallenges
+      operationId: ChallengeList
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineListChallengesOutput'
-        "403":
-          description: Returned when the user does not have permission to access the
-            resource.
-          schema: {}
-        "404":
-          description: Returned when the resource does not exist.
-          schema:
-            format: string
-            type: string
-      tags:
-      - Engine
-  /dev/generate-fake-data:
-    post:
-      operationId: GenerateFakeData
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/engineVoid'
-        "403":
-          description: Returned when the user does not have permission to access the
-            resource.
-          schema: {}
-        "404":
-          description: Returned when the resource does not exist.
-          schema:
-            format: string
-            type: string
-      tags:
-      - Engine
-  /dev/sql-dump:
-    get:
-      operationId: DBDump
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/dbDump'
+            $ref: '#/definitions/engineChallengeListOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -989,7 +951,7 @@ paths:
       - Engine
   /info:
     get:
-      operationId: GetInfo
+      operationId: ToolInfo
       responses:
         "200":
           description: A successful response.
@@ -1004,17 +966,16 @@ paths:
           schema:
             format: string
             type: string
-      summary: dev helpers
       tags:
       - Engine
-  /ping:
+  /organizations:
     get:
-      operationId: Ping
+      operationId: OrganizationList
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineVoid'
+            $ref: '#/definitions/engineOrganizationListOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1024,18 +985,11 @@ paths:
           schema:
             format: string
             type: string
-      summary: Verify the service is up and running
       tags:
       - Engine
-  /preferences:
-    post:
-      operationId: SetPreferences
-      parameters:
-      - in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/engineSetPreferencesInput'
+  /ping:
+    get:
+      operationId: ToolPing
       responses:
         "200":
           description: A successful response.
@@ -1054,7 +1008,7 @@ paths:
       - Engine
   /status:
     get:
-      operationId: GetStatus
+      operationId: ToolStatus
       responses:
         "200":
           description: A successful response.
@@ -1071,39 +1025,20 @@ paths:
             type: string
       tags:
       - Engine
-  /teams:
+  /taems:
     get:
-      operationId: ListTeams
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/engineListTeamsOutput'
-        "403":
-          description: Returned when the user does not have permission to access the
-            resource.
-          schema: {}
-        "404":
-          description: Returned when the resource does not exist.
-          schema:
-            format: string
-            type: string
-      tags:
-      - Engine
-  /tournament/team:
-    get:
-      operationId: GetTournamentTeam
+      operationId: TeamList
       parameters:
       - format: int64
         in: query
-        name: tournament_team_id
+        name: season_id
         required: false
         type: string
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineGetTournamentTeamOutput'
+            $ref: '#/definitions/engineTeamListOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1115,20 +1050,20 @@ paths:
             type: string
       tags:
       - Engine
-  /tournament/teams:
+  /team:
     get:
-      operationId: ListTournamentTeams
+      operationId: TeamGet
       parameters:
       - format: int64
         in: query
-        name: tournament_id
+        name: team_id
         required: false
         type: string
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineListTournamentTeamsOutput'
+            $ref: '#/definitions/engineTeamGetOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1140,14 +1075,14 @@ paths:
             type: string
       tags:
       - Engine
-  /user-session:
-    get:
-      operationId: GetUserSession
+  /tool/generate-fake-data:
+    post:
+      operationId: ToolGenerateFakeData
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineUserSessionOutput'
+            $ref: '#/definitions/engineVoid'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1157,7 +1092,69 @@ paths:
           schema:
             format: string
             type: string
-      summary: Get current user session, based on JWT token
+      tags:
+      - Engine
+  /tool/sql-dump:
+    get:
+      operationId: ToolDBDump
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/dbDump'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /user/preferences:
+    post:
+      operationId: UserSetPreferences
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineUserSetPreferencesInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineVoid'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /user/session:
+    get:
+      operationId: UserGetSession
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineUserGetSessionOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
       tags:
       - Engine
 produces:
