@@ -11,7 +11,6 @@ import SiteWrapper from "../components/SiteWrapper";
 const ProtectedRoute = loadable(() => import('../components/ProtectedRoute'))
 
 import "tabler-react/dist/Tabler.css";
-import "../styles/layout/loader.css";
 
 
 const App = () => (

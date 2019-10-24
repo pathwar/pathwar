@@ -5,6 +5,8 @@ import Keycloak from 'keycloak-js';
 import { Dimmer } from "tabler-react";
 import { setKeycloakSession } from '../actions/userSession';
 
+import styles from "../styles/layout/loader.module.css"
+
 class ProtectedRoute extends React.PureComponent {
 
     async componentDidMount() {
@@ -27,7 +29,7 @@ class ProtectedRoute extends React.PureComponent {
         }
 
         return (
-          <Dimmer active loader />
+          <Dimmer className={styles.dimmer} active loader />
         );
     }
 }
