@@ -1,6 +1,6 @@
 [build]
   base = "web"
-  publish = "web/public"
+  publish = "public"
   command = "npm install && npm run build"
 
 [build.environment]
