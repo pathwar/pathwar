@@ -51,30 +51,30 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 }
 
 func firstEntities(sfn *snowflake.Node) []interface{} {
-	solo := &Tournament{
-		// ID:         "solo-tournament",
+	solo := &Season{
+		// ID:         "solo-season",
 		Name:       "Solo Mode",
-		Status:     Tournament_Started,
-		Visibility: Tournament_Public,
+		Status:     Season_Started,
+		Visibility: Season_Public,
 		IsDefault:  true,
 	}
-	testTournament := &Tournament{
-		Name:       "Test Tournament",
-		Status:     Tournament_Started,
-		Visibility: Tournament_Public,
+	testSeason := &Season{
+		Name:       "Test Season",
+		Status:     Season_Started,
+		Visibility: Season_Public,
 	}
 	m1ch3l := &User{
 		Username:     "m1ch3l",
 		OAuthSubject: "m1ch3l",
 		// State: special
 	}
-	staff := &Team{
+	staff := &Organization{
 		Name: "Staff",
 	}
-	soloStaff := &TournamentTeam{
-		IsDefault:  true,
-		Tournament: solo,
-		Team:       staff,
+	soloStaff := &Team{
+		IsDefault:    true,
+		Season:       solo,
+		Organization: staff,
 	}
 	localhost := &Hypervisor{
 		Name:    "localhost",
@@ -99,7 +99,7 @@ func firstEntities(sfn *snowflake.Node) []interface{} {
 
 	return []interface{}{
 		solo,
-		testTournament,
+		testSeason,
 		m1ch3l,
 		staff,
 		soloStaff,

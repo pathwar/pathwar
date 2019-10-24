@@ -8,22 +8,18 @@ import (
 	"pathwar.land/go/internal/testutil"
 )
 
-func TestEngine_GetInfo(t *testing.T) {
+func TestEngine_GetStatus(t *testing.T) {
 	engine, cleanup := TestingEngine(t, Opts{Logger: testutil.Logger(t)})
 	defer cleanup()
 	ctx := context.Background()
 
-	status, err := engine.GetInfo(ctx, nil)
+	status, err := engine.ToolStatus(ctx, nil)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
-	expected := &Info{
-		Version: "dev",
-		Commit:  "n/a",
-		BuiltAt: "n/a",
-		BuiltBy: "n/a",
+	expected := &Status{
+		EverythingIsOK: true,
 	}
-	expected.Uptime = status.Uptime // may vary
 	if !reflect.DeepEqual(expected, status) {
 		t.Fatalf("Expected: %#v, got %#v instead.", expected, status)
 	}

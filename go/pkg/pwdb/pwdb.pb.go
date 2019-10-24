@@ -114,6 +114,34 @@ func (Hypervisor_Status) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{5, 0}
 }
 
+type OrganizationMember_Role int32
+
+const (
+	OrganizationMember_Undefined OrganizationMember_Role = 0
+	OrganizationMember_Owner     OrganizationMember_Role = 1
+	OrganizationMember_Member    OrganizationMember_Role = 2
+)
+
+var OrganizationMember_Role_name = map[int32]string{
+	0: "Undefined",
+	1: "Owner",
+	2: "Member",
+}
+
+var OrganizationMember_Role_value = map[string]int32{
+	"Undefined": 0,
+	"Owner":     1,
+	"Member":    2,
+}
+
+func (x OrganizationMember_Role) String() string {
+	return proto.EnumName(OrganizationMember_Role_name, int32(x))
+}
+
+func (OrganizationMember_Role) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_debbe06253822cef, []int{6, 0}
+}
+
 type TeamMember_Role int32
 
 const (
@@ -139,93 +167,65 @@ func (x TeamMember_Role) String() string {
 }
 
 func (TeamMember_Role) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_debbe06253822cef, []int{6, 0}
-}
-
-type TournamentMember_Role int32
-
-const (
-	TournamentMember_Undefined TournamentMember_Role = 0
-	TournamentMember_Owner     TournamentMember_Role = 1
-	TournamentMember_Member    TournamentMember_Role = 2
-)
-
-var TournamentMember_Role_name = map[int32]string{
-	0: "Undefined",
-	1: "Owner",
-	2: "Member",
-}
-
-var TournamentMember_Role_value = map[string]int32{
-	"Undefined": 0,
-	"Owner":     1,
-	"Member":    2,
-}
-
-func (x TournamentMember_Role) String() string {
-	return proto.EnumName(TournamentMember_Role_name, int32(x))
-}
-
-func (TournamentMember_Role) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{7, 0}
 }
 
-type Tournament_Status int32
+type Season_Status int32
 
 const (
-	Tournament_UnknownStatus Tournament_Status = 0
-	Tournament_Started       Tournament_Status = 1
-	Tournament_Stopped       Tournament_Status = 2
+	Season_UnknownStatus Season_Status = 0
+	Season_Started       Season_Status = 1
+	Season_Stopped       Season_Status = 2
 )
 
-var Tournament_Status_name = map[int32]string{
+var Season_Status_name = map[int32]string{
 	0: "UnknownStatus",
 	1: "Started",
 	2: "Stopped",
 }
 
-var Tournament_Status_value = map[string]int32{
+var Season_Status_value = map[string]int32{
 	"UnknownStatus": 0,
 	"Started":       1,
 	"Stopped":       2,
 }
 
-func (x Tournament_Status) String() string {
-	return proto.EnumName(Tournament_Status_name, int32(x))
+func (x Season_Status) String() string {
+	return proto.EnumName(Season_Status_name, int32(x))
 }
 
-func (Tournament_Status) EnumDescriptor() ([]byte, []int) {
+func (Season_Status) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{12, 0}
 }
 
-type Tournament_Visibility int32
+type Season_Visibility int32
 
 const (
-	Tournament_UnknownVisibility Tournament_Visibility = 0
-	Tournament_Private           Tournament_Visibility = 1
-	Tournament_Unlisted          Tournament_Visibility = 2
-	Tournament_Public            Tournament_Visibility = 3
+	Season_UnknownVisibility Season_Visibility = 0
+	Season_Private           Season_Visibility = 1
+	Season_Unlisted          Season_Visibility = 2
+	Season_Public            Season_Visibility = 3
 )
 
-var Tournament_Visibility_name = map[int32]string{
+var Season_Visibility_name = map[int32]string{
 	0: "UnknownVisibility",
 	1: "Private",
 	2: "Unlisted",
 	3: "Public",
 }
 
-var Tournament_Visibility_value = map[string]int32{
+var Season_Visibility_value = map[string]int32{
 	"UnknownVisibility": 0,
 	"Private":           1,
 	"Unlisted":          2,
 	"Public":            3,
 }
 
-func (x Tournament_Visibility) String() string {
-	return proto.EnumName(Tournament_Visibility_name, int32(x))
+func (x Season_Visibility) String() string {
+	return proto.EnumName(Season_Visibility_name, int32(x))
 }
 
-func (Tournament_Visibility) EnumDescriptor() ([]byte, []int) {
+func (Season_Visibility) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_debbe06253822cef, []int{12, 1}
 }
 
@@ -984,22 +984,128 @@ func (m *Hypervisor) GetChallengeInstances() []*ChallengeInstance {
 	return nil
 }
 
+type OrganizationMember struct {
+	ID             int64                   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt      *time.Time              `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt      *time.Time              `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	Role           OrganizationMember_Role `protobuf:"varint,100,opt,name=role,proto3,enum=pathwar.db.OrganizationMember_Role" json:"role,omitempty"`
+	User           *User                   `protobuf:"bytes,200,opt,name=user,proto3" json:"user,omitempty" gorm:"foreignkey:UserID"`
+	UserID         int64                   `protobuf:"varint,201,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty" sql:"not null" gorm:"index"`
+	Organization   *Organization           `protobuf:"bytes,202,opt,name=organization,proto3" json:"organization,omitempty" gorm:"foreignkey:OrganizationID"`
+	OrganizationID int64                   `protobuf:"varint,203,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty" sql:"not null" gorm:"index"`
+}
+
+func (m *OrganizationMember) Reset()         { *m = OrganizationMember{} }
+func (m *OrganizationMember) String() string { return proto.CompactTextString(m) }
+func (*OrganizationMember) ProtoMessage()    {}
+func (*OrganizationMember) Descriptor() ([]byte, []int) {
+	return fileDescriptor_debbe06253822cef, []int{6}
+}
+func (m *OrganizationMember) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *OrganizationMember) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_OrganizationMember.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *OrganizationMember) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OrganizationMember.Merge(m, src)
+}
+func (m *OrganizationMember) XXX_Size() int {
+	return m.Size()
+}
+func (m *OrganizationMember) XXX_DiscardUnknown() {
+	xxx_messageInfo_OrganizationMember.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_OrganizationMember proto.InternalMessageInfo
+
+func (m *OrganizationMember) GetID() int64 {
+	if m != nil {
+		return m.ID
+	}
+	return 0
+}
+
+func (m *OrganizationMember) GetCreatedAt() *time.Time {
+	if m != nil {
+		return m.CreatedAt
+	}
+	return nil
+}
+
+func (m *OrganizationMember) GetUpdatedAt() *time.Time {
+	if m != nil {
+		return m.UpdatedAt
+	}
+	return nil
+}
+
+func (m *OrganizationMember) GetRole() OrganizationMember_Role {
+	if m != nil {
+		return m.Role
+	}
+	return OrganizationMember_Undefined
+}
+
+func (m *OrganizationMember) GetUser() *User {
+	if m != nil {
+		return m.User
+	}
+	return nil
+}
+
+func (m *OrganizationMember) GetUserID() int64 {
+	if m != nil {
+		return m.UserID
+	}
+	return 0
+}
+
+func (m *OrganizationMember) GetOrganization() *Organization {
+	if m != nil {
+		return m.Organization
+	}
+	return nil
+}
+
+func (m *OrganizationMember) GetOrganizationID() int64 {
+	if m != nil {
+		return m.OrganizationID
+	}
+	return 0
+}
+
 type TeamMember struct {
-	ID        int64           `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt *time.Time      `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt *time.Time      `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	Role      TeamMember_Role `protobuf:"varint,100,opt,name=role,proto3,enum=pathwar.db.TeamMember_Role" json:"role,omitempty"`
-	User      *User           `protobuf:"bytes,200,opt,name=user,proto3" json:"user,omitempty" gorm:"foreignkey:UserID"`
-	UserID    int64           `protobuf:"varint,201,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty" sql:"not null" gorm:"index"`
-	Team      *Team           `protobuf:"bytes,202,opt,name=team,proto3" json:"team,omitempty" gorm:"foreignkey:TeamID"`
-	TeamID    int64           `protobuf:"varint,203,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty" sql:"not null" gorm:"index"`
+	ID                      int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt               *time.Time             `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt               *time.Time             `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	Role                    TeamMember_Role        `protobuf:"varint,100,opt,name=role,proto3,enum=pathwar.db.TeamMember_Role" json:"role,omitempty"`
+	User                    *User                  `protobuf:"bytes,200,opt,name=user,proto3" json:"user,omitempty" gorm:"foreignkey:UserID"`
+	UserID                  int64                  `protobuf:"varint,201,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty" sql:"not null" gorm:"index"`
+	Team                    *Team                  `protobuf:"bytes,202,opt,name=team,proto3" json:"team,omitempty" gorm:"foreignkey:TeamID"`
+	TeamID                  int64                  `protobuf:"varint,203,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty" sql:"not null" gorm:"index"`
+	Coupons                 []*Coupon              `protobuf:"bytes,204,rep,name=coupons,proto3" json:"coupons,omitempty" gorm:"PRELOAD:false"`
+	Achievements            []*Achievement         `protobuf:"bytes,205,rep,name=achievements,proto3" json:"achievements,omitempty" gorm:"PRELOAD:false"`
+	SentWhoswhoAttempts     []*WhoswhoAttempt      `protobuf:"bytes,206,rep,name=sent_whoswho_attempts,json=sentWhoswhoAttempts,proto3" json:"sent_whoswho_attempts,omitempty" gorm:"PRELOAD:false"`
+	ReceivedWhoswhoAttempts []*WhoswhoAttempt      `protobuf:"bytes,207,rep,name=received_whoswho_attempts,json=receivedWhoswhoAttempts,proto3" json:"received_whoswho_attempts,omitempty" gorm:"PRELOAD:false"`
+	Items                   []*InventoryItem       `protobuf:"bytes,208,rep,name=items,proto3" json:"items,omitempty" gorm:"PRELOAD:false"`
+	ChallengeValidations    []*ChallengeValidation `protobuf:"bytes,209,rep,name=challenge_validations,json=challengeValidations,proto3" json:"challenge_validations,omitempty" gorm:"PRELOAD:false"`
 }
 
 func (m *TeamMember) Reset()         { *m = TeamMember{} }
 func (m *TeamMember) String() string { return proto.CompactTextString(m) }
 func (*TeamMember) ProtoMessage()    {}
 func (*TeamMember) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debbe06253822cef, []int{6}
+	return fileDescriptor_debbe06253822cef, []int{7}
 }
 func (m *TeamMember) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1084,148 +1190,42 @@ func (m *TeamMember) GetTeamID() int64 {
 	return 0
 }
 
-type TournamentMember struct {
-	ID                      int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt               *time.Time             `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt               *time.Time             `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	Role                    TournamentMember_Role  `protobuf:"varint,100,opt,name=role,proto3,enum=pathwar.db.TournamentMember_Role" json:"role,omitempty"`
-	User                    *User                  `protobuf:"bytes,200,opt,name=user,proto3" json:"user,omitempty" gorm:"foreignkey:UserID"`
-	UserID                  int64                  `protobuf:"varint,201,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty" sql:"not null" gorm:"index"`
-	TournamentTeam          *TournamentTeam        `protobuf:"bytes,202,opt,name=tournament_team,json=tournamentTeam,proto3" json:"tournament_team,omitempty" gorm:"foreignkey:TournamentTeamID"`
-	TournamentTeamID        int64                  `protobuf:"varint,203,opt,name=tournament_team_id,json=tournamentTeamId,proto3" json:"tournament_team_id,omitempty" sql:"not null" gorm:"index"`
-	Coupons                 []*Coupon              `protobuf:"bytes,204,rep,name=coupons,proto3" json:"coupons,omitempty" gorm:"PRELOAD:false"`
-	Achievements            []*Achievement         `protobuf:"bytes,205,rep,name=achievements,proto3" json:"achievements,omitempty" gorm:"PRELOAD:false"`
-	SentWhoswhoAttempts     []*WhoswhoAttempt      `protobuf:"bytes,206,rep,name=sent_whoswho_attempts,json=sentWhoswhoAttempts,proto3" json:"sent_whoswho_attempts,omitempty" gorm:"PRELOAD:false"`
-	ReceivedWhoswhoAttempts []*WhoswhoAttempt      `protobuf:"bytes,207,rep,name=received_whoswho_attempts,json=receivedWhoswhoAttempts,proto3" json:"received_whoswho_attempts,omitempty" gorm:"PRELOAD:false"`
-	Items                   []*InventoryItem       `protobuf:"bytes,208,rep,name=items,proto3" json:"items,omitempty" gorm:"PRELOAD:false"`
-	ChallengeValidations    []*ChallengeValidation `protobuf:"bytes,209,rep,name=challenge_validations,json=challengeValidations,proto3" json:"challenge_validations,omitempty" gorm:"PRELOAD:false"`
-}
-
-func (m *TournamentMember) Reset()         { *m = TournamentMember{} }
-func (m *TournamentMember) String() string { return proto.CompactTextString(m) }
-func (*TournamentMember) ProtoMessage()    {}
-func (*TournamentMember) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debbe06253822cef, []int{7}
-}
-func (m *TournamentMember) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *TournamentMember) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_TournamentMember.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *TournamentMember) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TournamentMember.Merge(m, src)
-}
-func (m *TournamentMember) XXX_Size() int {
-	return m.Size()
-}
-func (m *TournamentMember) XXX_DiscardUnknown() {
-	xxx_messageInfo_TournamentMember.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_TournamentMember proto.InternalMessageInfo
-
-func (m *TournamentMember) GetID() int64 {
-	if m != nil {
-		return m.ID
-	}
-	return 0
-}
-
-func (m *TournamentMember) GetCreatedAt() *time.Time {
-	if m != nil {
-		return m.CreatedAt
-	}
-	return nil
-}
-
-func (m *TournamentMember) GetUpdatedAt() *time.Time {
-	if m != nil {
-		return m.UpdatedAt
-	}
-	return nil
-}
-
-func (m *TournamentMember) GetRole() TournamentMember_Role {
-	if m != nil {
-		return m.Role
-	}
-	return TournamentMember_Undefined
-}
-
-func (m *TournamentMember) GetUser() *User {
-	if m != nil {
-		return m.User
-	}
-	return nil
-}
-
-func (m *TournamentMember) GetUserID() int64 {
-	if m != nil {
-		return m.UserID
-	}
-	return 0
-}
-
-func (m *TournamentMember) GetTournamentTeam() *TournamentTeam {
-	if m != nil {
-		return m.TournamentTeam
-	}
-	return nil
-}
-
-func (m *TournamentMember) GetTournamentTeamID() int64 {
-	if m != nil {
-		return m.TournamentTeamID
-	}
-	return 0
-}
-
-func (m *TournamentMember) GetCoupons() []*Coupon {
+func (m *TeamMember) GetCoupons() []*Coupon {
 	if m != nil {
 		return m.Coupons
 	}
 	return nil
 }
 
-func (m *TournamentMember) GetAchievements() []*Achievement {
+func (m *TeamMember) GetAchievements() []*Achievement {
 	if m != nil {
 		return m.Achievements
 	}
 	return nil
 }
 
-func (m *TournamentMember) GetSentWhoswhoAttempts() []*WhoswhoAttempt {
+func (m *TeamMember) GetSentWhoswhoAttempts() []*WhoswhoAttempt {
 	if m != nil {
 		return m.SentWhoswhoAttempts
 	}
 	return nil
 }
 
-func (m *TournamentMember) GetReceivedWhoswhoAttempts() []*WhoswhoAttempt {
+func (m *TeamMember) GetReceivedWhoswhoAttempts() []*WhoswhoAttempt {
 	if m != nil {
 		return m.ReceivedWhoswhoAttempts
 	}
 	return nil
 }
 
-func (m *TournamentMember) GetItems() []*InventoryItem {
+func (m *TeamMember) GetItems() []*InventoryItem {
 	if m != nil {
 		return m.Items
 	}
 	return nil
 }
 
-func (m *TournamentMember) GetChallengeValidations() []*ChallengeValidation {
+func (m *TeamMember) GetChallengeValidations() []*ChallengeValidation {
 	if m != nil {
 		return m.ChallengeValidations
 	}
@@ -1234,22 +1234,22 @@ func (m *TournamentMember) GetChallengeValidations() []*ChallengeValidation {
 
 // User defines a User Account / Profile
 type User struct {
-	ID                       int64               `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt                *time.Time          `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt                *time.Time          `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	Username                 string              `protobuf:"bytes,100,opt,name=username,proto3" json:"username,omitempty"`
-	Email                    string              `protobuf:"bytes,101,opt,name=email,proto3" json:"email,omitempty"`
-	GravatarURL              string              `protobuf:"bytes,102,opt,name=gravatar_url,json=gravatarUrl,proto3" json:"gravatar_url,omitempty"`
-	WebsiteURL               string              `protobuf:"bytes,103,opt,name=website_url,json=websiteUrl,proto3" json:"website_url,omitempty"`
-	Locale                   string              `protobuf:"bytes,104,opt,name=locale,proto3" json:"locale,omitempty"`
-	OAuthSubject             string              `protobuf:"bytes,105,opt,name=oauth_subject,json=oauthSubject,proto3" json:"oauth_subject,omitempty" gorm:"unique_index"`
-	TournamentMemberships    []*TournamentMember `protobuf:"bytes,200,rep,name=tournament_memberships,json=tournamentMemberships,proto3" json:"tournament_memberships,omitempty" gorm:"PRELOAD:false"`
-	Notifications            []*Notification     `protobuf:"bytes,201,rep,name=notifications,proto3" json:"notifications,omitempty" gorm:"PRELOAD:false"`
-	Memberships              []*TeamMember       `protobuf:"bytes,202,rep,name=memberships,proto3" json:"memberships,omitempty" gorm:"PRELOAD:false"`
-	ActiveTournamentMember   *TournamentMember   `protobuf:"bytes,203,opt,name=active_tournament_member,json=activeTournamentMember,proto3" json:"active_tournament_member,omitempty" gorm:"foreignkey:ActiveTournamentMemberID;PRELOAD:false"`
-	ActiveTournamentMemberID int64               `protobuf:"varint,204,opt,name=active_tournament_member_id,json=activeTournamentMemberId,proto3" json:"active_tournament_member_id,omitempty" sql:"not null" gorm:"index"`
-	ActiveTournament         *TournamentMember   `protobuf:"bytes,205,opt,name=active_tournament,json=activeTournament,proto3" json:"active_tournament,omitempty" gorm:"foreignkey:ActiveTournamentID;PRELOAD:false"`
-	ActiveTournamentID       int64               `protobuf:"varint,206,opt,name=active_tournament_id,json=activeTournamentId,proto3" json:"active_tournament_id,omitempty" sql:"not null" gorm:"index"`
+	ID                 int64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt          *time.Time            `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt          *time.Time            `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	Username           string                `protobuf:"bytes,100,opt,name=username,proto3" json:"username,omitempty"`
+	Email              string                `protobuf:"bytes,101,opt,name=email,proto3" json:"email,omitempty"`
+	GravatarURL        string                `protobuf:"bytes,102,opt,name=gravatar_url,json=gravatarUrl,proto3" json:"gravatar_url,omitempty"`
+	WebsiteURL         string                `protobuf:"bytes,103,opt,name=website_url,json=websiteUrl,proto3" json:"website_url,omitempty"`
+	Locale             string                `protobuf:"bytes,104,opt,name=locale,proto3" json:"locale,omitempty"`
+	OAuthSubject       string                `protobuf:"bytes,105,opt,name=oauth_subject,json=oauthSubject,proto3" json:"oauth_subject,omitempty" gorm:"unique_index"`
+	TeamMemberships    []*TeamMember         `protobuf:"bytes,200,rep,name=team_memberships,json=teamMemberships,proto3" json:"team_memberships,omitempty" gorm:"PRELOAD:false"`
+	Notifications      []*Notification       `protobuf:"bytes,201,rep,name=notifications,proto3" json:"notifications,omitempty" gorm:"PRELOAD:false"`
+	Memberships        []*OrganizationMember `protobuf:"bytes,202,rep,name=memberships,proto3" json:"memberships,omitempty" gorm:"PRELOAD:false"`
+	ActiveTeamMember   *TeamMember           `protobuf:"bytes,203,opt,name=active_team_member,json=activeTeamMember,proto3" json:"active_team_member,omitempty" gorm:"foreignkey:ActiveTeamMemberID;PRELOAD:false"`
+	ActiveTeamMemberID int64                 `protobuf:"varint,204,opt,name=active_team_member_id,json=activeTeamMemberId,proto3" json:"active_team_member_id,omitempty" sql:"not null" gorm:"index"`
+	ActiveSeason       *TeamMember           `protobuf:"bytes,205,opt,name=active_season,json=activeSeason,proto3" json:"active_season,omitempty" gorm:"foreignkey:ActiveSeasonID;PRELOAD:false"`
+	ActiveSeasonID     int64                 `protobuf:"varint,206,opt,name=active_season_id,json=activeSeasonId,proto3" json:"active_season_id,omitempty" sql:"not null" gorm:"index"`
 }
 
 func (m *User) Reset()         { *m = User{} }
@@ -1348,9 +1348,9 @@ func (m *User) GetOAuthSubject() string {
 	return ""
 }
 
-func (m *User) GetTournamentMemberships() []*TournamentMember {
+func (m *User) GetTeamMemberships() []*TeamMember {
 	if m != nil {
-		return m.TournamentMemberships
+		return m.TeamMemberships
 	}
 	return nil
 }
@@ -1362,37 +1362,37 @@ func (m *User) GetNotifications() []*Notification {
 	return nil
 }
 
-func (m *User) GetMemberships() []*TeamMember {
+func (m *User) GetMemberships() []*OrganizationMember {
 	if m != nil {
 		return m.Memberships
 	}
 	return nil
 }
 
-func (m *User) GetActiveTournamentMember() *TournamentMember {
+func (m *User) GetActiveTeamMember() *TeamMember {
 	if m != nil {
-		return m.ActiveTournamentMember
+		return m.ActiveTeamMember
 	}
 	return nil
 }
 
-func (m *User) GetActiveTournamentMemberID() int64 {
+func (m *User) GetActiveTeamMemberID() int64 {
 	if m != nil {
-		return m.ActiveTournamentMemberID
+		return m.ActiveTeamMemberID
 	}
 	return 0
 }
 
-func (m *User) GetActiveTournament() *TournamentMember {
+func (m *User) GetActiveSeason() *TeamMember {
 	if m != nil {
-		return m.ActiveTournament
+		return m.ActiveSeason
 	}
 	return nil
 }
 
-func (m *User) GetActiveTournamentID() int64 {
+func (m *User) GetActiveSeasonID() int64 {
 	if m != nil {
-		return m.ActiveTournamentID
+		return m.ActiveSeasonID
 	}
 	return 0
 }
@@ -1441,23 +1441,328 @@ func (m *UserList) GetItems() []*User {
 	return nil
 }
 
+type Organization struct {
+	ID                      int64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt               *time.Time            `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt               *time.Time            `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	Name                    string                `protobuf:"bytes,100,opt,name=name,proto3" json:"name,omitempty"`
+	GravatarURL             string                `protobuf:"bytes,101,opt,name=gravatar_url,json=gravatarUrl,proto3" json:"gravatar_url,omitempty"`
+	Locale                  string                `protobuf:"bytes,102,opt,name=locale,proto3" json:"locale,omitempty"`
+	Teams                   []*Team               `protobuf:"bytes,200,rep,name=teams,proto3" json:"teams,omitempty" gorm:"PRELOAD:false"`
+	ReceivedWhoswhoAttempts []*WhoswhoAttempt     `protobuf:"bytes,201,rep,name=received_whoswho_attempts,json=receivedWhoswhoAttempts,proto3" json:"received_whoswho_attempts,omitempty" gorm:"PRELOAD:false"`
+	Members                 []*OrganizationMember `protobuf:"bytes,202,rep,name=members,proto3" json:"members,omitempty" gorm:"PRELOAD:false"`
+}
+
+func (m *Organization) Reset()         { *m = Organization{} }
+func (m *Organization) String() string { return proto.CompactTextString(m) }
+func (*Organization) ProtoMessage()    {}
+func (*Organization) Descriptor() ([]byte, []int) {
+	return fileDescriptor_debbe06253822cef, []int{10}
+}
+func (m *Organization) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Organization) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Organization.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Organization) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Organization.Merge(m, src)
+}
+func (m *Organization) XXX_Size() int {
+	return m.Size()
+}
+func (m *Organization) XXX_DiscardUnknown() {
+	xxx_messageInfo_Organization.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Organization proto.InternalMessageInfo
+
+func (m *Organization) GetID() int64 {
+	if m != nil {
+		return m.ID
+	}
+	return 0
+}
+
+func (m *Organization) GetCreatedAt() *time.Time {
+	if m != nil {
+		return m.CreatedAt
+	}
+	return nil
+}
+
+func (m *Organization) GetUpdatedAt() *time.Time {
+	if m != nil {
+		return m.UpdatedAt
+	}
+	return nil
+}
+
+func (m *Organization) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *Organization) GetGravatarURL() string {
+	if m != nil {
+		return m.GravatarURL
+	}
+	return ""
+}
+
+func (m *Organization) GetLocale() string {
+	if m != nil {
+		return m.Locale
+	}
+	return ""
+}
+
+func (m *Organization) GetTeams() []*Team {
+	if m != nil {
+		return m.Teams
+	}
+	return nil
+}
+
+func (m *Organization) GetReceivedWhoswhoAttempts() []*WhoswhoAttempt {
+	if m != nil {
+		return m.ReceivedWhoswhoAttempts
+	}
+	return nil
+}
+
+func (m *Organization) GetMembers() []*OrganizationMember {
+	if m != nil {
+		return m.Members
+	}
+	return nil
+}
+
+type OrganizationList struct {
+	Items []*Organization `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+}
+
+func (m *OrganizationList) Reset()         { *m = OrganizationList{} }
+func (m *OrganizationList) String() string { return proto.CompactTextString(m) }
+func (*OrganizationList) ProtoMessage()    {}
+func (*OrganizationList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_debbe06253822cef, []int{11}
+}
+func (m *OrganizationList) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *OrganizationList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_OrganizationList.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *OrganizationList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OrganizationList.Merge(m, src)
+}
+func (m *OrganizationList) XXX_Size() int {
+	return m.Size()
+}
+func (m *OrganizationList) XXX_DiscardUnknown() {
+	xxx_messageInfo_OrganizationList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_OrganizationList proto.InternalMessageInfo
+
+func (m *OrganizationList) GetItems() []*Organization {
+	if m != nil {
+		return m.Items
+	}
+	return nil
+}
+
+type Season struct {
+	ID            int64             `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt     *time.Time        `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt     *time.Time        `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	Name          string            `protobuf:"bytes,100,opt,name=name,proto3" json:"name,omitempty"`
+	Status        Season_Status     `protobuf:"varint,101,opt,name=status,proto3,enum=pathwar.db.Season_Status" json:"status,omitempty"`
+	Visibility    Season_Visibility `protobuf:"varint,102,opt,name=visibility,proto3,enum=pathwar.db.Season_Visibility" json:"visibility,omitempty"`
+	IsDefault     bool              `protobuf:"varint,103,opt,name=is_default,json=isDefault,proto3" json:"is_default,omitempty"`
+	Organizations []*Team           `protobuf:"bytes,200,rep,name=organizations,proto3" json:"organizations,omitempty" gorm:"PRELOAD:false"`
+	Coupons       []*Coupon         `protobuf:"bytes,201,rep,name=coupons,proto3" json:"coupons,omitempty" gorm:"PRELOAD:false"`
+}
+
+func (m *Season) Reset()         { *m = Season{} }
+func (m *Season) String() string { return proto.CompactTextString(m) }
+func (*Season) ProtoMessage()    {}
+func (*Season) Descriptor() ([]byte, []int) {
+	return fileDescriptor_debbe06253822cef, []int{12}
+}
+func (m *Season) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Season) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Season.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Season) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Season.Merge(m, src)
+}
+func (m *Season) XXX_Size() int {
+	return m.Size()
+}
+func (m *Season) XXX_DiscardUnknown() {
+	xxx_messageInfo_Season.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Season proto.InternalMessageInfo
+
+func (m *Season) GetID() int64 {
+	if m != nil {
+		return m.ID
+	}
+	return 0
+}
+
+func (m *Season) GetCreatedAt() *time.Time {
+	if m != nil {
+		return m.CreatedAt
+	}
+	return nil
+}
+
+func (m *Season) GetUpdatedAt() *time.Time {
+	if m != nil {
+		return m.UpdatedAt
+	}
+	return nil
+}
+
+func (m *Season) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *Season) GetStatus() Season_Status {
+	if m != nil {
+		return m.Status
+	}
+	return Season_UnknownStatus
+}
+
+func (m *Season) GetVisibility() Season_Visibility {
+	if m != nil {
+		return m.Visibility
+	}
+	return Season_UnknownVisibility
+}
+
+func (m *Season) GetIsDefault() bool {
+	if m != nil {
+		return m.IsDefault
+	}
+	return false
+}
+
+func (m *Season) GetOrganizations() []*Team {
+	if m != nil {
+		return m.Organizations
+	}
+	return nil
+}
+
+func (m *Season) GetCoupons() []*Coupon {
+	if m != nil {
+		return m.Coupons
+	}
+	return nil
+}
+
+type SeasonList struct {
+	Items []*Season `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+}
+
+func (m *SeasonList) Reset()         { *m = SeasonList{} }
+func (m *SeasonList) String() string { return proto.CompactTextString(m) }
+func (*SeasonList) ProtoMessage()    {}
+func (*SeasonList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_debbe06253822cef, []int{13}
+}
+func (m *SeasonList) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *SeasonList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_SeasonList.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *SeasonList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SeasonList.Merge(m, src)
+}
+func (m *SeasonList) XXX_Size() int {
+	return m.Size()
+}
+func (m *SeasonList) XXX_DiscardUnknown() {
+	xxx_messageInfo_SeasonList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SeasonList proto.InternalMessageInfo
+
+func (m *SeasonList) GetItems() []*Season {
+	if m != nil {
+		return m.Items
+	}
+	return nil
+}
+
 type Team struct {
-	ID                      int64             `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt               *time.Time        `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt               *time.Time        `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	Name                    string            `protobuf:"bytes,100,opt,name=name,proto3" json:"name,omitempty"`
-	GravatarURL             string            `protobuf:"bytes,101,opt,name=gravatar_url,json=gravatarUrl,proto3" json:"gravatar_url,omitempty"`
-	Locale                  string            `protobuf:"bytes,102,opt,name=locale,proto3" json:"locale,omitempty"`
-	TournamentTeams         []*TournamentTeam `protobuf:"bytes,200,rep,name=tournament_teams,json=tournamentTeams,proto3" json:"tournament_teams,omitempty" gorm:"PRELOAD:false"`
-	ReceivedWhoswhoAttempts []*WhoswhoAttempt `protobuf:"bytes,201,rep,name=received_whoswho_attempts,json=receivedWhoswhoAttempts,proto3" json:"received_whoswho_attempts,omitempty" gorm:"PRELOAD:false"`
-	Members                 []*TeamMember     `protobuf:"bytes,202,rep,name=members,proto3" json:"members,omitempty" gorm:"PRELOAD:false"`
+	ID                     int64                    `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
+	CreatedAt              *time.Time               `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
+	UpdatedAt              *time.Time               `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
+	IsDefault              bool                     `protobuf:"varint,100,opt,name=is_default,json=isDefault,proto3" json:"is_default,omitempty"`
+	Season                 *Season                  `protobuf:"bytes,200,opt,name=season,proto3" json:"season,omitempty" gorm:"foreignkey:SeasonID"`
+	SeasonID               int64                    `protobuf:"varint,201,opt,name=season_id,json=seasonId,proto3" json:"season_id,omitempty" sql:"not null" gorm:"index"`
+	Organization           *Organization            `protobuf:"bytes,202,opt,name=organization,proto3" json:"organization,omitempty" gorm:"foreignkey:OrganizationID"`
+	OrganizationID         int64                    `protobuf:"varint,203,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty" sql:"not null" gorm:"index"`
+	ChallengeSubscriptions []*ChallengeSubscription `protobuf:"bytes,205,rep,name=challenge_subscriptions,json=challengeSubscriptions,proto3" json:"challenge_subscriptions,omitempty" gorm:"PRELOAD:false"`
+	Members                []*TeamMember            `protobuf:"bytes,206,rep,name=members,proto3" json:"members,omitempty" gorm:"PRELOAD:false"`
 }
 
 func (m *Team) Reset()         { *m = Team{} }
 func (m *Team) String() string { return proto.CompactTextString(m) }
 func (*Team) ProtoMessage()    {}
 func (*Team) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debbe06253822cef, []int{10}
+	return fileDescriptor_debbe06253822cef, []int{14}
 }
 func (m *Team) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1507,37 +1812,44 @@ func (m *Team) GetUpdatedAt() *time.Time {
 	return nil
 }
 
-func (m *Team) GetName() string {
+func (m *Team) GetIsDefault() bool {
 	if m != nil {
-		return m.Name
+		return m.IsDefault
 	}
-	return ""
+	return false
 }
 
-func (m *Team) GetGravatarURL() string {
+func (m *Team) GetSeason() *Season {
 	if m != nil {
-		return m.GravatarURL
-	}
-	return ""
-}
-
-func (m *Team) GetLocale() string {
-	if m != nil {
-		return m.Locale
-	}
-	return ""
-}
-
-func (m *Team) GetTournamentTeams() []*TournamentTeam {
-	if m != nil {
-		return m.TournamentTeams
+		return m.Season
 	}
 	return nil
 }
 
-func (m *Team) GetReceivedWhoswhoAttempts() []*WhoswhoAttempt {
+func (m *Team) GetSeasonID() int64 {
 	if m != nil {
-		return m.ReceivedWhoswhoAttempts
+		return m.SeasonID
+	}
+	return 0
+}
+
+func (m *Team) GetOrganization() *Organization {
+	if m != nil {
+		return m.Organization
+	}
+	return nil
+}
+
+func (m *Team) GetOrganizationID() int64 {
+	if m != nil {
+		return m.OrganizationID
+	}
+	return 0
+}
+
+func (m *Team) GetChallengeSubscriptions() []*ChallengeSubscription {
+	if m != nil {
+		return m.ChallengeSubscriptions
 	}
 	return nil
 }
@@ -1557,7 +1869,7 @@ func (m *TeamList) Reset()         { *m = TeamList{} }
 func (m *TeamList) String() string { return proto.CompactTextString(m) }
 func (*TeamList) ProtoMessage()    {}
 func (*TeamList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debbe06253822cef, []int{11}
+	return fileDescriptor_debbe06253822cef, []int{15}
 }
 func (m *TeamList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1593,318 +1905,6 @@ func (m *TeamList) GetItems() []*Team {
 	return nil
 }
 
-type Tournament struct {
-	ID         int64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt  *time.Time            `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt  *time.Time            `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	Name       string                `protobuf:"bytes,100,opt,name=name,proto3" json:"name,omitempty"`
-	Status     Tournament_Status     `protobuf:"varint,101,opt,name=status,proto3,enum=pathwar.db.Tournament_Status" json:"status,omitempty"`
-	Visibility Tournament_Visibility `protobuf:"varint,102,opt,name=visibility,proto3,enum=pathwar.db.Tournament_Visibility" json:"visibility,omitempty"`
-	IsDefault  bool                  `protobuf:"varint,103,opt,name=is_default,json=isDefault,proto3" json:"is_default,omitempty"`
-	Teams      []*TournamentTeam     `protobuf:"bytes,200,rep,name=teams,proto3" json:"teams,omitempty" gorm:"PRELOAD:false"`
-	Coupons    []*Coupon             `protobuf:"bytes,201,rep,name=coupons,proto3" json:"coupons,omitempty" gorm:"PRELOAD:false"`
-}
-
-func (m *Tournament) Reset()         { *m = Tournament{} }
-func (m *Tournament) String() string { return proto.CompactTextString(m) }
-func (*Tournament) ProtoMessage()    {}
-func (*Tournament) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debbe06253822cef, []int{12}
-}
-func (m *Tournament) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *Tournament) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_Tournament.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *Tournament) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Tournament.Merge(m, src)
-}
-func (m *Tournament) XXX_Size() int {
-	return m.Size()
-}
-func (m *Tournament) XXX_DiscardUnknown() {
-	xxx_messageInfo_Tournament.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Tournament proto.InternalMessageInfo
-
-func (m *Tournament) GetID() int64 {
-	if m != nil {
-		return m.ID
-	}
-	return 0
-}
-
-func (m *Tournament) GetCreatedAt() *time.Time {
-	if m != nil {
-		return m.CreatedAt
-	}
-	return nil
-}
-
-func (m *Tournament) GetUpdatedAt() *time.Time {
-	if m != nil {
-		return m.UpdatedAt
-	}
-	return nil
-}
-
-func (m *Tournament) GetName() string {
-	if m != nil {
-		return m.Name
-	}
-	return ""
-}
-
-func (m *Tournament) GetStatus() Tournament_Status {
-	if m != nil {
-		return m.Status
-	}
-	return Tournament_UnknownStatus
-}
-
-func (m *Tournament) GetVisibility() Tournament_Visibility {
-	if m != nil {
-		return m.Visibility
-	}
-	return Tournament_UnknownVisibility
-}
-
-func (m *Tournament) GetIsDefault() bool {
-	if m != nil {
-		return m.IsDefault
-	}
-	return false
-}
-
-func (m *Tournament) GetTeams() []*TournamentTeam {
-	if m != nil {
-		return m.Teams
-	}
-	return nil
-}
-
-func (m *Tournament) GetCoupons() []*Coupon {
-	if m != nil {
-		return m.Coupons
-	}
-	return nil
-}
-
-type TournamentList struct {
-	Items []*Tournament `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
-}
-
-func (m *TournamentList) Reset()         { *m = TournamentList{} }
-func (m *TournamentList) String() string { return proto.CompactTextString(m) }
-func (*TournamentList) ProtoMessage()    {}
-func (*TournamentList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debbe06253822cef, []int{13}
-}
-func (m *TournamentList) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *TournamentList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_TournamentList.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *TournamentList) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TournamentList.Merge(m, src)
-}
-func (m *TournamentList) XXX_Size() int {
-	return m.Size()
-}
-func (m *TournamentList) XXX_DiscardUnknown() {
-	xxx_messageInfo_TournamentList.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_TournamentList proto.InternalMessageInfo
-
-func (m *TournamentList) GetItems() []*Tournament {
-	if m != nil {
-		return m.Items
-	}
-	return nil
-}
-
-type TournamentTeam struct {
-	ID                     int64                    `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt              *time.Time               `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
-	UpdatedAt              *time.Time               `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	IsDefault              bool                     `protobuf:"varint,100,opt,name=is_default,json=isDefault,proto3" json:"is_default,omitempty"`
-	Tournament             *Tournament              `protobuf:"bytes,200,opt,name=tournament,proto3" json:"tournament,omitempty" gorm:"foreignkey:TournamentID"`
-	TournamentID           int64                    `protobuf:"varint,201,opt,name=tournament_id,json=tournamentId,proto3" json:"tournament_id,omitempty" sql:"not null" gorm:"index"`
-	Team                   *Team                    `protobuf:"bytes,202,opt,name=team,proto3" json:"team,omitempty" gorm:"foreignkey:TeamID"`
-	TeamID                 int64                    `protobuf:"varint,203,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty" sql:"not null" gorm:"index"`
-	ChallengeSubscriptions []*ChallengeSubscription `protobuf:"bytes,205,rep,name=challenge_subscriptions,json=challengeSubscriptions,proto3" json:"challenge_subscriptions,omitempty" gorm:"PRELOAD:false"`
-	Members                []*TournamentMember      `protobuf:"bytes,206,rep,name=members,proto3" json:"members,omitempty" gorm:"PRELOAD:false"`
-}
-
-func (m *TournamentTeam) Reset()         { *m = TournamentTeam{} }
-func (m *TournamentTeam) String() string { return proto.CompactTextString(m) }
-func (*TournamentTeam) ProtoMessage()    {}
-func (*TournamentTeam) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debbe06253822cef, []int{14}
-}
-func (m *TournamentTeam) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *TournamentTeam) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_TournamentTeam.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *TournamentTeam) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TournamentTeam.Merge(m, src)
-}
-func (m *TournamentTeam) XXX_Size() int {
-	return m.Size()
-}
-func (m *TournamentTeam) XXX_DiscardUnknown() {
-	xxx_messageInfo_TournamentTeam.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_TournamentTeam proto.InternalMessageInfo
-
-func (m *TournamentTeam) GetID() int64 {
-	if m != nil {
-		return m.ID
-	}
-	return 0
-}
-
-func (m *TournamentTeam) GetCreatedAt() *time.Time {
-	if m != nil {
-		return m.CreatedAt
-	}
-	return nil
-}
-
-func (m *TournamentTeam) GetUpdatedAt() *time.Time {
-	if m != nil {
-		return m.UpdatedAt
-	}
-	return nil
-}
-
-func (m *TournamentTeam) GetIsDefault() bool {
-	if m != nil {
-		return m.IsDefault
-	}
-	return false
-}
-
-func (m *TournamentTeam) GetTournament() *Tournament {
-	if m != nil {
-		return m.Tournament
-	}
-	return nil
-}
-
-func (m *TournamentTeam) GetTournamentID() int64 {
-	if m != nil {
-		return m.TournamentID
-	}
-	return 0
-}
-
-func (m *TournamentTeam) GetTeam() *Team {
-	if m != nil {
-		return m.Team
-	}
-	return nil
-}
-
-func (m *TournamentTeam) GetTeamID() int64 {
-	if m != nil {
-		return m.TeamID
-	}
-	return 0
-}
-
-func (m *TournamentTeam) GetChallengeSubscriptions() []*ChallengeSubscription {
-	if m != nil {
-		return m.ChallengeSubscriptions
-	}
-	return nil
-}
-
-func (m *TournamentTeam) GetMembers() []*TournamentMember {
-	if m != nil {
-		return m.Members
-	}
-	return nil
-}
-
-type TournamentTeamList struct {
-	Items []*TournamentTeam `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
-}
-
-func (m *TournamentTeamList) Reset()         { *m = TournamentTeamList{} }
-func (m *TournamentTeamList) String() string { return proto.CompactTextString(m) }
-func (*TournamentTeamList) ProtoMessage()    {}
-func (*TournamentTeamList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debbe06253822cef, []int{15}
-}
-func (m *TournamentTeamList) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *TournamentTeamList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_TournamentTeamList.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *TournamentTeamList) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TournamentTeamList.Merge(m, src)
-}
-func (m *TournamentTeamList) XXX_Size() int {
-	return m.Size()
-}
-func (m *TournamentTeamList) XXX_DiscardUnknown() {
-	xxx_messageInfo_TournamentTeamList.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_TournamentTeamList proto.InternalMessageInfo
-
-func (m *TournamentTeamList) GetItems() []*TournamentTeam {
-	if m != nil {
-		return m.Items
-	}
-	return nil
-}
-
 type WhoswhoAttempt struct {
 	ID        int64      `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
 	CreatedAt *time.Time `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
@@ -1916,12 +1916,12 @@ type WhoswhoAttempt struct {
 	//
 	// associations
 	//
-	Author         *TournamentMember `protobuf:"bytes,200,opt,name=author,proto3" json:"author,omitempty" sql:"not null" gorm:"foreignkey:AuthorID"`
-	AuthorID       int64             `protobuf:"varint,201,opt,name=author_id,json=authorId,proto3" json:"author_id,omitempty" sql:"not null" gorm:"index"`
-	TargetMember   *TournamentMember `protobuf:"bytes,202,opt,name=target_member,json=targetMember,proto3" json:"target_member,omitempty" sql:"not null" gorm:"foreignkey:TargetMemberID"`
-	TargetMemberID int64             `protobuf:"varint,203,opt,name=target_member_id,json=targetMemberId,proto3" json:"target_member_id,omitempty" sql:"not null" gorm:"index"`
-	TargetTeam     *TournamentTeam   `protobuf:"bytes,204,opt,name=target_team,json=targetTeam,proto3" json:"target_team,omitempty" sql:"not null" gorm:"foreignkey:TargetTeamID"`
-	TargetTeamID   int64             `protobuf:"varint,205,opt,name=target_team_id,json=targetTeamId,proto3" json:"target_team_id,omitempty" sql:"not null" gorm:"index"`
+	Author               *TeamMember `protobuf:"bytes,200,opt,name=author,proto3" json:"author,omitempty" sql:"not null" gorm:"foreignkey:AuthorID"`
+	AuthorID             int64       `protobuf:"varint,201,opt,name=author_id,json=authorId,proto3" json:"author_id,omitempty" sql:"not null" gorm:"index"`
+	TargetMember         *TeamMember `protobuf:"bytes,202,opt,name=target_member,json=targetMember,proto3" json:"target_member,omitempty" sql:"not null" gorm:"foreignkey:TargetMemberID"`
+	TargetMemberID       int64       `protobuf:"varint,203,opt,name=target_member_id,json=targetMemberId,proto3" json:"target_member_id,omitempty" sql:"not null" gorm:"index"`
+	TargetOrganization   *Team       `protobuf:"bytes,204,opt,name=target_organization,json=targetOrganization,proto3" json:"target_organization,omitempty" sql:"not null" gorm:"foreignkey:TargetOrganizationID"`
+	TargetOrganizationID int64       `protobuf:"varint,205,opt,name=target_organization_id,json=targetOrganizationId,proto3" json:"target_organization_id,omitempty" sql:"not null" gorm:"index"`
 }
 
 func (m *WhoswhoAttempt) Reset()         { *m = WhoswhoAttempt{} }
@@ -1985,7 +1985,7 @@ func (m *WhoswhoAttempt) GetSuccess() bool {
 	return false
 }
 
-func (m *WhoswhoAttempt) GetAuthor() *TournamentMember {
+func (m *WhoswhoAttempt) GetAuthor() *TeamMember {
 	if m != nil {
 		return m.Author
 	}
@@ -1999,7 +1999,7 @@ func (m *WhoswhoAttempt) GetAuthorID() int64 {
 	return 0
 }
 
-func (m *WhoswhoAttempt) GetTargetMember() *TournamentMember {
+func (m *WhoswhoAttempt) GetTargetMember() *TeamMember {
 	if m != nil {
 		return m.TargetMember
 	}
@@ -2013,16 +2013,16 @@ func (m *WhoswhoAttempt) GetTargetMemberID() int64 {
 	return 0
 }
 
-func (m *WhoswhoAttempt) GetTargetTeam() *TournamentTeam {
+func (m *WhoswhoAttempt) GetTargetOrganization() *Team {
 	if m != nil {
-		return m.TargetTeam
+		return m.TargetOrganization
 	}
 	return nil
 }
 
-func (m *WhoswhoAttempt) GetTargetTeamID() int64 {
+func (m *WhoswhoAttempt) GetTargetOrganizationID() int64 {
 	if m != nil {
-		return m.TargetTeamID
+		return m.TargetOrganizationID
 	}
 	return 0
 }
@@ -2036,8 +2036,8 @@ type ChallengeValidation struct {
 	CorrectorComment        string                     `protobuf:"bytes,102,opt,name=corrector_comment,json=correctorComment,proto3" json:"corrector_comment,omitempty"`
 	ChallengeSubscription   *ChallengeSubscription     `protobuf:"bytes,200,opt,name=challenge_subscription,json=challengeSubscription,proto3" json:"challenge_subscription,omitempty" gorm:"foreignkey:ChallengeSubscriptionID"`
 	ChallengeSubscriptionID int64                      `protobuf:"varint,201,opt,name=challenge_subscription_id,json=challengeSubscriptionId,proto3" json:"challenge_subscription_id,omitempty" sql:"not null" gorm:"index"`
-	TournamentMember        *TournamentMember          `protobuf:"bytes,202,opt,name=tournament_member,json=tournamentMember,proto3" json:"tournament_member,omitempty" gorm:"foreignkey:TournamentMemberID"`
-	TournamentMemberID      int64                      `protobuf:"varint,203,opt,name=tournament_member_id,json=tournamentMemberId,proto3" json:"tournament_member_id,omitempty" sql:"not null" gorm:"index"`
+	TeamMember              *TeamMember                `protobuf:"bytes,202,opt,name=team_member,json=teamMember,proto3" json:"team_member,omitempty" gorm:"foreignkey:TeamMemberID"`
+	TeamMemberID            int64                      `protobuf:"varint,203,opt,name=team_member_id,json=teamMemberId,proto3" json:"team_member_id,omitempty" sql:"not null" gorm:"index"`
 }
 
 func (m *ChallengeValidation) Reset()         { *m = ChallengeValidation{} }
@@ -2129,16 +2129,16 @@ func (m *ChallengeValidation) GetChallengeSubscriptionID() int64 {
 	return 0
 }
 
-func (m *ChallengeValidation) GetTournamentMember() *TournamentMember {
+func (m *ChallengeValidation) GetTeamMember() *TeamMember {
 	if m != nil {
-		return m.TournamentMember
+		return m.TeamMember
 	}
 	return nil
 }
 
-func (m *ChallengeValidation) GetTournamentMemberID() int64 {
+func (m *ChallengeValidation) GetTeamMemberID() int64 {
 	if m != nil {
-		return m.TournamentMemberID
+		return m.TeamMemberID
 	}
 	return 0
 }
@@ -2147,8 +2147,8 @@ type ChallengeSubscription struct {
 	ID                int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" gorm:"primary_key"`
 	CreatedAt         *time.Time             `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
 	UpdatedAt         *time.Time             `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
-	TournamentTeam    *TournamentTeam        `protobuf:"bytes,200,opt,name=tournament_team,json=tournamentTeam,proto3" json:"tournament_team,omitempty" gorm:"foreignkey:TournamentTeamID"`
-	TournamentTeamID  int64                  `protobuf:"varint,201,opt,name=tournament_team_id,json=tournamentTeamId,proto3" json:"tournament_team_id,omitempty" sql:"not null" gorm:"index"`
+	Team              *Team                  `protobuf:"bytes,200,opt,name=team,proto3" json:"team,omitempty" gorm:"foreignkey:TeamID"`
+	TeamID            int64                  `protobuf:"varint,201,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty" sql:"not null" gorm:"index"`
 	ChallengeFlavor   *ChallengeFlavor       `protobuf:"bytes,202,opt,name=challenge_flavor,json=challengeFlavor,proto3" json:"challenge_flavor,omitempty" gorm:"foreignkey:ChallengeFlavorID"`
 	ChallengeFlavorID int64                  `protobuf:"varint,203,opt,name=challenge_flavor_id,json=challengeFlavorId,proto3" json:"challenge_flavor_id,omitempty" sql:"not null" gorm:"index"`
 	Validations       []*ChallengeValidation `protobuf:"bytes,204,rep,name=validations,proto3" json:"validations,omitempty" gorm:"PRELOAD:false"`
@@ -2208,16 +2208,16 @@ func (m *ChallengeSubscription) GetUpdatedAt() *time.Time {
 	return nil
 }
 
-func (m *ChallengeSubscription) GetTournamentTeam() *TournamentTeam {
+func (m *ChallengeSubscription) GetTeam() *Team {
 	if m != nil {
-		return m.TournamentTeam
+		return m.Team
 	}
 	return nil
 }
 
-func (m *ChallengeSubscription) GetTournamentTeamID() int64 {
+func (m *ChallengeSubscription) GetTeamID() int64 {
 	if m != nil {
-		return m.TournamentTeamID
+		return m.TeamID
 	}
 	return 0
 }
@@ -2248,7 +2248,7 @@ type InventoryItem struct {
 	CreatedAt *time.Time         `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3,stdtime" json:"created_at,omitempty"`
 	UpdatedAt *time.Time         `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3,stdtime" json:"updated_at,omitempty"`
 	Item      InventoryItem_Item `protobuf:"varint,100,opt,name=item,proto3,enum=pathwar.db.InventoryItem_Item" json:"item,omitempty"`
-	Owner     *TournamentMember  `protobuf:"bytes,200,opt,name=owner,proto3" json:"owner,omitempty" gorm:"foreignkey:OwnerID"`
+	Owner     *TeamMember        `protobuf:"bytes,200,opt,name=owner,proto3" json:"owner,omitempty" gorm:"foreignkey:OwnerID"`
 	OwnerID   int64              `protobuf:"varint,201,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty" sql:"not null" gorm:"index"`
 }
 
@@ -2313,7 +2313,7 @@ func (m *InventoryItem) GetItem() InventoryItem_Item {
 	return InventoryItem_Unknown
 }
 
-func (m *InventoryItem) GetOwner() *TournamentMember {
+func (m *InventoryItem) GetOwner() *TeamMember {
 	if m != nil {
 		return m.Owner
 	}
@@ -2448,9 +2448,9 @@ type Coupon struct {
 	//
 	// associations
 	//
-	Tournament   *Tournament         `protobuf:"bytes,200,opt,name=tournament,proto3" json:"tournament,omitempty" gorm:"foreignkey:TournamentID"`
-	TournamentID int64               `protobuf:"varint,201,opt,name=tournament_id,json=tournamentId,proto3" json:"tournament_id,omitempty" gorm:"index"`
-	Validations  []*CouponValidation `protobuf:"bytes,202,rep,name=validations,proto3" json:"validations,omitempty" gorm:"PRELOAD:false"`
+	Season      *Season             `protobuf:"bytes,200,opt,name=season,proto3" json:"season,omitempty" gorm:"foreignkey:SeasonID"`
+	SeasonID    int64               `protobuf:"varint,201,opt,name=season_id,json=seasonId,proto3" json:"season_id,omitempty" gorm:"index"`
+	Validations []*CouponValidation `protobuf:"bytes,202,rep,name=validations,proto3" json:"validations,omitempty" gorm:"PRELOAD:false"`
 }
 
 func (m *Coupon) Reset()         { *m = Coupon{} }
@@ -2528,16 +2528,16 @@ func (m *Coupon) GetMaxValidationCount() int32 {
 	return 0
 }
 
-func (m *Coupon) GetTournament() *Tournament {
+func (m *Coupon) GetSeason() *Season {
 	if m != nil {
-		return m.Tournament
+		return m.Season
 	}
 	return nil
 }
 
-func (m *Coupon) GetTournamentID() int64 {
+func (m *Coupon) GetSeasonID() int64 {
 	if m != nil {
-		return m.TournamentID
+		return m.SeasonID
 	}
 	return 0
 }
@@ -2560,10 +2560,10 @@ type CouponValidation struct {
 	//
 	// associations
 	//
-	Author   *TournamentMember `protobuf:"bytes,200,opt,name=author,proto3" json:"author,omitempty" gorm:"foreignkey:AuthorID"`
-	AuthorID int64             `protobuf:"varint,201,opt,name=author_id,json=authorId,proto3" json:"author_id,omitempty" sql:"not null" gorm:"index"`
-	Coupon   *Coupon           `protobuf:"bytes,202,opt,name=coupon,proto3" json:"coupon,omitempty" gorm:"foreignkey:CouponID"`
-	CouponID int64             `protobuf:"varint,203,opt,name=coupon_id,json=couponId,proto3" json:"coupon_id,omitempty" sql:"not null" gorm:"index"`
+	Author   *TeamMember `protobuf:"bytes,200,opt,name=author,proto3" json:"author,omitempty" gorm:"foreignkey:AuthorID"`
+	AuthorID int64       `protobuf:"varint,201,opt,name=author_id,json=authorId,proto3" json:"author_id,omitempty" sql:"not null" gorm:"index"`
+	Coupon   *Coupon     `protobuf:"bytes,202,opt,name=coupon,proto3" json:"coupon,omitempty" gorm:"foreignkey:CouponID"`
+	CouponID int64       `protobuf:"varint,203,opt,name=coupon_id,json=couponId,proto3" json:"coupon_id,omitempty" sql:"not null" gorm:"index"`
 }
 
 func (m *CouponValidation) Reset()         { *m = CouponValidation{} }
@@ -2627,7 +2627,7 @@ func (m *CouponValidation) GetComment() string {
 	return ""
 }
 
-func (m *CouponValidation) GetAuthor() *TournamentMember {
+func (m *CouponValidation) GetAuthor() *TeamMember {
 	if m != nil {
 		return m.Author
 	}
@@ -2663,7 +2663,7 @@ type Achievement struct {
 	IsGlobal              bool                 `protobuf:"varint,101,opt,name=is_global,json=isGlobal,proto3" json:"is_global,omitempty"`
 	Comment               string               `protobuf:"bytes,102,opt,name=comment,proto3" json:"comment,omitempty"`
 	Argument              string               `protobuf:"bytes,103,opt,name=argument,proto3" json:"argument,omitempty"`
-	Author                *TournamentMember    `protobuf:"bytes,200,opt,name=author,proto3" json:"author,omitempty" gorm:"foreignkey:AuthorID"`
+	Author                *TeamMember          `protobuf:"bytes,200,opt,name=author,proto3" json:"author,omitempty" gorm:"foreignkey:AuthorID"`
 	AuthorID              int64                `protobuf:"varint,201,opt,name=author_id,json=authorId,proto3" json:"author_id,omitempty" sql:"not null" gorm:"index"`
 	ChallengeValidation   *ChallengeValidation `protobuf:"bytes,202,opt,name=challenge_validation,json=challengeValidation,proto3" json:"challenge_validation,omitempty" gorm:"foreignkey:ChallengeValidationID"`
 	ChallengeValidationID int64                `protobuf:"varint,203,opt,name=challenge_validation_id,json=challengeValidationId,proto3" json:"challenge_validation_id,omitempty" sql:"not null" gorm:"index"`
@@ -2751,7 +2751,7 @@ func (m *Achievement) GetArgument() string {
 	return ""
 }
 
-func (m *Achievement) GetAuthor() *TournamentMember {
+func (m *Achievement) GetAuthor() *TeamMember {
 	if m != nil {
 		return m.Author
 	}
@@ -2781,24 +2781,24 @@ func (m *Achievement) GetChallengeValidationID() int64 {
 
 type Dump struct {
 	Achievements           []*Achievement           `protobuf:"bytes,1,rep,name=achievements,proto3" json:"achievements,omitempty"`
-	Coupons                []*Coupon                `protobuf:"bytes,3,rep,name=coupons,proto3" json:"coupons,omitempty"`
-	CouponValidations      []*CouponValidation      `protobuf:"bytes,4,rep,name=coupon_validations,json=couponValidations,proto3" json:"coupon_validations,omitempty"`
-	Hypervisors            []*Hypervisor            `protobuf:"bytes,5,rep,name=hypervisors,proto3" json:"hypervisors,omitempty"`
-	InventoryItems         []*InventoryItem         `protobuf:"bytes,6,rep,name=inventory_items,json=inventoryItems,proto3" json:"inventory_items,omitempty"`
-	Challenges             []*Challenge             `protobuf:"bytes,7,rep,name=challenges,proto3" json:"challenges,omitempty"`
-	ChallengeFlavors       []*ChallengeFlavor       `protobuf:"bytes,8,rep,name=challenge_flavors,json=challengeFlavors,proto3" json:"challenge_flavors,omitempty"`
-	ChallengeInstances     []*ChallengeInstance     `protobuf:"bytes,9,rep,name=challenge_instances,json=challengeInstances,proto3" json:"challenge_instances,omitempty"`
-	ChallengeSubscriptions []*ChallengeSubscription `protobuf:"bytes,10,rep,name=challenge_subscriptions,json=challengeSubscriptions,proto3" json:"challenge_subscriptions,omitempty"`
-	ChallengeValidations   []*ChallengeValidation   `protobuf:"bytes,11,rep,name=challenge_validations,json=challengeValidations,proto3" json:"challenge_validations,omitempty"`
-	ChallengeVersions      []*ChallengeVersion      `protobuf:"bytes,12,rep,name=challenge_versions,json=challengeVersions,proto3" json:"challenge_versions,omitempty"`
-	Notifications          []*Notification          `protobuf:"bytes,13,rep,name=notifications,proto3" json:"notifications,omitempty"`
-	Teams                  []*Team                  `protobuf:"bytes,14,rep,name=teams,proto3" json:"teams,omitempty"`
-	TeamMembers            []*TeamMember            `protobuf:"bytes,15,rep,name=team_members,json=teamMembers,proto3" json:"team_members,omitempty"`
-	Tournaments            []*Tournament            `protobuf:"bytes,16,rep,name=tournaments,proto3" json:"tournaments,omitempty"`
-	TournamentMembers      []*TournamentMember      `protobuf:"bytes,17,rep,name=tournament_members,json=tournamentMembers,proto3" json:"tournament_members,omitempty"`
-	TournamentTeams        []*TournamentTeam        `protobuf:"bytes,18,rep,name=tournament_teams,json=tournamentTeams,proto3" json:"tournament_teams,omitempty"`
-	Users                  []*User                  `protobuf:"bytes,19,rep,name=users,proto3" json:"users,omitempty"`
-	WhoswhoAttempts        []*WhoswhoAttempt        `protobuf:"bytes,20,rep,name=whoswho_attempts,json=whoswhoAttempts,proto3" json:"whoswho_attempts,omitempty"`
+	Challenges             []*Challenge             `protobuf:"bytes,2,rep,name=challenges,proto3" json:"challenges,omitempty"`
+	ChallengeFlavors       []*ChallengeFlavor       `protobuf:"bytes,3,rep,name=challenge_flavors,json=challengeFlavors,proto3" json:"challenge_flavors,omitempty"`
+	ChallengeInstances     []*ChallengeInstance     `protobuf:"bytes,4,rep,name=challenge_instances,json=challengeInstances,proto3" json:"challenge_instances,omitempty"`
+	ChallengeSubscriptions []*ChallengeSubscription `protobuf:"bytes,5,rep,name=challenge_subscriptions,json=challengeSubscriptions,proto3" json:"challenge_subscriptions,omitempty"`
+	ChallengeValidations   []*ChallengeValidation   `protobuf:"bytes,6,rep,name=challenge_validations,json=challengeValidations,proto3" json:"challenge_validations,omitempty"`
+	ChallengeVersions      []*ChallengeVersion      `protobuf:"bytes,7,rep,name=challenge_versions,json=challengeVersions,proto3" json:"challenge_versions,omitempty"`
+	Coupons                []*Coupon                `protobuf:"bytes,8,rep,name=coupons,proto3" json:"coupons,omitempty"`
+	CouponValidations      []*CouponValidation      `protobuf:"bytes,9,rep,name=coupon_validations,json=couponValidations,proto3" json:"coupon_validations,omitempty"`
+	Hypervisors            []*Hypervisor            `protobuf:"bytes,10,rep,name=hypervisors,proto3" json:"hypervisors,omitempty"`
+	InventoryItems         []*InventoryItem         `protobuf:"bytes,11,rep,name=inventory_items,json=inventoryItems,proto3" json:"inventory_items,omitempty"`
+	Notifications          []*Notification          `protobuf:"bytes,12,rep,name=notifications,proto3" json:"notifications,omitempty"`
+	Organizations          []*Organization          `protobuf:"bytes,13,rep,name=organizations,proto3" json:"organizations,omitempty"`
+	OrganizationMembers    []*OrganizationMember    `protobuf:"bytes,14,rep,name=organization_members,json=organizationMembers,proto3" json:"organization_members,omitempty"`
+	Seasons                []*Season                `protobuf:"bytes,15,rep,name=seasons,proto3" json:"seasons,omitempty"`
+	Teams                  []*Team                  `protobuf:"bytes,16,rep,name=teams,proto3" json:"teams,omitempty"`
+	TeamMembers            []*TeamMember            `protobuf:"bytes,17,rep,name=team_members,json=teamMembers,proto3" json:"team_members,omitempty"`
+	Users                  []*User                  `protobuf:"bytes,18,rep,name=users,proto3" json:"users,omitempty"`
+	WhoswhoAttempts        []*WhoswhoAttempt        `protobuf:"bytes,19,rep,name=whoswho_attempts,json=whoswhoAttempts,proto3" json:"whoswho_attempts,omitempty"`
 }
 
 func (m *Dump) Reset()         { *m = Dump{} }
@@ -2837,34 +2837,6 @@ var xxx_messageInfo_Dump proto.InternalMessageInfo
 func (m *Dump) GetAchievements() []*Achievement {
 	if m != nil {
 		return m.Achievements
-	}
-	return nil
-}
-
-func (m *Dump) GetCoupons() []*Coupon {
-	if m != nil {
-		return m.Coupons
-	}
-	return nil
-}
-
-func (m *Dump) GetCouponValidations() []*CouponValidation {
-	if m != nil {
-		return m.CouponValidations
-	}
-	return nil
-}
-
-func (m *Dump) GetHypervisors() []*Hypervisor {
-	if m != nil {
-		return m.Hypervisors
-	}
-	return nil
-}
-
-func (m *Dump) GetInventoryItems() []*InventoryItem {
-	if m != nil {
-		return m.InventoryItems
 	}
 	return nil
 }
@@ -2911,9 +2883,58 @@ func (m *Dump) GetChallengeVersions() []*ChallengeVersion {
 	return nil
 }
 
+func (m *Dump) GetCoupons() []*Coupon {
+	if m != nil {
+		return m.Coupons
+	}
+	return nil
+}
+
+func (m *Dump) GetCouponValidations() []*CouponValidation {
+	if m != nil {
+		return m.CouponValidations
+	}
+	return nil
+}
+
+func (m *Dump) GetHypervisors() []*Hypervisor {
+	if m != nil {
+		return m.Hypervisors
+	}
+	return nil
+}
+
+func (m *Dump) GetInventoryItems() []*InventoryItem {
+	if m != nil {
+		return m.InventoryItems
+	}
+	return nil
+}
+
 func (m *Dump) GetNotifications() []*Notification {
 	if m != nil {
 		return m.Notifications
+	}
+	return nil
+}
+
+func (m *Dump) GetOrganizations() []*Organization {
+	if m != nil {
+		return m.Organizations
+	}
+	return nil
+}
+
+func (m *Dump) GetOrganizationMembers() []*OrganizationMember {
+	if m != nil {
+		return m.OrganizationMembers
+	}
+	return nil
+}
+
+func (m *Dump) GetSeasons() []*Season {
+	if m != nil {
+		return m.Seasons
 	}
 	return nil
 }
@@ -2928,27 +2949,6 @@ func (m *Dump) GetTeams() []*Team {
 func (m *Dump) GetTeamMembers() []*TeamMember {
 	if m != nil {
 		return m.TeamMembers
-	}
-	return nil
-}
-
-func (m *Dump) GetTournaments() []*Tournament {
-	if m != nil {
-		return m.Tournaments
-	}
-	return nil
-}
-
-func (m *Dump) GetTournamentMembers() []*TournamentMember {
-	if m != nil {
-		return m.TournamentMembers
-	}
-	return nil
-}
-
-func (m *Dump) GetTournamentTeams() []*TournamentTeam {
-	if m != nil {
-		return m.TournamentTeams
 	}
 	return nil
 }
@@ -3015,10 +3015,10 @@ func init() {
 	proto.RegisterEnum("pathwar.db.ChallengeVersion_Driver", ChallengeVersion_Driver_name, ChallengeVersion_Driver_value)
 	proto.RegisterEnum("pathwar.db.ChallengeInstance_Status", ChallengeInstance_Status_name, ChallengeInstance_Status_value)
 	proto.RegisterEnum("pathwar.db.Hypervisor_Status", Hypervisor_Status_name, Hypervisor_Status_value)
+	proto.RegisterEnum("pathwar.db.OrganizationMember_Role", OrganizationMember_Role_name, OrganizationMember_Role_value)
 	proto.RegisterEnum("pathwar.db.TeamMember_Role", TeamMember_Role_name, TeamMember_Role_value)
-	proto.RegisterEnum("pathwar.db.TournamentMember_Role", TournamentMember_Role_name, TournamentMember_Role_value)
-	proto.RegisterEnum("pathwar.db.Tournament_Status", Tournament_Status_name, Tournament_Status_value)
-	proto.RegisterEnum("pathwar.db.Tournament_Visibility", Tournament_Visibility_name, Tournament_Visibility_value)
+	proto.RegisterEnum("pathwar.db.Season_Status", Season_Status_name, Season_Status_value)
+	proto.RegisterEnum("pathwar.db.Season_Visibility", Season_Visibility_name, Season_Visibility_value)
 	proto.RegisterEnum("pathwar.db.ChallengeValidation_Status", ChallengeValidation_Status_name, ChallengeValidation_Status_value)
 	proto.RegisterEnum("pathwar.db.InventoryItem_Item", InventoryItem_Item_name, InventoryItem_Item_value)
 	proto.RegisterEnum("pathwar.db.Achievement_Type", Achievement_Type_name, Achievement_Type_value)
@@ -3028,16 +3028,16 @@ func init() {
 	proto.RegisterType((*ChallengeFlavor)(nil), "pathwar.db.ChallengeFlavor")
 	proto.RegisterType((*ChallengeInstance)(nil), "pathwar.db.ChallengeInstance")
 	proto.RegisterType((*Hypervisor)(nil), "pathwar.db.Hypervisor")
+	proto.RegisterType((*OrganizationMember)(nil), "pathwar.db.OrganizationMember")
 	proto.RegisterType((*TeamMember)(nil), "pathwar.db.TeamMember")
-	proto.RegisterType((*TournamentMember)(nil), "pathwar.db.TournamentMember")
 	proto.RegisterType((*User)(nil), "pathwar.db.User")
 	proto.RegisterType((*UserList)(nil), "pathwar.db.UserList")
+	proto.RegisterType((*Organization)(nil), "pathwar.db.Organization")
+	proto.RegisterType((*OrganizationList)(nil), "pathwar.db.OrganizationList")
+	proto.RegisterType((*Season)(nil), "pathwar.db.Season")
+	proto.RegisterType((*SeasonList)(nil), "pathwar.db.SeasonList")
 	proto.RegisterType((*Team)(nil), "pathwar.db.Team")
 	proto.RegisterType((*TeamList)(nil), "pathwar.db.TeamList")
-	proto.RegisterType((*Tournament)(nil), "pathwar.db.Tournament")
-	proto.RegisterType((*TournamentList)(nil), "pathwar.db.TournamentList")
-	proto.RegisterType((*TournamentTeam)(nil), "pathwar.db.TournamentTeam")
-	proto.RegisterType((*TournamentTeamList)(nil), "pathwar.db.TournamentTeamList")
 	proto.RegisterType((*WhoswhoAttempt)(nil), "pathwar.db.WhoswhoAttempt")
 	proto.RegisterType((*ChallengeValidation)(nil), "pathwar.db.ChallengeValidation")
 	proto.RegisterType((*ChallengeSubscription)(nil), "pathwar.db.ChallengeSubscription")
@@ -3054,233 +3054,233 @@ func init() {
 func init() { proto.RegisterFile("pwdb.proto", fileDescriptor_debbe06253822cef) }
 
 var fileDescriptor_debbe06253822cef = []byte{
-	// 3609 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x3b, 0x5d, 0x6f, 0x1c, 0x47,
-	0x72, 0x5a, 0x72, 0x97, 0xe4, 0xd6, 0xf2, 0x63, 0xd8, 0xfc, 0x1a, 0x51, 0x12, 0x87, 0x9e, 0xbb,
-	0xc8, 0x72, 0x24, 0x91, 0x14, 0x7d, 0x0c, 0x1c, 0xc9, 0x30, 0x40, 0x8a, 0xfe, 0xd8, 0xb3, 0xee,
-	0xac, 0x0c, 0x49, 0x19, 0xfe, 0x08, 0x98, 0xe1, 0x4e, 0xef, 0xee, 0x1c, 0x67, 0x67, 0x56, 0x33,
-	0x3d, 0x5c, 0x13, 0x79, 0x49, 0x82, 0x3c, 0x04, 0x79, 0xc9, 0x01, 0x41, 0x5e, 0xf3, 0x0b, 0x92,
-	0xa7, 0x20, 0xc8, 0x6b, 0x5e, 0x82, 0x48, 0x3e, 0xdf, 0xc5, 0x79, 0x09, 0x0e, 0x79, 0x98, 0x0b,
-	0xd6, 0xaf, 0x01, 0x02, 0xec, 0x2f, 0x08, 0xba, 0x7b, 0x3e, 0x7a, 0x76, 0x67, 0x77, 0xc8, 0xe8,
-	0x1c, 0x98, 0x7e, 0x21, 0xa7, 0xab, 0xab, 0xab, 0xaa, 0xbb, 0xab, 0xab, 0xab, 0xab, 0x6a, 0x01,
-	0xda, 0x1d, 0xe3, 0x64, 0xa3, 0xed, 0x3a, 0xc4, 0x41, 0xd0, 0xd6, 0x49, 0xb3, 0xa3, 0xbb, 0x1b,
-	0xc6, 0xc9, 0xea, 0xa3, 0x86, 0x49, 0x9a, 0xfe, 0xc9, 0x46, 0xcd, 0x69, 0x6d, 0x36, 0x1c, 0x4b,
-	0xb7, 0x1b, 0x9b, 0x0c, 0xe9, 0xc4, 0xaf, 0x6f, 0xb6, 0xc9, 0x79, 0x1b, 0x7b, 0x9b, 0xc4, 0x6c,
-	0x61, 0x8f, 0xe8, 0xad, 0x76, 0xf2, 0xc5, 0x09, 0xad, 0xde, 0x6c, 0x38, 0x4e, 0xc3, 0xc2, 0x9b,
-	0x7a, 0xdb, 0xdc, 0xd4, 0x6d, 0xdb, 0x21, 0x3a, 0x31, 0x1d, 0xdb, 0x0b, 0x7b, 0xef, 0xa7, 0x48,
-	0x37, 0x9c, 0x84, 0x30, 0x6d, 0xb1, 0x06, 0xfb, 0x0a, 0xd1, 0x0f, 0x44, 0x74, 0xb7, 0x5d, 0xbb,
-	0x8f, 0x6b, 0x8e, 0x77, 0xee, 0x11, 0x1c, 0x36, 0x1b, 0x3a, 0xc1, 0x1d, 0xfd, 0x9c, 0x53, 0xa9,
-	0xdd, 0x6f, 0x60, 0xfb, 0xbe, 0xd7, 0xd1, 0x1b, 0x0d, 0xec, 0x6e, 0x3a, 0x6d, 0xc6, 0x77, 0x50,
-	0x06, 0xf5, 0x3f, 0xc6, 0xa1, 0xfc, 0xb8, 0xa9, 0x5b, 0x16, 0xb6, 0x1b, 0x18, 0xdd, 0x83, 0x31,
-	0xd3, 0x90, 0x0b, 0xeb, 0x85, 0x3b, 0xe3, 0x7b, 0x37, 0xbb, 0x81, 0x32, 0x56, 0xdd, 0xef, 0x05,
-	0x0a, 0x6a, 0x38, 0x6e, 0xeb, 0xa1, 0xda, 0x76, 0xcd, 0x96, 0xee, 0x9e, 0x1f, 0x9f, 0xe2, 0x73,
-	0x55, 0x1b, 0x33, 0x0d, 0xf4, 0x18, 0xa0, 0xe6, 0x62, 0x9d, 0x60, 0xe3, 0x58, 0x27, 0xf2, 0xd8,
-	0x7a, 0xe1, 0x4e, 0x65, 0x7b, 0x75, 0x83, 0x4f, 0x79, 0x23, 0x9a, 0xcb, 0xc6, 0x61, 0xb4, 0x26,
-	0x7b, 0x53, 0x2f, 0x02, 0xa5, 0xf0, 0xf3, 0xdf, 0x28, 0x05, 0xad, 0x1c, 0x8e, 0xdb, 0x25, 0x94,
-	0x88, 0xdf, 0x36, 0x22, 0x22, 0xe3, 0x97, 0x21, 0x12, 0x8e, 0xdb, 0x25, 0x08, 0x41, 0xd1, 0xd6,
-	0x5b, 0x58, 0x36, 0xd6, 0x0b, 0x77, 0xca, 0x1a, 0xfb, 0x46, 0xeb, 0x50, 0x31, 0xb0, 0x57, 0x73,
-	0x4d, 0x36, 0x77, 0x19, 0xb3, 0x2e, 0x11, 0x84, 0x96, 0x61, 0x42, 0xf7, 0x49, 0xd3, 0x71, 0xe5,
-	0x3a, 0xeb, 0x0c, 0x5b, 0x14, 0x6e, 0x39, 0x35, 0xdd, 0xc2, 0xb2, 0xc9, 0xe1, 0xbc, 0x85, 0xae,
-	0xc3, 0x94, 0xe9, 0x1d, 0x1b, 0xae, 0x5e, 0x27, 0xf2, 0xcf, 0xd6, 0x0b, 0x77, 0xa6, 0xb4, 0x49,
-	0xd3, 0xdb, 0xa7, 0x4d, 0xa4, 0x40, 0xa5, 0xed, 0xe2, 0x33, 0x13, 0x77, 0x8e, 0x7d, 0xd7, 0x92,
-	0x4f, 0xd9, 0x38, 0x08, 0x41, 0x47, 0xae, 0x85, 0x56, 0x61, 0xaa, 0xe9, 0xb4, 0x70, 0x5b, 0x6f,
-	0x60, 0xd9, 0x62, 0xbd, 0x71, 0x1b, 0x1d, 0xc0, 0xd4, 0x19, 0x76, 0x3d, 0xba, 0x2b, 0xf2, 0x8b,
-	0xc2, 0xfa, 0xf8, 0x9d, 0xca, 0xf6, 0xcd, 0x8d, 0x44, 0x05, 0x37, 0xe2, 0xfd, 0x79, 0xc6, 0xb1,
-	0xf6, 0xe4, 0x5e, 0xa0, 0x2c, 0xf2, 0x4d, 0x79, 0xaa, 0xbd, 0xfb, 0xe4, 0xa3, 0xdd, 0xfd, 0x87,
-	0x75, 0xdd, 0xf2, 0xb0, 0xaa, 0xc5, 0x84, 0xd4, 0xb7, 0x61, 0x26, 0x1e, 0xf7, 0xc4, 0xf4, 0x08,
-	0xba, 0x0b, 0x25, 0x93, 0xe0, 0x96, 0x27, 0x73, 0x0e, 0x4b, 0x99, 0x1c, 0x34, 0x8e, 0xa3, 0xfe,
-	0x67, 0x09, 0xa4, 0x7e, 0xb6, 0x57, 0x56, 0x3b, 0x64, 0x98, 0x0c, 0x97, 0x25, 0x54, 0x90, 0xa8,
-	0x89, 0x6e, 0x42, 0xb9, 0xd6, 0xd4, 0xed, 0x06, 0xb6, 0x9c, 0x46, 0xa8, 0x21, 0x09, 0x20, 0xb5,
-	0xdf, 0xf5, 0xf4, 0x7e, 0xdf, 0x80, 0xb2, 0xe9, 0x1d, 0x5b, 0x3a, 0xc1, 0x1e, 0x91, 0x1b, 0xac,
-	0x6f, 0xca, 0xf4, 0x9e, 0xb0, 0x36, 0xba, 0x07, 0xe0, 0x39, 0xbe, 0x5b, 0xc3, 0x4c, 0x17, 0x9a,
-	0x94, 0xec, 0xde, 0x4c, 0x37, 0x50, 0xca, 0x07, 0x0c, 0x7a, 0xa4, 0x3d, 0xd1, 0xca, 0x1c, 0x81,
-	0x6a, 0xc6, 0x23, 0x98, 0x30, 0x5c, 0xf3, 0x0c, 0xbb, 0x4c, 0xdb, 0x66, 0xb7, 0x7f, 0x30, 0x6a,
-	0xeb, 0x37, 0xf6, 0x19, 0xaa, 0x16, 0x0e, 0x41, 0x1f, 0xb3, 0x09, 0x70, 0x14, 0xaa, 0x3b, 0x85,
-	0xa1, 0x3b, 0xbb, 0xf7, 0x5a, 0x2f, 0x50, 0x6e, 0xf1, 0xbd, 0xaa, 0x3b, 0x2e, 0x36, 0x1b, 0xf6,
-	0x29, 0x3e, 0x7f, 0x18, 0xf7, 0x57, 0xf7, 0x55, 0x2d, 0xa1, 0x85, 0x34, 0x98, 0x8e, 0x1b, 0xc7,
-	0xa6, 0x21, 0xbf, 0xe4, 0xdb, 0xbe, 0xd1, 0x0d, 0x94, 0x8a, 0x30, 0xa6, 0x17, 0x28, 0x37, 0xbc,
-	0xe7, 0xd6, 0x43, 0xd5, 0x76, 0xc8, 0xba, 0xed, 0x5b, 0x96, 0xba, 0xce, 0x59, 0x98, 0xb6, 0x81,
-	0xbf, 0x50, 0xb5, 0x4a, 0x4c, 0xa4, 0x6a, 0xa0, 0xa7, 0x30, 0x59, 0xb7, 0xf4, 0x33, 0xc7, 0xf5,
-	0xe4, 0x2f, 0xb9, 0x12, 0xde, 0xc8, 0x14, 0xf5, 0x3d, 0x86, 0x34, 0x42, 0xcb, 0x23, 0x32, 0xea,
-	0x8f, 0x60, 0x82, 0x2f, 0x08, 0xaa, 0xc0, 0xe4, 0x91, 0x7d, 0x6a, 0x3b, 0x1d, 0x5b, 0xba, 0x86,
-	0x00, 0x26, 0xf6, 0x9d, 0xda, 0x29, 0x76, 0xa5, 0x02, 0x9a, 0x87, 0x19, 0xfe, 0xfd, 0xd8, 0x69,
-	0xb5, 0x1d, 0x0f, 0x4b, 0x63, 0xea, 0x9f, 0x16, 0x61, 0xae, 0x8f, 0xd9, 0x95, 0xd5, 0x6d, 0x02,
-	0xf3, 0xc9, 0x3e, 0x45, 0x5a, 0x1e, 0x2a, 0xc2, 0x68, 0x23, 0x72, 0xa7, 0x17, 0x28, 0x3f, 0x1c,
-	0xae, 0x0f, 0x21, 0x1a, 0x55, 0x0b, 0xa9, 0xd6, 0x6f, 0x09, 0x9a, 0xb0, 0x38, 0xc0, 0x55, 0xd0,
-	0x92, 0x9d, 0x6e, 0xa0, 0xa0, 0x41, 0x4a, 0x79, 0xca, 0x82, 0xfa, 0xf9, 0x54, 0x0d, 0xf4, 0x0c,
-	0xca, 0xa6, 0xed, 0x11, 0xdd, 0xae, 0xe1, 0x58, 0x6b, 0x6e, 0x65, 0xce, 0xab, 0x1a, 0xa2, 0x8d,
-	0xd0, 0x9b, 0x84, 0x94, 0xfa, 0x57, 0x25, 0x98, 0x1f, 0x18, 0x7a, 0x65, 0xb5, 0xe0, 0x6d, 0x98,
-	0xf0, 0x88, 0x4e, 0x7c, 0x8f, 0x19, 0xb8, 0xd9, 0xed, 0x1f, 0x8e, 0x5c, 0xa1, 0x8d, 0x03, 0x86,
-	0xab, 0x85, 0x63, 0xd0, 0x67, 0x00, 0xcd, 0xf3, 0x36, 0x76, 0xcf, 0x4c, 0xcf, 0x71, 0x23, 0xe5,
-	0x59, 0x16, 0x49, 0x7c, 0x10, 0x77, 0xef, 0xa9, 0xbd, 0x40, 0x59, 0x1b, 0x50, 0x9b, 0x04, 0x81,
-	0x2a, 0x8c, 0x40, 0x0e, 0x1d, 0xc1, 0x4c, 0xd2, 0x12, 0x74, 0x64, 0xb3, 0x1b, 0x28, 0xd3, 0xe2,
-	0xb0, 0x3c, 0xed, 0x98, 0x4e, 0xc8, 0x54, 0x0d, 0x74, 0x08, 0x13, 0xdc, 0x08, 0x50, 0xa5, 0x28,
-	0xe4, 0x99, 0x92, 0xb5, 0x5e, 0xa0, 0xac, 0x0e, 0x08, 0xcd, 0x3b, 0xa9, 0xc0, 0x21, 0x2d, 0x54,
-	0x85, 0x32, 0xff, 0xa2, 0x82, 0xfe, 0x82, 0x0b, 0x7a, 0xb7, 0x1b, 0x28, 0x53, 0x11, 0x6a, 0x9e,
-	0x90, 0x53, 0x7c, 0x78, 0xd5, 0x50, 0x37, 0x61, 0x82, 0x2f, 0xf3, 0x80, 0x69, 0xda, 0xad, 0x11,
-	0xf3, 0x0c, 0x4b, 0x05, 0x34, 0x0d, 0x53, 0x55, 0x5b, 0xe7, 0xad, 0x31, 0xf5, 0x5f, 0xc6, 0x01,
-	0x92, 0xf5, 0xf8, 0x5e, 0xb9, 0x62, 0x32, 0x4c, 0xea, 0x86, 0xe1, 0x62, 0xcf, 0x0b, 0x2f, 0xd9,
-	0xa8, 0x89, 0x76, 0x62, 0xc5, 0xad, 0x33, 0xc5, 0xbd, 0x95, 0xad, 0x75, 0xfd, 0x1a, 0x6b, 0xc2,
-	0x82, 0x70, 0x3b, 0xc5, 0xf6, 0xe1, 0xc5, 0x2b, 0xda, 0x87, 0xc4, 0x00, 0x55, 0x63, 0x43, 0x71,
-	0xe9, 0x7d, 0xfc, 0xa7, 0x22, 0xc0, 0x21, 0xd6, 0x5b, 0x3f, 0xc1, 0xad, 0x13, 0x7c, 0x75, 0xf7,
-	0x71, 0x13, 0x8a, 0xae, 0x63, 0xe1, 0xd0, 0xa0, 0xa4, 0x4e, 0x57, 0x32, 0xbb, 0x0d, 0xcd, 0xb1,
-	0xb0, 0xc6, 0x10, 0xd1, 0x63, 0x28, 0xfa, 0x1e, 0x8e, 0xed, 0x87, 0x24, 0x8e, 0x38, 0xf2, 0xb0,
-	0xbb, 0x77, 0xb3, 0x17, 0x28, 0xf2, 0xc0, 0x21, 0xa4, 0x5d, 0xf4, 0x08, 0xb2, 0xc1, 0xe8, 0x31,
-	0x4c, 0xd2, 0xff, 0x82, 0x9d, 0x78, 0xa3, 0x1b, 0x28, 0x13, 0x1c, 0x29, 0xef, 0xf0, 0x4d, 0xd0,
-	0xa1, 0x55, 0xba, 0x88, 0x45, 0x82, 0xf5, 0x56, 0x64, 0x19, 0xa4, 0x7e, 0xd9, 0x87, 0x48, 0x42,
-	0xbb, 0x98, 0x24, 0x74, 0x30, 0x95, 0x84, 0xfe, 0x17, 0x0c, 0x01, 0x93, 0x84, 0x23, 0xe5, 0x4a,
-	0x42, 0x87, 0x56, 0x0d, 0xf5, 0x1e, 0x14, 0xe9, 0x0a, 0xa1, 0x19, 0x28, 0x1f, 0xd9, 0x06, 0xae,
-	0x9b, 0x36, 0x36, 0xa4, 0x6b, 0xa8, 0x0c, 0xa5, 0x8f, 0x3a, 0x36, 0x73, 0x4f, 0x00, 0x26, 0xf8,
-	0x52, 0x4a, 0x63, 0xea, 0xbf, 0x96, 0x41, 0x3a, 0x74, 0x7c, 0x97, 0x9e, 0x19, 0x9b, 0x5c, 0x71,
-	0xfd, 0xd9, 0x49, 0xe9, 0xcf, 0x6b, 0xa9, 0x3d, 0xe8, 0x9b, 0xe3, 0x77, 0x53, 0x8b, 0x2c, 0x98,
-	0x23, 0xb1, 0xa0, 0xc7, 0xa2, 0x42, 0xad, 0x66, 0x4f, 0x86, 0xa9, 0xd6, 0xed, 0x5e, 0xa0, 0xa8,
-	0x83, 0xaa, 0x95, 0x42, 0xa2, 0x82, 0xce, 0x92, 0x14, 0x08, 0x9d, 0x00, 0xea, 0xe3, 0x26, 0x68,
-	0xde, 0x9b, 0xdd, 0x40, 0x91, 0xfa, 0x69, 0xe4, 0xcd, 0x43, 0x4a, 0x73, 0xa8, 0x1a, 0xe8, 0x7d,
-	0x98, 0xac, 0x39, 0x7e, 0x9b, 0x3e, 0x33, 0xbf, 0xe2, 0x96, 0x12, 0xa5, 0x2c, 0x25, 0xeb, 0x1b,
-	0xe5, 0x76, 0x87, 0xa3, 0xd1, 0x33, 0x98, 0xd6, 0x6b, 0x4d, 0x13, 0x9f, 0x61, 0x4a, 0xdd, 0x93,
-	0x7f, 0xc9, 0xa9, 0xad, 0x88, 0xd4, 0x76, 0x13, 0x84, 0x11, 0x24, 0x53, 0x74, 0x90, 0x09, 0x4b,
-	0x1e, 0x9d, 0x7e, 0xa7, 0xe9, 0x78, 0x9d, 0xa6, 0x73, 0xac, 0x13, 0x82, 0x5b, 0x6d, 0xe2, 0xc9,
-	0xbf, 0xe2, 0x0c, 0x52, 0x0b, 0xff, 0x31, 0x47, 0xda, 0xe5, 0x38, 0x23, 0x78, 0x2c, 0x50, 0x9a,
-	0x69, 0x6c, 0x0f, 0x3d, 0x87, 0xeb, 0x2e, 0xae, 0x61, 0xf3, 0x0c, 0x1b, 0x83, 0xec, 0xfe, 0xed,
-	0x55, 0xd8, 0xad, 0x44, 0x74, 0xfb, 0x59, 0xfe, 0x38, 0x7a, 0x80, 0x7f, 0xcd, 0xc9, 0x5f, 0x17,
-	0xc9, 0x57, 0xed, 0x33, 0x6c, 0x13, 0xc7, 0x3d, 0xaf, 0x12, 0xdc, 0x1a, 0x41, 0x9d, 0x93, 0x40,
-	0x0e, 0x2c, 0x09, 0x0e, 0xb8, 0x6e, 0x99, 0x06, 0x8f, 0xea, 0xc8, 0xff, 0xce, 0x69, 0x2b, 0xd9,
-	0xae, 0x7f, 0x8c, 0x38, 0x82, 0x43, 0xe2, 0xd9, 0x27, 0xe8, 0xde, 0x25, 0x2d, 0xd9, 0x6f, 0xca,
-	0x50, 0xa4, 0xa7, 0xed, 0xca, 0x5a, 0xaf, 0x55, 0x98, 0xa2, 0x66, 0x40, 0xf0, 0x64, 0xe2, 0x36,
-	0x5a, 0x84, 0x12, 0x6e, 0xe9, 0xa6, 0x15, 0xfa, 0x32, 0xbc, 0x81, 0xb6, 0x61, 0xba, 0xe1, 0xea,
-	0x67, 0x3a, 0xd1, 0x5d, 0xf6, 0xec, 0x67, 0x21, 0xa5, 0xbd, 0x39, 0xfa, 0x5e, 0x7e, 0x3f, 0x84,
-	0xd3, 0x87, 0x7f, 0x25, 0x42, 0xa2, 0x4f, 0xff, 0x4d, 0xa8, 0x74, 0xf0, 0x89, 0x67, 0x12, 0x1e,
-	0x29, 0x68, 0xb0, 0x21, 0xb3, 0xdd, 0x40, 0x81, 0x8f, 0x39, 0x98, 0x8e, 0x80, 0x10, 0x85, 0x0e,
-	0x48, 0x22, 0x53, 0xcd, 0x54, 0x64, 0xea, 0x09, 0xcc, 0x38, 0xba, 0x4f, 0x9a, 0xc7, 0x9e, 0x7f,
-	0xf2, 0x33, 0x5c, 0x23, 0x3c, 0x70, 0xb5, 0xf7, 0x3a, 0xf5, 0xb1, 0x3f, 0xda, 0xf5, 0x49, 0xf3,
-	0x80, 0xc3, 0x7b, 0x81, 0xb2, 0xc0, 0xd7, 0xde, 0xb7, 0xcd, 0xe7, 0x3e, 0xf5, 0x9d, 0xb8, 0x6f,
-	0xcd, 0x46, 0x87, 0x48, 0xc8, 0x86, 0x65, 0xc1, 0x16, 0xb5, 0xd8, 0xa6, 0x7a, 0x4d, 0xb3, 0x9d,
-	0x1d, 0x9d, 0xea, 0xb7, 0xe6, 0x23, 0x54, 0x6b, 0x89, 0xf4, 0xe1, 0x32, 0xaa, 0xe8, 0x13, 0x98,
-	0xb1, 0x1d, 0x62, 0xd6, 0xcd, 0x5a, 0xa8, 0xc4, 0x2f, 0x39, 0x1b, 0x59, 0x64, 0xf3, 0x53, 0x01,
-	0x63, 0x04, 0x8b, 0x34, 0x25, 0x74, 0x00, 0x15, 0x51, 0xfe, 0xf0, 0x01, 0xb9, 0x9c, 0xed, 0xcd,
-	0x8c, 0x20, 0x2b, 0x52, 0x41, 0x7f, 0x53, 0x00, 0x99, 0xbb, 0x7b, 0xc7, 0x03, 0xeb, 0xc4, 0x4d,
-	0x76, 0xde, 0x12, 0xbd, 0xdd, 0x0b, 0x94, 0xb7, 0x06, 0x6e, 0x09, 0xee, 0x50, 0xf6, 0x23, 0x57,
-	0xf7, 0x1f, 0xf5, 0x09, 0xb3, 0xac, 0x67, 0x22, 0xa2, 0x3f, 0x86, 0x1b, 0xc3, 0xc4, 0xa2, 0x97,
-	0xc9, 0x57, 0xfc, 0x18, 0x3e, 0xea, 0x06, 0x8a, 0x3c, 0x8c, 0x55, 0xde, 0xa5, 0x22, 0x67, 0xb3,
-	0xae, 0x1a, 0xe8, 0xcf, 0x0a, 0x30, 0x3f, 0xc0, 0x9d, 0xde, 0x0c, 0xf9, 0xab, 0xf1, 0x7b, 0xbd,
-	0x40, 0xd9, 0xce, 0x5d, 0x8d, 0xc1, 0x75, 0x90, 0xfa, 0x85, 0x41, 0x4d, 0x58, 0x1c, 0x5c, 0x01,
-	0xd3, 0xa0, 0xf7, 0x47, 0x1c, 0x97, 0x18, 0xa4, 0x9b, 0x1b, 0x97, 0xe8, 0xe7, 0x53, 0x35, 0xd4,
-	0x6d, 0x98, 0xa2, 0x06, 0x8e, 0x45, 0x56, 0x6f, 0xa7, 0x23, 0xab, 0x03, 0x3e, 0x4b, 0x14, 0x54,
-	0xfd, 0xe7, 0x22, 0x14, 0xd9, 0x65, 0xff, 0x7d, 0x7a, 0xdb, 0xf5, 0xdb, 0x3d, 0x7c, 0x01, 0xbb,
-	0x97, 0x98, 0xb1, 0x7a, 0xca, 0x8c, 0xfd, 0x11, 0x48, 0x7d, 0x4e, 0x50, 0x6c, 0x72, 0x46, 0xf9,
-	0x5c, 0xc3, 0x8f, 0xed, 0x5c, 0xda, 0x07, 0xca, 0xb9, 0xf6, 0x5f, 0x7e, 0x2b, 0xd7, 0xfe, 0x87,
-	0x30, 0x19, 0x1a, 0x8f, 0xff, 0xbb, 0xf9, 0x89, 0x28, 0x50, 0xb5, 0xa3, 0x03, 0x72, 0xd5, 0x8e,
-	0x22, 0x45, 0x6a, 0xf7, 0x97, 0x25, 0x00, 0xe1, 0x8c, 0x7c, 0x9f, 0x94, 0x2f, 0x09, 0x1f, 0xe0,
-	0xc1, 0xf0, 0x41, 0x32, 0xe7, 0xfe, 0xf0, 0xc1, 0x2e, 0xc0, 0x99, 0xe9, 0x99, 0x27, 0xa6, 0x65,
-	0x92, 0xf3, 0x30, 0xf2, 0x30, 0xe4, 0x85, 0xb2, 0xf1, 0x2c, 0x46, 0xd4, 0x84, 0x41, 0xe8, 0x16,
-	0x80, 0xe9, 0x1d, 0x1b, 0xb8, 0xae, 0xfb, 0x56, 0x94, 0x01, 0x28, 0x9b, 0xde, 0x3e, 0x07, 0xa0,
-	0x0f, 0xa1, 0xf4, 0x5b, 0x50, 0x5f, 0x4e, 0x43, 0xf4, 0xdb, 0x5f, 0xbe, 0x8a, 0xdf, 0xae, 0xee,
-	0xc4, 0xb1, 0x8c, 0x79, 0x98, 0x09, 0x63, 0x19, 0x1c, 0x20, 0x5d, 0x43, 0x15, 0x98, 0x3c, 0x20,
-	0xba, 0x4b, 0xb0, 0x21, 0x15, 0x78, 0xc3, 0x69, 0xb7, 0xb1, 0x21, 0x8d, 0xa9, 0x3f, 0x06, 0x48,
-	0x56, 0x01, 0x2d, 0xc1, 0x7c, 0x38, 0x34, 0x01, 0xf2, 0xe1, 0x4f, 0x5d, 0xf3, 0x4c, 0x27, 0x61,
-	0x44, 0xe4, 0xc8, 0xb6, 0x4c, 0x8f, 0x12, 0x1b, 0xa3, 0x9e, 0xe1, 0x53, 0xff, 0xc4, 0x32, 0x6b,
-	0xd2, 0xb8, 0xfa, 0x0e, 0xcc, 0x26, 0xd3, 0x67, 0x6a, 0x7c, 0x2f, 0xad, 0xc6, 0xcb, 0xd9, 0x2b,
-	0x15, 0x29, 0xf3, 0xff, 0x94, 0x44, 0x02, 0x57, 0xda, 0x9a, 0xa6, 0x55, 0xc8, 0xe8, 0x57, 0xa1,
-	0xcf, 0x00, 0x84, 0x8b, 0x34, 0x2b, 0x2a, 0x9b, 0xac, 0xc3, 0x90, 0xa8, 0xac, 0x78, 0xc9, 0xa9,
-	0x9a, 0x40, 0x0e, 0x1d, 0xc1, 0x4c, 0xfa, 0x86, 0x14, 0xa3, 0xb2, 0x97, 0xb9, 0x1b, 0xa7, 0x89,
-	0x70, 0x2b, 0x7e, 0x77, 0x22, 0x2f, 0xc8, 0x87, 0x95, 0xe4, 0x81, 0xe4, 0xf9, 0x27, 0x71, 0xd6,
-	0x37, 0x7e, 0xad, 0xbe, 0x96, 0xf9, 0x44, 0x3a, 0x10, 0x50, 0x47, 0x1c, 0xa9, 0xe5, 0x5a, 0xd6,
-	0x00, 0x0f, 0xfd, 0x41, 0x62, 0xec, 0x7f, 0xf5, 0x6a, 0xbe, 0x72, 0x6c, 0xf2, 0xdf, 0x03, 0x94,
-	0x56, 0x78, 0x76, 0x6a, 0xb6, 0xd2, 0xa7, 0x66, 0x84, 0x7d, 0x89, 0x4e, 0xce, 0x3f, 0x4c, 0xc0,
-	0x6c, 0xfa, 0x6e, 0xba, 0xca, 0x09, 0x5d, 0xcf, 0xaf, 0xd5, 0xb0, 0xe7, 0x85, 0xc7, 0x26, 0x6a,
-	0x22, 0x23, 0x4e, 0xe9, 0xbf, 0xb8, 0x88, 0xe7, 0x79, 0xbf, 0x17, 0x28, 0x6f, 0x64, 0xaa, 0x93,
-	0xe8, 0x88, 0x32, 0x82, 0x2c, 0x4d, 0x10, 0x16, 0x08, 0x54, 0xa1, 0xcc, 0xbf, 0x84, 0x93, 0xc3,
-	0xd2, 0x04, 0x11, 0x6a, 0x6e, 0x9a, 0x80, 0x0f, 0xaf, 0x1a, 0xa8, 0x03, 0x33, 0x44, 0x77, 0x1b,
-	0x38, 0x7e, 0x3f, 0x7c, 0x79, 0x11, 0xb9, 0xdf, 0xec, 0x05, 0xca, 0x66, 0x9e, 0xdc, 0x87, 0x8c,
-	0x6e, 0xe4, 0xd9, 0xd3, 0xa3, 0x2a, 0x00, 0xd0, 0xe7, 0x20, 0xa5, 0x18, 0x0b, 0xc7, 0xed, 0x41,
-	0x37, 0x50, 0x66, 0xd3, 0xa3, 0xf3, 0x26, 0x34, 0x2b, 0xd2, 0xae, 0x1a, 0xc8, 0x81, 0x4a, 0x48,
-	0x9d, 0xd9, 0x83, 0xaf, 0xf2, 0x03, 0x67, 0x0f, 0x7a, 0x81, 0x72, 0xff, 0x62, 0x53, 0x8a, 0xcc,
-	0x05, 0x90, 0xb8, 0x89, 0x9e, 0xc1, 0xac, 0xc0, 0x90, 0x4e, 0xe6, 0x97, 0xa2, 0x45, 0x13, 0xc6,
-	0xe5, 0x5b, 0xb4, 0x04, 0xd9, 0x50, 0xff, 0x7a, 0x12, 0x16, 0x32, 0xe2, 0x27, 0x57, 0xf6, 0xe8,
-	0xbc, 0xd3, 0x97, 0x29, 0xbc, 0x9d, 0x13, 0x28, 0xea, 0x77, 0x9d, 0x7e, 0x07, 0x66, 0x43, 0xd5,
-	0xaf, 0x39, 0x2d, 0x76, 0x33, 0xf1, 0x28, 0xc8, 0x0c, 0x87, 0x3e, 0xe6, 0x40, 0x74, 0x17, 0xe6,
-	0x6b, 0x8e, 0xeb, 0xe2, 0x1a, 0x11, 0x30, 0xb9, 0xb3, 0x2f, 0xc5, 0x1d, 0x11, 0xf2, 0x5f, 0x14,
-	0x60, 0x39, 0xdb, 0x58, 0x47, 0xa7, 0xf8, 0x02, 0xb6, 0x9a, 0x1d, 0xe5, 0xe1, 0xe9, 0x6c, 0x11,
-	0x97, 0xea, 0xce, 0x52, 0xa6, 0x01, 0x47, 0x1d, 0xb8, 0x9e, 0x2d, 0x89, 0x70, 0xd2, 0x1f, 0x76,
-	0x03, 0x65, 0x65, 0x08, 0xe1, 0x3c, 0xe5, 0x5a, 0xc9, 0x64, 0x5b, 0x35, 0x10, 0x81, 0xf9, 0xc1,
-	0x58, 0xc2, 0x85, 0x6c, 0x41, 0x76, 0x1e, 0x7f, 0xf0, 0x69, 0x9f, 0x8a, 0x08, 0x87, 0x46, 0xa0,
-	0x09, 0x8b, 0x99, 0xa1, 0x82, 0x5f, 0x08, 0xef, 0xe5, 0xcb, 0x07, 0x09, 0x10, 0x19, 0x08, 0x0f,
-	0xa8, 0x4f, 0xb2, 0xd3, 0x68, 0x53, 0x50, 0x3c, 0xc0, 0x36, 0xe1, 0x2e, 0xe3, 0x6e, 0xad, 0x86,
-	0xdb, 0xdc, 0x65, 0xac, 0xc0, 0xa4, 0x86, 0xeb, 0xbe, 0x87, 0x0d, 0x69, 0x1c, 0x49, 0x30, 0xbd,
-	0xeb, 0x13, 0x27, 0xee, 0x2e, 0xaa, 0xbf, 0x2e, 0xc1, 0x52, 0xe6, 0x0e, 0x5c, 0xd9, 0x73, 0x99,
-	0x91, 0x6d, 0x78, 0xf1, 0xff, 0x9d, 0x6d, 0x78, 0xf9, 0x5b, 0xcd, 0x36, 0xb4, 0x21, 0xa9, 0x1b,
-	0x39, 0xbe, 0x44, 0xae, 0xfe, 0xf5, 0x5e, 0xa0, 0xfc, 0x60, 0xf8, 0x41, 0x4e, 0x92, 0xf6, 0x73,
-	0xb5, 0xbe, 0x1a, 0x1e, 0x2c, 0x66, 0x85, 0x07, 0xf2, 0xf8, 0x3f, 0xea, 0x06, 0xca, 0xfc, 0x00,
-	0x99, 0xbc, 0x79, 0xcd, 0xf7, 0x31, 0xa9, 0x1a, 0xe8, 0x73, 0xa8, 0x88, 0x11, 0xf7, 0xaf, 0x5e,
-	0x39, 0xe2, 0x2e, 0x92, 0x53, 0xff, 0x6e, 0x1c, 0x66, 0x52, 0xc9, 0x80, 0x2b, 0xab, 0xd2, 0xdb,
-	0x50, 0xa4, 0x9e, 0x67, 0x78, 0xd1, 0xac, 0x0d, 0xcd, 0x76, 0x6c, 0xd0, 0x3f, 0x1a, 0xc3, 0x45,
-	0x1a, 0x94, 0x9c, 0x8e, 0x8d, 0x2f, 0xe8, 0xbe, 0xdd, 0xea, 0x05, 0xca, 0xf5, 0x01, 0x55, 0x61,
-	0x09, 0x09, 0xaa, 0x20, 0x9c, 0x14, 0x7a, 0x0f, 0xa6, 0xd8, 0x87, 0xa0, 0xe2, 0xbf, 0xdb, 0x0d,
-	0x94, 0xc9, 0x10, 0x2f, 0x4f, 0x03, 0x26, 0xd9, 0xe0, 0xaa, 0xa1, 0x2e, 0x40, 0x91, 0xed, 0x87,
-	0x68, 0xc0, 0xe8, 0x76, 0x4d, 0x8b, 0xa1, 0xe9, 0x2b, 0xbb, 0x5b, 0x2b, 0x30, 0x69, 0x7a, 0xc7,
-	0x2e, 0xd6, 0x8d, 0xd0, 0xa7, 0x9e, 0x30, 0x3d, 0x0d, 0xeb, 0x06, 0xba, 0x01, 0xe5, 0x9a, 0x65,
-	0xd6, 0x4e, 0x93, 0xe8, 0x9e, 0x36, 0xc5, 0x00, 0x47, 0xae, 0x85, 0x24, 0x18, 0x6f, 0x79, 0x8d,
-	0xf0, 0x66, 0xa7, 0x9f, 0x08, 0x41, 0x51, 0x77, 0x1b, 0x1e, 0x4f, 0x66, 0x68, 0xec, 0xfb, 0xbb,
-	0x93, 0xd4, 0x55, 0xff, 0xb1, 0x08, 0x13, 0x3c, 0x5e, 0x72, 0x65, 0x37, 0xea, 0x2e, 0x14, 0x9b,
-	0xba, 0xd7, 0xe4, 0x71, 0xb0, 0xbd, 0x95, 0x61, 0x29, 0x1d, 0x86, 0x84, 0x16, 0xa1, 0x74, 0xa6,
-	0x5b, 0x3e, 0x66, 0x1b, 0x57, 0xd2, 0x78, 0x03, 0x6d, 0xc1, 0x62, 0x4b, 0xff, 0x42, 0xc8, 0x1b,
-	0x1e, 0xd7, 0x1c, 0x3f, 0x74, 0xd0, 0x4a, 0x1a, 0x6a, 0xe9, 0x5f, 0x24, 0x76, 0xeb, 0x31, 0xed,
-	0xf9, 0x76, 0x83, 0x11, 0xef, 0x0d, 0x09, 0x46, 0xac, 0x67, 0x04, 0x23, 0xa6, 0x47, 0x44, 0x1f,
-	0x3e, 0x49, 0x1b, 0xe6, 0x2f, 0xb3, 0x4a, 0xa9, 0xd9, 0xde, 0x5f, 0xde, 0x2a, 0xff, 0x6d, 0x11,
-	0xa4, 0xfe, 0xb1, 0x57, 0xf9, 0xf9, 0x1c, 0xb9, 0xe4, 0x61, 0x3d, 0x74, 0xd8, 0x44, 0x47, 0x97,
-	0x7b, 0x3e, 0x67, 0x97, 0xd5, 0x7d, 0xab, 0xef, 0xe5, 0x0f, 0x61, 0x82, 0x47, 0x33, 0x23, 0x5f,
-	0x22, 0x2b, 0x14, 0x9a, 0x2d, 0x17, 0xef, 0x64, 0x72, 0x71, 0x12, 0x54, 0x2e, 0xfe, 0xd5, 0x5f,
-	0xee, 0x17, 0xa1, 0xe6, 0xca, 0xc5, 0x87, 0x57, 0x0d, 0xf5, 0xef, 0x2b, 0x50, 0x11, 0x4a, 0x1e,
-	0xae, 0xac, 0x6e, 0x6c, 0x41, 0x91, 0x9c, 0xb7, 0xa3, 0xb2, 0x9d, 0x9b, 0x43, 0x2a, 0x3a, 0x36,
-	0x0e, 0xcf, 0xdb, 0x58, 0x63, 0x98, 0x61, 0x29, 0x7c, 0xc3, 0x72, 0x4e, 0x74, 0x7e, 0x3f, 0xb0,
-	0x52, 0xf8, 0xf7, 0x59, 0x5b, 0x54, 0xb5, 0x7a, 0x5a, 0xd5, 0x56, 0x61, 0x4a, 0x77, 0x1b, 0x3e,
-	0xeb, 0xe2, 0x77, 0x45, 0xdc, 0xbe, 0x02, 0x6a, 0xf8, 0x27, 0x85, 0x54, 0x05, 0x74, 0x6c, 0x13,
-	0x22, 0xad, 0xcc, 0xf5, 0x06, 0xef, 0xf6, 0x02, 0xe5, 0xf5, 0x11, 0xd5, 0xd7, 0x31, 0x26, 0x9d,
-	0xc0, 0x42, 0x46, 0x49, 0x06, 0x7a, 0x2e, 0x46, 0x38, 0x05, 0x53, 0x9e, 0xa8, 0xf2, 0x5b, 0xdd,
-	0x40, 0x59, 0xca, 0x24, 0x99, 0x37, 0xd1, 0xa5, 0x0c, 0x86, 0x55, 0x43, 0x7d, 0x51, 0x82, 0x22,
-	0xdd, 0xf9, 0xfe, 0x2a, 0x90, 0x79, 0x98, 0xd9, 0xf3, 0xcf, 0x1f, 0xc4, 0xac, 0xa4, 0x02, 0x42,
-	0x30, 0xbb, 0xe7, 0x9f, 0xef, 0xc4, 0x20, 0x4f, 0x1a, 0x43, 0x0b, 0x30, 0x47, 0xd1, 0xb6, 0x04,
-	0xe0, 0x78, 0x08, 0xdc, 0x16, 0x81, 0xc5, 0x10, 0xb8, 0x23, 0x02, 0x4b, 0x68, 0x19, 0x50, 0x28,
-	0x0d, 0x16, 0x58, 0x01, 0x5a, 0x81, 0x85, 0x08, 0x2e, 0xf2, 0xab, 0x20, 0x19, 0x16, 0xe3, 0x01,
-	0x22, 0xa9, 0x69, 0xb1, 0x27, 0xc5, 0x79, 0x46, 0xec, 0x49, 0xb1, 0x9f, 0xa5, 0x32, 0x25, 0xec,
-	0xd9, 0xb1, 0x97, 0x16, 0xd1, 0x22, 0x48, 0x09, 0x6f, 0x9e, 0x65, 0x91, 0x96, 0xd0, 0x12, 0xcc,
-	0x0b, 0x8c, 0x43, 0xf0, 0xb2, 0x08, 0xde, 0x8e, 0xc1, 0x2b, 0x22, 0x78, 0x27, 0x06, 0xcb, 0xa9,
-	0xe9, 0x6e, 0xc5, 0xf0, 0xeb, 0x94, 0x25, 0xd7, 0x57, 0x61, 0x11, 0xd6, 0x28, 0x11, 0x0e, 0xdd,
-	0x16, 0x84, 0x56, 0x12, 0xb0, 0xb8, 0x32, 0xeb, 0x94, 0x76, 0x48, 0x43, 0x9c, 0xe3, 0x6b, 0x14,
-	0xfe, 0xae, 0xee, 0x5a, 0xe7, 0xbb, 0x86, 0xd3, 0x26, 0xd8, 0x3d, 0x74, 0xda, 0x0f, 0xb6, 0xb6,
-	0xa4, 0x3b, 0x74, 0x89, 0x07, 0xe1, 0x5b, 0xd2, 0x1b, 0xf4, 0xd5, 0xfe, 0x91, 0x65, 0x3c, 0xf8,
-	0x04, 0xeb, 0xae, 0xb4, 0x4d, 0x45, 0x3b, 0xc0, 0xb6, 0xf1, 0xe0, 0xa9, 0x6f, 0x59, 0x1a, 0x7e,
-	0xee, 0x63, 0x8f, 0x48, 0x9f, 0x52, 0x19, 0x28, 0x74, 0x5b, 0x80, 0x7a, 0xd2, 0x67, 0x11, 0x78,
-	0x27, 0x05, 0xfe, 0x9c, 0x8a, 0xc0, 0x68, 0x6c, 0x51, 0xb8, 0x1b, 0xc1, 0xff, 0x10, 0x95, 0xa1,
-	0x74, 0x40, 0xf4, 0x7a, 0x5d, 0x32, 0xd0, 0x1c, 0x54, 0x1e, 0x3b, 0x36, 0x71, 0xcd, 0x13, 0x9f,
-	0x38, 0xae, 0xc4, 0xd4, 0x71, 0xcf, 0x6f, 0x7c, 0xe0, 0xdb, 0x04, 0xbb, 0x52, 0x9d, 0x36, 0x7f,
-	0xe2, 0x18, 0xd8, 0xd5, 0x69, 0x6f, 0x83, 0x6e, 0xdc, 0x07, 0x7a, 0xed, 0xf4, 0xb0, 0x89, 0x9f,
-	0x5a, 0x3a, 0xa9, 0x3b, 0x6e, 0x4b, 0x6a, 0xaa, 0xff, 0x5d, 0x86, 0xe2, 0xbe, 0xdf, 0x6a, 0xa3,
-	0x47, 0x7d, 0xb5, 0x6c, 0xa3, 0x4b, 0xd9, 0xfa, 0x0a, 0xd6, 0xee, 0x25, 0x99, 0xb9, 0xf1, 0x61,
-	0x89, 0xb9, 0xa4, 0x6c, 0xee, 0x43, 0x40, 0xe1, 0x75, 0x23, 0xba, 0x29, 0xc5, 0x7c, 0x2f, 0x45,
-	0x9b, 0xaf, 0xf5, 0x41, 0x3c, 0xf4, 0x16, 0x54, 0x92, 0x82, 0x78, 0x4f, 0x2e, 0x0d, 0x26, 0xcf,
-	0x92, 0xf2, 0x69, 0x4d, 0x44, 0x45, 0x7b, 0x30, 0x67, 0x46, 0xef, 0xaf, 0x63, 0x9e, 0x44, 0x98,
-	0xc8, 0x29, 0x48, 0xd3, 0x66, 0x4d, 0xb1, 0xe9, 0xa1, 0x1d, 0x80, 0xd8, 0x44, 0x78, 0xf2, 0xe4,
-	0xa8, 0x5f, 0x94, 0x09, 0x88, 0xe8, 0x03, 0xf1, 0xd7, 0x2a, 0xd1, 0x6f, 0x81, 0xa6, 0x72, 0x7f,
-	0x0a, 0x24, 0xfc, 0x02, 0x85, 0x03, 0x3c, 0xf4, 0xd3, 0xec, 0x0a, 0xf0, 0xf2, 0x05, 0x0a, 0xc0,
-	0xb3, 0xca, 0xbc, 0xd1, 0xa7, 0xc3, 0xf3, 0x45, 0x70, 0xc1, 0x74, 0xd1, 0xd0, 0xa4, 0xd0, 0xe1,
-	0xb0, 0x62, 0xbd, 0xca, 0x85, 0x22, 0x07, 0xd9, 0x15, 0x79, 0x4c, 0x9b, 0xfa, 0x7f, 0x83, 0xe3,
-	0xc9, 0xd3, 0xf9, 0x3f, 0x1f, 0x14, 0x62, 0x1a, 0x21, 0xc4, 0x43, 0xef, 0xf4, 0x97, 0x60, 0xcd,
-	0x8c, 0xae, 0xc0, 0xea, 0xaf, 0xb3, 0xba, 0x1d, 0xe5, 0xbb, 0x67, 0x87, 0xd5, 0x22, 0xf0, 0x54,
-	0xf6, 0xef, 0xc3, 0x34, 0x8b, 0x36, 0x45, 0x49, 0xb2, 0xb9, 0x51, 0x05, 0x11, 0x5a, 0x85, 0xc4,
-	0xdf, 0x4c, 0xe1, 0x13, 0x6f, 0xdf, 0x93, 0xa5, 0x91, 0xd9, 0x62, 0x11, 0x95, 0xae, 0xd4, 0x60,
-	0x3d, 0x9b, 0x3c, 0x9f, 0x9f, 0x9e, 0xd3, 0xe6, 0x07, 0x0a, 0xd6, 0xd0, 0xbb, 0x19, 0x35, 0x2a,
-	0x28, 0x37, 0x07, 0x37, 0x50, 0x88, 0x72, 0x1b, 0x4a, 0xf4, 0x49, 0xea, 0xc9, 0x0b, 0xc3, 0x6a,
-	0x86, 0x58, 0x37, 0x65, 0x37, 0x50, 0xa7, 0xb2, 0x98, 0x57, 0xa6, 0xa2, 0xcd, 0x75, 0xd2, 0x45,
-	0x28, 0xea, 0x9f, 0x17, 0xa0, 0x58, 0xb5, 0xeb, 0x0e, 0x7a, 0x07, 0x80, 0xe8, 0x27, 0x16, 0x3e,
-	0x76, 0x9d, 0x4e, 0x64, 0xec, 0x94, 0xf4, 0xb9, 0xaf, 0x3b, 0x1b, 0x87, 0x14, 0x45, 0x73, 0x3a,
-	0xde, 0xbb, 0x36, 0x71, 0xcf, 0xb5, 0x32, 0x89, 0xda, 0xab, 0x6f, 0xc3, 0x6c, 0xba, 0x13, 0x49,
-	0x30, 0x7e, 0x8a, 0xcf, 0x99, 0xab, 0x5b, 0xd6, 0xe8, 0x67, 0xf2, 0xe8, 0xa4, 0x8e, 0xec, 0x4c,
-	0xf8, 0xe8, 0x7c, 0x38, 0xf6, 0x56, 0x61, 0x6f, 0xfb, 0x45, 0x77, 0xad, 0xf0, 0x75, 0x77, 0xad,
-	0xf0, 0x5f, 0xdd, 0xb5, 0xc2, 0xcf, 0xbf, 0x59, 0xbb, 0xf6, 0xf5, 0x37, 0x6b, 0xd7, 0x7e, 0xfd,
-	0xcd, 0xda, 0xb5, 0x4f, 0xe5, 0x48, 0x04, 0x4b, 0xb7, 0x8d, 0xcd, 0x86, 0xb3, 0xd9, 0x3e, 0x6d,
-	0x6c, 0xb6, 0x3b, 0xc6, 0xc9, 0xc9, 0x04, 0x73, 0x5d, 0xdf, 0xfc, 0xdf, 0x00, 0x00, 0x00, 0xff,
-	0xff, 0xeb, 0xb9, 0x30, 0x79, 0xa1, 0x3d, 0x00, 0x00,
+	// 3605 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x3b, 0x4d, 0x73, 0x1b, 0x47,
+	0x76, 0x02, 0x09, 0x80, 0xc0, 0x03, 0x40, 0x0e, 0x9b, 0xa4, 0x08, 0xd1, 0x12, 0x87, 0x9e, 0x75,
+	0x6c, 0x39, 0xb2, 0x40, 0x89, 0xbb, 0xdc, 0xf5, 0xca, 0x8e, 0xab, 0x08, 0xd2, 0x6b, 0x63, 0xad,
+	0x5d, 0x69, 0x87, 0xa4, 0x5c, 0xfe, 0x48, 0x58, 0xc3, 0x99, 0x06, 0x30, 0xcb, 0xc1, 0x0c, 0x34,
+	0x3d, 0x43, 0x9a, 0xa9, 0xda, 0xaa, 0xa4, 0x6a, 0x0f, 0xa9, 0xca, 0x21, 0x3e, 0x26, 0x7f, 0x20,
+	0xb9, 0xe4, 0x92, 0x1f, 0x91, 0x2a, 0xc9, 0x6b, 0x3b, 0xce, 0x25, 0x95, 0xca, 0x61, 0x36, 0x05,
+	0x9f, 0x72, 0x45, 0x8e, 0x39, 0x64, 0xab, 0xbb, 0xe7, 0xa3, 0x07, 0x9f, 0x94, 0xb5, 0xae, 0x32,
+	0x7d, 0x21, 0xa7, 0x5f, 0xbf, 0x8f, 0xfe, 0x78, 0xfd, 0xfa, 0xbd, 0xd7, 0x0f, 0x00, 0xdd, 0x33,
+	0xe3, 0xb8, 0xd6, 0x75, 0x1d, 0xcf, 0x41, 0xd0, 0xd5, 0xbc, 0xf6, 0x99, 0xe6, 0xd6, 0x8c, 0xe3,
+	0xb5, 0x37, 0x5a, 0xa6, 0xd7, 0xf6, 0x8f, 0x6b, 0xba, 0xd3, 0xd9, 0x6c, 0x39, 0x96, 0x66, 0xb7,
+	0x36, 0x19, 0xd2, 0xb1, 0xdf, 0xdc, 0xec, 0x7a, 0xe7, 0x5d, 0x4c, 0x36, 0x3d, 0xb3, 0x83, 0x89,
+	0xa7, 0x75, 0xba, 0xc9, 0x17, 0x67, 0xb4, 0x76, 0xbd, 0xe5, 0x38, 0x2d, 0x0b, 0x6f, 0x6a, 0x5d,
+	0x73, 0x53, 0xb3, 0x6d, 0xc7, 0xd3, 0x3c, 0xd3, 0xb1, 0x49, 0xd8, 0x7b, 0x3b, 0xc5, 0xba, 0xe5,
+	0x24, 0x8c, 0x69, 0x8b, 0x35, 0xd8, 0x57, 0x88, 0xbe, 0x2f, 0xa2, 0xbb, 0x5d, 0xfd, 0x36, 0xd6,
+	0x1d, 0x72, 0x4e, 0x3c, 0x1c, 0x36, 0x5b, 0x9a, 0x87, 0xcf, 0xb4, 0x73, 0xce, 0x45, 0xbf, 0xdd,
+	0xc2, 0xf6, 0x6d, 0x72, 0xa6, 0xb5, 0x5a, 0xd8, 0xdd, 0x74, 0xba, 0x4c, 0xee, 0xf0, 0x18, 0x94,
+	0xff, 0x98, 0x85, 0xe2, 0x6e, 0x5b, 0xb3, 0x2c, 0x6c, 0xb7, 0x30, 0x7a, 0x0d, 0x66, 0x4c, 0xa3,
+	0x9a, 0xd9, 0xc8, 0xdc, 0x9c, 0xad, 0x5f, 0xef, 0x05, 0xf2, 0x4c, 0x63, 0xaf, 0x1f, 0xc8, 0xa8,
+	0xe5, 0xb8, 0x9d, 0x7b, 0x4a, 0xd7, 0x35, 0x3b, 0x9a, 0x7b, 0x7e, 0x74, 0x82, 0xcf, 0x15, 0x75,
+	0xc6, 0x34, 0xd0, 0x2e, 0x80, 0xee, 0x62, 0xcd, 0xc3, 0xc6, 0x91, 0xe6, 0x55, 0x67, 0x36, 0x32,
+	0x37, 0x4b, 0x5b, 0x6b, 0x35, 0x3e, 0xe5, 0x5a, 0x34, 0x97, 0xda, 0x41, 0xb4, 0x26, 0xf5, 0xc2,
+	0x93, 0x40, 0xce, 0x7c, 0xfa, 0x7b, 0x39, 0xa3, 0x16, 0x43, 0xba, 0x1d, 0x8f, 0x32, 0xf1, 0xbb,
+	0x46, 0xc4, 0x64, 0xf6, 0x59, 0x98, 0x84, 0x74, 0x3b, 0x1e, 0x42, 0x90, 0xb5, 0xb5, 0x0e, 0xae,
+	0x1a, 0x1b, 0x99, 0x9b, 0x45, 0x95, 0x7d, 0xa3, 0x0d, 0x28, 0x19, 0x98, 0xe8, 0xae, 0xc9, 0xe6,
+	0x5e, 0xc5, 0xac, 0x4b, 0x04, 0xa1, 0xab, 0x90, 0xd7, 0x7c, 0xaf, 0xed, 0xb8, 0xd5, 0x26, 0xeb,
+	0x0c, 0x5b, 0x14, 0x6e, 0x39, 0xba, 0x66, 0xe1, 0xaa, 0xc9, 0xe1, 0xbc, 0x85, 0xae, 0x41, 0xc1,
+	0x24, 0x47, 0x86, 0xab, 0x35, 0xbd, 0xea, 0xaf, 0x37, 0x32, 0x37, 0x0b, 0xea, 0x9c, 0x49, 0xf6,
+	0x68, 0x13, 0xc9, 0x50, 0xea, 0xba, 0xf8, 0xd4, 0xc4, 0x67, 0x47, 0xbe, 0x6b, 0x55, 0x4f, 0x18,
+	0x1d, 0x84, 0xa0, 0x43, 0xd7, 0x42, 0x6b, 0x50, 0x68, 0x3b, 0x1d, 0xdc, 0xd5, 0x5a, 0xb8, 0x6a,
+	0xb1, 0xde, 0xb8, 0x8d, 0xf6, 0xa1, 0x70, 0x8a, 0x5d, 0x42, 0x77, 0xa5, 0xfa, 0x24, 0xb3, 0x31,
+	0x7b, 0xb3, 0xb4, 0x75, 0xbd, 0x96, 0xa8, 0x60, 0x2d, 0xde, 0x9f, 0x47, 0x1c, 0xab, 0x5e, 0xed,
+	0x07, 0xf2, 0x32, 0xdf, 0x94, 0x87, 0xea, 0xdb, 0xf7, 0x1f, 0xec, 0xec, 0xdd, 0x6b, 0x6a, 0x16,
+	0xc1, 0x8a, 0x1a, 0x33, 0x52, 0xde, 0x84, 0x4a, 0x4c, 0x77, 0xdf, 0x24, 0x1e, 0xba, 0x05, 0x39,
+	0xd3, 0xc3, 0x1d, 0x52, 0xe5, 0x12, 0x56, 0x46, 0x4a, 0x50, 0x39, 0x8e, 0xf2, 0x5f, 0x39, 0x90,
+	0x06, 0xc5, 0x5e, 0x5a, 0xed, 0xa8, 0xc2, 0x5c, 0xb8, 0x2c, 0xa1, 0x82, 0x44, 0x4d, 0x74, 0x1d,
+	0x8a, 0x7a, 0x5b, 0xb3, 0x5b, 0xd8, 0x72, 0x5a, 0xa1, 0x86, 0x24, 0x80, 0xd4, 0x7e, 0x37, 0xd3,
+	0xfb, 0xfd, 0x02, 0x14, 0x4d, 0x72, 0x64, 0x69, 0x1e, 0x26, 0x5e, 0xb5, 0xc5, 0xfa, 0x0a, 0x26,
+	0xb9, 0xcf, 0xda, 0xe8, 0x35, 0x00, 0xe2, 0xf8, 0xae, 0x8e, 0x99, 0x2e, 0xb4, 0x29, 0xdb, 0x7a,
+	0xa5, 0x17, 0xc8, 0xc5, 0x7d, 0x06, 0x3d, 0x54, 0xef, 0xab, 0x45, 0x8e, 0x40, 0x35, 0xe3, 0x0d,
+	0xc8, 0x1b, 0xae, 0x79, 0x8a, 0x5d, 0xa6, 0x6d, 0xf3, 0x5b, 0x3f, 0x98, 0xb4, 0xf5, 0xb5, 0x3d,
+	0x86, 0xaa, 0x86, 0x24, 0xe8, 0x7d, 0x36, 0x01, 0x8e, 0x42, 0x75, 0x27, 0x33, 0x76, 0x67, 0xeb,
+	0x2f, 0xf6, 0x03, 0xf9, 0x06, 0xdf, 0xab, 0xa6, 0xe3, 0x62, 0xb3, 0x65, 0x9f, 0xe0, 0xf3, 0x7b,
+	0x71, 0x7f, 0x63, 0x4f, 0x51, 0x13, 0x5e, 0x48, 0x85, 0x72, 0xdc, 0x38, 0x32, 0x8d, 0xea, 0x53,
+	0xbe, 0xed, 0xb5, 0x5e, 0x20, 0x97, 0x04, 0x9a, 0x7e, 0x20, 0xbf, 0x40, 0x1e, 0x5b, 0xf7, 0x14,
+	0xdb, 0xf1, 0x36, 0x6c, 0xdf, 0xb2, 0x94, 0x0d, 0x2e, 0xc2, 0xb4, 0x0d, 0xfc, 0x89, 0xa2, 0x96,
+	0x62, 0x26, 0x0d, 0x03, 0x3d, 0x84, 0xb9, 0xa6, 0xa5, 0x9d, 0x3a, 0x2e, 0xa9, 0x7e, 0xc6, 0x95,
+	0xf0, 0x85, 0x91, 0x43, 0xfd, 0x19, 0x43, 0x9a, 0xa0, 0xe5, 0x11, 0x1b, 0xe5, 0x47, 0x90, 0xe7,
+	0x0b, 0x82, 0x4a, 0x30, 0x77, 0x68, 0x9f, 0xd8, 0xce, 0x99, 0x2d, 0x5d, 0x41, 0x00, 0xf9, 0x3d,
+	0x47, 0x3f, 0xc1, 0xae, 0x94, 0x41, 0x8b, 0x50, 0xe1, 0xdf, 0xbb, 0x4e, 0xa7, 0xeb, 0x10, 0x2c,
+	0xcd, 0x28, 0x7f, 0x9d, 0x85, 0x85, 0x01, 0x61, 0x97, 0x56, 0xb7, 0x3d, 0x58, 0x4c, 0xf6, 0x29,
+	0xd2, 0xf2, 0x50, 0x11, 0x26, 0x1b, 0x91, 0x9b, 0xfd, 0x40, 0x7e, 0x69, 0xbc, 0x3e, 0x84, 0x68,
+	0x54, 0x2d, 0x24, 0x7d, 0xd0, 0x12, 0xb4, 0x61, 0x79, 0x48, 0xaa, 0xa0, 0x25, 0xdb, 0xbd, 0x40,
+	0x46, 0xc3, 0x9c, 0xa6, 0x29, 0x0b, 0x1a, 0x94, 0xd3, 0x30, 0xd0, 0x23, 0x28, 0x9a, 0x36, 0xf1,
+	0x34, 0x5b, 0xc7, 0xb1, 0xd6, 0xdc, 0x18, 0x39, 0xaf, 0x46, 0x88, 0x36, 0x41, 0x6f, 0x12, 0x56,
+	0xca, 0xdf, 0xe5, 0x60, 0x71, 0x88, 0xf4, 0xd2, 0x6a, 0xc1, 0x9b, 0x90, 0x27, 0x9e, 0xe6, 0xf9,
+	0x84, 0x19, 0xb8, 0xf9, 0xad, 0x97, 0x26, 0xae, 0x50, 0x6d, 0x9f, 0xe1, 0xaa, 0x21, 0x0d, 0xfa,
+	0x08, 0xa0, 0x7d, 0xde, 0xc5, 0xee, 0xa9, 0x49, 0x1c, 0x37, 0x52, 0x9e, 0xab, 0x22, 0x8b, 0x77,
+	0xe3, 0xee, 0xba, 0xd2, 0x0f, 0xe4, 0xf5, 0x21, 0xb5, 0x49, 0x10, 0xa8, 0xc2, 0x08, 0xec, 0xd0,
+	0x21, 0x54, 0x92, 0x96, 0xa0, 0x23, 0x9b, 0xbd, 0x40, 0x2e, 0x8b, 0x64, 0xd3, 0xb4, 0xa3, 0x9c,
+	0xb0, 0x69, 0x18, 0xe8, 0x00, 0xf2, 0xdc, 0x08, 0x50, 0xa5, 0xc8, 0x4c, 0x33, 0x25, 0xeb, 0xfd,
+	0x40, 0x5e, 0x1b, 0x1a, 0x34, 0xef, 0xa4, 0x03, 0x0e, 0x79, 0xa1, 0x06, 0x14, 0xf9, 0x17, 0x1d,
+	0xe8, 0xef, 0xf8, 0x40, 0x6f, 0xf5, 0x02, 0xb9, 0x10, 0xa1, 0x4e, 0x1b, 0x64, 0x81, 0x93, 0x37,
+	0x0c, 0x65, 0x13, 0xf2, 0x7c, 0x99, 0x87, 0x4c, 0xd3, 0x8e, 0xee, 0x99, 0xa7, 0x58, 0xca, 0xa0,
+	0x32, 0x14, 0x1a, 0xb6, 0xc6, 0x5b, 0x33, 0xca, 0xbf, 0xce, 0x02, 0x24, 0xeb, 0xf1, 0xbd, 0x72,
+	0xc5, 0xaa, 0x30, 0xa7, 0x19, 0x86, 0x8b, 0x09, 0x09, 0x2f, 0xd9, 0xa8, 0x89, 0xb6, 0x63, 0xc5,
+	0x6d, 0x32, 0xc5, 0xbd, 0x31, 0x5a, 0xeb, 0x06, 0x35, 0xd6, 0x84, 0x25, 0xe1, 0x76, 0x8a, 0xed,
+	0xc3, 0x93, 0xe7, 0xb4, 0x0f, 0x89, 0x01, 0x6a, 0xc4, 0x86, 0xe2, 0x99, 0xf7, 0xf1, 0xff, 0xb3,
+	0x80, 0x1e, 0xb8, 0x2d, 0xcd, 0x36, 0xff, 0x92, 0x79, 0xda, 0xbf, 0xc0, 0x9d, 0x63, 0x7c, 0x79,
+	0xf7, 0xf3, 0x27, 0x90, 0x75, 0x1d, 0x0b, 0x87, 0x86, 0x25, 0xe5, 0x9c, 0x0c, 0xcf, 0xb2, 0xa6,
+	0x3a, 0x16, 0x56, 0x19, 0x01, 0xda, 0x85, 0xac, 0x4f, 0x70, 0x6c, 0x4f, 0x24, 0x91, 0xf2, 0x90,
+	0x60, 0xb7, 0x7e, 0xbd, 0x1f, 0xc8, 0xd5, 0xa1, 0x43, 0x49, 0xbb, 0xe8, 0x91, 0x64, 0xc4, 0x68,
+	0x17, 0xe6, 0xe8, 0x7f, 0xc1, 0x6e, 0xbc, 0xda, 0x0b, 0xe4, 0x3c, 0x47, 0x9a, 0x76, 0x18, 0xf3,
+	0x94, 0xb4, 0x61, 0x20, 0x1d, 0xca, 0x8e, 0x30, 0xd4, 0xc8, 0x62, 0x54, 0xc7, 0xcd, 0xa5, 0xfe,
+	0x52, 0x3f, 0x90, 0x37, 0x86, 0x46, 0x26, 0xa2, 0xd0, 0x11, 0xa6, 0x98, 0xa2, 0x8f, 0x60, 0x41,
+	0x6c, 0x0b, 0x06, 0xe4, 0x6e, 0x2f, 0x90, 0xe7, 0xd3, 0xc4, 0xd3, 0x46, 0x3e, 0x2f, 0xb2, 0x6a,
+	0x18, 0xca, 0x6b, 0x90, 0xa5, 0x2b, 0x8b, 0x2a, 0x50, 0x3c, 0xb4, 0x0d, 0xdc, 0x34, 0x6d, 0x6c,
+	0x48, 0x57, 0x50, 0x11, 0x72, 0x0f, 0xce, 0x6c, 0xe6, 0xe6, 0x00, 0xe4, 0xf9, 0x16, 0x48, 0x33,
+	0xca, 0xff, 0x16, 0x00, 0x0e, 0xb0, 0xd6, 0xb9, 0xe4, 0x9a, 0xb7, 0x99, 0xd2, 0xbc, 0x94, 0x7d,
+	0x4f, 0x66, 0xf7, 0xdd, 0xd4, 0xb8, 0x5d, 0xc8, 0x7a, 0x58, 0xeb, 0x44, 0x9a, 0x26, 0x0d, 0x8e,
+	0x7d, 0xcc, 0x48, 0x68, 0x17, 0x1b, 0x09, 0x25, 0xa6, 0x23, 0xa1, 0xff, 0x05, 0x4d, 0x62, 0x23,
+	0xe1, 0x48, 0x53, 0x47, 0x42, 0x49, 0x1b, 0x06, 0x7a, 0x07, 0xe6, 0x74, 0xc7, 0xef, 0xd2, 0xd0,
+	0xf2, 0x73, 0x6e, 0x1d, 0x51, 0xca, 0x3a, 0xb2, 0xbe, 0x49, 0xae, 0x76, 0x48, 0x8d, 0x1e, 0x41,
+	0x59, 0xd3, 0xdb, 0x26, 0x3e, 0xc5, 0x1d, 0x6c, 0x7b, 0xa4, 0xfa, 0x05, 0xe7, 0xb6, 0x2a, 0x72,
+	0xdb, 0x49, 0x10, 0x26, 0xb0, 0x4c, 0xf1, 0x41, 0x26, 0xac, 0x10, 0x6c, 0x7b, 0x47, 0x67, 0x6d,
+	0x87, 0x9c, 0xb5, 0x9d, 0x23, 0xcd, 0xf3, 0x70, 0xa7, 0xeb, 0x91, 0xea, 0x97, 0x5c, 0xc0, 0x9a,
+	0x28, 0xe0, 0x7d, 0x8e, 0xb4, 0xc3, 0x71, 0x26, 0xc8, 0x58, 0xa2, 0x3c, 0xd3, 0xd8, 0x04, 0x3d,
+	0x86, 0x6b, 0x2e, 0xd6, 0xb1, 0x79, 0x8a, 0x8d, 0x61, 0x71, 0xff, 0xf6, 0x3c, 0xe2, 0x56, 0x23,
+	0xbe, 0x83, 0x22, 0x7f, 0x1e, 0x05, 0xdd, 0x5f, 0x71, 0xf6, 0xd7, 0x44, 0xf6, 0x0d, 0xfb, 0x14,
+	0xdb, 0x9e, 0xe3, 0x9e, 0x37, 0x3c, 0xdc, 0x99, 0xc0, 0x9d, 0xb3, 0x40, 0x0e, 0xac, 0x08, 0x4e,
+	0xb7, 0x66, 0x99, 0x06, 0xcf, 0xe4, 0x54, 0xff, 0x9d, 0xf3, 0x96, 0x47, 0xbb, 0xfb, 0x31, 0xe2,
+	0x04, 0x09, 0x89, 0x37, 0x9f, 0xa0, 0x93, 0x67, 0xb4, 0x3a, 0x7f, 0x5b, 0x84, 0x2c, 0x3d, 0x25,
+	0x97, 0xd6, 0xde, 0xac, 0x41, 0x81, 0x1e, 0x5f, 0xc1, 0x7b, 0x89, 0xdb, 0x68, 0x19, 0x72, 0xb8,
+	0xa3, 0x99, 0x56, 0xe8, 0xbf, 0xf0, 0x06, 0xda, 0x82, 0x72, 0xcb, 0xd5, 0x4e, 0x35, 0x4f, 0x73,
+	0x59, 0xa8, 0xcf, 0xd2, 0x48, 0xf5, 0x05, 0x1a, 0x23, 0xbf, 0x13, 0xc2, 0x69, 0xb0, 0x5f, 0x8a,
+	0x90, 0x68, 0xb8, 0xbf, 0x09, 0xa5, 0x33, 0x7c, 0x4c, 0x4c, 0x8f, 0x67, 0x07, 0x5a, 0x8c, 0x64,
+	0xbe, 0x17, 0xc8, 0xf0, 0x3e, 0x07, 0x53, 0x0a, 0x08, 0x51, 0x28, 0x41, 0x92, 0x8d, 0x6a, 0xa7,
+	0xb2, 0x51, 0xf7, 0xa1, 0xe2, 0x68, 0xbe, 0xd7, 0x3e, 0x22, 0xfe, 0xf1, 0xaf, 0xb1, 0xee, 0xf1,
+	0x64, 0x55, 0xfd, 0x15, 0xea, 0x57, 0x3f, 0xd8, 0xf1, 0xbd, 0xf6, 0x3e, 0x87, 0xf7, 0x03, 0x79,
+	0x89, 0xaf, 0xbd, 0x6f, 0x9b, 0x8f, 0x7d, 0xea, 0x2f, 0x71, 0x7f, 0x9a, 0x51, 0x87, 0x48, 0xe8,
+	0x63, 0x90, 0x98, 0xb1, 0xe9, 0xb0, 0xed, 0x24, 0x6d, 0xb3, 0x1b, 0xbb, 0x53, 0x57, 0x47, 0x5b,
+	0xde, 0x09, 0xea, 0xb4, 0xe0, 0xc5, 0x58, 0x8c, 0x13, 0xfa, 0x00, 0x2a, 0xb6, 0xe3, 0x99, 0x4d,
+	0x53, 0x0f, 0x55, 0xf6, 0x29, 0x67, 0x9d, 0xba, 0x82, 0x7f, 0x29, 0x60, 0x4c, 0x60, 0x9e, 0xe6,
+	0x84, 0x3e, 0x82, 0x92, 0x38, 0xe6, 0x30, 0x44, 0x5c, 0x9f, 0xec, 0xa7, 0x4c, 0x60, 0x2f, 0x72,
+	0x43, 0xbf, 0x01, 0xc4, 0xfd, 0xba, 0x23, 0x61, 0x71, 0xb8, 0x35, 0x1e, 0xbf, 0x2e, 0x3f, 0xee,
+	0x07, 0xf2, 0xd6, 0x90, 0x6d, 0xe7, 0xde, 0x62, 0x82, 0xd6, 0xd8, 0x7b, 0x63, 0x40, 0xb2, 0xa4,
+	0x0d, 0xa0, 0x50, 0xdb, 0x38, 0x2c, 0x9e, 0xde, 0x07, 0x9f, 0x0b, 0x71, 0xf6, 0x30, 0xe3, 0xa9,
+	0x71, 0xf6, 0xa0, 0xa0, 0x86, 0x81, 0xba, 0x50, 0x09, 0x45, 0x11, 0xac, 0x11, 0xc7, 0xa6, 0xf6,
+	0x7d, 0xd2, 0x24, 0xb7, 0xfa, 0x81, 0x5c, 0x1b, 0x33, 0xc9, 0x7d, 0xc6, 0x61, 0x78, 0x82, 0x65,
+	0x4d, 0xe8, 0xa6, 0x1a, 0x97, 0x92, 0x48, 0xe7, 0xf5, 0xa5, 0xe0, 0x31, 0xa5, 0x79, 0x4d, 0xf5,
+	0x98, 0x44, 0xde, 0x0d, 0x43, 0xd9, 0x82, 0x02, 0x35, 0x46, 0x2c, 0xf3, 0xf9, 0x72, 0x3a, 0xf3,
+	0x39, 0xe4, 0x17, 0x44, 0x49, 0xcf, 0x7f, 0xc9, 0x42, 0x59, 0xd4, 0x95, 0xef, 0x55, 0x0c, 0x36,
+	0x68, 0xab, 0xf0, 0x05, 0x6c, 0x55, 0x62, 0x7a, 0x9a, 0x29, 0xd3, 0xb3, 0x03, 0x39, 0xaa, 0x90,
+	0xb1, 0x85, 0x18, 0xf6, 0x6f, 0x26, 0x5c, 0x66, 0x8c, 0x72, 0xf2, 0x5d, 0xfc, 0xf4, 0x5b, 0xb9,
+	0x8b, 0xf7, 0x61, 0x2e, 0x3c, 0xdb, 0xcf, 0x6f, 0x25, 0x22, 0x4e, 0x4a, 0x1d, 0x24, 0x91, 0x90,
+	0xe9, 0x5b, 0x2d, 0xad, 0x6f, 0x63, 0xe3, 0x8c, 0x48, 0xef, 0x7e, 0x9b, 0x83, 0x7c, 0x78, 0x28,
+	0xbe, 0x4f, 0x1a, 0x77, 0x37, 0x8e, 0xed, 0x31, 0xf3, 0xe0, 0x53, 0xbe, 0x0f, 0x9f, 0xef, 0x60,
+	0x5c, 0xff, 0x67, 0x00, 0xa7, 0x26, 0x31, 0x8f, 0x4d, 0xcb, 0xf4, 0xce, 0x47, 0xa5, 0x04, 0x42,
+	0xb2, 0x47, 0x31, 0x92, 0x2a, 0x10, 0xa0, 0x1b, 0x00, 0x26, 0x39, 0x32, 0x70, 0x53, 0xf3, 0xad,
+	0x28, 0x2d, 0x5f, 0x34, 0xc9, 0x1e, 0x07, 0xa0, 0x5f, 0x41, 0x45, 0x8c, 0xab, 0xbe, 0x91, 0xfa,
+	0xa6, 0x39, 0x88, 0xee, 0xf5, 0xd3, 0xe7, 0x71, 0xaf, 0x95, 0xed, 0x38, 0xcd, 0xb0, 0x08, 0x95,
+	0x30, 0xcd, 0xc0, 0x01, 0xd2, 0x15, 0x54, 0x82, 0xb9, 0x7d, 0x4f, 0x73, 0x3d, 0x6c, 0x48, 0x19,
+	0xde, 0x70, 0xba, 0x5d, 0x6c, 0x48, 0x33, 0xca, 0xcf, 0x01, 0x92, 0xb5, 0x40, 0x2b, 0xb0, 0x18,
+	0x92, 0x26, 0x40, 0x4e, 0xfe, 0xd0, 0x35, 0x4f, 0x35, 0x2f, 0x4c, 0x56, 0x1c, 0xda, 0x96, 0x49,
+	0x28, 0xb3, 0x19, 0xea, 0xc0, 0x3d, 0xf4, 0x8f, 0x2d, 0x53, 0x97, 0x66, 0x95, 0x1f, 0x03, 0xf0,
+	0xe5, 0x65, 0x4a, 0x7c, 0x33, 0xad, 0xc4, 0x68, 0x78, 0x17, 0x22, 0xf5, 0xfd, 0xbf, 0x1c, 0x64,
+	0xe9, 0xaa, 0x5d, 0x5a, 0xe5, 0x4d, 0xab, 0x8d, 0x31, 0xa8, 0x36, 0xef, 0x41, 0x3e, 0xbc, 0x13,
+	0xc3, 0xc0, 0x72, 0xc4, 0x5a, 0x8c, 0xc9, 0x30, 0x46, 0xb7, 0x97, 0xa2, 0x86, 0x2c, 0x50, 0x03,
+	0x8a, 0xc9, 0x75, 0xf7, 0x54, 0xc8, 0x30, 0x5e, 0xf4, 0xa2, 0x2b, 0x90, 0xf0, 0x8a, 0xbb, 0xfc,
+	0x69, 0x0d, 0xe4, 0xc3, 0x6a, 0x12, 0xd1, 0x10, 0xff, 0x38, 0x7e, 0x9a, 0x8d, 0xc3, 0xcb, 0x17,
+	0x47, 0xc6, 0x34, 0xfb, 0x02, 0xea, 0x84, 0xc3, 0x75, 0x55, 0x1f, 0x45, 0x40, 0xd0, 0x7b, 0xc9,
+	0x45, 0xf0, 0xe5, 0x37, 0x75, 0x71, 0xe3, 0x0b, 0x60, 0x0b, 0x0a, 0x94, 0x60, 0xaa, 0xa3, 0x41,
+	0x91, 0xa2, 0x13, 0xf3, 0x45, 0x1e, 0xe6, 0xd3, 0xb7, 0xd3, 0x65, 0x7e, 0x5b, 0x25, 0xbe, 0xae,
+	0x63, 0x42, 0xc2, 0x83, 0x13, 0x35, 0xd1, 0x5f, 0xc4, 0xaf, 0xeb, 0x4f, 0x26, 0xbb, 0x92, 0xb7,
+	0xfb, 0x81, 0xfc, 0xea, 0x48, 0xb5, 0x11, 0x3d, 0x4b, 0xc6, 0x8a, 0x9d, 0xa4, 0xf0, 0x95, 0xbe,
+	0x01, 0x45, 0xfe, 0x35, 0x78, 0x92, 0x22, 0xd4, 0xa9, 0x27, 0x89, 0x93, 0x37, 0x0c, 0xf4, 0x18,
+	0x2a, 0x9e, 0xe6, 0xb6, 0xb0, 0x17, 0x79, 0xf8, 0x9f, 0x4d, 0x1e, 0xf1, 0x0f, 0xfb, 0x81, 0xbc,
+	0x39, 0x6d, 0xc4, 0x07, 0x8c, 0x63, 0xe4, 0x93, 0x2b, 0x6a, 0xd9, 0x13, 0x00, 0x2c, 0xde, 0x12,
+	0x45, 0x0e, 0x1e, 0xac, 0x34, 0xf5, 0xd4, 0x83, 0x25, 0xf2, 0x6e, 0x18, 0xe8, 0x37, 0xb0, 0x14,
+	0x72, 0x4f, 0x59, 0x88, 0xcf, 0xc7, 0xa5, 0xa3, 0x7e, 0xda, 0x0f, 0xe4, 0xed, 0x8b, 0x4d, 0x68,
+	0xd0, 0x5c, 0x20, 0x6f, 0x08, 0x8c, 0x6c, 0xb8, 0x3a, 0x42, 0x3c, 0x9d, 0xe2, 0x17, 0x7c, 0x8a,
+	0x3f, 0xe9, 0x05, 0xf2, 0xf2, 0x28, 0x7e, 0xd3, 0x26, 0xba, 0x3c, 0x2c, 0xad, 0x61, 0x28, 0xff,
+	0x93, 0x87, 0xa5, 0x11, 0x09, 0x8f, 0x4b, 0x7b, 0xa8, 0xde, 0x1a, 0x78, 0xce, 0x7b, 0x79, 0x4a,
+	0x66, 0x67, 0xd0, 0x8d, 0xfa, 0x13, 0x98, 0x0f, 0x8f, 0x86, 0xee, 0x74, 0x3a, 0xd8, 0xf6, 0xc2,
+	0xb4, 0x45, 0x85, 0x43, 0x77, 0x39, 0x10, 0xdd, 0x82, 0x45, 0xdd, 0x71, 0x5d, 0xac, 0x7b, 0x02,
+	0x26, 0xf7, 0xf4, 0xa5, 0xb8, 0x23, 0x42, 0xfe, 0x9b, 0x0c, 0x5c, 0x1d, 0x6d, 0xac, 0xa3, 0xf3,
+	0x7d, 0x01, 0x5b, 0xcd, 0x8e, 0xfa, 0xf8, 0x37, 0x67, 0x11, 0x97, 0xea, 0xd6, 0xca, 0x48, 0x03,
+	0x8e, 0xce, 0xe0, 0xda, 0xe8, 0x91, 0x08, 0x96, 0xe0, 0x5e, 0x2f, 0x90, 0x57, 0xc7, 0x30, 0x9e,
+	0xa6, 0x64, 0xab, 0x23, 0xc5, 0x36, 0x0c, 0xf4, 0x31, 0x94, 0xc4, 0x3c, 0xc0, 0x14, 0x2b, 0x31,
+	0xfa, 0xa5, 0x54, 0x0c, 0xd4, 0x15, 0x15, 0x92, 0x4c, 0x09, 0x7a, 0x04, 0xf3, 0x03, 0x61, 0xfe,
+	0xef, 0x84, 0xa7, 0xd2, 0x67, 0x09, 0xf0, 0xcb, 0x9e, 0x10, 0xda, 0x2b, 0xf7, 0x47, 0xbf, 0x60,
+	0x15, 0x20, 0xbb, 0x8f, 0x6d, 0x8f, 0xbb, 0x84, 0x3b, 0xba, 0x8e, 0xbb, 0xdc, 0x25, 0x2c, 0xc1,
+	0x9c, 0x8a, 0x9b, 0x3e, 0xc1, 0x86, 0x34, 0x8b, 0x24, 0x28, 0xef, 0xf8, 0x9e, 0x13, 0x77, 0x67,
+	0x95, 0x4f, 0x73, 0xb0, 0x32, 0x72, 0x5d, 0x2f, 0xed, 0x69, 0x8b, 0x92, 0xf5, 0x4f, 0xfe, 0x48,
+	0xc9, 0xfa, 0xa7, 0xdf, 0x38, 0x59, 0xdf, 0x85, 0xa4, 0xd4, 0xe2, 0xe8, 0x19, 0x9e, 0xb7, 0x5f,
+	0xe9, 0x07, 0xf2, 0x0f, 0xc6, 0x1f, 0xab, 0xe4, 0x9d, 0x7b, 0x41, 0x1f, 0x28, 0x7b, 0xc1, 0xe2,
+	0x43, 0xea, 0xd0, 0xd3, 0xf7, 0x8f, 0x7a, 0x81, 0xbc, 0x38, 0xc4, 0x66, 0xda, 0x6c, 0x16, 0x07,
+	0x84, 0xf0, 0x83, 0x23, 0x26, 0xac, 0x3f, 0x7f, 0xee, 0x84, 0xb5, 0xc8, 0x4e, 0xf9, 0xc7, 0x59,
+	0xa8, 0xa4, 0x72, 0xe9, 0x97, 0x56, 0x15, 0xb7, 0x20, 0x4b, 0x3d, 0xc4, 0xd0, 0xec, 0xaf, 0x8f,
+	0x7d, 0x2c, 0xa8, 0xd1, 0x3f, 0x2a, 0xc3, 0x45, 0xf7, 0x21, 0xe7, 0x9c, 0xd9, 0x78, 0xaa, 0x9b,
+	0x75, 0xa3, 0x1f, 0xc8, 0xd7, 0x86, 0xbd, 0x7f, 0x4a, 0x4a, 0x55, 0x83, 0x33, 0x41, 0x3f, 0x83,
+	0x02, 0xfb, 0x10, 0x14, 0xf9, 0x4f, 0x7b, 0x81, 0x3c, 0x17, 0xe2, 0x4d, 0xdb, 0xfb, 0x39, 0x46,
+	0xdc, 0x30, 0x94, 0x25, 0xc8, 0xb2, 0x9d, 0x10, 0x4d, 0x8e, 0xf2, 0xcf, 0xb3, 0x50, 0x16, 0xb3,
+	0xbc, 0x97, 0x76, 0x9f, 0x56, 0x61, 0xce, 0x24, 0x47, 0x2e, 0xd6, 0x8c, 0xd0, 0xeb, 0xcd, 0x9b,
+	0x44, 0xc5, 0x9a, 0x81, 0x5e, 0x80, 0xa2, 0x6e, 0x99, 0xfa, 0x49, 0x92, 0x62, 0x53, 0x0b, 0x0c,
+	0x70, 0xe8, 0x5a, 0x48, 0x82, 0xd9, 0x0e, 0x69, 0x85, 0x37, 0x2c, 0xfd, 0x44, 0x08, 0xb2, 0x9a,
+	0xdb, 0x22, 0xfc, 0x15, 0x40, 0x65, 0xdf, 0xdf, 0x9d, 0x57, 0x4c, 0xe5, 0x1f, 0xb2, 0x90, 0xe7,
+	0x19, 0x8c, 0x4b, 0xbb, 0x51, 0xb7, 0x20, 0xdb, 0xd6, 0x48, 0x9b, 0xe7, 0xa5, 0xea, 0xab, 0xe3,
+	0xde, 0x42, 0x18, 0x12, 0x5a, 0x86, 0xdc, 0xa9, 0x66, 0xf9, 0x98, 0x6d, 0x5c, 0x4e, 0xe5, 0x0d,
+	0x74, 0x07, 0x96, 0x3b, 0xda, 0x27, 0xc2, 0x83, 0xdb, 0x91, 0xee, 0xf8, 0xa1, 0xa3, 0x94, 0x53,
+	0x51, 0x47, 0xfb, 0x24, 0xb1, 0x58, 0xbb, 0xb4, 0xe7, 0x8f, 0x9b, 0x30, 0xb8, 0x37, 0x22, 0x61,
+	0x70, 0x7d, 0x20, 0x61, 0x50, 0x1e, 0x93, 0x21, 0xf8, 0x20, 0x6d, 0x76, 0x3f, 0x1b, 0x55, 0x5b,
+	0xcc, 0xf6, 0xf7, 0xd9, 0x6d, 0xee, 0xdf, 0x67, 0x41, 0x1a, 0xa4, 0xbd, 0xcc, 0x41, 0x6c, 0xe4,
+	0xfe, 0x86, 0x05, 0xc2, 0x61, 0x13, 0x3d, 0xb8, 0x68, 0x10, 0x3b, 0x7a, 0x3b, 0xbf, 0xd5, 0xa8,
+	0xf5, 0x3d, 0xc8, 0xf3, 0xec, 0x61, 0xe4, 0x23, 0x8c, 0x4a, 0x3d, 0x8e, 0x1e, 0x17, 0xef, 0x64,
+	0xe3, 0xe2, 0x2c, 0xe8, 0xb8, 0xf8, 0xd7, 0x60, 0xe5, 0x5b, 0x84, 0x3a, 0x75, 0x5c, 0x9c, 0xbc,
+	0x61, 0x28, 0xff, 0x54, 0x82, 0x92, 0x50, 0x09, 0x70, 0x69, 0xb5, 0xe2, 0x0e, 0x64, 0xbd, 0xf3,
+	0x6e, 0x54, 0x7f, 0x72, 0x7d, 0x4c, 0xa1, 0x43, 0xed, 0xe0, 0xbc, 0x8b, 0x55, 0x86, 0x19, 0x56,
+	0x85, 0xb7, 0x2c, 0xe7, 0x58, 0xe3, 0xd6, 0x9f, 0x55, 0x85, 0xbf, 0xc3, 0xda, 0xa2, 0x92, 0x35,
+	0xd3, 0x4a, 0xb6, 0x06, 0x05, 0xcd, 0x6d, 0xf9, 0xac, 0x8b, 0xdf, 0x04, 0x71, 0xfb, 0x3b, 0xad,
+	0x80, 0x7f, 0x95, 0x49, 0x95, 0x01, 0xc7, 0x76, 0x20, 0xd2, 0xc7, 0xa9, 0xfe, 0xdd, 0xad, 0x7e,
+	0x20, 0xbf, 0x32, 0xa1, 0x04, 0x39, 0xc6, 0xa4, 0x13, 0x58, 0x1a, 0x51, 0xa3, 0x80, 0x1e, 0x8b,
+	0x19, 0x44, 0xc1, 0x44, 0x27, 0x4a, 0xfc, 0x7a, 0x2f, 0x90, 0x57, 0x46, 0xb2, 0x9c, 0x36, 0xd1,
+	0x95, 0x11, 0x02, 0x1b, 0x86, 0xf2, 0x24, 0x07, 0x59, 0xba, 0xe7, 0x83, 0x65, 0x11, 0x8b, 0x50,
+	0xa9, 0xfb, 0xe7, 0x77, 0x63, 0x51, 0x52, 0x06, 0x21, 0x98, 0xaf, 0xfb, 0xe7, 0xdb, 0x31, 0x88,
+	0x48, 0x33, 0x68, 0x09, 0x16, 0x28, 0xda, 0x1d, 0x01, 0x38, 0x1b, 0x02, 0xb7, 0x44, 0x60, 0x36,
+	0x04, 0x6e, 0x8b, 0xc0, 0x1c, 0xba, 0x0a, 0x28, 0x1c, 0x0d, 0x16, 0x44, 0x01, 0x5a, 0x85, 0xa5,
+	0x08, 0x2e, 0xca, 0x2b, 0xa1, 0x2a, 0x2c, 0xc7, 0x04, 0x22, 0xab, 0xb2, 0xd8, 0x93, 0x92, 0x5c,
+	0x11, 0x7b, 0x52, 0xe2, 0xe7, 0xe9, 0x98, 0x12, 0xf1, 0xec, 0xc0, 0x4b, 0xcb, 0x68, 0x19, 0xa4,
+	0x44, 0x36, 0x7f, 0xcf, 0x90, 0x56, 0xd0, 0x0a, 0x2c, 0x0a, 0x82, 0x43, 0xf0, 0x55, 0x11, 0xbc,
+	0x15, 0x83, 0x57, 0x45, 0xf0, 0x76, 0x0c, 0xae, 0xa6, 0xa6, 0x7b, 0x27, 0x86, 0x5f, 0xa3, 0x22,
+	0xb9, 0xbe, 0x0a, 0x8b, 0xb0, 0x4e, 0x99, 0x70, 0xe8, 0x96, 0x30, 0x68, 0x39, 0x01, 0x8b, 0x2b,
+	0xb3, 0x41, 0x79, 0x87, 0x3c, 0xc4, 0x39, 0xbe, 0x48, 0xe1, 0x6f, 0x6b, 0xae, 0x75, 0xbe, 0x63,
+	0x38, 0x5d, 0x0f, 0xbb, 0x07, 0x4e, 0xf7, 0xee, 0x9d, 0x3b, 0xd2, 0x4d, 0xba, 0xc4, 0xc3, 0xf0,
+	0x3b, 0xd2, 0xab, 0x34, 0x7e, 0x7e, 0x60, 0x19, 0x77, 0x3f, 0xc0, 0x9a, 0x2b, 0x6d, 0xd1, 0xa1,
+	0xed, 0x63, 0xdb, 0xb8, 0xfb, 0xd0, 0xb7, 0x2c, 0x15, 0x3f, 0xf6, 0x31, 0xf1, 0xa4, 0x0f, 0xe9,
+	0x18, 0x28, 0x74, 0x4b, 0x80, 0x12, 0xe9, 0xa3, 0x08, 0xbc, 0x9d, 0x02, 0x7f, 0x4c, 0x87, 0xc0,
+	0x78, 0xdc, 0xa1, 0x70, 0x37, 0x82, 0xff, 0x39, 0x2a, 0x42, 0x6e, 0xdf, 0xd3, 0x9a, 0x4d, 0xc9,
+	0x40, 0x0b, 0x50, 0xda, 0x75, 0x6c, 0xcf, 0x35, 0x8f, 0x7d, 0xcf, 0x71, 0x25, 0xa6, 0x8e, 0x75,
+	0xbf, 0xf5, 0xae, 0x6f, 0x7b, 0xd8, 0x95, 0x9a, 0xb4, 0xf9, 0x0b, 0xc7, 0xc0, 0xae, 0x46, 0x7b,
+	0x5b, 0x74, 0xe3, 0xde, 0xd5, 0xf4, 0x93, 0x83, 0x36, 0x7e, 0x68, 0x69, 0x5e, 0xd3, 0x71, 0x3b,
+	0x52, 0x5b, 0xf9, 0x7d, 0x11, 0xb2, 0x7b, 0x7e, 0xa7, 0x8b, 0xde, 0x18, 0x28, 0xee, 0x9a, 0x5c,
+	0xdb, 0x35, 0x50, 0xc1, 0xb5, 0x0d, 0x10, 0x9f, 0x14, 0x52, 0x9d, 0x99, 0xf4, 0xeb, 0x22, 0x01,
+	0x11, 0xbd, 0x2b, 0xfe, 0x72, 0x21, 0xfa, 0x5d, 0xc8, 0xec, 0xd4, 0x9f, 0x85, 0x08, 0xbf, 0x46,
+	0xe0, 0x00, 0x82, 0x7e, 0x39, 0xba, 0x1a, 0x38, 0x7b, 0x81, 0x62, 0xe0, 0x51, 0x25, 0xbf, 0xe8,
+	0xc3, 0xf1, 0xcf, 0x12, 0xb9, 0x0b, 0xbe, 0x4a, 0x8c, 0x7d, 0x7b, 0x38, 0x18, 0x57, 0xc4, 0x95,
+	0xbf, 0x50, 0x48, 0x3c, 0xba, 0x52, 0x0b, 0xbd, 0x07, 0x68, 0xe8, 0xf7, 0x18, 0xa4, 0x3a, 0x37,
+	0xfd, 0xa7, 0x64, 0x42, 0xb0, 0x1e, 0x42, 0x08, 0x7a, 0x2d, 0x79, 0xd3, 0x2c, 0x8c, 0x7b, 0xd2,
+	0x4c, 0xea, 0x02, 0xa9, 0x68, 0xee, 0x38, 0x88, 0xb3, 0x29, 0x4e, 0xf7, 0x34, 0xd5, 0x45, 0x7d,
+	0x00, 0x42, 0xd0, 0xeb, 0x50, 0x4a, 0xaa, 0xfc, 0x49, 0x15, 0x86, 0x1f, 0x67, 0x92, 0x9a, 0x70,
+	0x55, 0x44, 0x45, 0x75, 0x58, 0x30, 0xa3, 0x08, 0xf9, 0x88, 0x3f, 0xc2, 0x94, 0xa6, 0x54, 0xdc,
+	0xa9, 0xf3, 0xa6, 0xd8, 0x24, 0xe8, 0xad, 0xc1, 0x2a, 0xa5, 0xf2, 0xe4, 0x22, 0xa5, 0xc1, 0x52,
+	0xa4, 0xb7, 0x06, 0xdf, 0x97, 0x2b, 0x53, 0xde, 0xff, 0x07, 0x1e, 0x93, 0x7f, 0x05, 0xcb, 0xa9,
+	0x7c, 0x79, 0xf4, 0x48, 0x35, 0x7f, 0x91, 0x62, 0x05, 0x75, 0xc9, 0x19, 0x82, 0xb1, 0xbd, 0xe4,
+	0xd1, 0x00, 0xa9, 0x2e, 0x8c, 0x7d, 0xc7, 0x8d, 0x50, 0xd0, 0xcb, 0x51, 0x5d, 0x87, 0x34, 0xee,
+	0xfd, 0x8a, 0x17, 0x6f, 0xfc, 0x14, 0xca, 0x62, 0xb1, 0x58, 0x75, 0x71, 0xd2, 0x23, 0x9a, 0x5a,
+	0x12, 0xaa, 0xc1, 0xa8, 0x08, 0x1a, 0x5d, 0x92, 0x2a, 0x1a, 0x57, 0x8b, 0xc3, 0xba, 0xd1, 0xdb,
+	0x20, 0x0d, 0x95, 0x85, 0x2c, 0x4d, 0xab, 0x0a, 0x51, 0x17, 0xce, 0xd2, 0x35, 0x1f, 0xca, 0x6f,
+	0x33, 0x90, 0x6d, 0xd8, 0x4d, 0x07, 0xbd, 0x05, 0xe0, 0x69, 0xc7, 0x16, 0x3e, 0x72, 0x9d, 0xb3,
+	0xc8, 0xbe, 0xc9, 0x69, 0xd5, 0x68, 0x3a, 0xb5, 0x03, 0x8a, 0xa2, 0x3a, 0x67, 0xe4, 0x6d, 0xdb,
+	0x73, 0xcf, 0xd5, 0xa2, 0x17, 0xb5, 0xd7, 0xde, 0x84, 0xf9, 0x74, 0x27, 0x8d, 0xe6, 0x4f, 0xf0,
+	0x39, 0xf3, 0x6b, 0x8b, 0x2a, 0xfd, 0x4c, 0xe2, 0x47, 0xea, 0xb5, 0x56, 0xc2, 0xf8, 0xf1, 0xde,
+	0xcc, 0xeb, 0x99, 0xfa, 0xd6, 0x93, 0xde, 0x7a, 0xe6, 0xab, 0xde, 0x7a, 0xe6, 0xbf, 0x7b, 0xeb,
+	0x99, 0x4f, 0xbf, 0x5e, 0xbf, 0xf2, 0xd5, 0xd7, 0xeb, 0x57, 0xfe, 0xf3, 0xeb, 0xf5, 0x2b, 0x1f,
+	0x56, 0xa3, 0x21, 0x58, 0x9a, 0x6d, 0x6c, 0xb6, 0x9c, 0xcd, 0xee, 0x49, 0x6b, 0xb3, 0x7b, 0x66,
+	0x1c, 0x1f, 0xe7, 0x99, 0x9f, 0xfa, 0xc3, 0x3f, 0x04, 0x00, 0x00, 0xff, 0xff, 0x32, 0x9d, 0x5f,
+	0x1f, 0x99, 0x3c, 0x00, 0x00,
 }
 
 func (m *Challenge) Marshal() (dAtA []byte, err error) {
@@ -3864,7 +3864,7 @@ func (m *Hypervisor) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *TeamMember) Marshal() (dAtA []byte, err error) {
+func (m *OrganizationMember) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3874,26 +3874,26 @@ func (m *TeamMember) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *TeamMember) MarshalTo(dAtA []byte) (int, error) {
+func (m *OrganizationMember) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *TeamMember) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *OrganizationMember) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.TeamID != 0 {
-		i = encodeVarintPwdb(dAtA, i, uint64(m.TeamID))
+	if m.OrganizationID != 0 {
+		i = encodeVarintPwdb(dAtA, i, uint64(m.OrganizationID))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xd8
 	}
-	if m.Team != nil {
+	if m.Organization != nil {
 		{
-			size, err := m.Team.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Organization.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -3961,7 +3961,7 @@ func (m *TeamMember) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *TournamentMember) Marshal() (dAtA []byte, err error) {
+func (m *TeamMember) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3971,12 +3971,12 @@ func (m *TournamentMember) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *TournamentMember) MarshalTo(dAtA []byte) (int, error) {
+func (m *TeamMember) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *TournamentMember) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *TeamMember) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -4077,16 +4077,16 @@ func (m *TournamentMember) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0xe2
 		}
 	}
-	if m.TournamentTeamID != 0 {
-		i = encodeVarintPwdb(dAtA, i, uint64(m.TournamentTeamID))
+	if m.TeamID != 0 {
+		i = encodeVarintPwdb(dAtA, i, uint64(m.TeamID))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xd8
 	}
-	if m.TournamentTeam != nil {
+	if m.Team != nil {
 		{
-			size, err := m.TournamentTeam.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Team.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -4174,16 +4174,16 @@ func (m *User) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.ActiveTournamentID != 0 {
-		i = encodeVarintPwdb(dAtA, i, uint64(m.ActiveTournamentID))
+	if m.ActiveSeasonID != 0 {
+		i = encodeVarintPwdb(dAtA, i, uint64(m.ActiveSeasonID))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xf0
 	}
-	if m.ActiveTournament != nil {
+	if m.ActiveSeason != nil {
 		{
-			size, err := m.ActiveTournament.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.ActiveSeason.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -4195,16 +4195,16 @@ func (m *User) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0xea
 	}
-	if m.ActiveTournamentMemberID != 0 {
-		i = encodeVarintPwdb(dAtA, i, uint64(m.ActiveTournamentMemberID))
+	if m.ActiveTeamMemberID != 0 {
+		i = encodeVarintPwdb(dAtA, i, uint64(m.ActiveTeamMemberID))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xe0
 	}
-	if m.ActiveTournamentMember != nil {
+	if m.ActiveTeamMember != nil {
 		{
-			size, err := m.ActiveTournamentMember.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.ActiveTeamMember.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -4248,10 +4248,10 @@ func (m *User) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0xca
 		}
 	}
-	if len(m.TournamentMemberships) > 0 {
-		for iNdEx := len(m.TournamentMemberships) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.TeamMemberships) > 0 {
+		for iNdEx := len(m.TeamMemberships) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.TournamentMemberships[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.TeamMemberships[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -4383,7 +4383,7 @@ func (m *UserList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *Team) Marshal() (dAtA []byte, err error) {
+func (m *Organization) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -4393,12 +4393,12 @@ func (m *Team) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Team) MarshalTo(dAtA []byte) (int, error) {
+func (m *Organization) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Team) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Organization) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -4435,10 +4435,10 @@ func (m *Team) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0xca
 		}
 	}
-	if len(m.TournamentTeams) > 0 {
-		for iNdEx := len(m.TournamentTeams) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.Teams) > 0 {
+		for iNdEx := len(m.Teams) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.TournamentTeams[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.Teams[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -4506,7 +4506,7 @@ func (m *Team) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *TeamList) Marshal() (dAtA []byte, err error) {
+func (m *OrganizationList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -4516,12 +4516,12 @@ func (m *TeamList) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *TeamList) MarshalTo(dAtA []byte) (int, error) {
+func (m *OrganizationList) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *TeamList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *OrganizationList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -4543,7 +4543,7 @@ func (m *TeamList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *Tournament) Marshal() (dAtA []byte, err error) {
+func (m *Season) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -4553,12 +4553,12 @@ func (m *Tournament) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Tournament) MarshalTo(dAtA []byte) (int, error) {
+func (m *Season) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Tournament) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Season) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -4579,10 +4579,10 @@ func (m *Tournament) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0xca
 		}
 	}
-	if len(m.Teams) > 0 {
-		for iNdEx := len(m.Teams) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.Organizations) > 0 {
+		for iNdEx := len(m.Organizations) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.Teams[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.Organizations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -4658,7 +4658,7 @@ func (m *Tournament) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *TournamentList) Marshal() (dAtA []byte, err error) {
+func (m *SeasonList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -4668,12 +4668,12 @@ func (m *TournamentList) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *TournamentList) MarshalTo(dAtA []byte) (int, error) {
+func (m *SeasonList) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *TournamentList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *SeasonList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -4695,7 +4695,7 @@ func (m *TournamentList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *TournamentTeam) Marshal() (dAtA []byte, err error) {
+func (m *Team) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -4705,12 +4705,12 @@ func (m *TournamentTeam) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *TournamentTeam) MarshalTo(dAtA []byte) (int, error) {
+func (m *Team) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *TournamentTeam) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Team) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -4747,16 +4747,16 @@ func (m *TournamentTeam) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0xea
 		}
 	}
-	if m.TeamID != 0 {
-		i = encodeVarintPwdb(dAtA, i, uint64(m.TeamID))
+	if m.OrganizationID != 0 {
+		i = encodeVarintPwdb(dAtA, i, uint64(m.OrganizationID))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xd8
 	}
-	if m.Team != nil {
+	if m.Organization != nil {
 		{
-			size, err := m.Team.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Organization.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -4768,16 +4768,16 @@ func (m *TournamentTeam) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0xd2
 	}
-	if m.TournamentID != 0 {
-		i = encodeVarintPwdb(dAtA, i, uint64(m.TournamentID))
+	if m.SeasonID != 0 {
+		i = encodeVarintPwdb(dAtA, i, uint64(m.SeasonID))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xc8
 	}
-	if m.Tournament != nil {
+	if m.Season != nil {
 		{
-			size, err := m.Tournament.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Season.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -4829,7 +4829,7 @@ func (m *TournamentTeam) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *TournamentTeamList) Marshal() (dAtA []byte, err error) {
+func (m *TeamList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -4839,12 +4839,12 @@ func (m *TournamentTeamList) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *TournamentTeamList) MarshalTo(dAtA []byte) (int, error) {
+func (m *TeamList) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *TournamentTeamList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *TeamList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -4886,16 +4886,16 @@ func (m *WhoswhoAttempt) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.TargetTeamID != 0 {
-		i = encodeVarintPwdb(dAtA, i, uint64(m.TargetTeamID))
+	if m.TargetOrganizationID != 0 {
+		i = encodeVarintPwdb(dAtA, i, uint64(m.TargetOrganizationID))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xe8
 	}
-	if m.TargetTeam != nil {
+	if m.TargetOrganization != nil {
 		{
-			size, err := m.TargetTeam.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.TargetOrganization.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -5009,16 +5009,16 @@ func (m *ChallengeValidation) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.TournamentMemberID != 0 {
-		i = encodeVarintPwdb(dAtA, i, uint64(m.TournamentMemberID))
+	if m.TeamMemberID != 0 {
+		i = encodeVarintPwdb(dAtA, i, uint64(m.TeamMemberID))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xd8
 	}
-	if m.TournamentMember != nil {
+	if m.TeamMember != nil {
 		{
-			size, err := m.TournamentMember.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.TeamMember.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -5161,16 +5161,16 @@ func (m *ChallengeSubscription) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0xd2
 	}
-	if m.TournamentTeamID != 0 {
-		i = encodeVarintPwdb(dAtA, i, uint64(m.TournamentTeamID))
+	if m.TeamID != 0 {
+		i = encodeVarintPwdb(dAtA, i, uint64(m.TeamID))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xc8
 	}
-	if m.TournamentTeam != nil {
+	if m.Team != nil {
 		{
-			size, err := m.TournamentTeam.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Team.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -5430,16 +5430,16 @@ func (m *Coupon) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0xd2
 		}
 	}
-	if m.TournamentID != 0 {
-		i = encodeVarintPwdb(dAtA, i, uint64(m.TournamentID))
+	if m.SeasonID != 0 {
+		i = encodeVarintPwdb(dAtA, i, uint64(m.SeasonID))
 		i--
 		dAtA[i] = 0xc
 		i--
 		dAtA[i] = 0xc8
 	}
-	if m.Tournament != nil {
+	if m.Season != nil {
 		{
-			size, err := m.Tournament.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Season.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -5761,7 +5761,7 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i--
 			dAtA[i] = 0x1
 			i--
-			dAtA[i] = 0xa2
+			dAtA[i] = 0x9a
 		}
 	}
 	if len(m.Users) > 0 {
@@ -5777,55 +5777,7 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i--
 			dAtA[i] = 0x1
 			i--
-			dAtA[i] = 0x9a
-		}
-	}
-	if len(m.TournamentTeams) > 0 {
-		for iNdEx := len(m.TournamentTeams) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.TournamentTeams[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintPwdb(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x1
-			i--
 			dAtA[i] = 0x92
-		}
-	}
-	if len(m.TournamentMembers) > 0 {
-		for iNdEx := len(m.TournamentMembers) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.TournamentMembers[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintPwdb(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0x8a
-		}
-	}
-	if len(m.Tournaments) > 0 {
-		for iNdEx := len(m.Tournaments) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Tournaments[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintPwdb(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0x82
 		}
 	}
 	if len(m.TeamMembers) > 0 {
@@ -5839,7 +5791,9 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintPwdb(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x7a
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0x8a
 		}
 	}
 	if len(m.Teams) > 0 {
@@ -5853,7 +5807,51 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintPwdb(dAtA, i, uint64(size))
 			}
 			i--
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0x82
+		}
+	}
+	if len(m.Seasons) > 0 {
+		for iNdEx := len(m.Seasons) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Seasons[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwdb(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x7a
+		}
+	}
+	if len(m.OrganizationMembers) > 0 {
+		for iNdEx := len(m.OrganizationMembers) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.OrganizationMembers[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwdb(dAtA, i, uint64(size))
+			}
+			i--
 			dAtA[i] = 0x72
+		}
+	}
+	if len(m.Organizations) > 0 {
+		for iNdEx := len(m.Organizations) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Organizations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwdb(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x6a
 		}
 	}
 	if len(m.Notifications) > 0 {
@@ -5867,91 +5865,7 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintPwdb(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x6a
-		}
-	}
-	if len(m.ChallengeVersions) > 0 {
-		for iNdEx := len(m.ChallengeVersions) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.ChallengeVersions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintPwdb(dAtA, i, uint64(size))
-			}
-			i--
 			dAtA[i] = 0x62
-		}
-	}
-	if len(m.ChallengeValidations) > 0 {
-		for iNdEx := len(m.ChallengeValidations) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.ChallengeValidations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintPwdb(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x5a
-		}
-	}
-	if len(m.ChallengeSubscriptions) > 0 {
-		for iNdEx := len(m.ChallengeSubscriptions) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.ChallengeSubscriptions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintPwdb(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x52
-		}
-	}
-	if len(m.ChallengeInstances) > 0 {
-		for iNdEx := len(m.ChallengeInstances) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.ChallengeInstances[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintPwdb(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x4a
-		}
-	}
-	if len(m.ChallengeFlavors) > 0 {
-		for iNdEx := len(m.ChallengeFlavors) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.ChallengeFlavors[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintPwdb(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x42
-		}
-	}
-	if len(m.Challenges) > 0 {
-		for iNdEx := len(m.Challenges) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Challenges[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintPwdb(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x3a
 		}
 	}
 	if len(m.InventoryItems) > 0 {
@@ -5965,7 +5879,7 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintPwdb(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x32
+			dAtA[i] = 0x5a
 		}
 	}
 	if len(m.Hypervisors) > 0 {
@@ -5979,7 +5893,7 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintPwdb(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x2a
+			dAtA[i] = 0x52
 		}
 	}
 	if len(m.CouponValidations) > 0 {
@@ -5993,7 +5907,7 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintPwdb(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x22
+			dAtA[i] = 0x4a
 		}
 	}
 	if len(m.Coupons) > 0 {
@@ -6007,7 +5921,91 @@ func (m *Dump) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintPwdb(dAtA, i, uint64(size))
 			}
 			i--
+			dAtA[i] = 0x42
+		}
+	}
+	if len(m.ChallengeVersions) > 0 {
+		for iNdEx := len(m.ChallengeVersions) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ChallengeVersions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwdb(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x3a
+		}
+	}
+	if len(m.ChallengeValidations) > 0 {
+		for iNdEx := len(m.ChallengeValidations) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ChallengeValidations[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwdb(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x32
+		}
+	}
+	if len(m.ChallengeSubscriptions) > 0 {
+		for iNdEx := len(m.ChallengeSubscriptions) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ChallengeSubscriptions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwdb(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x2a
+		}
+	}
+	if len(m.ChallengeInstances) > 0 {
+		for iNdEx := len(m.ChallengeInstances) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ChallengeInstances[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwdb(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
+	}
+	if len(m.ChallengeFlavors) > 0 {
+		for iNdEx := len(m.ChallengeFlavors) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ChallengeFlavors[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwdb(dAtA, i, uint64(size))
+			}
+			i--
 			dAtA[i] = 0x1a
+		}
+	}
+	if len(m.Challenges) > 0 {
+		for iNdEx := len(m.Challenges) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Challenges[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwdb(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
 		}
 	}
 	if len(m.Achievements) > 0 {
@@ -6307,6 +6305,43 @@ func (m *Hypervisor) Size() (n int) {
 	return n
 }
 
+func (m *OrganizationMember) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ID != 0 {
+		n += 1 + sovPwdb(uint64(m.ID))
+	}
+	if m.CreatedAt != nil {
+		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.CreatedAt)
+		n += 1 + l + sovPwdb(uint64(l))
+	}
+	if m.UpdatedAt != nil {
+		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.UpdatedAt)
+		n += 1 + l + sovPwdb(uint64(l))
+	}
+	if m.Role != 0 {
+		n += 2 + sovPwdb(uint64(m.Role))
+	}
+	if m.User != nil {
+		l = m.User.Size()
+		n += 2 + l + sovPwdb(uint64(l))
+	}
+	if m.UserID != 0 {
+		n += 2 + sovPwdb(uint64(m.UserID))
+	}
+	if m.Organization != nil {
+		l = m.Organization.Size()
+		n += 2 + l + sovPwdb(uint64(l))
+	}
+	if m.OrganizationID != 0 {
+		n += 2 + sovPwdb(uint64(m.OrganizationID))
+	}
+	return n
+}
+
 func (m *TeamMember) Size() (n int) {
 	if m == nil {
 		return 0
@@ -6340,43 +6375,6 @@ func (m *TeamMember) Size() (n int) {
 	}
 	if m.TeamID != 0 {
 		n += 2 + sovPwdb(uint64(m.TeamID))
-	}
-	return n
-}
-
-func (m *TournamentMember) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.ID != 0 {
-		n += 1 + sovPwdb(uint64(m.ID))
-	}
-	if m.CreatedAt != nil {
-		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.CreatedAt)
-		n += 1 + l + sovPwdb(uint64(l))
-	}
-	if m.UpdatedAt != nil {
-		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.UpdatedAt)
-		n += 1 + l + sovPwdb(uint64(l))
-	}
-	if m.Role != 0 {
-		n += 2 + sovPwdb(uint64(m.Role))
-	}
-	if m.User != nil {
-		l = m.User.Size()
-		n += 2 + l + sovPwdb(uint64(l))
-	}
-	if m.UserID != 0 {
-		n += 2 + sovPwdb(uint64(m.UserID))
-	}
-	if m.TournamentTeam != nil {
-		l = m.TournamentTeam.Size()
-		n += 2 + l + sovPwdb(uint64(l))
-	}
-	if m.TournamentTeamID != 0 {
-		n += 2 + sovPwdb(uint64(m.TournamentTeamID))
 	}
 	if len(m.Coupons) > 0 {
 		for _, e := range m.Coupons {
@@ -6458,8 +6456,8 @@ func (m *User) Size() (n int) {
 	if l > 0 {
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if len(m.TournamentMemberships) > 0 {
-		for _, e := range m.TournamentMemberships {
+	if len(m.TeamMemberships) > 0 {
+		for _, e := range m.TeamMemberships {
 			l = e.Size()
 			n += 2 + l + sovPwdb(uint64(l))
 		}
@@ -6476,24 +6474,149 @@ func (m *User) Size() (n int) {
 			n += 2 + l + sovPwdb(uint64(l))
 		}
 	}
-	if m.ActiveTournamentMember != nil {
-		l = m.ActiveTournamentMember.Size()
+	if m.ActiveTeamMember != nil {
+		l = m.ActiveTeamMember.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if m.ActiveTournamentMemberID != 0 {
-		n += 2 + sovPwdb(uint64(m.ActiveTournamentMemberID))
+	if m.ActiveTeamMemberID != 0 {
+		n += 2 + sovPwdb(uint64(m.ActiveTeamMemberID))
 	}
-	if m.ActiveTournament != nil {
-		l = m.ActiveTournament.Size()
+	if m.ActiveSeason != nil {
+		l = m.ActiveSeason.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if m.ActiveTournamentID != 0 {
-		n += 2 + sovPwdb(uint64(m.ActiveTournamentID))
+	if m.ActiveSeasonID != 0 {
+		n += 2 + sovPwdb(uint64(m.ActiveSeasonID))
 	}
 	return n
 }
 
 func (m *UserList) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for _, e := range m.Items {
+			l = e.Size()
+			n += 1 + l + sovPwdb(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *Organization) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ID != 0 {
+		n += 1 + sovPwdb(uint64(m.ID))
+	}
+	if m.CreatedAt != nil {
+		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.CreatedAt)
+		n += 1 + l + sovPwdb(uint64(l))
+	}
+	if m.UpdatedAt != nil {
+		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.UpdatedAt)
+		n += 1 + l + sovPwdb(uint64(l))
+	}
+	l = len(m.Name)
+	if l > 0 {
+		n += 2 + l + sovPwdb(uint64(l))
+	}
+	l = len(m.GravatarURL)
+	if l > 0 {
+		n += 2 + l + sovPwdb(uint64(l))
+	}
+	l = len(m.Locale)
+	if l > 0 {
+		n += 2 + l + sovPwdb(uint64(l))
+	}
+	if len(m.Teams) > 0 {
+		for _, e := range m.Teams {
+			l = e.Size()
+			n += 2 + l + sovPwdb(uint64(l))
+		}
+	}
+	if len(m.ReceivedWhoswhoAttempts) > 0 {
+		for _, e := range m.ReceivedWhoswhoAttempts {
+			l = e.Size()
+			n += 2 + l + sovPwdb(uint64(l))
+		}
+	}
+	if len(m.Members) > 0 {
+		for _, e := range m.Members {
+			l = e.Size()
+			n += 2 + l + sovPwdb(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *OrganizationList) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for _, e := range m.Items {
+			l = e.Size()
+			n += 1 + l + sovPwdb(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *Season) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ID != 0 {
+		n += 1 + sovPwdb(uint64(m.ID))
+	}
+	if m.CreatedAt != nil {
+		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.CreatedAt)
+		n += 1 + l + sovPwdb(uint64(l))
+	}
+	if m.UpdatedAt != nil {
+		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.UpdatedAt)
+		n += 1 + l + sovPwdb(uint64(l))
+	}
+	l = len(m.Name)
+	if l > 0 {
+		n += 2 + l + sovPwdb(uint64(l))
+	}
+	if m.Status != 0 {
+		n += 2 + sovPwdb(uint64(m.Status))
+	}
+	if m.Visibility != 0 {
+		n += 2 + sovPwdb(uint64(m.Visibility))
+	}
+	if m.IsDefault {
+		n += 3
+	}
+	if len(m.Organizations) > 0 {
+		for _, e := range m.Organizations {
+			l = e.Size()
+			n += 2 + l + sovPwdb(uint64(l))
+		}
+	}
+	if len(m.Coupons) > 0 {
+		for _, e := range m.Coupons {
+			l = e.Size()
+			n += 2 + l + sovPwdb(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *SeasonList) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -6525,147 +6648,22 @@ func (m *Team) Size() (n int) {
 		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.UpdatedAt)
 		n += 1 + l + sovPwdb(uint64(l))
 	}
-	l = len(m.Name)
-	if l > 0 {
-		n += 2 + l + sovPwdb(uint64(l))
-	}
-	l = len(m.GravatarURL)
-	if l > 0 {
-		n += 2 + l + sovPwdb(uint64(l))
-	}
-	l = len(m.Locale)
-	if l > 0 {
-		n += 2 + l + sovPwdb(uint64(l))
-	}
-	if len(m.TournamentTeams) > 0 {
-		for _, e := range m.TournamentTeams {
-			l = e.Size()
-			n += 2 + l + sovPwdb(uint64(l))
-		}
-	}
-	if len(m.ReceivedWhoswhoAttempts) > 0 {
-		for _, e := range m.ReceivedWhoswhoAttempts {
-			l = e.Size()
-			n += 2 + l + sovPwdb(uint64(l))
-		}
-	}
-	if len(m.Members) > 0 {
-		for _, e := range m.Members {
-			l = e.Size()
-			n += 2 + l + sovPwdb(uint64(l))
-		}
-	}
-	return n
-}
-
-func (m *TeamList) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if len(m.Items) > 0 {
-		for _, e := range m.Items {
-			l = e.Size()
-			n += 1 + l + sovPwdb(uint64(l))
-		}
-	}
-	return n
-}
-
-func (m *Tournament) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.ID != 0 {
-		n += 1 + sovPwdb(uint64(m.ID))
-	}
-	if m.CreatedAt != nil {
-		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.CreatedAt)
-		n += 1 + l + sovPwdb(uint64(l))
-	}
-	if m.UpdatedAt != nil {
-		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.UpdatedAt)
-		n += 1 + l + sovPwdb(uint64(l))
-	}
-	l = len(m.Name)
-	if l > 0 {
-		n += 2 + l + sovPwdb(uint64(l))
-	}
-	if m.Status != 0 {
-		n += 2 + sovPwdb(uint64(m.Status))
-	}
-	if m.Visibility != 0 {
-		n += 2 + sovPwdb(uint64(m.Visibility))
-	}
 	if m.IsDefault {
 		n += 3
 	}
-	if len(m.Teams) > 0 {
-		for _, e := range m.Teams {
-			l = e.Size()
-			n += 2 + l + sovPwdb(uint64(l))
-		}
-	}
-	if len(m.Coupons) > 0 {
-		for _, e := range m.Coupons {
-			l = e.Size()
-			n += 2 + l + sovPwdb(uint64(l))
-		}
-	}
-	return n
-}
-
-func (m *TournamentList) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if len(m.Items) > 0 {
-		for _, e := range m.Items {
-			l = e.Size()
-			n += 1 + l + sovPwdb(uint64(l))
-		}
-	}
-	return n
-}
-
-func (m *TournamentTeam) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.ID != 0 {
-		n += 1 + sovPwdb(uint64(m.ID))
-	}
-	if m.CreatedAt != nil {
-		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.CreatedAt)
-		n += 1 + l + sovPwdb(uint64(l))
-	}
-	if m.UpdatedAt != nil {
-		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.UpdatedAt)
-		n += 1 + l + sovPwdb(uint64(l))
-	}
-	if m.IsDefault {
-		n += 3
-	}
-	if m.Tournament != nil {
-		l = m.Tournament.Size()
+	if m.Season != nil {
+		l = m.Season.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if m.TournamentID != 0 {
-		n += 2 + sovPwdb(uint64(m.TournamentID))
+	if m.SeasonID != 0 {
+		n += 2 + sovPwdb(uint64(m.SeasonID))
 	}
-	if m.Team != nil {
-		l = m.Team.Size()
+	if m.Organization != nil {
+		l = m.Organization.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if m.TeamID != 0 {
-		n += 2 + sovPwdb(uint64(m.TeamID))
+	if m.OrganizationID != 0 {
+		n += 2 + sovPwdb(uint64(m.OrganizationID))
 	}
 	if len(m.ChallengeSubscriptions) > 0 {
 		for _, e := range m.ChallengeSubscriptions {
@@ -6682,7 +6680,7 @@ func (m *TournamentTeam) Size() (n int) {
 	return n
 }
 
-func (m *TournamentTeamList) Size() (n int) {
+func (m *TeamList) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -6731,12 +6729,12 @@ func (m *WhoswhoAttempt) Size() (n int) {
 	if m.TargetMemberID != 0 {
 		n += 2 + sovPwdb(uint64(m.TargetMemberID))
 	}
-	if m.TargetTeam != nil {
-		l = m.TargetTeam.Size()
+	if m.TargetOrganization != nil {
+		l = m.TargetOrganization.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if m.TargetTeamID != 0 {
-		n += 2 + sovPwdb(uint64(m.TargetTeamID))
+	if m.TargetOrganizationID != 0 {
+		n += 2 + sovPwdb(uint64(m.TargetOrganizationID))
 	}
 	return n
 }
@@ -6776,12 +6774,12 @@ func (m *ChallengeValidation) Size() (n int) {
 	if m.ChallengeSubscriptionID != 0 {
 		n += 2 + sovPwdb(uint64(m.ChallengeSubscriptionID))
 	}
-	if m.TournamentMember != nil {
-		l = m.TournamentMember.Size()
+	if m.TeamMember != nil {
+		l = m.TeamMember.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if m.TournamentMemberID != 0 {
-		n += 2 + sovPwdb(uint64(m.TournamentMemberID))
+	if m.TeamMemberID != 0 {
+		n += 2 + sovPwdb(uint64(m.TeamMemberID))
 	}
 	return n
 }
@@ -6803,12 +6801,12 @@ func (m *ChallengeSubscription) Size() (n int) {
 		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.UpdatedAt)
 		n += 1 + l + sovPwdb(uint64(l))
 	}
-	if m.TournamentTeam != nil {
-		l = m.TournamentTeam.Size()
+	if m.Team != nil {
+		l = m.Team.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if m.TournamentTeamID != 0 {
-		n += 2 + sovPwdb(uint64(m.TournamentTeamID))
+	if m.TeamID != 0 {
+		n += 2 + sovPwdb(uint64(m.TeamID))
 	}
 	if m.ChallengeFlavor != nil {
 		l = m.ChallengeFlavor.Size()
@@ -6925,12 +6923,12 @@ func (m *Coupon) Size() (n int) {
 	if m.MaxValidationCount != 0 {
 		n += 2 + sovPwdb(uint64(m.MaxValidationCount))
 	}
-	if m.Tournament != nil {
-		l = m.Tournament.Size()
+	if m.Season != nil {
+		l = m.Season.Size()
 		n += 2 + l + sovPwdb(uint64(l))
 	}
-	if m.TournamentID != 0 {
-		n += 2 + sovPwdb(uint64(m.TournamentID))
+	if m.SeasonID != 0 {
+		n += 2 + sovPwdb(uint64(m.SeasonID))
 	}
 	if len(m.Validations) > 0 {
 		for _, e := range m.Validations {
@@ -7039,30 +7037,6 @@ func (m *Dump) Size() (n int) {
 			n += 1 + l + sovPwdb(uint64(l))
 		}
 	}
-	if len(m.Coupons) > 0 {
-		for _, e := range m.Coupons {
-			l = e.Size()
-			n += 1 + l + sovPwdb(uint64(l))
-		}
-	}
-	if len(m.CouponValidations) > 0 {
-		for _, e := range m.CouponValidations {
-			l = e.Size()
-			n += 1 + l + sovPwdb(uint64(l))
-		}
-	}
-	if len(m.Hypervisors) > 0 {
-		for _, e := range m.Hypervisors {
-			l = e.Size()
-			n += 1 + l + sovPwdb(uint64(l))
-		}
-	}
-	if len(m.InventoryItems) > 0 {
-		for _, e := range m.InventoryItems {
-			l = e.Size()
-			n += 1 + l + sovPwdb(uint64(l))
-		}
-	}
 	if len(m.Challenges) > 0 {
 		for _, e := range m.Challenges {
 			l = e.Size()
@@ -7099,8 +7073,50 @@ func (m *Dump) Size() (n int) {
 			n += 1 + l + sovPwdb(uint64(l))
 		}
 	}
+	if len(m.Coupons) > 0 {
+		for _, e := range m.Coupons {
+			l = e.Size()
+			n += 1 + l + sovPwdb(uint64(l))
+		}
+	}
+	if len(m.CouponValidations) > 0 {
+		for _, e := range m.CouponValidations {
+			l = e.Size()
+			n += 1 + l + sovPwdb(uint64(l))
+		}
+	}
+	if len(m.Hypervisors) > 0 {
+		for _, e := range m.Hypervisors {
+			l = e.Size()
+			n += 1 + l + sovPwdb(uint64(l))
+		}
+	}
+	if len(m.InventoryItems) > 0 {
+		for _, e := range m.InventoryItems {
+			l = e.Size()
+			n += 1 + l + sovPwdb(uint64(l))
+		}
+	}
 	if len(m.Notifications) > 0 {
 		for _, e := range m.Notifications {
+			l = e.Size()
+			n += 1 + l + sovPwdb(uint64(l))
+		}
+	}
+	if len(m.Organizations) > 0 {
+		for _, e := range m.Organizations {
+			l = e.Size()
+			n += 1 + l + sovPwdb(uint64(l))
+		}
+	}
+	if len(m.OrganizationMembers) > 0 {
+		for _, e := range m.OrganizationMembers {
+			l = e.Size()
+			n += 1 + l + sovPwdb(uint64(l))
+		}
+	}
+	if len(m.Seasons) > 0 {
+		for _, e := range m.Seasons {
 			l = e.Size()
 			n += 1 + l + sovPwdb(uint64(l))
 		}
@@ -7108,29 +7124,11 @@ func (m *Dump) Size() (n int) {
 	if len(m.Teams) > 0 {
 		for _, e := range m.Teams {
 			l = e.Size()
-			n += 1 + l + sovPwdb(uint64(l))
+			n += 2 + l + sovPwdb(uint64(l))
 		}
 	}
 	if len(m.TeamMembers) > 0 {
 		for _, e := range m.TeamMembers {
-			l = e.Size()
-			n += 1 + l + sovPwdb(uint64(l))
-		}
-	}
-	if len(m.Tournaments) > 0 {
-		for _, e := range m.Tournaments {
-			l = e.Size()
-			n += 2 + l + sovPwdb(uint64(l))
-		}
-	}
-	if len(m.TournamentMembers) > 0 {
-		for _, e := range m.TournamentMembers {
-			l = e.Size()
-			n += 2 + l + sovPwdb(uint64(l))
-		}
-	}
-	if len(m.TournamentTeams) > 0 {
-		for _, e := range m.TournamentTeams {
 			l = e.Size()
 			n += 2 + l + sovPwdb(uint64(l))
 		}
@@ -8805,6 +8803,279 @@ func (m *Hypervisor) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *OrganizationMember) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwdb
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: OrganizationMember: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: OrganizationMember: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ID", wireType)
+			}
+			m.ID = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ID |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CreatedAt", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.CreatedAt == nil {
+				m.CreatedAt = new(time.Time)
+			}
+			if err := github_com_gogo_protobuf_types.StdTimeUnmarshal(m.CreatedAt, dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field UpdatedAt", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.UpdatedAt == nil {
+				m.UpdatedAt = new(time.Time)
+			}
+			if err := github_com_gogo_protobuf_types.StdTimeUnmarshal(m.UpdatedAt, dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 100:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Role", wireType)
+			}
+			m.Role = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Role |= OrganizationMember_Role(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 200:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field User", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.User == nil {
+				m.User = &User{}
+			}
+			if err := m.User.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 201:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field UserID", wireType)
+			}
+			m.UserID = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.UserID |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 202:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Organization", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Organization == nil {
+				m.Organization = &Organization{}
+			}
+			if err := m.Organization.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 203:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OrganizationID", wireType)
+			}
+			m.OrganizationID = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.OrganizationID |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwdb(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *TeamMember) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -9050,279 +9321,6 @@ func (m *TeamMember) Unmarshal(dAtA []byte) error {
 				b := dAtA[iNdEx]
 				iNdEx++
 				m.TeamID |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipPwdb(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if (iNdEx + skippy) < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *TournamentMember) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowPwdb
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: TournamentMember: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TournamentMember: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ID", wireType)
-			}
-			m.ID = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.ID |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CreatedAt", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.CreatedAt == nil {
-				m.CreatedAt = new(time.Time)
-			}
-			if err := github_com_gogo_protobuf_types.StdTimeUnmarshal(m.CreatedAt, dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field UpdatedAt", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.UpdatedAt == nil {
-				m.UpdatedAt = new(time.Time)
-			}
-			if err := github_com_gogo_protobuf_types.StdTimeUnmarshal(m.UpdatedAt, dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 100:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Role", wireType)
-			}
-			m.Role = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Role |= TournamentMember_Role(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 200:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field User", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.User == nil {
-				m.User = &User{}
-			}
-			if err := m.User.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 201:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field UserID", wireType)
-			}
-			m.UserID = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.UserID |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 202:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TournamentTeam", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.TournamentTeam == nil {
-				m.TournamentTeam = &TournamentTeam{}
-			}
-			if err := m.TournamentTeam.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 203:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TournamentTeamID", wireType)
-			}
-			m.TournamentTeamID = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.TournamentTeamID |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -9869,7 +9867,7 @@ func (m *User) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 200:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TournamentMemberships", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field TeamMemberships", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -9896,8 +9894,8 @@ func (m *User) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.TournamentMemberships = append(m.TournamentMemberships, &TournamentMember{})
-			if err := m.TournamentMemberships[len(m.TournamentMemberships)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.TeamMemberships = append(m.TeamMemberships, &TeamMember{})
+			if err := m.TeamMemberships[len(m.TeamMemberships)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -9964,14 +9962,14 @@ func (m *User) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Memberships = append(m.Memberships, &TeamMember{})
+			m.Memberships = append(m.Memberships, &OrganizationMember{})
 			if err := m.Memberships[len(m.Memberships)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 203:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ActiveTournamentMember", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ActiveTeamMember", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -9998,18 +9996,18 @@ func (m *User) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.ActiveTournamentMember == nil {
-				m.ActiveTournamentMember = &TournamentMember{}
+			if m.ActiveTeamMember == nil {
+				m.ActiveTeamMember = &TeamMember{}
 			}
-			if err := m.ActiveTournamentMember.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.ActiveTeamMember.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 204:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ActiveTournamentMemberID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ActiveTeamMemberID", wireType)
 			}
-			m.ActiveTournamentMemberID = 0
+			m.ActiveTeamMemberID = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowPwdb
@@ -10019,14 +10017,14 @@ func (m *User) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ActiveTournamentMemberID |= int64(b&0x7F) << shift
+				m.ActiveTeamMemberID |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 205:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ActiveTournament", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ActiveSeason", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -10053,18 +10051,18 @@ func (m *User) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.ActiveTournament == nil {
-				m.ActiveTournament = &TournamentMember{}
+			if m.ActiveSeason == nil {
+				m.ActiveSeason = &TeamMember{}
 			}
-			if err := m.ActiveTournament.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.ActiveSeason.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 206:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ActiveTournamentID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ActiveSeasonID", wireType)
 			}
-			m.ActiveTournamentID = 0
+			m.ActiveSeasonID = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowPwdb
@@ -10074,7 +10072,7 @@ func (m *User) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ActiveTournamentID |= int64(b&0x7F) << shift
+				m.ActiveSeasonID |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -10190,7 +10188,7 @@ func (m *UserList) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Team) Unmarshal(dAtA []byte) error {
+func (m *Organization) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -10213,10 +10211,10 @@ func (m *Team) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Team: wiretype end group for non-group")
+			return fmt.Errorf("proto: Organization: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Team: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Organization: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -10408,7 +10406,7 @@ func (m *Team) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 200:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TournamentTeams", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Teams", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -10435,8 +10433,8 @@ func (m *Team) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.TournamentTeams = append(m.TournamentTeams, &TournamentTeam{})
-			if err := m.TournamentTeams[len(m.TournamentTeams)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.Teams = append(m.Teams, &Team{})
+			if err := m.Teams[len(m.Teams)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -10503,7 +10501,7 @@ func (m *Team) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Members = append(m.Members, &TeamMember{})
+			m.Members = append(m.Members, &OrganizationMember{})
 			if err := m.Members[len(m.Members)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -10532,7 +10530,7 @@ func (m *Team) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *TeamList) Unmarshal(dAtA []byte) error {
+func (m *OrganizationList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -10555,10 +10553,10 @@ func (m *TeamList) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: TeamList: wiretype end group for non-group")
+			return fmt.Errorf("proto: OrganizationList: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TeamList: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: OrganizationList: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -10590,7 +10588,7 @@ func (m *TeamList) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Items = append(m.Items, &Team{})
+			m.Items = append(m.Items, &Organization{})
 			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -10619,7 +10617,7 @@ func (m *TeamList) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Tournament) Unmarshal(dAtA []byte) error {
+func (m *Season) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -10642,10 +10640,10 @@ func (m *Tournament) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Tournament: wiretype end group for non-group")
+			return fmt.Errorf("proto: Season: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Tournament: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Season: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -10785,7 +10783,7 @@ func (m *Tournament) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Status |= Tournament_Status(b&0x7F) << shift
+				m.Status |= Season_Status(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -10804,7 +10802,7 @@ func (m *Tournament) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Visibility |= Tournament_Visibility(b&0x7F) << shift
+				m.Visibility |= Season_Visibility(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -10831,7 +10829,7 @@ func (m *Tournament) Unmarshal(dAtA []byte) error {
 			m.IsDefault = bool(v != 0)
 		case 200:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Teams", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Organizations", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -10858,8 +10856,8 @@ func (m *Tournament) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Teams = append(m.Teams, &TournamentTeam{})
-			if err := m.Teams[len(m.Teams)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.Organizations = append(m.Organizations, &Team{})
+			if err := m.Organizations[len(m.Organizations)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -10921,7 +10919,7 @@ func (m *Tournament) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *TournamentList) Unmarshal(dAtA []byte) error {
+func (m *SeasonList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -10944,10 +10942,10 @@ func (m *TournamentList) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: TournamentList: wiretype end group for non-group")
+			return fmt.Errorf("proto: SeasonList: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TournamentList: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: SeasonList: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -10979,7 +10977,7 @@ func (m *TournamentList) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Items = append(m.Items, &Tournament{})
+			m.Items = append(m.Items, &Season{})
 			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -11008,7 +11006,7 @@ func (m *TournamentList) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *TournamentTeam) Unmarshal(dAtA []byte) error {
+func (m *Team) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -11031,10 +11029,10 @@ func (m *TournamentTeam) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: TournamentTeam: wiretype end group for non-group")
+			return fmt.Errorf("proto: Team: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TournamentTeam: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Team: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -11150,7 +11148,7 @@ func (m *TournamentTeam) Unmarshal(dAtA []byte) error {
 			m.IsDefault = bool(v != 0)
 		case 200:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Tournament", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Season", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -11177,18 +11175,18 @@ func (m *TournamentTeam) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Tournament == nil {
-				m.Tournament = &Tournament{}
+			if m.Season == nil {
+				m.Season = &Season{}
 			}
-			if err := m.Tournament.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Season.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 201:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TournamentID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field SeasonID", wireType)
 			}
-			m.TournamentID = 0
+			m.SeasonID = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowPwdb
@@ -11198,14 +11196,14 @@ func (m *TournamentTeam) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.TournamentID |= int64(b&0x7F) << shift
+				m.SeasonID |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 202:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Team", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Organization", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -11232,18 +11230,18 @@ func (m *TournamentTeam) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Team == nil {
-				m.Team = &Team{}
+			if m.Organization == nil {
+				m.Organization = &Organization{}
 			}
-			if err := m.Team.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Organization.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 203:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TeamID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field OrganizationID", wireType)
 			}
-			m.TeamID = 0
+			m.OrganizationID = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowPwdb
@@ -11253,7 +11251,7 @@ func (m *TournamentTeam) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.TeamID |= int64(b&0x7F) << shift
+				m.OrganizationID |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -11321,7 +11319,7 @@ func (m *TournamentTeam) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Members = append(m.Members, &TournamentMember{})
+			m.Members = append(m.Members, &TeamMember{})
 			if err := m.Members[len(m.Members)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -11350,7 +11348,7 @@ func (m *TournamentTeam) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *TournamentTeamList) Unmarshal(dAtA []byte) error {
+func (m *TeamList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -11373,10 +11371,10 @@ func (m *TournamentTeamList) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: TournamentTeamList: wiretype end group for non-group")
+			return fmt.Errorf("proto: TeamList: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TournamentTeamList: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: TeamList: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -11408,7 +11406,7 @@ func (m *TournamentTeamList) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Items = append(m.Items, &TournamentTeam{})
+			m.Items = append(m.Items, &Team{})
 			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -11607,7 +11605,7 @@ func (m *WhoswhoAttempt) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Author == nil {
-				m.Author = &TournamentMember{}
+				m.Author = &TeamMember{}
 			}
 			if err := m.Author.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -11662,7 +11660,7 @@ func (m *WhoswhoAttempt) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.TargetMember == nil {
-				m.TargetMember = &TournamentMember{}
+				m.TargetMember = &TeamMember{}
 			}
 			if err := m.TargetMember.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -11689,7 +11687,7 @@ func (m *WhoswhoAttempt) Unmarshal(dAtA []byte) error {
 			}
 		case 204:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TargetTeam", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field TargetOrganization", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -11716,18 +11714,18 @@ func (m *WhoswhoAttempt) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.TargetTeam == nil {
-				m.TargetTeam = &TournamentTeam{}
+			if m.TargetOrganization == nil {
+				m.TargetOrganization = &Team{}
 			}
-			if err := m.TargetTeam.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.TargetOrganization.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 205:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TargetTeamID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field TargetOrganizationID", wireType)
 			}
-			m.TargetTeamID = 0
+			m.TargetOrganizationID = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowPwdb
@@ -11737,7 +11735,7 @@ func (m *WhoswhoAttempt) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.TargetTeamID |= int64(b&0x7F) << shift
+				m.TargetOrganizationID |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -12026,7 +12024,7 @@ func (m *ChallengeValidation) Unmarshal(dAtA []byte) error {
 			}
 		case 202:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TournamentMember", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field TeamMember", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -12053,18 +12051,18 @@ func (m *ChallengeValidation) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.TournamentMember == nil {
-				m.TournamentMember = &TournamentMember{}
+			if m.TeamMember == nil {
+				m.TeamMember = &TeamMember{}
 			}
-			if err := m.TournamentMember.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.TeamMember.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 203:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TournamentMemberID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field TeamMemberID", wireType)
 			}
-			m.TournamentMemberID = 0
+			m.TeamMemberID = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowPwdb
@@ -12074,7 +12072,7 @@ func (m *ChallengeValidation) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.TournamentMemberID |= int64(b&0x7F) << shift
+				m.TeamMemberID |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -12225,7 +12223,7 @@ func (m *ChallengeSubscription) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 200:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TournamentTeam", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Team", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -12252,18 +12250,18 @@ func (m *ChallengeSubscription) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.TournamentTeam == nil {
-				m.TournamentTeam = &TournamentTeam{}
+			if m.Team == nil {
+				m.Team = &Team{}
 			}
-			if err := m.TournamentTeam.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Team.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 201:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TournamentTeamID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field TeamID", wireType)
 			}
-			m.TournamentTeamID = 0
+			m.TeamID = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowPwdb
@@ -12273,7 +12271,7 @@ func (m *ChallengeSubscription) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.TournamentTeamID |= int64(b&0x7F) << shift
+				m.TeamID |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -12560,7 +12558,7 @@ func (m *InventoryItem) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Owner == nil {
-				m.Owner = &TournamentMember{}
+				m.Owner = &TeamMember{}
 			}
 			if err := m.Owner.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -13116,7 +13114,7 @@ func (m *Coupon) Unmarshal(dAtA []byte) error {
 			}
 		case 200:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Tournament", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Season", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -13143,18 +13141,18 @@ func (m *Coupon) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Tournament == nil {
-				m.Tournament = &Tournament{}
+			if m.Season == nil {
+				m.Season = &Season{}
 			}
-			if err := m.Tournament.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Season.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 201:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TournamentID", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field SeasonID", wireType)
 			}
-			m.TournamentID = 0
+			m.SeasonID = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowPwdb
@@ -13164,7 +13162,7 @@ func (m *Coupon) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.TournamentID |= int64(b&0x7F) << shift
+				m.SeasonID |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -13409,7 +13407,7 @@ func (m *CouponValidation) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Author == nil {
-				m.Author = &TournamentMember{}
+				m.Author = &TeamMember{}
 			}
 			if err := m.Author.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -13766,7 +13764,7 @@ func (m *Achievement) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Author == nil {
-				m.Author = &TournamentMember{}
+				m.Author = &TeamMember{}
 			}
 			if err := m.Author.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -13933,143 +13931,7 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Coupons", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Coupons = append(m.Coupons, &Coupon{})
-			if err := m.Coupons[len(m.Coupons)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CouponValidations", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.CouponValidations = append(m.CouponValidations, &CouponValidation{})
-			if err := m.CouponValidations[len(m.CouponValidations)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Hypervisors", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Hypervisors = append(m.Hypervisors, &Hypervisor{})
-			if err := m.Hypervisors[len(m.Hypervisors)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 6:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field InventoryItems", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.InventoryItems = append(m.InventoryItems, &InventoryItem{})
-			if err := m.InventoryItems[len(m.InventoryItems)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 7:
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Challenges", wireType)
 			}
@@ -14103,7 +13965,7 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 8:
+		case 3:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeFlavors", wireType)
 			}
@@ -14137,7 +13999,7 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 9:
+		case 4:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeInstances", wireType)
 			}
@@ -14171,7 +14033,7 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 10:
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeSubscriptions", wireType)
 			}
@@ -14205,7 +14067,7 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 11:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeValidations", wireType)
 			}
@@ -14239,7 +14101,7 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 12:
+		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeVersions", wireType)
 			}
@@ -14273,7 +14135,143 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 13:
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Coupons", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Coupons = append(m.Coupons, &Coupon{})
+			if err := m.Coupons[len(m.Coupons)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CouponValidations", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CouponValidations = append(m.CouponValidations, &CouponValidation{})
+			if err := m.CouponValidations[len(m.CouponValidations)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Hypervisors", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Hypervisors = append(m.Hypervisors, &Hypervisor{})
+			if err := m.Hypervisors[len(m.Hypervisors)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field InventoryItems", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.InventoryItems = append(m.InventoryItems, &InventoryItem{})
+			if err := m.InventoryItems[len(m.InventoryItems)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 12:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Notifications", wireType)
 			}
@@ -14307,7 +14305,109 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 13:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Organizations", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Organizations = append(m.Organizations, &Organization{})
+			if err := m.Organizations[len(m.Organizations)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		case 14:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OrganizationMembers", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.OrganizationMembers = append(m.OrganizationMembers, &OrganizationMember{})
+			if err := m.OrganizationMembers[len(m.OrganizationMembers)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 15:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Seasons", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwdb
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwdb
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Seasons = append(m.Seasons, &Season{})
+			if err := m.Seasons[len(m.Seasons)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 16:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Teams", wireType)
 			}
@@ -14341,7 +14441,7 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 15:
+		case 17:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TeamMembers", wireType)
 			}
@@ -14375,109 +14475,7 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 16:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Tournaments", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Tournaments = append(m.Tournaments, &Tournament{})
-			if err := m.Tournaments[len(m.Tournaments)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 17:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TournamentMembers", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.TournamentMembers = append(m.TournamentMembers, &TournamentMember{})
-			if err := m.TournamentMembers[len(m.TournamentMembers)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
 		case 18:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TournamentTeams", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwdb
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwdb
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.TournamentTeams = append(m.TournamentTeams, &TournamentTeam{})
-			if err := m.TournamentTeams[len(m.TournamentTeams)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 19:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Users", wireType)
 			}
@@ -14511,7 +14509,7 @@ func (m *Dump) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 20:
+		case 19:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field WhoswhoAttempts", wireType)
 			}

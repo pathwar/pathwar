@@ -7,7 +7,7 @@ import (
 	"pathwar.land/go/pkg/pwversion"
 )
 
-func (e *engine) GetInfo(context.Context, *Void) (*Info, error) {
+func (e *engine) ToolInfo(context.Context, *Void) (*Info, error) {
 	return &Info{
 		Version: pwversion.Version,
 		Commit:  pwversion.Commit,
