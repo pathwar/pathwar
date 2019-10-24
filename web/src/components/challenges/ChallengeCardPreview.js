@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { Link } from "gatsby";
-import { Card, Button } from "tabler-react";
+import { Card, Button, Dimmer } from "tabler-react";
+import styles from "../../styles/layout/loader.module.css";
 
 const ChallengeBody = (props) => {
     const { author, description, locale, key } = props;
@@ -28,7 +29,7 @@ const ChallengeBody = (props) => {
 const ChallengeCardPreview = (props) => {
     const { challenges } = props;
 
-    return challenges.map((challenge) =>
+    return !challenges ? <Dimmer className={styles.dimmer} active loader /> : challenges.map((challenge) =>
     <Card title={challenge.name} key={challenge.id}
         isCollapsible
         statusColor="orange"

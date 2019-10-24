@@ -7,21 +7,25 @@ import { isNil } from "ramda";
 import AllTeamsOnTournamentList from "../components/tournament/AllTeamsOnTournamentList"
 import ChallengesCardPreview from "../components/challenges/ChallengeCardPreview";
 import ValidationCouponStamp from "../components/coupon/ValidateCouponStampCard";
-import { fetchChallenges as fetchChallengesAction } from "../actions/tournaments";
+import {
+  fetchChallenges as fetchChallengesAction ,
+  fetchAllTournamentTeams as fetchAllTournamentTeamsAction
+} from "../actions/tournaments";
 
 class TournamentPage extends React.Component {
 
     componentDidUpdate(prevProps) {
-      const { fetchChallengesAction, tournaments: { activeTournament } } = this.props;
+      const { fetchChallengesAction, fetchAllTournamentTeamsAction, tournaments: { activeTournament } } = this.props;
       const { tournaments: { activeTournament: prevActiveTournament } } = prevProps;
 
       if (isNil(prevActiveTournament) && activeTournament ) {
         fetchChallengesAction(activeTournament.id);
+        fetchAllTournamentTeamsAction(activeTournament.id)
       }
     }
 
     render() {
-        const { tournaments: { activeTournament, activeChallenges } } = this.props;
+        const { tournaments: { activeTournament, activeChallenges, allTeamsOnTournament } } = this.props;
         const name = activeTournament ? activeTournament.name : undefined;
 
         return (
@@ -29,11 +33,11 @@ class TournamentPage extends React.Component {
                 <Grid.Row>
                   <Grid.Col xs={12} sm={3} lg={3}>
                     <h3>Teams</h3>
-                    {activeTournament && <AllTeamsOnTournamentList />}
+                    <AllTeamsOnTournamentList activeTournament={activeTournament} allTeamsOnTournament={allTeamsOnTournament} />
                   </Grid.Col>
                   <Grid.Col xs={12} sm={6} lg={6}>
                     <h3>Challenges</h3>
-                    {activeChallenges && <ChallengesCardPreview challenges={activeChallenges} />}
+                    <ChallengesCardPreview challenges={activeChallenges} />
                   </Grid.Col>
                   <Grid.Col xs={12} sm={3} lg={3}>
                     <h3>Actions</h3>
@@ -57,6 +61,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchChallengesAction: (tournamentID) => fetchChallengesAction(tournamentID),
+  fetchAllTournamentTeamsAction: (tournamentID) => fetchAllTournamentTeamsAction(tournamentID)
 };
 
 export default connect(
