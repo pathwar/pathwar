@@ -111,7 +111,7 @@ service Engine {
   // Team
   //
 
-  rpc TeamList(TeamListInput) returns (TeamListOutput) { option (google.api.http) = {get: "/taems"}; };
+  rpc TeamList(TeamListInput) returns (TeamListOutput) { option (google.api.http) = {get: "/teams"}; };
   rpc TeamGet(TeamGetInput) returns (TeamGetOutput) { option (google.api.http) = {get: "/team"}; };
 
   //

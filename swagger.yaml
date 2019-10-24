@@ -1025,31 +1025,6 @@ paths:
             type: string
       tags:
       - Engine
-  /taems:
-    get:
-      operationId: TeamList
-      parameters:
-      - format: int64
-        in: query
-        name: season_id
-        required: false
-        type: string
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/engineTeamListOutput'
-        "403":
-          description: Returned when the user does not have permission to access the
-            resource.
-          schema: {}
-        "404":
-          description: Returned when the resource does not exist.
-          schema:
-            format: string
-            type: string
-      tags:
-      - Engine
   /team:
     get:
       operationId: TeamGet
@@ -1064,6 +1039,31 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/engineTeamGetOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /teams:
+    get:
+      operationId: TeamList
+      parameters:
+      - format: int64
+        in: query
+        name: season_id
+        required: false
+        type: string
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineTeamListOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
