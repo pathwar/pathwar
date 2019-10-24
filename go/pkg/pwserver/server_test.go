@@ -2,28 +2,33 @@ package pwserver
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"testing"
 
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"pathwar.land/go/internal/testutil"
 )
 
 func TestServer(t *testing.T) {
-	opts := Opts{
-		HTTPBind: ":8000",
-	}
 	ctx, cancel := context.WithCancel(context.Background())
-	start, cleanup := TestingServer(t, ctx, opts)
-	defer cleanup()
 	defer cancel()
-	go start()
 
-	resp, err := http.Get("http://localhost:8000/status")
+	logger := testutil.Logger(t)
+
+	server, cleanup := TestingServer(t, ctx, Opts{Logger: logger})
+	defer cleanup()
+
+	api := fmt.Sprintf("http://%s", server.HTTPListenerAddr())
+	//api = strings.Replace(api, "[::]", "127.0.0.1", -1)
+
+	resp, err := http.Get(api + "/status")
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
 	defer resp.Body.Close()
+
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("err: %v", err)
