@@ -1,7 +1,7 @@
 import { baseApi } from "./index";
 
 export function postPreferences(seasonID) {
-  return baseApi.post(`/preferences`, {"active_season_id": seasonID});
+  return baseApi.post(`/user/preferences`, {"active_season_id": seasonID});
 }
 
 export function getAllSeasonTeams(seasonID) {
