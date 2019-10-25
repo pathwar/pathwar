@@ -49,6 +49,16 @@ jobs:
           git diff -w | cat
           git diff-index -w --quiet HEAD --
 
+  challenge-build:
+    working_directory: /go/src/pathwar.land
+    docker:
+      - image: docker/compose:1.24.1
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: apk add --no-cache make
+      - run: cd challenges && make build
+
   #githooks:
 
   #docker-integration:
@@ -70,5 +80,6 @@ workflows:
       - go-build
       - go-docker
       - go-generate
+      - challenge-build
       #- githooks
       #- docker-integration

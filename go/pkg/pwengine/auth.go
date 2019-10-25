@@ -26,9 +26,9 @@ var (
 // see https://github.com/grpc-ecosystem/go-grpc-middleware/blob/master/auth/auth.go
 func (e *engine) AuthFuncOverride(ctx context.Context, path string) (context.Context, error) {
 	switch path { // always allow public endpoints
-	case "/pathwar.engine.Engine/Ping",
-		"/pathwar.engine.Engine/GetStatus",
-		"/pathwar.engine.Engine/GetInfo":
+	case "/pathwar.engine.Engine/ToolPing",
+		"/pathwar.engine.Engine/ToolStatus",
+		"/pathwar.engine.Engine/ToolInfo":
 		return ctx, nil
 	}
 

@@ -9,14 +9,17 @@ import {
   FETCH_PREFERENCES_SUCCESS,
   FETCH_PREFERENCES_FAILED,
   SET_CHALLENGES_LIST,
-  SET_CHALLENGES_LIST_FAILED
+  SET_CHALLENGES_LIST_FAILED,
+  GET_CHALLENGE_DETAILS_SUCCESS,
+  GET_CHALLENGE_DETAILS_FAILED
 } from "../constants/actionTypes"
 
 import {
   getAllTournaments,
   getAllTournamentTeams,
   postPreferences,
-  getChallenges
+  getChallenges,
+  getChallengeDetails
 } from "../api/tournaments"
 
 import { fetchUserSession as fetchUserSessionAction } from "./userSession";
@@ -87,6 +90,20 @@ export const fetchAllTournaments = () => async dispatch => {
     dispatch({ type: GET_ALL_TOURNAMENTS_FAILED, payload: { error } });
   }
 }
+
+export const fetchChallengeDetail = (challengeID) => async dispatch => {
+  try {
+    const response = await getChallengeDetails(challengeID);
+
+    dispatch({
+      type: GET_CHALLENGE_DETAILS_SUCCESS,
+      payload: { challenge: response.data.item }
+    });
+
+  } catch (error) {
+    dispatch({ type: GET_CHALLENGE_DETAILS_FAILED, payload: { error } });
+  }
+};
 
 export const fetchChallenges = (tournamentID) => async dispatch => {
   try {

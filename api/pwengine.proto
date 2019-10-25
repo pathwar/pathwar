@@ -87,24 +87,42 @@ option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
 };
 
 service Engine {
-  // Verify the service is up and running
-  rpc Ping(Void) returns (Void) { option (google.api.http) = {get: "/ping"}; };
-  // Get current user session, based on JWT token
-  rpc GetUserSession(Void) returns (UserSessionOutput) { option (google.api.http) = {get: "/user-session"}; };
-  rpc SetPreferences(SetPreferencesInput) returns (Void) { option (google.api.http) = {post: "/preferences"; body: "*"}; };
-  rpc ListChallenges(Void) returns (ListChallengesOutput) { option (google.api.http) = {get: "/challenges"}; };
-  rpc GetChallenge(GetChallengeInput) returns (GetChallengeOutput) { option (google.api.http) = {get: "/challenge"}; };
-  rpc ListTeams(Void) returns (ListTeamsOutput) { option (google.api.http) = {get: "/teams"}; };
-  rpc ListTournamentTeams(ListTournamentTeamsInput) returns (ListTournamentTeamsOutput) { option (google.api.http) = {get: "/tournament/teams"}; };
-  rpc GetTournamentTeam(GetTournamentTeamInput) returns (GetTournamentTeamOutput) { option (google.api.http) = {get: "/tournament/team"}; };
-  rpc GetStatus(Void) returns (Status) { option (google.api.http) = {get: "/status"}; }
+  //
+  // User
+  //
+
+  rpc UserGetSession(Void) returns (UserGetSessionOutput) { option (google.api.http) = {get: "/user/session"}; };
+  rpc UserSetPreferences(UserSetPreferencesInput) returns (Void) { option (google.api.http) = {post: "/user/preferences"; body: "*"}; };
 
   //
-  // dev helpers
+  // Challenge
   //
-  rpc GetInfo(Void) returns (Info) { option (google.api.http) = {get: "/info"}; };
-  rpc GenerateFakeData(Void) returns (Void) { option (google.api.http) = {post: "/dev/generate-fake-data"}; };
-  rpc DBDump(Void) returns (pathwar.db.Dump) { option (google.api.http) = {get: "/dev/sql-dump"}; };
+
+  rpc ChallengeList(Void) returns (ChallengeListOutput) { option (google.api.http) = {get: "/challenges"}; };
+  rpc ChallengeGet(ChallengeGetInput) returns (ChallengeGetOutput) { option (google.api.http) = {get: "/challenge"}; };
+
+  //
+  // Organization
+  //
+
+  rpc OrganizationList(Void) returns (OrganizationListOutput) { option (google.api.http) = {get: "/organizations"}; };
+
+  //
+  // Team
+  //
+
+  rpc TeamList(TeamListInput) returns (TeamListOutput) { option (google.api.http) = {get: "/teams"}; };
+  rpc TeamGet(TeamGetInput) returns (TeamGetOutput) { option (google.api.http) = {get: "/team"}; };
+
+  //
+  // Tool
+  //
+
+  rpc ToolPing(Void) returns (Void) { option (google.api.http) = {get: "/ping"}; };
+  rpc ToolStatus(Void) returns (Status) { option (google.api.http) = {get: "/status"}; }
+  rpc ToolInfo(Void) returns (Info) { option (google.api.http) = {get: "/info"}; };
+  rpc ToolGenerateFakeData(Void) returns (Void) { option (google.api.http) = {post: "/tool/generate-fake-data"}; };
+  rpc ToolDBDump(Void) returns (pathwar.db.Dump) { option (google.api.http) = {get: "/tool/sql-dump"}; };
 }
 
 // Void is an empty message
@@ -114,47 +132,47 @@ message Void {
   };
 }
 
-message GetTournamentTeamInput {
-  int64 tournament_team_id = 1 [(gogoproto.customname) = "TournamentTeamID"];
+message TeamGetInput {
+  int64 team_id = 1 [(gogoproto.customname) = "TeamID"];
 }
 
-message GetTournamentTeamOutput {
-  pathwar.db.TournamentTeam item = 1;
+message TeamGetOutput {
+  pathwar.db.Team item = 1;
 }
 
-message GetChallengeInput {
+message ChallengeGetInput {
   int64 challenge_id = 1 [(gogoproto.customname) = "ChallengeID"];
 }
 
-message GetChallengeOutput {
+message ChallengeGetOutput {
   pathwar.db.Challenge item = 1;
 }
 
-message ListTournamentTeamsInput {
-  int64 tournament_id = 1 [(gogoproto.customname) = "TournamentID"];
+message TeamListInput {
+  int64 season_id = 1 [(gogoproto.customname) = "SeasonID"];
 }
 
-message SetPreferencesInput {
-  int64 active_tournament_id = 1 [(gogoproto.customname) = "ActiveTournamentID"];
+message UserSetPreferencesInput {
+  int64 active_season_id = 1 [(gogoproto.customname) = "ActiveSeasonID"];
   // bool dark_mode
 }
 
-message ListTournamentTeamsOutput {
-  repeated pathwar.db.TournamentTeam items = 1;
-}
-
-message ListTeamsOutput {
+message TeamListOutput {
   repeated pathwar.db.Team items = 1;
 }
 
-message ListChallengesOutput {
+message OrganizationListOutput {
+  repeated pathwar.db.Organization items = 1;
+}
+
+message ChallengeListOutput {
   repeated pathwar.db.Challenge items = 1;
 }
 
-message UserSessionOutput {
-  message TournamentAndTeam {
-    pathwar.db.Tournament tournament = 1;
-    pathwar.db.TournamentTeam team = 2;
+message UserGetSessionOutput {
+  message SeasonAndTeam {
+    pathwar.db.Season season = 1;
+    pathwar.db.Team team = 2;
     bool is_active = 3;
   }
 
@@ -162,7 +180,7 @@ message UserSessionOutput {
   bool is_new_user = 2;
   pathwar.sso.Claims claims = 3;
   int32 notifications = 4;
-  repeated TournamentAndTeam tournaments = 5;
+  repeated SeasonAndTeam seasons = 5;
 }
 
 message Status {

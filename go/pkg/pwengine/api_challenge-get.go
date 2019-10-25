@@ -7,17 +7,17 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) GetTournamentTeam(ctx context.Context, in *GetTournamentTeamInput) (*GetTournamentTeamOutput, error) {
+func (e *engine) ChallengeGet(ctx context.Context, in *ChallengeGetInput) (*ChallengeGetOutput, error) {
 	{ // validation
-		if in.TournamentTeamID == 0 {
+		if in.ChallengeID == 0 {
 			return nil, ErrMissingArgument
 		}
 	}
 
-	var item pwdb.TournamentTeam
+	var item pwdb.Challenge
 	err := e.db.
 		Set("gorm:auto_preload", true).
-		Where(pwdb.TournamentTeam{ID: in.TournamentTeamID}).
+		Where(pwdb.Challenge{ID: in.ChallengeID}).
 		First(&item).
 		Error
 
@@ -25,10 +25,10 @@ func (e *engine) GetTournamentTeam(ctx context.Context, in *GetTournamentTeamInp
 	case err != nil && pwdb.IsRecordNotFoundError(err):
 		return nil, ErrInvalidArgument // FIXME: wrap original error
 	case err != nil:
-		return nil, fmt.Errorf("fetch tournament team from db: %w", err)
+		return nil, fmt.Errorf("query challenge: %w", err)
 	}
 
-	ret := GetTournamentTeamOutput{
+	ret := ChallengeGetOutput{
 		Item: &item,
 	}
 

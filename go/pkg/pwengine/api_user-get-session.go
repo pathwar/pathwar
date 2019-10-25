@@ -10,14 +10,14 @@ import (
 	"pathwar.land/go/pkg/pwsso"
 )
 
-func (e *engine) GetUserSession(ctx context.Context, _ *Void) (*UserSessionOutput, error) {
+func (e *engine) UserGetSession(ctx context.Context, _ *Void) (*UserGetSessionOutput, error) {
 	token, err := tokenFromContext(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("get token from context: %w", err)
 	}
 	zap.L().Debug("token", zap.Any("token", token))
 
-	output := &UserSessionOutput{}
+	output := &UserGetSessionOutput{}
 	output.Claims = pwsso.ClaimsFromToken(token)
 
 	// try loading it from database
@@ -45,18 +45,18 @@ func (e *engine) GetUserSession(ctx context.Context, _ *Void) (*UserSessionOutpu
 	// FIXME: output.Notifications = COUNT
 	output.Notifications = 42
 
-	output.Tournaments, err = e.tournaments(ctx)
+	output.Seasons, err = e.seasons(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("get tournaments: %w", err)
+		return nil, fmt.Errorf("get seasons: %w", err)
 	}
 
 	return output, nil
 }
 
-func (e *engine) tournaments(ctx context.Context) ([]*UserSessionOutput_TournamentAndTeam, error) {
+func (e *engine) seasons(ctx context.Context) ([]*UserGetSessionOutput_SeasonAndTeam, error) {
 	var (
-		tournaments []*pwdb.Tournament
-		memberships []*pwdb.TournamentMember
+		seasons     []*pwdb.Season
+		memberships []*pwdb.TeamMember
 	)
 
 	userID, err := userIDFromContext(ctx, e.db)
@@ -64,36 +64,36 @@ func (e *engine) tournaments(ctx context.Context) ([]*UserSessionOutput_Tourname
 		return nil, fmt.Errorf("get userid from context: %w", err)
 	}
 
-	// get tournament teams for user
+	// get season organizations for user
 	err = e.db.
-		Preload("TournamentTeam").
-		Preload("TournamentTeam.Team").
-		Where(pwdb.TournamentMember{UserID: userID}).
+		Preload("Team").
+		Preload("Team.Organization").
+		Where(pwdb.TeamMember{UserID: userID}).
 		Find(&memberships).
 		Error
 	if err != nil && !pwdb.IsRecordNotFoundError(err) {
-		return nil, fmt.Errorf("fetch tournament teams: %w", err)
+		return nil, fmt.Errorf("fetch season organizations: %w", err)
 	}
 
-	// get all available tournaments
+	// get all available seasons
 	err = e.db.
-		Where(pwdb.Tournament{Visibility: pwdb.Tournament_Public}).
+		Where(pwdb.Season{Visibility: pwdb.Season_Public}).
 		// FIXME: admins can see everything
-		Find(&tournaments).
+		Find(&seasons).
 		Error
 	if err != nil {
-		return nil, fmt.Errorf("fetch tournaments: %w", err)
+		return nil, fmt.Errorf("fetch seasons: %w", err)
 	}
 
-	output := []*UserSessionOutput_TournamentAndTeam{}
-	for _, tournament := range tournaments {
-		item := &UserSessionOutput_TournamentAndTeam{
-			Tournament: tournament,
+	output := []*UserGetSessionOutput_SeasonAndTeam{}
+	for _, season := range seasons {
+		item := &UserGetSessionOutput_SeasonAndTeam{
+			Season: season,
 		}
 
 		for _, membership := range memberships {
-			if membership.TournamentTeam.TournamentID == tournament.ID {
-				item.Team = membership.TournamentTeam
+			if membership.Team.SeasonID == season.ID {
+				item.Team = membership.Team
 				break
 			}
 		}
@@ -107,10 +107,10 @@ func (e *engine) tournaments(ctx context.Context) ([]*UserSessionOutput_Tourname
 func (e *engine) loadOAuthUser(subject string) (*pwdb.User, error) {
 	var user pwdb.User
 	err := e.db.
-		Preload("ActiveTournamentMember").
-		Preload("ActiveTournamentMember.TournamentTeam").
-		Preload("ActiveTournamentMember.TournamentTeam.Tournament").
-		Preload("ActiveTournamentMember.TournamentTeam.Team").
+		Preload("ActiveTeamMember").
+		Preload("ActiveTeamMember.Team").
+		Preload("ActiveTeamMember.Team.Season").
+		Preload("ActiveTeamMember.Team.Organization").
 		Where(pwdb.User{OAuthSubject: subject}).
 		First(&user).
 		Error
@@ -129,9 +129,9 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 
 	gravatarURL := fmt.Sprintf("https://www.gravatar.com/avatar/%x", md5.Sum([]byte(claims.Email)))
 
-	var tournament pwdb.Tournament
-	if err := e.db.Where(pwdb.Tournament{IsDefault: true}).First(&tournament).Error; err != nil {
-		return nil, fmt.Errorf("get default tournament: %w", err)
+	var season pwdb.Season
+	if err := e.db.Where(pwdb.Season{IsDefault: true}).First(&season).Error; err != nil {
+		return nil, fmt.Errorf("get default season: %w", err)
 	}
 
 	user := pwdb.User{
@@ -142,34 +142,34 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 		// WebsiteURL
 		// Locale
 
-		TournamentMemberships: []*pwdb.TournamentMember{},
-		Memberships:           []*pwdb.TeamMember{},
+		TeamMemberships: []*pwdb.TeamMember{},
+		Memberships:     []*pwdb.OrganizationMember{},
 	}
-	team := pwdb.Team{
+	organization := pwdb.Organization{
 		Name:        claims.PreferredUsername,
 		GravatarURL: gravatarURL,
 		// Locale
 	}
-	teamMember := pwdb.TeamMember{
+	organizationMember := pwdb.OrganizationMember{
 		//User: &user,
-		Team: &team,
+		Organization: &organization,
+		Role:         pwdb.OrganizationMember_Owner,
+	}
+	seasonOrganization := pwdb.Team{
+		Season:       &season,
+		IsDefault:    true,
+		Organization: &organization,
+	}
+	seasonMember := pwdb.TeamMember{
+		User: &user,
+		Team: &seasonOrganization,
 		Role: pwdb.TeamMember_Owner,
 	}
-	tournamentTeam := pwdb.TournamentTeam{
-		Tournament: &tournament,
-		IsDefault:  true,
-		Team:       &team,
-	}
-	tournamentMember := pwdb.TournamentMember{
-		User:           &user,
-		TournamentTeam: &tournamentTeam,
-		Role:           pwdb.TournamentMember_Owner,
-	}
-	user.Memberships = []*pwdb.TeamMember{&teamMember}
+	user.Memberships = []*pwdb.OrganizationMember{&organizationMember}
 
 	tx := e.db.Begin()
 	tx.Create(&user)
-	tx.Create(&tournamentMember)
+	tx.Create(&seasonMember)
 
 	// FIXME: create a "welcome" notification
 
@@ -177,16 +177,16 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 		return nil, fmt.Errorf("commit transaction: %w", err)
 	}
 
-	// set active tournament
+	// set active season
 	err := e.db.
 		Model(&user).
 		Updates(pwdb.User{
-			ActiveTournamentMemberID: tournamentMember.ID,
-			ActiveTournamentID:       tournament.ID,
+			ActiveTeamMemberID: seasonMember.ID,
+			ActiveSeasonID:     season.ID,
 		}).
 		Error
 	if err != nil {
-		return nil, fmt.Errorf("update active tournament: %w", err)
+		return nil, fmt.Errorf("update active season: %w", err)
 	}
 
 	return &user, nil

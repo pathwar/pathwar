@@ -48,19 +48,19 @@ func GetDump(db *gorm.DB) (*Dump, error) {
 	if err := db.Find(&dump.Users).Error; err != nil {
 		return nil, err
 	}
+	if err := db.Find(&dump.Organizations).Error; err != nil {
+		return nil, err
+	}
+	if err := db.Find(&dump.OrganizationMembers).Error; err != nil {
+		return nil, err
+	}
+	if err := db.Find(&dump.Seasons).Error; err != nil {
+		return nil, err
+	}
 	if err := db.Find(&dump.Teams).Error; err != nil {
 		return nil, err
 	}
 	if err := db.Find(&dump.TeamMembers).Error; err != nil {
-		return nil, err
-	}
-	if err := db.Find(&dump.Tournaments).Error; err != nil {
-		return nil, err
-	}
-	if err := db.Find(&dump.TournamentTeams).Error; err != nil {
-		return nil, err
-	}
-	if err := db.Find(&dump.TournamentMembers).Error; err != nil {
 		return nil, err
 	}
 	if err := db.Find(&dump.Coupons).Error; err != nil {
@@ -118,14 +118,14 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 		challenges = append(challenges, challenge)
 	}
 
-	teams := []*Team{}
+	organizations := []*Organization{}
 	for i := 0; i < 5; i++ {
-		team := &Team{
+		organization := &Organization{
 			Name:        gofakeit.HipsterWord(),
 			GravatarURL: gofakeit.ImageURL(400, 400) + "?" + gofakeit.HipsterWord(),
 			Locale:      "fr_FR",
 		}
-		teams = append(teams, team)
+		organizations = append(organizations, organization)
 	}
 
 	users := []*User{}
@@ -135,23 +135,23 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 			GravatarURL:  gofakeit.ImageURL(400, 400) + "?" + gofakeit.HipsterWord(),
 			WebsiteURL:   gofakeit.URL(),
 			Locale:       "fr_FR",
-			Memberships:  []*TeamMember{},
+			Memberships:  []*OrganizationMember{},
 			OAuthSubject: randstring.RandString(10),
 		}
 		users = append(users, user)
 	}
 
-	tournaments := []*Tournament{}
+	seasons := []*Season{}
 	for i := 0; i < 3; i++ {
-		tournament := &Tournament{
+		season := &Season{
 			Name:       gofakeit.HipsterWord(),
-			Status:     Tournament_Started,
-			Visibility: Tournament_Public,
+			Status:     Season_Started,
+			Visibility: Season_Public,
 			IsDefault:  false,
 		}
-		tournaments = append(tournaments, tournament)
+		seasons = append(seasons, season)
 	}
-	tournaments[0].IsDefault = true
+	seasons[0].IsDefault = true
 
 	logger.Debug("Generating hypervisors")
 	for _, entity := range hypervisors {
@@ -171,16 +171,16 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 			return fmt.Errorf("create challenges: %w", err)
 		}
 	}
-	logger.Debug("Generating tournaments")
-	for _, entity := range tournaments {
+	logger.Debug("Generating seasons")
+	for _, entity := range seasons {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("create tournaments: %w", err)
+			return fmt.Errorf("create seasons: %w", err)
 		}
 	}
-	logger.Debug("Generating teams")
-	for _, entity := range teams {
+	logger.Debug("Generating organizations")
+	for _, entity := range organizations {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("create teams: %w", err)
+			return fmt.Errorf("create organizations: %w", err)
 		}
 	}
 
@@ -190,20 +190,20 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 			Hash:               gofakeit.UUID(),
 			MaxValidationCount: int32(rand.Int() % 5),
 			Value:              int32(rand.Int() % 10),
-			TournamentID:       tournaments[rand.Int()%len(tournaments)].ID,
+			SeasonID:           seasons[rand.Int()%len(seasons)].ID,
 		}
 		coupons = append(coupons, coupon)
 	}
 
-	memberships := []*TeamMember{}
+	memberships := []*OrganizationMember{}
 	for _, user := range users {
 		for i := 0; i < 2; i++ {
 			memberships = append(
 				memberships,
-				&TeamMember{
-					TeamID: teams[rand.Int()%len(teams)].ID,
-					UserID: user.ID,
-					Role:   TeamMember_Member, // or Owner
+				&OrganizationMember{
+					OrganizationID: organizations[rand.Int()%len(organizations)].ID,
+					UserID:         user.ID,
+					Role:           OrganizationMember_Member, // or Owner
 				},
 			)
 		}

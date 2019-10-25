@@ -154,13 +154,13 @@ func main() {
 					ShutdownTimeout:    *serverShutdownTimeout,
 					WithPprof:          *serverWithPprof,
 				}
-				start, cleanup, err := pwserver.Start(ctx, engine, opts)
+				server, err := pwserver.New(ctx, engine, opts)
 				if err != nil {
 					return fmt.Errorf("init server: %w", err)
 				}
 				g.Add(
-					start,
-					func(error) { cleanup() },
+					server.Run,
+					func(error) { server.Close() },
 				)
 			}
 			{ // signal handling and cancellation
