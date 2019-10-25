@@ -9,12 +9,12 @@ import (
 	"pathwar.land/go/pkg/pwsso"
 )
 
-func TestEngine_GetUserSession(t *testing.T) {
+func TestEngine_UserGetSession(t *testing.T) {
 	engine, cleanup := TestingEngine(t, Opts{Logger: testutil.Logger(t)})
 	defer cleanup()
 	ctx := testingSetContextToken(context.Background(), t)
 
-	session, err := engine.GetUserSession(ctx, nil)
+	session, err := engine.UserGetSession(ctx, nil)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
@@ -26,11 +26,11 @@ func TestEngine_GetUserSession(t *testing.T) {
 		expected string
 	}{
 		{".User.Username", session.User.Username, `"moul"`},
-		{"len(.Tournament)", len(session.Tournaments), "2"},
+		{"len(.Season)", len(session.Seasons), "2"},
 		{".Claims", session.Claims, godev.JSON(pwsso.TestingClaims(t))},
 		{".IsNewUser", session.IsNewUser, `true`},
-		{".User.ActiveTournamentMember.TournamentTeam.Tournament.Name", session.User.ActiveTournamentMember.TournamentTeam.Tournament.Name, `"Solo Mode"`},
-		{".User.ActiveTournamentMember.TournamentTeam.Team.Name", session.User.ActiveTournamentMember.TournamentTeam.Team.Name, `"moul"`},
+		{".User.ActiveTeamMember.Team.Season.Name", session.User.ActiveTeamMember.Team.Season.Name, `"Solo Mode"`},
+		{".User.ActiveTeamMember.Team.Organization.Name", session.User.ActiveTeamMember.Team.Organization.Name, `"moul"`},
 	}
 
 	for _, test := range tests {

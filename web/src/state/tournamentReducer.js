@@ -2,7 +2,8 @@ import {
   GET_ALL_TOURNAMENTS_SUCCESS,
   SET_ACTIVE_TOURNAMENT,
   GET_ALL_TOURNAMENT_TEAMS_SUCCESS,
-  SET_CHALLENGES_LIST
+  SET_CHALLENGES_LIST,
+  GET_CHALLENGE_DETAILS_SUCCESS
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -12,7 +13,8 @@ const initialState = {
     allTeamTournaments: null,
     activeTournament: null,
     allTeamsOnTournament: null,
-    activeChallenges: null
+    activeChallenges: null,
+    challengeInDetail: null
   }
 };
 
@@ -20,7 +22,6 @@ export default function tournamentReducer(state = initialState.tournaments, acti
 
   switch (action.type) {
     case GET_ALL_TOURNAMENTS_SUCCESS:
-
       return {
         ...state,
         allTournaments: action.payload.allTournaments
@@ -38,8 +39,13 @@ export default function tournamentReducer(state = initialState.tournaments, acti
         activeTournament: action.payload.activeTournament
       }
 
-    case SET_CHALLENGES_LIST:
+    case GET_CHALLENGE_DETAILS_SUCCESS:
+      return {
+        ...state,
+        challengeInDetail: action.payload.challenge
+      }
 
+    case SET_CHALLENGES_LIST:
       return {
         ...state,
         activeChallenges: action.payload.activeChallenges

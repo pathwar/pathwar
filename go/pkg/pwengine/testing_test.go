@@ -9,27 +9,27 @@ import (
 	"pathwar.land/go/pkg/pwsso"
 )
 
-func testingTournaments(t *testing.T, e Engine) *pwdb.TournamentList {
+func testingSeasons(t *testing.T, e Engine) *pwdb.SeasonList {
 	t.Helper()
 
 	db := testingEngineDB(t, e)
-	var list pwdb.TournamentList
+	var list pwdb.SeasonList
 	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
 	if err != nil {
-		t.Fatalf("list tournaments: %v", err)
+		t.Fatalf("list seasons: %v", err)
 	}
 
 	return &list
 }
 
-func testingTournamentTeams(t *testing.T, e Engine) *pwdb.TournamentTeamList {
+func testingTeams(t *testing.T, e Engine) *pwdb.TeamList {
 	t.Helper()
 
 	db := testingEngineDB(t, e)
-	var list pwdb.TournamentTeamList
+	var list pwdb.TeamList
 	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
 	if err != nil {
-		t.Fatalf("list tournament teams: %v", err)
+		t.Fatalf("list season organizations: %v", err)
 	}
 
 	return &list
@@ -42,7 +42,7 @@ func testingChallenges(t *testing.T, e Engine) *pwdb.ChallengeList {
 	var list pwdb.ChallengeList
 	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
 	if err != nil {
-		t.Fatalf("list tournament teams: %v", err)
+		t.Fatalf("list season organizations: %v", err)
 	}
 
 	return &list

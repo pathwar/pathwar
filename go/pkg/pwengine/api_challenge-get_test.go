@@ -8,7 +8,7 @@ import (
 	"pathwar.land/go/internal/testutil"
 )
 
-func TestEngine_GetChallenge(t *testing.T) {
+func TestEngine_ChallengeGet(t *testing.T) {
 	engine, cleanup := TestingEngine(t, Opts{Logger: testutil.Logger(t)})
 	defer cleanup()
 	ctx := testingSetContextToken(context.Background(), t)
@@ -22,26 +22,26 @@ func TestEngine_GetChallenge(t *testing.T) {
 
 	var tests = []struct {
 		name                  string
-		input                 *GetChallengeInput
+		input                 *ChallengeGetInput
 		expectedErr           error
 		expectedChallengeName string
 		expectedAuthor        string
 	}{
 		{
 			"empty",
-			&GetChallengeInput{},
+			&ChallengeGetInput{},
 			ErrMissingArgument,
 			"",
 			"",
 		}, {
-			"unknown-tournament-id",
-			&GetChallengeInput{ChallengeID: -42}, // -42 should not exists
+			"unknown-season-id",
+			&ChallengeGetInput{ChallengeID: -42}, // -42 should not exists
 			ErrInvalidArgument,
 			"",
 			"",
 		}, {
 			"Staff",
-			&GetChallengeInput{ChallengeID: challenges["Hello World (test)"]},
+			&ChallengeGetInput{ChallengeID: challenges["Hello World (test)"]},
 			nil,
 			"Hello World (test)",
 			"m1ch3l",
@@ -50,7 +50,7 @@ func TestEngine_GetChallenge(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			ret, err := engine.GetChallenge(ctx, test.input)
+			ret, err := engine.ChallengeGet(ctx, test.input)
 			if !errors.Is(err, test.expectedErr) {
 				t.Fatalf("Expected %#v, got %#v.", test.expectedErr, err)
 			}

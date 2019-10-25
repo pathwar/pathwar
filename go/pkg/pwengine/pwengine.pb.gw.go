@@ -28,44 +28,26 @@ var _ status.Status
 var _ = runtime.String
 var _ = utilities.NewDoubleArray
 
-func request_Engine_Ping_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Engine_UserGetSession_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.Ping(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.UserGetSession(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Engine_Ping_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Engine_UserGetSession_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.Ping(ctx, &protoReq)
+	msg, err := server.UserGetSession(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_Engine_GetUserSession_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Void
-	var metadata runtime.ServerMetadata
-
-	msg, err := client.GetUserSession(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_Engine_GetUserSession_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Void
-	var metadata runtime.ServerMetadata
-
-	msg, err := server.GetUserSession(ctx, &protoReq)
-	return msg, metadata, err
-
-}
-
-func request_Engine_SetPreferences_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SetPreferencesInput
+func request_Engine_UserSetPreferences_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UserSetPreferencesInput
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -76,13 +58,13 @@ func request_Engine_SetPreferences_0(ctx context.Context, marshaler runtime.Mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.SetPreferences(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.UserSetPreferences(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Engine_SetPreferences_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SetPreferencesInput
+func local_request_Engine_UserSetPreferences_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UserSetPreferencesInput
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -93,214 +75,232 @@ func local_request_Engine_SetPreferences_0(ctx context.Context, marshaler runtim
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.SetPreferences(ctx, &protoReq)
+	msg, err := server.UserSetPreferences(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_Engine_ListChallenges_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Engine_ChallengeList_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.ListChallenges(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ChallengeList(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Engine_ListChallenges_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Engine_ChallengeList_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.ListChallenges(ctx, &protoReq)
+	msg, err := server.ChallengeList(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
 var (
-	filter_Engine_GetChallenge_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_Engine_ChallengeGet_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_Engine_GetChallenge_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetChallengeInput
+func request_Engine_ChallengeGet_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ChallengeGetInput
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Engine_GetChallenge_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Engine_ChallengeGet_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.GetChallenge(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ChallengeGet(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Engine_GetChallenge_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetChallengeInput
+func local_request_Engine_ChallengeGet_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ChallengeGetInput
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Engine_GetChallenge_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Engine_ChallengeGet_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.GetChallenge(ctx, &protoReq)
+	msg, err := server.ChallengeGet(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_Engine_ListTeams_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Engine_OrganizationList_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.ListTeams(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.OrganizationList(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Engine_ListTeams_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Engine_OrganizationList_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.ListTeams(ctx, &protoReq)
+	msg, err := server.OrganizationList(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
 var (
-	filter_Engine_ListTournamentTeams_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_Engine_TeamList_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_Engine_ListTournamentTeams_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListTournamentTeamsInput
+func request_Engine_TeamList_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq TeamListInput
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Engine_ListTournamentTeams_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Engine_TeamList_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.ListTournamentTeams(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.TeamList(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Engine_ListTournamentTeams_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListTournamentTeamsInput
+func local_request_Engine_TeamList_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq TeamListInput
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Engine_ListTournamentTeams_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Engine_TeamList_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.ListTournamentTeams(ctx, &protoReq)
+	msg, err := server.TeamList(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
 var (
-	filter_Engine_GetTournamentTeam_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_Engine_TeamGet_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_Engine_GetTournamentTeam_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetTournamentTeamInput
+func request_Engine_TeamGet_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq TeamGetInput
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Engine_GetTournamentTeam_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Engine_TeamGet_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.GetTournamentTeam(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.TeamGet(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Engine_GetTournamentTeam_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetTournamentTeamInput
+func local_request_Engine_TeamGet_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq TeamGetInput
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Engine_GetTournamentTeam_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Engine_TeamGet_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.GetTournamentTeam(ctx, &protoReq)
+	msg, err := server.TeamGet(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_Engine_GetStatus_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Engine_ToolPing_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.GetStatus(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ToolPing(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Engine_GetStatus_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Engine_ToolPing_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.GetStatus(ctx, &protoReq)
+	msg, err := server.ToolPing(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_Engine_GetInfo_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Engine_ToolStatus_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.GetInfo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ToolStatus(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Engine_GetInfo_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Engine_ToolStatus_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.GetInfo(ctx, &protoReq)
+	msg, err := server.ToolStatus(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_Engine_GenerateFakeData_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Engine_ToolInfo_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.GenerateFakeData(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ToolInfo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Engine_GenerateFakeData_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Engine_ToolInfo_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.GenerateFakeData(ctx, &protoReq)
+	msg, err := server.ToolInfo(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_Engine_DBDump_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Engine_ToolGenerateFakeData_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.DBDump(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ToolGenerateFakeData(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Engine_DBDump_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Engine_ToolGenerateFakeData_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.DBDump(ctx, &protoReq)
+	msg, err := server.ToolGenerateFakeData(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_Engine_ToolDBDump_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Void
+	var metadata runtime.ServerMetadata
+
+	msg, err := client.ToolDBDump(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Engine_ToolDBDump_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Void
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.ToolDBDump(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -310,7 +310,7 @@ func local_request_Engine_DBDump_0(ctx context.Context, marshaler runtime.Marsha
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, server EngineServer) error {
 
-	mux.Handle("GET", pattern_Engine_Ping_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_UserGetSession_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -319,18 +319,18 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Engine_Ping_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Engine_UserGetSession_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_Ping_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_UserGetSession_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_GetUserSession_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Engine_UserSetPreferences_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -339,18 +339,18 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Engine_GetUserSession_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Engine_UserSetPreferences_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_GetUserSession_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_UserSetPreferences_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_Engine_SetPreferences_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_ChallengeList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -359,18 +359,18 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Engine_SetPreferences_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Engine_ChallengeList_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_SetPreferences_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ChallengeList_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_ListChallenges_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_ChallengeGet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -379,18 +379,18 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Engine_ListChallenges_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Engine_ChallengeGet_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_ListChallenges_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ChallengeGet_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_GetChallenge_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_OrganizationList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -399,18 +399,18 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Engine_GetChallenge_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Engine_OrganizationList_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_GetChallenge_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_OrganizationList_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_ListTeams_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_TeamList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -419,18 +419,18 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Engine_ListTeams_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Engine_TeamList_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_ListTeams_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_TeamList_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_ListTournamentTeams_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_TeamGet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -439,18 +439,18 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Engine_ListTournamentTeams_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Engine_TeamGet_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_ListTournamentTeams_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_TeamGet_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_GetTournamentTeam_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_ToolPing_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -459,18 +459,18 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Engine_GetTournamentTeam_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Engine_ToolPing_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_GetTournamentTeam_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ToolPing_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_GetStatus_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_ToolStatus_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -479,18 +479,18 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Engine_GetStatus_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Engine_ToolStatus_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_GetStatus_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ToolStatus_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_GetInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_ToolInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -499,18 +499,18 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Engine_GetInfo_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Engine_ToolInfo_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_GetInfo_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ToolInfo_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_Engine_GenerateFakeData_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Engine_ToolGenerateFakeData_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -519,18 +519,18 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Engine_GenerateFakeData_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Engine_ToolGenerateFakeData_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_GenerateFakeData_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ToolGenerateFakeData_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_DBDump_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_ToolDBDump_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -539,14 +539,14 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Engine_DBDump_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Engine_ToolDBDump_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_DBDump_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ToolDBDump_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -591,7 +591,7 @@ func RegisterEngineHandler(ctx context.Context, mux *runtime.ServeMux, conn *grp
 // "EngineClient" to call the correct interceptors.
 func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, client EngineClient) error {
 
-	mux.Handle("GET", pattern_Engine_Ping_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_UserGetSession_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -600,18 +600,18 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Engine_Ping_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Engine_UserGetSession_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_Ping_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_UserGetSession_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_GetUserSession_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Engine_UserSetPreferences_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -620,18 +620,18 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Engine_GetUserSession_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Engine_UserSetPreferences_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_GetUserSession_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_UserSetPreferences_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_Engine_SetPreferences_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_ChallengeList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -640,18 +640,18 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Engine_SetPreferences_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Engine_ChallengeList_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_SetPreferences_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ChallengeList_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_ListChallenges_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_ChallengeGet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -660,18 +660,18 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Engine_ListChallenges_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Engine_ChallengeGet_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_ListChallenges_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ChallengeGet_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_GetChallenge_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_OrganizationList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -680,18 +680,18 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Engine_GetChallenge_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Engine_OrganizationList_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_GetChallenge_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_OrganizationList_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_ListTeams_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_TeamList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -700,18 +700,18 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Engine_ListTeams_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Engine_TeamList_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_ListTeams_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_TeamList_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_ListTournamentTeams_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_TeamGet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -720,18 +720,18 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Engine_ListTournamentTeams_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Engine_TeamGet_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_ListTournamentTeams_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_TeamGet_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_GetTournamentTeam_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_ToolPing_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -740,18 +740,18 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Engine_GetTournamentTeam_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Engine_ToolPing_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_GetTournamentTeam_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ToolPing_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_GetStatus_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_ToolStatus_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -760,18 +760,18 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Engine_GetStatus_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Engine_ToolStatus_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_GetStatus_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ToolStatus_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_GetInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_ToolInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -780,18 +780,18 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Engine_GetInfo_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Engine_ToolInfo_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_GetInfo_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ToolInfo_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_Engine_GenerateFakeData_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Engine_ToolGenerateFakeData_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -800,18 +800,18 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Engine_GenerateFakeData_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Engine_ToolGenerateFakeData_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_GenerateFakeData_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ToolGenerateFakeData_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Engine_DBDump_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Engine_ToolDBDump_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -820,14 +820,14 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Engine_DBDump_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Engine_ToolDBDump_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Engine_DBDump_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Engine_ToolDBDump_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -835,53 +835,53 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 }
 
 var (
-	pattern_Engine_Ping_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"ping"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_UserGetSession_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"user", "session"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_GetUserSession_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"user-session"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_UserSetPreferences_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"user", "preferences"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_SetPreferences_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"preferences"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_ChallengeList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"challenges"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_ListChallenges_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"challenges"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_ChallengeGet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"challenge"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_GetChallenge_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"challenge"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_OrganizationList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"organizations"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_ListTeams_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"teams"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_TeamList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"teams"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_ListTournamentTeams_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"tournament", "teams"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_TeamGet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"team"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_GetTournamentTeam_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"tournament", "team"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_ToolPing_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"ping"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_GetStatus_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"status"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_ToolStatus_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"status"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_GetInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"info"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_ToolInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"info"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_GenerateFakeData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"dev", "generate-fake-data"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_ToolGenerateFakeData_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"tool", "generate-fake-data"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_DBDump_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"dev", "sql-dump"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_ToolDBDump_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"tool", "sql-dump"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_Engine_Ping_0 = runtime.ForwardResponseMessage
+	forward_Engine_UserGetSession_0 = runtime.ForwardResponseMessage
 
-	forward_Engine_GetUserSession_0 = runtime.ForwardResponseMessage
+	forward_Engine_UserSetPreferences_0 = runtime.ForwardResponseMessage
 
-	forward_Engine_SetPreferences_0 = runtime.ForwardResponseMessage
+	forward_Engine_ChallengeList_0 = runtime.ForwardResponseMessage
 
-	forward_Engine_ListChallenges_0 = runtime.ForwardResponseMessage
+	forward_Engine_ChallengeGet_0 = runtime.ForwardResponseMessage
 
-	forward_Engine_GetChallenge_0 = runtime.ForwardResponseMessage
+	forward_Engine_OrganizationList_0 = runtime.ForwardResponseMessage
 
-	forward_Engine_ListTeams_0 = runtime.ForwardResponseMessage
+	forward_Engine_TeamList_0 = runtime.ForwardResponseMessage
 
-	forward_Engine_ListTournamentTeams_0 = runtime.ForwardResponseMessage
+	forward_Engine_TeamGet_0 = runtime.ForwardResponseMessage
 
-	forward_Engine_GetTournamentTeam_0 = runtime.ForwardResponseMessage
+	forward_Engine_ToolPing_0 = runtime.ForwardResponseMessage
 
-	forward_Engine_GetStatus_0 = runtime.ForwardResponseMessage
+	forward_Engine_ToolStatus_0 = runtime.ForwardResponseMessage
 
-	forward_Engine_GetInfo_0 = runtime.ForwardResponseMessage
+	forward_Engine_ToolInfo_0 = runtime.ForwardResponseMessage
 
-	forward_Engine_GenerateFakeData_0 = runtime.ForwardResponseMessage
+	forward_Engine_ToolGenerateFakeData_0 = runtime.ForwardResponseMessage
 
-	forward_Engine_DBDump_0 = runtime.ForwardResponseMessage
+	forward_Engine_ToolDBDump_0 = runtime.ForwardResponseMessage
 )
