@@ -15,9 +15,9 @@ const TeamsRows = ({ teams }) => {
     })
 }
 
-const AllTeamsOnTournamentList = ({ activeTournament, allTeamsOnTournament }) => {
+const AllTeamsOnSeasonList = ({ activeSeason, allTeamsOnSeason }) => {
     return (
-        !activeTournament || !allTeamsOnTournament ? <Dimmer className={styles.dimmer} active loader /> :
+        !activeSeason || !allTeamsOnSeason ? <Dimmer className={styles.dimmer} active loader /> :
         <Card>
             <Table
                 cards={true}
@@ -31,9 +31,9 @@ const AllTeamsOnTournamentList = ({ activeTournament, allTeamsOnTournament }) =>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    { activeTournament && allTeamsOnTournament &&
+                    { activeSeason && allTeamsOnSeason &&
                         <TeamsRows
-                            teams={allTeamsOnTournament}
+                            teams={allTeamsOnSeason}
                         />
                     }
                 </Table.Body>
@@ -42,8 +42,8 @@ const AllTeamsOnTournamentList = ({ activeTournament, allTeamsOnTournament }) =>
     )
 }
 
-AllTeamsOnTournamentList.propTypes = {
-    tournaments: PropTypes.object,
+AllTeamsOnSeasonList.propTypes = {
+    seasons: PropTypes.object,
 };
 
-export default AllTeamsOnTournamentList;
+export default AllTeamsOnSeasonList;

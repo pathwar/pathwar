@@ -2,24 +2,24 @@ import * as React from "react";
 import { Card, Table } from "tabler-react";
 import PropTypes from "prop-types";
 
-const TournamentsRows = ({allTournaments}) => {
-    return allTournaments.map((tournament) => {
+const SeasonsRows = ({allSeasons}) => {
+    return allSeasons.map((season) => {
         return (
-            <Table.Row key={tournament.id}>
-                <Table.Col colSpan={2}>{tournament.name}</Table.Col>
-                <Table.Col>{tournament.status}</Table.Col>
-                <Table.Col>{tournament.visibility}</Table.Col>
+            <Table.Row key={season.id}>
+                <Table.Col colSpan={2}>{season.name}</Table.Col>
+                <Table.Col>{season.status}</Table.Col>
+                <Table.Col>{season.visibility}</Table.Col>
             </Table.Row>
         )
     })
 }
 
-const AllTournamentsList = props => {
-    const { tournaments } = props;
+const AllSeasonsList = props => {
+    const { seasons } = props;
     return (
         <Card>
             <Card.Header>
-                <Card.Title>All Tournaments</Card.Title>
+                <Card.Title>All Seasons</Card.Title>
             </Card.Header>
             <Table
                 cards={true}
@@ -35,15 +35,15 @@ const AllTournamentsList = props => {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {tournaments && <TournamentsRows allTournaments={tournaments}  />}
+                    {seasons && <SeasonsRows allSeasons={seasons}  />}
                 </Table.Body>
             </Table>
         </Card>
     )
 }
 
-AllTournamentsList.propTypes = {
-    tournaments: PropTypes.array,
+AllSeasonsList.propTypes = {
+    seasons: PropTypes.array,
 };
 
-export default AllTournamentsList
+export default AllSeasonsList
