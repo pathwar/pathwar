@@ -25,7 +25,7 @@ func (e *engine) TeamGet(ctx context.Context, in *TeamGetInput) (*TeamGetOutput,
 	case err != nil && pwdb.IsRecordNotFoundError(err):
 		return nil, ErrInvalidArgument // FIXME: wrap original error
 	case err != nil:
-		return nil, fmt.Errorf("fetch season organization from db: %w", err)
+		return nil, fmt.Errorf("fetch team from db: %w", err)
 	}
 
 	ret := TeamGetOutput{
