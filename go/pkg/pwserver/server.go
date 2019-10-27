@@ -13,6 +13,7 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/gogo/gateway"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
@@ -73,14 +74,17 @@ func New(ctx context.Context, engine pwengine.Engine, opts Opts) (*Server, error
 	)
 
 	{ // local gRPC server
+		authFunc := func(context.Context) (context.Context, error) { return nil, pwengine.ErrNotImplemented }
 		serverStreamOpts := []grpc.StreamServerInterceptor{
 			grpc_recovery.StreamServerInterceptor(),
+			grpc_auth.StreamServerInterceptor(authFunc),
 			grpc_ctxtags.StreamServerInterceptor(),
 			grpc_zap.StreamServerInterceptor(grpcLogger),
 			grpc_recovery.StreamServerInterceptor(),
 		}
 		serverUnaryOpts := []grpc.UnaryServerInterceptor{
 			grpc_recovery.UnaryServerInterceptor(),
+			grpc_auth.UnaryServerInterceptor(authFunc),
 			grpc_ctxtags.UnaryServerInterceptor(),
 			grpc_zap.UnaryServerInterceptor(grpcLogger),
 			grpc_recovery.UnaryServerInterceptor(),
