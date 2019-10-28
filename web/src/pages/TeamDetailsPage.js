@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 
 import {
   Page,
-  Grid
+  Grid,
+  Dimmer
 } from "tabler-react";
 
 import {
@@ -21,7 +22,7 @@ class TeamDetailsPage extends React.PureComponent {
 
     render() {
         const { teamInDetail } = this.props;
-        return (
+        return ( !teamInDetail ? <Dimmer active loader /> :
             <Page.Content title={`Team ${teamInDetail.organization.name}`}>
                 <Grid.Row cards={true}>
                   <Grid.Col xs={12} sm={12} lg={6}>
