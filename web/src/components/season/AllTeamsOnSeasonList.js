@@ -6,10 +6,11 @@ import PropTypes from "prop-types";
 import styles from "../../styles/layout/loader.module.css"
 
 const TeamsRows = ({ teams }) => {
+  debugger
     return teams.map((item) => {
         return (
-            <Table.Row key={item.team.id}>
-                <Table.Col colSpan={2}><Link to={`/app/team/${item.team.id}`}>{item.team.name}</Link></Table.Col>
+            <Table.Row key={item.organization.id}>
+                <Table.Col colSpan={2}><Link to={`/app/team/${item.id}`}>{item.organization.name}</Link></Table.Col>
             </Table.Row>
         )
     })

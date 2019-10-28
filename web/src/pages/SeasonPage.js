@@ -51,7 +51,6 @@ class SeasonPage extends React.Component {
 
 SeasonPage.propTypes = {
     seasons: PropTypes.object,
-    activeTeam: PropTypes.object,
     fetchChallengesAction: PropTypes.func
 };
 

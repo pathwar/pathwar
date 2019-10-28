@@ -9,7 +9,7 @@ import {
 
 import {
   fetchTeamDetails as fetchTeamDetailsAction
-} from "../actions/teams"
+} from "../actions/seasons"
 
 class TeamDetailsPage extends React.PureComponent {
 

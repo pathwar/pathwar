@@ -9,7 +9,7 @@ import {
 } from "../constants/actionTypes"
 import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
 import { getUserSession } from "../api/userSession"
-import { setActiveTeam as setActiveTeamAction } from "./teams";
+import { setActiveOrganization as setActiveOrganizationAction } from "./organizations";
 import {
   setActiveSeason as setActiveSeasonAction,
   fetchPreferences as fetchPreferencesAction
@@ -50,7 +50,7 @@ export const fetchUserSession = (postPreferences) => async dispatch => {
     if (activeSeasonId) {
       const activeSeason = userSessionData.seasons.find((item) => item.season.id === activeSeasonId);
       dispatch(setActiveSeasonAction(activeSeason.season));
-      dispatch(setActiveTeamAction(defaultTeam));
+      dispatch(setActiveOrganizationAction(defaultTeam));
     }
 
   }

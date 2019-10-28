@@ -11,7 +11,9 @@ import {
   SET_CHALLENGES_LIST,
   SET_CHALLENGES_LIST_FAILED,
   GET_CHALLENGE_DETAILS_SUCCESS,
-  GET_CHALLENGE_DETAILS_FAILED
+  GET_CHALLENGE_DETAILS_FAILED,
+  GET_TEAM_DETAILS_SUCCESS,
+  GET_TEAM_DETAILS_FAILED
 } from "../constants/actionTypes"
 
 import {
@@ -19,7 +21,8 @@ import {
   getAllSeasonTeams,
   postPreferences,
   getChallenges,
-  getChallengeDetails
+  getChallengeDetails,
+  getTeamDetails
 } from "../api/seasons"
 
 import { fetchUserSession as fetchUserSessionAction } from "./userSession";
@@ -74,6 +77,28 @@ export const fetchAllSeasonTeams = (seasonID) => async dispatch => {
     })
   } catch (error) {
     dispatch({ type: GET_ALL_SEASON_TEAMS_FAILED, payload: { error } });
+  }
+}
+
+export const fetchTeamDetails = (teamID) => async dispatch => {
+  try {
+    const response = await getTeamDetails(teamID);
+    const detailsResponse = response.data.items;
+
+    console.log("AI RESPONSE >>>", response.data);
+
+    dispatch({
+      type: GET_TEAM_DETAILS_SUCCESS,
+      payload: {
+        details: detailsResponse,
+      }
+    })
+
+  } catch (error) {
+    dispatch({
+      type: GET_TEAM_DETAILS_FAILED,
+      payload: { error }
+    })
   }
 }
 
