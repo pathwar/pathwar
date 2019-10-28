@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "gatsby";
 import { StampCard } from "tabler-react";
 
-const TeamStatsStampCard = () => {
+const OrganizationStatsStampCard = () => {
 
     return (
         <StampCard
@@ -18,4 +18,4 @@ const TeamStatsStampCard = () => {
     )
 }
 
-export default TeamStatsStampCard;
+export default OrganizationStatsStampCard;

@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { fetchChallengeDetail as fetchChallengeDetailAction } from "../actions/tournaments"
+import { fetchChallengeDetail as fetchChallengeDetailAction } from "../actions/seasons"
 import styles from "./styles/ChallengeDetailsPage.module.css"
 
 import {
@@ -50,7 +50,7 @@ ChallengeDetailsPage.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  challenge: state.tournaments.challengeInDetail
+  challenge: state.seasons.challengeInDetail
 });
 
 const mapDispatchToProps = {
