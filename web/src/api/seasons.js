@@ -19,7 +19,7 @@ export function getChallenges(seasonID) {
 
 export function getTeamDetails(teamID) {
   const urlIdParam = encodeURIComponent(teamID);
-  return baseApi.get(`/season/team?season_team_id=${urlIdParam}`);
+  return baseApi.get(`/team?team_id=${urlIdParam}`);
 }
 
 export function getChallengeDetails(challengeID) {

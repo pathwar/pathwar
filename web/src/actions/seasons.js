@@ -83,14 +83,12 @@ export const fetchAllSeasonTeams = (seasonID) => async dispatch => {
 export const fetchTeamDetails = (teamID) => async dispatch => {
   try {
     const response = await getTeamDetails(teamID);
-    const detailsResponse = response.data.items;
-
-    console.log("AI RESPONSE >>>", response.data);
+    const detailsResponse = response.data.item;
 
     dispatch({
       type: GET_TEAM_DETAILS_SUCCESS,
       payload: {
-        details: detailsResponse,
+        team: detailsResponse,
       }
     })
 

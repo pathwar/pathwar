@@ -20,8 +20,9 @@ class TeamDetailsPage extends React.PureComponent {
     }
 
     render() {
+        const { teamInDetail } = this.props;
         return (
-            <Page.Content title="TEAM XYZ">
+            <Page.Content title={`Team ${teamInDetail.organization.name}`}>
                 <Grid.Row cards={true}>
                   <Grid.Col xs={12} sm={12} lg={6}>
 
@@ -33,10 +34,12 @@ class TeamDetailsPage extends React.PureComponent {
 }
 
 TeamDetailsPage.propTypes = {
-    fetchTeamDetailsAction: PropTypes.func
+  teamInDetail: PropTypes.object,
+  fetchTeamDetailsAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
+  teamInDetail: state.seasons.teamInDetail
 });
 
 const mapDispatchToProps = {
