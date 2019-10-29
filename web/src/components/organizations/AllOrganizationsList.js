@@ -8,7 +8,6 @@ import {
 } from "../../actions/organizations"
 
 const OrgRows = ({allOrganizationsList, userOrganizationsList, joinOrganization}) => {
-  debugger
     return allOrganizationsList.map((team) => {
 
         const isUserOnTem = userOrganizationsList ? userOrganizationsList.find((userTeam) => team.id === userTeam.id) : undefined;
