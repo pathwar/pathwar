@@ -89,7 +89,7 @@ func main() {
 		if *globalDebug {
 			config := zap.NewDevelopmentConfig()
 			config.Level.SetLevel(zap.DebugLevel)
-			config.DisableStacktrace = true
+			config.DisableStacktrace = false
 			config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 			var err error
 			logger, err = config.Build()

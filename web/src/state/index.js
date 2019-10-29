@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import userSession from './userSessionReducer';
-import teams from './teamsReducer';
-import tournaments from "./tournamentReducer";
+import organizations from './organizationsReducer';
+import seasons from "./seasonReducer";
 
 const rootReducer = combineReducers({
   userSession,
-  teams,
-  tournaments
+  organizations,
+  seasons
 });
 
 export default rootReducer;

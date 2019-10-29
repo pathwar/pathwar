@@ -5,9 +5,9 @@ import {
   Grid
 } from "tabler-react";
 
-import AllTeamsCard from "../components/teams/AllTeamsList";
+import AllOrganizationsList from "../components/organizations/AllOrganizationsList";
 // import UserTeamsCard from "../components/teams/UserTeamsList";
-import TeamStatsStampCard from "../components/teams/TeamsStatsStampCard";
+import TeamStatsStampCard from "../components/organizations/OrganizationStatsStampCard";
 
 const Dashboard = () => {
   return (
@@ -19,7 +19,7 @@ const Dashboard = () => {
           </Grid.Col>
 
           <Grid.Col xs={12} sm={12} lg={6}>
-            <AllTeamsCard />
+            <AllOrganizationsList />
           </Grid.Col>
 
         </Grid.Row>

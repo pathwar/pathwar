@@ -25,8 +25,8 @@ const navBarItems = [
     LinkComponent: Link
   },
   {
-    value: "Tournament",
-    to: "/app/tournament",
+    value: "Season",
+    to: "/app/season",
     icon: "flag",
     LinkComponent: Link
   }

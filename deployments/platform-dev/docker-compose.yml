@@ -1,28 +1,16 @@
 version: '3.7'
 
 services:
-  watchtower:
-    image: containrrr/watchtower
-    restart: always
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
-    restart: on-failure
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
-    command: --interval 60 --label-enable
-
-  pathwar:
+  pathwar-dev:
     image: pathwar/pathwar:latest
-    restart: always
+    restart: on-failure
     entrypoint:
       - ./wait-for-it.sh
       - db:3306
       - "--"
     environment:
       # specific to prod
-      - VIRTUAL_HOST=api.pathwar.land,api-dev.pathwar.land
+      - VIRTUAL_HOST=api-dev.pathwar.land
       - VIRTUAL_PORT=8000
       # loaded from .env
       - ENGINE_URN
@@ -44,9 +32,41 @@ services:
       - service-proxy
       - internal
 
+  pathwar-unsafe:
+    image: pathwar/pathwar:latest
+    restart: on-failure
+    entrypoint:
+      - ./wait-for-it.sh
+      - db:3306
+      - "--"
+    environment:
+      # specific to prod
+      - VIRTUAL_HOST=api-unsafe.pathwar.land
+      - VIRTUAL_PORT=8000
+      # loaded from .env
+      - ENGINE_URN
+    command:
+      - pathwar
+      - --debug
+      - engine
+      - --urn=$ENGINE_URN
+      - --sso-unsafe
+      - server
+      - --http-bind=0.0.0.0:8000
+      - --grpc-bind=0.0.0.0:9111
+      # - --cors-allowed-origins=https://www.pathwar.land ## FIXME: enable in production
+    depends_on:
+      - db
+      - mailserver
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    networks:
+      - service-proxy
+      - internal
+
   mailserver:
     image: fgribreau/smtp-to-sendgrid-gateway
-    restart: always
+    restart: on-failure
     ports:
       - 25:25
     environment:
@@ -56,7 +76,7 @@ services:
 
   db:
     image: mariadb:10
-    restart: always
+    restart: on-failure
     volumes:
       - db_data:/var/lib/mysql
     environment:
@@ -69,7 +89,7 @@ services:
 
   forestadmin:
     image: pathwar/forestadmin:latest
-    restart: always
+    restart: on-failure
     labels:
       com.centurylinklabs.watchtower.enable: "true"
     environment:

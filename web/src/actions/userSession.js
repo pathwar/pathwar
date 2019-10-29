@@ -9,11 +9,11 @@ import {
 } from "../constants/actionTypes"
 import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
 import { getUserSession } from "../api/userSession"
-// import { setActiveTeam as setActiveTeamAction } from "./teams";
+import { setActiveOrganization as setActiveOrganizationAction } from "./organizations";
 import {
-  setActiveTournament as setActiveTournamentAction,
+  setActiveSeason as setActiveSeasonAction,
   fetchPreferences as fetchPreferencesAction
-} from "./tournaments"
+} from "./seasons"
 
 export const logoutUser = () => async dispatch => {
   dispatch({
@@ -33,23 +33,26 @@ export const fetchUserSession = (postPreferences) => async dispatch => {
   try {
     const userSessionResponse = await getUserSession();
     const userSessionData = userSessionResponse.data;
-    const defaultTournamentSet = userSessionData.tournaments.find((item) => item.tournament.is_default);
-    const defaultTournament = defaultTournamentSet.tournament;
+    const defaultSeasonSet = userSessionData.seasons.find((item) => item.season.is_default);
+    const defaultTeamSet = userSessionData.seasons.find((item) => item.team.is_default);
 
-    const activeTournamentId = userSessionData.user.active_tournament_id
+    const defaultSeason = defaultSeasonSet.season;
+    const defaultTeam = defaultTeamSet.team;
+
+    const activeSeasonId = userSessionData.user.active_season_id
 
     dispatch(setUserSession(userSessionData))
 
     if (postPreferences) {
-      dispatch(fetchPreferencesAction(defaultTournament.id))
+      dispatch(fetchPreferencesAction(defaultSeason.id))
     }
 
-    if (activeTournamentId) {
-      const activeTournament = userSessionData.tournaments.find((item) => item.tournament.id === activeTournamentId);
-      dispatch(setActiveTournamentAction(activeTournament.tournament));
+    if (activeSeasonId) {
+      const activeSeason = userSessionData.seasons.find((item) => item.season.id === activeSeasonId);
+      dispatch(setActiveSeasonAction(activeSeason.season));
+      dispatch(setActiveOrganizationAction(defaultTeam));
     }
 
-    // dispatch(setActiveTeamAction(defaultTeam))
   }
   catch(error) {
     dispatch({ type: SET_USER_SESSION_FAILED, payload: { error } });

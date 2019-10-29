@@ -2,15 +2,12 @@ import * as React from "react";
 import { connect } from "react-redux"
 import { Card, Table, Avatar, Button } from "tabler-react";
 import PropTypes from "prop-types";
-import {
-    fetchTeamsList as fetchTeamsListAction,
-    joinTeam as joinTeamAction
-} from "../../actions/teams"
+import { fetchUserOrganizations as fetUserTeamsListAction } from "../../actions/organizations"
 
-const TeamsRows = ({allTeamsList, userTeamsList, joinTeam}) => {
-    return allTeamsList.map((team) => {
+const OrgRows = ({teamsList, activeOrganization}) => {
+    return teamsList.map((team) => {
 
-        const isUserOnTem = userTeamsList ? userTeamsList.find((userTeam) => team.id === userTeam.id) : undefined;
+        const isActive = team.id === activeOrganization.id;
 
         return (
             <Table.Row key={team.id}>
@@ -19,11 +16,11 @@ const TeamsRows = ({allTeamsList, userTeamsList, joinTeam}) => {
             </Table.Col>
             <Table.Col>{team.name}</Table.Col>
             <Table.Col>{team.locale}</Table.Col>
-            {isUserOnTem && <Table.Col>
-                Joined
+            {isActive && <Table.Col>
+                Active
             </Table.Col>}
-            {!isUserOnTem && <Table.Col>
-                <Button color="info" size="sm" onClick={() => joinTeam(team.id)}>Join</Button>
+            {!isActive && <Table.Col>
+                <Button color="info" size="sm">Set Active</Button>
             </Table.Col>}
         </Table.Row>
         )
@@ -31,19 +28,19 @@ const TeamsRows = ({allTeamsList, userTeamsList, joinTeam}) => {
 
 }
 
-class AllTeamsCard extends React.PureComponent {
+class UserOrganizationsList extends React.PureComponent {
 
     componentDidMount() {
-        const { fetchTeamsListAction } = this.props;
-        fetchTeamsListAction();
+        const { fetUserTeamsListAction } = this.props;
+        fetUserTeamsListAction();
     }
 
     render() {
-        const { teams, joinTeamAction } = this.props;
+        const { userOrganizationsList, activeOrganization } = this.props;
         return (
             <Card>
                   <Card.Header>
-                    <Card.Title>All Teams</Card.Title>
+                    <Card.Title>My Teams</Card.Title>
                   </Card.Header>
                   <Table
                     cards={true}
@@ -59,11 +56,7 @@ class AllTeamsCard extends React.PureComponent {
                       </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {teams.allTeamsList && <TeamsRows
-                            allTeamsList={teams.allTeamsList}
-                            userTeamsList={teams.userTeamsList}
-                            joinTeam={joinTeamAction}
-                        />}
+                        {userOrganizationsList && <OrgRows teamsList={userOrganizationsList} activeOrganization={activeOrganization} />}
                     </Table.Body>
                   </Table>
                 </Card>
@@ -71,22 +64,22 @@ class AllTeamsCard extends React.PureComponent {
     }
 }
 
-AllTeamsCard.propTypes = {
-    teams: PropTypes.object,
-    fetchTeamsListAction: PropTypes.func,
-    joinTeamAction: PropTypes.func
+UserOrganizationsList.propTypes = {
+    activeOrganization: PropTypes.object,
+    userOrganizationsList: PropTypes.array,
+    fetUserTeamsListAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
-    teams: state.teams,
+    userOrganizationsList: state.organizations.userOrganizationsList,
+    activeOrganization: state.organizations.activeOrganization
 });
 
 const mapDispatchToProps = {
-    fetchTeamsListAction: () => fetchTeamsListAction(),
-    joinTeamAction: (teamID) => joinTeamAction(teamID)
+    fetUserTeamsListAction: () => fetUserTeamsListAction()
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AllTeamsCard);
+)(UserOrganizationsList);

@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { baseApi } from "./index";
 
-export function getAllTeams() {
-    return baseApi.get(`/teams`);
+export function getAllOrganizations() {
+    return baseApi.get(`/organizations`);
 }
-export function getUserTeams(userID) {
+export function getUserOrganizations(userID) {
     return baseApi.get(`/user-teams`, { userID });
 }
 
-export function joinTeam(userID, teamID) {
+export function joinOrganization(userID, teamID) {
   // return axios.post("/join-teams", {userID, teamID})
 }
