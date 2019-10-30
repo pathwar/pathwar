@@ -13,8 +13,8 @@ export function getAllSeasons() {
     return baseApi.get(`/seasons`);
 }
 
-export function getChallenges(seasonID) {
-    return baseApi.get(`/challenges`, { id: seasonID });
+export function getChallenges() {
+    return baseApi.get(`/challenges`);
 }
 
 export function getTeamDetails(teamID) {

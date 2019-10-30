@@ -7,7 +7,7 @@ const withToken = function(config) {
 };
 
 export const unsafeApi = axios.create({
-  baseURL: "https://app-unsafe.pathwar.land/"
+  baseURL: "https://api-unsafe.pathwar.land"
 });
 
 unsafeApi.interceptors.request.use(withToken);
