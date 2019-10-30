@@ -1,4 +1,5 @@
 import axios from "axios";
+require('dotenv').config({ path: "../../.env" });
 
 //Axios Config
 const withToken = function(config) {
@@ -7,7 +8,7 @@ const withToken = function(config) {
 };
 
 export const unsafeApi = axios.create({
-  baseURL: "https://api-unsafe.pathwar.land"
+  baseURL: process.env.API_URL_UNSAFE
 });
 
 unsafeApi.interceptors.request.use(withToken);
@@ -22,7 +23,6 @@ const active_season_id = "1187423482216976384";
 
 describe('User Session API Calls', () => {
   it('should work GET user session - /user/session', async () => {
-
     const response = await unsafeApi.get("/user/session");
     expect(response.status).toEqual(200);
     expect(response.data).toBeDefined();
