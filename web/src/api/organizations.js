@@ -4,8 +4,10 @@ import { baseApi } from "./index";
 export function getAllOrganizations() {
     return baseApi.get(`/organizations`);
 }
-export function getUserOrganizations(userID) {
-    return baseApi.get(`/user-teams`, { userID });
+
+//TODO: Verify new endpoint to return the user organizations
+export function getUserOrganizations() {
+    return baseApi.get(`/user/organizations`);
 }
 
 export function joinOrganization(userID, teamID) {
