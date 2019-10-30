@@ -12,8 +12,16 @@ export const unsafeApi = axios.create({
 
 unsafeApi.interceptors.request.use(withToken);
 
+//Helpers
+const performUserSessionCalls = async () => {
+  const userSessionResponse = await unsafeApi.get("/user/session");
+  unsafeApi.post(`/user/preferences`, {"active_season_id": userSessionResponse.data.user.active_season_id});
+  await unsafeApi.get("/user/session")
+}
+const active_season_id = "1187423482216976384";
+
 describe('User Session API Calls', () => {
-  it('should work get user session - /user/session', async () => {
+  it('should work GET user session - /user/session', async () => {
 
     const response = await unsafeApi.get("/user/session");
     expect(response.status).toEqual(200);
@@ -22,7 +30,31 @@ describe('User Session API Calls', () => {
 })
 
 describe('Organizations API Calls', () => {
-  it('should work get all organizations - /organizations', () => {
+  it('should work GET all organizations - /organizations', async () => {
+    const response = await unsafeApi.get("/organizations");
+    expect(response.status).toEqual(200);
+    expect(response.data).toBeDefined();
+  })
+})
 
+describe('Seasons API Calls', () => {
+  it('should work POST preferences - /preferences', async () => {
+    const preferencesPost = await unsafeApi.post(`/user/preferences`, {"active_season_id": active_season_id});
+    expect(preferencesPost.status).toEqual(200);
+  })
+
+  it('should work GET all teams on a season - /teams?season_id=the_id', async () => {
+    const getAllTeamsResponse = await unsafeApi.get(`/teams?season_id=${active_season_id}`);
+    expect(getAllTeamsResponse.status).toEqual(200);
+  })
+  it('should work GET all challenges on a season - /challenges', async () => {
+    const response = await unsafeApi.get("/challenges");
+    expect(response.status).toEqual(200);
+    expect(response.data).toBeDefined();
+  })
+  it.skip('should work GET all seasons - /seasons', async () => {
+    const response = await unsafeApi.get("/seasons");
+    expect(response.status).toEqual(200);
+    expect(response.data).toBeDefined();
   })
 })
