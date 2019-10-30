@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux"
 import { Card, Table, Avatar, Button } from "tabler-react";
 import PropTypes from "prop-types";
-import { fetchUserOrganizations as fetUserTeamsListAction } from "../../actions/organizations"
+import { fetchUserOrganizations as fetchUserOrganizationsAction } from "../../actions/organizations"
 
 const OrgRows = ({teamsList, activeOrganization}) => {
     return teamsList.map((team) => {
@@ -31,8 +31,8 @@ const OrgRows = ({teamsList, activeOrganization}) => {
 class UserOrganizationsList extends React.PureComponent {
 
     componentDidMount() {
-        const { fetUserTeamsListAction } = this.props;
-        fetUserTeamsListAction();
+        const { fetchUserOrganizationsAction } = this.props;
+        fetchUserOrganizationsAction();
     }
 
     render() {
@@ -67,7 +67,7 @@ class UserOrganizationsList extends React.PureComponent {
 UserOrganizationsList.propTypes = {
     activeOrganization: PropTypes.object,
     userOrganizationsList: PropTypes.array,
-    fetUserTeamsListAction: PropTypes.func
+    fetchUserOrganizationsAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
@@ -76,7 +76,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    fetUserTeamsListAction: () => fetUserTeamsListAction()
+    fetchUserOrganizationsAction: () => fetchUserOrganizationsAction()
 };
 
 export default connect(
