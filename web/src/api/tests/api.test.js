@@ -19,7 +19,10 @@ const performUserSessionCalls = async () => {
   unsafeApi.post(`/user/preferences`, {"active_season_id": userSessionResponse.data.user.active_season_id});
   await unsafeApi.get("/user/session")
 }
-const active_season_id = "1187423482216976384";
+
+const active_season_id = "1187423482216976384" //Solo mode
+const team_id = "1187423482267308032" //Staff team
+const challenge_id = "1187423482284085248" //Hello word (test)
 
 describe('User Session API Calls', () => {
   it('should work GET user session - /user/session', async () => {
@@ -52,8 +55,15 @@ describe('Seasons API Calls', () => {
     expect(response.status).toEqual(200);
     expect(response.data).toBeDefined();
   })
-  it.skip('should work GET all seasons - /seasons', async () => {
-    const response = await unsafeApi.get("/seasons");
+  it('should work GET challenge details - /challenge?challenge_id=the_id', async () => {
+    const response = await unsafeApi.get(`/challenge?challenge_id=${challenge_id}`);
+
+    expect(response.status).toEqual(200);
+    expect(response.data).toBeDefined();
+  })
+  it('should work GET team details - /team?team_id=the_id', async () => {
+    const response = await unsafeApi.get(`/team?team_id=${team_id}`);
+
     expect(response.status).toEqual(200);
     expect(response.data).toBeDefined();
   })

@@ -9,6 +9,7 @@ export function getAllSeasonTeams(seasonID) {
   return baseApi.get(`/teams?season_id=${urlIdParam}`)
 }
 
+//TODO: Verify endpoint to return all seasons
 export function getAllSeasons() {
     return baseApi.get(`/seasons`);
 }
