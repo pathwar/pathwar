@@ -128,9 +128,9 @@ export const fetchChallengeDetail = (challengeID) => async dispatch => {
   }
 };
 
-export const fetchChallenges = (seasonID) => async dispatch => {
+export const fetchChallenges = () => async dispatch => {
   try {
-    const response = await getChallenges(seasonID);
+    const response = await getChallenges();
     dispatch({
       type: SET_CHALLENGES_LIST,
       payload: { activeChallenges: response.data.items }

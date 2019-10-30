@@ -10,7 +10,6 @@ class LogoutPage extends React.PureComponent {
         const { userSession, logoutUserAction } = this.props;
 
         if (!userSession.activeKeycloakSession) {
-          debugger
             navigate("/");
         } else {
           userSession.activeKeycloakSession.logout();
