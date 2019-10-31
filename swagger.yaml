@@ -152,16 +152,16 @@ definitions:
       id:
         format: int64
         type: string
-      instances:
-        items:
-          $ref: '#/definitions/dbChallengeInstance'
-        type: array
       is_draft:
         format: boolean
         type: boolean
       is_latest:
         format: boolean
         type: boolean
+      season_challenges:
+        items:
+          $ref: '#/definitions/dbSeasonChallenge'
+        type: array
       source_url:
         type: string
       updated_at:
@@ -203,15 +203,15 @@ definitions:
     type: string
   dbChallengeSubscription:
     properties:
-      challenge_flavor:
-        $ref: '#/definitions/dbChallengeFlavor'
-      challenge_flavor_id:
-        format: int64
-        type: string
       created_at:
         format: date-time
         type: string
       id:
+        format: int64
+        type: string
+      season_challenge:
+        $ref: '#/definitions/dbSeasonChallenge'
+      season_challenge_id:
         format: int64
         type: string
       team:
@@ -229,7 +229,12 @@ definitions:
     type: object
   dbChallengeValidation:
     properties:
+      author:
+        $ref: '#/definitions/dbTeamMember'
       author_comment:
+        type: string
+      author_id:
+        format: int64
         type: string
       challenge_subscription:
         $ref: '#/definitions/dbChallengeSubscription'
@@ -246,11 +251,6 @@ definitions:
         type: string
       status:
         $ref: '#/definitions/dbChallengeValidationStatus'
-      team_member:
-        $ref: '#/definitions/dbTeamMember'
-      team_member_id:
-        format: int64
-        type: string
       updated_at:
         format: date-time
         type: string
@@ -374,6 +374,10 @@ definitions:
       organizations:
         items:
           $ref: '#/definitions/dbOrganization'
+        type: array
+      season_challenges:
+        items:
+          $ref: '#/definitions/dbSeasonChallenge'
         type: array
       seasons:
         items:
@@ -560,6 +564,36 @@ definitions:
       visibility:
         $ref: '#/definitions/SeasonVisibility'
     type: object
+  dbSeasonChallenge:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+      flavor:
+        $ref: '#/definitions/dbChallengeFlavor'
+      flavor_id:
+        format: int64
+        type: string
+      id:
+        format: int64
+        type: string
+      instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
+      season:
+        $ref: '#/definitions/dbSeason'
+      season_id:
+        format: int64
+        type: string
+      subscriptions:
+        items:
+          $ref: '#/definitions/dbChallengeSubscription'
+        type: array
+      updated_at:
+        format: date-time
+        type: string
+    type: object
   dbSeasonStatus:
     default: UnknownStatus
     enum:
@@ -734,6 +768,22 @@ definitions:
         format: date-time
         type: string
     type: object
+  engineChallengeBuyInput:
+    properties:
+      challenge_flavor_id:
+        format: int64
+        type: string
+    type: object
+  engineChallengeBuyOutput:
+    type: object
+  engineChallengeCloseInput:
+    properties:
+      challenge_subscription_id:
+        format: int64
+        type: string
+    type: object
+  engineChallengeCloseOutput:
+    type: object
   engineChallengeGetOutput:
     properties:
       item:
@@ -745,6 +795,14 @@ definitions:
         items:
           $ref: '#/definitions/dbChallenge'
         type: array
+    type: object
+  engineChallengeValidateInput:
+    properties:
+      challenge_subscription_id:
+        format: int64
+        type: string
+    type: object
+  engineChallengeValidateOutput:
     type: object
   engineOrganizationListOutput:
     properties:
@@ -896,6 +954,81 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/engineChallengeGetOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /challenge/buy:
+    post:
+      operationId: ChallengeBuy
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineChallengeBuyInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineChallengeBuyOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /challenge/close:
+    post:
+      operationId: ChallengeClose
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineChallengeCloseInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineChallengeCloseOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /challenge/validate:
+    post:
+      operationId: ChallengeValidate
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineChallengeValidateInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineChallengeValidateOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.

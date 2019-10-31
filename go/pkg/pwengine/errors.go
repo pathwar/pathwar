@@ -6,4 +6,5 @@ var (
 	ErrNotImplemented  = errors.New("not implemented")
 	ErrMissingArgument = errors.New("missing argument(s)")
 	ErrInvalidArgument = errors.New("invalid argument(s)")
+	ErrDuplicate       = errors.New("duplicate")
 )
