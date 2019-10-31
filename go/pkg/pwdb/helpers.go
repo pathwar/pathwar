@@ -33,9 +33,6 @@ func GetDump(db *gorm.DB) (*Dump, error) {
 	if err := db.Find(&dump.Challenges).Error; err != nil {
 		return nil, err
 	}
-	if err := db.Find(&dump.ChallengeVersions).Error; err != nil {
-		return nil, err
-	}
 	if err := db.Find(&dump.ChallengeFlavors).Error; err != nil {
 		return nil, err
 	}
@@ -88,32 +85,26 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 			Author:      gofakeit.Name(),
 			Locale:      "fr_FR",
 			IsDraft:     false,
-			Versions:    []*ChallengeVersion{},
+			Flavors:     []*ChallengeFlavor{},
 		}
 		for i := 0; i < 2; i++ {
-			version := &ChallengeVersion{
-				Driver:    ChallengeVersion_Docker,
+			flavor := &ChallengeFlavor{
+				Driver:    ChallengeFlavor_Docker,
 				Version:   gofakeit.IPv4Address(),
 				Changelog: gofakeit.HipsterSentence(5),
 				IsDraft:   false,
 				IsLatest:  i == 0,
 				SourceURL: gofakeit.URL(),
-				Flavors:   []*ChallengeFlavor{},
+				Instances: []*ChallengeInstance{},
 			}
-			for j := 0; j < 2; j++ {
-				flavor := &ChallengeFlavor{
-					Instances: []*ChallengeInstance{},
+			for k := 0; k < 2; k++ {
+				instance := &ChallengeInstance{
+					HypervisorID: hypervisors[rand.Int()%len(hypervisors)].ID,
+					Status:       ChallengeInstance_Active,
 				}
-				for k := 0; k < 2; k++ {
-					instance := &ChallengeInstance{
-						HypervisorID: hypervisors[rand.Int()%len(hypervisors)].ID,
-						Status:       ChallengeInstance_Active,
-					}
-					flavor.Instances = append(flavor.Instances, instance)
-				}
-				version.Flavors = append(version.Flavors, flavor)
+				flavor.Instances = append(flavor.Instances, instance)
 			}
-			challenge.Versions = append(challenge.Versions, version)
+			challenge.Flavors = append(challenge.Flavors, flavor)
 		}
 		challenges = append(challenges, challenge)
 	}

@@ -29,7 +29,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 
 func request_Engine_UserGetSession_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Void
+	var protoReq UserGetSessionInput
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.UserGetSession(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -38,7 +38,7 @@ func request_Engine_UserGetSession_0(ctx context.Context, marshaler runtime.Mars
 }
 
 func local_request_Engine_UserGetSession_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Void
+	var protoReq UserGetSessionInput
 	var metadata runtime.ServerMetadata
 
 	msg, err := server.UserGetSession(ctx, &protoReq)
@@ -81,7 +81,7 @@ func local_request_Engine_UserSetPreferences_0(ctx context.Context, marshaler ru
 }
 
 func request_Engine_ChallengeList_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Void
+	var protoReq ChallengeListInput
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.ChallengeList(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -90,7 +90,7 @@ func request_Engine_ChallengeList_0(ctx context.Context, marshaler runtime.Marsh
 }
 
 func local_request_Engine_ChallengeList_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Void
+	var protoReq ChallengeListInput
 	var metadata runtime.ServerMetadata
 
 	msg, err := server.ChallengeList(ctx, &protoReq)
@@ -132,7 +132,7 @@ func local_request_Engine_ChallengeGet_0(ctx context.Context, marshaler runtime.
 }
 
 func request_Engine_OrganizationList_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Void
+	var protoReq OrganizationListInput
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.OrganizationList(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -141,7 +141,7 @@ func request_Engine_OrganizationList_0(ctx context.Context, marshaler runtime.Ma
 }
 
 func local_request_Engine_OrganizationList_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Void
+	var protoReq OrganizationListInput
 	var metadata runtime.ServerMetadata
 
 	msg, err := server.OrganizationList(ctx, &protoReq)

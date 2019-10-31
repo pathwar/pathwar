@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func (e *engine) ChallengeList(context.Context, *Void) (*ChallengeListOutput, error) {
+func (e *engine) ChallengeList(context.Context, *ChallengeListInput) (*ChallengeListOutput, error) {
 	var challenges ChallengeListOutput
 	err := e.db.
 		Set("gorm:auto_preload", true). // FIXME: explicit preloading

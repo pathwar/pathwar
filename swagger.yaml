@@ -3,7 +3,7 @@ basePath: /
 consumes:
 - application/json
 definitions:
-  ChallengeVersionDriver:
+  ChallengeFlavorDriver:
     default: Unknown
     enum:
     - Unknown
@@ -111,6 +111,10 @@ definitions:
         type: string
       description:
         type: string
+      flavors:
+        items:
+          $ref: '#/definitions/dbChallengeFlavor'
+        type: array
       homepage:
         title: repeated string tags = ;
         type: string
@@ -130,21 +134,21 @@ definitions:
       updated_at:
         format: date-time
         type: string
-      versions:
-        items:
-          $ref: '#/definitions/dbChallengeVersion'
-        type: array
     type: object
   dbChallengeFlavor:
     properties:
-      challenge_version:
-        $ref: '#/definitions/dbChallengeVersion'
-      challenge_version_id:
+      challenge:
+        $ref: '#/definitions/dbChallenge'
+      challenge_id:
         format: int64
+        type: string
+      changelog:
         type: string
       created_at:
         format: date-time
         type: string
+      driver:
+        $ref: '#/definitions/ChallengeFlavorDriver'
       id:
         format: int64
         type: string
@@ -152,8 +156,18 @@ definitions:
         items:
           $ref: '#/definitions/dbChallengeInstance'
         type: array
+      is_draft:
+        format: boolean
+        type: boolean
+      is_latest:
+        format: boolean
+        type: boolean
+      source_url:
+        type: string
       updated_at:
         format: date-time
+        type: string
+      version:
         type: string
     type: object
   dbChallengeInstance:
@@ -250,41 +264,6 @@ definitions:
     - Refused
     - AutoAccepted
     type: string
-  dbChallengeVersion:
-    properties:
-      challenge:
-        $ref: '#/definitions/dbChallenge'
-      challenge_id:
-        format: int64
-        type: string
-      changelog:
-        type: string
-      created_at:
-        format: date-time
-        type: string
-      driver:
-        $ref: '#/definitions/ChallengeVersionDriver'
-      flavors:
-        items:
-          $ref: '#/definitions/dbChallengeFlavor'
-        type: array
-      id:
-        format: int64
-        type: string
-      is_draft:
-        format: boolean
-        type: boolean
-      is_latest:
-        format: boolean
-        type: boolean
-      source_url:
-        type: string
-      updated_at:
-        format: date-time
-        type: string
-      version:
-        type: string
-    type: object
   dbCoupon:
     properties:
       created_at:
@@ -363,10 +342,6 @@ definitions:
       challenge_validations:
         items:
           $ref: '#/definitions/dbChallengeValidation'
-        type: array
-      challenge_versions:
-        items:
-          $ref: '#/definitions/dbChallengeVersion'
         type: array
       challenges:
         items:
@@ -813,6 +788,8 @@ definitions:
         format: int64
         type: string
     type: object
+  engineUserSetPreferencesOutput:
+    type: object
   engineVoid:
     example: {}
     title: Void is an empty message
@@ -1126,7 +1103,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineVoid'
+            $ref: '#/definitions/engineUserSetPreferencesOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.

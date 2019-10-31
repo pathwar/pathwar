@@ -10,7 +10,7 @@ import (
 	"pathwar.land/go/pkg/pwsso"
 )
 
-func (e *engine) UserGetSession(ctx context.Context, _ *Void) (*UserGetSessionOutput, error) {
+func (e *engine) UserGetSession(ctx context.Context, _ *UserGetSessionInput) (*UserGetSessionOutput, error) {
 	token, err := tokenFromContext(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("get token from context: %w", err)

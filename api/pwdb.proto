@@ -36,12 +36,12 @@ message Challenge {
   // associations
   //
 
-  repeated ChallengeVersion versions = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated ChallengeFlavor flavors = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message ChallengeList { repeated Challenge items = 1; }
 
-message ChallengeVersion {
+message ChallengeFlavor {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
@@ -71,26 +71,6 @@ message ChallengeVersion {
 
   Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
   int64 challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
-
-  repeated ChallengeFlavor flavors = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
-}
-
-message ChallengeFlavor {
-  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
-  google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
-
-  //
-  // fields
-  //
-
-  //
-  // associations
-  //
-
-  ChallengeVersion challenge_version = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeVersionID\""];
-  int64 challenge_version_id = 201 [(gogoproto.customname) = "ChallengeVersionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   repeated ChallengeInstance instances = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   //repeated ChallengeSubscription subscriptions = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
@@ -602,7 +582,6 @@ message Dump {
   repeated ChallengeInstance challenge_instances = 4;
   repeated ChallengeSubscription challenge_subscriptions = 5;
   repeated ChallengeValidation challenge_validations = 6;
-  repeated ChallengeVersion challenge_versions = 7;
   repeated Coupon coupons = 8;
   repeated CouponValidation coupon_validations = 9;
   repeated Hypervisor hypervisors = 10;
