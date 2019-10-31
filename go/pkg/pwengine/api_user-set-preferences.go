@@ -7,7 +7,7 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) UserSetPreferences(ctx context.Context, in *UserSetPreferencesInput) (*Void, error) {
+func (e *engine) UserSetPreferences(ctx context.Context, in *UserSetPreferencesInput) (*UserSetPreferencesOutput, error) {
 	userID, err := userIDFromContext(ctx, e.db)
 	if err != nil {
 		return nil, fmt.Errorf("get userid from context: %w", err)

@@ -87,14 +87,14 @@ func firstEntities(sfn *snowflake.Node) []interface{} {
 		Author:   "m1ch3l",
 		Homepage: "https://github.com/pathwar/pathwar/tree/master/challenge/example/hello-world",
 	}
-	helloWorldLatest := &ChallengeVersion{
+	helloWorldLatest := &ChallengeFlavor{
 		Challenge: helloWorld,
 		SourceURL: "https://github.com/pathwar/pathwar/tree/master/challenge/example/hello-world",
 		IsLatest:  true,
 		IsDraft:   false,
 		Changelog: "Lorem Ipsum",
 		Version:   "latest",
-		Driver:    ChallengeVersion_DockerCompose,
+		Driver:    ChallengeFlavor_DockerCompose,
 	}
 
 	return []interface{}{
