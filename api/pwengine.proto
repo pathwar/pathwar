@@ -91,7 +91,7 @@ message ChallengeSubscriptionValidateOutput {
 }
 
 message ChallengeSubscriptionCloseInput  { int64 challenge_subscription_id = 1 [(gogoproto.customname) = "ChallengeSubscriptionID"]; }
-message ChallengeSubscriptionCloseOutput {}
+message ChallengeSubscriptionCloseOutput { pathwar.db.ChallengeSubscription challenge_subscription = 1; }
 
 message TeamListInput  { int64 season_id = 1 [(gogoproto.customname) = "SeasonID"]; }
 message TeamListOutput { repeated pathwar.db.Team items = 1; }

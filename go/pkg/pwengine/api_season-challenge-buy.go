@@ -65,7 +65,8 @@ func (e *engine) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuyI
 	subscription := pwdb.ChallengeSubscription{
 		SeasonChallengeID: in.SeasonChallengeID,
 		TeamID:            in.TeamID,
-		AuthorID:          userID,
+		BuyerID:           userID,
+		Status:            pwdb.ChallengeSubscription_Active,
 	}
 	err = e.db.Create(&subscription).Error
 	if err != nil {
@@ -75,8 +76,11 @@ func (e *engine) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuyI
 	// load and return the freshly inserted entry
 	err = e.db.
 		Preload("Team").
-		Preload("Author").
+		Preload("Team.Season").
+		Preload("Buyer").
 		Preload("SeasonChallenge").
+		Preload("SeasonChallenge.Flavor").
+		Preload("SeasonChallenge.Flavor.Challenge").
 		First(&subscription, subscription.ID).
 		Error
 	if err != nil {

@@ -30,7 +30,9 @@ func (e *engine) SeasonChallengeList(ctx context.Context, in *SeasonChallengeLis
 
 	var ret SeasonChallengeListOutput
 	err := e.db.
-		Set("gorm:auto_preload", true).
+		Preload("Season").
+		Preload("Flavor").
+		Preload("Flavor.Challenge").
 		Where(pwdb.SeasonChallenge{SeasonID: in.SeasonID}).
 		Find(&ret.Items).
 		Error

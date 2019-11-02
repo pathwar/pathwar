@@ -39,7 +39,7 @@ func All() []interface{} {
 func ForeignKeys() [][3]string {
 	return [][3]string{
 		// {"User", "active_team_member_id", "team_member(id)"}, // FIXME: check why this cause an error!?
-		{"Achievement", "user_id", "user(id)"},
+		{"Achievement", "author_id", "user(id)"},
 		{"Achievement", "team_id", "team(id)"},
 		{"Achievement", "challenge_validation_id", "challenge_validation(id)"},
 		{"ChallengeFlavor", "challenge_id", "challenge(id)"},
@@ -47,7 +47,8 @@ func ForeignKeys() [][3]string {
 		{"ChallengeInstance", "hypervisor_id", "hypervisor(id)"},
 		{"ChallengeSubscription", "season_challenge_id", "season_challenge(id)"},
 		{"ChallengeSubscription", "team_id", "team(id)"},
-		{"ChallengeSubscription", "author_id", "user(id)"},
+		{"ChallengeSubscription", "buyer_id", "user(id)"},
+		{"ChallengeSubscription", "closer_id", "user(id)"},
 		{"ChallengeValidation", "challenge_subscription_id", "challenge_subscription(id)"},
 		{"ChallengeValidation", "author_id", "user(id)"},
 		{"Coupon", "season_id", "season(id)"},

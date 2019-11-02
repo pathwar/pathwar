@@ -426,6 +426,14 @@ message ChallengeSubscription {
   // fields
   //
 
+  enum Status {
+    Unknown = 0;
+    Active = 1;
+    Closed = 2;
+  }
+  Status status = 100;
+  google.protobuf.Timestamp closed_at = 101 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+
   //
   // associations
   //
@@ -436,10 +444,13 @@ message ChallengeSubscription {
   SeasonChallenge season_challenge = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:SeasonChallengeID\""];
   int64 season_challenge_id = 203 [(gogoproto.customname) = "SeasonChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"unique_index:idx_team_season_challenge\""];
 
-  User author = 204 [(gogoproto.moretags) = "gorm:\"foreignkey:AuthorID\""];
-  int64 author_id = 205 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  User buyer = 204 [(gogoproto.moretags) = "gorm:\"foreignkey:BuyerID\""];
+  int64 buyer_id = 205 [(gogoproto.customname) = "BuyerID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
-  repeated ChallengeValidation validations = 206 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  User closer = 206 [(gogoproto.moretags) = "gorm:\"foreignkey:CloserID\""];
+  int64 closer_id = 207 [(gogoproto.customname) = "CloserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+
+  repeated ChallengeValidation validations = 208 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message InventoryItem {
