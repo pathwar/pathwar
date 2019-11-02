@@ -63,8 +63,9 @@ func TestEngine_ChallengeBuy(t *testing.T) {
 	for _, test := range tests {
 		subscription, err := engine.SeasonChallengeBuy(ctx, test.input)
 		if !errors.Is(err, test.expectedErr) {
-			t.Fatalf("%s: Expected %#v, got %#v.", test.name, test.expectedErr, err)
+			t.Errorf("%s: Expected %#v, got %#v.", test.name, test.expectedErr, err)
 		}
+
 		if err != nil {
 			continue
 		}
@@ -73,6 +74,9 @@ func TestEngine_ChallengeBuy(t *testing.T) {
 		}
 		if subscription.ChallengeSubscription.SeasonChallengeID != test.input.SeasonChallengeID {
 			t.Errorf("%s: Expected %d, got %d.", test.name, test.input.SeasonChallengeID, subscription.ChallengeSubscription.SeasonChallengeID)
+		}
+		if subscription.ChallengeSubscription.AuthorID != session.User.ID {
+			t.Errorf("%s: Expected %d, got %d.", test.name, session.User.ID, subscription.ChallengeSubscription.AuthorID)
 		}
 	}
 }

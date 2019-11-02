@@ -88,18 +88,10 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 		// GravatarURL: staff
 	}
 	hackSparrow := &User{
-		Username:     "Hack Sparrow",
-		OAuthSubject: "Hack Sparrow",
-		OrganizationMemberships: []*OrganizationMember{
-			&OrganizationMember{
-				Organization: staffOrg,
-			},
-		},
-		TeamMemberships: []*TeamMember{
-			&TeamMember{
-				Team: staffTeam,
-			},
-		},
+		Username:                "Hack Sparrow",
+		OAuthSubject:            "Hack Sparrow",
+		OrganizationMemberships: []*OrganizationMember{{Organization: staffOrg}},
+		TeamMemberships:         []*TeamMember{{Team: staffTeam}},
 		// State: special
 		// GravatarURL: m1ch3l
 	}

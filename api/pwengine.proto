@@ -81,8 +81,14 @@ message SeasonChallengeBuyInput  {
 }
 message SeasonChallengeBuyOutput { pathwar.db.ChallengeSubscription challenge_subscription = 1; }
 
-message ChallengeSubscriptionValidateInput  { int64 challenge_subscription_id = 1 [(gogoproto.customname) = "ChallengeSubscriptionID"]; }
-message ChallengeSubscriptionValidateOutput {}
+message ChallengeSubscriptionValidateInput  {
+  int64 challenge_subscription_id = 1 [(gogoproto.customname) = "ChallengeSubscriptionID"];
+  string passphrase = 2;
+  string comment = 3;
+}
+message ChallengeSubscriptionValidateOutput {
+  pathwar.db.ChallengeValidation challenge_validation = 1;
+}
 
 message ChallengeSubscriptionCloseInput  { int64 challenge_subscription_id = 1 [(gogoproto.customname) = "ChallengeSubscriptionID"]; }
 message ChallengeSubscriptionCloseOutput {}
