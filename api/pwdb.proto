@@ -449,7 +449,7 @@ message ChallengeSubscription {
   int64 buyer_id = 205 [(gogoproto.customname) = "BuyerID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   User closer = 206 [(gogoproto.moretags) = "gorm:\"foreignkey:CloserID\""];
-  int64 closer_id = 207 [(gogoproto.customname) = "CloserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 closer_id = 207 [(gogoproto.customname) = "CloserID", (gogoproto.moretags) = "sql:\"null\" gorm:\"index\""];
 
   repeated ChallengeValidation validations = 208 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }

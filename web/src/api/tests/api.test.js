@@ -21,9 +21,22 @@ let season_challenge_id = undefined
 //Helpers
 const performUserSessionCalls = async () => {
 
-  // FIXME: call a (not yet created) call that erase the current account to start fresh, with a new team, etc
+  // ensure we have an account for this token before deleting it in the next step
+  try {
+    const userSessionResponse = await unsafeApi.get("/user/session");
+    const { user } = userSessionResponse.data
+  } catch (error) {
+    throw error;
+  }
 
-  //Set a real season id for tests
+  // trash any existing account first
+  try {
+    const response = await unsafeApi.post(`/user/delete-account`, {"reason": "integration test"})
+  } catch (error) {
+    throw error;
+  }
+
+  // Set a real season id and team id for tests
   try {
     const userSessionResponse = await unsafeApi.get("/user/session");
     const { user } = userSessionResponse.data
@@ -33,7 +46,7 @@ const performUserSessionCalls = async () => {
     throw error;
   }
 
-  //Set a real challenge_id from the season for tests
+  // Set a real challenge_id from the season for tests
   try {
     const seasonChallengesResponse = await unsafeApi.get(`/season-challenges?season_id=${active_season_id}`);
     const firstItem = seasonChallengesResponse.data.items[0]
@@ -82,14 +95,12 @@ describe('API Calls', () => {
     expect(response.status).toEqual(200);
     expect(response.data).toBeDefined();
   })
-  /* temporarily disabled, because it can only be done once per account, so it needs to be launched on a server that supports deleting old accounts
   it('should work POST season challenge buy - /season-challenge/buy', async() => {
-    const seasonChallengeBuyPost = await unsafeApi.post(`/season-challenge/buy`, {"season_challenge_id": season_challenge_id, "team_id": active_team_id});
+    const response = await unsafeApi.post(`/season-challenge/buy`, {"season_challenge_id": season_challenge_id, "team_id": active_team_id});
     expect(response.status).toEqual(200);
     expect(response.data).toBeDefined();
     // FIXME: save the returned challengeSubscription.id to make the next calls
   })
-  */
   // FIXME: call POST /season-challenge/validate {"challenge_subscription_id": the_id, "passphrase": "lorem ipsum", "comment", "dolor sit amet"}
   // FIXME: call POST /season-challenge/close {"challenge_subscription_id": the_id}
 })

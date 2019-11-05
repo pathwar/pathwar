@@ -745,6 +745,8 @@ definitions:
       created_at:
         format: date-time
         type: string
+      deletion_reason:
+        type: string
       email:
         type: string
       gravatar_url:
@@ -896,6 +898,13 @@ definitions:
         items:
           $ref: '#/definitions/dbTeam'
         type: array
+    type: object
+  engineUserDeleteAccountInput:
+    properties:
+      reason:
+        type: string
+    type: object
+  engineUserDeleteAccountOutput:
     type: object
   engineUserGetSessionOutput:
     properties:
@@ -1336,6 +1345,31 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/dbDump'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /user/delete-account:
+    post:
+      operationId: UserDeleteAccount
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineUserDeleteAccountInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineUserDeleteAccountOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
