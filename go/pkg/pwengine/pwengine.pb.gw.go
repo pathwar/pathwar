@@ -1215,11 +1215,11 @@ var (
 
 	pattern_Engine_SeasonChallengeGet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"season-challenge"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_SeasonChallengeBuy_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"challenge", "buy"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_SeasonChallengeBuy_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"season-challenge", "buy"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_ChallengeSubscriptionValidate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"challenge", "validate"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_ChallengeSubscriptionValidate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"challenge-subscription", "validate"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Engine_ChallengeSubscriptionClose_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"challenge", "close"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Engine_ChallengeSubscriptionClose_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"challenge-subscription", "close"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Engine_OrganizationList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"organizations"}, "", runtime.AssumeColonVerbOpt(true)))
 

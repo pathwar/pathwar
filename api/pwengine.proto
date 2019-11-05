@@ -31,9 +31,9 @@ service Engine {
   rpc ChallengeGet(ChallengeGetInput) returns (ChallengeGetOutput) { option (google.api.http) = {get: "/challenge"}; };
   rpc SeasonChallengeList(SeasonChallengeListInput) returns (SeasonChallengeListOutput) { option (google.api.http) = {get: "/season-challenges"}; };
   rpc SeasonChallengeGet(SeasonChallengeGetInput) returns (SeasonChallengeGetOutput) { option (google.api.http) = {get: "/season-challenge"}; };
-  rpc SeasonChallengeBuy(SeasonChallengeBuyInput) returns (SeasonChallengeBuyOutput) { option (google.api.http) = {post: "/challenge/buy"; body: "*"}; };
-  rpc ChallengeSubscriptionValidate(ChallengeSubscriptionValidateInput) returns (ChallengeSubscriptionValidateOutput) { option (google.api.http) = {post: "/challenge/validate"; body: "*"}; };
-  rpc ChallengeSubscriptionClose(ChallengeSubscriptionCloseInput) returns (ChallengeSubscriptionCloseOutput) { option (google.api.http) = {post: "/challenge/close"; body: "*"}; };
+  rpc SeasonChallengeBuy(SeasonChallengeBuyInput) returns (SeasonChallengeBuyOutput) { option (google.api.http) = {post: "/season-challenge/buy"; body: "*"}; };
+  rpc ChallengeSubscriptionValidate(ChallengeSubscriptionValidateInput) returns (ChallengeSubscriptionValidateOutput) { option (google.api.http) = {post: "/challenge-subscription/validate"; body: "*"}; };
+  rpc ChallengeSubscriptionClose(ChallengeSubscriptionCloseInput) returns (ChallengeSubscriptionCloseOutput) { option (google.api.http) = {post: "/challenge-subscription/close"; body: "*"}; };
 
   //
   // Organization
