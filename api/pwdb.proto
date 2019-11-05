@@ -238,6 +238,7 @@ message User {
   string website_url = 103 [(gogoproto.customname) = "WebsiteURL"];
   string locale = 104;
   string oauth_subject = 105 [(gogoproto.customname) = "OAuthSubject", (gogoproto.moretags) = "gorm:\"unique_index\""];
+  string deletion_reason = 106;
 
   //
   // associations
