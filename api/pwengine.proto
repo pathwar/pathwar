@@ -22,6 +22,7 @@ service Engine {
 
   rpc UserGetSession(UserGetSessionInput) returns (UserGetSessionOutput) { option (google.api.http) = {get: "/user/session"}; };
   rpc UserSetPreferences(UserSetPreferencesInput) returns (UserSetPreferencesOutput) { option (google.api.http) = {post: "/user/preferences"; body: "*"}; };
+  rpc UserDeleteAccount(UserDeleteAccountInput) returns (UserDeleteAccountOutput) { option (google.api.http) = {post: "/user/delete-account"; body: "*"}; };
 
   //
   // Challenge
@@ -102,6 +103,11 @@ message UserSetPreferencesInput {
 }
 message UserSetPreferencesOutput {}
 
+message UserDeleteAccountInput {
+  string reason = 1;
+  // FIXME: captcha
+}
+message UserDeleteAccountOutput {}
 
 message OrganizationListInput  {}
 message OrganizationListOutput { repeated pathwar.db.Organization items = 1; }

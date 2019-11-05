@@ -48,7 +48,7 @@ func ForeignKeys() [][3]string {
 		{"ChallengeSubscription", "season_challenge_id", "season_challenge(id)"},
 		{"ChallengeSubscription", "team_id", "team(id)"},
 		{"ChallengeSubscription", "buyer_id", "user(id)"},
-		{"ChallengeSubscription", "closer_id", "user(id)"},
+		// {"ChallengeSubscription", "closer_id", "user(id)"}, // can be nil
 		{"ChallengeValidation", "challenge_subscription_id", "challenge_subscription(id)"},
 		{"ChallengeValidation", "author_id", "user(id)"},
 		{"Coupon", "season_id", "season(id)"},
