@@ -13,16 +13,47 @@ export const unsafeApi = axios.create({
 
 unsafeApi.interceptors.request.use(withToken);
 
+//Test session variables
+let active_season_id = undefined
+let team_id = undefined
+let challenge_id = undefined
+
 //Helpers
 const performUserSessionCalls = async () => {
-  const userSessionResponse = await unsafeApi.get("/user/session");
-  unsafeApi.post(`/user/preferences`, {"active_season_id": userSessionResponse.data.user.active_season_id});
-  await unsafeApi.get("/user/session")
+
+  //Set a real season id for tests
+  try {
+    const userSessionResponse = await unsafeApi.get("/user/session");
+    const { user } = userSessionResponse.data
+    active_season_id = user.active_season_id
+  } catch (error) {
+    throw error;
+  }
+
+  //Set a real challenge_id from the season for tests
+  try {
+    const challengesResponse = await unsafeApi.get("/challenges");
+    const firstItem = challengesResponse.data.items[0]
+    challenge_id = firstItem.id
+  } catch (error) {
+    throw error;
+  }
+
+  //Set a real team_id from the teams on season
+  try {
+    const getAllTeamsResponse = await unsafeApi.get(`/teams?season_id=${active_season_id}`);
+    const { items } = getAllTeamsResponse.data;
+    const team = items.find((item) => item.is_default)
+    team_id = team.id;
+  } catch (error) {
+    throw error;
+  }
+
 }
 
-const active_season_id = "1187423482216976384" //Solo mode
-const team_id = "1187423482267308032" //Staff team
-const challenge_id = "1187423482284085248" //Hello word (test)
+beforeAll(() => {
+  return performUserSessionCalls();
+})
 
 describe('User Session API Calls', () => {
   it('should work GET user session - /user/session', async () => {
