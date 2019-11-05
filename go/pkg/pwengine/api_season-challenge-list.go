@@ -7,7 +7,7 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) TeamList(ctx context.Context, in *TeamListInput) (*TeamListOutput, error) {
+func (e *engine) SeasonChallengeList(ctx context.Context, in *SeasonChallengeListInput) (*SeasonChallengeListOutput, error) {
 	{ // validation
 		if in.SeasonID == 0 {
 			return nil, ErrMissingArgument
@@ -28,14 +28,16 @@ func (e *engine) TeamList(ctx context.Context, in *TeamListInput) (*TeamListOutp
 		}
 	}
 
-	var ret TeamListOutput
+	var ret SeasonChallengeListOutput
 	err := e.db.
-		Set("gorm:auto_preload", true).
-		Where(pwdb.Team{SeasonID: in.SeasonID}).
+		Preload("Season").
+		Preload("Flavor").
+		Preload("Flavor.Challenge").
+		Where(pwdb.SeasonChallenge{SeasonID: in.SeasonID}).
 		Find(&ret.Items).
 		Error
 	if err != nil {
-		return nil, fmt.Errorf("fetch teams: %w", err)
+		return nil, fmt.Errorf("fetch season challenges: %w", err)
 	}
 
 	return &ret, nil

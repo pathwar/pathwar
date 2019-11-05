@@ -8,10 +8,9 @@ import (
 )
 
 func (e *engine) ChallengeGet(ctx context.Context, in *ChallengeGetInput) (*ChallengeGetOutput, error) {
-	{ // validation
-		if in.ChallengeID == 0 {
-			return nil, ErrMissingArgument
-		}
+	// validation
+	if in == nil || in.ChallengeID == 0 {
+		return nil, ErrMissingArgument
 	}
 
 	var item pwdb.Challenge
@@ -20,7 +19,6 @@ func (e *engine) ChallengeGet(ctx context.Context, in *ChallengeGetInput) (*Chal
 		Where(pwdb.Challenge{ID: in.ChallengeID}).
 		First(&item).
 		Error
-
 	switch {
 	case err != nil && pwdb.IsRecordNotFoundError(err):
 		return nil, ErrInvalidArgument // FIXME: wrap original error
@@ -28,9 +26,7 @@ func (e *engine) ChallengeGet(ctx context.Context, in *ChallengeGetInput) (*Chal
 		return nil, fmt.Errorf("query challenge: %w", err)
 	}
 
-	ret := ChallengeGetOutput{
-		Item: &item,
-	}
+	ret := ChallengeGetOutput{Item: &item}
 
 	return &ret, nil
 }

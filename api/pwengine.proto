@@ -29,6 +29,11 @@ service Engine {
 
   rpc ChallengeList(ChallengeListInput) returns (ChallengeListOutput) { option (google.api.http) = {get: "/challenges"}; };
   rpc ChallengeGet(ChallengeGetInput) returns (ChallengeGetOutput) { option (google.api.http) = {get: "/challenge"}; };
+  rpc SeasonChallengeList(SeasonChallengeListInput) returns (SeasonChallengeListOutput) { option (google.api.http) = {get: "/season-challenges"}; };
+  rpc SeasonChallengeGet(SeasonChallengeGetInput) returns (SeasonChallengeGetOutput) { option (google.api.http) = {get: "/season-challenge"}; };
+  rpc SeasonChallengeBuy(SeasonChallengeBuyInput) returns (SeasonChallengeBuyOutput) { option (google.api.http) = {post: "/season-challenge/buy"; body: "*"}; };
+  rpc ChallengeSubscriptionValidate(ChallengeSubscriptionValidateInput) returns (ChallengeSubscriptionValidateOutput) { option (google.api.http) = {post: "/challenge-subscription/validate"; body: "*"}; };
+  rpc ChallengeSubscriptionClose(ChallengeSubscriptionCloseInput) returns (ChallengeSubscriptionCloseOutput) { option (google.api.http) = {post: "/challenge-subscription/close"; body: "*"}; };
 
   //
   // Organization
@@ -61,8 +66,32 @@ service Engine {
 message TeamGetInput  { int64 team_id = 1 [(gogoproto.customname) = "TeamID"]; }
 message TeamGetOutput { pathwar.db.Team item = 1; }
 
+message SeasonChallengeListInput  { int64 season_id = 1 [(gogoproto.customname) = "SeasonID"]; }
+message SeasonChallengeListOutput { repeated pathwar.db.SeasonChallenge items = 1; }
+
+message SeasonChallengeGetInput  { int64 season_challenge_id = 1 [(gogoproto.customname) = "SeasonChallengeID"]; }
+message SeasonChallengeGetOutput { pathwar.db.SeasonChallenge item = 1; }
+
 message ChallengeGetInput  { int64 challenge_id = 1 [(gogoproto.customname) = "ChallengeID"]; }
 message ChallengeGetOutput { pathwar.db.Challenge item = 1; }
+
+message SeasonChallengeBuyInput  {
+  int64 season_challenge_id = 1 [(gogoproto.customname) = "SeasonChallengeID"];
+  int64 team_id = 2 [(gogoproto.customname) = "TeamID"];
+}
+message SeasonChallengeBuyOutput { pathwar.db.ChallengeSubscription challenge_subscription = 1; }
+
+message ChallengeSubscriptionValidateInput  {
+  int64 challenge_subscription_id = 1 [(gogoproto.customname) = "ChallengeSubscriptionID"];
+  string passphrase = 2;
+  string comment = 3;
+}
+message ChallengeSubscriptionValidateOutput {
+  pathwar.db.ChallengeValidation challenge_validation = 1;
+}
+
+message ChallengeSubscriptionCloseInput  { int64 challenge_subscription_id = 1 [(gogoproto.customname) = "ChallengeSubscriptionID"]; }
+message ChallengeSubscriptionCloseOutput { pathwar.db.ChallengeSubscription challenge_subscription = 1; }
 
 message TeamListInput  { int64 season_id = 1 [(gogoproto.customname) = "SeasonID"]; }
 message TeamListOutput { repeated pathwar.db.Team items = 1; }

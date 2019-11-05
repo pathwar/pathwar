@@ -142,8 +142,8 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 		// WebsiteURL
 		// Locale
 
-		TeamMemberships: []*pwdb.TeamMember{},
-		Memberships:     []*pwdb.OrganizationMember{},
+		TeamMemberships:         []*pwdb.TeamMember{},
+		OrganizationMemberships: []*pwdb.OrganizationMember{},
 	}
 	organization := pwdb.Organization{
 		Name:        claims.PreferredUsername,
@@ -165,7 +165,7 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 		Team: &seasonOrganization,
 		Role: pwdb.TeamMember_Owner,
 	}
-	user.Memberships = []*pwdb.OrganizationMember{&organizationMember}
+	user.OrganizationMemberships = []*pwdb.OrganizationMember{&organizationMember}
 
 	tx := e.db.Begin()
 	tx.Create(&user)

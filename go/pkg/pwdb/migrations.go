@@ -13,10 +13,12 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 
 	// only called on fresh database
 	m.InitSchema(func(tx *gorm.DB) error {
-		if err := tx.AutoMigrate(All()...).Error; err != nil {
+		err := tx.AutoMigrate(All()...).Error
+		if err != nil {
 			tx.Rollback()
 			return fmt.Errorf("automigrate: %w", err)
 		}
+
 		if !opts.skipFK {
 			for _, fk := range ForeignKeys() {
 				e := ByName(fk[0])
@@ -27,12 +29,11 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 			}
 		}
 
-		for _, entity := range firstEntities(sfn) {
-			if err := tx.Create(entity).Error; err != nil {
-				tx.Rollback()
-				return fmt.Errorf("create first entities: %w", err)
-			}
+		err = createFirstEntities(tx, sfn)
+		if err != nil {
+			return fmt.Errorf("create first entities: %w", err)
 		}
+
 		return nil
 	})
 
@@ -50,7 +51,10 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 	return nil
 }
 
-func firstEntities(sfn *snowflake.Node) []interface{} {
+func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
+	//
+	// seasons
+	//
 	solo := &Season{
 		// ID:         "solo-season",
 		Name:       "Solo Mode",
@@ -63,48 +67,112 @@ func firstEntities(sfn *snowflake.Node) []interface{} {
 		Status:     Season_Started,
 		Visibility: Season_Public,
 	}
-	m1ch3l := &User{
-		Username:     "m1ch3l",
-		OAuthSubject: "m1ch3l",
-		// State: special
-	}
-	staff := &Organization{
-		Name: "Staff",
-	}
-	soloStaff := &Team{
-		IsDefault:    true,
-		Season:       solo,
-		Organization: staff,
-	}
-	localhost := &Hypervisor{
-		Name:    "localhost",
-		Address: "127.0.0.1",
-		Status:  Hypervisor_Active, // only useful during dev
-	}
-	helloWorld := &Challenge{
-		Name:     "Hello World (test)",
-		IsDraft:  false,
-		Author:   "m1ch3l",
-		Homepage: "https://github.com/pathwar/pathwar/tree/master/challenge/example/hello-world",
-	}
-	helloWorldLatest := &ChallengeFlavor{
-		Challenge: helloWorld,
-		SourceURL: "https://github.com/pathwar/pathwar/tree/master/challenge/example/hello-world",
-		IsLatest:  true,
-		IsDraft:   false,
-		Changelog: "Lorem Ipsum",
-		Version:   "latest",
-		Driver:    ChallengeFlavor_DockerCompose,
+	for _, season := range []*Season{solo, testSeason} {
+		if err := tx.Create(season).Error; err != nil {
+			return err
+		}
 	}
 
-	return []interface{}{
-		solo,
-		testSeason,
-		m1ch3l,
-		staff,
-		soloStaff,
-		localhost,
-		helloWorld,
-		helloWorldLatest,
+	//
+	// staff team & org
+	//
+
+	staffOrg := &Organization{
+		Name: "Staff",
+		// GravatarURL: staff
 	}
+	staffTeam := &Team{
+		IsDefault:    true,
+		Season:       solo,
+		Organization: staffOrg,
+		// GravatarURL: staff
+	}
+	hackSparrow := &User{
+		Username:                "Hack Sparrow",
+		OAuthSubject:            "Hack Sparrow",
+		OrganizationMemberships: []*OrganizationMember{{Organization: staffOrg}},
+		TeamMemberships:         []*TeamMember{{Team: staffTeam}},
+		// State: special
+		// GravatarURL: m1ch3l
+	}
+	err := tx.
+		Set("gorm:association_autoupdate", true).
+		Create(hackSparrow).
+		Error
+	if err != nil {
+		return err
+	}
+
+	//
+	// hypervisors
+	//
+
+	localhost := &Hypervisor{
+		Name:    "default",
+		Address: "default-hypervisor.pathwar.land",
+		Status:  Hypervisor_Active, // only useful during dev
+	}
+	err = tx.Create(localhost).Error
+	if err != nil {
+		return err
+	}
+
+	//
+	// challenges
+	//
+
+	helloworld := newOfficialChallengeWithFlavor("Hello World", "https://github.com/pathwar/pathwar/tree/master/challenges/web/helloworld")
+	helloworld.addSeasonChallengeByID(solo.ID)
+	helloworld.addSeasonChallengeByID(testSeason.ID)
+
+	trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http")
+	trainingHTTP.addSeasonChallengeByID(solo.ID)
+
+	trainingSQLI := newOfficialChallengeWithFlavor("Training SQLI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-sqli")
+	trainingSQLI.addSeasonChallengeByID(solo.ID)
+
+	trainingInclude := newOfficialChallengeWithFlavor("Training Include", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-include")
+	trainingInclude.addSeasonChallengeByID(solo.ID)
+
+	trainingBrute := newOfficialChallengeWithFlavor("Training Brute", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-brute")
+	trainingBrute.addSeasonChallengeByID(solo.ID)
+
+	captchaLuigi := newOfficialChallengeWithFlavor("Captcha Luigi", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-luigi")
+	captchaLuigi.addSeasonChallengeByID(testSeason.ID)
+
+	captchaMario := newOfficialChallengeWithFlavor("Captcha Mario", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-mario")
+	captchaMario.addSeasonChallengeByID(testSeason.ID)
+
+	uploadHi := newOfficialChallengeWithFlavor("Upload HI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/upload-hi")
+	uploadHi.addSeasonChallengeByID(testSeason.ID)
+
+	imageboard := newOfficialChallengeWithFlavor("Image Board", "https://github.com/pathwar/pathwar/tree/master/challenges/web/imageboard")
+	imageboard.addSeasonChallengeByID(testSeason.ID)
+
+	for _, flavor := range []*ChallengeFlavor{
+		helloworld, trainingHTTP, trainingSQLI, trainingInclude, trainingBrute,
+		captchaLuigi, captchaMario, uploadHi, imageboard,
+	} {
+		err := tx.
+			Set("gorm:association_autoupdate", true).
+			Create(flavor).
+			Error
+		if err != nil {
+			return err
+		}
+
+		// FIXME: should not be necessary, should be done automatically thanks to association_autoupdate
+		for _, seasonChallenge := range flavor.SeasonChallenges {
+			seasonChallenge.FlavorID = flavor.ID
+			err := tx.
+				Set("gorm:association_autoupdate", true).
+				Create(seasonChallenge).
+				Error
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }
