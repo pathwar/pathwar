@@ -22,7 +22,6 @@ let challenge_subscription_id = undefined
 
 //Helpers
 const performUserSessionCalls = async () => {
-
   // ensure we have an account for this token before deleting it in the next step
   try {
     const userSessionResponse = await unsafeApi.get("/user/session");
@@ -46,8 +45,6 @@ const performUserSessionCalls = async () => {
     active_season_id = user.active_season_id
     active_team_id = user.active_team_member.team_id
 
-    console.log("Season ID >>", active_season_id)
-    console.log("Active team ID >>", active_team_id)
   } catch (error) {
     throw error;
   }
@@ -57,20 +54,22 @@ const performUserSessionCalls = async () => {
     const seasonChallengesResponse = await unsafeApi.get(`/season-challenges?season_id=${active_season_id}`);
     const firstItem = seasonChallengesResponse.data.items[0]
     season_challenge_id = firstItem.id
-    console.log("Challenge ID >>", season_challenge_id)
   } catch (error) {
     throw error;
   }
-
 }
 
-beforeAll((done) => {
+beforeAll(async (done) => {
   jest.setTimeout(50000);
-  performUserSessionCalls();
+  await performUserSessionCalls();
+  console.log("Season ID >>", active_season_id)
+  console.log("Active team ID >>", active_team_id)
+  console.log("Challenge ID >>", season_challenge_id)
   return done();
 });
 
 describe('API Calls', () => {
+
   it('should work GET user session - /user/session', async () => {
     const response = await unsafeApi.get("/user/session");
     expect(response.status).toEqual(200);

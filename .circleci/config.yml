@@ -8,16 +8,16 @@ orbs:
   gotools: gotest/tools@0.0.10
 
 jobs:
-  go-docker:
-    working_directory: /go/src/pathwar.land/go
-    docker:
-      - image: docker:18.06.3-ce-git
-    steps:
-      - checkout:
-          path: /go/src/pathwar.land
-      - setup_remote_docker
-      - docker/build:
-          image: pathwar/pathwar
+  #go-docker:
+  #  working_directory: /go/src/pathwar.land/go
+  #  docker:
+  #    - image: docker:18.06.3-ce-git
+  #  steps:
+  #    - checkout:
+  #        path: /go/src/pathwar.land
+  #    - setup_remote_docker
+  #    - docker/build:
+  #        image: pathwar/pathwar
 
   go-build:
     working_directory: /go/src/pathwar.land/go
@@ -59,27 +59,28 @@ jobs:
       - run: apk add --no-cache make
       - run: cd challenges && make build
 
-  #githooks:
-
-  #docker-integration:
-  #  docker:
-  #    - image: docker/compose:1.24.0
-  #  steps:
-  #    - checkout
-  #    - retry/install
-  #    - run: retry -m 3 apk --no-cache add curl openssl make bash
-  #    - setup_remote_docker
-  #    - run: retry -m 3 make integration.build
-  #    - run: retry -m 3 make integration.run
-  #    - run: retry -m 3 make integration.run # yes, again :)
-  #    - run: docker-compose logs
+  docker-integration:
+    docker:
+      - image: docker/compose:1.24.0
+    steps:
+      - checkout
+      - retry/install
+      - run: retry -m 3 apk --no-cache add curl openssl make bash
+      - setup_remote_docker
+      - run: cd tool/integration; retry -m 3 make pull
+      - run: cd tool/integration; retry -m 3 make build-server
+      - run: cd tool/integration; retry -m 3 make build-web
+      - run: cd tool/integration; retry -m 3 make build # the rest
+      - run: cd tool/integration; retry -m 3 make run
+      - run: cd tool/integration; make run # yes, again
+      - run: cd tool/integration; make logs-once
 
 workflows:
   main:
     jobs:
       - go-build
-      - go-docker
+      #- go-docker # already tested in docker-integration
       - go-generate
       - challenge-build
+      - docker-integration
       #- githooks
-      #- docker-integration
