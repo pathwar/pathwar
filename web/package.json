@@ -9,7 +9,8 @@
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
     "serve": "gatsby serve",
-    "test": "env-cmd --file ./.env.test jest"
+    "test": "env-cmd --file ./.env.test jest",
+    "integration": "env-cmd --file ./.env.integration jest"
   },
   "dependencies": {
     "@loadable/component": "^5.10.2",
