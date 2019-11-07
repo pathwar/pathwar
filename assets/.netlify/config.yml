@@ -2,6 +2,7 @@ title: Pathwar Assets
 baseURL: https://assets.pathwar.land
 
 params:
+  favicon: images/pathwar-favicon.png
   # category_order: ['logotype', 'hack-sparrow']
 
   # Map mimetype to placeholder icons
