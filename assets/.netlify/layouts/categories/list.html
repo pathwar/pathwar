@@ -1,0 +1,16 @@
+{{ partial "head" . }}
+
+<div class="container">
+  <div class="row my-5">
+    <div class="col">
+      <h1 class="font-weight-bold">{{ replace .Title "_" " " | title }}</h1>
+    </div>
+  </div>
+  <div class="row">
+    {{ range where .RegularPages "Params.show_in_list" true }}
+      {{ partial "thumbnail" (dict "page" . "ctx" $) }}
+    {{ end }}
+  </div>
+</div>
+
+{{ partial "foot" . }}

@@ -1,5 +1,5 @@
 [build]
-  base = "web"
+  base = "web/"
   publish = "public"
   command = "npm install && npm run build"
   ignore = "git diff --quiet HEAD^ HEAD -- ."

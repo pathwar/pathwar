@@ -1,0 +1,27 @@
+{{ partial "head" . }}
+
+{{ range $category := .Site.Taxonomies.categories }}
+
+  <section class="my-5">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h1 class="font-weight-bold mb-5">
+            <a href="{{ .Page.RelPermalink }}">{{ replace .Page.Title "_" " " | title }}</a>
+          </h1>
+        </div>
+      </div>
+
+      <div class="row">
+        {{ range where .Page.RegularPages "Params.show_in_list" true }}
+          {{ partial "thumbnail" (dict "page" . "ctx" $) }}
+        {{ end }}
+      </div>
+
+    </div>
+  </section>
+  <hr>
+
+{{ end }}
+
+{{ partial "foot" . }}

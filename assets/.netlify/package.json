@@ -1,0 +1,16 @@
+{
+  "name": "pathwar-assets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pre-build": "node scripts/generate-content.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "glob": "^7.1.5",
+    "mime-types": "^2.1.24"
+  }
+}

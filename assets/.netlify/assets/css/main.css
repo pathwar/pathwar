@@ -1,0 +1,112 @@
+body {
+  font-family: "Rubik", sans-serif;
+  background: radial-gradient(#212138, #000a15);
+  color: #fff;
+}
+
+a,
+a:hover {
+  color: #fff;
+}
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  width: 99%;
+}
+
+img {
+  max-width: 100%;
+}
+
+.block {
+  display: block;
+  background-color: #fff;
+  color: #212138;
+  border-radius: 0.8rem;
+  padding: 15px 15px 30px 15px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.02), 0 5px 22px -8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
+  height: auto;
+  margin-bottom: 30px;
+}
+a.block {
+  transition: all 0.8s ease;
+}
+a.block:hover {
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.03), 0 8px 26px -4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  transform: scale(1.05) translateY(-2.5%);
+}
+.block .block-inner {
+  display: block;
+  width: 100%;
+  position: relative;
+  height: 100%;
+}
+.block img {
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.block .block-title {
+  position: absolute;
+  bottom: -22px;
+  width: 100%;
+  left: 0;
+  font-size: 13px;
+  color: #383b62;
+  background: #ffffff8a;
+  border-radius: 6px;
+}
+
+@media (min-width: 1200px) {
+  .block {
+    height: 175px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .block {
+    height: 145px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .block {
+    height: 165px;
+  }
+}
+@media (min-width: 576px) and (max-width: 767px) {
+  .block {
+    height: 255px;
+  }
+}
+@media (max-width: 575px) {
+  .block {
+    height: 197px;
+  }
+}
+
+/* SINGLE PAGE */
+#single-page {
+  min-height: calc(100vh - 300px);
+}
+
+#single-page .main-image img {
+  background-color: #fff;
+  color: #212138;
+  border-radius: 0.8rem;
+  padding: 15px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.02), 0 5px 22px -8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  text-decoration: none;
+  margin-bottom: 30px;
+}
