@@ -1,7 +1,8 @@
 [build]
 publish = "public"
 command = "npm run pre-build && hugo --gc --minify"
-ignore = "(exit 1)"
+base = "assets/.netlify/"
+ignore = "git diff --quiet HEAD^ HEAD -- ../"
 
 [context.production.environment]
 HUGO_VERSION = "0.59.1"
