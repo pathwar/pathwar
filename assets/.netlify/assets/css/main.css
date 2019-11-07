@@ -65,6 +65,8 @@ a.block:hover {
   left: 0;
   font-size: 13px;
   color: #383b62;
+  background: #ffffff8a;
+  border-radius: 6px;
 }
 
 @media (min-width: 1200px) {

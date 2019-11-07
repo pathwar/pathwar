@@ -10,9 +10,14 @@
     <a class="block" href="{{$page.RelPermalink}}">
       <div class="block-inner">
         <img src="{{ partial `asset-image` (dict `ctx` $ctx `page` $page `width` 200) | safeHTMLAttr }}" />
-        {{ if $ctx.IsNode }}
-          <span class="block-title">{{ $page.Params.parent_folder_title | title }}</span>
-        {{ end }}
+          <span class="block-title pt-1">
+            {{ if $ctx.IsNode }}
+              {{ $page.Params.parent_folder_title | title }}
+            {{ end }}
+            {{ if $ctx.IsPage }}
+              {{ $page.Title | title }}
+            {{ end }}
+          </span>
       </div>
     </a>
 
