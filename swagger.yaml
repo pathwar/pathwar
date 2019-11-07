@@ -907,6 +907,16 @@ definitions:
           $ref: '#/definitions/dbSeasonChallenge'
         type: array
     type: object
+  engineTeamAcceptInviteOutput:
+    properties:
+      team_member:
+        $ref: '#/definitions/dbTeamMember'
+    type: object
+  engineTeamCreateOutput:
+    properties:
+      team:
+        $ref: '#/definitions/dbTeam'
+    type: object
   engineTeamGetOutput:
     properties:
       item:
@@ -918,6 +928,11 @@ definitions:
         items:
           $ref: '#/definitions/dbTeam'
         type: array
+    type: object
+  engineTeamSendInviteOutput:
+    properties:
+      team_member:
+        $ref: '#/definitions/dbTeamMember'
     type: object
   engineUserDeleteAccountInput:
     properties:
@@ -1282,6 +1297,62 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/engineTeamGetOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+    post:
+      operationId: TeamCreate
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineTeamCreateOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /team/invite:
+    post:
+      operationId: TeamSendInvite
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineTeamSendInviteOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /team/invite/accept:
+    post:
+      operationId: TeamAcceptInvite
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineTeamAcceptInviteOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
