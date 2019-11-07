@@ -1,6 +1,10 @@
 .PHONY: all
 all: up logs
 
+.PHONY: ps restart pull
+ps restart pull:
+	docker-compose $@
+
 .PHONY: up
 up:
 	docker-compose up -d
