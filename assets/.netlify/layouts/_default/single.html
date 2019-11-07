@@ -1,0 +1,38 @@
+{{ $asset := resources.Get .Params.file_path }}
+
+{{ partial "head" . }}
+
+<div class="container">
+  <div class="d-flex flex-column text-center justify-content-center align-content-center min-vh-100">
+    
+    <div>
+      <img style="max-width: 800px;" src="{{ partial `asset-image` . }}">
+    </div>
+
+    <h3>{{ .Params.file_name }}</h3>
+
+    <div>
+      <a class="btn btn-primary" href="{{ $asset.RelPermalink }}" download>Download</a>
+    </div>
+
+    {{ $related_assets := where .Site.RegularPages "Params.folder_id" .Params.folder_id }}
+    {{ if gt (len $related_assets) 1 }}
+    <div class="row">
+
+      <div class="col-md-12 text-left my-4">
+        <h4>Related assets</h4>
+      </div>
+
+      {{ range where .Site.RegularPages "Params.folder_id" .Params.folder_id }}
+        {{ if ne .Params.file_name $.Params.file_name }}
+        {{ partial "thumbnail" (dict "page" . "ctx" $) }}
+        {{ end }}
+      {{ end }}
+
+    </div>
+    {{ end }}
+
+  </div>
+</div>
+
+{{ partial "foot" . }}

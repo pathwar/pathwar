@@ -1,0 +1,24 @@
+{{ $page := .page }}
+{{ $ctx := .ctx}}
+{{ with $page.Params }}
+{{ with .file_path }}
+
+  {{ if in $ctx.Site.Params.shown_assets $page.Params.media_type_sub }}
+
+  <div class="col-lg-2 col-md-3">
+
+    <a class="block" href="{{$page.RelPermalink}}">
+      <div class="block-inner">
+        <img src="{{ partial `asset-image` $page | safeHTMLAttr }}" />
+        {{ if $ctx.IsNode }}
+          <span class="block-title">{{ $page.Params.parent_folder_title | title }}</span>
+        {{ end }}
+      </div>
+    </a>
+
+  </div>
+
+  {{ end }}
+
+{{ end }}
+{{ end }}
