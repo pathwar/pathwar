@@ -2,11 +2,15 @@ package pwcompose
 
 import "fmt"
 
+func Dev( /* opts */ ) error {
+	return fmt.Errorf("not implemented")
+}
+
 func Bundle( /* opts */ ) error {
 	return fmt.Errorf("not implemented")
 }
 
-func Up( /* opts */ ) error {
+func Deploy( /* opts */ ) error {
 	return fmt.Errorf("not implemented")
 }
 
