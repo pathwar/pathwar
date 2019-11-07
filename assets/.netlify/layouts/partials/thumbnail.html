@@ -9,7 +9,7 @@
 
     <a class="block" href="{{$page.RelPermalink}}">
       <div class="block-inner">
-        <img src="{{ partial `asset-image` $page | safeHTMLAttr }}" />
+        <img src="{{ partial `asset-image` (dict `ctx` $ctx `page` $page `width` 200) | safeHTMLAttr }}" />
         {{ if $ctx.IsNode }}
           <span class="block-title">{{ $page.Params.parent_folder_title | title }}</span>
         {{ end }}
