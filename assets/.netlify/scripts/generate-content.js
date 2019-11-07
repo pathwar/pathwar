@@ -22,13 +22,13 @@ const assetsDir = path.join(__dirname, '../assets/files');
 
 const options = {
   cwd: rootDir,
-  ignore: ['_archives/**', 'docs/**', 'LICENSE', 'README.md']
+  ignore: []
 };
 
 const folders = glob.sync('**/', options);
 
 folders.forEach(folder => {
-  
+
   folder = folder
     .replace(/.$/, '');
 
@@ -58,7 +58,7 @@ folders.forEach(folder => {
 
   files.forEach(file => {
     const title = path.basename(file);
-    const filename = folder 
+    const filename = folder
       .replace(`${category}/`, '')
       .replace(/\/+/g, '-')
       .concat(`--${file}`);
@@ -77,7 +77,7 @@ folders.forEach(folder => {
     if (file.includes('zip')) {
       console.log(file)
     }
-    
+
     const mediaTypeSplit = mediaType.split('/'),
           mediaMainType = mediaTypeSplit[0],
           mediaSubType = mediaTypeSplit[1];
