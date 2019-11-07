@@ -1,10 +1,6 @@
 {{ partial "head" . }}
 
-{{ $categories := .Site.Taxonomies.categories }}
-{{ range $cat := .Site.Params.category_order }}
-  {{ $category := index $categories $cat }}
-
-  {{ with $category }}
+{{ range $category := .Site.Taxonomies.categories }}
 
   <section class="my-5">
     <div class="container">
@@ -26,7 +22,6 @@
   </section>
   <hr>
 
-  {{ end }}
 {{ end }}
 
 {{ partial "foot" . }}
