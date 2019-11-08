@@ -35,7 +35,7 @@ func (e *engine) TeamList(ctx context.Context, in *TeamListInput) (*TeamListOutp
 		Find(&ret.Items).
 		Error
 	if err != nil {
-		return nil, fmt.Errorf("fetch season organizations from db: %w", err)
+		return nil, fmt.Errorf("fetch teams: %w", err)
 	}
 
 	return &ret, nil

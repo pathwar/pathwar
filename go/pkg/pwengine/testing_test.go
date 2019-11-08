@@ -22,6 +22,20 @@ func testingSeasons(t *testing.T, e Engine) *pwdb.SeasonList {
 	return &list
 }
 
+func testingSoloSeason(t *testing.T, e Engine) *pwdb.Season {
+	t.Helper()
+
+	seasons := testingSeasons(t, e)
+	for _, season := range seasons.Items {
+		if season.Name == "Solo Mode" {
+			return season
+		}
+	}
+
+	t.Fatalf("no such solo season")
+	return nil
+}
+
 func testingTeams(t *testing.T, e Engine) *pwdb.TeamList {
 	t.Helper()
 

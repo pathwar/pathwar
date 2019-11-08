@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import styles from "../../styles/layout/loader.module.css"
 
 const TeamsRows = ({ teams }) => {
-  debugger
     return teams.map((item) => {
         return (
             <Table.Row key={item.organization.id}>

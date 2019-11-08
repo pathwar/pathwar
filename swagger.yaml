@@ -3,7 +3,7 @@ basePath: /
 consumes:
 - application/json
 definitions:
-  ChallengeVersionDriver:
+  ChallengeFlavorDriver:
     default: Unknown
     enum:
     - Unknown
@@ -38,7 +38,7 @@ definitions:
       argument:
         type: string
       author:
-        $ref: '#/definitions/dbTeamMember'
+        $ref: '#/definitions/dbUser'
       author_id:
         format: int64
         type: string
@@ -58,6 +58,11 @@ definitions:
       is_global:
         format: boolean
         type: boolean
+      team:
+        $ref: '#/definitions/dbTeam'
+      team_id:
+        format: int64
+        type: string
       type:
         $ref: '#/definitions/dbAchievementType'
       updated_at:
@@ -111,6 +116,10 @@ definitions:
         type: string
       description:
         type: string
+      flavors:
+        items:
+          $ref: '#/definitions/dbChallengeFlavor'
+        type: array
       homepage:
         title: repeated string tags = ;
         type: string
@@ -130,30 +139,40 @@ definitions:
       updated_at:
         format: date-time
         type: string
-      versions:
-        items:
-          $ref: '#/definitions/dbChallengeVersion'
-        type: array
     type: object
   dbChallengeFlavor:
     properties:
-      challenge_version:
-        $ref: '#/definitions/dbChallengeVersion'
-      challenge_version_id:
+      challenge:
+        $ref: '#/definitions/dbChallenge'
+      challenge_id:
         format: int64
+        type: string
+      changelog:
         type: string
       created_at:
         format: date-time
         type: string
+      driver:
+        $ref: '#/definitions/ChallengeFlavorDriver'
       id:
         format: int64
         type: string
-      instances:
+      is_draft:
+        format: boolean
+        type: boolean
+      is_latest:
+        format: boolean
+        type: boolean
+      season_challenges:
         items:
-          $ref: '#/definitions/dbChallengeInstance'
+          $ref: '#/definitions/dbSeasonChallenge'
         type: array
+      source_url:
+        type: string
       updated_at:
         format: date-time
+        type: string
+      version:
         type: string
     type: object
   dbChallengeInstance:
@@ -189,9 +208,17 @@ definitions:
     type: string
   dbChallengeSubscription:
     properties:
-      challenge_flavor:
-        $ref: '#/definitions/dbChallengeFlavor'
-      challenge_flavor_id:
+      buyer:
+        $ref: '#/definitions/dbUser'
+      buyer_id:
+        format: int64
+        type: string
+      closed_at:
+        format: date-time
+        type: string
+      closer:
+        $ref: '#/definitions/dbUser'
+      closer_id:
         format: int64
         type: string
       created_at:
@@ -200,6 +227,13 @@ definitions:
       id:
         format: int64
         type: string
+      season_challenge:
+        $ref: '#/definitions/dbSeasonChallenge'
+      season_challenge_id:
+        format: int64
+        type: string
+      status:
+        $ref: '#/definitions/dbChallengeSubscriptionStatus'
       team:
         $ref: '#/definitions/dbTeam'
       team_id:
@@ -213,9 +247,21 @@ definitions:
           $ref: '#/definitions/dbChallengeValidation'
         type: array
     type: object
+  dbChallengeSubscriptionStatus:
+    default: Unknown
+    enum:
+    - Unknown
+    - Active
+    - Closed
+    type: string
   dbChallengeValidation:
     properties:
+      author:
+        $ref: '#/definitions/dbUser'
       author_comment:
+        type: string
+      author_id:
+        format: int64
         type: string
       challenge_subscription:
         $ref: '#/definitions/dbChallengeSubscription'
@@ -230,11 +276,15 @@ definitions:
       id:
         format: int64
         type: string
+      passphrase:
+        type: string
+      passphrase_key:
+        type: string
       status:
         $ref: '#/definitions/dbChallengeValidationStatus'
-      team_member:
-        $ref: '#/definitions/dbTeamMember'
-      team_member_id:
+      team:
+        $ref: '#/definitions/dbTeam'
+      team_id:
         format: int64
         type: string
       updated_at:
@@ -245,46 +295,11 @@ definitions:
     default: Unknown
     enum:
     - Unknown
-    - Sent
+    - NeedReview
     - Accepted
     - Refused
     - AutoAccepted
     type: string
-  dbChallengeVersion:
-    properties:
-      challenge:
-        $ref: '#/definitions/dbChallenge'
-      challenge_id:
-        format: int64
-        type: string
-      changelog:
-        type: string
-      created_at:
-        format: date-time
-        type: string
-      driver:
-        $ref: '#/definitions/ChallengeVersionDriver'
-      flavors:
-        items:
-          $ref: '#/definitions/dbChallengeFlavor'
-        type: array
-      id:
-        format: int64
-        type: string
-      is_draft:
-        format: boolean
-        type: boolean
-      is_latest:
-        format: boolean
-        type: boolean
-      source_url:
-        type: string
-      updated_at:
-        format: date-time
-        type: string
-      version:
-        type: string
-    type: object
   dbCoupon:
     properties:
       created_at:
@@ -319,7 +334,7 @@ definitions:
   dbCouponValidation:
     properties:
       author:
-        $ref: '#/definitions/dbTeamMember'
+        $ref: '#/definitions/dbUser'
         title: associations
       author_id:
         format: int64
@@ -336,6 +351,11 @@ definitions:
         format: date-time
         type: string
       id:
+        format: int64
+        type: string
+      team:
+        $ref: '#/definitions/dbTeam'
+      team_id:
         format: int64
         type: string
       updated_at:
@@ -363,10 +383,6 @@ definitions:
       challenge_validations:
         items:
           $ref: '#/definitions/dbChallengeValidation'
-        type: array
-      challenge_versions:
-        items:
-          $ref: '#/definitions/dbChallengeVersion'
         type: array
       challenges:
         items:
@@ -399,6 +415,10 @@ definitions:
       organizations:
         items:
           $ref: '#/definitions/dbOrganization'
+        type: array
+      season_challenges:
+        items:
+          $ref: '#/definitions/dbSeasonChallenge'
         type: array
       seasons:
         items:
@@ -585,6 +605,36 @@ definitions:
       visibility:
         $ref: '#/definitions/SeasonVisibility'
     type: object
+  dbSeasonChallenge:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+      flavor:
+        $ref: '#/definitions/dbChallengeFlavor'
+      flavor_id:
+        format: int64
+        type: string
+      id:
+        format: int64
+        type: string
+      instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
+      season:
+        $ref: '#/definitions/dbSeason'
+      season_id:
+        format: int64
+        type: string
+      subscriptions:
+        items:
+          $ref: '#/definitions/dbChallengeSubscription'
+        type: array
+      updated_at:
+        format: date-time
+        type: string
+    type: object
   dbSeasonStatus:
     default: UnknownStatus
     enum:
@@ -683,7 +733,7 @@ definitions:
   dbUser:
     properties:
       active_season:
-        $ref: '#/definitions/dbTeamMember'
+        $ref: '#/definitions/dbSeason'
       active_season_id:
         format: int64
         type: string
@@ -695,6 +745,8 @@ definitions:
       created_at:
         format: date-time
         type: string
+      deletion_reason:
+        type: string
       email:
         type: string
       gravatar_url:
@@ -704,16 +756,16 @@ definitions:
         type: string
       locale:
         type: string
-      memberships:
-        items:
-          $ref: '#/definitions/dbOrganizationMember'
-        type: array
       notifications:
         items:
           $ref: '#/definitions/dbNotification'
         type: array
       oauth_subject:
         type: string
+      organization_memberships:
+        items:
+          $ref: '#/definitions/dbOrganizationMember'
+        type: array
       team_memberships:
         items:
           $ref: '#/definitions/dbTeamMember'
@@ -730,9 +782,14 @@ definitions:
   dbWhoswhoAttempt:
     properties:
       author:
-        $ref: '#/definitions/dbTeamMember'
+        $ref: '#/definitions/dbUser'
         title: associations
       author_id:
+        format: int64
+        type: string
+      author_team:
+        $ref: '#/definitions/dbTeam'
+      author_team_id:
         format: int64
         type: string
       created_at:
@@ -745,14 +802,14 @@ definitions:
         format: boolean
         title: fields
         type: boolean
-      target_member:
-        $ref: '#/definitions/dbTeamMember'
-      target_member_id:
+      target_team:
+        $ref: '#/definitions/dbTeam'
+      target_team_id:
         format: int64
         type: string
-      target_organization:
-        $ref: '#/definitions/dbTeam'
-      target_organization_id:
+      target_user:
+        $ref: '#/definitions/dbUser'
+      target_user_id:
         format: int64
         type: string
       updated_at:
@@ -771,11 +828,63 @@ definitions:
           $ref: '#/definitions/dbChallenge'
         type: array
     type: object
+  engineChallengeSubscriptionCloseInput:
+    properties:
+      challenge_subscription_id:
+        format: int64
+        type: string
+    type: object
+  engineChallengeSubscriptionCloseOutput:
+    properties:
+      challenge_subscription:
+        $ref: '#/definitions/dbChallengeSubscription'
+    type: object
+  engineChallengeSubscriptionValidateInput:
+    properties:
+      challenge_subscription_id:
+        format: int64
+        type: string
+      comment:
+        type: string
+      passphrase:
+        type: string
+    type: object
+  engineChallengeSubscriptionValidateOutput:
+    properties:
+      challenge_validation:
+        $ref: '#/definitions/dbChallengeValidation'
+    type: object
   engineOrganizationListOutput:
     properties:
       items:
         items:
           $ref: '#/definitions/dbOrganization'
+        type: array
+    type: object
+  engineSeasonChallengeBuyInput:
+    properties:
+      season_challenge_id:
+        format: int64
+        type: string
+      team_id:
+        format: int64
+        type: string
+    type: object
+  engineSeasonChallengeBuyOutput:
+    properties:
+      challenge_subscription:
+        $ref: '#/definitions/dbChallengeSubscription'
+    type: object
+  engineSeasonChallengeGetOutput:
+    properties:
+      item:
+        $ref: '#/definitions/dbSeasonChallenge'
+    type: object
+  engineSeasonChallengeListOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbSeasonChallenge'
         type: array
     type: object
   engineTeamGetOutput:
@@ -789,6 +898,13 @@ definitions:
         items:
           $ref: '#/definitions/dbTeam'
         type: array
+    type: object
+  engineUserDeleteAccountInput:
+    properties:
+      reason:
+        type: string
+    type: object
+  engineUserDeleteAccountOutput:
     type: object
   engineUserGetSessionOutput:
     properties:
@@ -812,6 +928,8 @@ definitions:
       active_season_id:
         format: int64
         type: string
+    type: object
+  engineUserSetPreferencesOutput:
     type: object
   engineVoid:
     example: {}
@@ -930,6 +1048,56 @@ paths:
             type: string
       tags:
       - Engine
+  /challenge-subscription/close:
+    post:
+      operationId: ChallengeSubscriptionClose
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineChallengeSubscriptionCloseInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineChallengeSubscriptionCloseOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /challenge-subscription/validate:
+    post:
+      operationId: ChallengeSubscriptionValidate
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineChallengeSubscriptionValidateInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineChallengeSubscriptionValidateOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
   /challenges:
     get:
       operationId: ChallengeList
@@ -995,6 +1163,81 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/engineVoid'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /season-challenge:
+    get:
+      operationId: SeasonChallengeGet
+      parameters:
+      - format: int64
+        in: query
+        name: season_challenge_id
+        required: false
+        type: string
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineSeasonChallengeGetOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /season-challenge/buy:
+    post:
+      operationId: SeasonChallengeBuy
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineSeasonChallengeBuyInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineSeasonChallengeBuyOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /season-challenges:
+    get:
+      operationId: SeasonChallengeList
+      parameters:
+      - format: int64
+        in: query
+        name: season_id
+        required: false
+        type: string
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineSeasonChallengeListOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1113,6 +1356,31 @@ paths:
             type: string
       tags:
       - Engine
+  /user/delete-account:
+    post:
+      operationId: UserDeleteAccount
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineUserDeleteAccountInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineUserDeleteAccountOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
   /user/preferences:
     post:
       operationId: UserSetPreferences
@@ -1126,7 +1394,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineVoid'
+            $ref: '#/definitions/engineUserSetPreferencesOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.

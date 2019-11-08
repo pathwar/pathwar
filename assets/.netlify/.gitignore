@@ -1,0 +1,5 @@
+node_modules
+resources
+public
+content/*
+assets/files/*

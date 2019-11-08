@@ -41,10 +41,10 @@ func TestEngine_ChallengeGet(t *testing.T) {
 			"",
 		}, {
 			"Staff",
-			&ChallengeGetInput{ChallengeID: challenges["Hello World (test)"]},
+			&ChallengeGetInput{ChallengeID: challenges["Hello World"]},
 			nil,
-			"Hello World (test)",
-			"m1ch3l",
+			"Hello World",
+			"Staff Team",
 		},
 	}
 

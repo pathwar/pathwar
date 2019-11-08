@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>{{ .Title }}</title>
+        <meta name="description" content="Assets for Pathwar.land">
+
+        <link rel="canonical" href="{{ .Permalink }}">
+
+        <!-- Favicons-->
+        {{ $favicon := resources.Get .Site.Params.favicon }}
+        <!-- generics -->
+        <link rel="icon" href="{{ ($favicon.Resize `32x32`).RelPermalink }}" sizes="32x32">
+        <link rel="icon" href="{{ ($favicon.Resize `57x57`).RelPermalink }}" sizes="57x57">
+        <link rel="icon" href="{{ ($favicon.Resize `76x76`).RelPermalink }}" sizes="76x76">
+        <link rel="icon" href="{{ ($favicon.Resize `96x96`).RelPermalink }}" sizes="96x96">
+        <link rel="icon" href="{{ ($favicon.Resize `128x128`).RelPermalink }}" sizes="128x128">
+        <link rel="icon" href="{{ ($favicon.Resize `192x192`).RelPermalink }}" sizes="192x192">
+        <link rel="icon" href="{{ ($favicon.Resize `228x228`).RelPermalink }}" sizes="228x228">
+        <!-- Android -->
+        <link rel="shortcut icon" href="{{ ($favicon.Resize `196x196`).RelPermalink }}" sizes="196x196">
+        <!-- iOS -->
+        <link rel="apple-touch-icon" href="{{ ($favicon.Resize `120x120`).RelPermalink }}" sizes="120x120">
+        <link rel="apple-touch-icon" href="{{ ($favicon.Resize `152x152`).RelPermalink }}" sizes="152x152">
+        <link rel="apple-touch-icon" href="{{ ($favicon.Resize `180x180`).RelPermalink }}" sizes="180x180">
+        <!-- Windows 8 IE 10-->
+        <meta name="msapplication-TileColor" content="#212138">
+        <meta name="msapplication-TileImage" content="{{ ($favicon.Resize `144x144`).RelPermalink }}">
+
+        <!-- Styling -->
+        {{ $bootstrap := resources.Get "css/bootstrap.min.css" }}
+        {{ $main := resources.Get "css/main.css" }}
+        {{ $style := slice $bootstrap $main | resources.Concat "bundle.css" | minify | fingerprint }}
+        <link rel="stylesheet" type="text/css" href="{{ $style.RelPermalink }}">
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik:300,400,700&display=swap" />
+    </head>
+    <body>
+
+    <div class="container pt-4">
+      <div class="row justify-content-center">
+        <a href="/"><img width="100" src="{{ (resources.Get `images/pathwar-logo.svg`).RelPermalink }}" /></a>
+      </div>
+    </div>

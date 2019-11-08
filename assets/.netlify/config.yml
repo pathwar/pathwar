@@ -1,0 +1,25 @@
+title: Pathwar Assets
+baseURL: https://assets.pathwar.land
+
+params:
+  favicon: images/pathwar-favicon.png
+  # category_order: ['logotype', 'hack-sparrow']
+
+  # Map mimetype to placeholder icons
+  nonimage_icons:
+    plain: images/plain-icon.png
+    vnd.adobe.photoshop: images/psd-icon.png
+    postscript: images/ai-icon.png
+    zip: images/zip-icon.png
+
+  # Show only assets with below mimetypes
+  shown_assets:
+    - "jpg"
+    - "jpeg"
+    - "png"
+    - "gif"
+    - "svg+xml"
+    - "plain"
+    - "vnd.adobe.photoshop"
+    - "postscript"
+    - "zip"
