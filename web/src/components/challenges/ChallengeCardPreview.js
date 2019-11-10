@@ -21,6 +21,7 @@ const ChallengeTable = ({ challenges }) => {
           <Table.ColHeader />
           <Table.ColHeader />
           <Table.ColHeader />
+          <Table.ColHeader />
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -28,7 +29,7 @@ const ChallengeTable = ({ challenges }) => {
           const { flavor } = challenge
           return (
             <Table.Row>
-              <Table.Col>{flavor.challenge.name}</Table.Col>
+              <Table.Col><strong>{flavor.challenge.name}</strong></Table.Col>
               <Table.Col className="text-nowrap">
                 {flavor.challenge.author}
               </Table.Col>
@@ -48,22 +49,26 @@ const ChallengeTable = ({ challenges }) => {
                   to={`/app/challenge/${challenge.id}`}
                   color="info"
                   size="sm"
+                  icon="eye"
                 >
                   View
                 </Button>
               </Table.Col>
               <Table.Col className="w-1">
-                <Button RootComponent={Link} to="/" color="success" size="sm">
+                <Button value="Buy" size="sm" color="success" icon="dollar-sign">
                   Buy
-                </Button>
+                  </Button>
               </Table.Col>
               <Table.Col className="w-1">
-                <Button RootComponent={Link} to="/" color="warning" size="sm">
+                <Button value="Validate" size="sm" color="warning" icon="check">
                   Validate
                 </Button>
               </Table.Col>
               <Table.Col className="w-1">
-                <Button social="github" />
+                <Button value="Close" size="sm" color="danger" icon="x-circle" />
+              </Table.Col>
+              <Table.Col className="w-1">
+                <Button value="Github page" social="github" size="sm"/>
               </Table.Col>
             </Table.Row>
           )
