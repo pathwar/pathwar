@@ -32,17 +32,16 @@ class SeasonPage extends React.Component {
             <Page.Content title="Season" subTitle={name}>
                 <Grid.Row>
                   <Grid.Col xs={12} sm={3} lg={3}>
+                  <h3>Actions</h3>
+                    <ValidationCouponStamp />
                     <h3>Teams</h3>
                     <AllTeamsOnSeasonList activeSeason={activeSeason} allTeamsOnSeason={allTeamsOnSeason} />
                   </Grid.Col>
-                  <Grid.Col xs={12} sm={6} lg={6}>
+                  <Grid.Col xs={12} sm={9} lg={9}>
                     <h3>Challenges</h3>
                     <ChallengesCardPreview challenges={activeChallenges} />
                   </Grid.Col>
-                  <Grid.Col xs={12} sm={3} lg={3}>
-                    <h3>Actions</h3>
-                    <ValidationCouponStamp />
-                  </Grid.Col>
+
                 </Grid.Row>
               </Page.Content>
           );

@@ -1,41 +1,88 @@
 /* eslint-disable react/prop-types */
-import * as React from "react";
-import { Link } from "gatsby";
-import { Card, Button, Dimmer } from "tabler-react";
-import styles from "../../styles/layout/loader.module.css";
+import * as React from "react"
+import { Link } from "gatsby"
+import { Card, Button, Dimmer, Table, Progress } from "tabler-react"
+import styles from "../../styles/layout/loader.module.css"
 
-const ChallengeBody = ({ challenge }) => {
-    const { author, description, locale, key, id } = challenge;
-
-    return (
-        <React.Fragment key={key}>
-            <strong><small>Author: </small>{author}</strong><br />
-            <strong><small>Locale: </small>{locale}</strong>
-            <br />
-            <br />
-            <p>{description}</p>
-            <Button.List>
-                <Button RootComponent={Link} to={`/app/challenge/${id}`} color="info" size="sm">
-                    View challenge
+const ChallengeTable = ({ challenges }) => {
+  return (
+    <Table
+      cards={true}
+      striped={true}
+      responsive={true}
+      className="table-vcenter"
+    >
+      <Table.Header>
+        <Table.Row>
+          <Table.ColHeader>Name</Table.ColHeader>
+          <Table.ColHeader>Author</Table.ColHeader>
+          <Table.ColHeader>Progress</Table.ColHeader>
+          <Table.ColHeader />
+          <Table.ColHeader />
+          <Table.ColHeader />
+          <Table.ColHeader />
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {challenges.map(challenge => {
+          const { flavor } = challenge
+          return (
+            <Table.Row>
+              <Table.Col>{flavor.challenge.name}</Table.Col>
+              <Table.Col className="text-nowrap">
+                {flavor.challenge.author}
+              </Table.Col>
+              <Table.Col>
+                <div className="clearfix">
+                  <div className="float-left">
+                    <strong>42%</strong>
+                  </div>
+                </div>
+                <Progress size="sm">
+                  <Progress.Bar color="yellow" width={42} />
+                </Progress>
+              </Table.Col>
+              <Table.Col className="w-1">
+                <Button
+                  RootComponent={Link}
+                  to={`/app/challenge/${challenge.id}`}
+                  color="info"
+                  size="sm"
+                >
+                  View
                 </Button>
+              </Table.Col>
+              <Table.Col className="w-1">
                 <Button RootComponent={Link} to="/" color="success" size="sm">
-                    Validate challenge
+                  Buy
                 </Button>
-            </Button.List>
-        </React.Fragment>
-    )
+              </Table.Col>
+              <Table.Col className="w-1">
+                <Button RootComponent={Link} to="/" color="warning" size="sm">
+                  Validate
+                </Button>
+              </Table.Col>
+              <Table.Col className="w-1">
+                <Button social="github" />
+              </Table.Col>
+            </Table.Row>
+          )
+        })}
+      </Table.Body>
+    </Table>
+  )
 }
 
-const ChallengeCardPreview = (props) => {
-    const { challenges } = props;
+const ChallengeCardPreview = props => {
+  const { challenges } = props
 
-    return !challenges ? <Dimmer className={styles.dimmer} active loader /> : challenges.map((challenge) =>
-    <Card title={challenge.name} key={challenge.id}
-        isCollapsible
-        statusColor="orange"
-        body={<ChallengeBody challenge={challenge} />}
-    />)
+  return !challenges ? (
+    <Dimmer className={styles.dimmer} active loader />
+  ) : (
+    <Card>
+      <ChallengeTable challenges={challenges} />
+    </Card>
+  )
 }
 
-
-export default ChallengeCardPreview;
+export default ChallengeCardPreview
