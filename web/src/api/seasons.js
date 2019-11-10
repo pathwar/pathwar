@@ -29,10 +29,14 @@ export function getChallengeDetails(challengeID) {
 }
 
 export function postBuyChallenge(seasonID, teamID) {
-  return baseApi.post(`/season-challenge/buy`, {"season_challenge_id": seasonID, "team_id": teamID})
+  return baseApi.post(`/season-challenge/buy`, { "season_challenge_id": seasonID, "team_id": teamID })
 }
 
 export function postValidateChallenge(validateData) {
   const { subscriptionID, passphrase, comment } = validateData;
-  return baseApi.post(`/season-challenge/validate`, {"challenge_subscription_id": subscriptionID, "passphrase": passphrase, "comment": comment}  )
+  return baseApi.post(`/season-challenge/validate`, { "challenge_subscription_id": subscriptionID, "passphrase": passphrase, "comment": comment }  )
+}
+
+export function postCloseChallenge(subscriptionID) {
+  return baseApi.post(`/season-challenge/close`, { "challenge_subscription_id": subscriptionID }  )
 }
