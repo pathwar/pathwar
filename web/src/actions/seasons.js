@@ -15,7 +15,9 @@ import {
   GET_TEAM_DETAILS_SUCCESS,
   GET_TEAM_DETAILS_FAILED,
   BUY_CHALLENGE_SUCCESS,
-  BUY_CHALLENGE_FAILED
+  BUY_CHALLENGE_FAILED,
+  VALIDATE_CHALLENGE_SUCCESS,
+  VALIDATE_CHALLENGE_FAILED
 } from "../constants/actionTypes"
 
 import {
@@ -25,7 +27,8 @@ import {
   getChallenges,
   getChallengeDetails,
   getTeamDetails,
-  postBuyChallenge
+  postBuyChallenge,
+  postValidateChallenge
 } from "../api/seasons"
 
 import { fetchUserSession as fetchUserSessionAction } from "./userSession";
@@ -152,5 +155,17 @@ export const buyChallenge = (seasonID, teamID) => async dispatch => {
     });
   } catch (error) {
     dispatch({ type: BUY_CHALLENGE_FAILED, payload: { error } });
+  }
+}
+
+export const validateChallenge = (validateData) => async dispatch => {
+  try {
+    const response = await postValidateChallenge(validateData);
+    dispatch({
+      type: VALIDATE_CHALLENGE_SUCCESS,
+      payload: { activeChallenges: response.data.items }
+    });
+  } catch (error) {
+    dispatch({ type: VALIDATE_CHALLENGE_FAILED, payload: { error } });
   }
 }
