@@ -15,18 +15,18 @@ func TestEngine_ChallengeSubscriptionValidate(t *testing.T) {
 
 	solo := testingSoloSeason(t, engine)
 
-	// fetch challenges
-	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeListInput{solo.ID})
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
-
 	// fetch user session
 	session, err := engine.UserGetSession(ctx, nil)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
 	activeTeam := session.User.ActiveTeamMember.Team
+
+	// fetch challenges
+	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeListInput{solo.ID})
+	if err != nil {
+		t.Fatalf("err: %v", err)
+	}
 
 	// buy a challenge
 	subscription, err := engine.SeasonChallengeBuy(ctx, &SeasonChallengeBuyInput{
