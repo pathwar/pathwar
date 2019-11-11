@@ -5,10 +5,12 @@ import {
   SET_USER_SESSION,
   SET_USER_SESSION_FAILED,
   SET_KEYCLOAK_SESSION,
-  LOGOUT
+  LOGOUT,
+  DELETE_ACCOUNT_FAILED,
+  DELETE_ACCOUNT_SUCCESS
 } from "../constants/actionTypes"
 import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
-import { getUserSession } from "../api/userSession"
+import { getUserSession, deleteUserAccount } from "../api/userSession"
 import { setActiveOrganization as setActiveOrganizationAction } from "./organizations";
 import {
   setActiveSeason as setActiveSeasonAction,
@@ -75,3 +77,16 @@ export const setKeycloakSession = (keycloakInstance, authenticated) => async dis
     dispatch({ type: LOGIN_FAILED, payload: { error } });
   }
 };
+
+export const deleteAccount = (reason) => async dispatch => {
+  try {
+    const response = await deleteUserAccount(reason);
+    dispatch({
+      type: DELETE_ACCOUNT_SUCCESS,
+      payload: { activeChallenges: response.data.items }
+    });
+  } catch (error) {
+    dispatch({ type: DELETE_ACCOUNT_FAILED, payload: { error } });
+    alert("Delete account failed!")
+  }
+}

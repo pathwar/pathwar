@@ -14,17 +14,13 @@ import {
 
 class SeasonPage extends React.Component {
 
-    componentDidMount() {
-      const { fetchChallengesAction } = this.props;
-      fetchChallengesAction();
-    }
-
     componentDidUpdate(prevProps) {
-      const { fetchAllSeasonTeamsAction, seasons: { activeSeason } } = this.props;
+      const { fetchAllSeasonTeamsAction, fetchChallengesAction, seasons: { activeSeason } } = this.props;
       const { seasons: { activeSeason: prevActiveSeason } } = prevProps;
 
       if (isNil(prevActiveSeason) && activeSeason ) {
-        fetchAllSeasonTeamsAction(activeSeason.id)
+        fetchAllSeasonTeamsAction(activeSeason.id);
+        fetchChallengesAction(activeSeason.id);
       }
     }
 
@@ -63,7 +59,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  fetchChallengesAction: () => fetchChallengesAction(),
+  fetchChallengesAction: (seasonID) => fetchChallengesAction(seasonID),
   fetchAllSeasonTeamsAction: (seasonID) => fetchAllSeasonTeamsAction(seasonID)
 };
 

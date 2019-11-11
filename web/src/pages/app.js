@@ -9,6 +9,7 @@ import AllSeasonsPage from "./AllSeasonsPage";
 import ChallengeDetailsPage from "./ChallengeDetailsPage";
 import SiteWrapper from "../components/SiteWrapper";
 import TeamDetailsPage from "./TeamDetailsPage";
+import SettingsPage from "./SettingsPage";
 const ProtectedRoute = loadable(() => import('../components/ProtectedRoute'))
 
 import "tabler-react/dist/Tabler.css";
@@ -25,6 +26,7 @@ const App = () => (
             <ProtectedRoute path="/app/all-seasons" component={AllSeasonsPage} />
             <ProtectedRoute path="/app/team/:teamId" component={TeamDetailsPage} />
             <ProtectedRoute path="/app/challenge/:challengeId" component={ChallengeDetailsPage} />
+            <ProtectedRoute path="/app/settings" component={SettingsPage} />
             <LogoutPage path="/app/logout" component={LogoutPage} />
           </Router>
         )}

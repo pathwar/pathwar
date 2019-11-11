@@ -57,9 +57,11 @@ const performUserSessionCalls = async () => {
 
 }
 
-beforeAll(() => {
-  return performUserSessionCalls();
-})
+beforeAll((done) => {
+  jest.setTimeout(10000);
+  performUserSessionCalls();
+  return done();
+});
 
 describe('API Calls', () => {
   it('should work GET user session - /user/session', async () => {
