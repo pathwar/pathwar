@@ -9,7 +9,8 @@ import ChallengesCardPreview from "../components/challenges/ChallengeCardPreview
 import ValidationCouponStamp from "../components/coupon/ValidateCouponStampCard";
 import {
   fetchChallenges as fetchChallengesAction ,
-  fetchAllSeasonTeams as fetchAllSeasonTeamsAction
+  fetchAllSeasonTeams as fetchAllSeasonTeamsAction,
+  buyChallenge as buyChallengeAction
 } from "../actions/seasons";
 
 class SeasonPage extends React.Component {
@@ -25,7 +26,7 @@ class SeasonPage extends React.Component {
     }
 
     render() {
-        const { seasons: { activeSeason, activeChallenges, allTeamsOnSeason } } = this.props;
+        const { buyChallengeAction, seasons: { activeSeason, activeChallenges, allTeamsOnSeason } } = this.props;
         const name = activeSeason ? activeSeason.name : undefined;
 
         return (
@@ -39,7 +40,7 @@ class SeasonPage extends React.Component {
                   </Grid.Col>
                   <Grid.Col xs={12} sm={9} lg={9}>
                     <h3>Challenges</h3>
-                    <ChallengesCardPreview challenges={activeChallenges} />
+                    <ChallengesCardPreview challenges={activeChallenges} buyChallenge={buyChallengeAction} />
                   </Grid.Col>
 
                 </Grid.Row>
@@ -54,12 +55,14 @@ SeasonPage.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    seasons: state.seasons
+    seasons: state.seasons,
+    activeOrganization: state.organizations.activeOrganization
 });
 
 const mapDispatchToProps = {
   fetchChallengesAction: (seasonID) => fetchChallengesAction(seasonID),
-  fetchAllSeasonTeamsAction: (seasonID) => fetchAllSeasonTeamsAction(seasonID)
+  fetchAllSeasonTeamsAction: (seasonID) => fetchAllSeasonTeamsAction(seasonID),
+  buyChallengeAction: (seasonID, teamID) => buyChallengeAction(seasonID, teamID)
 };
 
 export default connect(
