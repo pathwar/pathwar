@@ -43,6 +43,7 @@ func (e *engine) SeasonChallengeList(ctx context.Context, in *SeasonChallengeLis
 		Preload("Flavor").
 		Preload("Flavor.Challenge").
 		Preload("Subscriptions", "team_id = ?", team.ID).
+		Preload("Subscriptions.Team").
 		Where(pwdb.SeasonChallenge{SeasonID: in.SeasonID}).
 		Find(&ret.Items).
 		Error

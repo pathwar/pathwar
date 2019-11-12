@@ -95,9 +95,11 @@ func TestEngine_ChallengeBuy(t *testing.T) {
 				if challenge.Subscriptions[0].ID != subscription.ChallengeSubscription.ID {
 					t.Errorf("%s: Expected %d, got %d.", test.name, subscription.ChallengeSubscription.ID, challenge.Subscriptions[0].ID)
 				}
-
 				if challenge.Subscriptions[0].TeamID != test.input.TeamID {
 					t.Errorf("%s: Expected %d, got %d.", test.name, test.input.TeamID, challenge.Subscriptions[0].TeamID)
+				}
+				if challenge.Subscriptions[0].Team.ID != test.input.TeamID {
+					t.Errorf("%s: Expected %d, got %d.", test.name, test.input.TeamID, challenge.Subscriptions[0].Team.ID)
 				}
 			}
 		}
