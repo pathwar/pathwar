@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  front:
+    labels:
+      land.pathwar.challenge_flavor: training-sqli-latest
+      land.pathwar.challenge.ports: '{"depends_on": "mysql"}'
+    image: pathwar/training-sqli:front
+    build: front
+    ports:
+      - 80
+    links:
+      - mysql
+
+  mysql:
+    image: pathwar/training-sqli:mysql
+    build: mysql
+    expose:
+      - 3306
