@@ -89,6 +89,7 @@ const ChallengeRow = ({
             size="sm"
             color="warning"
             icon="check"
+            disabled={!hasSubscriptions}
             onClick={() => setValidateOpen(!isValidateOpen)}
           >
             Validate
