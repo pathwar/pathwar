@@ -176,6 +176,7 @@ export const buyChallenge = (challengeID, teamID, seasonId) => async dispatch =>
     });
   } catch (error) {
     dispatch({ type: BUY_CHALLENGE_FAILED, payload: { error } });
+    toast.error(`Buy challenge ERROR!`)
   }
 }
 
@@ -184,10 +185,13 @@ export const validateChallenge = (validateData) => async dispatch => {
     const response = await postValidateChallenge(validateData);
     dispatch({
       type: VALIDATE_CHALLENGE_SUCCESS,
-      payload: { activeChallenges: response.data.items }
+      payload: { data: response.data }
     });
+
+    toast.success(`Validate challenge success!`)
   } catch (error) {
     dispatch({ type: VALIDATE_CHALLENGE_FAILED, payload: { error } });
+    toast.error(`Validate challenge ERROR!`)
   }
 }
 

@@ -6,12 +6,33 @@ import { Link } from "gatsby"
 import { Card, Button, Dimmer, Table, Progress, Form } from "tabler-react"
 import styles from "../../styles/layout/loader.module.css"
 
-import { buyChallenge as buyChallengeAction } from "../../actions/seasons"
+import {
+  buyChallenge as buyChallengeAction,
+  validateChallenge as validateChallengeAction
+} from "../../actions/seasons"
 
-const ChallengeRow = ({ challenge, teamId, seasonId, buyChallenge }) => {
+const ChallengeRow = ({ challenge, teamId, seasonId, buyChallenge, validateChallenge }) => {
   const [isValidateOpen, setValidateOpen] = useState(false)
+  const [formData, setFormData] = useState({ passphrase: "", comment: "" })
   const { flavor } = challenge
   const hasSubscriptions = challenge.subscriptions
+  const subscription = hasSubscriptions && challenge.subscriptions.find((item) => item.status === "Active");
+
+  const submitValidate = (event) => {
+    event.preventDefault();
+    const validateDataSet = {
+      ...formData,
+      subscriptionID: subscription.id
+    }
+    validateChallenge(validateDataSet);
+  }
+
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value
+    })
+  }
 
   return (
     <>
@@ -69,19 +90,26 @@ const ChallengeRow = ({ challenge, teamId, seasonId, buyChallenge }) => {
       {isValidateOpen && (
         <Table.Row>
           <Table.Col colSpan="8">
-          <Form.FieldSet>
-            <Form.Group isRequired label="Passphrase">
-              <Form.Input name="passphrase" />
-            </Form.Group>
-            <Form.Group isRequired label="Comment">
-              <Form.Textarea
-                defaultValue=" Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed! We shall say 'Ni' again to you, if you do not appease us. I'm not a witch. I'm not a witch. Camelot!"
-                name="example-textarea"
-                placeholder="Content.."
-                rows={6}
-              />
-            </Form.Group>
-          </Form.FieldSet>
+            <form onSubmit={submitValidate}>
+              <Form.FieldSet>
+                <Form.Group isRequired label="Passphrase">
+                  <Form.Input name="passphrase" onChange={handleChange} />
+                </Form.Group>
+                <Form.Group isRequired label="Comment">
+                  <Form.Textarea
+                    name="comment"
+                    onChange={handleChange}
+                    placeholder="Leave a comment..."
+                    rows={6}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Button type="submit" color="primary" className="ml-auto">
+                    Send
+                  </Button>
+                </Form.Group>
+              </Form.FieldSet>
+            </form>
           </Table.Col>
         </Table.Row>
       )}
@@ -89,7 +117,7 @@ const ChallengeRow = ({ challenge, teamId, seasonId, buyChallenge }) => {
   )
 }
 
-const ChallengeTable = ({ challenges, teamId, seasonId, buyChallenge }) => {
+const ChallengeTable = ({ challenges, teamId, seasonId, buyChallenge, validateChallenge }) => {
   return (
     <Table
       cards={true}
@@ -115,6 +143,7 @@ const ChallengeTable = ({ challenges, teamId, seasonId, buyChallenge }) => {
             <ChallengeRow
               challenge={challenge}
               buyChallenge={buyChallenge}
+              validateChallenge={validateChallenge}
               teamId={teamId}
               seasonId={seasonId}
             />
@@ -126,11 +155,9 @@ const ChallengeTable = ({ challenges, teamId, seasonId, buyChallenge }) => {
 }
 
 const ChallengeCardPreview = props => {
-  const { challenges, activeUserSession, buyChallengeAction } = props
+  const { challenges, activeUserSession, buyChallengeAction, validateChallengeAction } = props
   const { active_team_member, active_season_id } =
     (activeUserSession && activeUserSession.user) || {}
-
-  debugger
 
   return !challenges || !activeUserSession ? (
     <Dimmer className={styles.dimmer} active loader />
@@ -139,6 +166,7 @@ const ChallengeCardPreview = props => {
       <ChallengeTable
         challenges={challenges}
         buyChallenge={buyChallengeAction}
+        validateChallenge={validateChallengeAction}
         teamId={active_team_member.team_id}
         seasonId={active_season_id}
       />
@@ -149,6 +177,7 @@ const ChallengeCardPreview = props => {
 ChallengeCardPreview.propTypes = {
   fetchChallengesAction: PropTypes.func,
   buyChallengeAction: PropTypes.func,
+  validateChallengeAction: PropTypes.func,
   activeTeamId: PropTypes.string,
 }
 
@@ -157,8 +186,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  buyChallengeAction: (challengeID, teamID, seasonId) =>
-    buyChallengeAction(challengeID, teamID, seasonId),
+  buyChallengeAction: (challengeID, teamID, seasonId) => buyChallengeAction(challengeID, teamID, seasonId),
+  validateChallengeAction: (validationData) => validateChallengeAction(validationData)
 }
 
 export default connect(
