@@ -8,30 +8,44 @@ import styles from "../../styles/layout/loader.module.css"
 
 import {
   buyChallenge as buyChallengeAction,
-  validateChallenge as validateChallengeAction
+  validateChallenge as validateChallengeAction,
+  closeChallenge as closeChallengeAction,
 } from "../../actions/seasons"
 
-const ChallengeRow = ({ challenge, teamId, seasonId, buyChallenge, validateChallenge }) => {
+const ChallengeRow = ({
+  challenge,
+  teamId,
+  seasonId,
+  buyChallenge,
+  validateChallenge,
+  closeChallenge
+}) => {
   const [isValidateOpen, setValidateOpen] = useState(false)
   const [formData, setFormData] = useState({ passphrase: "", comment: "" })
   const { flavor } = challenge
   const hasSubscriptions = challenge.subscriptions
-  const subscription = hasSubscriptions && challenge.subscriptions.find((item) => item.status === "Active");
+  const subscription =
+    hasSubscriptions &&
+    challenge.subscriptions.find(item => item.status === "Active")
 
-  const submitValidate = (event) => {
-    event.preventDefault();
+  const submitValidate = event => {
+    event.preventDefault()
     const validateDataSet = {
       ...formData,
-      subscriptionID: subscription.id
+      subscriptionID: subscription.id,
     }
-    validateChallenge(validateDataSet);
+    validateChallenge(validateDataSet)
   }
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     })
+  }
+
+  const closeChallengeHandle = () => {
+    closeChallenge(subscription.id);
   }
 
   return (
@@ -84,7 +98,7 @@ const ChallengeRow = ({ challenge, teamId, seasonId, buyChallenge, validateChall
           <Button value="Github page" social="github" size="sm" />
         </Table.Col>
         <Table.Col className="w-1">
-          <Button value="Close" size="sm" color="danger" icon="x-circle" />
+          <Button onClick={closeChallengeHandle} value="Close" size="sm" color="danger" icon="x-circle" />
         </Table.Col>
       </Table.Row>
       {isValidateOpen && (
@@ -117,7 +131,14 @@ const ChallengeRow = ({ challenge, teamId, seasonId, buyChallenge, validateChall
   )
 }
 
-const ChallengeTable = ({ challenges, teamId, seasonId, buyChallenge, validateChallenge }) => {
+const ChallengeTable = ({
+  challenges,
+  teamId,
+  seasonId,
+  buyChallenge,
+  validateChallenge,
+  closeChallenge,
+}) => {
   return (
     <Table
       cards={true}
@@ -144,6 +165,7 @@ const ChallengeTable = ({ challenges, teamId, seasonId, buyChallenge, validateCh
               challenge={challenge}
               buyChallenge={buyChallenge}
               validateChallenge={validateChallenge}
+              closeChallenge={closeChallenge}
               teamId={teamId}
               seasonId={seasonId}
             />
@@ -155,7 +177,13 @@ const ChallengeTable = ({ challenges, teamId, seasonId, buyChallenge, validateCh
 }
 
 const ChallengeCardPreview = props => {
-  const { challenges, activeUserSession, buyChallengeAction, validateChallengeAction } = props
+  const {
+    challenges,
+    activeUserSession,
+    buyChallengeAction,
+    validateChallengeAction,
+    closeChallengeAction,
+  } = props
   const { active_team_member, active_season_id } =
     (activeUserSession && activeUserSession.user) || {}
 
@@ -167,6 +195,7 @@ const ChallengeCardPreview = props => {
         challenges={challenges}
         buyChallenge={buyChallengeAction}
         validateChallenge={validateChallengeAction}
+        closeChallenge={closeChallengeAction}
         teamId={active_team_member.team_id}
         seasonId={active_season_id}
       />
@@ -186,8 +215,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  buyChallengeAction: (challengeID, teamID, seasonId) => buyChallengeAction(challengeID, teamID, seasonId),
-  validateChallengeAction: (validationData) => validateChallengeAction(validationData)
+  buyChallengeAction: (challengeID, teamID, seasonId) =>
+    buyChallengeAction(challengeID, teamID, seasonId),
+  validateChallengeAction: validationData =>
+    validateChallengeAction(validationData),
+  closeChallengeAction: subscriptionID => closeChallengeAction(subscriptionID),
 }
 
 export default connect(

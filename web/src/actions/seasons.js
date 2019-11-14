@@ -200,9 +200,12 @@ export const closeChallenge = (subscriptionID) => async dispatch => {
     const response = await postCloseChallenge(subscriptionID);
     dispatch({
       type: CLOSE_CHALLENGE_SUCCESS,
-      payload: { activeChallenges: response.data.items }
+      payload: { data: response.data }
     });
+
+    toast.success(`Close challenge success!`)
   } catch (error) {
     dispatch({ type: CLOSE_CHALLENGE_FAILED, payload: { error } });
+    toast.error(`Close challenge ERROR!`)
   }
 }
