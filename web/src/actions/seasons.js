@@ -19,7 +19,8 @@ import {
   VALIDATE_CHALLENGE_SUCCESS,
   VALIDATE_CHALLENGE_FAILED,
   CLOSE_CHALLENGE_SUCCESS,
-  CLOSE_CHALLENGE_FAILED
+  CLOSE_CHALLENGE_FAILED,
+  SET_ACTIVE_TEAM
 } from "../constants/actionTypes"
 
 import {
@@ -107,6 +108,15 @@ export const fetchTeamDetails = (teamID) => async dispatch => {
       payload: { error }
     })
   }
+}
+
+export const setActiveTeam = (teamData) => async dispatch => {
+  dispatch({
+    type: SET_ACTIVE_TEAM,
+    payload: {
+      team: teamData,
+    }
+  })
 }
 
 export const fetchAllSeasons = () => async dispatch => {

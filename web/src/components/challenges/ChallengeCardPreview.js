@@ -14,14 +14,14 @@ const ChallengeTable = ({ challenges }) => {
     >
       <Table.Header>
         <Table.Row>
-          <Table.ColHeader>Name</Table.ColHeader>
+          <Table.ColHeader>Flavor</Table.ColHeader>
           <Table.ColHeader>Author</Table.ColHeader>
           <Table.ColHeader>Progress</Table.ColHeader>
           <Table.ColHeader>View</Table.ColHeader>
           <Table.ColHeader>Buy</Table.ColHeader>
           <Table.ColHeader />
-          <Table.ColHeader>Close</Table.ColHeader>
           <Table.ColHeader>Page</Table.ColHeader>
+          <Table.ColHeader>Close</Table.ColHeader>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -61,10 +61,10 @@ const ChallengeTable = ({ challenges }) => {
                 </Button>
               </Table.Col>
               <Table.Col className="w-1">
-                <Button value="Close" size="sm" color="danger" icon="x-circle" />
+                <Button value="Github page" social="github" size="sm"/>
               </Table.Col>
               <Table.Col className="w-1">
-                <Button value="Github page" social="github" size="sm"/>
+                <Button value="Close" size="sm" color="danger" icon="x-circle" />
               </Table.Col>
             </Table.Row>
           )
