@@ -14,7 +14,8 @@ import { getUserSession, deleteUserAccount } from "../api/userSession"
 import { setActiveOrganization as setActiveOrganizationAction } from "./organizations";
 import {
   setActiveSeason as setActiveSeasonAction,
-  fetchPreferences as fetchPreferencesAction
+  fetchPreferences as fetchPreferencesAction,
+  setActiveTeam as setActiveTeamAction
 } from "./seasons"
 
 export const logoutUser = () => async dispatch => {
@@ -34,25 +35,21 @@ export const fetchUserSession = (postPreferences) => async dispatch => {
 
   try {
     const userSessionResponse = await getUserSession();
-    const userSessionData = userSessionResponse.data;
-    const defaultSeasonSet = userSessionData.seasons.find((item) => item.season.is_default);
-    const defaultTeamSet = userSessionData.seasons.find((item) => item.team.is_default);
-
-    const defaultSeason = defaultSeasonSet.season;
-    const defaultTeam = defaultTeamSet.team;
-
+    const { data: userSessionData} = userSessionResponse;
+    const defaultSeasonTeamSet = userSessionData.seasons.find((item) => item.season.is_default);
     const activeSeasonId = userSessionData.user.active_season_id
 
     dispatch(setUserSession(userSessionData))
 
     if (postPreferences) {
-      dispatch(fetchPreferencesAction(defaultSeason.id))
+      dispatch(fetchPreferencesAction(defaultSeasonTeamSet.season.id))
     }
 
     if (activeSeasonId) {
       const activeSeason = userSessionData.seasons.find((item) => item.season.id === activeSeasonId);
       dispatch(setActiveSeasonAction(activeSeason.season));
-      dispatch(setActiveOrganizationAction(defaultTeam));
+      dispatch(setActiveTeamAction(activeSeason.team));
+      dispatch(setActiveOrganizationAction(activeSeason.team.organization));
     }
 
   }
