@@ -28,8 +28,8 @@ export function getChallengeDetails(challengeID) {
   return baseApi.get(`/season-challenge?season_challenge_id=${urlIdParam}`)
 }
 
-export function postBuyChallenge(seasonID, teamID) {
-  return baseApi.post(`/season-challenge/buy`, { "season_challenge_id": seasonID, "team_id": teamID })
+export function postBuyChallenge(challengeID, teamID) {
+  return baseApi.post(`/season-challenge/buy`, { "season_challenge_id": challengeID, "team_id": teamID })
 }
 
 export function postValidateChallenge(validateData) {

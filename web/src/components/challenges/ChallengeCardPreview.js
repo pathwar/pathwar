@@ -1,10 +1,16 @@
 /* eslint-disable react/prop-types */
 import * as React from "react"
+import { connect } from "react-redux"
+import PropTypes from "prop-types";
 import { Link } from "gatsby"
 import { Card, Button, Dimmer, Table, Progress } from "tabler-react"
 import styles from "../../styles/layout/loader.module.css"
 
-const ChallengeTable = ({ challenges }) => {
+import {
+  buyChallenge as buyChallengeAction
+} from "../../actions/seasons";
+
+const ChallengeTable = ({ challenges, teamId, seasonId, buyChallenge }) => {
   return (
     <Table
       cards={true}
@@ -27,6 +33,7 @@ const ChallengeTable = ({ challenges }) => {
       <Table.Body>
         {challenges.map(challenge => {
           const { flavor } = challenge
+          const hasSubscriptions = challenge.subscriptions
           return (
             <Table.Row>
               <Table.Col><strong>{flavor.challenge.name}</strong></Table.Col>
@@ -53,7 +60,7 @@ const ChallengeTable = ({ challenges }) => {
                 />
               </Table.Col>
               <Table.Col className="w-1">
-                <Button value="Buy" size="sm" color="success" icon="dollar-sign" />
+                <Button onClick={() => buyChallenge(challenge.id, teamId, seasonId)} value="Buy" size="sm" color="success" icon={hasSubscriptions ? "check" : "dollar-sign"} />
               </Table.Col>
               <Table.Col className="w-1">
                 <Button value="Validate" size="sm" color="warning" icon="check">
@@ -75,15 +82,40 @@ const ChallengeTable = ({ challenges }) => {
 }
 
 const ChallengeCardPreview = props => {
-  const { challenges } = props
+  const { challenges, activeUserSession, buyChallengeAction } = props
+  const { active_team_member, active_season_id } = (activeUserSession && activeUserSession.user) || {};
 
-  return !challenges ? (
+  debugger
+
+  return !challenges || !activeUserSession ? (
     <Dimmer className={styles.dimmer} active loader />
   ) : (
     <Card>
-      <ChallengeTable challenges={challenges} />
+      <ChallengeTable
+        challenges={challenges}
+        buyChallenge={buyChallengeAction}
+        teamId={active_team_member.team_id}
+        seasonId={active_season_id}
+      />
     </Card>
   )
 }
 
-export default ChallengeCardPreview
+ChallengeCardPreview.propTypes = {
+  fetchChallengesAction: PropTypes.func,
+  buyChallengeAction: PropTypes.func,
+  activeTeamId: PropTypes.string
+};
+
+const mapStateToProps = state => ({
+  activeUserSession: state.userSession.activeUserSession
+});
+
+const mapDispatchToProps = {
+  buyChallengeAction: (challengeID, teamID, seasonId) => buyChallengeAction(challengeID, teamID, seasonId)
+};
+
+export default connect(
+mapStateToProps,
+mapDispatchToProps
+)(ChallengeCardPreview);

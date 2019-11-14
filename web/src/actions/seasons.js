@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 import {
   GET_ALL_SEASONS_SUCCESS,
   GET_ALL_SEASONS_FAILED,
@@ -159,12 +161,18 @@ export const fetchChallenges = (seasonID) => async dispatch => {
   }
 };
 
-export const buyChallenge = (seasonID, teamID) => async dispatch => {
+export const buyChallenge = (challengeID, teamID, seasonId) => async dispatch => {
   try {
-    const response = await postBuyChallenge(seasonID, teamID);
+    const response = await postBuyChallenge(challengeID, teamID);
+    const subscription = response.data.challenge_subscription
+    const { season_challenge: { flavor: { challenge } } } = subscription
     dispatch({
       type: BUY_CHALLENGE_SUCCESS,
-      payload: { activeChallenges: response.data.items }
+      payload: { challengeSubscription: subscription }
+    });
+
+    dispatch(fetchChallenges(seasonId)).then(() =>{
+        toast.success(`Buy challenge ${challenge.name} success!`)
     });
   } catch (error) {
     dispatch({ type: BUY_CHALLENGE_FAILED, payload: { error } });

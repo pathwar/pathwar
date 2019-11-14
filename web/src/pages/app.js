@@ -3,6 +3,8 @@ import React from "react"
 import { Router, Location } from "@reach/router"
 import { Helmet } from "react-helmet"
 import loadable from "@loadable/component"
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import DashboardPage from "./DashboardPage"
 import LogoutPage from "./LogoutPage"
 import SeasonPage from "./SeasonPage"
@@ -14,6 +16,8 @@ import SettingsPage from "./SettingsPage"
 const ProtectedRoute = loadable(() => import("../components/ProtectedRoute"))
 
 import "tabler-react/dist/Tabler.css"
+
+toast.configure();
 
 const App = () => (
   <div>
