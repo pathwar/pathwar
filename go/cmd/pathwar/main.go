@@ -6,6 +6,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
@@ -21,6 +22,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"pathwar.land/go/pkg/pwchallenge"
+	"pathwar.land/go/pkg/pwcompose"
 	"pathwar.land/go/pkg/pwdb"
 	"pathwar.land/go/pkg/pwengine"
 	"pathwar.land/go/pkg/pwserver"
@@ -58,6 +60,21 @@ var (
 
 	// compose flags
 	composeFlags = flag.NewFlagSet("compose", flag.ExitOnError)
+
+	// compose prepare flags
+	composePrepareFlags  = flag.NewFlagSet("compose prepare", flag.ExitOnError)
+	composePrepareNoPush = composePrepareFlags.Bool("no-push", false, "don't push images")
+
+	// compose up flags
+	composeUpFlags       = flag.NewFlagSet("compose up", flag.ExitOnError)
+	composeUpInstanceKey = composeUpFlags.String("instance-key", "default", "instance key used to generate instance ID")
+
+	// compose down flags
+	composeDownFlags = flag.NewFlagSet("compose down", flag.ExitOnError)
+
+	// compose ps flags
+	composePSFlags = flag.NewFlagSet("compose ps", flag.ExitOnError)
+	composePSDepth = composePSFlags.Int("depth", 0, "depth to display")
 
 	// hypervisor flags
 	hypervisorFlags = flag.NewFlagSet("hypervisor", flag.ExitOnError)
@@ -359,10 +376,80 @@ func main() {
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
 
+	composePrepare := &ffcli.Command{
+		Name:    "prepare",
+		Usage:   "pathwar [global flags] compose [compose flags] prepare [flags] PATH",
+		FlagSet: composePrepareFlags,
+		Exec: func(args []string) error {
+			if len(args) < 1 {
+				return flag.ErrHelp
+			}
+			path := args[0]
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			return pwcompose.Prepare(
+				path,
+				*composePrepareNoPush,
+				logger,
+			)
+		},
+	}
+
+	composeUp := &ffcli.Command{
+		Name:    "up",
+		Usage:   "pathwar [global flags] compose [compose flags] up [flags] PATH",
+		FlagSet: composeUpFlags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			if len(args) < 1 {
+				return flag.ErrHelp
+			}
+
+			path := args[0]
+			f, err := os.Open(path)
+			if err != nil {
+				return err
+			}
+			preparedCompose, err := ioutil.ReadAll(f)
+			if err != nil {
+				return err
+			}
+
+			return pwcompose.Up(string(preparedCompose), *composeUpInstanceKey, logger)
+		},
+	}
+
+	composeDown := &ffcli.Command{
+		Name:    "down",
+		Usage:   "pathwar [global flags] compose [compose flags] down [flags] ID [ID...]",
+		FlagSet: composeDownFlags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			return pwcompose.Down(args, logger)
+		},
+	}
+
+	composePS := &ffcli.Command{
+		Name:    "ps",
+		Usage:   "pathwar [global flags] compose [compose flags] ps [flags]",
+		FlagSet: composePSFlags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			return pwcompose.PS(*composePSDepth, logger)
+		},
+	}
+
 	compose := &ffcli.Command{
 		Name:        "compose",
 		Usage:       "pathwar [global flags] compose [sso flags] <subcommand> [flags] [args...]",
-		Subcommands: []*ffcli.Command{},
+		Subcommands: []*ffcli.Command{composePrepare, composeUp, composePS, composeDown},
 		ShortHelp:   "manage a challenge",
 		FlagSet:     composeFlags,
 		Exec:        func([]string) error { return flag.ErrHelp },

@@ -2,7 +2,6 @@ version: '3.7'
 
 services:
   front:
-    image: pathwar/training-sqli:front
     build: front
     ports:
       - 80
@@ -10,7 +9,6 @@ services:
       - mysql
 
   mysql:
-    image: pathwar/training-sqli:mysql
     build: mysql
     expose:
       - 3306

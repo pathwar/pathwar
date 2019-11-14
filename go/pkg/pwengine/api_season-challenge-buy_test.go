@@ -15,18 +15,18 @@ func TestEngine_ChallengeBuy(t *testing.T) {
 
 	solo := testingSoloSeason(t, engine)
 
-	// fetch challenges
-	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeListInput{solo.ID})
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
-
 	// fetch user session
 	session, err := engine.UserGetSession(ctx, nil)
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
 	activeTeam := session.User.ActiveTeamMember.Team
+
+	// fetch challenges
+	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeListInput{solo.ID})
+	if err != nil {
+		t.Fatalf("err: %v", err)
+	}
 
 	var tests = []struct {
 		name        string
@@ -77,6 +77,32 @@ func TestEngine_ChallengeBuy(t *testing.T) {
 		}
 		if subscription.ChallengeSubscription.BuyerID != session.User.ID {
 			t.Errorf("%s: Expected %d, got %d.", test.name, session.User.ID, subscription.ChallengeSubscription.BuyerID)
+		}
+
+		// check if challenge subscription is now visible in season challenge list
+		challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeListInput{solo.ID})
+		if err != nil {
+			t.Fatalf("err: %v", err)
+		}
+		found := 0
+		for _, challenge := range challenges.Items {
+			if challenge.ID == subscription.ChallengeSubscription.SeasonChallengeID {
+				found++
+				if len(challenge.Subscriptions) != 1 {
+					t.Errorf("%s: Expected only one subscription, got %d.", test.name, len(challenge.Subscriptions))
+				}
+
+				if challenge.Subscriptions[0].ID != subscription.ChallengeSubscription.ID {
+					t.Errorf("%s: Expected %d, got %d.", test.name, subscription.ChallengeSubscription.ID, challenge.Subscriptions[0].ID)
+				}
+
+				if challenge.Subscriptions[0].TeamID != test.input.TeamID {
+					t.Errorf("%s: Expected %d, got %d.", test.name, test.input.TeamID, challenge.Subscriptions[0].TeamID)
+				}
+			}
+		}
+		if found != 1 {
+			t.Errorf("%s: Expected 1 found, got %d.", test.name, found)
 		}
 	}
 }
