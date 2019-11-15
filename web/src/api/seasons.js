@@ -27,3 +27,16 @@ export function getChallengeDetails(challengeID) {
   const urlIdParam = encodeURIComponent(challengeID)
   return baseApi.get(`/season-challenge?season_challenge_id=${urlIdParam}`)
 }
+
+export function postBuyChallenge(challengeID, teamID) {
+  return baseApi.post(`/season-challenge/buy`, { "season_challenge_id": challengeID, "team_id": teamID })
+}
+
+export function postValidateChallenge(validateData) {
+  const { subscriptionID, passphrase, comment } = validateData;
+  return baseApi.post(`/season-challenge/validate`, { "challenge_subscription_id": subscriptionID, "passphrase": passphrase, "comment": comment }  )
+}
+
+export function postCloseChallenge(subscriptionID) {
+  return baseApi.post(`/season-challenge/close`, { "challenge_subscription_id": subscriptionID }  )
+}

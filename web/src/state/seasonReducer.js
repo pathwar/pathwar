@@ -4,19 +4,20 @@ import {
   GET_ALL_SEASON_TEAMS_SUCCESS,
   SET_CHALLENGES_LIST,
   GET_CHALLENGE_DETAILS_SUCCESS,
-  GET_TEAM_DETAILS_SUCCESS
+  GET_TEAM_DETAILS_SUCCESS,
+  SET_ACTIVE_TEAM
 } from '../constants/actionTypes';
 
 const initialState = {
   seasons: {
     error: null,
     allSeasons: null,
-    allTeamSeasons: null,
     activeSeason: null,
+    activeTeam: null,
+    teamInDetail: null,
     allTeamsOnSeason: null,
     activeChallenges: null,
     challengeInDetail: null,
-    teamInDetail: null
   }
 };
 
@@ -57,6 +58,12 @@ export default function seasonReducer(state = initialState.seasons, action) {
       return {
         ...state,
         teamInDetail: action.payload.team
+      }
+
+    case SET_ACTIVE_TEAM:
+      return {
+        ...state,
+        activeTeam: action.payload.team
       }
 
     default:
