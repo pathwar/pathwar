@@ -113,12 +113,16 @@ describe('API Calls', () => {
   })
   it('should work POST season challenge VALIDATE - /challenge-subscription/validate', async() => {
     const response = await unsafeApi.post(`/challenge-subscription/validate`, {"challenge_subscription_id": challenge_subscription_id,  "passphrase": "lorem ipsum", "comment": "dolor sit amet"});
+    const validationData = response.data;
     expect(response.status).toEqual(200);
-    expect(response.data).toBeDefined();
+    expect(validationData).toBeDefined();
+    expect(validationData.challenge_validation).toBeDefined();
   })
   it('should work POST season challenge CLOSE - /challenge-subscription/close', async() => {
     const response = await unsafeApi.post(`/challenge-subscription/close`, {"challenge_subscription_id": challenge_subscription_id});
+    const closeData = response.data;
     expect(response.status).toEqual(200);
-    expect(response.data).toBeDefined();
+    expect(closeData).toBeDefined();
+    expect(closeData.challenge_subscription).toBeDefined();
   })
 })
