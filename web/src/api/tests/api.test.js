@@ -117,7 +117,7 @@ describe('API Calls', () => {
     expect(response.data).toBeDefined();
   })
   it('should work POST season challenge CLOSE - /season-challenge/close', async() => {
-    const response = await unsafeApi.post(`/season-challenge/validate`, {"challenge_subscription_id": challenge_subscription_id});
+    const response = await unsafeApi.post(`/season-challenge/close`, {"challenge_subscription_id": challenge_subscription_id});
     expect(response.status).toEqual(200);
     expect(response.data).toBeDefined();
   })
