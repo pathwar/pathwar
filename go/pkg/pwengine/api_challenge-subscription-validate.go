@@ -55,6 +55,7 @@ func (e *engine) ChallengeSubscriptionValidate(ctx context.Context, in *Challeng
 		Preload("Author").
 		Preload("ChallengeSubscription").
 		Preload("ChallengeSubscription.SeasonChallenge").
+		Preload("ChallengeSubscription.Validations").
 		Preload("ChallengeSubscription.Team").
 		First(&validation, validation.ID).
 		Error

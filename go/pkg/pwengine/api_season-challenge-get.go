@@ -14,10 +14,30 @@ func (e *engine) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGetI
 		}
 	}
 
+	userID, err := userIDFromContext(ctx, e.db)
+	if err != nil {
+		return nil, fmt.Errorf("get userid from context: %w", err)
+	}
+
+	season, err := seasonFromSeasonChallengeID(e.db, in.SeasonChallengeID)
+	if err != nil {
+		return nil, ErrInvalidArgument // season challenge is malformed
+	}
+
+	team, err := userTeamForSeason(e.db, userID, season.ID)
+	if err != nil {
+		return nil, ErrInvalidArgument // user does not have team for this season
+	}
+
 	var item pwdb.SeasonChallenge
-	err := e.db.
+	err = e.db.
 		Set("gorm:auto_preload", true).
 		Where(pwdb.SeasonChallenge{ID: in.SeasonChallengeID}).
+		Preload("Season").
+		Preload("Flavor").
+		Preload("Flavor.Challenge").
+		Preload("Subscriptions", "team_id = ?", team.ID).
+		Preload("Subscriptions.Validations").
 		First(&item).
 		Error
 

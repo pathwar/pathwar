@@ -85,6 +85,9 @@ func TestEngine_ChallengeSubscriptionValidate(t *testing.T) {
 		if test.expectedPassphraseKey != ret.ChallengeValidation.PassphraseKey {
 			t.Errorf("%s: Expected %v, got %v.", test.name, test.expectedPassphraseKey, ret.ChallengeValidation.PassphraseKey)
 		}
+		if len(ret.ChallengeValidation.ChallengeSubscription.Validations) == 0 {
+			t.Errorf("%s: should have at least one validation", test.name)
+		}
 		// fmt.Println(godev.PrettyJSON(ret))
 	}
 }
