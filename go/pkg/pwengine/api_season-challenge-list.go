@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/jinzhu/gorm"
 	"pathwar.land/go/pkg/pwdb"
 )
 
@@ -43,6 +42,7 @@ func (e *engine) SeasonChallengeList(ctx context.Context, in *SeasonChallengeLis
 		Preload("Flavor").
 		Preload("Flavor.Challenge").
 		Preload("Subscriptions", "team_id = ?", team.ID).
+		Preload("Subscriptions.Validations").
 		Where(pwdb.SeasonChallenge{SeasonID: in.SeasonID}).
 		Find(&ret.Items).
 		Error
@@ -51,16 +51,4 @@ func (e *engine) SeasonChallengeList(ctx context.Context, in *SeasonChallengeLis
 	}
 
 	return &ret, nil
-}
-
-func userTeamForSeason(db *gorm.DB, userID, seasonID int64) (*pwdb.Team, error) {
-	var team pwdb.Team
-
-	err := db.
-		Where(pwdb.Team{SeasonID: seasonID}).
-		Joins("JOIN team_member ON team.id = team_member.team_id AND team_member.user_id = ?", userID).
-		First(&team).
-		Error
-
-	return &team, err
 }
