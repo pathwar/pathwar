@@ -10,21 +10,20 @@ class SettingsPage extends React.PureComponent {
 
   state = {
     isFetching: false,
-    success: undefined
   }
 
   deleteAccount = async (reason) => {
     const self = this;
     const { deleteAccountAction } = this.props;
-    this.setState({ isFetching: true, success: undefined })
+    this.setState({ isFetching: true })
     deleteAccountAction(reason).then((response) => {
-      self.setState({ isFetching: false, success: true });
+      self.setState({ isFetching: false });
       return response;
     })
   }
 
   render() {
-    const { isFetching, success } = this.state;
+    const { isFetching } = this.state;
 
     return (
       <Page.Content title={`Settings`}>
@@ -33,7 +32,6 @@ class SettingsPage extends React.PureComponent {
             <Button.List>
               <Button onClick={() => this.deleteAccount("integration test")} loading={isFetching} color="primary">Delete Account</Button>
             </Button.List>
-            {success && <p>Success!</p>}
           </Grid.Col>
         </Grid.Row>
       </Page.Content>
