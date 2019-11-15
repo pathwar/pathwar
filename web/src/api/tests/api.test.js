@@ -18,6 +18,8 @@ let active_season_id = undefined
 let active_team_id = undefined
 let season_challenge_id = undefined
 
+let challenge_subscription_id = undefined
+
 //Helpers
 const performUserSessionCalls = async () => {
 
@@ -40,8 +42,12 @@ const performUserSessionCalls = async () => {
   try {
     const userSessionResponse = await unsafeApi.get("/user/session");
     const { user } = userSessionResponse.data
+
     active_season_id = user.active_season_id
     active_team_id = user.active_team_member.team_id
+
+    console.log("Season ID >>", active_season_id)
+    console.log("Active team ID >>", active_team_id)
   } catch (error) {
     throw error;
   }
@@ -51,6 +57,7 @@ const performUserSessionCalls = async () => {
     const seasonChallengesResponse = await unsafeApi.get(`/season-challenges?season_id=${active_season_id}`);
     const firstItem = seasonChallengesResponse.data.items[0]
     season_challenge_id = firstItem.id
+    console.log("Challenge ID >>", season_challenge_id)
   } catch (error) {
     throw error;
   }
@@ -58,7 +65,7 @@ const performUserSessionCalls = async () => {
 }
 
 beforeAll((done) => {
-  jest.setTimeout(10000);
+  jest.setTimeout(50000);
   performUserSessionCalls();
   return done();
 });
@@ -74,7 +81,7 @@ describe('API Calls', () => {
     expect(response.status).toEqual(200);
     expect(response.data).toBeDefined();
   })
-  it('should work POST preferences - /preferences', async () => {
+  it('should work POST preferences - /user/preferences', async () => {
     const preferencesPost = await unsafeApi.post(`/user/preferences`, {"active_season_id": active_season_id});
     expect(preferencesPost.status).toEqual(200);
   })
@@ -97,12 +104,21 @@ describe('API Calls', () => {
     expect(response.status).toEqual(200);
     expect(response.data).toBeDefined();
   })
-  it('should work POST season challenge buy - /season-challenge/buy', async() => {
+  it('should work POST season challenge BUY - /season-challenge/buy', async() => {
     const response = await unsafeApi.post(`/season-challenge/buy`, {"season_challenge_id": season_challenge_id, "team_id": active_team_id});
+    const { challenge_subscription } = response.data;
+    challenge_subscription_id = challenge_subscription.id;
     expect(response.status).toEqual(200);
     expect(response.data).toBeDefined();
-    // FIXME: save the returned challengeSubscription.id to make the next calls
   })
-  // FIXME: call POST /season-challenge/validate {"challenge_subscription_id": the_id, "passphrase": "lorem ipsum", "comment", "dolor sit amet"}
-  // FIXME: call POST /season-challenge/close {"challenge_subscription_id": the_id}
+  it('should work POST season challenge VALIDATE - /challenge-subscription/validate', async() => {
+    const response = await unsafeApi.post(`/challenge-subscription/validate`, {"challenge_subscription_id": challenge_subscription_id,  "passphrase": "lorem ipsum", "comment": "dolor sit amet"});
+    expect(response.status).toEqual(200);
+    expect(response.data).toBeDefined();
+  })
+  it('should work POST season challenge CLOSE - /challenge-subscription/close', async() => {
+    const response = await unsafeApi.post(`/challenge-subscription/close`, {"challenge_subscription_id": challenge_subscription_id});
+    expect(response.status).toEqual(200);
+    expect(response.data).toBeDefined();
+  })
 })
