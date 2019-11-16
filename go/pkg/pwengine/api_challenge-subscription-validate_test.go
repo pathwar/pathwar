@@ -23,13 +23,13 @@ func TestEngine_ChallengeSubscriptionValidate(t *testing.T) {
 	activeTeam := session.User.ActiveTeamMember.Team
 
 	// fetch challenges
-	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeListInput{solo.ID})
+	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
 
 	// buy a challenge
-	subscription, err := engine.SeasonChallengeBuy(ctx, &SeasonChallengeBuyInput{
+	subscription, err := engine.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{
 		SeasonChallengeID: challenges.Items[0].ID,
 		TeamID:            activeTeam.ID,
 	})
@@ -39,16 +39,16 @@ func TestEngine_ChallengeSubscriptionValidate(t *testing.T) {
 
 	var tests = []struct {
 		name                  string
-		input                 *ChallengeSubscriptionValidateInput
+		input                 *ChallengeSubscriptionValidate_Input
 		expectedErr           error
 		expectedPassphraseKey string
 	}{
 		{"nil", nil, ErrMissingArgument, ""},
-		{"empty", &ChallengeSubscriptionValidateInput{}, ErrMissingArgument, ""},
-		{"invalid", &ChallengeSubscriptionValidateInput{ChallengeSubscriptionID: 42, Passphrase: "secret", Comment: "explanation"}, ErrInvalidArgument, ""},
+		{"empty", &ChallengeSubscriptionValidate_Input{}, ErrMissingArgument, ""},
+		{"invalid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: 42, Passphrase: "secret", Comment: "explanation"}, ErrInvalidArgument, ""},
 		{
 			"valid",
-			&ChallengeSubscriptionValidateInput{
+			&ChallengeSubscriptionValidate_Input{
 				ChallengeSubscriptionID: subscription.ChallengeSubscription.ID,
 				Passphrase:              "secret",
 				Comment:                 "ultra cool explanation",

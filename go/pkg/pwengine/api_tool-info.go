@@ -7,8 +7,8 @@ import (
 	"pathwar.land/go/pkg/pwversion"
 )
 
-func (e *engine) ToolInfo(context.Context, *Void) (*Info, error) {
-	return &Info{
+func (e *engine) ToolInfo(context.Context, *GetInfo_Input) (*GetInfo_Output, error) {
+	return &GetInfo_Output{
 		Version: pwversion.Version,
 		Commit:  pwversion.Commit,
 		BuiltAt: pwversion.Date,

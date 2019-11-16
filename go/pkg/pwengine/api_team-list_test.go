@@ -22,29 +22,29 @@ func TestEngine_TeamList(t *testing.T) {
 
 	var tests = []struct {
 		name                  string
-		input                 *TeamListInput
+		input                 *TeamList_Input
 		expectedErr           error
 		expectedOrganizations int
 		// expectedOwnedOrganizations int?
 	}{
 		{
 			"empty",
-			&TeamListInput{},
+			&TeamList_Input{},
 			ErrMissingArgument,
 			0,
 		}, {
 			"unknown-season-id",
-			&TeamListInput{SeasonID: -42}, // -42 should not exists
+			&TeamList_Input{SeasonID: -42}, // -42 should not exists
 			ErrInvalidArgument,
 			0,
 		}, {
 			"solo-mode",
-			&TeamListInput{SeasonID: seasons["Solo Mode"]},
+			&TeamList_Input{SeasonID: seasons["Solo Mode"]},
 			nil,
 			1,
 		}, {
 			"test-season",
-			&TeamListInput{SeasonID: seasons["Test Season"]},
+			&TeamList_Input{SeasonID: seasons["Test Season"]},
 			nil,
 			0,
 		},

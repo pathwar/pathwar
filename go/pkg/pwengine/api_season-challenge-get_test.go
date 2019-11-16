@@ -28,32 +28,32 @@ func TestEngine_SeasonChallengeGet(t *testing.T) {
 
 	var tests = []struct {
 		name                  string
-		input                 *SeasonChallengeGetInput
+		input                 *SeasonChallengeGet_Input
 		expectedErr           error
 		expectedSeasonName    string
 		expectedChallengeName string
 	}{
 		{
 			"empty",
-			&SeasonChallengeGetInput{},
+			&SeasonChallengeGet_Input{},
 			ErrMissingArgument,
 			"",
 			"",
 		}, {
 			"unknown-season-id",
-			&SeasonChallengeGetInput{SeasonChallengeID: -42}, // -42 should not exists
+			&SeasonChallengeGet_Input{SeasonChallengeID: -42}, // -42 should not exists
 			ErrInvalidArgument,
 			"",
 			"",
 		}, {
 			"solo-mode-hello-world",
-			&SeasonChallengeGetInput{SeasonChallengeID: seasonChallenges["Solo Mode/Hello World"]},
+			&SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Solo Mode/Hello World"]},
 			nil,
 			"Solo Mode",
 			"Hello World",
 		}, {
 			"test-season-hello-world",
-			&SeasonChallengeGetInput{SeasonChallengeID: seasonChallenges["Test Season/Hello World"]},
+			&SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Test Season/Hello World"]},
 			ErrInvalidArgument, // no team in this season
 			"Test Season",
 			"Hello World",

@@ -8,7 +8,7 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) ChallengeSubscriptionClose(ctx context.Context, in *ChallengeSubscriptionCloseInput) (*ChallengeSubscriptionCloseOutput, error) {
+func (e *engine) ChallengeSubscriptionClose(ctx context.Context, in *ChallengeSubscriptionClose_Input) (*ChallengeSubscriptionClose_Output, error) {
 	// validation
 	if in == nil || in.ChallengeSubscriptionID == 0 {
 		return nil, ErrMissingArgument
@@ -57,6 +57,6 @@ func (e *engine) ChallengeSubscriptionClose(ctx context.Context, in *ChallengeSu
 		return nil, fmt.Errorf("update challenge subscription: %w", err)
 	}
 
-	ret := ChallengeSubscriptionCloseOutput{ChallengeSubscription: &subscription}
+	ret := ChallengeSubscriptionClose_Output{ChallengeSubscription: &subscription}
 	return &ret, nil
 }

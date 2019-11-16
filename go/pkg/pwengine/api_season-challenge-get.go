@@ -7,7 +7,7 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGetInput) (*SeasonChallengeGetOutput, error) {
+func (e *engine) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGet_Input) (*SeasonChallengeGet_Output, error) {
 	{ // validation
 		if in.SeasonChallengeID == 0 {
 			return nil, ErrMissingArgument
@@ -48,7 +48,7 @@ func (e *engine) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGetI
 		return nil, fmt.Errorf("query season challenge: %w", err)
 	}
 
-	ret := SeasonChallengeGetOutput{
+	ret := SeasonChallengeGet_Output{
 		Item: &item,
 	}
 

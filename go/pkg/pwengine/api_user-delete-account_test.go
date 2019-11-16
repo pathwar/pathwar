@@ -21,7 +21,7 @@ func TestEngine_UserDeleteAccount(t *testing.T) {
 	beforeDeleteSubject := beforeDelete.User.OAuthSubject
 
 	// delete account
-	_, err = engine.UserDeleteAccount(ctx, &UserDeleteAccountInput{Reason: "just a test"})
+	_, err = engine.UserDeleteAccount(ctx, &UserDeleteAccount_Input{Reason: "just a test"})
 	if err != nil {
 		t.Errorf("err: %v", err)
 	}
