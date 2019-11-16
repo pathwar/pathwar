@@ -32,22 +32,21 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type TeamGetInput struct {
-	TeamID int64 `protobuf:"varint,1,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"`
+type TeamGet struct {
 }
 
-func (m *TeamGetInput) Reset()         { *m = TeamGetInput{} }
-func (m *TeamGetInput) String() string { return proto.CompactTextString(m) }
-func (*TeamGetInput) ProtoMessage()    {}
-func (*TeamGetInput) Descriptor() ([]byte, []int) {
+func (m *TeamGet) Reset()         { *m = TeamGet{} }
+func (m *TeamGet) String() string { return proto.CompactTextString(m) }
+func (*TeamGet) ProtoMessage()    {}
+func (*TeamGet) Descriptor() ([]byte, []int) {
 	return fileDescriptor_02cf22bbbf1a21c2, []int{0}
 }
-func (m *TeamGetInput) XXX_Unmarshal(b []byte) error {
+func (m *TeamGet) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *TeamGetInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *TeamGet) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_TeamGetInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_TeamGet.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -57,41 +56,78 @@ func (m *TeamGetInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return b[:n], nil
 	}
 }
-func (m *TeamGetInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TeamGetInput.Merge(m, src)
+func (m *TeamGet) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamGet.Merge(m, src)
 }
-func (m *TeamGetInput) XXX_Size() int {
+func (m *TeamGet) XXX_Size() int {
 	return m.Size()
 }
-func (m *TeamGetInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_TeamGetInput.DiscardUnknown(m)
+func (m *TeamGet) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamGet.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_TeamGetInput proto.InternalMessageInfo
+var xxx_messageInfo_TeamGet proto.InternalMessageInfo
 
-func (m *TeamGetInput) GetTeamID() int64 {
+type TeamGet_Input struct {
+	TeamID int64 `protobuf:"varint,1,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"`
+}
+
+func (m *TeamGet_Input) Reset()         { *m = TeamGet_Input{} }
+func (m *TeamGet_Input) String() string { return proto.CompactTextString(m) }
+func (*TeamGet_Input) ProtoMessage()    {}
+func (*TeamGet_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{0, 0}
+}
+func (m *TeamGet_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TeamGet_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TeamGet_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TeamGet_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamGet_Input.Merge(m, src)
+}
+func (m *TeamGet_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *TeamGet_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamGet_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TeamGet_Input proto.InternalMessageInfo
+
+func (m *TeamGet_Input) GetTeamID() int64 {
 	if m != nil {
 		return m.TeamID
 	}
 	return 0
 }
 
-type TeamGetOutput struct {
+type TeamGet_Output struct {
 	Item *pwdb.Team `protobuf:"bytes,1,opt,name=item,proto3" json:"item,omitempty"`
 }
 
-func (m *TeamGetOutput) Reset()         { *m = TeamGetOutput{} }
-func (m *TeamGetOutput) String() string { return proto.CompactTextString(m) }
-func (*TeamGetOutput) ProtoMessage()    {}
-func (*TeamGetOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{1}
+func (m *TeamGet_Output) Reset()         { *m = TeamGet_Output{} }
+func (m *TeamGet_Output) String() string { return proto.CompactTextString(m) }
+func (*TeamGet_Output) ProtoMessage()    {}
+func (*TeamGet_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{0, 1}
 }
-func (m *TeamGetOutput) XXX_Unmarshal(b []byte) error {
+func (m *TeamGet_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *TeamGetOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *TeamGet_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_TeamGetOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_TeamGet_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -101,41 +137,40 @@ func (m *TeamGetOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return b[:n], nil
 	}
 }
-func (m *TeamGetOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TeamGetOutput.Merge(m, src)
+func (m *TeamGet_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamGet_Output.Merge(m, src)
 }
-func (m *TeamGetOutput) XXX_Size() int {
+func (m *TeamGet_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *TeamGetOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_TeamGetOutput.DiscardUnknown(m)
+func (m *TeamGet_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamGet_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_TeamGetOutput proto.InternalMessageInfo
+var xxx_messageInfo_TeamGet_Output proto.InternalMessageInfo
 
-func (m *TeamGetOutput) GetItem() *pwdb.Team {
+func (m *TeamGet_Output) GetItem() *pwdb.Team {
 	if m != nil {
 		return m.Item
 	}
 	return nil
 }
 
-type SeasonChallengeListInput struct {
-	SeasonID int64 `protobuf:"varint,1,opt,name=season_id,json=seasonId,proto3" json:"season_id,omitempty"`
+type SeasonChallengeList struct {
 }
 
-func (m *SeasonChallengeListInput) Reset()         { *m = SeasonChallengeListInput{} }
-func (m *SeasonChallengeListInput) String() string { return proto.CompactTextString(m) }
-func (*SeasonChallengeListInput) ProtoMessage()    {}
-func (*SeasonChallengeListInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{2}
+func (m *SeasonChallengeList) Reset()         { *m = SeasonChallengeList{} }
+func (m *SeasonChallengeList) String() string { return proto.CompactTextString(m) }
+func (*SeasonChallengeList) ProtoMessage()    {}
+func (*SeasonChallengeList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{1}
 }
-func (m *SeasonChallengeListInput) XXX_Unmarshal(b []byte) error {
+func (m *SeasonChallengeList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *SeasonChallengeListInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *SeasonChallengeList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_SeasonChallengeListInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_SeasonChallengeList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -145,41 +180,78 @@ func (m *SeasonChallengeListInput) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *SeasonChallengeListInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SeasonChallengeListInput.Merge(m, src)
+func (m *SeasonChallengeList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SeasonChallengeList.Merge(m, src)
 }
-func (m *SeasonChallengeListInput) XXX_Size() int {
+func (m *SeasonChallengeList) XXX_Size() int {
 	return m.Size()
 }
-func (m *SeasonChallengeListInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_SeasonChallengeListInput.DiscardUnknown(m)
+func (m *SeasonChallengeList) XXX_DiscardUnknown() {
+	xxx_messageInfo_SeasonChallengeList.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_SeasonChallengeListInput proto.InternalMessageInfo
+var xxx_messageInfo_SeasonChallengeList proto.InternalMessageInfo
 
-func (m *SeasonChallengeListInput) GetSeasonID() int64 {
+type SeasonChallengeList_Input struct {
+	SeasonID int64 `protobuf:"varint,1,opt,name=season_id,json=seasonId,proto3" json:"season_id,omitempty"`
+}
+
+func (m *SeasonChallengeList_Input) Reset()         { *m = SeasonChallengeList_Input{} }
+func (m *SeasonChallengeList_Input) String() string { return proto.CompactTextString(m) }
+func (*SeasonChallengeList_Input) ProtoMessage()    {}
+func (*SeasonChallengeList_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{1, 0}
+}
+func (m *SeasonChallengeList_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *SeasonChallengeList_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_SeasonChallengeList_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *SeasonChallengeList_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SeasonChallengeList_Input.Merge(m, src)
+}
+func (m *SeasonChallengeList_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *SeasonChallengeList_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_SeasonChallengeList_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SeasonChallengeList_Input proto.InternalMessageInfo
+
+func (m *SeasonChallengeList_Input) GetSeasonID() int64 {
 	if m != nil {
 		return m.SeasonID
 	}
 	return 0
 }
 
-type SeasonChallengeListOutput struct {
+type SeasonChallengeList_Output struct {
 	Items []*pwdb.SeasonChallenge `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 }
 
-func (m *SeasonChallengeListOutput) Reset()         { *m = SeasonChallengeListOutput{} }
-func (m *SeasonChallengeListOutput) String() string { return proto.CompactTextString(m) }
-func (*SeasonChallengeListOutput) ProtoMessage()    {}
-func (*SeasonChallengeListOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{3}
+func (m *SeasonChallengeList_Output) Reset()         { *m = SeasonChallengeList_Output{} }
+func (m *SeasonChallengeList_Output) String() string { return proto.CompactTextString(m) }
+func (*SeasonChallengeList_Output) ProtoMessage()    {}
+func (*SeasonChallengeList_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{1, 1}
 }
-func (m *SeasonChallengeListOutput) XXX_Unmarshal(b []byte) error {
+func (m *SeasonChallengeList_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *SeasonChallengeListOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *SeasonChallengeList_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_SeasonChallengeListOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_SeasonChallengeList_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -189,41 +261,40 @@ func (m *SeasonChallengeListOutput) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *SeasonChallengeListOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SeasonChallengeListOutput.Merge(m, src)
+func (m *SeasonChallengeList_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SeasonChallengeList_Output.Merge(m, src)
 }
-func (m *SeasonChallengeListOutput) XXX_Size() int {
+func (m *SeasonChallengeList_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *SeasonChallengeListOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_SeasonChallengeListOutput.DiscardUnknown(m)
+func (m *SeasonChallengeList_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_SeasonChallengeList_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_SeasonChallengeListOutput proto.InternalMessageInfo
+var xxx_messageInfo_SeasonChallengeList_Output proto.InternalMessageInfo
 
-func (m *SeasonChallengeListOutput) GetItems() []*pwdb.SeasonChallenge {
+func (m *SeasonChallengeList_Output) GetItems() []*pwdb.SeasonChallenge {
 	if m != nil {
 		return m.Items
 	}
 	return nil
 }
 
-type SeasonChallengeGetInput struct {
-	SeasonChallengeID int64 `protobuf:"varint,1,opt,name=season_challenge_id,json=seasonChallengeId,proto3" json:"season_challenge_id,omitempty"`
+type SeasonChallengeGet struct {
 }
 
-func (m *SeasonChallengeGetInput) Reset()         { *m = SeasonChallengeGetInput{} }
-func (m *SeasonChallengeGetInput) String() string { return proto.CompactTextString(m) }
-func (*SeasonChallengeGetInput) ProtoMessage()    {}
-func (*SeasonChallengeGetInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{4}
+func (m *SeasonChallengeGet) Reset()         { *m = SeasonChallengeGet{} }
+func (m *SeasonChallengeGet) String() string { return proto.CompactTextString(m) }
+func (*SeasonChallengeGet) ProtoMessage()    {}
+func (*SeasonChallengeGet) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{2}
 }
-func (m *SeasonChallengeGetInput) XXX_Unmarshal(b []byte) error {
+func (m *SeasonChallengeGet) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *SeasonChallengeGetInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *SeasonChallengeGet) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_SeasonChallengeGetInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_SeasonChallengeGet.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -233,41 +304,78 @@ func (m *SeasonChallengeGetInput) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *SeasonChallengeGetInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SeasonChallengeGetInput.Merge(m, src)
+func (m *SeasonChallengeGet) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SeasonChallengeGet.Merge(m, src)
 }
-func (m *SeasonChallengeGetInput) XXX_Size() int {
+func (m *SeasonChallengeGet) XXX_Size() int {
 	return m.Size()
 }
-func (m *SeasonChallengeGetInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_SeasonChallengeGetInput.DiscardUnknown(m)
+func (m *SeasonChallengeGet) XXX_DiscardUnknown() {
+	xxx_messageInfo_SeasonChallengeGet.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_SeasonChallengeGetInput proto.InternalMessageInfo
+var xxx_messageInfo_SeasonChallengeGet proto.InternalMessageInfo
 
-func (m *SeasonChallengeGetInput) GetSeasonChallengeID() int64 {
+type SeasonChallengeGet_Input struct {
+	SeasonChallengeID int64 `protobuf:"varint,1,opt,name=season_challenge_id,json=seasonChallengeId,proto3" json:"season_challenge_id,omitempty"`
+}
+
+func (m *SeasonChallengeGet_Input) Reset()         { *m = SeasonChallengeGet_Input{} }
+func (m *SeasonChallengeGet_Input) String() string { return proto.CompactTextString(m) }
+func (*SeasonChallengeGet_Input) ProtoMessage()    {}
+func (*SeasonChallengeGet_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{2, 0}
+}
+func (m *SeasonChallengeGet_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *SeasonChallengeGet_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_SeasonChallengeGet_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *SeasonChallengeGet_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SeasonChallengeGet_Input.Merge(m, src)
+}
+func (m *SeasonChallengeGet_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *SeasonChallengeGet_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_SeasonChallengeGet_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SeasonChallengeGet_Input proto.InternalMessageInfo
+
+func (m *SeasonChallengeGet_Input) GetSeasonChallengeID() int64 {
 	if m != nil {
 		return m.SeasonChallengeID
 	}
 	return 0
 }
 
-type SeasonChallengeGetOutput struct {
+type SeasonChallengeGet_Output struct {
 	Item *pwdb.SeasonChallenge `protobuf:"bytes,1,opt,name=item,proto3" json:"item,omitempty"`
 }
 
-func (m *SeasonChallengeGetOutput) Reset()         { *m = SeasonChallengeGetOutput{} }
-func (m *SeasonChallengeGetOutput) String() string { return proto.CompactTextString(m) }
-func (*SeasonChallengeGetOutput) ProtoMessage()    {}
-func (*SeasonChallengeGetOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{5}
+func (m *SeasonChallengeGet_Output) Reset()         { *m = SeasonChallengeGet_Output{} }
+func (m *SeasonChallengeGet_Output) String() string { return proto.CompactTextString(m) }
+func (*SeasonChallengeGet_Output) ProtoMessage()    {}
+func (*SeasonChallengeGet_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{2, 1}
 }
-func (m *SeasonChallengeGetOutput) XXX_Unmarshal(b []byte) error {
+func (m *SeasonChallengeGet_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *SeasonChallengeGetOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *SeasonChallengeGet_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_SeasonChallengeGetOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_SeasonChallengeGet_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -277,41 +385,40 @@ func (m *SeasonChallengeGetOutput) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *SeasonChallengeGetOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SeasonChallengeGetOutput.Merge(m, src)
+func (m *SeasonChallengeGet_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SeasonChallengeGet_Output.Merge(m, src)
 }
-func (m *SeasonChallengeGetOutput) XXX_Size() int {
+func (m *SeasonChallengeGet_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *SeasonChallengeGetOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_SeasonChallengeGetOutput.DiscardUnknown(m)
+func (m *SeasonChallengeGet_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_SeasonChallengeGet_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_SeasonChallengeGetOutput proto.InternalMessageInfo
+var xxx_messageInfo_SeasonChallengeGet_Output proto.InternalMessageInfo
 
-func (m *SeasonChallengeGetOutput) GetItem() *pwdb.SeasonChallenge {
+func (m *SeasonChallengeGet_Output) GetItem() *pwdb.SeasonChallenge {
 	if m != nil {
 		return m.Item
 	}
 	return nil
 }
 
-type ChallengeGetInput struct {
-	ChallengeID int64 `protobuf:"varint,1,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty"`
+type ChallengeGet struct {
 }
 
-func (m *ChallengeGetInput) Reset()         { *m = ChallengeGetInput{} }
-func (m *ChallengeGetInput) String() string { return proto.CompactTextString(m) }
-func (*ChallengeGetInput) ProtoMessage()    {}
-func (*ChallengeGetInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{6}
+func (m *ChallengeGet) Reset()         { *m = ChallengeGet{} }
+func (m *ChallengeGet) String() string { return proto.CompactTextString(m) }
+func (*ChallengeGet) ProtoMessage()    {}
+func (*ChallengeGet) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{3}
 }
-func (m *ChallengeGetInput) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeGet) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ChallengeGetInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeGet) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ChallengeGetInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeGet.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -321,41 +428,78 @@ func (m *ChallengeGetInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *ChallengeGetInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ChallengeGetInput.Merge(m, src)
+func (m *ChallengeGet) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeGet.Merge(m, src)
 }
-func (m *ChallengeGetInput) XXX_Size() int {
+func (m *ChallengeGet) XXX_Size() int {
 	return m.Size()
 }
-func (m *ChallengeGetInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_ChallengeGetInput.DiscardUnknown(m)
+func (m *ChallengeGet) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeGet.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ChallengeGetInput proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeGet proto.InternalMessageInfo
 
-func (m *ChallengeGetInput) GetChallengeID() int64 {
+type ChallengeGet_Input struct {
+	ChallengeID int64 `protobuf:"varint,1,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty"`
+}
+
+func (m *ChallengeGet_Input) Reset()         { *m = ChallengeGet_Input{} }
+func (m *ChallengeGet_Input) String() string { return proto.CompactTextString(m) }
+func (*ChallengeGet_Input) ProtoMessage()    {}
+func (*ChallengeGet_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{3, 0}
+}
+func (m *ChallengeGet_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ChallengeGet_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ChallengeGet_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ChallengeGet_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeGet_Input.Merge(m, src)
+}
+func (m *ChallengeGet_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *ChallengeGet_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeGet_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ChallengeGet_Input proto.InternalMessageInfo
+
+func (m *ChallengeGet_Input) GetChallengeID() int64 {
 	if m != nil {
 		return m.ChallengeID
 	}
 	return 0
 }
 
-type ChallengeGetOutput struct {
+type ChallengeGet_Output struct {
 	Item *pwdb.Challenge `protobuf:"bytes,1,opt,name=item,proto3" json:"item,omitempty"`
 }
 
-func (m *ChallengeGetOutput) Reset()         { *m = ChallengeGetOutput{} }
-func (m *ChallengeGetOutput) String() string { return proto.CompactTextString(m) }
-func (*ChallengeGetOutput) ProtoMessage()    {}
-func (*ChallengeGetOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{7}
+func (m *ChallengeGet_Output) Reset()         { *m = ChallengeGet_Output{} }
+func (m *ChallengeGet_Output) String() string { return proto.CompactTextString(m) }
+func (*ChallengeGet_Output) ProtoMessage()    {}
+func (*ChallengeGet_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{3, 1}
 }
-func (m *ChallengeGetOutput) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeGet_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ChallengeGetOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeGet_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ChallengeGetOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeGet_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -365,42 +509,40 @@ func (m *ChallengeGetOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *ChallengeGetOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ChallengeGetOutput.Merge(m, src)
+func (m *ChallengeGet_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeGet_Output.Merge(m, src)
 }
-func (m *ChallengeGetOutput) XXX_Size() int {
+func (m *ChallengeGet_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *ChallengeGetOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_ChallengeGetOutput.DiscardUnknown(m)
+func (m *ChallengeGet_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeGet_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ChallengeGetOutput proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeGet_Output proto.InternalMessageInfo
 
-func (m *ChallengeGetOutput) GetItem() *pwdb.Challenge {
+func (m *ChallengeGet_Output) GetItem() *pwdb.Challenge {
 	if m != nil {
 		return m.Item
 	}
 	return nil
 }
 
-type SeasonChallengeBuyInput struct {
-	SeasonChallengeID int64 `protobuf:"varint,1,opt,name=season_challenge_id,json=seasonChallengeId,proto3" json:"season_challenge_id,omitempty"`
-	TeamID            int64 `protobuf:"varint,2,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"`
+type SeasonChallengeBuy struct {
 }
 
-func (m *SeasonChallengeBuyInput) Reset()         { *m = SeasonChallengeBuyInput{} }
-func (m *SeasonChallengeBuyInput) String() string { return proto.CompactTextString(m) }
-func (*SeasonChallengeBuyInput) ProtoMessage()    {}
-func (*SeasonChallengeBuyInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{8}
+func (m *SeasonChallengeBuy) Reset()         { *m = SeasonChallengeBuy{} }
+func (m *SeasonChallengeBuy) String() string { return proto.CompactTextString(m) }
+func (*SeasonChallengeBuy) ProtoMessage()    {}
+func (*SeasonChallengeBuy) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{4}
 }
-func (m *SeasonChallengeBuyInput) XXX_Unmarshal(b []byte) error {
+func (m *SeasonChallengeBuy) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *SeasonChallengeBuyInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *SeasonChallengeBuy) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_SeasonChallengeBuyInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_SeasonChallengeBuy.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -410,48 +552,86 @@ func (m *SeasonChallengeBuyInput) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *SeasonChallengeBuyInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SeasonChallengeBuyInput.Merge(m, src)
+func (m *SeasonChallengeBuy) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SeasonChallengeBuy.Merge(m, src)
 }
-func (m *SeasonChallengeBuyInput) XXX_Size() int {
+func (m *SeasonChallengeBuy) XXX_Size() int {
 	return m.Size()
 }
-func (m *SeasonChallengeBuyInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_SeasonChallengeBuyInput.DiscardUnknown(m)
+func (m *SeasonChallengeBuy) XXX_DiscardUnknown() {
+	xxx_messageInfo_SeasonChallengeBuy.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_SeasonChallengeBuyInput proto.InternalMessageInfo
+var xxx_messageInfo_SeasonChallengeBuy proto.InternalMessageInfo
 
-func (m *SeasonChallengeBuyInput) GetSeasonChallengeID() int64 {
+type SeasonChallengeBuy_Input struct {
+	SeasonChallengeID int64 `protobuf:"varint,1,opt,name=season_challenge_id,json=seasonChallengeId,proto3" json:"season_challenge_id,omitempty"`
+	TeamID            int64 `protobuf:"varint,2,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"`
+}
+
+func (m *SeasonChallengeBuy_Input) Reset()         { *m = SeasonChallengeBuy_Input{} }
+func (m *SeasonChallengeBuy_Input) String() string { return proto.CompactTextString(m) }
+func (*SeasonChallengeBuy_Input) ProtoMessage()    {}
+func (*SeasonChallengeBuy_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{4, 0}
+}
+func (m *SeasonChallengeBuy_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *SeasonChallengeBuy_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_SeasonChallengeBuy_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *SeasonChallengeBuy_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SeasonChallengeBuy_Input.Merge(m, src)
+}
+func (m *SeasonChallengeBuy_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *SeasonChallengeBuy_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_SeasonChallengeBuy_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SeasonChallengeBuy_Input proto.InternalMessageInfo
+
+func (m *SeasonChallengeBuy_Input) GetSeasonChallengeID() int64 {
 	if m != nil {
 		return m.SeasonChallengeID
 	}
 	return 0
 }
 
-func (m *SeasonChallengeBuyInput) GetTeamID() int64 {
+func (m *SeasonChallengeBuy_Input) GetTeamID() int64 {
 	if m != nil {
 		return m.TeamID
 	}
 	return 0
 }
 
-type SeasonChallengeBuyOutput struct {
+type SeasonChallengeBuy_Output struct {
 	ChallengeSubscription *pwdb.ChallengeSubscription `protobuf:"bytes,1,opt,name=challenge_subscription,json=challengeSubscription,proto3" json:"challenge_subscription,omitempty"`
 }
 
-func (m *SeasonChallengeBuyOutput) Reset()         { *m = SeasonChallengeBuyOutput{} }
-func (m *SeasonChallengeBuyOutput) String() string { return proto.CompactTextString(m) }
-func (*SeasonChallengeBuyOutput) ProtoMessage()    {}
-func (*SeasonChallengeBuyOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{9}
+func (m *SeasonChallengeBuy_Output) Reset()         { *m = SeasonChallengeBuy_Output{} }
+func (m *SeasonChallengeBuy_Output) String() string { return proto.CompactTextString(m) }
+func (*SeasonChallengeBuy_Output) ProtoMessage()    {}
+func (*SeasonChallengeBuy_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{4, 1}
 }
-func (m *SeasonChallengeBuyOutput) XXX_Unmarshal(b []byte) error {
+func (m *SeasonChallengeBuy_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *SeasonChallengeBuyOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *SeasonChallengeBuy_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_SeasonChallengeBuyOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_SeasonChallengeBuy_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -461,43 +641,40 @@ func (m *SeasonChallengeBuyOutput) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *SeasonChallengeBuyOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SeasonChallengeBuyOutput.Merge(m, src)
+func (m *SeasonChallengeBuy_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SeasonChallengeBuy_Output.Merge(m, src)
 }
-func (m *SeasonChallengeBuyOutput) XXX_Size() int {
+func (m *SeasonChallengeBuy_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *SeasonChallengeBuyOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_SeasonChallengeBuyOutput.DiscardUnknown(m)
+func (m *SeasonChallengeBuy_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_SeasonChallengeBuy_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_SeasonChallengeBuyOutput proto.InternalMessageInfo
+var xxx_messageInfo_SeasonChallengeBuy_Output proto.InternalMessageInfo
 
-func (m *SeasonChallengeBuyOutput) GetChallengeSubscription() *pwdb.ChallengeSubscription {
+func (m *SeasonChallengeBuy_Output) GetChallengeSubscription() *pwdb.ChallengeSubscription {
 	if m != nil {
 		return m.ChallengeSubscription
 	}
 	return nil
 }
 
-type ChallengeSubscriptionValidateInput struct {
-	ChallengeSubscriptionID int64  `protobuf:"varint,1,opt,name=challenge_subscription_id,json=challengeSubscriptionId,proto3" json:"challenge_subscription_id,omitempty"`
-	Passphrase              string `protobuf:"bytes,2,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
-	Comment                 string `protobuf:"bytes,3,opt,name=comment,proto3" json:"comment,omitempty"`
+type ChallengeSubscriptionValidate struct {
 }
 
-func (m *ChallengeSubscriptionValidateInput) Reset()         { *m = ChallengeSubscriptionValidateInput{} }
-func (m *ChallengeSubscriptionValidateInput) String() string { return proto.CompactTextString(m) }
-func (*ChallengeSubscriptionValidateInput) ProtoMessage()    {}
-func (*ChallengeSubscriptionValidateInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{10}
+func (m *ChallengeSubscriptionValidate) Reset()         { *m = ChallengeSubscriptionValidate{} }
+func (m *ChallengeSubscriptionValidate) String() string { return proto.CompactTextString(m) }
+func (*ChallengeSubscriptionValidate) ProtoMessage()    {}
+func (*ChallengeSubscriptionValidate) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{5}
 }
-func (m *ChallengeSubscriptionValidateInput) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeSubscriptionValidate) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ChallengeSubscriptionValidateInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeSubscriptionValidate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ChallengeSubscriptionValidateInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeSubscriptionValidate.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -507,55 +684,94 @@ func (m *ChallengeSubscriptionValidateInput) XXX_Marshal(b []byte, deterministic
 		return b[:n], nil
 	}
 }
-func (m *ChallengeSubscriptionValidateInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ChallengeSubscriptionValidateInput.Merge(m, src)
+func (m *ChallengeSubscriptionValidate) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeSubscriptionValidate.Merge(m, src)
 }
-func (m *ChallengeSubscriptionValidateInput) XXX_Size() int {
+func (m *ChallengeSubscriptionValidate) XXX_Size() int {
 	return m.Size()
 }
-func (m *ChallengeSubscriptionValidateInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_ChallengeSubscriptionValidateInput.DiscardUnknown(m)
+func (m *ChallengeSubscriptionValidate) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeSubscriptionValidate.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ChallengeSubscriptionValidateInput proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeSubscriptionValidate proto.InternalMessageInfo
 
-func (m *ChallengeSubscriptionValidateInput) GetChallengeSubscriptionID() int64 {
+type ChallengeSubscriptionValidate_Input struct {
+	ChallengeSubscriptionID int64  `protobuf:"varint,1,opt,name=challenge_subscription_id,json=challengeSubscriptionId,proto3" json:"challenge_subscription_id,omitempty"`
+	Passphrase              string `protobuf:"bytes,2,opt,name=passphrase,proto3" json:"passphrase,omitempty"`
+	Comment                 string `protobuf:"bytes,3,opt,name=comment,proto3" json:"comment,omitempty"`
+}
+
+func (m *ChallengeSubscriptionValidate_Input) Reset()         { *m = ChallengeSubscriptionValidate_Input{} }
+func (m *ChallengeSubscriptionValidate_Input) String() string { return proto.CompactTextString(m) }
+func (*ChallengeSubscriptionValidate_Input) ProtoMessage()    {}
+func (*ChallengeSubscriptionValidate_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{5, 0}
+}
+func (m *ChallengeSubscriptionValidate_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ChallengeSubscriptionValidate_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ChallengeSubscriptionValidate_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ChallengeSubscriptionValidate_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeSubscriptionValidate_Input.Merge(m, src)
+}
+func (m *ChallengeSubscriptionValidate_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *ChallengeSubscriptionValidate_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeSubscriptionValidate_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ChallengeSubscriptionValidate_Input proto.InternalMessageInfo
+
+func (m *ChallengeSubscriptionValidate_Input) GetChallengeSubscriptionID() int64 {
 	if m != nil {
 		return m.ChallengeSubscriptionID
 	}
 	return 0
 }
 
-func (m *ChallengeSubscriptionValidateInput) GetPassphrase() string {
+func (m *ChallengeSubscriptionValidate_Input) GetPassphrase() string {
 	if m != nil {
 		return m.Passphrase
 	}
 	return ""
 }
 
-func (m *ChallengeSubscriptionValidateInput) GetComment() string {
+func (m *ChallengeSubscriptionValidate_Input) GetComment() string {
 	if m != nil {
 		return m.Comment
 	}
 	return ""
 }
 
-type ChallengeSubscriptionValidateOutput struct {
+type ChallengeSubscriptionValidate_Output struct {
 	ChallengeValidation *pwdb.ChallengeValidation `protobuf:"bytes,1,opt,name=challenge_validation,json=challengeValidation,proto3" json:"challenge_validation,omitempty"`
 }
 
-func (m *ChallengeSubscriptionValidateOutput) Reset()         { *m = ChallengeSubscriptionValidateOutput{} }
-func (m *ChallengeSubscriptionValidateOutput) String() string { return proto.CompactTextString(m) }
-func (*ChallengeSubscriptionValidateOutput) ProtoMessage()    {}
-func (*ChallengeSubscriptionValidateOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{11}
+func (m *ChallengeSubscriptionValidate_Output) Reset()         { *m = ChallengeSubscriptionValidate_Output{} }
+func (m *ChallengeSubscriptionValidate_Output) String() string { return proto.CompactTextString(m) }
+func (*ChallengeSubscriptionValidate_Output) ProtoMessage()    {}
+func (*ChallengeSubscriptionValidate_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{5, 1}
 }
-func (m *ChallengeSubscriptionValidateOutput) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeSubscriptionValidate_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ChallengeSubscriptionValidateOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeSubscriptionValidate_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ChallengeSubscriptionValidateOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeSubscriptionValidate_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -565,41 +781,40 @@ func (m *ChallengeSubscriptionValidateOutput) XXX_Marshal(b []byte, deterministi
 		return b[:n], nil
 	}
 }
-func (m *ChallengeSubscriptionValidateOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ChallengeSubscriptionValidateOutput.Merge(m, src)
+func (m *ChallengeSubscriptionValidate_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeSubscriptionValidate_Output.Merge(m, src)
 }
-func (m *ChallengeSubscriptionValidateOutput) XXX_Size() int {
+func (m *ChallengeSubscriptionValidate_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *ChallengeSubscriptionValidateOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_ChallengeSubscriptionValidateOutput.DiscardUnknown(m)
+func (m *ChallengeSubscriptionValidate_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeSubscriptionValidate_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ChallengeSubscriptionValidateOutput proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeSubscriptionValidate_Output proto.InternalMessageInfo
 
-func (m *ChallengeSubscriptionValidateOutput) GetChallengeValidation() *pwdb.ChallengeValidation {
+func (m *ChallengeSubscriptionValidate_Output) GetChallengeValidation() *pwdb.ChallengeValidation {
 	if m != nil {
 		return m.ChallengeValidation
 	}
 	return nil
 }
 
-type ChallengeSubscriptionCloseInput struct {
-	ChallengeSubscriptionID int64 `protobuf:"varint,1,opt,name=challenge_subscription_id,json=challengeSubscriptionId,proto3" json:"challenge_subscription_id,omitempty"`
+type ChallengeSubscriptionClose struct {
 }
 
-func (m *ChallengeSubscriptionCloseInput) Reset()         { *m = ChallengeSubscriptionCloseInput{} }
-func (m *ChallengeSubscriptionCloseInput) String() string { return proto.CompactTextString(m) }
-func (*ChallengeSubscriptionCloseInput) ProtoMessage()    {}
-func (*ChallengeSubscriptionCloseInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{12}
+func (m *ChallengeSubscriptionClose) Reset()         { *m = ChallengeSubscriptionClose{} }
+func (m *ChallengeSubscriptionClose) String() string { return proto.CompactTextString(m) }
+func (*ChallengeSubscriptionClose) ProtoMessage()    {}
+func (*ChallengeSubscriptionClose) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{6}
 }
-func (m *ChallengeSubscriptionCloseInput) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeSubscriptionClose) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ChallengeSubscriptionCloseInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeSubscriptionClose) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ChallengeSubscriptionCloseInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeSubscriptionClose.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -609,41 +824,78 @@ func (m *ChallengeSubscriptionCloseInput) XXX_Marshal(b []byte, deterministic bo
 		return b[:n], nil
 	}
 }
-func (m *ChallengeSubscriptionCloseInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ChallengeSubscriptionCloseInput.Merge(m, src)
+func (m *ChallengeSubscriptionClose) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeSubscriptionClose.Merge(m, src)
 }
-func (m *ChallengeSubscriptionCloseInput) XXX_Size() int {
+func (m *ChallengeSubscriptionClose) XXX_Size() int {
 	return m.Size()
 }
-func (m *ChallengeSubscriptionCloseInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_ChallengeSubscriptionCloseInput.DiscardUnknown(m)
+func (m *ChallengeSubscriptionClose) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeSubscriptionClose.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ChallengeSubscriptionCloseInput proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeSubscriptionClose proto.InternalMessageInfo
 
-func (m *ChallengeSubscriptionCloseInput) GetChallengeSubscriptionID() int64 {
+type ChallengeSubscriptionClose_Input struct {
+	ChallengeSubscriptionID int64 `protobuf:"varint,1,opt,name=challenge_subscription_id,json=challengeSubscriptionId,proto3" json:"challenge_subscription_id,omitempty"`
+}
+
+func (m *ChallengeSubscriptionClose_Input) Reset()         { *m = ChallengeSubscriptionClose_Input{} }
+func (m *ChallengeSubscriptionClose_Input) String() string { return proto.CompactTextString(m) }
+func (*ChallengeSubscriptionClose_Input) ProtoMessage()    {}
+func (*ChallengeSubscriptionClose_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{6, 0}
+}
+func (m *ChallengeSubscriptionClose_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ChallengeSubscriptionClose_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ChallengeSubscriptionClose_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ChallengeSubscriptionClose_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeSubscriptionClose_Input.Merge(m, src)
+}
+func (m *ChallengeSubscriptionClose_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *ChallengeSubscriptionClose_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeSubscriptionClose_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ChallengeSubscriptionClose_Input proto.InternalMessageInfo
+
+func (m *ChallengeSubscriptionClose_Input) GetChallengeSubscriptionID() int64 {
 	if m != nil {
 		return m.ChallengeSubscriptionID
 	}
 	return 0
 }
 
-type ChallengeSubscriptionCloseOutput struct {
+type ChallengeSubscriptionClose_Output struct {
 	ChallengeSubscription *pwdb.ChallengeSubscription `protobuf:"bytes,1,opt,name=challenge_subscription,json=challengeSubscription,proto3" json:"challenge_subscription,omitempty"`
 }
 
-func (m *ChallengeSubscriptionCloseOutput) Reset()         { *m = ChallengeSubscriptionCloseOutput{} }
-func (m *ChallengeSubscriptionCloseOutput) String() string { return proto.CompactTextString(m) }
-func (*ChallengeSubscriptionCloseOutput) ProtoMessage()    {}
-func (*ChallengeSubscriptionCloseOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{13}
+func (m *ChallengeSubscriptionClose_Output) Reset()         { *m = ChallengeSubscriptionClose_Output{} }
+func (m *ChallengeSubscriptionClose_Output) String() string { return proto.CompactTextString(m) }
+func (*ChallengeSubscriptionClose_Output) ProtoMessage()    {}
+func (*ChallengeSubscriptionClose_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{6, 1}
 }
-func (m *ChallengeSubscriptionCloseOutput) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeSubscriptionClose_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ChallengeSubscriptionCloseOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeSubscriptionClose_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ChallengeSubscriptionCloseOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeSubscriptionClose_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -653,41 +905,40 @@ func (m *ChallengeSubscriptionCloseOutput) XXX_Marshal(b []byte, deterministic b
 		return b[:n], nil
 	}
 }
-func (m *ChallengeSubscriptionCloseOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ChallengeSubscriptionCloseOutput.Merge(m, src)
+func (m *ChallengeSubscriptionClose_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeSubscriptionClose_Output.Merge(m, src)
 }
-func (m *ChallengeSubscriptionCloseOutput) XXX_Size() int {
+func (m *ChallengeSubscriptionClose_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *ChallengeSubscriptionCloseOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_ChallengeSubscriptionCloseOutput.DiscardUnknown(m)
+func (m *ChallengeSubscriptionClose_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeSubscriptionClose_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ChallengeSubscriptionCloseOutput proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeSubscriptionClose_Output proto.InternalMessageInfo
 
-func (m *ChallengeSubscriptionCloseOutput) GetChallengeSubscription() *pwdb.ChallengeSubscription {
+func (m *ChallengeSubscriptionClose_Output) GetChallengeSubscription() *pwdb.ChallengeSubscription {
 	if m != nil {
 		return m.ChallengeSubscription
 	}
 	return nil
 }
 
-type TeamListInput struct {
-	SeasonID int64 `protobuf:"varint,1,opt,name=season_id,json=seasonId,proto3" json:"season_id,omitempty"`
+type TeamList struct {
 }
 
-func (m *TeamListInput) Reset()         { *m = TeamListInput{} }
-func (m *TeamListInput) String() string { return proto.CompactTextString(m) }
-func (*TeamListInput) ProtoMessage()    {}
-func (*TeamListInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{14}
+func (m *TeamList) Reset()         { *m = TeamList{} }
+func (m *TeamList) String() string { return proto.CompactTextString(m) }
+func (*TeamList) ProtoMessage()    {}
+func (*TeamList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{7}
 }
-func (m *TeamListInput) XXX_Unmarshal(b []byte) error {
+func (m *TeamList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *TeamListInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *TeamList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_TeamListInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_TeamList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -697,41 +948,78 @@ func (m *TeamListInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return b[:n], nil
 	}
 }
-func (m *TeamListInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TeamListInput.Merge(m, src)
+func (m *TeamList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamList.Merge(m, src)
 }
-func (m *TeamListInput) XXX_Size() int {
+func (m *TeamList) XXX_Size() int {
 	return m.Size()
 }
-func (m *TeamListInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_TeamListInput.DiscardUnknown(m)
+func (m *TeamList) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamList.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_TeamListInput proto.InternalMessageInfo
+var xxx_messageInfo_TeamList proto.InternalMessageInfo
 
-func (m *TeamListInput) GetSeasonID() int64 {
+type TeamList_Input struct {
+	SeasonID int64 `protobuf:"varint,1,opt,name=season_id,json=seasonId,proto3" json:"season_id,omitempty"`
+}
+
+func (m *TeamList_Input) Reset()         { *m = TeamList_Input{} }
+func (m *TeamList_Input) String() string { return proto.CompactTextString(m) }
+func (*TeamList_Input) ProtoMessage()    {}
+func (*TeamList_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{7, 0}
+}
+func (m *TeamList_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TeamList_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TeamList_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TeamList_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamList_Input.Merge(m, src)
+}
+func (m *TeamList_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *TeamList_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamList_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TeamList_Input proto.InternalMessageInfo
+
+func (m *TeamList_Input) GetSeasonID() int64 {
 	if m != nil {
 		return m.SeasonID
 	}
 	return 0
 }
 
-type TeamListOutput struct {
+type TeamList_Output struct {
 	Items []*pwdb.Team `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 }
 
-func (m *TeamListOutput) Reset()         { *m = TeamListOutput{} }
-func (m *TeamListOutput) String() string { return proto.CompactTextString(m) }
-func (*TeamListOutput) ProtoMessage()    {}
-func (*TeamListOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{15}
+func (m *TeamList_Output) Reset()         { *m = TeamList_Output{} }
+func (m *TeamList_Output) String() string { return proto.CompactTextString(m) }
+func (*TeamList_Output) ProtoMessage()    {}
+func (*TeamList_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{7, 1}
 }
-func (m *TeamListOutput) XXX_Unmarshal(b []byte) error {
+func (m *TeamList_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *TeamListOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *TeamList_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_TeamListOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_TeamList_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -741,41 +1029,40 @@ func (m *TeamListOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return b[:n], nil
 	}
 }
-func (m *TeamListOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TeamListOutput.Merge(m, src)
+func (m *TeamList_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamList_Output.Merge(m, src)
 }
-func (m *TeamListOutput) XXX_Size() int {
+func (m *TeamList_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *TeamListOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_TeamListOutput.DiscardUnknown(m)
+func (m *TeamList_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamList_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_TeamListOutput proto.InternalMessageInfo
+var xxx_messageInfo_TeamList_Output proto.InternalMessageInfo
 
-func (m *TeamListOutput) GetItems() []*pwdb.Team {
+func (m *TeamList_Output) GetItems() []*pwdb.Team {
 	if m != nil {
 		return m.Items
 	}
 	return nil
 }
 
-type UserSetPreferencesInput struct {
-	ActiveSeasonID int64 `protobuf:"varint,1,opt,name=active_season_id,json=activeSeasonId,proto3" json:"active_season_id,omitempty"`
+type UserSetPreferences struct {
 }
 
-func (m *UserSetPreferencesInput) Reset()         { *m = UserSetPreferencesInput{} }
-func (m *UserSetPreferencesInput) String() string { return proto.CompactTextString(m) }
-func (*UserSetPreferencesInput) ProtoMessage()    {}
-func (*UserSetPreferencesInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{16}
+func (m *UserSetPreferences) Reset()         { *m = UserSetPreferences{} }
+func (m *UserSetPreferences) String() string { return proto.CompactTextString(m) }
+func (*UserSetPreferences) ProtoMessage()    {}
+func (*UserSetPreferences) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{8}
 }
-func (m *UserSetPreferencesInput) XXX_Unmarshal(b []byte) error {
+func (m *UserSetPreferences) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *UserSetPreferencesInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *UserSetPreferences) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_UserSetPreferencesInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_UserSetPreferences.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -785,40 +1072,77 @@ func (m *UserSetPreferencesInput) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *UserSetPreferencesInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UserSetPreferencesInput.Merge(m, src)
+func (m *UserSetPreferences) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserSetPreferences.Merge(m, src)
 }
-func (m *UserSetPreferencesInput) XXX_Size() int {
+func (m *UserSetPreferences) XXX_Size() int {
 	return m.Size()
 }
-func (m *UserSetPreferencesInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_UserSetPreferencesInput.DiscardUnknown(m)
+func (m *UserSetPreferences) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserSetPreferences.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UserSetPreferencesInput proto.InternalMessageInfo
+var xxx_messageInfo_UserSetPreferences proto.InternalMessageInfo
 
-func (m *UserSetPreferencesInput) GetActiveSeasonID() int64 {
+type UserSetPreferences_Input struct {
+	ActiveSeasonID int64 `protobuf:"varint,1,opt,name=active_season_id,json=activeSeasonId,proto3" json:"active_season_id,omitempty"`
+}
+
+func (m *UserSetPreferences_Input) Reset()         { *m = UserSetPreferences_Input{} }
+func (m *UserSetPreferences_Input) String() string { return proto.CompactTextString(m) }
+func (*UserSetPreferences_Input) ProtoMessage()    {}
+func (*UserSetPreferences_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{8, 0}
+}
+func (m *UserSetPreferences_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UserSetPreferences_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UserSetPreferences_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UserSetPreferences_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserSetPreferences_Input.Merge(m, src)
+}
+func (m *UserSetPreferences_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *UserSetPreferences_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserSetPreferences_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UserSetPreferences_Input proto.InternalMessageInfo
+
+func (m *UserSetPreferences_Input) GetActiveSeasonID() int64 {
 	if m != nil {
 		return m.ActiveSeasonID
 	}
 	return 0
 }
 
-type UserSetPreferencesOutput struct {
+type UserSetPreferences_Output struct {
 }
 
-func (m *UserSetPreferencesOutput) Reset()         { *m = UserSetPreferencesOutput{} }
-func (m *UserSetPreferencesOutput) String() string { return proto.CompactTextString(m) }
-func (*UserSetPreferencesOutput) ProtoMessage()    {}
-func (*UserSetPreferencesOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{17}
+func (m *UserSetPreferences_Output) Reset()         { *m = UserSetPreferences_Output{} }
+func (m *UserSetPreferences_Output) String() string { return proto.CompactTextString(m) }
+func (*UserSetPreferences_Output) ProtoMessage()    {}
+func (*UserSetPreferences_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{8, 1}
 }
-func (m *UserSetPreferencesOutput) XXX_Unmarshal(b []byte) error {
+func (m *UserSetPreferences_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *UserSetPreferencesOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *UserSetPreferences_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_UserSetPreferencesOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_UserSetPreferences_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -828,34 +1152,70 @@ func (m *UserSetPreferencesOutput) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *UserSetPreferencesOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UserSetPreferencesOutput.Merge(m, src)
+func (m *UserSetPreferences_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserSetPreferences_Output.Merge(m, src)
 }
-func (m *UserSetPreferencesOutput) XXX_Size() int {
+func (m *UserSetPreferences_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *UserSetPreferencesOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_UserSetPreferencesOutput.DiscardUnknown(m)
+func (m *UserSetPreferences_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserSetPreferences_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UserSetPreferencesOutput proto.InternalMessageInfo
+var xxx_messageInfo_UserSetPreferences_Output proto.InternalMessageInfo
 
-type UserDeleteAccountInput struct {
+type UserDeleteAccount struct {
+}
+
+func (m *UserDeleteAccount) Reset()         { *m = UserDeleteAccount{} }
+func (m *UserDeleteAccount) String() string { return proto.CompactTextString(m) }
+func (*UserDeleteAccount) ProtoMessage()    {}
+func (*UserDeleteAccount) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{9}
+}
+func (m *UserDeleteAccount) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UserDeleteAccount) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UserDeleteAccount.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UserDeleteAccount) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserDeleteAccount.Merge(m, src)
+}
+func (m *UserDeleteAccount) XXX_Size() int {
+	return m.Size()
+}
+func (m *UserDeleteAccount) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserDeleteAccount.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UserDeleteAccount proto.InternalMessageInfo
+
+type UserDeleteAccount_Input struct {
 	Reason string `protobuf:"bytes,1,opt,name=reason,proto3" json:"reason,omitempty"`
 }
 
-func (m *UserDeleteAccountInput) Reset()         { *m = UserDeleteAccountInput{} }
-func (m *UserDeleteAccountInput) String() string { return proto.CompactTextString(m) }
-func (*UserDeleteAccountInput) ProtoMessage()    {}
-func (*UserDeleteAccountInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{18}
+func (m *UserDeleteAccount_Input) Reset()         { *m = UserDeleteAccount_Input{} }
+func (m *UserDeleteAccount_Input) String() string { return proto.CompactTextString(m) }
+func (*UserDeleteAccount_Input) ProtoMessage()    {}
+func (*UserDeleteAccount_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{9, 0}
 }
-func (m *UserDeleteAccountInput) XXX_Unmarshal(b []byte) error {
+func (m *UserDeleteAccount_Input) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *UserDeleteAccountInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *UserDeleteAccount_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_UserDeleteAccountInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_UserDeleteAccount_Input.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -865,40 +1225,40 @@ func (m *UserDeleteAccountInput) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-func (m *UserDeleteAccountInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UserDeleteAccountInput.Merge(m, src)
+func (m *UserDeleteAccount_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserDeleteAccount_Input.Merge(m, src)
 }
-func (m *UserDeleteAccountInput) XXX_Size() int {
+func (m *UserDeleteAccount_Input) XXX_Size() int {
 	return m.Size()
 }
-func (m *UserDeleteAccountInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_UserDeleteAccountInput.DiscardUnknown(m)
+func (m *UserDeleteAccount_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserDeleteAccount_Input.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UserDeleteAccountInput proto.InternalMessageInfo
+var xxx_messageInfo_UserDeleteAccount_Input proto.InternalMessageInfo
 
-func (m *UserDeleteAccountInput) GetReason() string {
+func (m *UserDeleteAccount_Input) GetReason() string {
 	if m != nil {
 		return m.Reason
 	}
 	return ""
 }
 
-type UserDeleteAccountOutput struct {
+type UserDeleteAccount_Output struct {
 }
 
-func (m *UserDeleteAccountOutput) Reset()         { *m = UserDeleteAccountOutput{} }
-func (m *UserDeleteAccountOutput) String() string { return proto.CompactTextString(m) }
-func (*UserDeleteAccountOutput) ProtoMessage()    {}
-func (*UserDeleteAccountOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{19}
+func (m *UserDeleteAccount_Output) Reset()         { *m = UserDeleteAccount_Output{} }
+func (m *UserDeleteAccount_Output) String() string { return proto.CompactTextString(m) }
+func (*UserDeleteAccount_Output) ProtoMessage()    {}
+func (*UserDeleteAccount_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{9, 1}
 }
-func (m *UserDeleteAccountOutput) XXX_Unmarshal(b []byte) error {
+func (m *UserDeleteAccount_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *UserDeleteAccountOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *UserDeleteAccount_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_UserDeleteAccountOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_UserDeleteAccount_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -908,33 +1268,33 @@ func (m *UserDeleteAccountOutput) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *UserDeleteAccountOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UserDeleteAccountOutput.Merge(m, src)
+func (m *UserDeleteAccount_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserDeleteAccount_Output.Merge(m, src)
 }
-func (m *UserDeleteAccountOutput) XXX_Size() int {
+func (m *UserDeleteAccount_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *UserDeleteAccountOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_UserDeleteAccountOutput.DiscardUnknown(m)
+func (m *UserDeleteAccount_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserDeleteAccount_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UserDeleteAccountOutput proto.InternalMessageInfo
+var xxx_messageInfo_UserDeleteAccount_Output proto.InternalMessageInfo
 
-type OrganizationListInput struct {
+type OrganizationList struct {
 }
 
-func (m *OrganizationListInput) Reset()         { *m = OrganizationListInput{} }
-func (m *OrganizationListInput) String() string { return proto.CompactTextString(m) }
-func (*OrganizationListInput) ProtoMessage()    {}
-func (*OrganizationListInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{20}
+func (m *OrganizationList) Reset()         { *m = OrganizationList{} }
+func (m *OrganizationList) String() string { return proto.CompactTextString(m) }
+func (*OrganizationList) ProtoMessage()    {}
+func (*OrganizationList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{10}
 }
-func (m *OrganizationListInput) XXX_Unmarshal(b []byte) error {
+func (m *OrganizationList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *OrganizationListInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *OrganizationList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_OrganizationListInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_OrganizationList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -944,34 +1304,70 @@ func (m *OrganizationListInput) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *OrganizationListInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_OrganizationListInput.Merge(m, src)
+func (m *OrganizationList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OrganizationList.Merge(m, src)
 }
-func (m *OrganizationListInput) XXX_Size() int {
+func (m *OrganizationList) XXX_Size() int {
 	return m.Size()
 }
-func (m *OrganizationListInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_OrganizationListInput.DiscardUnknown(m)
+func (m *OrganizationList) XXX_DiscardUnknown() {
+	xxx_messageInfo_OrganizationList.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_OrganizationListInput proto.InternalMessageInfo
+var xxx_messageInfo_OrganizationList proto.InternalMessageInfo
 
-type OrganizationListOutput struct {
+type OrganizationList_Input struct {
+}
+
+func (m *OrganizationList_Input) Reset()         { *m = OrganizationList_Input{} }
+func (m *OrganizationList_Input) String() string { return proto.CompactTextString(m) }
+func (*OrganizationList_Input) ProtoMessage()    {}
+func (*OrganizationList_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{10, 0}
+}
+func (m *OrganizationList_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *OrganizationList_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_OrganizationList_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *OrganizationList_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OrganizationList_Input.Merge(m, src)
+}
+func (m *OrganizationList_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *OrganizationList_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_OrganizationList_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_OrganizationList_Input proto.InternalMessageInfo
+
+type OrganizationList_Output struct {
 	Items []*pwdb.Organization `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 }
 
-func (m *OrganizationListOutput) Reset()         { *m = OrganizationListOutput{} }
-func (m *OrganizationListOutput) String() string { return proto.CompactTextString(m) }
-func (*OrganizationListOutput) ProtoMessage()    {}
-func (*OrganizationListOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{21}
+func (m *OrganizationList_Output) Reset()         { *m = OrganizationList_Output{} }
+func (m *OrganizationList_Output) String() string { return proto.CompactTextString(m) }
+func (*OrganizationList_Output) ProtoMessage()    {}
+func (*OrganizationList_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{10, 1}
 }
-func (m *OrganizationListOutput) XXX_Unmarshal(b []byte) error {
+func (m *OrganizationList_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *OrganizationListOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *OrganizationList_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_OrganizationListOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_OrganizationList_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -981,40 +1377,40 @@ func (m *OrganizationListOutput) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-func (m *OrganizationListOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_OrganizationListOutput.Merge(m, src)
+func (m *OrganizationList_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OrganizationList_Output.Merge(m, src)
 }
-func (m *OrganizationListOutput) XXX_Size() int {
+func (m *OrganizationList_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *OrganizationListOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_OrganizationListOutput.DiscardUnknown(m)
+func (m *OrganizationList_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_OrganizationList_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_OrganizationListOutput proto.InternalMessageInfo
+var xxx_messageInfo_OrganizationList_Output proto.InternalMessageInfo
 
-func (m *OrganizationListOutput) GetItems() []*pwdb.Organization {
+func (m *OrganizationList_Output) GetItems() []*pwdb.Organization {
 	if m != nil {
 		return m.Items
 	}
 	return nil
 }
 
-type ChallengeListInput struct {
+type ChallengeList struct {
 }
 
-func (m *ChallengeListInput) Reset()         { *m = ChallengeListInput{} }
-func (m *ChallengeListInput) String() string { return proto.CompactTextString(m) }
-func (*ChallengeListInput) ProtoMessage()    {}
-func (*ChallengeListInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{22}
+func (m *ChallengeList) Reset()         { *m = ChallengeList{} }
+func (m *ChallengeList) String() string { return proto.CompactTextString(m) }
+func (*ChallengeList) ProtoMessage()    {}
+func (*ChallengeList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{11}
 }
-func (m *ChallengeListInput) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ChallengeListInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ChallengeListInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1024,34 +1420,70 @@ func (m *ChallengeListInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *ChallengeListInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ChallengeListInput.Merge(m, src)
+func (m *ChallengeList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeList.Merge(m, src)
 }
-func (m *ChallengeListInput) XXX_Size() int {
+func (m *ChallengeList) XXX_Size() int {
 	return m.Size()
 }
-func (m *ChallengeListInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_ChallengeListInput.DiscardUnknown(m)
+func (m *ChallengeList) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeList.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ChallengeListInput proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeList proto.InternalMessageInfo
 
-type ChallengeListOutput struct {
+type ChallengeList_Input struct {
+}
+
+func (m *ChallengeList_Input) Reset()         { *m = ChallengeList_Input{} }
+func (m *ChallengeList_Input) String() string { return proto.CompactTextString(m) }
+func (*ChallengeList_Input) ProtoMessage()    {}
+func (*ChallengeList_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{11, 0}
+}
+func (m *ChallengeList_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ChallengeList_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ChallengeList_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ChallengeList_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeList_Input.Merge(m, src)
+}
+func (m *ChallengeList_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *ChallengeList_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeList_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ChallengeList_Input proto.InternalMessageInfo
+
+type ChallengeList_Output struct {
 	Items []*pwdb.Challenge `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 }
 
-func (m *ChallengeListOutput) Reset()         { *m = ChallengeListOutput{} }
-func (m *ChallengeListOutput) String() string { return proto.CompactTextString(m) }
-func (*ChallengeListOutput) ProtoMessage()    {}
-func (*ChallengeListOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{23}
+func (m *ChallengeList_Output) Reset()         { *m = ChallengeList_Output{} }
+func (m *ChallengeList_Output) String() string { return proto.CompactTextString(m) }
+func (*ChallengeList_Output) ProtoMessage()    {}
+func (*ChallengeList_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{11, 1}
 }
-func (m *ChallengeListOutput) XXX_Unmarshal(b []byte) error {
+func (m *ChallengeList_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ChallengeListOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ChallengeList_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ChallengeListOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ChallengeList_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1061,40 +1493,40 @@ func (m *ChallengeListOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *ChallengeListOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ChallengeListOutput.Merge(m, src)
+func (m *ChallengeList_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChallengeList_Output.Merge(m, src)
 }
-func (m *ChallengeListOutput) XXX_Size() int {
+func (m *ChallengeList_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *ChallengeListOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_ChallengeListOutput.DiscardUnknown(m)
+func (m *ChallengeList_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChallengeList_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ChallengeListOutput proto.InternalMessageInfo
+var xxx_messageInfo_ChallengeList_Output proto.InternalMessageInfo
 
-func (m *ChallengeListOutput) GetItems() []*pwdb.Challenge {
+func (m *ChallengeList_Output) GetItems() []*pwdb.Challenge {
 	if m != nil {
 		return m.Items
 	}
 	return nil
 }
 
-type UserGetSessionInput struct {
+type UserGetSession struct {
 }
 
-func (m *UserGetSessionInput) Reset()         { *m = UserGetSessionInput{} }
-func (m *UserGetSessionInput) String() string { return proto.CompactTextString(m) }
-func (*UserGetSessionInput) ProtoMessage()    {}
-func (*UserGetSessionInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{24}
+func (m *UserGetSession) Reset()         { *m = UserGetSession{} }
+func (m *UserGetSession) String() string { return proto.CompactTextString(m) }
+func (*UserGetSession) ProtoMessage()    {}
+func (*UserGetSession) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{12}
 }
-func (m *UserGetSessionInput) XXX_Unmarshal(b []byte) error {
+func (m *UserGetSession) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *UserGetSessionInput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *UserGetSession) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_UserGetSessionInput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_UserGetSession.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1104,38 +1536,33 @@ func (m *UserGetSessionInput) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *UserGetSessionInput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UserGetSessionInput.Merge(m, src)
+func (m *UserGetSession) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserGetSession.Merge(m, src)
 }
-func (m *UserGetSessionInput) XXX_Size() int {
+func (m *UserGetSession) XXX_Size() int {
 	return m.Size()
 }
-func (m *UserGetSessionInput) XXX_DiscardUnknown() {
-	xxx_messageInfo_UserGetSessionInput.DiscardUnknown(m)
+func (m *UserGetSession) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserGetSession.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UserGetSessionInput proto.InternalMessageInfo
+var xxx_messageInfo_UserGetSession proto.InternalMessageInfo
 
-type UserGetSessionOutput struct {
-	User          *pwdb.User                            `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
-	IsNewUser     bool                                  `protobuf:"varint,2,opt,name=is_new_user,json=isNewUser,proto3" json:"is_new_user,omitempty"`
-	Claims        *pwsso.Claims                         `protobuf:"bytes,3,opt,name=claims,proto3" json:"claims,omitempty"`
-	Notifications int32                                 `protobuf:"varint,4,opt,name=notifications,proto3" json:"notifications,omitempty"`
-	Seasons       []*UserGetSessionOutput_SeasonAndTeam `protobuf:"bytes,5,rep,name=seasons,proto3" json:"seasons,omitempty"`
+type UserGetSession_Input struct {
 }
 
-func (m *UserGetSessionOutput) Reset()         { *m = UserGetSessionOutput{} }
-func (m *UserGetSessionOutput) String() string { return proto.CompactTextString(m) }
-func (*UserGetSessionOutput) ProtoMessage()    {}
-func (*UserGetSessionOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{25}
+func (m *UserGetSession_Input) Reset()         { *m = UserGetSession_Input{} }
+func (m *UserGetSession_Input) String() string { return proto.CompactTextString(m) }
+func (*UserGetSession_Input) ProtoMessage()    {}
+func (*UserGetSession_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{12, 0}
 }
-func (m *UserGetSessionOutput) XXX_Unmarshal(b []byte) error {
+func (m *UserGetSession_Input) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *UserGetSessionOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *UserGetSession_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_UserGetSessionOutput.Marshal(b, m, deterministic)
+		return xxx_messageInfo_UserGetSession_Input.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1145,71 +1572,112 @@ func (m *UserGetSessionOutput) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *UserGetSessionOutput) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UserGetSessionOutput.Merge(m, src)
+func (m *UserGetSession_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserGetSession_Input.Merge(m, src)
 }
-func (m *UserGetSessionOutput) XXX_Size() int {
+func (m *UserGetSession_Input) XXX_Size() int {
 	return m.Size()
 }
-func (m *UserGetSessionOutput) XXX_DiscardUnknown() {
-	xxx_messageInfo_UserGetSessionOutput.DiscardUnknown(m)
+func (m *UserGetSession_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserGetSession_Input.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UserGetSessionOutput proto.InternalMessageInfo
+var xxx_messageInfo_UserGetSession_Input proto.InternalMessageInfo
 
-func (m *UserGetSessionOutput) GetUser() *pwdb.User {
+type UserGetSession_Output struct {
+	User          *pwdb.User                             `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	IsNewUser     bool                                   `protobuf:"varint,2,opt,name=is_new_user,json=isNewUser,proto3" json:"is_new_user,omitempty"`
+	Claims        *pwsso.Claims                          `protobuf:"bytes,3,opt,name=claims,proto3" json:"claims,omitempty"`
+	Notifications int32                                  `protobuf:"varint,4,opt,name=notifications,proto3" json:"notifications,omitempty"`
+	Seasons       []*UserGetSession_Output_SeasonAndTeam `protobuf:"bytes,5,rep,name=seasons,proto3" json:"seasons,omitempty"`
+}
+
+func (m *UserGetSession_Output) Reset()         { *m = UserGetSession_Output{} }
+func (m *UserGetSession_Output) String() string { return proto.CompactTextString(m) }
+func (*UserGetSession_Output) ProtoMessage()    {}
+func (*UserGetSession_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{12, 1}
+}
+func (m *UserGetSession_Output) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UserGetSession_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UserGetSession_Output.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UserGetSession_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserGetSession_Output.Merge(m, src)
+}
+func (m *UserGetSession_Output) XXX_Size() int {
+	return m.Size()
+}
+func (m *UserGetSession_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserGetSession_Output.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UserGetSession_Output proto.InternalMessageInfo
+
+func (m *UserGetSession_Output) GetUser() *pwdb.User {
 	if m != nil {
 		return m.User
 	}
 	return nil
 }
 
-func (m *UserGetSessionOutput) GetIsNewUser() bool {
+func (m *UserGetSession_Output) GetIsNewUser() bool {
 	if m != nil {
 		return m.IsNewUser
 	}
 	return false
 }
 
-func (m *UserGetSessionOutput) GetClaims() *pwsso.Claims {
+func (m *UserGetSession_Output) GetClaims() *pwsso.Claims {
 	if m != nil {
 		return m.Claims
 	}
 	return nil
 }
 
-func (m *UserGetSessionOutput) GetNotifications() int32 {
+func (m *UserGetSession_Output) GetNotifications() int32 {
 	if m != nil {
 		return m.Notifications
 	}
 	return 0
 }
 
-func (m *UserGetSessionOutput) GetSeasons() []*UserGetSessionOutput_SeasonAndTeam {
+func (m *UserGetSession_Output) GetSeasons() []*UserGetSession_Output_SeasonAndTeam {
 	if m != nil {
 		return m.Seasons
 	}
 	return nil
 }
 
-type UserGetSessionOutput_SeasonAndTeam struct {
+type UserGetSession_Output_SeasonAndTeam struct {
 	Season   *pwdb.Season `protobuf:"bytes,1,opt,name=season,proto3" json:"season,omitempty"`
 	Team     *pwdb.Team   `protobuf:"bytes,2,opt,name=team,proto3" json:"team,omitempty"`
 	IsActive bool         `protobuf:"varint,3,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 }
 
-func (m *UserGetSessionOutput_SeasonAndTeam) Reset()         { *m = UserGetSessionOutput_SeasonAndTeam{} }
-func (m *UserGetSessionOutput_SeasonAndTeam) String() string { return proto.CompactTextString(m) }
-func (*UserGetSessionOutput_SeasonAndTeam) ProtoMessage()    {}
-func (*UserGetSessionOutput_SeasonAndTeam) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{25, 0}
+func (m *UserGetSession_Output_SeasonAndTeam) Reset()         { *m = UserGetSession_Output_SeasonAndTeam{} }
+func (m *UserGetSession_Output_SeasonAndTeam) String() string { return proto.CompactTextString(m) }
+func (*UserGetSession_Output_SeasonAndTeam) ProtoMessage()    {}
+func (*UserGetSession_Output_SeasonAndTeam) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{12, 1, 0}
 }
-func (m *UserGetSessionOutput_SeasonAndTeam) XXX_Unmarshal(b []byte) error {
+func (m *UserGetSession_Output_SeasonAndTeam) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *UserGetSessionOutput_SeasonAndTeam) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *UserGetSession_Output_SeasonAndTeam) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_UserGetSessionOutput_SeasonAndTeam.Marshal(b, m, deterministic)
+		return xxx_messageInfo_UserGetSession_Output_SeasonAndTeam.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1219,55 +1687,54 @@ func (m *UserGetSessionOutput_SeasonAndTeam) XXX_Marshal(b []byte, deterministic
 		return b[:n], nil
 	}
 }
-func (m *UserGetSessionOutput_SeasonAndTeam) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UserGetSessionOutput_SeasonAndTeam.Merge(m, src)
+func (m *UserGetSession_Output_SeasonAndTeam) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserGetSession_Output_SeasonAndTeam.Merge(m, src)
 }
-func (m *UserGetSessionOutput_SeasonAndTeam) XXX_Size() int {
+func (m *UserGetSession_Output_SeasonAndTeam) XXX_Size() int {
 	return m.Size()
 }
-func (m *UserGetSessionOutput_SeasonAndTeam) XXX_DiscardUnknown() {
-	xxx_messageInfo_UserGetSessionOutput_SeasonAndTeam.DiscardUnknown(m)
+func (m *UserGetSession_Output_SeasonAndTeam) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserGetSession_Output_SeasonAndTeam.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UserGetSessionOutput_SeasonAndTeam proto.InternalMessageInfo
+var xxx_messageInfo_UserGetSession_Output_SeasonAndTeam proto.InternalMessageInfo
 
-func (m *UserGetSessionOutput_SeasonAndTeam) GetSeason() *pwdb.Season {
+func (m *UserGetSession_Output_SeasonAndTeam) GetSeason() *pwdb.Season {
 	if m != nil {
 		return m.Season
 	}
 	return nil
 }
 
-func (m *UserGetSessionOutput_SeasonAndTeam) GetTeam() *pwdb.Team {
+func (m *UserGetSession_Output_SeasonAndTeam) GetTeam() *pwdb.Team {
 	if m != nil {
 		return m.Team
 	}
 	return nil
 }
 
-func (m *UserGetSessionOutput_SeasonAndTeam) GetIsActive() bool {
+func (m *UserGetSession_Output_SeasonAndTeam) GetIsActive() bool {
 	if m != nil {
 		return m.IsActive
 	}
 	return false
 }
 
-type Status struct {
-	EverythingIsOK bool `protobuf:"varint,1,opt,name=everything_is_ok,json=everythingIsOk,proto3" json:"everything_is_ok,omitempty"`
+type GetStatus struct {
 }
 
-func (m *Status) Reset()         { *m = Status{} }
-func (m *Status) String() string { return proto.CompactTextString(m) }
-func (*Status) ProtoMessage()    {}
-func (*Status) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{26}
+func (m *GetStatus) Reset()         { *m = GetStatus{} }
+func (m *GetStatus) String() string { return proto.CompactTextString(m) }
+func (*GetStatus) ProtoMessage()    {}
+func (*GetStatus) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{13}
 }
-func (m *Status) XXX_Unmarshal(b []byte) error {
+func (m *GetStatus) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Status) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *GetStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Status.Marshal(b, m, deterministic)
+		return xxx_messageInfo_GetStatus.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1277,26 +1744,171 @@ func (m *Status) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Status) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Status.Merge(m, src)
+func (m *GetStatus) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetStatus.Merge(m, src)
 }
-func (m *Status) XXX_Size() int {
+func (m *GetStatus) XXX_Size() int {
 	return m.Size()
 }
-func (m *Status) XXX_DiscardUnknown() {
-	xxx_messageInfo_Status.DiscardUnknown(m)
+func (m *GetStatus) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetStatus.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Status proto.InternalMessageInfo
+var xxx_messageInfo_GetStatus proto.InternalMessageInfo
 
-func (m *Status) GetEverythingIsOK() bool {
+type GetStatus_Input struct {
+}
+
+func (m *GetStatus_Input) Reset()         { *m = GetStatus_Input{} }
+func (m *GetStatus_Input) String() string { return proto.CompactTextString(m) }
+func (*GetStatus_Input) ProtoMessage()    {}
+func (*GetStatus_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{13, 0}
+}
+func (m *GetStatus_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetStatus_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetStatus_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetStatus_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetStatus_Input.Merge(m, src)
+}
+func (m *GetStatus_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetStatus_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetStatus_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetStatus_Input proto.InternalMessageInfo
+
+type GetStatus_Output struct {
+	EverythingIsOK bool `protobuf:"varint,1,opt,name=everything_is_ok,json=everythingIsOk,proto3" json:"everything_is_ok,omitempty"`
+}
+
+func (m *GetStatus_Output) Reset()         { *m = GetStatus_Output{} }
+func (m *GetStatus_Output) String() string { return proto.CompactTextString(m) }
+func (*GetStatus_Output) ProtoMessage()    {}
+func (*GetStatus_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{13, 1}
+}
+func (m *GetStatus_Output) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetStatus_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetStatus_Output.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetStatus_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetStatus_Output.Merge(m, src)
+}
+func (m *GetStatus_Output) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetStatus_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetStatus_Output.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetStatus_Output proto.InternalMessageInfo
+
+func (m *GetStatus_Output) GetEverythingIsOK() bool {
 	if m != nil {
 		return m.EverythingIsOK
 	}
 	return false
 }
 
-type Info struct {
+type GetInfo struct {
+}
+
+func (m *GetInfo) Reset()         { *m = GetInfo{} }
+func (m *GetInfo) String() string { return proto.CompactTextString(m) }
+func (*GetInfo) ProtoMessage()    {}
+func (*GetInfo) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{14}
+}
+func (m *GetInfo) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetInfo.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetInfo) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetInfo.Merge(m, src)
+}
+func (m *GetInfo) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetInfo) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetInfo.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetInfo proto.InternalMessageInfo
+
+type GetInfo_Input struct {
+}
+
+func (m *GetInfo_Input) Reset()         { *m = GetInfo_Input{} }
+func (m *GetInfo_Input) String() string { return proto.CompactTextString(m) }
+func (*GetInfo_Input) ProtoMessage()    {}
+func (*GetInfo_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{14, 0}
+}
+func (m *GetInfo_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetInfo_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetInfo_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetInfo_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetInfo_Input.Merge(m, src)
+}
+func (m *GetInfo_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetInfo_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetInfo_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetInfo_Input proto.InternalMessageInfo
+
+type GetInfo_Output struct {
 	Version string `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	Uptime  int32  `protobuf:"varint,2,opt,name=uptime,proto3" json:"uptime,omitempty"`
 	Commit  string `protobuf:"bytes,3,opt,name=commit,proto3" json:"commit,omitempty"`
@@ -1304,18 +1916,18 @@ type Info struct {
 	BuiltBy string `protobuf:"bytes,5,opt,name=built_by,json=builtBy,proto3" json:"built_by,omitempty"`
 }
 
-func (m *Info) Reset()         { *m = Info{} }
-func (m *Info) String() string { return proto.CompactTextString(m) }
-func (*Info) ProtoMessage()    {}
-func (*Info) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{27}
+func (m *GetInfo_Output) Reset()         { *m = GetInfo_Output{} }
+func (m *GetInfo_Output) String() string { return proto.CompactTextString(m) }
+func (*GetInfo_Output) ProtoMessage()    {}
+func (*GetInfo_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{14, 1}
 }
-func (m *Info) XXX_Unmarshal(b []byte) error {
+func (m *GetInfo_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Info) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *GetInfo_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Info.Marshal(b, m, deterministic)
+		return xxx_messageInfo_GetInfo_Output.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1325,47 +1937,47 @@ func (m *Info) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Info) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Info.Merge(m, src)
+func (m *GetInfo_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetInfo_Output.Merge(m, src)
 }
-func (m *Info) XXX_Size() int {
+func (m *GetInfo_Output) XXX_Size() int {
 	return m.Size()
 }
-func (m *Info) XXX_DiscardUnknown() {
-	xxx_messageInfo_Info.DiscardUnknown(m)
+func (m *GetInfo_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetInfo_Output.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Info proto.InternalMessageInfo
+var xxx_messageInfo_GetInfo_Output proto.InternalMessageInfo
 
-func (m *Info) GetVersion() string {
+func (m *GetInfo_Output) GetVersion() string {
 	if m != nil {
 		return m.Version
 	}
 	return ""
 }
 
-func (m *Info) GetUptime() int32 {
+func (m *GetInfo_Output) GetUptime() int32 {
 	if m != nil {
 		return m.Uptime
 	}
 	return 0
 }
 
-func (m *Info) GetCommit() string {
+func (m *GetInfo_Output) GetCommit() string {
 	if m != nil {
 		return m.Commit
 	}
 	return ""
 }
 
-func (m *Info) GetBuiltAt() string {
+func (m *GetInfo_Output) GetBuiltAt() string {
 	if m != nil {
 		return m.BuiltAt
 	}
 	return ""
 }
 
-func (m *Info) GetBuiltBy() string {
+func (m *GetInfo_Output) GetBuiltBy() string {
 	if m != nil {
 		return m.BuiltBy
 	}
@@ -1380,7 +1992,7 @@ func (m *Void) Reset()         { *m = Void{} }
 func (m *Void) String() string { return proto.CompactTextString(m) }
 func (*Void) ProtoMessage()    {}
 func (*Void) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{28}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{15}
 }
 func (m *Void) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1410,35 +2022,52 @@ func (m *Void) XXX_DiscardUnknown() {
 var xxx_messageInfo_Void proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*TeamGetInput)(nil), "pathwar.engine.TeamGetInput")
-	proto.RegisterType((*TeamGetOutput)(nil), "pathwar.engine.TeamGetOutput")
-	proto.RegisterType((*SeasonChallengeListInput)(nil), "pathwar.engine.SeasonChallengeListInput")
-	proto.RegisterType((*SeasonChallengeListOutput)(nil), "pathwar.engine.SeasonChallengeListOutput")
-	proto.RegisterType((*SeasonChallengeGetInput)(nil), "pathwar.engine.SeasonChallengeGetInput")
-	proto.RegisterType((*SeasonChallengeGetOutput)(nil), "pathwar.engine.SeasonChallengeGetOutput")
-	proto.RegisterType((*ChallengeGetInput)(nil), "pathwar.engine.ChallengeGetInput")
-	proto.RegisterType((*ChallengeGetOutput)(nil), "pathwar.engine.ChallengeGetOutput")
-	proto.RegisterType((*SeasonChallengeBuyInput)(nil), "pathwar.engine.SeasonChallengeBuyInput")
-	proto.RegisterType((*SeasonChallengeBuyOutput)(nil), "pathwar.engine.SeasonChallengeBuyOutput")
-	proto.RegisterType((*ChallengeSubscriptionValidateInput)(nil), "pathwar.engine.ChallengeSubscriptionValidateInput")
-	proto.RegisterType((*ChallengeSubscriptionValidateOutput)(nil), "pathwar.engine.ChallengeSubscriptionValidateOutput")
-	proto.RegisterType((*ChallengeSubscriptionCloseInput)(nil), "pathwar.engine.ChallengeSubscriptionCloseInput")
-	proto.RegisterType((*ChallengeSubscriptionCloseOutput)(nil), "pathwar.engine.ChallengeSubscriptionCloseOutput")
-	proto.RegisterType((*TeamListInput)(nil), "pathwar.engine.TeamListInput")
-	proto.RegisterType((*TeamListOutput)(nil), "pathwar.engine.TeamListOutput")
-	proto.RegisterType((*UserSetPreferencesInput)(nil), "pathwar.engine.UserSetPreferencesInput")
-	proto.RegisterType((*UserSetPreferencesOutput)(nil), "pathwar.engine.UserSetPreferencesOutput")
-	proto.RegisterType((*UserDeleteAccountInput)(nil), "pathwar.engine.UserDeleteAccountInput")
-	proto.RegisterType((*UserDeleteAccountOutput)(nil), "pathwar.engine.UserDeleteAccountOutput")
-	proto.RegisterType((*OrganizationListInput)(nil), "pathwar.engine.OrganizationListInput")
-	proto.RegisterType((*OrganizationListOutput)(nil), "pathwar.engine.OrganizationListOutput")
-	proto.RegisterType((*ChallengeListInput)(nil), "pathwar.engine.ChallengeListInput")
-	proto.RegisterType((*ChallengeListOutput)(nil), "pathwar.engine.ChallengeListOutput")
-	proto.RegisterType((*UserGetSessionInput)(nil), "pathwar.engine.UserGetSessionInput")
-	proto.RegisterType((*UserGetSessionOutput)(nil), "pathwar.engine.UserGetSessionOutput")
-	proto.RegisterType((*UserGetSessionOutput_SeasonAndTeam)(nil), "pathwar.engine.UserGetSessionOutput.SeasonAndTeam")
-	proto.RegisterType((*Status)(nil), "pathwar.engine.Status")
-	proto.RegisterType((*Info)(nil), "pathwar.engine.Info")
+	proto.RegisterType((*TeamGet)(nil), "pathwar.engine.TeamGet")
+	proto.RegisterType((*TeamGet_Input)(nil), "pathwar.engine.TeamGet.Input")
+	proto.RegisterType((*TeamGet_Output)(nil), "pathwar.engine.TeamGet.Output")
+	proto.RegisterType((*SeasonChallengeList)(nil), "pathwar.engine.SeasonChallengeList")
+	proto.RegisterType((*SeasonChallengeList_Input)(nil), "pathwar.engine.SeasonChallengeList.Input")
+	proto.RegisterType((*SeasonChallengeList_Output)(nil), "pathwar.engine.SeasonChallengeList.Output")
+	proto.RegisterType((*SeasonChallengeGet)(nil), "pathwar.engine.SeasonChallengeGet")
+	proto.RegisterType((*SeasonChallengeGet_Input)(nil), "pathwar.engine.SeasonChallengeGet.Input")
+	proto.RegisterType((*SeasonChallengeGet_Output)(nil), "pathwar.engine.SeasonChallengeGet.Output")
+	proto.RegisterType((*ChallengeGet)(nil), "pathwar.engine.ChallengeGet")
+	proto.RegisterType((*ChallengeGet_Input)(nil), "pathwar.engine.ChallengeGet.Input")
+	proto.RegisterType((*ChallengeGet_Output)(nil), "pathwar.engine.ChallengeGet.Output")
+	proto.RegisterType((*SeasonChallengeBuy)(nil), "pathwar.engine.SeasonChallengeBuy")
+	proto.RegisterType((*SeasonChallengeBuy_Input)(nil), "pathwar.engine.SeasonChallengeBuy.Input")
+	proto.RegisterType((*SeasonChallengeBuy_Output)(nil), "pathwar.engine.SeasonChallengeBuy.Output")
+	proto.RegisterType((*ChallengeSubscriptionValidate)(nil), "pathwar.engine.ChallengeSubscriptionValidate")
+	proto.RegisterType((*ChallengeSubscriptionValidate_Input)(nil), "pathwar.engine.ChallengeSubscriptionValidate.Input")
+	proto.RegisterType((*ChallengeSubscriptionValidate_Output)(nil), "pathwar.engine.ChallengeSubscriptionValidate.Output")
+	proto.RegisterType((*ChallengeSubscriptionClose)(nil), "pathwar.engine.ChallengeSubscriptionClose")
+	proto.RegisterType((*ChallengeSubscriptionClose_Input)(nil), "pathwar.engine.ChallengeSubscriptionClose.Input")
+	proto.RegisterType((*ChallengeSubscriptionClose_Output)(nil), "pathwar.engine.ChallengeSubscriptionClose.Output")
+	proto.RegisterType((*TeamList)(nil), "pathwar.engine.TeamList")
+	proto.RegisterType((*TeamList_Input)(nil), "pathwar.engine.TeamList.Input")
+	proto.RegisterType((*TeamList_Output)(nil), "pathwar.engine.TeamList.Output")
+	proto.RegisterType((*UserSetPreferences)(nil), "pathwar.engine.UserSetPreferences")
+	proto.RegisterType((*UserSetPreferences_Input)(nil), "pathwar.engine.UserSetPreferences.Input")
+	proto.RegisterType((*UserSetPreferences_Output)(nil), "pathwar.engine.UserSetPreferences.Output")
+	proto.RegisterType((*UserDeleteAccount)(nil), "pathwar.engine.UserDeleteAccount")
+	proto.RegisterType((*UserDeleteAccount_Input)(nil), "pathwar.engine.UserDeleteAccount.Input")
+	proto.RegisterType((*UserDeleteAccount_Output)(nil), "pathwar.engine.UserDeleteAccount.Output")
+	proto.RegisterType((*OrganizationList)(nil), "pathwar.engine.OrganizationList")
+	proto.RegisterType((*OrganizationList_Input)(nil), "pathwar.engine.OrganizationList.Input")
+	proto.RegisterType((*OrganizationList_Output)(nil), "pathwar.engine.OrganizationList.Output")
+	proto.RegisterType((*ChallengeList)(nil), "pathwar.engine.ChallengeList")
+	proto.RegisterType((*ChallengeList_Input)(nil), "pathwar.engine.ChallengeList.Input")
+	proto.RegisterType((*ChallengeList_Output)(nil), "pathwar.engine.ChallengeList.Output")
+	proto.RegisterType((*UserGetSession)(nil), "pathwar.engine.UserGetSession")
+	proto.RegisterType((*UserGetSession_Input)(nil), "pathwar.engine.UserGetSession.Input")
+	proto.RegisterType((*UserGetSession_Output)(nil), "pathwar.engine.UserGetSession.Output")
+	proto.RegisterType((*UserGetSession_Output_SeasonAndTeam)(nil), "pathwar.engine.UserGetSession.Output.SeasonAndTeam")
+	proto.RegisterType((*GetStatus)(nil), "pathwar.engine.GetStatus")
+	proto.RegisterType((*GetStatus_Input)(nil), "pathwar.engine.GetStatus.Input")
+	proto.RegisterType((*GetStatus_Output)(nil), "pathwar.engine.GetStatus.Output")
+	proto.RegisterType((*GetInfo)(nil), "pathwar.engine.GetInfo")
+	proto.RegisterType((*GetInfo_Input)(nil), "pathwar.engine.GetInfo.Input")
+	proto.RegisterType((*GetInfo_Output)(nil), "pathwar.engine.GetInfo.Output")
 	proto.RegisterType((*Void)(nil), "pathwar.engine.Void")
 }
 
@@ -1446,123 +2075,123 @@ func init() { proto.RegisterFile("pwengine.proto", fileDescriptor_02cf22bbbf1a21
 
 var fileDescriptor_02cf22bbbf1a21c2 = []byte{
 	// 1873 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0xcd, 0x6f, 0x1b, 0xc7,
-	0x15, 0xf7, 0xd2, 0x12, 0x45, 0x3e, 0x4a, 0x94, 0x34, 0xfa, 0xa2, 0xd6, 0x96, 0xb8, 0x59, 0x3b,
-	0x8e, 0x2c, 0x83, 0x5c, 0x85, 0x76, 0x01, 0x43, 0x2d, 0xd0, 0x52, 0x96, 0xa2, 0x10, 0x72, 0x22,
-	0x61, 0xe5, 0x38, 0x1f, 0x17, 0x75, 0xb8, 0x1c, 0x91, 0x5b, 0x91, 0xbb, 0xdb, 0x9d, 0x59, 0xa9,
-	0x4c, 0x3f, 0x0e, 0x01, 0x12, 0xb4, 0xb7, 0x22, 0xbd, 0xf5, 0xd4, 0x6b, 0x81, 0x5e, 0x8b, 0xde,
-	0x7b, 0xea, 0x31, 0x40, 0x2f, 0x3d, 0x09, 0x85, 0xdc, 0x7f, 0xa3, 0x40, 0x31, 0xb3, 0x43, 0x72,
-	0xc9, 0x5d, 0x4a, 0x4a, 0x91, 0x9c, 0xac, 0x99, 0xf7, 0x7b, 0xbf, 0xf7, 0x9b, 0x37, 0x6f, 0xdf,
-	0x3c, 0x13, 0xf2, 0xde, 0x05, 0x71, 0x9a, 0xb6, 0x43, 0xca, 0x9e, 0xef, 0x32, 0x17, 0xe5, 0x3d,
-	0xcc, 0x5a, 0x17, 0xd8, 0x2f, 0x87, 0xbb, 0xea, 0xfd, 0xa6, 0xeb, 0x36, 0xdb, 0xc4, 0xc0, 0x9e,
-	0x6d, 0x60, 0xc7, 0x71, 0x19, 0x66, 0xb6, 0xeb, 0xd0, 0x10, 0xad, 0x96, 0x9a, 0x36, 0x6b, 0x05,
-	0xf5, 0xb2, 0xe5, 0x76, 0x8c, 0xa6, 0xdb, 0x74, 0x0d, 0xb1, 0x5d, 0x0f, 0x4e, 0xc5, 0x4a, 0x2c,
-	0xc4, 0x5f, 0x12, 0x7e, 0x1c, 0x85, 0xfb, 0x9e, 0x55, 0x22, 0x96, 0x4b, 0xbb, 0x94, 0x11, 0xb9,
-	0x6c, 0x62, 0x46, 0x2e, 0x70, 0x37, 0x64, 0xb1, 0x4a, 0x4d, 0xe2, 0x94, 0xe8, 0x05, 0x6e, 0x36,
-	0x89, 0x6f, 0xb8, 0x9e, 0x88, 0x9b, 0xa0, 0x21, 0xe7, 0x5d, 0x50, 0xda, 0x8b, 0x00, 0xde, 0x45,
-	0xa3, 0x1e, 0xfe, 0xad, 0x3f, 0x85, 0xe9, 0x57, 0x04, 0x77, 0xf6, 0x09, 0xab, 0x39, 0x5e, 0xc0,
-	0xd0, 0x03, 0x98, 0x62, 0x04, 0x77, 0x4e, 0xec, 0x46, 0x41, 0xd1, 0x94, 0x8d, 0xbb, 0x3b, 0x70,
-	0x75, 0x59, 0x4c, 0x73, 0x48, 0x6d, 0xd7, 0x4c, 0x73, 0x53, 0xad, 0xa1, 0xff, 0x00, 0x66, 0xa4,
-	0xd3, 0x61, 0xc0, 0xb8, 0xd7, 0x43, 0x98, 0xb0, 0x19, 0xe9, 0x08, 0x97, 0x5c, 0x65, 0xae, 0xdc,
-	0xcb, 0x4f, 0xa3, 0x5e, 0xe6, 0x40, 0x53, 0x58, 0xf5, 0x3d, 0x28, 0x1c, 0x13, 0x4c, 0x5d, 0xe7,
-	0x45, 0x0b, 0xb7, 0xdb, 0xc4, 0x69, 0x92, 0x97, 0x36, 0x95, 0x71, 0x1f, 0x43, 0x96, 0x0a, 0xdb,
-	0x20, 0xf2, 0xf4, 0xd5, 0x65, 0x31, 0x13, 0x3a, 0xd4, 0x76, 0xcd, 0x4c, 0x68, 0xae, 0x35, 0xf4,
-	0x0f, 0x61, 0x35, 0x81, 0x46, 0x2a, 0x79, 0x17, 0x26, 0x79, 0x2c, 0x5a, 0x50, 0xb4, 0xbb, 0x1b,
-	0xb9, 0xca, 0xbd, 0xa8, 0x94, 0x11, 0x2f, 0x33, 0x44, 0xea, 0x3f, 0x85, 0x95, 0x11, 0x4b, 0x3f,
-	0x1b, 0x7b, 0xb0, 0x20, 0x55, 0x59, 0x3d, 0xdb, 0x40, 0xdf, 0xd2, 0xd5, 0x65, 0x71, 0x7e, 0xc4,
-	0xb3, 0xb6, 0x6b, 0xce, 0xd3, 0x91, 0xad, 0x86, 0x7e, 0x10, 0x3b, 0xf8, 0x20, 0x75, 0xc6, 0x50,
-	0xea, 0xae, 0xd5, 0x1b, 0x66, 0x71, 0x1f, 0xe6, 0xe3, 0x42, 0x2b, 0x30, 0x9d, 0xa0, 0x70, 0xf6,
-	0xea, 0xb2, 0x98, 0x8b, 0x6a, 0xcb, 0x59, 0x11, 0x55, 0x3f, 0x06, 0x94, 0xa0, 0xe7, 0xf1, 0x90,
-	0x9e, 0xa5, 0xa8, 0x9e, 0x51, 0x25, 0x5f, 0x2a, 0xb1, 0xcc, 0xed, 0x04, 0xdd, 0xef, 0x32, 0x73,
-	0xd1, 0x72, 0x4c, 0x8d, 0x2d, 0x47, 0x16, 0x4b, 0xef, 0x4e, 0xd0, 0x95, 0xc7, 0xf9, 0x04, 0x96,
-	0x07, 0x02, 0x68, 0x50, 0xa7, 0x96, 0x6f, 0x8b, 0xaf, 0x44, 0x1e, 0xf0, 0xad, 0xc4, 0x03, 0x1e,
-	0x47, 0x80, 0xe6, 0x92, 0x95, 0xb4, 0xad, 0xff, 0x4d, 0x01, 0x3d, 0xd1, 0xe1, 0x35, 0x6e, 0xdb,
-	0x0d, 0xcc, 0x48, 0x98, 0x88, 0x8f, 0x61, 0x35, 0x59, 0xc0, 0x20, 0x1d, 0xf7, 0xae, 0x2e, 0x8b,
-	0x2b, 0x89, 0x54, 0xb5, 0x5d, 0x73, 0x25, 0x31, 0x7a, 0xad, 0x81, 0xd6, 0x01, 0x3c, 0x4c, 0xa9,
-	0xd7, 0xf2, 0x31, 0x25, 0x22, 0x3b, 0x59, 0x33, 0xb2, 0x83, 0x0a, 0x30, 0x65, 0xb9, 0x9d, 0x0e,
-	0x71, 0x58, 0xe1, 0xae, 0x30, 0xf6, 0x96, 0x7a, 0x17, 0x1e, 0x5c, 0x2b, 0x5c, 0xa6, 0xce, 0x84,
-	0xc5, 0x81, 0xf2, 0xf3, 0xd0, 0x36, 0x48, 0x5c, 0x31, 0x31, 0x71, 0xaf, 0xfb, 0x30, 0x73, 0xc1,
-	0x8a, 0x6f, 0xea, 0x9f, 0x43, 0x31, 0x31, 0xf4, 0x8b, 0xb6, 0x4b, 0xbf, 0xe7, 0x84, 0xe9, 0xbf,
-	0x02, 0x6d, 0x7c, 0xec, 0xef, 0xbd, 0x5c, 0xb6, 0xc3, 0x9e, 0xf9, 0x7f, 0x75, 0xbc, 0xe7, 0x90,
-	0xef, 0xf9, 0x4a, 0x9d, 0x8f, 0x86, 0xdb, 0x5c, 0xbc, 0xe3, 0xca, 0xde, 0xf6, 0x31, 0xac, 0x7c,
-	0x44, 0x89, 0x7f, 0x4c, 0xd8, 0x91, 0x4f, 0x4e, 0x89, 0x4f, 0x1c, 0x8b, 0xd0, 0x30, 0xfe, 0x8f,
-	0x60, 0x0e, 0x5b, 0xcc, 0x3e, 0x27, 0x27, 0xa3, 0x32, 0xd0, 0xd5, 0x65, 0x31, 0x5f, 0x15, 0xb6,
-	0xbe, 0x98, 0x3c, 0x8e, 0xae, 0x1b, 0xba, 0x0a, 0x85, 0x38, 0x71, 0x28, 0x4e, 0xdf, 0x82, 0x65,
-	0x6e, 0xdb, 0x25, 0x6d, 0xc2, 0x48, 0xd5, 0xb2, 0xdc, 0xc0, 0x91, 0x67, 0x5e, 0x86, 0xb4, 0x2f,
-	0x18, 0x44, 0xa4, 0xac, 0x29, 0x57, 0xfa, 0x6a, 0x28, 0x73, 0xc8, 0x43, 0x92, 0xad, 0xc0, 0xd2,
-	0xa1, 0xdf, 0xc4, 0x8e, 0xfd, 0xb9, 0xa8, 0xa0, 0x7e, 0xfe, 0xf4, 0xf7, 0x61, 0x79, 0xd4, 0x20,
-	0x93, 0x53, 0x1e, 0x4e, 0x4e, 0x21, 0x9a, 0x9c, 0xa8, 0x4b, 0x2f, 0x49, 0x8b, 0x91, 0x46, 0x38,
-	0xe0, 0xdf, 0x81, 0x85, 0xa4, 0x07, 0xe6, 0xc9, 0x30, 0xf9, 0x98, 0x06, 0x29, 0x99, 0x97, 0x60,
-	0x81, 0x9f, 0x6b, 0x9f, 0xb0, 0x63, 0x42, 0x29, 0x2f, 0x43, 0x41, 0xfd, 0xdf, 0x14, 0x2c, 0x0e,
-	0xef, 0x0f, 0xde, 0xd1, 0x80, 0x12, 0x3f, 0xe9, 0x1d, 0xe5, 0x78, 0x53, 0x58, 0xd1, 0x3a, 0xe4,
-	0x6c, 0x7a, 0xe2, 0x90, 0x8b, 0x13, 0x01, 0xe6, 0x9f, 0x7e, 0xc6, 0xcc, 0xda, 0xf4, 0x43, 0x72,
-	0xc1, 0x51, 0xe8, 0x09, 0xa4, 0xad, 0x36, 0xb6, 0x3b, 0x54, 0x7c, 0xf8, 0xb9, 0xca, 0x42, 0x9f,
-	0x87, 0xcf, 0x00, 0x2f, 0x84, 0xc9, 0x94, 0x10, 0xf4, 0x10, 0x66, 0x1c, 0x97, 0xd9, 0xa7, 0xb6,
-	0x15, 0x0e, 0x0c, 0x85, 0x09, 0x4d, 0xd9, 0x98, 0x34, 0x87, 0x37, 0xd1, 0x4b, 0x98, 0x0a, 0xab,
-	0x84, 0x16, 0x26, 0xc5, 0xb9, 0x2b, 0xe5, 0xe1, 0x19, 0xa8, 0x9c, 0x74, 0x1e, 0xf9, 0x82, 0x55,
-	0x9d, 0x86, 0xa8, 0xc9, 0x1e, 0x85, 0xfa, 0x1b, 0x98, 0x19, 0xb2, 0xa0, 0x4d, 0x48, 0xd3, 0x41,
-	0x5d, 0xe4, 0x2a, 0x28, 0xfe, 0x0c, 0x9a, 0x12, 0xc1, 0x73, 0xc4, 0xfb, 0xbe, 0x38, 0x76, 0xe2,
-	0xac, 0xc1, 0xad, 0xe8, 0x1e, 0x64, 0x6d, 0x7a, 0x12, 0x16, 0xad, 0x48, 0x43, 0xc6, 0xcc, 0xd8,
-	0x34, 0x2c, 0x6a, 0xfd, 0x3d, 0x48, 0x1f, 0x33, 0xcc, 0x02, 0xca, 0x3f, 0x02, 0x72, 0x4e, 0xfc,
-	0x2e, 0x6b, 0xd9, 0x4e, 0xf3, 0xc4, 0xa6, 0x27, 0xee, 0x99, 0x90, 0x90, 0x09, 0x3f, 0x82, 0xbd,
-	0xbe, 0xad, 0x46, 0x0f, 0x0f, 0xcc, 0x3c, 0x89, 0xae, 0xcf, 0xf4, 0xaf, 0x14, 0x98, 0xa8, 0x39,
-	0xa7, 0x2e, 0xef, 0xb5, 0xe7, 0xc4, 0xa7, 0x76, 0xbf, 0xb0, 0x7b, 0x4b, 0x5e, 0xf1, 0x81, 0xc7,
-	0xec, 0x4e, 0xd8, 0xa1, 0x27, 0x4d, 0xb9, 0xe2, 0xfb, 0xbc, 0x1d, 0xdb, 0xbd, 0xe6, 0x2c, 0x57,
-	0x68, 0x15, 0x32, 0xf5, 0xc0, 0x6e, 0xb3, 0x13, 0xcc, 0xc4, 0x4d, 0x64, 0xcd, 0x29, 0xb1, 0xae,
-	0x46, 0x4c, 0xf5, 0x6e, 0x61, 0x32, 0x62, 0xda, 0xe9, 0xea, 0xf3, 0x30, 0xf1, 0xda, 0xb5, 0x1b,
-	0xdb, 0xd9, 0xaf, 0xab, 0xe9, 0xca, 0x04, 0x4a, 0xfd, 0xf2, 0xd7, 0x95, 0x3f, 0xcd, 0x41, 0x7a,
-	0x4f, 0x5c, 0x0d, 0xf2, 0x21, 0x3f, 0x7c, 0x3b, 0xe8, 0xc1, 0xf5, 0xb7, 0x27, 0xaa, 0x54, 0x7d,
-	0x78, 0x9b, 0x2b, 0xd6, 0x97, 0xbe, 0xf8, 0xe7, 0x7f, 0xfe, 0x90, 0x9a, 0x45, 0x33, 0x06, 0x2f,
-	0x46, 0x83, 0xca, 0x08, 0x5f, 0x2a, 0x80, 0xe2, 0x0d, 0x02, 0xbd, 0x93, 0xc4, 0x99, 0xd0, 0x9d,
-	0xd4, 0x8d, 0x9b, 0x81, 0x52, 0xc0, 0x7d, 0x21, 0x60, 0x59, 0x9f, 0x0f, 0x05, 0x78, 0x03, 0xc0,
-	0xb6, 0xb2, 0xc9, 0x75, 0xcc, 0xc7, 0x5a, 0x0b, 0x7a, 0x94, 0xc4, 0x1e, 0xef, 0x57, 0xea, 0x3b,
-	0x37, 0xe2, 0xa4, 0x88, 0xa2, 0x10, 0xb1, 0xaa, 0x2f, 0x86, 0x22, 0x1a, 0x02, 0x52, 0xc2, 0x21,
-	0x86, 0xeb, 0xe8, 0xc0, 0xcc, 0x50, 0x37, 0x41, 0xfa, 0x28, 0x75, 0xbc, 0x05, 0xa9, 0x0f, 0xae,
-	0xc5, 0xc8, 0xd0, 0x0b, 0x22, 0xf4, 0x0c, 0xca, 0x19, 0xfd, 0x87, 0x87, 0x22, 0x1b, 0xa6, 0xa3,
-	0xb3, 0x1d, 0x7a, 0x6b, 0x2c, 0x53, 0x6f, 0x84, 0x54, 0xf5, 0xeb, 0x20, 0x32, 0x16, 0x12, 0xb1,
-	0xa6, 0x11, 0x0c, 0x62, 0xa1, 0xaf, 0x14, 0x58, 0x48, 0x98, 0xc7, 0x51, 0xec, 0x06, 0xc7, 0xcd,
-	0xfe, 0xea, 0xe3, 0x5b, 0x20, 0xa5, 0x00, 0x55, 0x08, 0x58, 0x44, 0xc8, 0x08, 0xbb, 0x41, 0x29,
-	0x72, 0xe6, 0x2f, 0x14, 0x40, 0xf1, 0x31, 0x3b, 0x5e, 0x72, 0x63, 0x86, 0x7d, 0x75, 0xe3, 0x66,
-	0xa0, 0x54, 0xb1, 0x2a, 0x54, 0x2c, 0xa0, 0xf9, 0x98, 0x0a, 0xf4, 0xbb, 0xb8, 0x88, 0x9d, 0xa0,
-	0x7b, 0xa3, 0x88, 0xde, 0xdc, 0x7c, 0xa3, 0x88, 0xfe, 0x64, 0xab, 0x6b, 0x42, 0x84, 0xaa, 0x2f,
-	0xc5, 0x44, 0x18, 0xf5, 0xa0, 0xcb, 0x6b, 0xee, 0xaf, 0x0a, 0xac, 0x5d, 0x3b, 0xe8, 0xa1, 0xca,
-	0xd8, 0x3b, 0x1f, 0x3b, 0xd0, 0xaa, 0x4f, 0xbf, 0x95, 0x8f, 0x14, 0xfb, 0x44, 0x88, 0x7d, 0x5b,
-	0xd7, 0x06, 0x85, 0x53, 0x8a, 0x8e, 0x57, 0x86, 0x9c, 0x2f, 0x09, 0xd7, 0xfd, 0x67, 0x05, 0xd4,
-	0xf1, 0x93, 0x1a, 0x32, 0x6e, 0x25, 0x60, 0x30, 0x51, 0xaa, 0x5b, 0xb7, 0x77, 0x90, 0x72, 0x37,
-	0x84, 0x5c, 0x5d, 0x5f, 0x1b, 0x27, 0xd7, 0xe2, 0x60, 0xae, 0xb5, 0x0b, 0x73, 0xa3, 0x53, 0x08,
-	0x7a, 0x7b, 0x34, 0x5e, 0xe2, 0x00, 0xa3, 0x3e, 0xba, 0x09, 0x26, 0xc5, 0x2c, 0x0b, 0x31, 0x73,
-	0x28, 0x6f, 0xb8, 0x11, 0x00, 0x45, 0x9f, 0x42, 0xa6, 0x37, 0x15, 0xa2, 0xb5, 0x51, 0xae, 0xa1,
-	0x59, 0x53, 0x5d, 0x1f, 0x67, 0x96, 0x21, 0xf2, 0x22, 0x44, 0x06, 0xa5, 0x0d, 0xfe, 0x78, 0x52,
-	0xf4, 0x11, 0x4c, 0xc9, 0xff, 0xe0, 0xa3, 0xfb, 0x49, 0xae, 0xfd, 0x6f, 0x66, 0x6d, 0x8c, 0x55,
-	0xf2, 0xce, 0x08, 0xde, 0x29, 0x34, 0x29, 0x78, 0xd1, 0x1e, 0x64, 0x5e, 0xb9, 0x6e, 0xfb, 0xc8,
-	0x76, 0x9a, 0x68, 0x71, 0xd4, 0x93, 0x3f, 0x60, 0x6a, 0xe2, 0x6e, 0x84, 0xc6, 0xe3, 0xae, 0x07,
-	0x00, 0x9c, 0x46, 0x3e, 0xe1, 0xc9, 0x44, 0xcb, 0xb1, 0xef, 0x48, 0xa0, 0xf5, 0x59, 0x41, 0x95,
-	0x45, 0x53, 0x06, 0x0d, 0xdd, 0xa5, 0x26, 0xf1, 0x8c, 0xdf, 0x52, 0x13, 0xc7, 0x46, 0x34, 0xd9,
-	0xdc, 0xb5, 0x01, 0x8b, 0x9c, 0x66, 0x9f, 0x38, 0xc4, 0xc7, 0x8c, 0xbc, 0x87, 0xcf, 0xc8, 0x2e,
-	0x66, 0xf8, 0x5b, 0x1d, 0xb3, 0xf7, 0x45, 0x17, 0x0c, 0xe6, 0xba, 0x6d, 0xa3, 0x29, 0xb9, 0x4a,
-	0xa7, 0xf8, 0x8c, 0x94, 0x1a, 0x9c, 0xed, 0x65, 0x78, 0xf2, 0xdd, 0x9d, 0xdd, 0xa0, 0xe3, 0x8d,
-	0xe1, 0x1e, 0x9a, 0x88, 0x38, 0x2e, 0x52, 0x40, 0x82, 0x97, 0xfe, 0xbc, 0x5d, 0x6a, 0x04, 0x1d,
-	0x6f, 0xe7, 0xef, 0x13, 0x5f, 0x57, 0x7f, 0x3b, 0x81, 0xfe, 0xa2, 0x40, 0xee, 0x28, 0x74, 0xd1,
-	0xaa, 0x47, 0x35, 0x7d, 0x1f, 0x66, 0x7a, 0xcb, 0x63, 0x86, 0x4f, 0x4f, 0x91, 0xde, 0x62, 0xcc,
-	0xa3, 0xdb, 0x86, 0x11, 0xf9, 0x65, 0x4a, 0xc6, 0xe8, 0xfd, 0xab, 0x22, 0xca, 0xa1, 0x3f, 0xe9,
-	0x85, 0x6e, 0x63, 0xa7, 0xb1, 0x79, 0x08, 0x0b, 0x1b, 0x55, 0x0f, 0x5b, 0x2d, 0x52, 0xaa, 0x94,
-	0xb7, 0xb4, 0x43, 0x53, 0xfb, 0xa0, 0xf6, 0xea, 0x31, 0x7a, 0x7e, 0x33, 0x9d, 0x51, 0x6f, 0xbb,
-	0x75, 0xa3, 0x83, 0x29, 0x23, 0xbe, 0xf1, 0xe2, 0xf0, 0xe8, 0x53, 0xb3, 0xb6, 0xff, 0xfe, 0xab,
-	0xca, 0xdd, 0x77, 0xcb, 0x5b, 0xea, 0x1c, 0xf6, 0xec, 0x72, 0x34, 0x8e, 0xae, 0x18, 0x9b, 0xa9,
-	0xd4, 0x44, 0x65, 0x0e, 0x7b, 0x5e, 0x5b, 0x4e, 0xac, 0xc6, 0xcf, 0xa8, 0xeb, 0x6c, 0xc7, 0x76,
-	0xcc, 0x23, 0xb8, 0xfb, 0x6c, 0xeb, 0x29, 0xaa, 0xc1, 0xbe, 0x49, 0x58, 0xe0, 0x3b, 0xa4, 0xa1,
-	0x5d, 0xb4, 0x88, 0xa3, 0xb1, 0x16, 0xd1, 0xf8, 0xcb, 0xad, 0x35, 0x5c, 0x42, 0x35, 0xc7, 0x65,
-	0x5a, 0x0b, 0x9f, 0x13, 0xcd, 0x23, 0x7e, 0xc7, 0x16, 0x03, 0x8d, 0xc6, 0x5c, 0x0d, 0x5b, 0x16,
-	0xa1, 0x54, 0x60, 0x7d, 0x42, 0xdd, 0xc0, 0xb7, 0x48, 0xd9, 0xfc, 0x21, 0x67, 0x7c, 0x86, 0x9e,
-	0xc1, 0x66, 0x9c, 0xb1, 0x87, 0x1a, 0xb0, 0x92, 0x5f, 0xd8, 0x94, 0x95, 0x51, 0x1a, 0x26, 0xfe,
-	0x98, 0x52, 0xa6, 0x3e, 0xdb, 0x82, 0x59, 0xc8, 0xee, 0x60, 0x6a, 0x5b, 0xd5, 0x80, 0xb5, 0x50,
-	0x2a, 0xa3, 0xc0, 0x1a, 0x40, 0xd5, 0xb3, 0x0f, 0x48, 0x57, 0xec, 0xcc, 0x66, 0x52, 0x6a, 0xf6,
-	0x93, 0x52, 0xf5, 0xa8, 0x56, 0x3a, 0x20, 0x5d, 0x2d, 0x55, 0x2f, 0xc2, 0x4c, 0xd4, 0xe3, 0x0e,
-	0xe4, 0x87, 0xf0, 0x77, 0xfc, 0xe7, 0x80, 0x3e, 0x70, 0x7d, 0xa2, 0xe1, 0xba, 0x1b, 0x30, 0x4d,
-	0x5e, 0xe4, 0x6d, 0xae, 0xf0, 0x1f, 0x57, 0xeb, 0xca, 0x37, 0x57, 0xeb, 0xca, 0xbf, 0xaf, 0xd6,
-	0x95, 0xdf, 0xbf, 0x59, 0xbf, 0xf3, 0xcd, 0x9b, 0xf5, 0x3b, 0xff, 0x7a, 0xb3, 0x7e, 0xe7, 0xb3,
-	0xfb, 0xd1, 0x64, 0x1b, 0x4d, 0xd7, 0xf0, 0xce, 0x9a, 0x46, 0xef, 0x17, 0xd1, 0x7a, 0x5a, 0xfc,
-	0x8e, 0xf8, 0xf4, 0x7f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x90, 0xad, 0x13, 0xbf, 0x24, 0x15, 0x00,
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x58, 0xcf, 0x6f, 0xdb, 0xc8,
+	0x15, 0x36, 0x65, 0x5b, 0x3f, 0x46, 0xf1, 0xaf, 0xb1, 0x9d, 0x55, 0xb8, 0x89, 0xc4, 0x32, 0xd9,
+	0x5d, 0xc7, 0xa9, 0x44, 0x47, 0x4e, 0x81, 0x34, 0x59, 0x14, 0x95, 0x63, 0xaf, 0x2b, 0x64, 0xb3,
+	0x36, 0xe8, 0x6c, 0x36, 0xdd, 0x2e, 0xe0, 0x1d, 0x91, 0x63, 0x8a, 0xb5, 0x44, 0xb2, 0x9c, 0xa1,
+	0x55, 0x75, 0xd1, 0xa2, 0x28, 0x8a, 0x36, 0x40, 0x7b, 0x28, 0xb6, 0xb7, 0x00, 0x45, 0xff, 0x80,
+	0xf6, 0xde, 0x7b, 0x4f, 0x3d, 0x2e, 0xd0, 0x4b, 0x4f, 0x46, 0xa1, 0xf4, 0x5a, 0xa0, 0x7f, 0x42,
+	0x31, 0xc3, 0x21, 0x45, 0x49, 0x54, 0xec, 0x14, 0x6d, 0x4f, 0xf1, 0xcc, 0xfb, 0xde, 0xf7, 0xbe,
+	0xf7, 0xe6, 0x71, 0xe6, 0x45, 0x60, 0xd1, 0xeb, 0x61, 0xc7, 0xb2, 0x1d, 0x5c, 0xf3, 0x7c, 0x97,
+	0xba, 0x70, 0xd1, 0x43, 0xb4, 0xdd, 0x43, 0x7e, 0x2d, 0xdc, 0x95, 0xaf, 0x5b, 0xae, 0x6b, 0x75,
+	0xb0, 0x86, 0x3c, 0x5b, 0x43, 0x8e, 0xe3, 0x52, 0x44, 0x6d, 0xd7, 0x21, 0x21, 0x5a, 0xae, 0x5a,
+	0x36, 0x6d, 0x07, 0xad, 0x9a, 0xe1, 0x76, 0x35, 0xcb, 0xb5, 0x5c, 0x8d, 0x6f, 0xb7, 0x82, 0x13,
+	0xbe, 0xe2, 0x0b, 0xfe, 0x97, 0x80, 0x1f, 0x25, 0xe1, 0xbe, 0x67, 0x54, 0xb1, 0xe1, 0x92, 0x3e,
+	0xa1, 0x58, 0x2c, 0x2d, 0x44, 0x71, 0x0f, 0xf5, 0x43, 0x16, 0xa3, 0x6a, 0x61, 0xa7, 0x4a, 0x7a,
+	0xc8, 0xb2, 0xb0, 0xaf, 0xb9, 0x1e, 0x8f, 0x9b, 0xa2, 0xa1, 0xe8, 0xf5, 0x08, 0x89, 0x22, 0x00,
+	0xaf, 0x67, 0xb6, 0xc2, 0xbf, 0x55, 0x0b, 0xe4, 0x9e, 0x62, 0xd4, 0xdd, 0xc7, 0x54, 0xfe, 0x3a,
+	0x98, 0x6f, 0x3a, 0x5e, 0x40, 0xe1, 0x4d, 0x90, 0xa3, 0x18, 0x75, 0x8f, 0x6d, 0xb3, 0x24, 0x29,
+	0xd2, 0xc6, 0xec, 0x0e, 0x18, 0x9c, 0x57, 0xb2, 0x0c, 0xd6, 0xdc, 0xd5, 0xb3, 0xcc, 0xd4, 0x34,
+	0xe5, 0x1a, 0xc8, 0x1e, 0x04, 0x94, 0xc1, 0x6f, 0x81, 0x39, 0x9b, 0xe2, 0x2e, 0xc7, 0x16, 0xeb,
+	0xcb, 0xb5, 0xa8, 0x38, 0x66, 0xab, 0xc6, 0x7c, 0x74, 0x6e, 0x55, 0x7f, 0x21, 0x81, 0xd5, 0x23,
+	0x8c, 0x88, 0xeb, 0x3c, 0x6a, 0xa3, 0x4e, 0x07, 0x3b, 0x16, 0xfe, 0xd0, 0x26, 0x54, 0xae, 0x47,
+	0x51, 0x6f, 0x83, 0x02, 0xe1, 0xf6, 0x61, 0xdc, 0x2b, 0x83, 0xf3, 0x4a, 0x3e, 0x74, 0x6a, 0xee,
+	0xea, 0xf9, 0xd0, 0xdc, 0x34, 0xe5, 0x87, 0x71, 0xec, 0xbb, 0x60, 0x9e, 0xb1, 0x93, 0x92, 0xa4,
+	0xcc, 0x6e, 0x14, 0xeb, 0x6f, 0x27, 0x83, 0x8f, 0x45, 0xd3, 0x43, 0xa4, 0xfa, 0x7b, 0x09, 0xc0,
+	0x31, 0x13, 0xcb, 0xfe, 0xa3, 0x48, 0xc7, 0x1e, 0x58, 0x15, 0x3a, 0x8c, 0xc8, 0x3e, 0x54, 0xb4,
+	0x3e, 0x38, 0xaf, 0xac, 0x8c, 0x79, 0x37, 0x77, 0xf5, 0x15, 0x32, 0xb6, 0x65, 0xca, 0xdf, 0x8c,
+	0x35, 0x6a, 0x23, 0xf5, 0x79, 0xad, 0xc4, 0xb0, 0x54, 0x3f, 0x95, 0xc0, 0x95, 0x11, 0x6d, 0x0f,
+	0x23, 0x6d, 0x75, 0x70, 0x25, 0x45, 0xd4, 0xd2, 0xe0, 0xbc, 0x52, 0x4c, 0xca, 0x29, 0x1a, 0x09,
+	0x21, 0xdb, 0xb1, 0x90, 0xdb, 0x23, 0x42, 0xd6, 0x93, 0x42, 0xc6, 0x25, 0xfc, 0x73, 0xb2, 0x48,
+	0x3b, 0x41, 0x5f, 0x26, 0xff, 0xdd, 0x22, 0x25, 0x3b, 0x2d, 0x33, 0xb5, 0xd3, 0x5a, 0x71, 0x02,
+	0xcf, 0xc1, 0xd5, 0x61, 0x38, 0x12, 0xb4, 0x88, 0xe1, 0xdb, 0xbc, 0xe5, 0x45, 0x4a, 0x5f, 0x4b,
+	0x4d, 0xe9, 0x28, 0x01, 0xd4, 0xd7, 0x8d, 0xb4, 0x6d, 0xf5, 0x65, 0x06, 0xdc, 0x48, 0x75, 0x78,
+	0x86, 0x3a, 0xb6, 0x89, 0x28, 0x96, 0x5f, 0x4a, 0x51, 0xee, 0x9f, 0x80, 0x6b, 0xe9, 0x2a, 0x86,
+	0x15, 0x78, 0x7b, 0x70, 0x5e, 0x79, 0x2b, 0x95, 0xaf, 0xb9, 0xab, 0xbf, 0x95, 0x2a, 0xa1, 0x69,
+	0xc2, 0x32, 0x00, 0x1e, 0x22, 0xc4, 0x6b, 0xfb, 0x88, 0x60, 0x5e, 0x90, 0x82, 0x9e, 0xd8, 0x81,
+	0x25, 0x90, 0x33, 0xdc, 0x6e, 0x17, 0x3b, 0xb4, 0x34, 0xcb, 0x8d, 0xd1, 0x52, 0xfe, 0x2c, 0x2e,
+	0x91, 0x0e, 0xd6, 0x86, 0xe2, 0xce, 0x42, 0xf1, 0xc3, 0x02, 0x55, 0x52, 0x0b, 0xf4, 0x2c, 0x86,
+	0xe9, 0xab, 0xc6, 0xe4, 0xa6, 0x3a, 0x90, 0x80, 0x9c, 0x9a, 0xcc, 0xa3, 0x8e, 0x4b, 0xb0, 0xfc,
+	0xf9, 0xff, 0xba, 0x30, 0xff, 0x97, 0x0e, 0xf0, 0x40, 0x9e, 0xf5, 0xdd, 0x7f, 0x7c, 0x27, 0x6d,
+	0xc5, 0x1a, 0xdf, 0x1d, 0xbd, 0x93, 0x26, 0x2f, 0x44, 0x71, 0x11, 0x61, 0x00, 0x3f, 0x26, 0xd8,
+	0x3f, 0xc2, 0xf4, 0xd0, 0xc7, 0x27, 0xd8, 0xc7, 0x8e, 0x81, 0x89, 0xbc, 0x17, 0xc5, 0x7e, 0x1f,
+	0x2c, 0x23, 0x83, 0xda, 0x67, 0xf8, 0x78, 0x5c, 0x02, 0x1c, 0x9c, 0x57, 0x16, 0x1b, 0xdc, 0x16,
+	0x0b, 0x59, 0x44, 0xc9, 0xb5, 0x29, 0xe7, 0x23, 0x39, 0xea, 0xb7, 0xc0, 0x0a, 0x0b, 0xb3, 0x8b,
+	0x3b, 0x98, 0xe2, 0x86, 0x61, 0xb8, 0x81, 0x43, 0xe5, 0x4a, 0x14, 0xe5, 0x2a, 0xc8, 0xfa, 0xdc,
+	0x87, 0x73, 0x17, 0x74, 0xb1, 0x4a, 0xf8, 0x7f, 0x0c, 0x96, 0x0f, 0x7c, 0x0b, 0x39, 0xf6, 0x8f,
+	0x78, 0x37, 0xf0, 0x02, 0xe5, 0x84, 0xbb, 0x7c, 0x3f, 0xce, 0xba, 0x36, 0x9a, 0x75, 0x29, 0x99,
+	0x75, 0xd2, 0x3f, 0xca, 0xfe, 0x00, 0x2c, 0x8c, 0x3e, 0x04, 0x31, 0xe7, 0x37, 0x62, 0xce, 0x3b,
+	0xa3, 0x9c, 0x53, 0x6e, 0x2c, 0x41, 0xf8, 0xeb, 0x59, 0xb0, 0xc8, 0x12, 0xdd, 0xc7, 0xf4, 0x08,
+	0x13, 0x62, 0xbb, 0xce, 0x90, 0xf2, 0x5f, 0x99, 0xe4, 0x6b, 0x15, 0x10, 0xec, 0xa7, 0xbd, 0x56,
+	0xcc, 0x5b, 0xe7, 0x56, 0x58, 0x06, 0x45, 0x9b, 0x1c, 0x3b, 0xb8, 0x77, 0xcc, 0xc1, 0xec, 0x5b,
+	0xcc, 0xeb, 0x05, 0x9b, 0x7c, 0x84, 0x7b, 0x0c, 0x05, 0xef, 0x80, 0xac, 0xd1, 0x41, 0x76, 0x97,
+	0xf0, 0x2f, 0xb1, 0x58, 0x5f, 0x8d, 0x79, 0xd8, 0x33, 0xfb, 0x88, 0x9b, 0x74, 0x01, 0x81, 0xb7,
+	0xc0, 0x82, 0xe3, 0x52, 0xfb, 0xc4, 0x36, 0xc2, 0x37, 0xb9, 0x34, 0xa7, 0x48, 0x1b, 0xf3, 0xfa,
+	0xe8, 0x26, 0x7c, 0x02, 0x72, 0xe1, 0x41, 0x93, 0xd2, 0x3c, 0x4f, 0x77, 0xbb, 0x36, 0x3a, 0x66,
+	0xd4, 0x46, 0xb3, 0xab, 0x85, 0x09, 0x89, 0x37, 0xa4, 0xe1, 0x98, 0xbc, 0xb7, 0x22, 0x0e, 0xf9,
+	0x27, 0x60, 0x61, 0xc4, 0x02, 0x37, 0x41, 0x96, 0x0c, 0x4f, 0xba, 0x58, 0x87, 0x93, 0x0f, 0x91,
+	0x2e, 0x10, 0xac, 0x48, 0xec, 0xf2, 0xe5, 0x79, 0xa7, 0x3e, 0xe9, 0xcc, 0x0a, 0xdf, 0x06, 0x05,
+	0x9b, 0x1c, 0x87, 0x8d, 0xc7, 0xeb, 0x90, 0xd7, 0xf3, 0x36, 0x09, 0x1b, 0x53, 0xfd, 0x0c, 0x14,
+	0x98, 0x56, 0x8a, 0x68, 0x40, 0x86, 0x07, 0xf1, 0x41, 0x7c, 0x0e, 0xef, 0x83, 0x65, 0x7c, 0x86,
+	0xfd, 0x3e, 0x6d, 0xdb, 0x8e, 0x75, 0x6c, 0x93, 0x63, 0xf7, 0x94, 0x0b, 0xcb, 0x87, 0xed, 0xbd,
+	0x17, 0xdb, 0x9a, 0xe4, 0xe0, 0xb1, 0xbe, 0x88, 0x93, 0xeb, 0x53, 0xf5, 0x77, 0x12, 0xc8, 0xed,
+	0x63, 0xda, 0x74, 0x4e, 0xdc, 0x21, 0xf9, 0x0b, 0x29, 0x66, 0x2f, 0x81, 0xdc, 0x19, 0xf6, 0x89,
+	0x1d, 0xf7, 0x75, 0xb4, 0x64, 0x0d, 0x1f, 0x78, 0xd4, 0xee, 0x86, 0x17, 0xec, 0xbc, 0x2e, 0x56,
+	0x6c, 0x9f, 0xdd, 0xa6, 0x76, 0x74, 0xb7, 0x8a, 0x15, 0xbc, 0x06, 0xf2, 0xad, 0xc0, 0xee, 0xd0,
+	0x63, 0x44, 0xf9, 0xb9, 0x15, 0xf4, 0x1c, 0x5f, 0x37, 0x12, 0xa6, 0x56, 0xbf, 0x34, 0x9f, 0x30,
+	0xed, 0xf4, 0xd5, 0x15, 0x30, 0xf7, 0xcc, 0xb5, 0xcd, 0x07, 0x85, 0x2f, 0x1b, 0xd9, 0xfa, 0x1c,
+	0xcc, 0x7c, 0xf1, 0xe3, 0xfa, 0x60, 0x19, 0x64, 0xf7, 0xf8, 0x41, 0x42, 0x3a, 0xde, 0xa9, 0xf0,
+	0xd6, 0x05, 0x67, 0x1d, 0x26, 0xf8, 0xce, 0xa5, 0x3a, 0x42, 0x5d, 0xff, 0xd9, 0x5f, 0xff, 0xf1,
+	0xdb, 0xcc, 0x12, 0x5c, 0xd0, 0x58, 0xf3, 0x6a, 0x44, 0xc4, 0xf8, 0xa5, 0x94, 0x76, 0xe1, 0xc0,
+	0x8d, 0x34, 0xd2, 0x51, 0x8c, 0x08, 0x7f, 0xfb, 0x12, 0x48, 0x21, 0xe1, 0x3a, 0x97, 0x70, 0x55,
+	0x5d, 0x09, 0x25, 0x78, 0x43, 0xc4, 0x03, 0x69, 0x93, 0x29, 0x99, 0xbc, 0x93, 0xe0, 0x7b, 0x69,
+	0xf4, 0x23, 0x10, 0xa1, 0x63, 0xe3, 0x62, 0xa0, 0x90, 0x51, 0xe1, 0x32, 0xae, 0xa9, 0x6b, 0xa1,
+	0x0c, 0x93, 0x63, 0xaa, 0x28, 0x04, 0x31, 0x25, 0xee, 0xd8, 0x2d, 0x04, 0x6f, 0x8e, 0x73, 0x8f,
+	0x98, 0x85, 0x80, 0x5b, 0xaf, 0x07, 0x89, 0xe0, 0xab, 0x3c, 0xf8, 0x02, 0x2c, 0x6a, 0xf1, 0x8b,
+	0x43, 0xe0, 0xe9, 0xe8, 0x68, 0x07, 0xd5, 0xa9, 0x54, 0xfb, 0x38, 0x0a, 0x77, 0xf3, 0xb5, 0x18,
+	0x11, 0x0d, 0xf2, 0x68, 0x57, 0x20, 0x18, 0x46, 0x83, 0x2f, 0xd2, 0x67, 0x6e, 0x38, 0x71, 0x90,
+	0x29, 0x20, 0x11, 0x7b, 0xf3, 0x32, 0x50, 0x21, 0x41, 0xe6, 0x12, 0xd6, 0x20, 0xd4, 0xc2, 0x6b,
+	0xa4, 0x9a, 0xc8, 0xfb, 0xe7, 0xa9, 0x53, 0xf7, 0x64, 0xf3, 0x4d, 0x62, 0xa6, 0x35, 0x5f, 0x0a,
+	0x52, 0xe8, 0xb8, 0xc6, 0x75, 0xac, 0xc2, 0x95, 0x09, 0x1d, 0xf0, 0x57, 0xa9, 0x73, 0xed, 0x85,
+	0x32, 0x76, 0x82, 0xfe, 0x25, 0x65, 0x30, 0xa4, 0x90, 0xa1, 0x70, 0x19, 0xb2, 0xba, 0x3e, 0x21,
+	0x43, 0x6b, 0x05, 0x7d, 0xd6, 0x7d, 0x7f, 0x92, 0x2e, 0x98, 0x3a, 0xe1, 0xf6, 0xd4, 0xa3, 0x4f,
+	0x83, 0x0b, 0x8d, 0xf7, 0xde, 0xcc, 0x49, 0xc8, 0xbd, 0xc3, 0xe5, 0xbe, 0xa3, 0x2a, 0xc3, 0x06,
+	0xaa, 0x26, 0x27, 0x2c, 0x4d, 0x4c, 0x93, 0x98, 0x29, 0xff, 0xc3, 0x6b, 0x47, 0x42, 0xb8, 0x75,
+	0x29, 0x05, 0x1c, 0x2b, 0x34, 0xdf, 0x7d, 0x03, 0x0f, 0x21, 0x78, 0x83, 0x0b, 0x56, 0xd5, 0x1b,
+	0xd3, 0x04, 0x1b, 0x0c, 0xcd, 0xd4, 0x7e, 0x31, 0x39, 0xc2, 0xc0, 0x77, 0xc7, 0x03, 0x8e, 0x23,
+	0x84, 0xb0, 0xf7, 0x2e, 0xc4, 0x09, 0x39, 0x57, 0xb9, 0x9c, 0x65, 0xb8, 0xa8, 0xb9, 0x09, 0x04,
+	0x81, 0xdf, 0x1b, 0x0e, 0x96, 0xb0, 0x3c, 0x4e, 0x16, 0x59, 0x44, 0xb0, 0xca, 0x54, 0xbb, 0x08,
+	0xb2, 0xc8, 0x83, 0xe4, 0x61, 0x56, 0x63, 0x2f, 0x30, 0x81, 0x9f, 0xc4, 0xff, 0x7d, 0x87, 0x37,
+	0xd2, 0x7c, 0x87, 0xdf, 0x4f, 0x79, 0x9a, 0x59, 0x30, 0x2f, 0x70, 0xe6, 0x1c, 0x9c, 0xe7, 0xcc,
+	0x70, 0x0f, 0xe4, 0x9f, 0xba, 0x6e, 0xe7, 0xd0, 0x76, 0x2c, 0xb8, 0x36, 0xee, 0xca, 0x9e, 0x36,
+	0x39, 0x75, 0x37, 0x41, 0xe3, 0x31, 0xd7, 0xcf, 0x01, 0x60, 0x34, 0xe1, 0x18, 0x00, 0x27, 0xd2,
+	0x8b, 0x27, 0x04, 0x21, 0x52, 0x99, 0x0e, 0x10, 0x32, 0x97, 0x38, 0x7f, 0x01, 0xe6, 0x34, 0x12,
+	0x72, 0x3e, 0x0f, 0x85, 0xb2, 0x49, 0x60, 0xb2, 0x04, 0x62, 0x44, 0x98, 0x56, 0x82, 0xc8, 0x3c,
+	0x51, 0x02, 0x9b, 0xb1, 0x99, 0x60, 0x8d, 0x31, 0xef, 0x63, 0x07, 0xfb, 0x88, 0xe2, 0x0f, 0xd0,
+	0x29, 0xde, 0x45, 0x14, 0xbd, 0x51, 0x39, 0xa2, 0x3b, 0xa0, 0xa4, 0x51, 0xd7, 0xed, 0x68, 0x96,
+	0xe0, 0xaa, 0x9e, 0xa0, 0x53, 0x5c, 0x35, 0x19, 0xdb, 0x87, 0x61, 0x85, 0x76, 0x77, 0x76, 0x83,
+	0xae, 0x37, 0x85, 0x7b, 0x64, 0x00, 0x63, 0xb8, 0x44, 0xb3, 0x71, 0x5e, 0xf2, 0x83, 0x4e, 0xd5,
+	0x0c, 0xba, 0xde, 0xce, 0x9f, 0xe7, 0xbe, 0x6c, 0xbc, 0x98, 0x83, 0x7f, 0x94, 0x40, 0xf1, 0x30,
+	0x74, 0x51, 0x1a, 0x87, 0x4d, 0x75, 0x1f, 0x2c, 0x44, 0xcb, 0x23, 0x8a, 0x4e, 0x4e, 0xa0, 0xda,
+	0xa6, 0xd4, 0x23, 0x0f, 0x34, 0x2d, 0xf1, 0x63, 0x93, 0x88, 0x11, 0xfd, 0x2b, 0x43, 0xc2, 0xa0,
+	0xdf, 0x8e, 0x42, 0x77, 0x90, 0x63, 0x6e, 0x1e, 0x80, 0xd5, 0x8d, 0x86, 0x87, 0x8c, 0x36, 0xae,
+	0xd6, 0x6b, 0x5b, 0xca, 0x81, 0xae, 0x3c, 0x69, 0x3e, 0xbd, 0x0d, 0xef, 0x5f, 0x4c, 0xa7, 0xb5,
+	0x3a, 0x6e, 0x4b, 0xeb, 0x22, 0x42, 0xb1, 0xaf, 0x3d, 0x3a, 0x38, 0xfc, 0xae, 0xde, 0xdc, 0xff,
+	0xce, 0xd3, 0xfa, 0xec, 0xdd, 0xda, 0x96, 0xbc, 0x8c, 0x3c, 0xbb, 0x96, 0x8c, 0xa3, 0x4a, 0xda,
+	0x66, 0x26, 0x33, 0x57, 0x5f, 0x46, 0x9e, 0xd7, 0x11, 0x13, 0xb2, 0xf6, 0x7d, 0xe2, 0x3a, 0x0f,
+	0x26, 0x76, 0xf4, 0x43, 0x30, 0x7b, 0x6f, 0x6b, 0x1b, 0x36, 0xc1, 0xbe, 0x8e, 0x69, 0xe0, 0x3b,
+	0xd8, 0x54, 0x7a, 0x6d, 0xec, 0x28, 0xb4, 0x8d, 0x15, 0xf6, 0xea, 0x2b, 0xa6, 0x8b, 0x89, 0xe2,
+	0xb8, 0x54, 0x69, 0xa3, 0x33, 0xac, 0x78, 0xd8, 0xef, 0xda, 0x7c, 0x20, 0x52, 0xa8, 0xab, 0x20,
+	0xc3, 0xc0, 0x84, 0x70, 0xac, 0x8f, 0x89, 0x1b, 0xf8, 0x06, 0xae, 0xe9, 0x0f, 0x19, 0xe3, 0x3d,
+	0x78, 0x0f, 0x6c, 0x4e, 0x32, 0x46, 0xa8, 0x21, 0x2b, 0xfe, 0x21, 0xfb, 0x3e, 0x61, 0x16, 0xcc,
+	0xbd, 0xcc, 0x48, 0xb9, 0x4f, 0xb7, 0xc0, 0x12, 0x28, 0xec, 0x20, 0x62, 0x1b, 0x8d, 0x80, 0xb6,
+	0x61, 0x26, 0x2f, 0x81, 0x1b, 0x00, 0x34, 0x3c, 0xfb, 0x31, 0xee, 0xf3, 0x9d, 0xa5, 0x7c, 0x46,
+	0x2e, 0x3c, 0xaf, 0x36, 0x0e, 0x9b, 0xd5, 0xc7, 0xb8, 0xaf, 0x64, 0x5a, 0x15, 0xb0, 0x90, 0xf4,
+	0x98, 0x01, 0x8b, 0x23, 0xf8, 0x19, 0xff, 0x3e, 0x80, 0x4f, 0x5c, 0x1f, 0x2b, 0xa8, 0xe5, 0x06,
+	0x54, 0x11, 0x07, 0x79, 0x99, 0x23, 0xfc, 0xcb, 0xa0, 0x2c, 0x7d, 0x35, 0x28, 0x4b, 0x7f, 0x1f,
+	0x94, 0xa5, 0xdf, 0xbc, 0x2a, 0xcf, 0x7c, 0xf5, 0xaa, 0x3c, 0xf3, 0xb7, 0x57, 0xe5, 0x99, 0x4f,
+	0xaf, 0x27, 0x8b, 0xad, 0x59, 0xae, 0xe6, 0x9d, 0x5a, 0x5a, 0xf4, 0x23, 0x67, 0x2b, 0xcb, 0x7f,
+	0x1a, 0xdc, 0xfe, 0x77, 0x00, 0x00, 0x00, 0xff, 0xff, 0xe1, 0x40, 0x68, 0xd9, 0xf7, 0x14, 0x00,
 	0x00,
 }
 
@@ -1578,22 +2207,22 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type EngineClient interface {
-	UserGetSession(ctx context.Context, in *UserGetSessionInput, opts ...grpc.CallOption) (*UserGetSessionOutput, error)
-	UserSetPreferences(ctx context.Context, in *UserSetPreferencesInput, opts ...grpc.CallOption) (*UserSetPreferencesOutput, error)
-	UserDeleteAccount(ctx context.Context, in *UserDeleteAccountInput, opts ...grpc.CallOption) (*UserDeleteAccountOutput, error)
-	ChallengeList(ctx context.Context, in *ChallengeListInput, opts ...grpc.CallOption) (*ChallengeListOutput, error)
-	ChallengeGet(ctx context.Context, in *ChallengeGetInput, opts ...grpc.CallOption) (*ChallengeGetOutput, error)
-	SeasonChallengeList(ctx context.Context, in *SeasonChallengeListInput, opts ...grpc.CallOption) (*SeasonChallengeListOutput, error)
-	SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGetInput, opts ...grpc.CallOption) (*SeasonChallengeGetOutput, error)
-	SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuyInput, opts ...grpc.CallOption) (*SeasonChallengeBuyOutput, error)
-	ChallengeSubscriptionValidate(ctx context.Context, in *ChallengeSubscriptionValidateInput, opts ...grpc.CallOption) (*ChallengeSubscriptionValidateOutput, error)
-	ChallengeSubscriptionClose(ctx context.Context, in *ChallengeSubscriptionCloseInput, opts ...grpc.CallOption) (*ChallengeSubscriptionCloseOutput, error)
-	OrganizationList(ctx context.Context, in *OrganizationListInput, opts ...grpc.CallOption) (*OrganizationListOutput, error)
-	TeamList(ctx context.Context, in *TeamListInput, opts ...grpc.CallOption) (*TeamListOutput, error)
-	TeamGet(ctx context.Context, in *TeamGetInput, opts ...grpc.CallOption) (*TeamGetOutput, error)
+	UserGetSession(ctx context.Context, in *UserGetSession_Input, opts ...grpc.CallOption) (*UserGetSession_Output, error)
+	UserSetPreferences(ctx context.Context, in *UserSetPreferences_Input, opts ...grpc.CallOption) (*UserSetPreferences_Output, error)
+	UserDeleteAccount(ctx context.Context, in *UserDeleteAccount_Input, opts ...grpc.CallOption) (*UserDeleteAccount_Output, error)
+	ChallengeList(ctx context.Context, in *ChallengeList_Input, opts ...grpc.CallOption) (*ChallengeList_Output, error)
+	ChallengeGet(ctx context.Context, in *ChallengeGet_Input, opts ...grpc.CallOption) (*ChallengeGet_Output, error)
+	SeasonChallengeList(ctx context.Context, in *SeasonChallengeList_Input, opts ...grpc.CallOption) (*SeasonChallengeList_Output, error)
+	SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGet_Input, opts ...grpc.CallOption) (*SeasonChallengeGet_Output, error)
+	SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuy_Input, opts ...grpc.CallOption) (*SeasonChallengeBuy_Output, error)
+	ChallengeSubscriptionValidate(ctx context.Context, in *ChallengeSubscriptionValidate_Input, opts ...grpc.CallOption) (*ChallengeSubscriptionValidate_Output, error)
+	ChallengeSubscriptionClose(ctx context.Context, in *ChallengeSubscriptionClose_Input, opts ...grpc.CallOption) (*ChallengeSubscriptionClose_Output, error)
+	OrganizationList(ctx context.Context, in *OrganizationList_Input, opts ...grpc.CallOption) (*OrganizationList_Output, error)
+	TeamList(ctx context.Context, in *TeamList_Input, opts ...grpc.CallOption) (*TeamList_Output, error)
+	TeamGet(ctx context.Context, in *TeamGet_Input, opts ...grpc.CallOption) (*TeamGet_Output, error)
 	ToolPing(ctx context.Context, in *Void, opts ...grpc.CallOption) (*Void, error)
-	ToolStatus(ctx context.Context, in *Void, opts ...grpc.CallOption) (*Status, error)
-	ToolInfo(ctx context.Context, in *Void, opts ...grpc.CallOption) (*Info, error)
+	ToolStatus(ctx context.Context, in *GetStatus_Input, opts ...grpc.CallOption) (*GetStatus_Output, error)
+	ToolInfo(ctx context.Context, in *GetInfo_Input, opts ...grpc.CallOption) (*GetInfo_Output, error)
 	ToolGenerateFakeData(ctx context.Context, in *Void, opts ...grpc.CallOption) (*Void, error)
 	ToolDBDump(ctx context.Context, in *Void, opts ...grpc.CallOption) (*pwdb.Dump, error)
 }
@@ -1606,8 +2235,8 @@ func NewEngineClient(cc *grpc.ClientConn) EngineClient {
 	return &engineClient{cc}
 }
 
-func (c *engineClient) UserGetSession(ctx context.Context, in *UserGetSessionInput, opts ...grpc.CallOption) (*UserGetSessionOutput, error) {
-	out := new(UserGetSessionOutput)
+func (c *engineClient) UserGetSession(ctx context.Context, in *UserGetSession_Input, opts ...grpc.CallOption) (*UserGetSession_Output, error) {
+	out := new(UserGetSession_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/UserGetSession", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1615,8 +2244,8 @@ func (c *engineClient) UserGetSession(ctx context.Context, in *UserGetSessionInp
 	return out, nil
 }
 
-func (c *engineClient) UserSetPreferences(ctx context.Context, in *UserSetPreferencesInput, opts ...grpc.CallOption) (*UserSetPreferencesOutput, error) {
-	out := new(UserSetPreferencesOutput)
+func (c *engineClient) UserSetPreferences(ctx context.Context, in *UserSetPreferences_Input, opts ...grpc.CallOption) (*UserSetPreferences_Output, error) {
+	out := new(UserSetPreferences_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/UserSetPreferences", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1624,8 +2253,8 @@ func (c *engineClient) UserSetPreferences(ctx context.Context, in *UserSetPrefer
 	return out, nil
 }
 
-func (c *engineClient) UserDeleteAccount(ctx context.Context, in *UserDeleteAccountInput, opts ...grpc.CallOption) (*UserDeleteAccountOutput, error) {
-	out := new(UserDeleteAccountOutput)
+func (c *engineClient) UserDeleteAccount(ctx context.Context, in *UserDeleteAccount_Input, opts ...grpc.CallOption) (*UserDeleteAccount_Output, error) {
+	out := new(UserDeleteAccount_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/UserDeleteAccount", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1633,8 +2262,8 @@ func (c *engineClient) UserDeleteAccount(ctx context.Context, in *UserDeleteAcco
 	return out, nil
 }
 
-func (c *engineClient) ChallengeList(ctx context.Context, in *ChallengeListInput, opts ...grpc.CallOption) (*ChallengeListOutput, error) {
-	out := new(ChallengeListOutput)
+func (c *engineClient) ChallengeList(ctx context.Context, in *ChallengeList_Input, opts ...grpc.CallOption) (*ChallengeList_Output, error) {
+	out := new(ChallengeList_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/ChallengeList", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1642,8 +2271,8 @@ func (c *engineClient) ChallengeList(ctx context.Context, in *ChallengeListInput
 	return out, nil
 }
 
-func (c *engineClient) ChallengeGet(ctx context.Context, in *ChallengeGetInput, opts ...grpc.CallOption) (*ChallengeGetOutput, error) {
-	out := new(ChallengeGetOutput)
+func (c *engineClient) ChallengeGet(ctx context.Context, in *ChallengeGet_Input, opts ...grpc.CallOption) (*ChallengeGet_Output, error) {
+	out := new(ChallengeGet_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/ChallengeGet", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1651,8 +2280,8 @@ func (c *engineClient) ChallengeGet(ctx context.Context, in *ChallengeGetInput, 
 	return out, nil
 }
 
-func (c *engineClient) SeasonChallengeList(ctx context.Context, in *SeasonChallengeListInput, opts ...grpc.CallOption) (*SeasonChallengeListOutput, error) {
-	out := new(SeasonChallengeListOutput)
+func (c *engineClient) SeasonChallengeList(ctx context.Context, in *SeasonChallengeList_Input, opts ...grpc.CallOption) (*SeasonChallengeList_Output, error) {
+	out := new(SeasonChallengeList_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/SeasonChallengeList", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1660,8 +2289,8 @@ func (c *engineClient) SeasonChallengeList(ctx context.Context, in *SeasonChalle
 	return out, nil
 }
 
-func (c *engineClient) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGetInput, opts ...grpc.CallOption) (*SeasonChallengeGetOutput, error) {
-	out := new(SeasonChallengeGetOutput)
+func (c *engineClient) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGet_Input, opts ...grpc.CallOption) (*SeasonChallengeGet_Output, error) {
+	out := new(SeasonChallengeGet_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/SeasonChallengeGet", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1669,8 +2298,8 @@ func (c *engineClient) SeasonChallengeGet(ctx context.Context, in *SeasonChallen
 	return out, nil
 }
 
-func (c *engineClient) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuyInput, opts ...grpc.CallOption) (*SeasonChallengeBuyOutput, error) {
-	out := new(SeasonChallengeBuyOutput)
+func (c *engineClient) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuy_Input, opts ...grpc.CallOption) (*SeasonChallengeBuy_Output, error) {
+	out := new(SeasonChallengeBuy_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/SeasonChallengeBuy", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1678,8 +2307,8 @@ func (c *engineClient) SeasonChallengeBuy(ctx context.Context, in *SeasonChallen
 	return out, nil
 }
 
-func (c *engineClient) ChallengeSubscriptionValidate(ctx context.Context, in *ChallengeSubscriptionValidateInput, opts ...grpc.CallOption) (*ChallengeSubscriptionValidateOutput, error) {
-	out := new(ChallengeSubscriptionValidateOutput)
+func (c *engineClient) ChallengeSubscriptionValidate(ctx context.Context, in *ChallengeSubscriptionValidate_Input, opts ...grpc.CallOption) (*ChallengeSubscriptionValidate_Output, error) {
+	out := new(ChallengeSubscriptionValidate_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/ChallengeSubscriptionValidate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1687,8 +2316,8 @@ func (c *engineClient) ChallengeSubscriptionValidate(ctx context.Context, in *Ch
 	return out, nil
 }
 
-func (c *engineClient) ChallengeSubscriptionClose(ctx context.Context, in *ChallengeSubscriptionCloseInput, opts ...grpc.CallOption) (*ChallengeSubscriptionCloseOutput, error) {
-	out := new(ChallengeSubscriptionCloseOutput)
+func (c *engineClient) ChallengeSubscriptionClose(ctx context.Context, in *ChallengeSubscriptionClose_Input, opts ...grpc.CallOption) (*ChallengeSubscriptionClose_Output, error) {
+	out := new(ChallengeSubscriptionClose_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/ChallengeSubscriptionClose", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1696,8 +2325,8 @@ func (c *engineClient) ChallengeSubscriptionClose(ctx context.Context, in *Chall
 	return out, nil
 }
 
-func (c *engineClient) OrganizationList(ctx context.Context, in *OrganizationListInput, opts ...grpc.CallOption) (*OrganizationListOutput, error) {
-	out := new(OrganizationListOutput)
+func (c *engineClient) OrganizationList(ctx context.Context, in *OrganizationList_Input, opts ...grpc.CallOption) (*OrganizationList_Output, error) {
+	out := new(OrganizationList_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/OrganizationList", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1705,8 +2334,8 @@ func (c *engineClient) OrganizationList(ctx context.Context, in *OrganizationLis
 	return out, nil
 }
 
-func (c *engineClient) TeamList(ctx context.Context, in *TeamListInput, opts ...grpc.CallOption) (*TeamListOutput, error) {
-	out := new(TeamListOutput)
+func (c *engineClient) TeamList(ctx context.Context, in *TeamList_Input, opts ...grpc.CallOption) (*TeamList_Output, error) {
+	out := new(TeamList_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/TeamList", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1714,8 +2343,8 @@ func (c *engineClient) TeamList(ctx context.Context, in *TeamListInput, opts ...
 	return out, nil
 }
 
-func (c *engineClient) TeamGet(ctx context.Context, in *TeamGetInput, opts ...grpc.CallOption) (*TeamGetOutput, error) {
-	out := new(TeamGetOutput)
+func (c *engineClient) TeamGet(ctx context.Context, in *TeamGet_Input, opts ...grpc.CallOption) (*TeamGet_Output, error) {
+	out := new(TeamGet_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/TeamGet", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1732,8 +2361,8 @@ func (c *engineClient) ToolPing(ctx context.Context, in *Void, opts ...grpc.Call
 	return out, nil
 }
 
-func (c *engineClient) ToolStatus(ctx context.Context, in *Void, opts ...grpc.CallOption) (*Status, error) {
-	out := new(Status)
+func (c *engineClient) ToolStatus(ctx context.Context, in *GetStatus_Input, opts ...grpc.CallOption) (*GetStatus_Output, error) {
+	out := new(GetStatus_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/ToolStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1741,8 +2370,8 @@ func (c *engineClient) ToolStatus(ctx context.Context, in *Void, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *engineClient) ToolInfo(ctx context.Context, in *Void, opts ...grpc.CallOption) (*Info, error) {
-	out := new(Info)
+func (c *engineClient) ToolInfo(ctx context.Context, in *GetInfo_Input, opts ...grpc.CallOption) (*GetInfo_Output, error) {
+	out := new(GetInfo_Output)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/ToolInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -1770,22 +2399,22 @@ func (c *engineClient) ToolDBDump(ctx context.Context, in *Void, opts ...grpc.Ca
 
 // EngineServer is the server API for Engine service.
 type EngineServer interface {
-	UserGetSession(context.Context, *UserGetSessionInput) (*UserGetSessionOutput, error)
-	UserSetPreferences(context.Context, *UserSetPreferencesInput) (*UserSetPreferencesOutput, error)
-	UserDeleteAccount(context.Context, *UserDeleteAccountInput) (*UserDeleteAccountOutput, error)
-	ChallengeList(context.Context, *ChallengeListInput) (*ChallengeListOutput, error)
-	ChallengeGet(context.Context, *ChallengeGetInput) (*ChallengeGetOutput, error)
-	SeasonChallengeList(context.Context, *SeasonChallengeListInput) (*SeasonChallengeListOutput, error)
-	SeasonChallengeGet(context.Context, *SeasonChallengeGetInput) (*SeasonChallengeGetOutput, error)
-	SeasonChallengeBuy(context.Context, *SeasonChallengeBuyInput) (*SeasonChallengeBuyOutput, error)
-	ChallengeSubscriptionValidate(context.Context, *ChallengeSubscriptionValidateInput) (*ChallengeSubscriptionValidateOutput, error)
-	ChallengeSubscriptionClose(context.Context, *ChallengeSubscriptionCloseInput) (*ChallengeSubscriptionCloseOutput, error)
-	OrganizationList(context.Context, *OrganizationListInput) (*OrganizationListOutput, error)
-	TeamList(context.Context, *TeamListInput) (*TeamListOutput, error)
-	TeamGet(context.Context, *TeamGetInput) (*TeamGetOutput, error)
+	UserGetSession(context.Context, *UserGetSession_Input) (*UserGetSession_Output, error)
+	UserSetPreferences(context.Context, *UserSetPreferences_Input) (*UserSetPreferences_Output, error)
+	UserDeleteAccount(context.Context, *UserDeleteAccount_Input) (*UserDeleteAccount_Output, error)
+	ChallengeList(context.Context, *ChallengeList_Input) (*ChallengeList_Output, error)
+	ChallengeGet(context.Context, *ChallengeGet_Input) (*ChallengeGet_Output, error)
+	SeasonChallengeList(context.Context, *SeasonChallengeList_Input) (*SeasonChallengeList_Output, error)
+	SeasonChallengeGet(context.Context, *SeasonChallengeGet_Input) (*SeasonChallengeGet_Output, error)
+	SeasonChallengeBuy(context.Context, *SeasonChallengeBuy_Input) (*SeasonChallengeBuy_Output, error)
+	ChallengeSubscriptionValidate(context.Context, *ChallengeSubscriptionValidate_Input) (*ChallengeSubscriptionValidate_Output, error)
+	ChallengeSubscriptionClose(context.Context, *ChallengeSubscriptionClose_Input) (*ChallengeSubscriptionClose_Output, error)
+	OrganizationList(context.Context, *OrganizationList_Input) (*OrganizationList_Output, error)
+	TeamList(context.Context, *TeamList_Input) (*TeamList_Output, error)
+	TeamGet(context.Context, *TeamGet_Input) (*TeamGet_Output, error)
 	ToolPing(context.Context, *Void) (*Void, error)
-	ToolStatus(context.Context, *Void) (*Status, error)
-	ToolInfo(context.Context, *Void) (*Info, error)
+	ToolStatus(context.Context, *GetStatus_Input) (*GetStatus_Output, error)
+	ToolInfo(context.Context, *GetInfo_Input) (*GetInfo_Output, error)
 	ToolGenerateFakeData(context.Context, *Void) (*Void, error)
 	ToolDBDump(context.Context, *Void) (*pwdb.Dump, error)
 }
@@ -1794,52 +2423,52 @@ type EngineServer interface {
 type UnimplementedEngineServer struct {
 }
 
-func (*UnimplementedEngineServer) UserGetSession(ctx context.Context, req *UserGetSessionInput) (*UserGetSessionOutput, error) {
+func (*UnimplementedEngineServer) UserGetSession(ctx context.Context, req *UserGetSession_Input) (*UserGetSession_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserGetSession not implemented")
 }
-func (*UnimplementedEngineServer) UserSetPreferences(ctx context.Context, req *UserSetPreferencesInput) (*UserSetPreferencesOutput, error) {
+func (*UnimplementedEngineServer) UserSetPreferences(ctx context.Context, req *UserSetPreferences_Input) (*UserSetPreferences_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserSetPreferences not implemented")
 }
-func (*UnimplementedEngineServer) UserDeleteAccount(ctx context.Context, req *UserDeleteAccountInput) (*UserDeleteAccountOutput, error) {
+func (*UnimplementedEngineServer) UserDeleteAccount(ctx context.Context, req *UserDeleteAccount_Input) (*UserDeleteAccount_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserDeleteAccount not implemented")
 }
-func (*UnimplementedEngineServer) ChallengeList(ctx context.Context, req *ChallengeListInput) (*ChallengeListOutput, error) {
+func (*UnimplementedEngineServer) ChallengeList(ctx context.Context, req *ChallengeList_Input) (*ChallengeList_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChallengeList not implemented")
 }
-func (*UnimplementedEngineServer) ChallengeGet(ctx context.Context, req *ChallengeGetInput) (*ChallengeGetOutput, error) {
+func (*UnimplementedEngineServer) ChallengeGet(ctx context.Context, req *ChallengeGet_Input) (*ChallengeGet_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChallengeGet not implemented")
 }
-func (*UnimplementedEngineServer) SeasonChallengeList(ctx context.Context, req *SeasonChallengeListInput) (*SeasonChallengeListOutput, error) {
+func (*UnimplementedEngineServer) SeasonChallengeList(ctx context.Context, req *SeasonChallengeList_Input) (*SeasonChallengeList_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SeasonChallengeList not implemented")
 }
-func (*UnimplementedEngineServer) SeasonChallengeGet(ctx context.Context, req *SeasonChallengeGetInput) (*SeasonChallengeGetOutput, error) {
+func (*UnimplementedEngineServer) SeasonChallengeGet(ctx context.Context, req *SeasonChallengeGet_Input) (*SeasonChallengeGet_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SeasonChallengeGet not implemented")
 }
-func (*UnimplementedEngineServer) SeasonChallengeBuy(ctx context.Context, req *SeasonChallengeBuyInput) (*SeasonChallengeBuyOutput, error) {
+func (*UnimplementedEngineServer) SeasonChallengeBuy(ctx context.Context, req *SeasonChallengeBuy_Input) (*SeasonChallengeBuy_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SeasonChallengeBuy not implemented")
 }
-func (*UnimplementedEngineServer) ChallengeSubscriptionValidate(ctx context.Context, req *ChallengeSubscriptionValidateInput) (*ChallengeSubscriptionValidateOutput, error) {
+func (*UnimplementedEngineServer) ChallengeSubscriptionValidate(ctx context.Context, req *ChallengeSubscriptionValidate_Input) (*ChallengeSubscriptionValidate_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChallengeSubscriptionValidate not implemented")
 }
-func (*UnimplementedEngineServer) ChallengeSubscriptionClose(ctx context.Context, req *ChallengeSubscriptionCloseInput) (*ChallengeSubscriptionCloseOutput, error) {
+func (*UnimplementedEngineServer) ChallengeSubscriptionClose(ctx context.Context, req *ChallengeSubscriptionClose_Input) (*ChallengeSubscriptionClose_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChallengeSubscriptionClose not implemented")
 }
-func (*UnimplementedEngineServer) OrganizationList(ctx context.Context, req *OrganizationListInput) (*OrganizationListOutput, error) {
+func (*UnimplementedEngineServer) OrganizationList(ctx context.Context, req *OrganizationList_Input) (*OrganizationList_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OrganizationList not implemented")
 }
-func (*UnimplementedEngineServer) TeamList(ctx context.Context, req *TeamListInput) (*TeamListOutput, error) {
+func (*UnimplementedEngineServer) TeamList(ctx context.Context, req *TeamList_Input) (*TeamList_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TeamList not implemented")
 }
-func (*UnimplementedEngineServer) TeamGet(ctx context.Context, req *TeamGetInput) (*TeamGetOutput, error) {
+func (*UnimplementedEngineServer) TeamGet(ctx context.Context, req *TeamGet_Input) (*TeamGet_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TeamGet not implemented")
 }
 func (*UnimplementedEngineServer) ToolPing(ctx context.Context, req *Void) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ToolPing not implemented")
 }
-func (*UnimplementedEngineServer) ToolStatus(ctx context.Context, req *Void) (*Status, error) {
+func (*UnimplementedEngineServer) ToolStatus(ctx context.Context, req *GetStatus_Input) (*GetStatus_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ToolStatus not implemented")
 }
-func (*UnimplementedEngineServer) ToolInfo(ctx context.Context, req *Void) (*Info, error) {
+func (*UnimplementedEngineServer) ToolInfo(ctx context.Context, req *GetInfo_Input) (*GetInfo_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ToolInfo not implemented")
 }
 func (*UnimplementedEngineServer) ToolGenerateFakeData(ctx context.Context, req *Void) (*Void, error) {
@@ -1854,7 +2483,7 @@ func RegisterEngineServer(s *grpc.Server, srv EngineServer) {
 }
 
 func _Engine_UserGetSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserGetSessionInput)
+	in := new(UserGetSession_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1866,13 +2495,13 @@ func _Engine_UserGetSession_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/pathwar.engine.Engine/UserGetSession",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).UserGetSession(ctx, req.(*UserGetSessionInput))
+		return srv.(EngineServer).UserGetSession(ctx, req.(*UserGetSession_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_UserSetPreferences_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserSetPreferencesInput)
+	in := new(UserSetPreferences_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1884,13 +2513,13 @@ func _Engine_UserSetPreferences_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/pathwar.engine.Engine/UserSetPreferences",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).UserSetPreferences(ctx, req.(*UserSetPreferencesInput))
+		return srv.(EngineServer).UserSetPreferences(ctx, req.(*UserSetPreferences_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_UserDeleteAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserDeleteAccountInput)
+	in := new(UserDeleteAccount_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1902,13 +2531,13 @@ func _Engine_UserDeleteAccount_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: "/pathwar.engine.Engine/UserDeleteAccount",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).UserDeleteAccount(ctx, req.(*UserDeleteAccountInput))
+		return srv.(EngineServer).UserDeleteAccount(ctx, req.(*UserDeleteAccount_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_ChallengeList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChallengeListInput)
+	in := new(ChallengeList_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1920,13 +2549,13 @@ func _Engine_ChallengeList_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/pathwar.engine.Engine/ChallengeList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).ChallengeList(ctx, req.(*ChallengeListInput))
+		return srv.(EngineServer).ChallengeList(ctx, req.(*ChallengeList_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_ChallengeGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChallengeGetInput)
+	in := new(ChallengeGet_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1938,13 +2567,13 @@ func _Engine_ChallengeGet_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/pathwar.engine.Engine/ChallengeGet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).ChallengeGet(ctx, req.(*ChallengeGetInput))
+		return srv.(EngineServer).ChallengeGet(ctx, req.(*ChallengeGet_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_SeasonChallengeList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SeasonChallengeListInput)
+	in := new(SeasonChallengeList_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1956,13 +2585,13 @@ func _Engine_SeasonChallengeList_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: "/pathwar.engine.Engine/SeasonChallengeList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).SeasonChallengeList(ctx, req.(*SeasonChallengeListInput))
+		return srv.(EngineServer).SeasonChallengeList(ctx, req.(*SeasonChallengeList_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_SeasonChallengeGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SeasonChallengeGetInput)
+	in := new(SeasonChallengeGet_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1974,13 +2603,13 @@ func _Engine_SeasonChallengeGet_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/pathwar.engine.Engine/SeasonChallengeGet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).SeasonChallengeGet(ctx, req.(*SeasonChallengeGetInput))
+		return srv.(EngineServer).SeasonChallengeGet(ctx, req.(*SeasonChallengeGet_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_SeasonChallengeBuy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SeasonChallengeBuyInput)
+	in := new(SeasonChallengeBuy_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1992,13 +2621,13 @@ func _Engine_SeasonChallengeBuy_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/pathwar.engine.Engine/SeasonChallengeBuy",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).SeasonChallengeBuy(ctx, req.(*SeasonChallengeBuyInput))
+		return srv.(EngineServer).SeasonChallengeBuy(ctx, req.(*SeasonChallengeBuy_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_ChallengeSubscriptionValidate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChallengeSubscriptionValidateInput)
+	in := new(ChallengeSubscriptionValidate_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2010,13 +2639,13 @@ func _Engine_ChallengeSubscriptionValidate_Handler(srv interface{}, ctx context.
 		FullMethod: "/pathwar.engine.Engine/ChallengeSubscriptionValidate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).ChallengeSubscriptionValidate(ctx, req.(*ChallengeSubscriptionValidateInput))
+		return srv.(EngineServer).ChallengeSubscriptionValidate(ctx, req.(*ChallengeSubscriptionValidate_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_ChallengeSubscriptionClose_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChallengeSubscriptionCloseInput)
+	in := new(ChallengeSubscriptionClose_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2028,13 +2657,13 @@ func _Engine_ChallengeSubscriptionClose_Handler(srv interface{}, ctx context.Con
 		FullMethod: "/pathwar.engine.Engine/ChallengeSubscriptionClose",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).ChallengeSubscriptionClose(ctx, req.(*ChallengeSubscriptionCloseInput))
+		return srv.(EngineServer).ChallengeSubscriptionClose(ctx, req.(*ChallengeSubscriptionClose_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_OrganizationList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OrganizationListInput)
+	in := new(OrganizationList_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2046,13 +2675,13 @@ func _Engine_OrganizationList_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: "/pathwar.engine.Engine/OrganizationList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).OrganizationList(ctx, req.(*OrganizationListInput))
+		return srv.(EngineServer).OrganizationList(ctx, req.(*OrganizationList_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_TeamList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TeamListInput)
+	in := new(TeamList_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2064,13 +2693,13 @@ func _Engine_TeamList_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/pathwar.engine.Engine/TeamList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).TeamList(ctx, req.(*TeamListInput))
+		return srv.(EngineServer).TeamList(ctx, req.(*TeamList_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_TeamGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TeamGetInput)
+	in := new(TeamGet_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2082,7 +2711,7 @@ func _Engine_TeamGet_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: "/pathwar.engine.Engine/TeamGet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).TeamGet(ctx, req.(*TeamGetInput))
+		return srv.(EngineServer).TeamGet(ctx, req.(*TeamGet_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2106,7 +2735,7 @@ func _Engine_ToolPing_Handler(srv interface{}, ctx context.Context, dec func(int
 }
 
 func _Engine_ToolStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Void)
+	in := new(GetStatus_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2118,13 +2747,13 @@ func _Engine_ToolStatus_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: "/pathwar.engine.Engine/ToolStatus",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).ToolStatus(ctx, req.(*Void))
+		return srv.(EngineServer).ToolStatus(ctx, req.(*GetStatus_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Engine_ToolInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Void)
+	in := new(GetInfo_Input)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2136,7 +2765,7 @@ func _Engine_ToolInfo_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/pathwar.engine.Engine/ToolInfo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EngineServer).ToolInfo(ctx, req.(*Void))
+		return srv.(EngineServer).ToolInfo(ctx, req.(*GetInfo_Input))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2258,7 +2887,7 @@ var _Engine_serviceDesc = grpc.ServiceDesc{
 	Metadata: "pwengine.proto",
 }
 
-func (m *TeamGetInput) Marshal() (dAtA []byte, err error) {
+func (m *TeamGet) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2268,12 +2897,35 @@ func (m *TeamGetInput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *TeamGetInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *TeamGet) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *TeamGetInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *TeamGet) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *TeamGet_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TeamGet_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamGet_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2286,7 +2938,7 @@ func (m *TeamGetInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *TeamGetOutput) Marshal() (dAtA []byte, err error) {
+func (m *TeamGet_Output) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2296,12 +2948,12 @@ func (m *TeamGetOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *TeamGetOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *TeamGet_Output) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *TeamGetOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *TeamGet_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2321,7 +2973,7 @@ func (m *TeamGetOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *SeasonChallengeListInput) Marshal() (dAtA []byte, err error) {
+func (m *SeasonChallengeList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2331,12 +2983,35 @@ func (m *SeasonChallengeListInput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *SeasonChallengeListInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *SeasonChallengeList) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *SeasonChallengeListInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *SeasonChallengeList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *SeasonChallengeList_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SeasonChallengeList_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SeasonChallengeList_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2349,7 +3024,7 @@ func (m *SeasonChallengeListInput) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *SeasonChallengeListOutput) Marshal() (dAtA []byte, err error) {
+func (m *SeasonChallengeList_Output) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2359,12 +3034,12 @@ func (m *SeasonChallengeListOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *SeasonChallengeListOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *SeasonChallengeList_Output) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *SeasonChallengeListOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *SeasonChallengeList_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2386,7 +3061,7 @@ func (m *SeasonChallengeListOutput) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *SeasonChallengeGetInput) Marshal() (dAtA []byte, err error) {
+func (m *SeasonChallengeGet) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2396,12 +3071,35 @@ func (m *SeasonChallengeGetInput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *SeasonChallengeGetInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *SeasonChallengeGet) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *SeasonChallengeGetInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *SeasonChallengeGet) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *SeasonChallengeGet_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SeasonChallengeGet_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SeasonChallengeGet_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2414,7 +3112,7 @@ func (m *SeasonChallengeGetInput) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *SeasonChallengeGetOutput) Marshal() (dAtA []byte, err error) {
+func (m *SeasonChallengeGet_Output) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2424,12 +3122,12 @@ func (m *SeasonChallengeGetOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *SeasonChallengeGetOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *SeasonChallengeGet_Output) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *SeasonChallengeGetOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *SeasonChallengeGet_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2449,7 +3147,7 @@ func (m *SeasonChallengeGetOutput) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *ChallengeGetInput) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeGet) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2459,12 +3157,35 @@ func (m *ChallengeGetInput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ChallengeGetInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeGet) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ChallengeGetInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeGet) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *ChallengeGet_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ChallengeGet_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ChallengeGet_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2477,7 +3198,7 @@ func (m *ChallengeGetInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *ChallengeGetOutput) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeGet_Output) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2487,12 +3208,12 @@ func (m *ChallengeGetOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ChallengeGetOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeGet_Output) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ChallengeGetOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeGet_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2512,7 +3233,7 @@ func (m *ChallengeGetOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *SeasonChallengeBuyInput) Marshal() (dAtA []byte, err error) {
+func (m *SeasonChallengeBuy) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2522,12 +3243,35 @@ func (m *SeasonChallengeBuyInput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *SeasonChallengeBuyInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *SeasonChallengeBuy) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *SeasonChallengeBuyInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *SeasonChallengeBuy) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *SeasonChallengeBuy_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SeasonChallengeBuy_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *SeasonChallengeBuy_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2545,7 +3289,7 @@ func (m *SeasonChallengeBuyInput) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *SeasonChallengeBuyOutput) Marshal() (dAtA []byte, err error) {
+func (m *SeasonChallengeBuy_Output) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2555,12 +3299,12 @@ func (m *SeasonChallengeBuyOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *SeasonChallengeBuyOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *SeasonChallengeBuy_Output) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *SeasonChallengeBuyOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *SeasonChallengeBuy_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2580,7 +3324,7 @@ func (m *SeasonChallengeBuyOutput) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *ChallengeSubscriptionValidateInput) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeSubscriptionValidate) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2590,12 +3334,35 @@ func (m *ChallengeSubscriptionValidateInput) Marshal() (dAtA []byte, err error) 
 	return dAtA[:n], nil
 }
 
-func (m *ChallengeSubscriptionValidateInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeSubscriptionValidate) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ChallengeSubscriptionValidateInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeSubscriptionValidate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *ChallengeSubscriptionValidate_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ChallengeSubscriptionValidate_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ChallengeSubscriptionValidate_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2622,7 +3389,7 @@ func (m *ChallengeSubscriptionValidateInput) MarshalToSizedBuffer(dAtA []byte) (
 	return len(dAtA) - i, nil
 }
 
-func (m *ChallengeSubscriptionValidateOutput) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeSubscriptionValidate_Output) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2632,12 +3399,12 @@ func (m *ChallengeSubscriptionValidateOutput) Marshal() (dAtA []byte, err error)
 	return dAtA[:n], nil
 }
 
-func (m *ChallengeSubscriptionValidateOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeSubscriptionValidate_Output) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ChallengeSubscriptionValidateOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeSubscriptionValidate_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2657,7 +3424,7 @@ func (m *ChallengeSubscriptionValidateOutput) MarshalToSizedBuffer(dAtA []byte) 
 	return len(dAtA) - i, nil
 }
 
-func (m *ChallengeSubscriptionCloseInput) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeSubscriptionClose) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2667,12 +3434,35 @@ func (m *ChallengeSubscriptionCloseInput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ChallengeSubscriptionCloseInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeSubscriptionClose) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ChallengeSubscriptionCloseInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeSubscriptionClose) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *ChallengeSubscriptionClose_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ChallengeSubscriptionClose_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ChallengeSubscriptionClose_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2685,7 +3475,7 @@ func (m *ChallengeSubscriptionCloseInput) MarshalToSizedBuffer(dAtA []byte) (int
 	return len(dAtA) - i, nil
 }
 
-func (m *ChallengeSubscriptionCloseOutput) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeSubscriptionClose_Output) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2695,12 +3485,12 @@ func (m *ChallengeSubscriptionCloseOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ChallengeSubscriptionCloseOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeSubscriptionClose_Output) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ChallengeSubscriptionCloseOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeSubscriptionClose_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2720,7 +3510,7 @@ func (m *ChallengeSubscriptionCloseOutput) MarshalToSizedBuffer(dAtA []byte) (in
 	return len(dAtA) - i, nil
 }
 
-func (m *TeamListInput) Marshal() (dAtA []byte, err error) {
+func (m *TeamList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2730,12 +3520,35 @@ func (m *TeamListInput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *TeamListInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *TeamList) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *TeamListInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *TeamList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *TeamList_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TeamList_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamList_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2748,7 +3561,7 @@ func (m *TeamListInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *TeamListOutput) Marshal() (dAtA []byte, err error) {
+func (m *TeamList_Output) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2758,12 +3571,12 @@ func (m *TeamListOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *TeamListOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *TeamList_Output) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *TeamListOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *TeamList_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2785,7 +3598,7 @@ func (m *TeamListOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *UserSetPreferencesInput) Marshal() (dAtA []byte, err error) {
+func (m *UserSetPreferences) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2795,12 +3608,35 @@ func (m *UserSetPreferencesInput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *UserSetPreferencesInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *UserSetPreferences) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *UserSetPreferencesInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *UserSetPreferences) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *UserSetPreferences_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UserSetPreferences_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UserSetPreferences_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2813,7 +3649,7 @@ func (m *UserSetPreferencesInput) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *UserSetPreferencesOutput) Marshal() (dAtA []byte, err error) {
+func (m *UserSetPreferences_Output) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2823,12 +3659,12 @@ func (m *UserSetPreferencesOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *UserSetPreferencesOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *UserSetPreferences_Output) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *UserSetPreferencesOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *UserSetPreferences_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2836,7 +3672,7 @@ func (m *UserSetPreferencesOutput) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *UserDeleteAccountInput) Marshal() (dAtA []byte, err error) {
+func (m *UserDeleteAccount) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2846,12 +3682,35 @@ func (m *UserDeleteAccountInput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *UserDeleteAccountInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *UserDeleteAccount) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *UserDeleteAccountInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *UserDeleteAccount) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *UserDeleteAccount_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UserDeleteAccount_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UserDeleteAccount_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2866,7 +3725,7 @@ func (m *UserDeleteAccountInput) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
-func (m *UserDeleteAccountOutput) Marshal() (dAtA []byte, err error) {
+func (m *UserDeleteAccount_Output) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2876,12 +3735,12 @@ func (m *UserDeleteAccountOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *UserDeleteAccountOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *UserDeleteAccount_Output) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *UserDeleteAccountOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *UserDeleteAccount_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2889,7 +3748,7 @@ func (m *UserDeleteAccountOutput) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *OrganizationListInput) Marshal() (dAtA []byte, err error) {
+func (m *OrganizationList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2899,12 +3758,12 @@ func (m *OrganizationListInput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *OrganizationListInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *OrganizationList) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *OrganizationListInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *OrganizationList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2912,7 +3771,7 @@ func (m *OrganizationListInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *OrganizationListOutput) Marshal() (dAtA []byte, err error) {
+func (m *OrganizationList_Input) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2922,49 +3781,12 @@ func (m *OrganizationListOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *OrganizationListOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *OrganizationList_Input) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *OrganizationListOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Items) > 0 {
-		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintPwengine(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0xa
-		}
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *ChallengeListInput) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *ChallengeListInput) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ChallengeListInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *OrganizationList_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2972,7 +3794,7 @@ func (m *ChallengeListInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *ChallengeListOutput) Marshal() (dAtA []byte, err error) {
+func (m *OrganizationList_Output) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2982,12 +3804,12 @@ func (m *ChallengeListOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ChallengeListOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *OrganizationList_Output) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ChallengeListOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *OrganizationList_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3009,7 +3831,7 @@ func (m *ChallengeListOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *UserGetSessionInput) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3019,12 +3841,12 @@ func (m *UserGetSessionInput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *UserGetSessionInput) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeList) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *UserGetSessionInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3032,7 +3854,7 @@ func (m *UserGetSessionInput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *UserGetSessionOutput) Marshal() (dAtA []byte, err error) {
+func (m *ChallengeList_Input) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3042,12 +3864,118 @@ func (m *UserGetSessionOutput) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *UserGetSessionOutput) MarshalTo(dAtA []byte) (int, error) {
+func (m *ChallengeList_Input) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *UserGetSessionOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ChallengeList_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *ChallengeList_Output) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ChallengeList_Output) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ChallengeList_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintPwengine(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UserGetSession) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UserGetSession) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UserGetSession) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *UserGetSession_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UserGetSession_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UserGetSession_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *UserGetSession_Output) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UserGetSession_Output) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UserGetSession_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3108,7 +4036,7 @@ func (m *UserGetSessionOutput) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *UserGetSessionOutput_SeasonAndTeam) Marshal() (dAtA []byte, err error) {
+func (m *UserGetSession_Output_SeasonAndTeam) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3118,12 +4046,12 @@ func (m *UserGetSessionOutput_SeasonAndTeam) Marshal() (dAtA []byte, err error) 
 	return dAtA[:n], nil
 }
 
-func (m *UserGetSessionOutput_SeasonAndTeam) MarshalTo(dAtA []byte) (int, error) {
+func (m *UserGetSession_Output_SeasonAndTeam) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *UserGetSessionOutput_SeasonAndTeam) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *UserGetSession_Output_SeasonAndTeam) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3165,7 +4093,7 @@ func (m *UserGetSessionOutput_SeasonAndTeam) MarshalToSizedBuffer(dAtA []byte) (
 	return len(dAtA) - i, nil
 }
 
-func (m *Status) Marshal() (dAtA []byte, err error) {
+func (m *GetStatus) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3175,12 +4103,58 @@ func (m *Status) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Status) MarshalTo(dAtA []byte) (int, error) {
+func (m *GetStatus) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Status) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *GetStatus) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *GetStatus_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetStatus_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetStatus_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *GetStatus_Output) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetStatus_Output) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetStatus_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3198,7 +4172,7 @@ func (m *Status) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *Info) Marshal() (dAtA []byte, err error) {
+func (m *GetInfo) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3208,12 +4182,58 @@ func (m *Info) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Info) MarshalTo(dAtA []byte) (int, error) {
+func (m *GetInfo) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Info) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *GetInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *GetInfo_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetInfo_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetInfo_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *GetInfo_Output) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetInfo_Output) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetInfo_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3288,7 +4308,16 @@ func encodeVarintPwengine(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *TeamGetInput) Size() (n int) {
+func (m *TeamGet) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *TeamGet_Input) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3300,7 +4329,7 @@ func (m *TeamGetInput) Size() (n int) {
 	return n
 }
 
-func (m *TeamGetOutput) Size() (n int) {
+func (m *TeamGet_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3313,7 +4342,16 @@ func (m *TeamGetOutput) Size() (n int) {
 	return n
 }
 
-func (m *SeasonChallengeListInput) Size() (n int) {
+func (m *SeasonChallengeList) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *SeasonChallengeList_Input) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3325,7 +4363,7 @@ func (m *SeasonChallengeListInput) Size() (n int) {
 	return n
 }
 
-func (m *SeasonChallengeListOutput) Size() (n int) {
+func (m *SeasonChallengeList_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3340,7 +4378,16 @@ func (m *SeasonChallengeListOutput) Size() (n int) {
 	return n
 }
 
-func (m *SeasonChallengeGetInput) Size() (n int) {
+func (m *SeasonChallengeGet) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *SeasonChallengeGet_Input) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3352,7 +4399,7 @@ func (m *SeasonChallengeGetInput) Size() (n int) {
 	return n
 }
 
-func (m *SeasonChallengeGetOutput) Size() (n int) {
+func (m *SeasonChallengeGet_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3365,7 +4412,16 @@ func (m *SeasonChallengeGetOutput) Size() (n int) {
 	return n
 }
 
-func (m *ChallengeGetInput) Size() (n int) {
+func (m *ChallengeGet) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *ChallengeGet_Input) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3377,7 +4433,7 @@ func (m *ChallengeGetInput) Size() (n int) {
 	return n
 }
 
-func (m *ChallengeGetOutput) Size() (n int) {
+func (m *ChallengeGet_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3390,7 +4446,16 @@ func (m *ChallengeGetOutput) Size() (n int) {
 	return n
 }
 
-func (m *SeasonChallengeBuyInput) Size() (n int) {
+func (m *SeasonChallengeBuy) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *SeasonChallengeBuy_Input) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3405,7 +4470,7 @@ func (m *SeasonChallengeBuyInput) Size() (n int) {
 	return n
 }
 
-func (m *SeasonChallengeBuyOutput) Size() (n int) {
+func (m *SeasonChallengeBuy_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3418,7 +4483,16 @@ func (m *SeasonChallengeBuyOutput) Size() (n int) {
 	return n
 }
 
-func (m *ChallengeSubscriptionValidateInput) Size() (n int) {
+func (m *ChallengeSubscriptionValidate) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *ChallengeSubscriptionValidate_Input) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3438,7 +4512,7 @@ func (m *ChallengeSubscriptionValidateInput) Size() (n int) {
 	return n
 }
 
-func (m *ChallengeSubscriptionValidateOutput) Size() (n int) {
+func (m *ChallengeSubscriptionValidate_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3451,7 +4525,16 @@ func (m *ChallengeSubscriptionValidateOutput) Size() (n int) {
 	return n
 }
 
-func (m *ChallengeSubscriptionCloseInput) Size() (n int) {
+func (m *ChallengeSubscriptionClose) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *ChallengeSubscriptionClose_Input) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3463,7 +4546,7 @@ func (m *ChallengeSubscriptionCloseInput) Size() (n int) {
 	return n
 }
 
-func (m *ChallengeSubscriptionCloseOutput) Size() (n int) {
+func (m *ChallengeSubscriptionClose_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3476,7 +4559,16 @@ func (m *ChallengeSubscriptionCloseOutput) Size() (n int) {
 	return n
 }
 
-func (m *TeamListInput) Size() (n int) {
+func (m *TeamList) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *TeamList_Input) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3488,7 +4580,7 @@ func (m *TeamListInput) Size() (n int) {
 	return n
 }
 
-func (m *TeamListOutput) Size() (n int) {
+func (m *TeamList_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3503,7 +4595,16 @@ func (m *TeamListOutput) Size() (n int) {
 	return n
 }
 
-func (m *UserSetPreferencesInput) Size() (n int) {
+func (m *UserSetPreferences) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *UserSetPreferences_Input) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3515,7 +4616,7 @@ func (m *UserSetPreferencesInput) Size() (n int) {
 	return n
 }
 
-func (m *UserSetPreferencesOutput) Size() (n int) {
+func (m *UserSetPreferences_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3524,7 +4625,16 @@ func (m *UserSetPreferencesOutput) Size() (n int) {
 	return n
 }
 
-func (m *UserDeleteAccountInput) Size() (n int) {
+func (m *UserDeleteAccount) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *UserDeleteAccount_Input) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3537,7 +4647,7 @@ func (m *UserDeleteAccountInput) Size() (n int) {
 	return n
 }
 
-func (m *UserDeleteAccountOutput) Size() (n int) {
+func (m *UserDeleteAccount_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3546,7 +4656,7 @@ func (m *UserDeleteAccountOutput) Size() (n int) {
 	return n
 }
 
-func (m *OrganizationListInput) Size() (n int) {
+func (m *OrganizationList) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3555,22 +4665,7 @@ func (m *OrganizationListInput) Size() (n int) {
 	return n
 }
 
-func (m *OrganizationListOutput) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if len(m.Items) > 0 {
-		for _, e := range m.Items {
-			l = e.Size()
-			n += 1 + l + sovPwengine(uint64(l))
-		}
-	}
-	return n
-}
-
-func (m *ChallengeListInput) Size() (n int) {
+func (m *OrganizationList_Input) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3579,7 +4674,7 @@ func (m *ChallengeListInput) Size() (n int) {
 	return n
 }
 
-func (m *ChallengeListOutput) Size() (n int) {
+func (m *OrganizationList_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3594,7 +4689,7 @@ func (m *ChallengeListOutput) Size() (n int) {
 	return n
 }
 
-func (m *UserGetSessionInput) Size() (n int) {
+func (m *ChallengeList) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3603,7 +4698,49 @@ func (m *UserGetSessionInput) Size() (n int) {
 	return n
 }
 
-func (m *UserGetSessionOutput) Size() (n int) {
+func (m *ChallengeList_Input) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *ChallengeList_Output) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for _, e := range m.Items {
+			l = e.Size()
+			n += 1 + l + sovPwengine(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *UserGetSession) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *UserGetSession_Input) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *UserGetSession_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3632,7 +4769,7 @@ func (m *UserGetSessionOutput) Size() (n int) {
 	return n
 }
 
-func (m *UserGetSessionOutput_SeasonAndTeam) Size() (n int) {
+func (m *UserGetSession_Output_SeasonAndTeam) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3652,7 +4789,25 @@ func (m *UserGetSessionOutput_SeasonAndTeam) Size() (n int) {
 	return n
 }
 
-func (m *Status) Size() (n int) {
+func (m *GetStatus) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *GetStatus_Input) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *GetStatus_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3664,7 +4819,25 @@ func (m *Status) Size() (n int) {
 	return n
 }
 
-func (m *Info) Size() (n int) {
+func (m *GetInfo) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *GetInfo_Input) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *GetInfo_Output) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3707,7 +4880,7 @@ func sovPwengine(x uint64) (n int) {
 func sozPwengine(x uint64) (n int) {
 	return sovPwengine(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *TeamGetInput) Unmarshal(dAtA []byte) error {
+func (m *TeamGet) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3730,10 +4903,63 @@ func (m *TeamGetInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: TeamGetInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: TeamGet: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TeamGetInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: TeamGet: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TeamGet_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3779,7 +5005,7 @@ func (m *TeamGetInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *TeamGetOutput) Unmarshal(dAtA []byte) error {
+func (m *TeamGet_Output) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3802,10 +5028,10 @@ func (m *TeamGetOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: TeamGetOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TeamGetOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3868,7 +5094,7 @@ func (m *TeamGetOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *SeasonChallengeListInput) Unmarshal(dAtA []byte) error {
+func (m *SeasonChallengeList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3891,10 +5117,63 @@ func (m *SeasonChallengeListInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: SeasonChallengeListInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: SeasonChallengeList: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: SeasonChallengeListInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: SeasonChallengeList: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SeasonChallengeList_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3940,7 +5219,7 @@ func (m *SeasonChallengeListInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *SeasonChallengeListOutput) Unmarshal(dAtA []byte) error {
+func (m *SeasonChallengeList_Output) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3963,10 +5242,10 @@ func (m *SeasonChallengeListOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: SeasonChallengeListOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: SeasonChallengeListOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4027,7 +5306,7 @@ func (m *SeasonChallengeListOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *SeasonChallengeGetInput) Unmarshal(dAtA []byte) error {
+func (m *SeasonChallengeGet) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4050,10 +5329,63 @@ func (m *SeasonChallengeGetInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: SeasonChallengeGetInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: SeasonChallengeGet: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: SeasonChallengeGetInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: SeasonChallengeGet: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SeasonChallengeGet_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4099,7 +5431,7 @@ func (m *SeasonChallengeGetInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *SeasonChallengeGetOutput) Unmarshal(dAtA []byte) error {
+func (m *SeasonChallengeGet_Output) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4122,10 +5454,10 @@ func (m *SeasonChallengeGetOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: SeasonChallengeGetOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: SeasonChallengeGetOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4188,7 +5520,7 @@ func (m *SeasonChallengeGetOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ChallengeGetInput) Unmarshal(dAtA []byte) error {
+func (m *ChallengeGet) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4211,10 +5543,63 @@ func (m *ChallengeGetInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ChallengeGetInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: ChallengeGet: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ChallengeGetInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ChallengeGet: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ChallengeGet_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4260,7 +5645,7 @@ func (m *ChallengeGetInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ChallengeGetOutput) Unmarshal(dAtA []byte) error {
+func (m *ChallengeGet_Output) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4283,10 +5668,10 @@ func (m *ChallengeGetOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ChallengeGetOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ChallengeGetOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4349,7 +5734,7 @@ func (m *ChallengeGetOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *SeasonChallengeBuyInput) Unmarshal(dAtA []byte) error {
+func (m *SeasonChallengeBuy) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4372,10 +5757,63 @@ func (m *SeasonChallengeBuyInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: SeasonChallengeBuyInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: SeasonChallengeBuy: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: SeasonChallengeBuyInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: SeasonChallengeBuy: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SeasonChallengeBuy_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4440,7 +5878,7 @@ func (m *SeasonChallengeBuyInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *SeasonChallengeBuyOutput) Unmarshal(dAtA []byte) error {
+func (m *SeasonChallengeBuy_Output) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4463,10 +5901,10 @@ func (m *SeasonChallengeBuyOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: SeasonChallengeBuyOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: SeasonChallengeBuyOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4529,7 +5967,7 @@ func (m *SeasonChallengeBuyOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ChallengeSubscriptionValidateInput) Unmarshal(dAtA []byte) error {
+func (m *ChallengeSubscriptionValidate) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4552,10 +5990,63 @@ func (m *ChallengeSubscriptionValidateInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ChallengeSubscriptionValidateInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: ChallengeSubscriptionValidate: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ChallengeSubscriptionValidateInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ChallengeSubscriptionValidate: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ChallengeSubscriptionValidate_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4665,7 +6156,7 @@ func (m *ChallengeSubscriptionValidateInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ChallengeSubscriptionValidateOutput) Unmarshal(dAtA []byte) error {
+func (m *ChallengeSubscriptionValidate_Output) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4688,10 +6179,10 @@ func (m *ChallengeSubscriptionValidateOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ChallengeSubscriptionValidateOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ChallengeSubscriptionValidateOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4754,7 +6245,7 @@ func (m *ChallengeSubscriptionValidateOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ChallengeSubscriptionCloseInput) Unmarshal(dAtA []byte) error {
+func (m *ChallengeSubscriptionClose) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4777,10 +6268,63 @@ func (m *ChallengeSubscriptionCloseInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ChallengeSubscriptionCloseInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: ChallengeSubscriptionClose: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ChallengeSubscriptionCloseInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ChallengeSubscriptionClose: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ChallengeSubscriptionClose_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4826,7 +6370,7 @@ func (m *ChallengeSubscriptionCloseInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ChallengeSubscriptionCloseOutput) Unmarshal(dAtA []byte) error {
+func (m *ChallengeSubscriptionClose_Output) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4849,10 +6393,10 @@ func (m *ChallengeSubscriptionCloseOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ChallengeSubscriptionCloseOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ChallengeSubscriptionCloseOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4915,7 +6459,7 @@ func (m *ChallengeSubscriptionCloseOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *TeamListInput) Unmarshal(dAtA []byte) error {
+func (m *TeamList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4938,10 +6482,63 @@ func (m *TeamListInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: TeamListInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: TeamList: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TeamListInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: TeamList: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TeamList_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4987,7 +6584,7 @@ func (m *TeamListInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *TeamListOutput) Unmarshal(dAtA []byte) error {
+func (m *TeamList_Output) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5010,10 +6607,10 @@ func (m *TeamListOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: TeamListOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: TeamListOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -5074,7 +6671,7 @@ func (m *TeamListOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *UserSetPreferencesInput) Unmarshal(dAtA []byte) error {
+func (m *UserSetPreferences) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5097,10 +6694,63 @@ func (m *UserSetPreferencesInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: UserSetPreferencesInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: UserSetPreferences: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: UserSetPreferencesInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: UserSetPreferences: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UserSetPreferences_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -5146,7 +6796,7 @@ func (m *UserSetPreferencesInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *UserSetPreferencesOutput) Unmarshal(dAtA []byte) error {
+func (m *UserSetPreferences_Output) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5169,10 +6819,10 @@ func (m *UserSetPreferencesOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: UserSetPreferencesOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: UserSetPreferencesOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -5199,7 +6849,7 @@ func (m *UserSetPreferencesOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *UserDeleteAccountInput) Unmarshal(dAtA []byte) error {
+func (m *UserDeleteAccount) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5222,10 +6872,63 @@ func (m *UserDeleteAccountInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: UserDeleteAccountInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: UserDeleteAccount: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: UserDeleteAccountInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: UserDeleteAccount: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UserDeleteAccount_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -5284,7 +6987,7 @@ func (m *UserDeleteAccountInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *UserDeleteAccountOutput) Unmarshal(dAtA []byte) error {
+func (m *UserDeleteAccount_Output) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5307,10 +7010,10 @@ func (m *UserDeleteAccountOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: UserDeleteAccountOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: UserDeleteAccountOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -5337,7 +7040,7 @@ func (m *UserDeleteAccountOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *OrganizationListInput) Unmarshal(dAtA []byte) error {
+func (m *OrganizationList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5360,10 +7063,10 @@ func (m *OrganizationListInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: OrganizationListInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: OrganizationList: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: OrganizationListInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: OrganizationList: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -5390,7 +7093,7 @@ func (m *OrganizationListInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *OrganizationListOutput) Unmarshal(dAtA []byte) error {
+func (m *OrganizationList_Input) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5413,10 +7116,63 @@ func (m *OrganizationListOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: OrganizationListOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: OrganizationListOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *OrganizationList_Output) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -5477,7 +7233,7 @@ func (m *OrganizationListOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ChallengeListInput) Unmarshal(dAtA []byte) error {
+func (m *ChallengeList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5500,10 +7256,10 @@ func (m *ChallengeListInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ChallengeListInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: ChallengeList: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ChallengeListInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ChallengeList: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -5530,7 +7286,7 @@ func (m *ChallengeListInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ChallengeListOutput) Unmarshal(dAtA []byte) error {
+func (m *ChallengeList_Input) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5553,10 +7309,63 @@ func (m *ChallengeListOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ChallengeListOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ChallengeListOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ChallengeList_Output) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -5617,7 +7426,7 @@ func (m *ChallengeListOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *UserGetSessionInput) Unmarshal(dAtA []byte) error {
+func (m *UserGetSession) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5640,10 +7449,10 @@ func (m *UserGetSessionInput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: UserGetSessionInput: wiretype end group for non-group")
+			return fmt.Errorf("proto: UserGetSession: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: UserGetSessionInput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: UserGetSession: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -5670,7 +7479,7 @@ func (m *UserGetSessionInput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *UserGetSessionOutput) Unmarshal(dAtA []byte) error {
+func (m *UserGetSession_Input) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5693,10 +7502,63 @@ func (m *UserGetSessionOutput) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: UserGetSessionOutput: wiretype end group for non-group")
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: UserGetSessionOutput: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UserGetSession_Output) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -5839,7 +7701,7 @@ func (m *UserGetSessionOutput) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Seasons = append(m.Seasons, &UserGetSessionOutput_SeasonAndTeam{})
+			m.Seasons = append(m.Seasons, &UserGetSession_Output_SeasonAndTeam{})
 			if err := m.Seasons[len(m.Seasons)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -5868,7 +7730,7 @@ func (m *UserGetSessionOutput) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *UserGetSessionOutput_SeasonAndTeam) Unmarshal(dAtA []byte) error {
+func (m *UserGetSession_Output_SeasonAndTeam) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -6013,7 +7875,7 @@ func (m *UserGetSessionOutput_SeasonAndTeam) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Status) Unmarshal(dAtA []byte) error {
+func (m *GetStatus) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -6036,10 +7898,116 @@ func (m *Status) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Status: wiretype end group for non-group")
+			return fmt.Errorf("proto: GetStatus: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Status: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: GetStatus: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetStatus_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetStatus_Output) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -6086,7 +8054,7 @@ func (m *Status) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Info) Unmarshal(dAtA []byte) error {
+func (m *GetInfo) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -6109,10 +8077,116 @@ func (m *Info) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Info: wiretype end group for non-group")
+			return fmt.Errorf("proto: GetInfo: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Info: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: GetInfo: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetInfo_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetInfo_Output) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

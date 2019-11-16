@@ -22,26 +22,26 @@ func TestEngine_TeamGet(t *testing.T) {
 
 	var tests = []struct {
 		name                     string
-		input                    *TeamGetInput
+		input                    *TeamGet_Input
 		expectedErr              error
 		expectedOrganizationName string
 		expectedSeasonName       string
 	}{
 		{
 			"empty",
-			&TeamGetInput{},
+			&TeamGet_Input{},
 			ErrMissingArgument,
 			"",
 			"",
 		}, {
 			"unknown-season-id",
-			&TeamGetInput{TeamID: -42}, // -42 should not exists
+			&TeamGet_Input{TeamID: -42}, // -42 should not exists
 			ErrInvalidArgument,
 			"",
 			"",
 		}, {
 			"Staff",
-			&TeamGetInput{TeamID: organizations["Staff"]},
+			&TeamGet_Input{TeamID: organizations["Staff"]},
 			nil,
 			"Staff",
 			"Solo Mode",

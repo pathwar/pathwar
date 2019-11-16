@@ -12,12 +12,14 @@ option (gogoproto.sizer_all) = true;
 option (gogoproto.marshaler_all) = true;
 option (gogoproto.unmarshaler_all) = true;
 
-service Composer {
-  // Verify the service is up and running
-  rpc Up(UpRequest) returns (UpReply) {
-    option (google.api.http) = {get: "/ping"};
-  };
-}
+//service Composer {
+//  // Verify the service is up and running
+//  rpc Up(Up.Input) returns (Up.Output) {
+//    option (google.api.http) = {get: "/ping"};
+//  };
+//}
 
-message UpRequest {}
-message UpReply {}
+//message Up {
+//  message Input {}
+//  message Output {}
+//}

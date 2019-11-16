@@ -26,28 +26,28 @@ func TestEngine_SeasonChallengeList(t *testing.T) {
 
 	var tests = []struct {
 		name          string
-		input         *SeasonChallengeListInput
+		input         *SeasonChallengeList_Input
 		expectedErr   error
 		expectedItems int
 	}{
 		{
 			"empty",
-			&SeasonChallengeListInput{},
+			&SeasonChallengeList_Input{},
 			ErrMissingArgument,
 			0,
 		}, {
 			"unknown-season-id",
-			&SeasonChallengeListInput{SeasonID: -42}, // -42 should not exists
+			&SeasonChallengeList_Input{SeasonID: -42}, // -42 should not exists
 			ErrInvalidArgument,
 			0,
 		}, {
 			"solo-mode",
-			&SeasonChallengeListInput{SeasonID: seasons["Solo Mode"]},
+			&SeasonChallengeList_Input{SeasonID: seasons["Solo Mode"]},
 			nil,
 			5,
 		}, {
 			"test-season",
-			&SeasonChallengeListInput{SeasonID: seasons["Test Season"]},
+			&SeasonChallengeList_Input{SeasonID: seasons["Test Season"]},
 			ErrInvalidArgument,
 			0,
 		},

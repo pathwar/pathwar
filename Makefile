@@ -13,6 +13,7 @@ recursive_install:
 .PHONY: recursive_test
 recursive_test:
 	cd go; make test
+	cd web; make test
 
 .PHONY: recursive_bumpdeps
 recursive_bumpdeps:

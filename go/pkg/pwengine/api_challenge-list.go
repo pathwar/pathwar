@@ -5,10 +5,10 @@ import (
 	"fmt"
 )
 
-func (e *engine) ChallengeList(context.Context, *ChallengeListInput) (*ChallengeListOutput, error) {
+func (e *engine) ChallengeList(context.Context, *ChallengeList_Input) (*ChallengeList_Output, error) {
 	return nil, fmt.Errorf("admin call (deprecated)")
 
-	var challenges ChallengeListOutput
+	var challenges ChallengeList_Output
 	err := e.db.
 		Preload("Flavors").
 		Find(&challenges.Items).Error

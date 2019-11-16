@@ -15,15 +15,7 @@ definitions:
     enum:
     - Unknown
     type: string
-  SeasonVisibility:
-    default: UnknownVisibility
-    enum:
-    - UnknownVisibility
-    - Private
-    - Unlisted
-    - Public
-    type: string
-  UserGetSessionOutputSeasonAndTeam:
+  OutputSeasonAndTeam:
     properties:
       is_active:
         format: boolean
@@ -33,6 +25,14 @@ definitions:
       team:
         $ref: '#/definitions/dbTeam'
     type: object
+  SeasonVisibility:
+    default: UnknownVisibility
+    enum:
+    - UnknownVisibility
+    - Private
+    - Unlisted
+    - Public
+    type: string
   dbAchievement:
     properties:
       argument:
@@ -854,6 +854,26 @@ definitions:
       challenge_validation:
         $ref: '#/definitions/dbChallengeValidation'
     type: object
+  engineGetInfoOutput:
+    properties:
+      built_at:
+        type: string
+      built_by:
+        type: string
+      commit:
+        type: string
+      uptime:
+        format: int32
+        type: integer
+      version:
+        type: string
+    type: object
+  engineGetStatusOutput:
+    properties:
+      everything_is_ok:
+        format: boolean
+        type: boolean
+    type: object
   engineOrganizationListOutput:
     properties:
       items:
@@ -918,7 +938,7 @@ definitions:
         type: integer
       seasons:
         items:
-          $ref: '#/definitions/UserGetSessionOutputSeasonAndTeam'
+          $ref: '#/definitions/OutputSeasonAndTeam'
         type: array
       user:
         $ref: '#/definitions/dbUser'
@@ -934,26 +954,6 @@ definitions:
   engineVoid:
     example: {}
     title: Void is an empty message
-    type: object
-  pathwarengineInfo:
-    properties:
-      built_at:
-        type: string
-      built_by:
-        type: string
-      commit:
-        type: string
-      uptime:
-        format: int32
-        type: integer
-      version:
-        type: string
-    type: object
-  pathwarengineStatus:
-    properties:
-      everything_is_ok:
-        format: boolean
-        type: boolean
     type: object
   ssoActionToken:
     properties:
@@ -1124,7 +1124,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/pathwarengineInfo'
+            $ref: '#/definitions/engineGetInfoOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1256,7 +1256,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/pathwarengineStatus'
+            $ref: '#/definitions/engineGetStatusOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.

@@ -23,36 +23,36 @@ func TestEngine_ChallengeBuy(t *testing.T) {
 	activeTeam := session.User.ActiveTeamMember.Team
 
 	// fetch challenges
-	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeListInput{solo.ID})
+	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
 
 	var tests = []struct {
 		name        string
-		input       *SeasonChallengeBuyInput
+		input       *SeasonChallengeBuy_Input
 		expectedErr error
 	}{
 		{"nil", nil, ErrMissingArgument},
-		{"empty", &SeasonChallengeBuyInput{}, ErrMissingArgument},
+		{"empty", &SeasonChallengeBuy_Input{}, ErrMissingArgument},
 		{
 			"invalid season challenge ID",
-			&SeasonChallengeBuyInput{SeasonChallengeID: 42, TeamID: activeTeam.ID},
+			&SeasonChallengeBuy_Input{SeasonChallengeID: 42, TeamID: activeTeam.ID},
 			ErrInvalidArgument,
 		},
 		{
 			"invalid team ID",
-			&SeasonChallengeBuyInput{SeasonChallengeID: challenges.Items[0].ID, TeamID: 42},
+			&SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: 42},
 			ErrInvalidArgument,
 		},
 		{
 			"valid 1",
-			&SeasonChallengeBuyInput{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID},
+			&SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID},
 			nil,
 		},
 		{
 			"valid 2 (duplicate)",
-			&SeasonChallengeBuyInput{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID},
+			&SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID},
 			ErrDuplicate,
 		},
 		// FIXME: check for a team and a challenge in different seasons
@@ -80,7 +80,7 @@ func TestEngine_ChallengeBuy(t *testing.T) {
 		}
 
 		// check if challenge subscription is now visible in season challenge list
-		challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeListInput{solo.ID})
+		challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
 		if err != nil {
 			t.Fatalf("err: %v", err)
 		}

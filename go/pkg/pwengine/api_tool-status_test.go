@@ -17,7 +17,7 @@ func TestEngine_GetStatus(t *testing.T) {
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
-	expected := &Status{
+	expected := &GetStatus_Output{
 		EverythingIsOK: true,
 	}
 	if !reflect.DeepEqual(expected, status) {

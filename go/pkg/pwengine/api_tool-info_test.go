@@ -17,7 +17,7 @@ func TestEngine_ToolInfo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
-	expected := &Info{
+	expected := &GetInfo_Output{
 		Version: "dev",
 		Commit:  "n/a",
 		BuiltAt: "n/a",

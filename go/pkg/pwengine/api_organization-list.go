@@ -5,8 +5,8 @@ import (
 	"fmt"
 )
 
-func (e *engine) OrganizationList(context.Context, *OrganizationListInput) (*OrganizationListOutput, error) {
-	var organizations OrganizationListOutput
+func (e *engine) OrganizationList(context.Context, *OrganizationList_Input) (*OrganizationList_Output, error) {
+	var organizations OrganizationList_Output
 	err := e.db.
 		Set("gorm:auto_preload", true). // FIXME: explicit preloading
 		Find(&organizations.Items).Error
