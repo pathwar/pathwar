@@ -31,10 +31,11 @@ import (
 )
 
 const (
-	defaultSSOPubKey   = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlEFxLlywsbI5BQ7DVkA66fICWGIYPpD+aZNYRR7SIc0zdtJR4xMOt5CjM0vbYT4z2a1U2yl0ewunyxFm8niS8w6mKYFnOS4nnSchQyIAmJkpLC4eAjijCdEHdr8mSqamThSrVRGSYEEsa+adidC13kRDy7NDKhvZb8F0YqnktNk6WHSlb8r2QRLPJ1DX534jjXPY6l/eoHuLJAOZxBlfwV5Dg37TVmf2xAH812E7ZigycLAvhsMvr5x2jLavAEEnZZmlQf4cyQ4tlMzKS1Zp0NcdOGS/i6lrndc5pNtZQuGr8IGBrEbTRFUiavn/HDnyalYZy8T5LakXRdVaKdshAQIDAQAB"
-	defaultSSORealm    = "Pathwar-Dev"
-	defaultSSOClientID = "platform-cli"
-	defaultDBURN       = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8&parseTime=true"
+	defaultSSOPubKey    = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlEFxLlywsbI5BQ7DVkA66fICWGIYPpD+aZNYRR7SIc0zdtJR4xMOt5CjM0vbYT4z2a1U2yl0ewunyxFm8niS8w6mKYFnOS4nnSchQyIAmJkpLC4eAjijCdEHdr8mSqamThSrVRGSYEEsa+adidC13kRDy7NDKhvZb8F0YqnktNk6WHSlb8r2QRLPJ1DX534jjXPY6l/eoHuLJAOZxBlfwV5Dg37TVmf2xAH812E7ZigycLAvhsMvr5x2jLavAEEnZZmlQf4cyQ4tlMzKS1Zp0NcdOGS/i6lrndc5pNtZQuGr8IGBrEbTRFUiavn/HDnyalYZy8T5LakXRdVaKdshAQIDAQAB"
+	defaultSSORealm     = "Pathwar-Dev"
+	defaultSSOClientID  = "platform-cli"
+	defaultDBURN        = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8&parseTime=true"
+	defaultDockerPrefix = "pathwar/"
 )
 
 var (
@@ -64,6 +65,7 @@ var (
 	// compose prepare flags
 	composePrepareFlags  = flag.NewFlagSet("compose prepare", flag.ExitOnError)
 	composePrepareNoPush = composePrepareFlags.Bool("no-push", false, "don't push images")
+	composePreparePrefix = composePrepareFlags.String("prefix", defaultDockerPrefix, "docker image prefix")
 
 	// compose up flags
 	composeUpFlags       = flag.NewFlagSet("compose up", flag.ExitOnError)
@@ -106,7 +108,7 @@ func main() {
 		if *globalDebug {
 			config := zap.NewDevelopmentConfig()
 			config.Level.SetLevel(zap.DebugLevel)
-			config.DisableStacktrace = false
+			config.DisableStacktrace = true
 			config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 			var err error
 			logger, err = config.Build()
@@ -390,6 +392,7 @@ func main() {
 			}
 			return pwcompose.Prepare(
 				path,
+				*composePreparePrefix,
 				*composePrepareNoPush,
 				logger,
 			)

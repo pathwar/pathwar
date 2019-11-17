@@ -1,76 +1,47 @@
 package pwcompose
 
-// https://github.com/digibib/docker-compose-dot/blob/master/docker-compose-dot.go
-
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 
 	"go.uber.org/zap"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
-type config struct {
-	Version  string
-	Networks map[string]network
-	Volumes  map[string]volume
-	Services map[string]service
-}
+func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger) error {
+	logger.Debug("prepare", zap.Bool("no-push", noPush), zap.String("challenge-dir", challengeDir), zap.String("prefix", prefix))
 
-type network struct {
-	Driver, External string            `yaml:",omitempty"`
-	DriverOpts       map[string]string `yaml:"driver_opts,omitempty"`
-}
-
-type volume struct {
-	Driver, External string            `yaml:",omitempty"`
-	DriverOpts       map[string]string `yaml:"driver_opts,omitempty"`
-}
-
-type service struct {
-	ContainerName                             string            `yaml:"container_name,omitempty"`
-	Image                                     string            `yaml:",omitempty"`
-	Networks, Ports, Expose, Volumes, Command []string          `yaml:",omitempty"`
-	VolumesFrom                               []string          `yaml:"volumes_from,omitempty"`
-	DependsOn                                 []string          `yaml:"depends_on,omitempty"`
-	CapAdd                                    []string          `yaml:"cap_add,omitempty"`
-	Build                                     string            `yaml:",omitempty"`
-	Environment                               map[string]string `yaml:",omitempty"`
-}
-
-type dabfile struct {
-	Services map[string]dabservice
-}
-
-type dabservice struct {
-	Image string
-}
-
-func Prepare(path string, noPush bool, logger *zap.Logger) error {
-	logger.Debug("prepare", zap.Bool("no-push", noPush), zap.String("path", path))
-
-	path = filepath.Clean(path)
-
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		logger.Fatal("wrong path: ", zap.Error(err))
+	cleanPath, err := filepath.Abs(filepath.Clean(challengeDir))
+	if err != nil {
+		return fmt.Errorf("get challenge dir: %w", err)
 	}
 
-	challengeName := filepath.Base(path)
+	var (
+		challengeName   = filepath.Base(cleanPath)
+		origComposePath = path.Join(cleanPath, "docker-compose.yml")
+		tmpComposePath  = path.Join(cleanPath, "docker-compose.tmp.yml")
+		dabPath         = path.Join(cleanPath, challengeName+".dab")
+	)
 
-	// parse yaml
-	composeData, err := ioutil.ReadFile(path + "/docker-compose.yml")
+	if _, err := os.Stat(cleanPath); os.IsNotExist(err) {
+		return fmt.Errorf("challenge dir does not exist: %w", err)
+	}
+
+	// parse docker-compose.yml file
+	composeData, err := ioutil.ReadFile(origComposePath)
 	if err != nil {
-		logger.Fatal("docker-compose.yml file not found: ", zap.Error(err))
+		return fmt.Errorf("read docker-compose.yml: %w", err)
 	}
 
 	composeStruct := config{}
 	err = yaml.Unmarshal(composeData, &composeStruct)
 	if err != nil {
-		logger.Fatal("error occured while parsing yaml: ", zap.Error(err))
+		return fmt.Errorf("parse docker-compose.yml: %w", err)
 	}
 
 	// check yaml and add image name if not defined
@@ -81,62 +52,64 @@ func Prepare(path string, noPush bool, logger *zap.Logger) error {
 		}
 	}
 
-	// Rename original docker-compose file before creating the temporary one
-	err = os.Rename(path+"/docker-compose.yml", path+"/docker-compose.yml.orig")
-	if err != nil {
-		logger.Fatal("file renaming error: ", zap.Error(err))
-	}
-
 	// create tmp docker-compose file
 	tmpData, err := yaml.Marshal(&composeStruct)
 	if err != nil {
-		logger.Fatal("error: ", zap.Error(err))
+		return fmt.Errorf("marshal config: %w", err)
 	}
-
-	tmpFile, err := os.Create(path + "/docker-compose.yml")
+	tmpFile, err := os.Create(tmpComposePath)
 	if err != nil {
-		logger.Fatal("temp file creation error: ", zap.Error(err))
+		return fmt.Errorf("create tmp compose file: %w", err)
 	}
-	tmpFile.Write(tmpData)
-	tmpFile.Sync()
+	defer func() {
+		if err = os.Remove(tmpComposePath); err != nil {
+			logger.Warn("rm tmp compose file", zap.Error(err))
+		}
+	}()
+	_, err = tmpFile.Write(tmpData)
+	if err != nil {
+		return fmt.Errorf("write tmp compose file: %w", err)
+	}
+	err = tmpFile.Sync()
+	if err != nil {
+		return fmt.Errorf("sync tmp compose file: %w", err)
+	}
+	tmpFile.Close()
 
 	// build and push images to dockerhub (don't forget to setup your credentials just type : "docker login" in bash)
-	cmd := exec.Command("docker-compose", "build")
-	cmd.Dir = path
-	out, err := cmd.Output()
+	logger.Debug("docker-compose", zap.String("-f", tmpComposePath), zap.String("action", "build"))
+	cmd := exec.Command("docker-compose", "-f", tmpComposePath, "build")
+	cmd.Dir = cleanPath
+	cmd.Stdout = os.Stderr
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
 	if err != nil {
-		logger.Fatal("docker-compose build error: ", zap.Error(err))
-	} else {
-		logger.Info("docker-compose build output: ", zap.String("bundle exec", string(out)))
+		return fmt.Errorf("docker-compose build: %w", err)
 	}
 
-	cmd = exec.Command("docker-compose", "bundle", "--push-images")
-	cmd.Dir = path
-	out, err = cmd.Output()
+	logger.Debug("docker-compose", zap.String("-f", tmpComposePath), zap.String("action", "bundle"))
+	cmd = exec.Command("docker-compose", "-f", tmpComposePath, "bundle", "--push-images")
+	cmd.Dir = cleanPath
+	cmd.Stdout = os.Stderr
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
 	if err != nil {
-		logger.Fatal("docker-compose bundle error: ", zap.Error(err))
-	} else {
-		logger.Info("bundle output: ", zap.String("bundle exec", string(out)))
+		return fmt.Errorf("docker-compose bundle: %w", err)
 	}
-
-	// rename original docker-compose file and erase tmp one
-	err = os.Rename(path+"/docker-compose.yml.orig", path+"/docker-compose.yml")
-	if err != nil {
-		logger.Fatal("file renaming error: ", zap.Error(err))
-	}
+	defer func() {
+		if err = os.Remove(dabPath); err != nil {
+			logger.Warn("rm dab file", zap.Error(err))
+		}
+	}()
 
 	// parse json from .dab file
 	composeDabfileJSON := dabfile{}
-	composeDabfile, err := ioutil.ReadFile(path + "/" + challengeName + ".dab")
+	composeDabfile, err := ioutil.ReadFile(dabPath)
 	if err != nil {
-		logger.Fatal(challengeName+".dab file not found: ", zap.Error(err))
+		return fmt.Errorf("read dab file: %w", err)
 	}
-	err = json.Unmarshal(composeDabfile, &composeDabfileJSON)
-
-	// parse .dab file from docker-compose bundle
-	composeData, err = yaml.Marshal(&composeStruct)
-	if err != nil {
-		logger.Fatal("error: ", zap.Error(err))
+	if err = json.Unmarshal(composeDabfile, &composeDabfileJSON); err != nil {
+		return fmt.Errorf("parse dab: %w", err)
 	}
 
 	// replace images from original docker-compose file with the one pushed to dockerhub
@@ -145,22 +118,14 @@ func Prepare(path string, noPush bool, logger *zap.Logger) error {
 		composeStruct.Services[name] = service
 	}
 
-	// cleanup
-	err = os.Remove(path + "/" + challengeName + ".dab")
-	if err != nil {
-		logger.Fatal("couldn't remove "+challengeName+".dab file: ", zap.Error(err))
-	}
-
 	// print yaml
-	// create tmp docker-compose file
 	finalData, err := yaml.Marshal(&composeStruct)
 	if err != nil {
-		logger.Fatal("error: ", zap.Error(err))
+		return fmt.Errorf("marshal compose file: %w", err)
 	}
-	logger.Info("final docker-compose struct: ", zap.String("docker-compose.yml", string(finalData)))
+	fmt.Println(string(finalData))
 
-	// return final docker-compose that can be used to deploy a challenge
-	return fmt.Errorf("not implemented")
+	return nil
 }
 
 func Up(preparedCompose string, instanceKey string, logger *zap.Logger) error {
