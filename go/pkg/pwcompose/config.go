@@ -27,6 +27,7 @@ type service struct {
 	CapAdd                                    []string          `yaml:"cap_add,omitempty"`
 	Build                                     string            `yaml:",omitempty"`
 	Environment                               map[string]string `yaml:",omitempty"`
+	Labels                                    map[string]string `yaml:"labels,omitempty"`
 }
 
 type dabfile struct {

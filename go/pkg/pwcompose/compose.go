@@ -14,6 +14,13 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+const (
+	labelPrefix        = "land.pathwar.compose."
+	serviceNameLabel   = labelPrefix + "service-name"
+	challengeNameLabel = labelPrefix + "challenge-name"
+	instanceKeyLabel   = labelPrefix + "instance-key"
+)
+
 func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger) error {
 	logger.Debug("prepare", zap.Bool("no-push", noPush), zap.String("challenge-dir", challengeDir), zap.String("prefix", prefix))
 
@@ -47,10 +54,15 @@ func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger
 
 	// check yaml and add image name if not defined
 	for name, service := range composeStruct.Services {
-		if len(service.Image) == 0 {
-			service.Image = prefix + challengeName + "." + name
-			composeStruct.Services[name] = service
+		if service.Image == "" {
+			service.Image = prefix + challengeName + ":" + name
 		}
+		if service.Labels == nil {
+			service.Labels = map[string]string{}
+		}
+		service.Labels[challengeNameLabel] = challengeName
+		service.Labels[serviceNameLabel] = name
+		composeStruct.Services[name] = service
 	}
 
 	// create tmp docker-compose file
@@ -146,14 +158,11 @@ func Up(preparedCompose string, instanceKey string, logger *zap.Logger) error {
 
 	// generate instanceIDs and set them as container_name
 	for name, service := range preparedComposeStruct.Services {
-		// remove image prefix for container name
-		containerName := service.Image[strings.Index(service.Image, "/")+1 : len(service.Image)]
-		// remove the sha256 part
-		containerName = strings.Replace(containerName, "@sha256:", ".", 1)
-		// cut the hash to only 6 first digits
-		containerName = containerName[0:len(containerName)-58] + "." + instanceKey
-
-		service.ContainerName = containerName
+		challengeName := service.Labels[challengeNameLabel]
+		serviceName := service.Labels[serviceNameLabel]
+		imageHash := strings.Split(service.Image, "@sha256:")[1]
+		service.ContainerName = fmt.Sprintf("%s.%s.%s.%s", challengeName, serviceName, imageHash[:6], instanceKey)
+		service.Labels[instanceKeyLabel] = instanceKey
 		preparedComposeStruct.Services[name] = service
 	}
 
