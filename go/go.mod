@@ -26,7 +26,7 @@ require (
 	google.golang.org/genproto v0.0.0-20190927181202-20e1ac93f88c
 	google.golang.org/grpc v1.24.0
 	gopkg.in/gormigrate.v1 v1.6.0
-	gopkg.in/yaml.v3 v3.0.0-20191010095647-fc94e3f71652 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20191010095647-fc94e3f71652
 	moul.io/godev v1.3.0
 	moul.io/zapgorm v0.0.0-20190706070406-8138918b527b
 )
