@@ -8,9 +8,17 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
+)
+
+const (
+	labelPrefix        = "land.pathwar.compose."
+	serviceNameLabel   = labelPrefix + "service-name"
+	challengeNameLabel = labelPrefix + "challenge-name"
+	instanceKeyLabel   = labelPrefix + "instance-key"
 )
 
 func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger) error {
@@ -46,10 +54,15 @@ func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger
 
 	// check yaml and add image name if not defined
 	for name, service := range composeStruct.Services {
-		if len(service.Image) == 0 {
-			service.Image = prefix + challengeName + "." + name
-			composeStruct.Services[name] = service
+		if service.Image == "" {
+			service.Image = prefix + challengeName + ":" + name
 		}
+		if service.Labels == nil {
+			service.Labels = map[string]string{}
+		}
+		service.Labels[challengeNameLabel] = challengeName
+		service.Labels[serviceNameLabel] = name
+		composeStruct.Services[name] = service
 	}
 
 	// create tmp docker-compose file
@@ -69,10 +82,6 @@ func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger
 	_, err = tmpFile.Write(tmpData)
 	if err != nil {
 		return fmt.Errorf("write tmp compose file: %w", err)
-	}
-	err = tmpFile.Sync()
-	if err != nil {
-		return fmt.Errorf("sync tmp compose file: %w", err)
 	}
 	tmpFile.Close()
 
@@ -119,6 +128,7 @@ func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger
 	// replace images from original docker-compose file with the one pushed to dockerhub
 	for name, service := range composeStruct.Services {
 		service.Image = composeDabfileJSON.Services[name].Image
+		service.Build = "" // ensure service only has an `image:` without a `build:`
 		composeStruct.Services[name] = service
 	}
 
@@ -138,12 +148,68 @@ func Up(preparedCompose string, instanceKey string, logger *zap.Logger) error {
 		zap.String("compose", preparedCompose),
 		zap.String("instance-key", instanceKey),
 	)
-	// parse compose labels to get flavor info
-	// generate instanceID with flavor+instanceKey
-	// exec docker-compose up -d with params
-	// print instanceID
-	// later: print instance passphrases
-	return fmt.Errorf("not implemented")
+
+	// parse prepared compose yaml
+	preparedComposeStruct := config{}
+	err := yaml.Unmarshal([]byte(preparedCompose), &preparedComposeStruct)
+	if err != nil {
+		return fmt.Errorf("parse prepared compose: %w", err)
+	}
+
+	// generate instanceIDs and set them as container_name
+	for name, service := range preparedComposeStruct.Services {
+		challengeName := service.Labels[challengeNameLabel]
+		serviceName := service.Labels[serviceNameLabel]
+		imageHash := strings.Split(service.Image, "@sha256:")[1]
+		service.ContainerName = fmt.Sprintf("%s.%s.%s.%s", challengeName, serviceName, imageHash[:6], instanceKey)
+		service.Labels[instanceKeyLabel] = instanceKey
+		preparedComposeStruct.Services[name] = service
+	}
+
+	tmpDir, err := ioutil.TempDir("", "pwcompose")
+	if err != nil {
+		return fmt.Errorf("temp dir creation: %w", err)
+	}
+	defer func() {
+		if err = os.RemoveAll(tmpDir); err != nil {
+			logger.Warn("rm tmp dir", zap.Error(err))
+		}
+	}()
+
+	tmpPreparedComposePath := filepath.Join(tmpDir, "docker-compose.yml")
+
+	// create tmp docker-compose file
+	tmpData, err := yaml.Marshal(&preparedComposeStruct)
+	if err != nil {
+		return fmt.Errorf("marshal config: %w", err)
+	}
+	tmpFile, err := os.Create(tmpPreparedComposePath)
+	if err != nil {
+		return fmt.Errorf("create tmp compose file: %w", err)
+	}
+
+	_, err = tmpFile.Write(tmpData)
+	if err != nil {
+		return fmt.Errorf("write tmp compose file: %w", err)
+	}
+	tmpFile.Close()
+
+	// start instances
+	logger.Debug("docker-compose", zap.String("action", "up"))
+	cmd := exec.Command("docker-compose", "-f", tmpPreparedComposePath, "up", "-d")
+	cmd.Stdout = os.Stderr
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		return fmt.Errorf("docker-compose up -d: %w", err)
+	}
+
+	// print instanceIDs
+	for _, service := range preparedComposeStruct.Services {
+		fmt.Println(service.ContainerName)
+	}
+
+	return nil
 }
 
 func Down(ids []string, logger *zap.Logger) error {
