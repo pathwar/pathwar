@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
@@ -70,10 +71,6 @@ func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger
 	if err != nil {
 		return fmt.Errorf("write tmp compose file: %w", err)
 	}
-	err = tmpFile.Sync()
-	if err != nil {
-		return fmt.Errorf("sync tmp compose file: %w", err)
-	}
 	tmpFile.Close()
 
 	// build and push images to dockerhub (don't forget to setup your credentials just type : "docker login" in bash)
@@ -119,6 +116,7 @@ func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger
 	// replace images from original docker-compose file with the one pushed to dockerhub
 	for name, service := range composeStruct.Services {
 		service.Image = composeDabfileJSON.Services[name].Image
+		service.Build = "" // ensure service only has an `image:` without a `build:`
 		composeStruct.Services[name] = service
 	}
 
@@ -138,12 +136,71 @@ func Up(preparedCompose string, instanceKey string, logger *zap.Logger) error {
 		zap.String("compose", preparedCompose),
 		zap.String("instance-key", instanceKey),
 	)
-	// parse compose labels to get flavor info
-	// generate instanceID with flavor+instanceKey
-	// exec docker-compose up -d with params
-	// print instanceID
-	// later: print instance passphrases
-	return fmt.Errorf("not implemented")
+
+	// parse prepared compose yaml
+	preparedComposeStruct := config{}
+	err := yaml.Unmarshal([]byte(preparedCompose), &preparedComposeStruct)
+	if err != nil {
+		return fmt.Errorf("parse prepared compose: %w", err)
+	}
+
+	// generate instanceIDs and set them as container_name
+	for name, service := range preparedComposeStruct.Services {
+		// remove image prefix for container name
+		containerName := service.Image[strings.Index(service.Image, "/")+1 : len(service.Image)]
+		// remove the sha256 part
+		containerName = strings.Replace(containerName, "@sha256:", ".", 1)
+		// cut the hash to only 6 first digits
+		containerName = containerName[0:len(containerName)-58] + "." + instanceKey
+
+		service.ContainerName = containerName
+		preparedComposeStruct.Services[name] = service
+	}
+
+	tmpDir, err := ioutil.TempDir("", "pwcompose")
+	if err != nil {
+		return fmt.Errorf("temp dir creation: %w", err)
+	}
+	defer func() {
+		if err = os.RemoveAll(tmpDir); err != nil {
+			logger.Warn("rm tmp dir", zap.Error(err))
+		}
+	}()
+
+	tmpPreparedComposePath := filepath.Join(tmpDir, "docker-compose.yml")
+
+	// create tmp docker-compose file
+	tmpData, err := yaml.Marshal(&preparedComposeStruct)
+	if err != nil {
+		return fmt.Errorf("marshal config: %w", err)
+	}
+	tmpFile, err := os.Create(tmpPreparedComposePath)
+	if err != nil {
+		return fmt.Errorf("create tmp compose file: %w", err)
+	}
+
+	_, err = tmpFile.Write(tmpData)
+	if err != nil {
+		return fmt.Errorf("write tmp compose file: %w", err)
+	}
+	tmpFile.Close()
+
+	// start instances
+	logger.Debug("docker-compose", zap.String("action", "up"))
+	cmd := exec.Command("docker-compose", "-f", tmpPreparedComposePath, "up", "-d")
+	cmd.Stdout = os.Stderr
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		return fmt.Errorf("docker-compose up -d: %w", err)
+	}
+
+	// print instanceIDs
+	for _, service := range preparedComposeStruct.Services {
+		fmt.Println(service.ContainerName)
+	}
+
+	return nil
 }
 
 func Down(ids []string, logger *zap.Logger) error {
