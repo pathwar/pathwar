@@ -48,9 +48,9 @@ service Engine {
 
   rpc TeamList(TeamList.Input) returns (TeamList.Output) { option (google.api.http) = {get: "/teams"}; };
   rpc TeamGet(TeamGet.Input) returns (TeamGet.Output) { option (google.api.http) = {get: "/team"}; };
-  rpc TeamCreate(TeamCreate.Input) returns (TeamCreate.Output) { option (google.api.http) = {post: "/team"}; };
-  rpc TeamSendInvite(TeamSendInvite.Input) returns (TeamSendInvite.Output) { option (google.api.http) = {post: "/team/invite"}; };
-  rpc TeamAcceptInvite(TeamAcceptInvite.Input) returns (TeamAcceptInvite.Output) { option (google.api.http) = {post: "/team/invite/accept"}; };
+  rpc TeamCreate(TeamCreate.Input) returns (TeamCreate.Output) { option (google.api.http) = {post: "/team"; body: "*"}; };
+  rpc TeamSendInvite(TeamSendInvite.Input) returns (TeamSendInvite.Output) { option (google.api.http) = {post: "/team/invite"; body: "*"}; };
+  rpc TeamAcceptInvite(TeamAcceptInvite.Input) returns (TeamAcceptInvite.Output) { option (google.api.http) = {post: "/team/invite/accept"; body: "*"}; };
 
   //
   // Tool
@@ -59,7 +59,7 @@ service Engine {
   rpc ToolPing(Void) returns (Void) { option (google.api.http) = {get: "/ping"}; };
   rpc ToolStatus(GetStatus.Input) returns (GetStatus.Output) { option (google.api.http) = {get: "/status"}; }
   rpc ToolInfo(GetInfo.Input) returns (GetInfo.Output) { option (google.api.http) = {get: "/info"}; };
-  rpc ToolGenerateFakeData(Void) returns (Void) { option (google.api.http) = {post: "/tool/generate-fake-data"}; };
+  rpc ToolGenerateFakeData(Void) returns (Void) { option (google.api.http) = {post: "/tool/generate-fake-data"; body: "*"}; };
   rpc ToolDBDump(Void) returns (pathwar.db.Dump) { option (google.api.http) = {get: "/tool/sql-dump"}; };
 }
 

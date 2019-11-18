@@ -907,10 +907,27 @@ definitions:
           $ref: '#/definitions/dbSeasonChallenge'
         type: array
     type: object
+  engineTeamAcceptInviteInput:
+    properties:
+      team_member_id:
+        format: int64
+        type: string
+    type: object
   engineTeamAcceptInviteOutput:
     properties:
       team_member:
         $ref: '#/definitions/dbTeamMember'
+    type: object
+  engineTeamCreateInput:
+    properties:
+      name:
+        type: string
+      organization_id:
+        format: int64
+        type: string
+      season_id:
+        format: int64
+        type: string
     type: object
   engineTeamCreateOutput:
     properties:
@@ -928,6 +945,15 @@ definitions:
         items:
           $ref: '#/definitions/dbTeam'
         type: array
+    type: object
+  engineTeamSendInviteInput:
+    properties:
+      team_id:
+        format: int64
+        type: string
+      user_id:
+        format: int64
+        type: string
     type: object
   engineTeamSendInviteOutput:
     properties:
@@ -1310,6 +1336,12 @@ paths:
       - Engine
     post:
       operationId: TeamCreate
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineTeamCreateInput'
       responses:
         "200":
           description: A successful response.
@@ -1329,6 +1361,12 @@ paths:
   /team/invite:
     post:
       operationId: TeamSendInvite
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineTeamSendInviteInput'
       responses:
         "200":
           description: A successful response.
@@ -1348,6 +1386,12 @@ paths:
   /team/invite/accept:
     post:
       operationId: TeamAcceptInvite
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineTeamAcceptInviteInput'
       responses:
         "200":
           description: A successful response.
@@ -1392,6 +1436,12 @@ paths:
   /tool/generate-fake-data:
     post:
       operationId: ToolGenerateFakeData
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineVoid'
       responses:
         "200":
           description: A successful response.

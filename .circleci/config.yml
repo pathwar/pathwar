@@ -74,6 +74,10 @@ jobs:
       - run: cd tool/integration; retry -m 3 make run
       - run: cd tool/integration; make run # yes, again
       - run: cd tool/integration; make logs-once
+      - run:
+          name: See server logs
+          command: cd tool/integration; make logs-once
+          when: on_fail
 
 workflows:
   main:
