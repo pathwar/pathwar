@@ -87,12 +87,12 @@ func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger
 		return fmt.Errorf("docker-compose build: %w", err)
 	}
 
-	logger.Debug("docker-compose", zap.String("-f", tmpComposePath), zap.String("action", "bundle"))
-	pushImages := ""
+	cmdArgs := []string{"docker-compose", "-f", tmpComposePath, "bundle"}
 	if !noPush {
-		pushImages = "--push-images"
+		cmdArgs = append(cmdArgs, "--push-images")
 	}
-	cmd = exec.Command("docker-compose", "-f", tmpComposePath, "bundle", pushImages)
+	logger.Debug("docker-compose", zap.Strings("args", cmdArgs[1:]))
+	cmd = exec.Command(cmdArgs[0], cmdArgs[1:]...)
 	cmd.Dir = cleanPath
 	cmd.Stdout = os.Stderr
 	cmd.Stderr = os.Stderr
