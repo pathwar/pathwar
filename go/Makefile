@@ -13,6 +13,8 @@ PRE_LINT_STEPS += generate
 PRE_TIDY_STEPS += generate
 PRE_BUMPDEPS_STEPS += generate
 PRE_INSTALL_STEPS += ./out/pwchallenge-linux-amd64
+
+COMPOSE_OPTS = -f docker-compose.yml -f docker-compose.dev.yml
 include ../rules.mk  # see https://github.com/moul/rules.mk
 ##
 
@@ -27,13 +29,17 @@ include ../rules.mk  # see https://github.com/moul/rules.mk
 
 MYSQL_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
 
+.PHONY: up
+up:
+	docker-compose $(COMPOSE_OPTS) up -d
+
 .PHONY: run
 run: install mysql.up
 	pathwar --debug engine --sso-unsafe server --with-pprof
 
 .PHONY: mysql.up
 mysql.up:
-	docker-compose up -d mysql
+	docker-compose $(COMPOSE_OPTS) up -d mysql
 	@echo "Waiting for mysql to be ready..."
 	@while ! mysqladmin ping $(MYSQL_CONFIG) --silent; do sleep 1; done
 	@echo "Done."

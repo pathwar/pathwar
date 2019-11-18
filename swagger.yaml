@@ -907,6 +907,33 @@ definitions:
           $ref: '#/definitions/dbSeasonChallenge'
         type: array
     type: object
+  engineTeamAcceptInviteInput:
+    properties:
+      team_member_id:
+        format: int64
+        type: string
+    type: object
+  engineTeamAcceptInviteOutput:
+    properties:
+      team_member:
+        $ref: '#/definitions/dbTeamMember'
+    type: object
+  engineTeamCreateInput:
+    properties:
+      name:
+        type: string
+      organization_id:
+        format: int64
+        type: string
+      season_id:
+        format: int64
+        type: string
+    type: object
+  engineTeamCreateOutput:
+    properties:
+      team:
+        $ref: '#/definitions/dbTeam'
+    type: object
   engineTeamGetOutput:
     properties:
       item:
@@ -918,6 +945,20 @@ definitions:
         items:
           $ref: '#/definitions/dbTeam'
         type: array
+    type: object
+  engineTeamSendInviteInput:
+    properties:
+      team_id:
+        format: int64
+        type: string
+      user_id:
+        format: int64
+        type: string
+    type: object
+  engineTeamSendInviteOutput:
+    properties:
+      team_member:
+        $ref: '#/definitions/dbTeamMember'
     type: object
   engineUserDeleteAccountInput:
     properties:
@@ -1293,6 +1334,80 @@ paths:
             type: string
       tags:
       - Engine
+    post:
+      operationId: TeamCreate
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineTeamCreateInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineTeamCreateOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /team/invite:
+    post:
+      operationId: TeamSendInvite
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineTeamSendInviteInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineTeamSendInviteOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /team/invite/accept:
+    post:
+      operationId: TeamAcceptInvite
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineTeamAcceptInviteInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineTeamAcceptInviteOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
   /teams:
     get:
       operationId: TeamList
@@ -1321,6 +1436,12 @@ paths:
   /tool/generate-fake-data:
     post:
       operationId: ToolGenerateFakeData
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineVoid'
       responses:
         "200":
           description: A successful response.

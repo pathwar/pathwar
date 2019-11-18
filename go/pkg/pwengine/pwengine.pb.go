@@ -1048,6 +1048,402 @@ func (m *TeamList_Output) GetItems() []*pwdb.Team {
 	return nil
 }
 
+type TeamCreate struct {
+}
+
+func (m *TeamCreate) Reset()         { *m = TeamCreate{} }
+func (m *TeamCreate) String() string { return proto.CompactTextString(m) }
+func (*TeamCreate) ProtoMessage()    {}
+func (*TeamCreate) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{8}
+}
+func (m *TeamCreate) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TeamCreate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TeamCreate.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TeamCreate) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamCreate.Merge(m, src)
+}
+func (m *TeamCreate) XXX_Size() int {
+	return m.Size()
+}
+func (m *TeamCreate) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamCreate.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TeamCreate proto.InternalMessageInfo
+
+type TeamCreate_Input struct {
+	OrganizationID int64  `protobuf:"varint,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Name           string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	SeasonID       int64  `protobuf:"varint,3,opt,name=season_id,json=seasonId,proto3" json:"season_id,omitempty"`
+}
+
+func (m *TeamCreate_Input) Reset()         { *m = TeamCreate_Input{} }
+func (m *TeamCreate_Input) String() string { return proto.CompactTextString(m) }
+func (*TeamCreate_Input) ProtoMessage()    {}
+func (*TeamCreate_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{8, 0}
+}
+func (m *TeamCreate_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TeamCreate_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TeamCreate_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TeamCreate_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamCreate_Input.Merge(m, src)
+}
+func (m *TeamCreate_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *TeamCreate_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamCreate_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TeamCreate_Input proto.InternalMessageInfo
+
+func (m *TeamCreate_Input) GetOrganizationID() int64 {
+	if m != nil {
+		return m.OrganizationID
+	}
+	return 0
+}
+
+func (m *TeamCreate_Input) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *TeamCreate_Input) GetSeasonID() int64 {
+	if m != nil {
+		return m.SeasonID
+	}
+	return 0
+}
+
+type TeamCreate_Output struct {
+	Team *pwdb.Team `protobuf:"bytes,1,opt,name=team,proto3" json:"team,omitempty"`
+}
+
+func (m *TeamCreate_Output) Reset()         { *m = TeamCreate_Output{} }
+func (m *TeamCreate_Output) String() string { return proto.CompactTextString(m) }
+func (*TeamCreate_Output) ProtoMessage()    {}
+func (*TeamCreate_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{8, 1}
+}
+func (m *TeamCreate_Output) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TeamCreate_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TeamCreate_Output.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TeamCreate_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamCreate_Output.Merge(m, src)
+}
+func (m *TeamCreate_Output) XXX_Size() int {
+	return m.Size()
+}
+func (m *TeamCreate_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamCreate_Output.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TeamCreate_Output proto.InternalMessageInfo
+
+func (m *TeamCreate_Output) GetTeam() *pwdb.Team {
+	if m != nil {
+		return m.Team
+	}
+	return nil
+}
+
+type TeamSendInvite struct {
+}
+
+func (m *TeamSendInvite) Reset()         { *m = TeamSendInvite{} }
+func (m *TeamSendInvite) String() string { return proto.CompactTextString(m) }
+func (*TeamSendInvite) ProtoMessage()    {}
+func (*TeamSendInvite) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{9}
+}
+func (m *TeamSendInvite) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TeamSendInvite) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TeamSendInvite.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TeamSendInvite) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamSendInvite.Merge(m, src)
+}
+func (m *TeamSendInvite) XXX_Size() int {
+	return m.Size()
+}
+func (m *TeamSendInvite) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamSendInvite.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TeamSendInvite proto.InternalMessageInfo
+
+type TeamSendInvite_Input struct {
+	TeamID int64 `protobuf:"varint,1,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"`
+	UserID int64 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+}
+
+func (m *TeamSendInvite_Input) Reset()         { *m = TeamSendInvite_Input{} }
+func (m *TeamSendInvite_Input) String() string { return proto.CompactTextString(m) }
+func (*TeamSendInvite_Input) ProtoMessage()    {}
+func (*TeamSendInvite_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{9, 0}
+}
+func (m *TeamSendInvite_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TeamSendInvite_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TeamSendInvite_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TeamSendInvite_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamSendInvite_Input.Merge(m, src)
+}
+func (m *TeamSendInvite_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *TeamSendInvite_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamSendInvite_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TeamSendInvite_Input proto.InternalMessageInfo
+
+func (m *TeamSendInvite_Input) GetTeamID() int64 {
+	if m != nil {
+		return m.TeamID
+	}
+	return 0
+}
+
+func (m *TeamSendInvite_Input) GetUserID() int64 {
+	if m != nil {
+		return m.UserID
+	}
+	return 0
+}
+
+type TeamSendInvite_Output struct {
+	TeamMember *pwdb.TeamMember `protobuf:"bytes,1,opt,name=team_member,json=teamMember,proto3" json:"team_member,omitempty"`
+}
+
+func (m *TeamSendInvite_Output) Reset()         { *m = TeamSendInvite_Output{} }
+func (m *TeamSendInvite_Output) String() string { return proto.CompactTextString(m) }
+func (*TeamSendInvite_Output) ProtoMessage()    {}
+func (*TeamSendInvite_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{9, 1}
+}
+func (m *TeamSendInvite_Output) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TeamSendInvite_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TeamSendInvite_Output.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TeamSendInvite_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamSendInvite_Output.Merge(m, src)
+}
+func (m *TeamSendInvite_Output) XXX_Size() int {
+	return m.Size()
+}
+func (m *TeamSendInvite_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamSendInvite_Output.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TeamSendInvite_Output proto.InternalMessageInfo
+
+func (m *TeamSendInvite_Output) GetTeamMember() *pwdb.TeamMember {
+	if m != nil {
+		return m.TeamMember
+	}
+	return nil
+}
+
+type TeamAcceptInvite struct {
+}
+
+func (m *TeamAcceptInvite) Reset()         { *m = TeamAcceptInvite{} }
+func (m *TeamAcceptInvite) String() string { return proto.CompactTextString(m) }
+func (*TeamAcceptInvite) ProtoMessage()    {}
+func (*TeamAcceptInvite) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{10}
+}
+func (m *TeamAcceptInvite) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TeamAcceptInvite) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TeamAcceptInvite.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TeamAcceptInvite) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamAcceptInvite.Merge(m, src)
+}
+func (m *TeamAcceptInvite) XXX_Size() int {
+	return m.Size()
+}
+func (m *TeamAcceptInvite) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamAcceptInvite.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TeamAcceptInvite proto.InternalMessageInfo
+
+type TeamAcceptInvite_Input struct {
+	TeamMemberID int64 `protobuf:"varint,1,opt,name=team_member_id,json=teamMemberId,proto3" json:"team_member_id,omitempty"`
+}
+
+func (m *TeamAcceptInvite_Input) Reset()         { *m = TeamAcceptInvite_Input{} }
+func (m *TeamAcceptInvite_Input) String() string { return proto.CompactTextString(m) }
+func (*TeamAcceptInvite_Input) ProtoMessage()    {}
+func (*TeamAcceptInvite_Input) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{10, 0}
+}
+func (m *TeamAcceptInvite_Input) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TeamAcceptInvite_Input) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TeamAcceptInvite_Input.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TeamAcceptInvite_Input) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamAcceptInvite_Input.Merge(m, src)
+}
+func (m *TeamAcceptInvite_Input) XXX_Size() int {
+	return m.Size()
+}
+func (m *TeamAcceptInvite_Input) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamAcceptInvite_Input.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TeamAcceptInvite_Input proto.InternalMessageInfo
+
+func (m *TeamAcceptInvite_Input) GetTeamMemberID() int64 {
+	if m != nil {
+		return m.TeamMemberID
+	}
+	return 0
+}
+
+type TeamAcceptInvite_Output struct {
+	TeamMember *pwdb.TeamMember `protobuf:"bytes,1,opt,name=team_member,json=teamMember,proto3" json:"team_member,omitempty"`
+}
+
+func (m *TeamAcceptInvite_Output) Reset()         { *m = TeamAcceptInvite_Output{} }
+func (m *TeamAcceptInvite_Output) String() string { return proto.CompactTextString(m) }
+func (*TeamAcceptInvite_Output) ProtoMessage()    {}
+func (*TeamAcceptInvite_Output) Descriptor() ([]byte, []int) {
+	return fileDescriptor_02cf22bbbf1a21c2, []int{10, 1}
+}
+func (m *TeamAcceptInvite_Output) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TeamAcceptInvite_Output) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TeamAcceptInvite_Output.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TeamAcceptInvite_Output) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TeamAcceptInvite_Output.Merge(m, src)
+}
+func (m *TeamAcceptInvite_Output) XXX_Size() int {
+	return m.Size()
+}
+func (m *TeamAcceptInvite_Output) XXX_DiscardUnknown() {
+	xxx_messageInfo_TeamAcceptInvite_Output.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TeamAcceptInvite_Output proto.InternalMessageInfo
+
+func (m *TeamAcceptInvite_Output) GetTeamMember() *pwdb.TeamMember {
+	if m != nil {
+		return m.TeamMember
+	}
+	return nil
+}
+
 type UserSetPreferences struct {
 }
 
@@ -1055,7 +1451,7 @@ func (m *UserSetPreferences) Reset()         { *m = UserSetPreferences{} }
 func (m *UserSetPreferences) String() string { return proto.CompactTextString(m) }
 func (*UserSetPreferences) ProtoMessage()    {}
 func (*UserSetPreferences) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{8}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{11}
 }
 func (m *UserSetPreferences) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1092,7 +1488,7 @@ func (m *UserSetPreferences_Input) Reset()         { *m = UserSetPreferences_Inp
 func (m *UserSetPreferences_Input) String() string { return proto.CompactTextString(m) }
 func (*UserSetPreferences_Input) ProtoMessage()    {}
 func (*UserSetPreferences_Input) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{8, 0}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{11, 0}
 }
 func (m *UserSetPreferences_Input) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1135,7 +1531,7 @@ func (m *UserSetPreferences_Output) Reset()         { *m = UserSetPreferences_Ou
 func (m *UserSetPreferences_Output) String() string { return proto.CompactTextString(m) }
 func (*UserSetPreferences_Output) ProtoMessage()    {}
 func (*UserSetPreferences_Output) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{8, 1}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{11, 1}
 }
 func (m *UserSetPreferences_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1171,7 +1567,7 @@ func (m *UserDeleteAccount) Reset()         { *m = UserDeleteAccount{} }
 func (m *UserDeleteAccount) String() string { return proto.CompactTextString(m) }
 func (*UserDeleteAccount) ProtoMessage()    {}
 func (*UserDeleteAccount) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{9}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{12}
 }
 func (m *UserDeleteAccount) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1208,7 +1604,7 @@ func (m *UserDeleteAccount_Input) Reset()         { *m = UserDeleteAccount_Input
 func (m *UserDeleteAccount_Input) String() string { return proto.CompactTextString(m) }
 func (*UserDeleteAccount_Input) ProtoMessage()    {}
 func (*UserDeleteAccount_Input) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{9, 0}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{12, 0}
 }
 func (m *UserDeleteAccount_Input) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1251,7 +1647,7 @@ func (m *UserDeleteAccount_Output) Reset()         { *m = UserDeleteAccount_Outp
 func (m *UserDeleteAccount_Output) String() string { return proto.CompactTextString(m) }
 func (*UserDeleteAccount_Output) ProtoMessage()    {}
 func (*UserDeleteAccount_Output) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{9, 1}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{12, 1}
 }
 func (m *UserDeleteAccount_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1287,7 +1683,7 @@ func (m *OrganizationList) Reset()         { *m = OrganizationList{} }
 func (m *OrganizationList) String() string { return proto.CompactTextString(m) }
 func (*OrganizationList) ProtoMessage()    {}
 func (*OrganizationList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{10}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{13}
 }
 func (m *OrganizationList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1323,7 +1719,7 @@ func (m *OrganizationList_Input) Reset()         { *m = OrganizationList_Input{}
 func (m *OrganizationList_Input) String() string { return proto.CompactTextString(m) }
 func (*OrganizationList_Input) ProtoMessage()    {}
 func (*OrganizationList_Input) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{10, 0}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{13, 0}
 }
 func (m *OrganizationList_Input) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1360,7 +1756,7 @@ func (m *OrganizationList_Output) Reset()         { *m = OrganizationList_Output
 func (m *OrganizationList_Output) String() string { return proto.CompactTextString(m) }
 func (*OrganizationList_Output) ProtoMessage()    {}
 func (*OrganizationList_Output) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{10, 1}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{13, 1}
 }
 func (m *OrganizationList_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1403,7 +1799,7 @@ func (m *ChallengeList) Reset()         { *m = ChallengeList{} }
 func (m *ChallengeList) String() string { return proto.CompactTextString(m) }
 func (*ChallengeList) ProtoMessage()    {}
 func (*ChallengeList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{11}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{14}
 }
 func (m *ChallengeList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1439,7 +1835,7 @@ func (m *ChallengeList_Input) Reset()         { *m = ChallengeList_Input{} }
 func (m *ChallengeList_Input) String() string { return proto.CompactTextString(m) }
 func (*ChallengeList_Input) ProtoMessage()    {}
 func (*ChallengeList_Input) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{11, 0}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{14, 0}
 }
 func (m *ChallengeList_Input) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1476,7 +1872,7 @@ func (m *ChallengeList_Output) Reset()         { *m = ChallengeList_Output{} }
 func (m *ChallengeList_Output) String() string { return proto.CompactTextString(m) }
 func (*ChallengeList_Output) ProtoMessage()    {}
 func (*ChallengeList_Output) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{11, 1}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{14, 1}
 }
 func (m *ChallengeList_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1519,7 +1915,7 @@ func (m *UserGetSession) Reset()         { *m = UserGetSession{} }
 func (m *UserGetSession) String() string { return proto.CompactTextString(m) }
 func (*UserGetSession) ProtoMessage()    {}
 func (*UserGetSession) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{12}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{15}
 }
 func (m *UserGetSession) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1555,7 +1951,7 @@ func (m *UserGetSession_Input) Reset()         { *m = UserGetSession_Input{} }
 func (m *UserGetSession_Input) String() string { return proto.CompactTextString(m) }
 func (*UserGetSession_Input) ProtoMessage()    {}
 func (*UserGetSession_Input) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{12, 0}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{15, 0}
 }
 func (m *UserGetSession_Input) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1596,7 +1992,7 @@ func (m *UserGetSession_Output) Reset()         { *m = UserGetSession_Output{} }
 func (m *UserGetSession_Output) String() string { return proto.CompactTextString(m) }
 func (*UserGetSession_Output) ProtoMessage()    {}
 func (*UserGetSession_Output) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{12, 1}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{15, 1}
 }
 func (m *UserGetSession_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1670,7 +2066,7 @@ func (m *UserGetSession_Output_SeasonAndTeam) Reset()         { *m = UserGetSess
 func (m *UserGetSession_Output_SeasonAndTeam) String() string { return proto.CompactTextString(m) }
 func (*UserGetSession_Output_SeasonAndTeam) ProtoMessage()    {}
 func (*UserGetSession_Output_SeasonAndTeam) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{12, 1, 0}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{15, 1, 0}
 }
 func (m *UserGetSession_Output_SeasonAndTeam) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1727,7 +2123,7 @@ func (m *GetStatus) Reset()         { *m = GetStatus{} }
 func (m *GetStatus) String() string { return proto.CompactTextString(m) }
 func (*GetStatus) ProtoMessage()    {}
 func (*GetStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{13}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{16}
 }
 func (m *GetStatus) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1763,7 +2159,7 @@ func (m *GetStatus_Input) Reset()         { *m = GetStatus_Input{} }
 func (m *GetStatus_Input) String() string { return proto.CompactTextString(m) }
 func (*GetStatus_Input) ProtoMessage()    {}
 func (*GetStatus_Input) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{13, 0}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{16, 0}
 }
 func (m *GetStatus_Input) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1800,7 +2196,7 @@ func (m *GetStatus_Output) Reset()         { *m = GetStatus_Output{} }
 func (m *GetStatus_Output) String() string { return proto.CompactTextString(m) }
 func (*GetStatus_Output) ProtoMessage()    {}
 func (*GetStatus_Output) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{13, 1}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{16, 1}
 }
 func (m *GetStatus_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1843,7 +2239,7 @@ func (m *GetInfo) Reset()         { *m = GetInfo{} }
 func (m *GetInfo) String() string { return proto.CompactTextString(m) }
 func (*GetInfo) ProtoMessage()    {}
 func (*GetInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{14}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{17}
 }
 func (m *GetInfo) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1879,7 +2275,7 @@ func (m *GetInfo_Input) Reset()         { *m = GetInfo_Input{} }
 func (m *GetInfo_Input) String() string { return proto.CompactTextString(m) }
 func (*GetInfo_Input) ProtoMessage()    {}
 func (*GetInfo_Input) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{14, 0}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{17, 0}
 }
 func (m *GetInfo_Input) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1920,7 +2316,7 @@ func (m *GetInfo_Output) Reset()         { *m = GetInfo_Output{} }
 func (m *GetInfo_Output) String() string { return proto.CompactTextString(m) }
 func (*GetInfo_Output) ProtoMessage()    {}
 func (*GetInfo_Output) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{14, 1}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{17, 1}
 }
 func (m *GetInfo_Output) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1992,7 +2388,7 @@ func (m *Void) Reset()         { *m = Void{} }
 func (m *Void) String() string { return proto.CompactTextString(m) }
 func (*Void) ProtoMessage()    {}
 func (*Void) Descriptor() ([]byte, []int) {
-	return fileDescriptor_02cf22bbbf1a21c2, []int{15}
+	return fileDescriptor_02cf22bbbf1a21c2, []int{18}
 }
 func (m *Void) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2046,6 +2442,15 @@ func init() {
 	proto.RegisterType((*TeamList)(nil), "pathwar.engine.TeamList")
 	proto.RegisterType((*TeamList_Input)(nil), "pathwar.engine.TeamList.Input")
 	proto.RegisterType((*TeamList_Output)(nil), "pathwar.engine.TeamList.Output")
+	proto.RegisterType((*TeamCreate)(nil), "pathwar.engine.TeamCreate")
+	proto.RegisterType((*TeamCreate_Input)(nil), "pathwar.engine.TeamCreate.Input")
+	proto.RegisterType((*TeamCreate_Output)(nil), "pathwar.engine.TeamCreate.Output")
+	proto.RegisterType((*TeamSendInvite)(nil), "pathwar.engine.TeamSendInvite")
+	proto.RegisterType((*TeamSendInvite_Input)(nil), "pathwar.engine.TeamSendInvite.Input")
+	proto.RegisterType((*TeamSendInvite_Output)(nil), "pathwar.engine.TeamSendInvite.Output")
+	proto.RegisterType((*TeamAcceptInvite)(nil), "pathwar.engine.TeamAcceptInvite")
+	proto.RegisterType((*TeamAcceptInvite_Input)(nil), "pathwar.engine.TeamAcceptInvite.Input")
+	proto.RegisterType((*TeamAcceptInvite_Output)(nil), "pathwar.engine.TeamAcceptInvite.Output")
 	proto.RegisterType((*UserSetPreferences)(nil), "pathwar.engine.UserSetPreferences")
 	proto.RegisterType((*UserSetPreferences_Input)(nil), "pathwar.engine.UserSetPreferences.Input")
 	proto.RegisterType((*UserSetPreferences_Output)(nil), "pathwar.engine.UserSetPreferences.Output")
@@ -2074,125 +2479,139 @@ func init() {
 func init() { proto.RegisterFile("pwengine.proto", fileDescriptor_02cf22bbbf1a21c2) }
 
 var fileDescriptor_02cf22bbbf1a21c2 = []byte{
-	// 1873 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x58, 0xcf, 0x6f, 0xdb, 0xc8,
-	0x15, 0x36, 0x65, 0x5b, 0x3f, 0x46, 0xf1, 0xaf, 0xb1, 0x9d, 0x55, 0xb8, 0x89, 0xc4, 0x32, 0xd9,
-	0x5d, 0xc7, 0xa9, 0x44, 0x47, 0x4e, 0x81, 0x34, 0x59, 0x14, 0x95, 0x63, 0xaf, 0x2b, 0x64, 0xb3,
-	0x36, 0xe8, 0x6c, 0x36, 0xdd, 0x2e, 0xe0, 0x1d, 0x91, 0x63, 0x8a, 0xb5, 0x44, 0xb2, 0x9c, 0xa1,
-	0x55, 0x75, 0xd1, 0xa2, 0x28, 0x8a, 0x36, 0x40, 0x7b, 0x28, 0xb6, 0xb7, 0x00, 0x45, 0xff, 0x80,
-	0xf6, 0xde, 0x7b, 0x4f, 0x3d, 0x2e, 0xd0, 0x4b, 0x4f, 0x46, 0xa1, 0xf4, 0x5a, 0xa0, 0x7f, 0x42,
-	0x31, 0xc3, 0x21, 0x45, 0x49, 0x54, 0xec, 0x14, 0x6d, 0x4f, 0xf1, 0xcc, 0xfb, 0xde, 0xf7, 0xbe,
-	0xf7, 0xe6, 0x71, 0xe6, 0x45, 0x60, 0xd1, 0xeb, 0x61, 0xc7, 0xb2, 0x1d, 0x5c, 0xf3, 0x7c, 0x97,
-	0xba, 0x70, 0xd1, 0x43, 0xb4, 0xdd, 0x43, 0x7e, 0x2d, 0xdc, 0x95, 0xaf, 0x5b, 0xae, 0x6b, 0x75,
-	0xb0, 0x86, 0x3c, 0x5b, 0x43, 0x8e, 0xe3, 0x52, 0x44, 0x6d, 0xd7, 0x21, 0x21, 0x5a, 0xae, 0x5a,
-	0x36, 0x6d, 0x07, 0xad, 0x9a, 0xe1, 0x76, 0x35, 0xcb, 0xb5, 0x5c, 0x8d, 0x6f, 0xb7, 0x82, 0x13,
-	0xbe, 0xe2, 0x0b, 0xfe, 0x97, 0x80, 0x1f, 0x25, 0xe1, 0xbe, 0x67, 0x54, 0xb1, 0xe1, 0x92, 0x3e,
-	0xa1, 0x58, 0x2c, 0x2d, 0x44, 0x71, 0x0f, 0xf5, 0x43, 0x16, 0xa3, 0x6a, 0x61, 0xa7, 0x4a, 0x7a,
-	0xc8, 0xb2, 0xb0, 0xaf, 0xb9, 0x1e, 0x8f, 0x9b, 0xa2, 0xa1, 0xe8, 0xf5, 0x08, 0x89, 0x22, 0x00,
-	0xaf, 0x67, 0xb6, 0xc2, 0xbf, 0x55, 0x0b, 0xe4, 0x9e, 0x62, 0xd4, 0xdd, 0xc7, 0x54, 0xfe, 0x3a,
-	0x98, 0x6f, 0x3a, 0x5e, 0x40, 0xe1, 0x4d, 0x90, 0xa3, 0x18, 0x75, 0x8f, 0x6d, 0xb3, 0x24, 0x29,
-	0xd2, 0xc6, 0xec, 0x0e, 0x18, 0x9c, 0x57, 0xb2, 0x0c, 0xd6, 0xdc, 0xd5, 0xb3, 0xcc, 0xd4, 0x34,
-	0xe5, 0x1a, 0xc8, 0x1e, 0x04, 0x94, 0xc1, 0x6f, 0x81, 0x39, 0x9b, 0xe2, 0x2e, 0xc7, 0x16, 0xeb,
-	0xcb, 0xb5, 0xa8, 0x38, 0x66, 0xab, 0xc6, 0x7c, 0x74, 0x6e, 0x55, 0x7f, 0x21, 0x81, 0xd5, 0x23,
-	0x8c, 0x88, 0xeb, 0x3c, 0x6a, 0xa3, 0x4e, 0x07, 0x3b, 0x16, 0xfe, 0xd0, 0x26, 0x54, 0xae, 0x47,
-	0x51, 0x6f, 0x83, 0x02, 0xe1, 0xf6, 0x61, 0xdc, 0x2b, 0x83, 0xf3, 0x4a, 0x3e, 0x74, 0x6a, 0xee,
-	0xea, 0xf9, 0xd0, 0xdc, 0x34, 0xe5, 0x87, 0x71, 0xec, 0xbb, 0x60, 0x9e, 0xb1, 0x93, 0x92, 0xa4,
-	0xcc, 0x6e, 0x14, 0xeb, 0x6f, 0x27, 0x83, 0x8f, 0x45, 0xd3, 0x43, 0xa4, 0xfa, 0x7b, 0x09, 0xc0,
-	0x31, 0x13, 0xcb, 0xfe, 0xa3, 0x48, 0xc7, 0x1e, 0x58, 0x15, 0x3a, 0x8c, 0xc8, 0x3e, 0x54, 0xb4,
-	0x3e, 0x38, 0xaf, 0xac, 0x8c, 0x79, 0x37, 0x77, 0xf5, 0x15, 0x32, 0xb6, 0x65, 0xca, 0xdf, 0x8c,
-	0x35, 0x6a, 0x23, 0xf5, 0x79, 0xad, 0xc4, 0xb0, 0x54, 0x3f, 0x95, 0xc0, 0x95, 0x11, 0x6d, 0x0f,
-	0x23, 0x6d, 0x75, 0x70, 0x25, 0x45, 0xd4, 0xd2, 0xe0, 0xbc, 0x52, 0x4c, 0xca, 0x29, 0x1a, 0x09,
-	0x21, 0xdb, 0xb1, 0x90, 0xdb, 0x23, 0x42, 0xd6, 0x93, 0x42, 0xc6, 0x25, 0xfc, 0x73, 0xb2, 0x48,
-	0x3b, 0x41, 0x5f, 0x26, 0xff, 0xdd, 0x22, 0x25, 0x3b, 0x2d, 0x33, 0xb5, 0xd3, 0x5a, 0x71, 0x02,
-	0xcf, 0xc1, 0xd5, 0x61, 0x38, 0x12, 0xb4, 0x88, 0xe1, 0xdb, 0xbc, 0xe5, 0x45, 0x4a, 0x5f, 0x4b,
-	0x4d, 0xe9, 0x28, 0x01, 0xd4, 0xd7, 0x8d, 0xb4, 0x6d, 0xf5, 0x65, 0x06, 0xdc, 0x48, 0x75, 0x78,
-	0x86, 0x3a, 0xb6, 0x89, 0x28, 0x96, 0x5f, 0x4a, 0x51, 0xee, 0x9f, 0x80, 0x6b, 0xe9, 0x2a, 0x86,
-	0x15, 0x78, 0x7b, 0x70, 0x5e, 0x79, 0x2b, 0x95, 0xaf, 0xb9, 0xab, 0xbf, 0x95, 0x2a, 0xa1, 0x69,
-	0xc2, 0x32, 0x00, 0x1e, 0x22, 0xc4, 0x6b, 0xfb, 0x88, 0x60, 0x5e, 0x90, 0x82, 0x9e, 0xd8, 0x81,
-	0x25, 0x90, 0x33, 0xdc, 0x6e, 0x17, 0x3b, 0xb4, 0x34, 0xcb, 0x8d, 0xd1, 0x52, 0xfe, 0x2c, 0x2e,
-	0x91, 0x0e, 0xd6, 0x86, 0xe2, 0xce, 0x42, 0xf1, 0xc3, 0x02, 0x55, 0x52, 0x0b, 0xf4, 0x2c, 0x86,
-	0xe9, 0xab, 0xc6, 0xe4, 0xa6, 0x3a, 0x90, 0x80, 0x9c, 0x9a, 0xcc, 0xa3, 0x8e, 0x4b, 0xb0, 0xfc,
-	0xf9, 0xff, 0xba, 0x30, 0xff, 0x97, 0x0e, 0xf0, 0x40, 0x9e, 0xf5, 0xdd, 0x7f, 0x7c, 0x27, 0x6d,
-	0xc5, 0x1a, 0xdf, 0x1d, 0xbd, 0x93, 0x26, 0x2f, 0x44, 0x71, 0x11, 0x61, 0x00, 0x3f, 0x26, 0xd8,
-	0x3f, 0xc2, 0xf4, 0xd0, 0xc7, 0x27, 0xd8, 0xc7, 0x8e, 0x81, 0x89, 0xbc, 0x17, 0xc5, 0x7e, 0x1f,
-	0x2c, 0x23, 0x83, 0xda, 0x67, 0xf8, 0x78, 0x5c, 0x02, 0x1c, 0x9c, 0x57, 0x16, 0x1b, 0xdc, 0x16,
-	0x0b, 0x59, 0x44, 0xc9, 0xb5, 0x29, 0xe7, 0x23, 0x39, 0xea, 0xb7, 0xc0, 0x0a, 0x0b, 0xb3, 0x8b,
-	0x3b, 0x98, 0xe2, 0x86, 0x61, 0xb8, 0x81, 0x43, 0xe5, 0x4a, 0x14, 0xe5, 0x2a, 0xc8, 0xfa, 0xdc,
-	0x87, 0x73, 0x17, 0x74, 0xb1, 0x4a, 0xf8, 0x7f, 0x0c, 0x96, 0x0f, 0x7c, 0x0b, 0x39, 0xf6, 0x8f,
-	0x78, 0x37, 0xf0, 0x02, 0xe5, 0x84, 0xbb, 0x7c, 0x3f, 0xce, 0xba, 0x36, 0x9a, 0x75, 0x29, 0x99,
-	0x75, 0xd2, 0x3f, 0xca, 0xfe, 0x00, 0x2c, 0x8c, 0x3e, 0x04, 0x31, 0xe7, 0x37, 0x62, 0xce, 0x3b,
-	0xa3, 0x9c, 0x53, 0x6e, 0x2c, 0x41, 0xf8, 0xeb, 0x59, 0xb0, 0xc8, 0x12, 0xdd, 0xc7, 0xf4, 0x08,
-	0x13, 0x62, 0xbb, 0xce, 0x90, 0xf2, 0x5f, 0x99, 0xe4, 0x6b, 0x15, 0x10, 0xec, 0xa7, 0xbd, 0x56,
-	0xcc, 0x5b, 0xe7, 0x56, 0x58, 0x06, 0x45, 0x9b, 0x1c, 0x3b, 0xb8, 0x77, 0xcc, 0xc1, 0xec, 0x5b,
-	0xcc, 0xeb, 0x05, 0x9b, 0x7c, 0x84, 0x7b, 0x0c, 0x05, 0xef, 0x80, 0xac, 0xd1, 0x41, 0x76, 0x97,
-	0xf0, 0x2f, 0xb1, 0x58, 0x5f, 0x8d, 0x79, 0xd8, 0x33, 0xfb, 0x88, 0x9b, 0x74, 0x01, 0x81, 0xb7,
-	0xc0, 0x82, 0xe3, 0x52, 0xfb, 0xc4, 0x36, 0xc2, 0x37, 0xb9, 0x34, 0xa7, 0x48, 0x1b, 0xf3, 0xfa,
-	0xe8, 0x26, 0x7c, 0x02, 0x72, 0xe1, 0x41, 0x93, 0xd2, 0x3c, 0x4f, 0x77, 0xbb, 0x36, 0x3a, 0x66,
-	0xd4, 0x46, 0xb3, 0xab, 0x85, 0x09, 0x89, 0x37, 0xa4, 0xe1, 0x98, 0xbc, 0xb7, 0x22, 0x0e, 0xf9,
-	0x27, 0x60, 0x61, 0xc4, 0x02, 0x37, 0x41, 0x96, 0x0c, 0x4f, 0xba, 0x58, 0x87, 0x93, 0x0f, 0x91,
-	0x2e, 0x10, 0xac, 0x48, 0xec, 0xf2, 0xe5, 0x79, 0xa7, 0x3e, 0xe9, 0xcc, 0x0a, 0xdf, 0x06, 0x05,
-	0x9b, 0x1c, 0x87, 0x8d, 0xc7, 0xeb, 0x90, 0xd7, 0xf3, 0x36, 0x09, 0x1b, 0x53, 0xfd, 0x0c, 0x14,
-	0x98, 0x56, 0x8a, 0x68, 0x40, 0x86, 0x07, 0xf1, 0x41, 0x7c, 0x0e, 0xef, 0x83, 0x65, 0x7c, 0x86,
-	0xfd, 0x3e, 0x6d, 0xdb, 0x8e, 0x75, 0x6c, 0x93, 0x63, 0xf7, 0x94, 0x0b, 0xcb, 0x87, 0xed, 0xbd,
-	0x17, 0xdb, 0x9a, 0xe4, 0xe0, 0xb1, 0xbe, 0x88, 0x93, 0xeb, 0x53, 0xf5, 0x77, 0x12, 0xc8, 0xed,
-	0x63, 0xda, 0x74, 0x4e, 0xdc, 0x21, 0xf9, 0x0b, 0x29, 0x66, 0x2f, 0x81, 0xdc, 0x19, 0xf6, 0x89,
-	0x1d, 0xf7, 0x75, 0xb4, 0x64, 0x0d, 0x1f, 0x78, 0xd4, 0xee, 0x86, 0x17, 0xec, 0xbc, 0x2e, 0x56,
-	0x6c, 0x9f, 0xdd, 0xa6, 0x76, 0x74, 0xb7, 0x8a, 0x15, 0xbc, 0x06, 0xf2, 0xad, 0xc0, 0xee, 0xd0,
-	0x63, 0x44, 0xf9, 0xb9, 0x15, 0xf4, 0x1c, 0x5f, 0x37, 0x12, 0xa6, 0x56, 0xbf, 0x34, 0x9f, 0x30,
-	0xed, 0xf4, 0xd5, 0x15, 0x30, 0xf7, 0xcc, 0xb5, 0xcd, 0x07, 0x85, 0x2f, 0x1b, 0xd9, 0xfa, 0x1c,
-	0xcc, 0x7c, 0xf1, 0xe3, 0xfa, 0x60, 0x19, 0x64, 0xf7, 0xf8, 0x41, 0x42, 0x3a, 0xde, 0xa9, 0xf0,
-	0xd6, 0x05, 0x67, 0x1d, 0x26, 0xf8, 0xce, 0xa5, 0x3a, 0x42, 0x5d, 0xff, 0xd9, 0x5f, 0xff, 0xf1,
-	0xdb, 0xcc, 0x12, 0x5c, 0xd0, 0x58, 0xf3, 0x6a, 0x44, 0xc4, 0xf8, 0xa5, 0x94, 0x76, 0xe1, 0xc0,
-	0x8d, 0x34, 0xd2, 0x51, 0x8c, 0x08, 0x7f, 0xfb, 0x12, 0x48, 0x21, 0xe1, 0x3a, 0x97, 0x70, 0x55,
-	0x5d, 0x09, 0x25, 0x78, 0x43, 0xc4, 0x03, 0x69, 0x93, 0x29, 0x99, 0xbc, 0x93, 0xe0, 0x7b, 0x69,
-	0xf4, 0x23, 0x10, 0xa1, 0x63, 0xe3, 0x62, 0xa0, 0x90, 0x51, 0xe1, 0x32, 0xae, 0xa9, 0x6b, 0xa1,
-	0x0c, 0x93, 0x63, 0xaa, 0x28, 0x04, 0x31, 0x25, 0xee, 0xd8, 0x2d, 0x04, 0x6f, 0x8e, 0x73, 0x8f,
-	0x98, 0x85, 0x80, 0x5b, 0xaf, 0x07, 0x89, 0xe0, 0xab, 0x3c, 0xf8, 0x02, 0x2c, 0x6a, 0xf1, 0x8b,
-	0x43, 0xe0, 0xe9, 0xe8, 0x68, 0x07, 0xd5, 0xa9, 0x54, 0xfb, 0x38, 0x0a, 0x77, 0xf3, 0xb5, 0x18,
-	0x11, 0x0d, 0xf2, 0x68, 0x57, 0x20, 0x18, 0x46, 0x83, 0x2f, 0xd2, 0x67, 0x6e, 0x38, 0x71, 0x90,
-	0x29, 0x20, 0x11, 0x7b, 0xf3, 0x32, 0x50, 0x21, 0x41, 0xe6, 0x12, 0xd6, 0x20, 0xd4, 0xc2, 0x6b,
-	0xa4, 0x9a, 0xc8, 0xfb, 0xe7, 0xa9, 0x53, 0xf7, 0x64, 0xf3, 0x4d, 0x62, 0xa6, 0x35, 0x5f, 0x0a,
-	0x52, 0xe8, 0xb8, 0xc6, 0x75, 0xac, 0xc2, 0x95, 0x09, 0x1d, 0xf0, 0x57, 0xa9, 0x73, 0xed, 0x85,
-	0x32, 0x76, 0x82, 0xfe, 0x25, 0x65, 0x30, 0xa4, 0x90, 0xa1, 0x70, 0x19, 0xb2, 0xba, 0x3e, 0x21,
-	0x43, 0x6b, 0x05, 0x7d, 0xd6, 0x7d, 0x7f, 0x92, 0x2e, 0x98, 0x3a, 0xe1, 0xf6, 0xd4, 0xa3, 0x4f,
-	0x83, 0x0b, 0x8d, 0xf7, 0xde, 0xcc, 0x49, 0xc8, 0xbd, 0xc3, 0xe5, 0xbe, 0xa3, 0x2a, 0xc3, 0x06,
-	0xaa, 0x26, 0x27, 0x2c, 0x4d, 0x4c, 0x93, 0x98, 0x29, 0xff, 0xc3, 0x6b, 0x47, 0x42, 0xb8, 0x75,
-	0x29, 0x05, 0x1c, 0x2b, 0x34, 0xdf, 0x7d, 0x03, 0x0f, 0x21, 0x78, 0x83, 0x0b, 0x56, 0xd5, 0x1b,
-	0xd3, 0x04, 0x1b, 0x0c, 0xcd, 0xd4, 0x7e, 0x31, 0x39, 0xc2, 0xc0, 0x77, 0xc7, 0x03, 0x8e, 0x23,
-	0x84, 0xb0, 0xf7, 0x2e, 0xc4, 0x09, 0x39, 0x57, 0xb9, 0x9c, 0x65, 0xb8, 0xa8, 0xb9, 0x09, 0x04,
-	0x81, 0xdf, 0x1b, 0x0e, 0x96, 0xb0, 0x3c, 0x4e, 0x16, 0x59, 0x44, 0xb0, 0xca, 0x54, 0xbb, 0x08,
-	0xb2, 0xc8, 0x83, 0xe4, 0x61, 0x56, 0x63, 0x2f, 0x30, 0x81, 0x9f, 0xc4, 0xff, 0x7d, 0x87, 0x37,
-	0xd2, 0x7c, 0x87, 0xdf, 0x4f, 0x79, 0x9a, 0x59, 0x30, 0x2f, 0x70, 0xe6, 0x1c, 0x9c, 0xe7, 0xcc,
-	0x70, 0x0f, 0xe4, 0x9f, 0xba, 0x6e, 0xe7, 0xd0, 0x76, 0x2c, 0xb8, 0x36, 0xee, 0xca, 0x9e, 0x36,
-	0x39, 0x75, 0x37, 0x41, 0xe3, 0x31, 0xd7, 0xcf, 0x01, 0x60, 0x34, 0xe1, 0x18, 0x00, 0x27, 0xd2,
-	0x8b, 0x27, 0x04, 0x21, 0x52, 0x99, 0x0e, 0x10, 0x32, 0x97, 0x38, 0x7f, 0x01, 0xe6, 0x34, 0x12,
-	0x72, 0x3e, 0x0f, 0x85, 0xb2, 0x49, 0x60, 0xb2, 0x04, 0x62, 0x44, 0x98, 0x56, 0x82, 0xc8, 0x3c,
-	0x51, 0x02, 0x9b, 0xb1, 0x99, 0x60, 0x8d, 0x31, 0xef, 0x63, 0x07, 0xfb, 0x88, 0xe2, 0x0f, 0xd0,
-	0x29, 0xde, 0x45, 0x14, 0xbd, 0x51, 0x39, 0xa2, 0x3b, 0xa0, 0xa4, 0x51, 0xd7, 0xed, 0x68, 0x96,
-	0xe0, 0xaa, 0x9e, 0xa0, 0x53, 0x5c, 0x35, 0x19, 0xdb, 0x87, 0x61, 0x85, 0x76, 0x77, 0x76, 0x83,
-	0xae, 0x37, 0x85, 0x7b, 0x64, 0x00, 0x63, 0xb8, 0x44, 0xb3, 0x71, 0x5e, 0xf2, 0x83, 0x4e, 0xd5,
-	0x0c, 0xba, 0xde, 0xce, 0x9f, 0xe7, 0xbe, 0x6c, 0xbc, 0x98, 0x83, 0x7f, 0x94, 0x40, 0xf1, 0x30,
-	0x74, 0x51, 0x1a, 0x87, 0x4d, 0x75, 0x1f, 0x2c, 0x44, 0xcb, 0x23, 0x8a, 0x4e, 0x4e, 0xa0, 0xda,
-	0xa6, 0xd4, 0x23, 0x0f, 0x34, 0x2d, 0xf1, 0x63, 0x93, 0x88, 0x11, 0xfd, 0x2b, 0x43, 0xc2, 0xa0,
-	0xdf, 0x8e, 0x42, 0x77, 0x90, 0x63, 0x6e, 0x1e, 0x80, 0xd5, 0x8d, 0x86, 0x87, 0x8c, 0x36, 0xae,
-	0xd6, 0x6b, 0x5b, 0xca, 0x81, 0xae, 0x3c, 0x69, 0x3e, 0xbd, 0x0d, 0xef, 0x5f, 0x4c, 0xa7, 0xb5,
-	0x3a, 0x6e, 0x4b, 0xeb, 0x22, 0x42, 0xb1, 0xaf, 0x3d, 0x3a, 0x38, 0xfc, 0xae, 0xde, 0xdc, 0xff,
-	0xce, 0xd3, 0xfa, 0xec, 0xdd, 0xda, 0x96, 0xbc, 0x8c, 0x3c, 0xbb, 0x96, 0x8c, 0xa3, 0x4a, 0xda,
-	0x66, 0x26, 0x33, 0x57, 0x5f, 0x46, 0x9e, 0xd7, 0x11, 0x13, 0xb2, 0xf6, 0x7d, 0xe2, 0x3a, 0x0f,
-	0x26, 0x76, 0xf4, 0x43, 0x30, 0x7b, 0x6f, 0x6b, 0x1b, 0x36, 0xc1, 0xbe, 0x8e, 0x69, 0xe0, 0x3b,
-	0xd8, 0x54, 0x7a, 0x6d, 0xec, 0x28, 0xb4, 0x8d, 0x15, 0xf6, 0xea, 0x2b, 0xa6, 0x8b, 0x89, 0xe2,
-	0xb8, 0x54, 0x69, 0xa3, 0x33, 0xac, 0x78, 0xd8, 0xef, 0xda, 0x7c, 0x20, 0x52, 0xa8, 0xab, 0x20,
-	0xc3, 0xc0, 0x84, 0x70, 0xac, 0x8f, 0x89, 0x1b, 0xf8, 0x06, 0xae, 0xe9, 0x0f, 0x19, 0xe3, 0x3d,
-	0x78, 0x0f, 0x6c, 0x4e, 0x32, 0x46, 0xa8, 0x21, 0x2b, 0xfe, 0x21, 0xfb, 0x3e, 0x61, 0x16, 0xcc,
-	0xbd, 0xcc, 0x48, 0xb9, 0x4f, 0xb7, 0xc0, 0x12, 0x28, 0xec, 0x20, 0x62, 0x1b, 0x8d, 0x80, 0xb6,
-	0x61, 0x26, 0x2f, 0x81, 0x1b, 0x00, 0x34, 0x3c, 0xfb, 0x31, 0xee, 0xf3, 0x9d, 0xa5, 0x7c, 0x46,
-	0x2e, 0x3c, 0xaf, 0x36, 0x0e, 0x9b, 0xd5, 0xc7, 0xb8, 0xaf, 0x64, 0x5a, 0x15, 0xb0, 0x90, 0xf4,
-	0x98, 0x01, 0x8b, 0x23, 0xf8, 0x19, 0xff, 0x3e, 0x80, 0x4f, 0x5c, 0x1f, 0x2b, 0xa8, 0xe5, 0x06,
-	0x54, 0x11, 0x07, 0x79, 0x99, 0x23, 0xfc, 0xcb, 0xa0, 0x2c, 0x7d, 0x35, 0x28, 0x4b, 0x7f, 0x1f,
-	0x94, 0xa5, 0xdf, 0xbc, 0x2a, 0xcf, 0x7c, 0xf5, 0xaa, 0x3c, 0xf3, 0xb7, 0x57, 0xe5, 0x99, 0x4f,
-	0xaf, 0x27, 0x8b, 0xad, 0x59, 0xae, 0xe6, 0x9d, 0x5a, 0x5a, 0xf4, 0x23, 0x67, 0x2b, 0xcb, 0x7f,
-	0x1a, 0xdc, 0xfe, 0x77, 0x00, 0x00, 0x00, 0xff, 0xff, 0xe1, 0x40, 0x68, 0xd9, 0xf7, 0x14, 0x00,
-	0x00,
+	// 2106 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x59, 0xcf, 0x6f, 0xdb, 0xc8,
+	0x19, 0x0d, 0x65, 0x5b, 0x3f, 0x46, 0xb6, 0x6c, 0x8f, 0xf3, 0x43, 0x61, 0x12, 0x89, 0xcb, 0x64,
+	0x77, 0x1d, 0xa7, 0x12, 0x1d, 0x25, 0x6d, 0xd3, 0x64, 0xd1, 0x56, 0x8e, 0xbd, 0x2e, 0x91, 0xcd,
+	0xda, 0xa5, 0xb3, 0xd9, 0x74, 0xbb, 0x80, 0x77, 0x44, 0x8e, 0x25, 0xd6, 0x12, 0xc9, 0x72, 0x46,
+	0x76, 0xdd, 0x45, 0x8b, 0xa2, 0x5b, 0xb4, 0x01, 0xda, 0x43, 0xb1, 0x05, 0x7a, 0x08, 0x50, 0xf4,
+	0xd6, 0x4b, 0x7b, 0xef, 0x7d, 0x4f, 0x7b, 0x5c, 0xa0, 0x97, 0x9e, 0x8c, 0x42, 0xe9, 0xb5, 0x40,
+	0xff, 0x84, 0x62, 0x86, 0x43, 0x8a, 0x94, 0x28, 0xdb, 0x29, 0xb6, 0x3d, 0x99, 0x33, 0xdf, 0x9b,
+	0xf7, 0xde, 0xcc, 0x7c, 0x1c, 0x7e, 0x23, 0x83, 0x92, 0x77, 0x88, 0x9d, 0xb6, 0xed, 0xe0, 0xba,
+	0xe7, 0xbb, 0xd4, 0x85, 0x25, 0x0f, 0xd1, 0xce, 0x21, 0xf2, 0xeb, 0x41, 0xaf, 0x7c, 0xb5, 0xed,
+	0xba, 0xed, 0x2e, 0xd6, 0x90, 0x67, 0x6b, 0xc8, 0x71, 0x5c, 0x8a, 0xa8, 0xed, 0x3a, 0x24, 0x40,
+	0xcb, 0xb5, 0xb6, 0x4d, 0x3b, 0xfd, 0x56, 0xdd, 0x74, 0x7b, 0x5a, 0xdb, 0x6d, 0xbb, 0x1a, 0xef,
+	0x6e, 0xf5, 0xf7, 0x78, 0x8b, 0x37, 0xf8, 0x93, 0x80, 0xef, 0xc4, 0xe1, 0xbe, 0x67, 0xd6, 0xb0,
+	0xe9, 0x92, 0x23, 0x42, 0xb1, 0x68, 0xb6, 0x11, 0xc5, 0x87, 0xe8, 0x28, 0x60, 0x31, 0x6b, 0x6d,
+	0xec, 0xd4, 0xc8, 0x21, 0x6a, 0xb7, 0xb1, 0xaf, 0xb9, 0x1e, 0xd7, 0x4d, 0xf1, 0x50, 0xf4, 0x0e,
+	0x09, 0x09, 0x15, 0x80, 0x77, 0x68, 0xb5, 0x82, 0x67, 0xb5, 0x0d, 0x72, 0x4f, 0x30, 0xea, 0x6d,
+	0x62, 0x2a, 0x7f, 0x05, 0xcc, 0xe8, 0x8e, 0xd7, 0xa7, 0xf0, 0x3a, 0xc8, 0x51, 0x8c, 0x7a, 0xbb,
+	0xb6, 0x55, 0x96, 0x14, 0x69, 0x79, 0x6a, 0x0d, 0x0c, 0x8e, 0xab, 0x59, 0x06, 0xd3, 0xd7, 0x8d,
+	0x2c, 0x0b, 0xe9, 0x96, 0x5c, 0x07, 0xd9, 0xad, 0x3e, 0x65, 0xf0, 0x1b, 0x60, 0xda, 0xa6, 0xb8,
+	0xc7, 0xb1, 0xc5, 0xc6, 0x42, 0x3d, 0x5c, 0x1c, 0xab, 0x55, 0x67, 0x63, 0x0c, 0x1e, 0x55, 0x7f,
+	0x29, 0x81, 0xa5, 0x1d, 0x8c, 0x88, 0xeb, 0x3c, 0xec, 0xa0, 0x6e, 0x17, 0x3b, 0x6d, 0xfc, 0x8e,
+	0x4d, 0xa8, 0xdc, 0x08, 0x55, 0x6f, 0x82, 0x02, 0xe1, 0xf1, 0xa1, 0xee, 0xec, 0xe0, 0xb8, 0x9a,
+	0x0f, 0x06, 0xe9, 0xeb, 0x46, 0x3e, 0x08, 0xeb, 0x96, 0xfc, 0x20, 0xd2, 0xbe, 0x0d, 0x66, 0x18,
+	0x3b, 0x29, 0x4b, 0xca, 0xd4, 0x72, 0xb1, 0x71, 0x25, 0x2e, 0x3e, 0xa2, 0x66, 0x04, 0x48, 0xf5,
+	0x8f, 0x12, 0x80, 0x23, 0x21, 0x36, 0xfb, 0x77, 0x43, 0x1f, 0x1b, 0x60, 0x49, 0xf8, 0x30, 0xc3,
+	0xf8, 0xd0, 0xd1, 0x85, 0xc1, 0x71, 0x75, 0x71, 0x64, 0xb4, 0xbe, 0x6e, 0x2c, 0x92, 0x91, 0x2e,
+	0x4b, 0xfe, 0x46, 0xe4, 0x51, 0x4b, 0xac, 0xcf, 0x89, 0x16, 0x83, 0xa5, 0xfa, 0x99, 0x04, 0x66,
+	0x13, 0xde, 0x1e, 0x84, 0xde, 0x1a, 0x60, 0x36, 0xc5, 0xd4, 0xfc, 0xe0, 0xb8, 0x5a, 0x8c, 0xdb,
+	0x29, 0x9a, 0x31, 0x23, 0x77, 0x22, 0x23, 0x37, 0x13, 0x46, 0x2e, 0xc4, 0x8d, 0x8c, 0x5a, 0xf8,
+	0xd7, 0xf8, 0x22, 0xad, 0xf5, 0x8f, 0x64, 0xf2, 0xe5, 0x2e, 0x52, 0x3c, 0xd3, 0x32, 0x13, 0x33,
+	0xad, 0x15, 0x4d, 0xe0, 0x19, 0xb8, 0x38, 0x94, 0x23, 0xfd, 0x16, 0x31, 0x7d, 0x9b, 0xa7, 0xbc,
+	0x98, 0xd2, 0x6b, 0xa9, 0x53, 0xda, 0x89, 0x01, 0x8d, 0x0b, 0x66, 0x5a, 0xb7, 0xfa, 0x22, 0x03,
+	0xae, 0xa5, 0x0e, 0x78, 0x8a, 0xba, 0xb6, 0x85, 0x28, 0x96, 0x5f, 0x48, 0xe1, 0xdc, 0xdf, 0x07,
+	0x97, 0xd3, 0x5d, 0x0c, 0x57, 0xe0, 0xca, 0xe0, 0xb8, 0x7a, 0x29, 0x95, 0x4f, 0x5f, 0x37, 0x2e,
+	0xa5, 0x5a, 0xd0, 0x2d, 0x58, 0x01, 0xc0, 0x43, 0x84, 0x78, 0x1d, 0x1f, 0x11, 0xcc, 0x17, 0xa4,
+	0x60, 0xc4, 0x7a, 0x60, 0x19, 0xe4, 0x4c, 0xb7, 0xd7, 0xc3, 0x0e, 0x2d, 0x4f, 0xf1, 0x60, 0xd8,
+	0x94, 0x3f, 0x8c, 0x96, 0xc8, 0x00, 0xe7, 0x87, 0xe6, 0x0e, 0x02, 0xf3, 0xc3, 0x05, 0xaa, 0xa6,
+	0x2e, 0xd0, 0xd3, 0x08, 0x66, 0x2c, 0x99, 0xe3, 0x9d, 0xea, 0x40, 0x02, 0x72, 0xea, 0x64, 0x1e,
+	0x76, 0x5d, 0x82, 0xe5, 0x8f, 0xfe, 0xd7, 0x0b, 0xf3, 0x7f, 0xc9, 0x00, 0x0f, 0xe4, 0x59, 0xde,
+	0xfd, 0xd7, 0x67, 0xd2, 0x6a, 0xe4, 0xf1, 0x8d, 0xe4, 0x99, 0x34, 0x7e, 0x20, 0x8a, 0x83, 0xe8,
+	0x33, 0x09, 0x00, 0xd6, 0x7e, 0xe8, 0x63, 0x96, 0x60, 0x9f, 0x44, 0x09, 0xf6, 0x00, 0xcc, 0xbb,
+	0x7e, 0x1b, 0x39, 0xf6, 0x8f, 0x51, 0x72, 0xf5, 0xe0, 0xe0, 0xb8, 0x5a, 0xda, 0x8a, 0x85, 0xf4,
+	0x75, 0xa3, 0x14, 0x87, 0xea, 0x16, 0x84, 0x60, 0xda, 0x41, 0xbd, 0x30, 0x7d, 0xf8, 0x73, 0x72,
+	0x1a, 0x53, 0x27, 0x4e, 0x23, 0x71, 0xac, 0xb3, 0x17, 0x70, 0xf2, 0xb1, 0xce, 0xa2, 0xea, 0x9f,
+	0x24, 0x50, 0x62, 0xcd, 0x1d, 0xec, 0x58, 0xba, 0x73, 0x60, 0x53, 0x2c, 0x7f, 0xf7, 0x55, 0xbe,
+	0x23, 0x0c, 0xd4, 0x27, 0xd8, 0x1f, 0x39, 0x02, 0xde, 0x23, 0xd8, 0x67, 0x20, 0x16, 0xd2, 0x2d,
+	0xb9, 0x19, 0xb9, 0xfa, 0x3a, 0x28, 0x72, 0xce, 0x1e, 0xee, 0xb5, 0xb0, 0x2f, 0xcc, 0x5d, 0x1c,
+	0x35, 0xf7, 0x98, 0x47, 0x0d, 0x40, 0xa3, 0x67, 0xf5, 0xf7, 0x12, 0x58, 0x60, 0xa1, 0xa6, 0x69,
+	0x62, 0x8f, 0x0a, 0xab, 0xdf, 0x0a, 0xad, 0x7e, 0x0d, 0x94, 0x62, 0xb4, 0x43, 0xc7, 0x0b, 0x83,
+	0xe3, 0xea, 0xec, 0x90, 0x51, 0x5f, 0x37, 0x66, 0x87, 0x9c, 0x5f, 0x8e, 0x31, 0x0c, 0x20, 0x9b,
+	0xed, 0x0e, 0xa6, 0xdb, 0x3e, 0xde, 0xc3, 0x3e, 0x76, 0x4c, 0x4c, 0xe4, 0x8d, 0xd0, 0xd9, 0x5b,
+	0x60, 0x01, 0x99, 0xd4, 0x3e, 0xc0, 0xbb, 0xa3, 0x99, 0xc8, 0xb3, 0xa1, 0xc9, 0x63, 0xd1, 0x46,
+	0x96, 0x50, 0xbc, 0x6d, 0xc9, 0xf9, 0xd0, 0x9f, 0xfa, 0x4d, 0xb0, 0xc8, 0x64, 0xd6, 0x71, 0x17,
+	0x53, 0xdc, 0x34, 0x4d, 0xb7, 0xef, 0x50, 0xb9, 0x1a, 0xaa, 0x5c, 0x04, 0x59, 0x9f, 0x8f, 0xe1,
+	0xdc, 0x05, 0x43, 0xb4, 0x62, 0xe3, 0xdf, 0x03, 0x0b, 0xf1, 0xcc, 0xe3, 0xef, 0x49, 0x4e, 0x0c,
+	0x97, 0xef, 0x45, 0xcb, 0x50, 0x4f, 0x26, 0x7f, 0x39, 0xbe, 0x00, 0xf1, 0xf1, 0xe1, 0x4b, 0xb0,
+	0x05, 0xe6, 0x92, 0xf5, 0x40, 0xc4, 0xf9, 0xd5, 0x88, 0xf3, 0x56, 0x92, 0x73, 0xc2, 0x87, 0x4b,
+	0x10, 0xfe, 0x66, 0x0a, 0x94, 0xd8, 0x44, 0x37, 0x31, 0xdd, 0xc1, 0x84, 0xd8, 0xae, 0x33, 0xa4,
+	0xfc, 0x77, 0x26, 0x9e, 0xdd, 0x2c, 0xb7, 0xd2, 0xb2, 0x9b, 0x8d, 0x36, 0x78, 0x14, 0x56, 0x40,
+	0xd1, 0x26, 0xbb, 0x0e, 0x3e, 0xdc, 0xe5, 0x60, 0x96, 0xa0, 0x79, 0xa3, 0x60, 0x93, 0x77, 0xf1,
+	0x21, 0x43, 0xc1, 0x5b, 0x20, 0x6b, 0x76, 0x91, 0xdd, 0x23, 0xfc, 0xad, 0x2a, 0x36, 0x96, 0x22,
+	0x1e, 0x56, 0x6d, 0x3d, 0xe4, 0x21, 0x43, 0x40, 0xe0, 0x0d, 0x30, 0xe7, 0xb8, 0xd4, 0xde, 0xb3,
+	0xcd, 0xa0, 0x34, 0x2b, 0x4f, 0x2b, 0xd2, 0xf2, 0x8c, 0x91, 0xec, 0x84, 0x8f, 0x41, 0x2e, 0xd8,
+	0x68, 0x52, 0x9e, 0xe1, 0xd3, 0xbd, 0x53, 0x4f, 0x56, 0x9b, 0xf5, 0xe4, 0xec, 0xea, 0xc1, 0x84,
+	0x44, 0x29, 0xd1, 0x74, 0x2c, 0xfe, 0x72, 0x86, 0x1c, 0xf2, 0x4f, 0xc1, 0x5c, 0x22, 0x02, 0x57,
+	0x40, 0x96, 0x0c, 0x77, 0xba, 0xd8, 0x80, 0xe3, 0xf5, 0x88, 0x21, 0x10, 0xd1, 0x11, 0x90, 0x39,
+	0xe9, 0x08, 0x80, 0x57, 0x40, 0xc1, 0x26, 0xbb, 0x41, 0xe2, 0xf1, 0x75, 0xc8, 0x1b, 0x79, 0x9b,
+	0x04, 0x89, 0xa9, 0x7e, 0x08, 0x0a, 0xcc, 0x2b, 0x45, 0xb4, 0x4f, 0x86, 0x1b, 0xf1, 0x76, 0xb4,
+	0x0f, 0x6f, 0x81, 0x05, 0x7c, 0x80, 0xfd, 0x23, 0xda, 0xb1, 0x9d, 0xf6, 0xae, 0x4d, 0x76, 0xdd,
+	0x7d, 0x6e, 0x2c, 0x1f, 0xa4, 0xf7, 0x46, 0x14, 0xd3, 0xc9, 0xd6, 0x23, 0xa3, 0x84, 0xe3, 0xed,
+	0x7d, 0xf5, 0x0f, 0x12, 0xc8, 0x6d, 0x62, 0xaa, 0x3b, 0x7b, 0xee, 0x90, 0xfc, 0xb9, 0x14, 0xb1,
+	0x97, 0x41, 0xee, 0x00, 0xfb, 0xc4, 0x8e, 0xf2, 0x3a, 0x6c, 0xb2, 0x84, 0xef, 0x7b, 0xd4, 0x16,
+	0x07, 0xe5, 0x8c, 0x21, 0x5a, 0xac, 0x9f, 0x7d, 0x54, 0xed, 0xf0, 0x13, 0x2b, 0x5a, 0xf0, 0x32,
+	0xc8, 0xb7, 0xfa, 0x76, 0x97, 0xee, 0x22, 0xca, 0xf7, 0xad, 0x60, 0xe4, 0x78, 0xbb, 0x19, 0x0b,
+	0xb5, 0x8e, 0xca, 0x33, 0xb1, 0xd0, 0xda, 0x91, 0xba, 0x08, 0xa6, 0x9f, 0xba, 0xb6, 0x75, 0xbf,
+	0xf0, 0x69, 0x33, 0xdb, 0x98, 0x86, 0x99, 0x8f, 0x7f, 0xd2, 0xf8, 0x7c, 0x09, 0x64, 0x37, 0xf8,
+	0x46, 0x42, 0x3a, 0x9a, 0xa9, 0xf0, 0xc6, 0x29, 0x7b, 0x1d, 0x4c, 0xf0, 0xf5, 0x33, 0x65, 0x84,
+	0x7a, 0xe1, 0xe7, 0x7f, 0xfb, 0xe7, 0xef, 0x32, 0xf3, 0x70, 0x4e, 0x63, 0xc9, 0xab, 0x11, 0xa1,
+	0xf1, 0x2b, 0x29, 0xed, 0xc0, 0x81, 0xcb, 0x69, 0xa4, 0x49, 0x8c, 0x90, 0xbf, 0x79, 0x06, 0xa4,
+	0xb0, 0x70, 0x95, 0x5b, 0xb8, 0xa8, 0x2e, 0x06, 0x16, 0xbc, 0x21, 0xe2, 0xbe, 0xb4, 0xc2, 0x9c,
+	0x8c, 0x9f, 0x49, 0xf0, 0xcd, 0x34, 0xfa, 0x04, 0x44, 0xf8, 0x58, 0x3e, 0x1d, 0x28, 0x6c, 0x54,
+	0xb9, 0x8d, 0xcb, 0xea, 0xf9, 0xc0, 0x86, 0xc5, 0x31, 0x35, 0x14, 0x80, 0x98, 0x13, 0x77, 0xe4,
+	0x14, 0x82, 0xd7, 0x47, 0xb9, 0x13, 0x61, 0x61, 0xe0, 0xc6, 0xc9, 0x20, 0x21, 0xbe, 0xc4, 0xc5,
+	0xe7, 0x60, 0x51, 0x8b, 0x0a, 0x0f, 0x02, 0xf7, 0x93, 0x15, 0x3e, 0x54, 0x27, 0x52, 0x6d, 0xe2,
+	0x50, 0xee, 0xfa, 0x89, 0x18, 0xa1, 0x06, 0xb9, 0xda, 0x2c, 0x04, 0x43, 0x35, 0xf8, 0x3c, 0xfd,
+	0xea, 0x05, 0xc7, 0x36, 0x32, 0x05, 0x24, 0xb4, 0x57, 0xce, 0x02, 0x15, 0x16, 0x64, 0x6e, 0xe1,
+	0x3c, 0x84, 0x5a, 0x70, 0x8c, 0xd4, 0x62, 0xf3, 0xfe, 0x45, 0xea, 0xe5, 0x6b, 0x3c, 0xf9, 0xc6,
+	0x31, 0x93, 0x92, 0x2f, 0x05, 0x29, 0x7c, 0x5c, 0xe6, 0x3e, 0x96, 0xe0, 0xe2, 0x98, 0x0f, 0xf8,
+	0xeb, 0xd4, 0xeb, 0xcd, 0xa9, 0x36, 0xd6, 0xfa, 0x47, 0x67, 0xb4, 0xc1, 0x90, 0xc2, 0x86, 0xc2,
+	0x6d, 0xc8, 0xea, 0x85, 0x31, 0x1b, 0x5a, 0xab, 0x7f, 0xc4, 0xb2, 0xef, 0xaf, 0xd2, 0x29, 0x97,
+	0x0f, 0x78, 0x67, 0xe2, 0xd6, 0xa7, 0xc1, 0x85, 0xc7, 0xbb, 0xaf, 0x36, 0x48, 0xd8, 0xbd, 0xc5,
+	0xed, 0xbe, 0xae, 0x2a, 0xc3, 0x04, 0xaa, 0xc5, 0x0b, 0x6d, 0x4d, 0x5c, 0x2a, 0x30, 0x73, 0xfe,
+	0xe7, 0x13, 0x6f, 0x06, 0x70, 0xf5, 0x4c, 0x0e, 0x38, 0x56, 0x78, 0xbe, 0xfd, 0x0a, 0x23, 0x84,
+	0xe1, 0x65, 0x6e, 0x58, 0x55, 0xaf, 0x4d, 0x32, 0x6c, 0x32, 0x34, 0x73, 0xfb, 0xf1, 0x78, 0x09,
+	0x03, 0xdf, 0x18, 0x15, 0x1c, 0x45, 0x08, 0x63, 0x6f, 0x9e, 0x8a, 0x13, 0x76, 0x2e, 0x72, 0x3b,
+	0x0b, 0xb0, 0xa4, 0xc5, 0x0b, 0x73, 0x02, 0xbf, 0x3f, 0xbc, 0x5f, 0xc0, 0xca, 0x28, 0x59, 0x18,
+	0x11, 0x62, 0xd5, 0x89, 0x71, 0x21, 0x52, 0xe2, 0x22, 0x79, 0x98, 0xd5, 0xd8, 0x17, 0x98, 0xc0,
+	0xf7, 0xa3, 0x5f, 0x71, 0xe0, 0xb5, 0xb4, 0xb1, 0xc3, 0xf7, 0xa7, 0x32, 0x29, 0x2c, 0x98, 0xe7,
+	0x38, 0x73, 0x0e, 0xce, 0x70, 0x66, 0x68, 0xc6, 0xaf, 0x28, 0x50, 0x49, 0x1b, 0x1c, 0xc4, 0x04,
+	0xfd, 0x6b, 0x27, 0x20, 0x84, 0xc2, 0x02, 0x57, 0x00, 0x6a, 0xa0, 0xc0, 0xf6, 0xe5, 0x60, 0xf4,
+	0x0a, 0x31, 0xfe, 0x1d, 0x4c, 0xc6, 0x27, 0x7d, 0x07, 0x47, 0x50, 0x42, 0xf0, 0x12, 0x17, 0x5c,
+	0x54, 0x67, 0xb9, 0xa0, 0x66, 0xf3, 0x20, 0xd3, 0xfd, 0x24, 0xe5, 0x4a, 0x30, 0x9e, 0x10, 0xa3,
+	0x88, 0x49, 0x09, 0x31, 0x86, 0x13, 0xf2, 0x15, 0x2e, 0x5f, 0x56, 0x97, 0xe2, 0xf2, 0x1a, 0xe2,
+	0x48, 0xe6, 0x62, 0x03, 0xe4, 0x9f, 0xb8, 0x6e, 0x77, 0xdb, 0x76, 0xda, 0xf0, 0xfc, 0x28, 0x29,
+	0xab, 0x1e, 0xe4, 0xd4, 0xde, 0xd8, 0x4e, 0x79, 0x6c, 0xe8, 0x47, 0x00, 0x30, 0x9a, 0xa0, 0xd2,
+	0x82, 0x63, 0x19, 0x14, 0x15, 0x61, 0xc2, 0xbe, 0x32, 0x19, 0x20, 0x7c, 0xcf, 0x73, 0xfe, 0x02,
+	0xcc, 0x69, 0x24, 0xe0, 0x7c, 0x16, 0x18, 0x65, 0xc5, 0xd6, 0x78, 0x96, 0x89, 0x2a, 0x6c, 0x52,
+	0x96, 0x85, 0xe1, 0xb1, 0x2c, 0xb3, 0x19, 0x5b, 0x1b, 0x9c, 0x67, 0xcc, 0x9b, 0xd8, 0xc1, 0x3e,
+	0xa2, 0xf8, 0x6d, 0xb4, 0x8f, 0xd7, 0x11, 0x45, 0xaf, 0xb4, 0x1c, 0xd7, 0x39, 0xe5, 0x35, 0xb5,
+	0xac, 0x51, 0xd7, 0xed, 0x6a, 0x6d, 0xc1, 0x55, 0xdb, 0x43, 0xfb, 0xb8, 0x66, 0x21, 0x8a, 0xd8,
+	0x5a, 0xbf, 0x13, 0x2c, 0xd2, 0xfa, 0xda, 0x7a, 0xbf, 0xe7, 0x4d, 0xa0, 0x4f, 0x94, 0xb9, 0x0c,
+	0x17, 0x7b, 0xa5, 0x39, 0x35, 0xf9, 0x61, 0xb7, 0x66, 0xf5, 0x7b, 0xde, 0xda, 0x67, 0xd3, 0x9f,
+	0x36, 0x9f, 0x4f, 0xc3, 0xbf, 0x48, 0xa0, 0xb8, 0x1d, 0x0c, 0x51, 0x9a, 0xdb, 0xba, 0xba, 0x09,
+	0xe6, 0xc2, 0xe6, 0x0e, 0x45, 0x7b, 0x7b, 0x50, 0xed, 0x50, 0xea, 0x91, 0xfb, 0x9a, 0x16, 0xfb,
+	0x65, 0x57, 0x68, 0x84, 0x7f, 0x65, 0x48, 0x18, 0xf4, 0xdb, 0xa1, 0x74, 0x17, 0x39, 0xd6, 0xca,
+	0x16, 0x58, 0x5a, 0x6e, 0x7a, 0xc8, 0xec, 0xe0, 0x5a, 0xa3, 0xbe, 0xaa, 0x6c, 0x19, 0xca, 0x63,
+	0xfd, 0xc9, 0x4d, 0x78, 0xef, 0x74, 0x3a, 0xad, 0xd5, 0x75, 0x5b, 0x5a, 0x0f, 0x11, 0x8a, 0x7d,
+	0xed, 0xe1, 0xd6, 0xf6, 0xf7, 0x0c, 0x7d, 0xf3, 0x3b, 0x4f, 0x1a, 0x53, 0xb7, 0xeb, 0xab, 0xf2,
+	0x02, 0xf2, 0xec, 0x7a, 0x5c, 0x47, 0x95, 0xb4, 0x95, 0x4c, 0x66, 0xba, 0xb1, 0x80, 0x3c, 0xaf,
+	0x2b, 0xee, 0x21, 0xda, 0x0f, 0x88, 0xeb, 0xdc, 0x1f, 0xeb, 0x31, 0xb6, 0xc1, 0xd4, 0xdd, 0xd5,
+	0x3b, 0x50, 0x07, 0x9b, 0x06, 0xa6, 0x7d, 0xdf, 0xc1, 0x96, 0x72, 0xd8, 0xc1, 0x8e, 0x42, 0x3b,
+	0x58, 0x61, 0xb5, 0x95, 0x62, 0xb9, 0x98, 0x28, 0x8e, 0x4b, 0x95, 0x0e, 0x3a, 0xc0, 0x8a, 0x87,
+	0xfd, 0x9e, 0xcd, 0xcb, 0x4e, 0x85, 0xba, 0x0a, 0xcb, 0x79, 0x42, 0x38, 0xd6, 0xc7, 0xc4, 0xed,
+	0xfb, 0x26, 0xae, 0x1b, 0x0f, 0x18, 0xe3, 0x5d, 0x78, 0x17, 0xac, 0x8c, 0x33, 0x86, 0xa8, 0x21,
+	0x2b, 0xfe, 0x11, 0x3b, 0x05, 0x61, 0x16, 0x4c, 0xbf, 0xc8, 0x48, 0xb9, 0x0f, 0x56, 0xc1, 0x3c,
+	0x28, 0xac, 0x21, 0x62, 0x9b, 0xcd, 0x3e, 0xed, 0xc0, 0x4c, 0x5e, 0x02, 0xd7, 0x00, 0x68, 0x7a,
+	0xf6, 0x23, 0x7c, 0xc4, 0x7b, 0xe6, 0xf3, 0x19, 0xb9, 0xf0, 0xac, 0xd6, 0xdc, 0xd6, 0x6b, 0x8f,
+	0xf0, 0x91, 0x92, 0x69, 0x55, 0xc1, 0x5c, 0x7c, 0xc4, 0x39, 0x50, 0x4a, 0xe0, 0xcf, 0xf9, 0xf7,
+	0x00, 0x7c, 0xec, 0xfa, 0x58, 0x41, 0x2d, 0xb7, 0x4f, 0x15, 0xb1, 0x91, 0x67, 0xd9, 0xc2, 0xcf,
+	0x07, 0x15, 0xe9, 0x8b, 0x41, 0x45, 0xfa, 0xc7, 0xa0, 0x22, 0xfd, 0xf6, 0x65, 0xe5, 0xdc, 0x17,
+	0x2f, 0x2b, 0xe7, 0xfe, 0xfe, 0xb2, 0x72, 0xee, 0x83, 0xab, 0xf1, 0xc5, 0xd6, 0xda, 0xae, 0xe6,
+	0xed, 0xb7, 0xb5, 0xf0, 0x3f, 0x0a, 0xad, 0x2c, 0xff, 0x1d, 0xfe, 0xce, 0x7f, 0x02, 0x00, 0x00,
+	0xff, 0xff, 0xa1, 0x09, 0x6f, 0x7a, 0x64, 0x18, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -2220,6 +2639,9 @@ type EngineClient interface {
 	OrganizationList(ctx context.Context, in *OrganizationList_Input, opts ...grpc.CallOption) (*OrganizationList_Output, error)
 	TeamList(ctx context.Context, in *TeamList_Input, opts ...grpc.CallOption) (*TeamList_Output, error)
 	TeamGet(ctx context.Context, in *TeamGet_Input, opts ...grpc.CallOption) (*TeamGet_Output, error)
+	TeamCreate(ctx context.Context, in *TeamCreate_Input, opts ...grpc.CallOption) (*TeamCreate_Output, error)
+	TeamSendInvite(ctx context.Context, in *TeamSendInvite_Input, opts ...grpc.CallOption) (*TeamSendInvite_Output, error)
+	TeamAcceptInvite(ctx context.Context, in *TeamAcceptInvite_Input, opts ...grpc.CallOption) (*TeamAcceptInvite_Output, error)
 	ToolPing(ctx context.Context, in *Void, opts ...grpc.CallOption) (*Void, error)
 	ToolStatus(ctx context.Context, in *GetStatus_Input, opts ...grpc.CallOption) (*GetStatus_Output, error)
 	ToolInfo(ctx context.Context, in *GetInfo_Input, opts ...grpc.CallOption) (*GetInfo_Output, error)
@@ -2352,6 +2774,33 @@ func (c *engineClient) TeamGet(ctx context.Context, in *TeamGet_Input, opts ...g
 	return out, nil
 }
 
+func (c *engineClient) TeamCreate(ctx context.Context, in *TeamCreate_Input, opts ...grpc.CallOption) (*TeamCreate_Output, error) {
+	out := new(TeamCreate_Output)
+	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/TeamCreate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *engineClient) TeamSendInvite(ctx context.Context, in *TeamSendInvite_Input, opts ...grpc.CallOption) (*TeamSendInvite_Output, error) {
+	out := new(TeamSendInvite_Output)
+	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/TeamSendInvite", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *engineClient) TeamAcceptInvite(ctx context.Context, in *TeamAcceptInvite_Input, opts ...grpc.CallOption) (*TeamAcceptInvite_Output, error) {
+	out := new(TeamAcceptInvite_Output)
+	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/TeamAcceptInvite", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *engineClient) ToolPing(ctx context.Context, in *Void, opts ...grpc.CallOption) (*Void, error) {
 	out := new(Void)
 	err := c.cc.Invoke(ctx, "/pathwar.engine.Engine/ToolPing", in, out, opts...)
@@ -2412,6 +2861,9 @@ type EngineServer interface {
 	OrganizationList(context.Context, *OrganizationList_Input) (*OrganizationList_Output, error)
 	TeamList(context.Context, *TeamList_Input) (*TeamList_Output, error)
 	TeamGet(context.Context, *TeamGet_Input) (*TeamGet_Output, error)
+	TeamCreate(context.Context, *TeamCreate_Input) (*TeamCreate_Output, error)
+	TeamSendInvite(context.Context, *TeamSendInvite_Input) (*TeamSendInvite_Output, error)
+	TeamAcceptInvite(context.Context, *TeamAcceptInvite_Input) (*TeamAcceptInvite_Output, error)
 	ToolPing(context.Context, *Void) (*Void, error)
 	ToolStatus(context.Context, *GetStatus_Input) (*GetStatus_Output, error)
 	ToolInfo(context.Context, *GetInfo_Input) (*GetInfo_Output, error)
@@ -2461,6 +2913,15 @@ func (*UnimplementedEngineServer) TeamList(ctx context.Context, req *TeamList_In
 }
 func (*UnimplementedEngineServer) TeamGet(ctx context.Context, req *TeamGet_Input) (*TeamGet_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TeamGet not implemented")
+}
+func (*UnimplementedEngineServer) TeamCreate(ctx context.Context, req *TeamCreate_Input) (*TeamCreate_Output, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TeamCreate not implemented")
+}
+func (*UnimplementedEngineServer) TeamSendInvite(ctx context.Context, req *TeamSendInvite_Input) (*TeamSendInvite_Output, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TeamSendInvite not implemented")
+}
+func (*UnimplementedEngineServer) TeamAcceptInvite(ctx context.Context, req *TeamAcceptInvite_Input) (*TeamAcceptInvite_Output, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TeamAcceptInvite not implemented")
 }
 func (*UnimplementedEngineServer) ToolPing(ctx context.Context, req *Void) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ToolPing not implemented")
@@ -2716,6 +3177,60 @@ func _Engine_TeamGet_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Engine_TeamCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TeamCreate_Input)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EngineServer).TeamCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pathwar.engine.Engine/TeamCreate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EngineServer).TeamCreate(ctx, req.(*TeamCreate_Input))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Engine_TeamSendInvite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TeamSendInvite_Input)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EngineServer).TeamSendInvite(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pathwar.engine.Engine/TeamSendInvite",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EngineServer).TeamSendInvite(ctx, req.(*TeamSendInvite_Input))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Engine_TeamAcceptInvite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TeamAcceptInvite_Input)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EngineServer).TeamAcceptInvite(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pathwar.engine.Engine/TeamAcceptInvite",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EngineServer).TeamAcceptInvite(ctx, req.(*TeamAcceptInvite_Input))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Engine_ToolPing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Void)
 	if err := dec(in); err != nil {
@@ -2861,6 +3376,18 @@ var _Engine_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TeamGet",
 			Handler:    _Engine_TeamGet_Handler,
+		},
+		{
+			MethodName: "TeamCreate",
+			Handler:    _Engine_TeamCreate_Handler,
+		},
+		{
+			MethodName: "TeamSendInvite",
+			Handler:    _Engine_TeamSendInvite_Handler,
+		},
+		{
+			MethodName: "TeamAcceptInvite",
+			Handler:    _Engine_TeamAcceptInvite_Handler,
 		},
 		{
 			MethodName: "ToolPing",
@@ -3594,6 +4121,281 @@ func (m *TeamList_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i--
 			dAtA[i] = 0xa
 		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TeamCreate) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TeamCreate) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamCreate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *TeamCreate_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TeamCreate_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamCreate_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.SeasonID != 0 {
+		i = encodeVarintPwengine(dAtA, i, uint64(m.SeasonID))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintPwengine(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.OrganizationID != 0 {
+		i = encodeVarintPwengine(dAtA, i, uint64(m.OrganizationID))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TeamCreate_Output) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TeamCreate_Output) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamCreate_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Team != nil {
+		{
+			size, err := m.Team.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPwengine(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TeamSendInvite) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TeamSendInvite) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamSendInvite) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *TeamSendInvite_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TeamSendInvite_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamSendInvite_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.UserID != 0 {
+		i = encodeVarintPwengine(dAtA, i, uint64(m.UserID))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.TeamID != 0 {
+		i = encodeVarintPwengine(dAtA, i, uint64(m.TeamID))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TeamSendInvite_Output) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TeamSendInvite_Output) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamSendInvite_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.TeamMember != nil {
+		{
+			size, err := m.TeamMember.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPwengine(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TeamAcceptInvite) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TeamAcceptInvite) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamAcceptInvite) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *TeamAcceptInvite_Input) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TeamAcceptInvite_Input) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamAcceptInvite_Input) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.TeamMemberID != 0 {
+		i = encodeVarintPwengine(dAtA, i, uint64(m.TeamMemberID))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TeamAcceptInvite_Output) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TeamAcceptInvite_Output) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TeamAcceptInvite_Output) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.TeamMember != nil {
+		{
+			size, err := m.TeamMember.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPwengine(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -4591,6 +5393,118 @@ func (m *TeamList_Output) Size() (n int) {
 			l = e.Size()
 			n += 1 + l + sovPwengine(uint64(l))
 		}
+	}
+	return n
+}
+
+func (m *TeamCreate) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *TeamCreate_Input) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.OrganizationID != 0 {
+		n += 1 + sovPwengine(uint64(m.OrganizationID))
+	}
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + sovPwengine(uint64(l))
+	}
+	if m.SeasonID != 0 {
+		n += 1 + sovPwengine(uint64(m.SeasonID))
+	}
+	return n
+}
+
+func (m *TeamCreate_Output) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Team != nil {
+		l = m.Team.Size()
+		n += 1 + l + sovPwengine(uint64(l))
+	}
+	return n
+}
+
+func (m *TeamSendInvite) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *TeamSendInvite_Input) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.TeamID != 0 {
+		n += 1 + sovPwengine(uint64(m.TeamID))
+	}
+	if m.UserID != 0 {
+		n += 1 + sovPwengine(uint64(m.UserID))
+	}
+	return n
+}
+
+func (m *TeamSendInvite_Output) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.TeamMember != nil {
+		l = m.TeamMember.Size()
+		n += 1 + l + sovPwengine(uint64(l))
+	}
+	return n
+}
+
+func (m *TeamAcceptInvite) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *TeamAcceptInvite_Input) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.TeamMemberID != 0 {
+		n += 1 + sovPwengine(uint64(m.TeamMemberID))
+	}
+	return n
+}
+
+func (m *TeamAcceptInvite_Output) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.TeamMember != nil {
+		l = m.TeamMember.Size()
+		n += 1 + l + sovPwengine(uint64(l))
 	}
 	return n
 }
@@ -6644,6 +7558,718 @@ func (m *TeamList_Output) Unmarshal(dAtA []byte) error {
 			}
 			m.Items = append(m.Items, &pwdb.Team{})
 			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TeamCreate) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TeamCreate: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TeamCreate: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TeamCreate_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OrganizationID", wireType)
+			}
+			m.OrganizationID = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.OrganizationID |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SeasonID", wireType)
+			}
+			m.SeasonID = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.SeasonID |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TeamCreate_Output) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Team", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Team == nil {
+				m.Team = &pwdb.Team{}
+			}
+			if err := m.Team.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TeamSendInvite) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TeamSendInvite: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TeamSendInvite: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TeamSendInvite_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TeamID", wireType)
+			}
+			m.TeamID = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.TeamID |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field UserID", wireType)
+			}
+			m.UserID = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.UserID |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TeamSendInvite_Output) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TeamMember", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.TeamMember == nil {
+				m.TeamMember = &pwdb.TeamMember{}
+			}
+			if err := m.TeamMember.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TeamAcceptInvite) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TeamAcceptInvite: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TeamAcceptInvite: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TeamAcceptInvite_Input) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Input: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Input: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TeamMemberID", wireType)
+			}
+			m.TeamMemberID = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.TeamMemberID |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPwengine(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TeamAcceptInvite_Output) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPwengine
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Output: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Output: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TeamMember", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPwengine
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPwengine
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.TeamMember == nil {
+				m.TeamMember = &pwdb.TeamMember{}
+			}
+			if err := m.TeamMember.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

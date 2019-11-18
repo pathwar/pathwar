@@ -48,6 +48,9 @@ service Engine {
 
   rpc TeamList(TeamList.Input) returns (TeamList.Output) { option (google.api.http) = {get: "/teams"}; };
   rpc TeamGet(TeamGet.Input) returns (TeamGet.Output) { option (google.api.http) = {get: "/team"}; };
+  rpc TeamCreate(TeamCreate.Input) returns (TeamCreate.Output) { option (google.api.http) = {post: "/team"; body: "*"}; };
+  rpc TeamSendInvite(TeamSendInvite.Input) returns (TeamSendInvite.Output) { option (google.api.http) = {post: "/team/invite"; body: "*"}; };
+  rpc TeamAcceptInvite(TeamAcceptInvite.Input) returns (TeamAcceptInvite.Output) { option (google.api.http) = {post: "/team/invite/accept"; body: "*"}; };
 
   //
   // Tool
@@ -56,7 +59,7 @@ service Engine {
   rpc ToolPing(Void) returns (Void) { option (google.api.http) = {get: "/ping"}; };
   rpc ToolStatus(GetStatus.Input) returns (GetStatus.Output) { option (google.api.http) = {get: "/status"}; }
   rpc ToolInfo(GetInfo.Input) returns (GetInfo.Output) { option (google.api.http) = {get: "/info"}; };
-  rpc ToolGenerateFakeData(Void) returns (Void) { option (google.api.http) = {post: "/tool/generate-fake-data"}; };
+  rpc ToolGenerateFakeData(Void) returns (Void) { option (google.api.http) = {post: "/tool/generate-fake-data"; body: "*"}; };
   rpc ToolDBDump(Void) returns (pathwar.db.Dump) { option (google.api.http) = {get: "/tool/sql-dump"}; };
 }
 
@@ -136,6 +139,36 @@ message TeamList {
   }
   message Output {
     repeated pathwar.db.Team items = 1;
+  }
+}
+
+message TeamCreate {
+  message Input {
+    int64 organization_id = 1 [(gogoproto.customname) = "OrganizationID"];
+    string name = 2;
+    int64 season_id = 3 [(gogoproto.customname) = "SeasonID"];
+  }
+  message Output {
+    pathwar.db.Team team = 1;
+  }
+}
+
+message TeamSendInvite {
+  message Input {
+    int64 team_id = 1 [(gogoproto.customname) = "TeamID"];
+    int64 user_id = 2 [(gogoproto.customname) = "UserID"];
+  }
+  message Output {
+    pathwar.db.TeamMember team_member = 1;
+  }
+}
+
+message TeamAcceptInvite {
+  message Input {
+    int64 team_member_id = 1 [(gogoproto.customname) = "TeamMemberID"];
+  }
+  message Output {
+    pathwar.db.TeamMember team_member = 1;
   }
 }
 
