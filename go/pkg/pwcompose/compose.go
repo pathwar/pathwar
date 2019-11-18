@@ -47,7 +47,7 @@ func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger
 	// check yaml and add image name if not defined
 	for name, service := range composeStruct.Services {
 		if len(service.Image) == 0 {
-			service.Image = "zarakii/" + challengeName + "." + name + ":latest"
+			service.Image = prefix + challengeName + "." + name
 			composeStruct.Services[name] = service
 		}
 	}
@@ -88,7 +88,11 @@ func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger
 	}
 
 	logger.Debug("docker-compose", zap.String("-f", tmpComposePath), zap.String("action", "bundle"))
-	cmd = exec.Command("docker-compose", "-f", tmpComposePath, "bundle", "--push-images")
+	pushImages := ""
+	if !noPush {
+		pushImages = "--push-images"
+	}
+	cmd = exec.Command("docker-compose", "-f", tmpComposePath, "bundle", pushImages)
 	cmd.Dir = cleanPath
 	cmd.Stdout = os.Stderr
 	cmd.Stderr = os.Stderr
