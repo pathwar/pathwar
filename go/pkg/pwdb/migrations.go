@@ -232,5 +232,24 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 		}
 	}
 
+	//
+	// coupons
+	//
+	coupons := []*Coupon{
+		{Hash: "test-coupon-1", Value: 42, MaxValidationCount: 1, SeasonID: solo.ID},
+		{Hash: "test-coupon-2", Value: 42, MaxValidationCount: 1, SeasonID: testSeason.ID},
+		{Hash: "test-coupon-3", Value: 42, MaxValidationCount: 0, SeasonID: solo.ID},
+		{Hash: "test-coupon-4", Value: 42, MaxValidationCount: 2, SeasonID: solo.ID},
+	}
+	for _, coupon := range coupons {
+		err := tx.
+			Set("gorm:association_autoupdate", true).
+			Create(coupon).
+			Error
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }

@@ -4,16 +4,17 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 )
 
-func TestSvc_ToolInfo(t *testing.T) {
+func TestEngine_ToolInfo(t *testing.T) {
 	svc, cleanup := TestingService(t, ServiceOpts{Logger: testutil.Logger(t)})
 	defer cleanup()
-	ctx := context.Background()
+	ctx := testingSetContextToken(context.Background(), t)
 
 	status, err := svc.ToolInfo(ctx, nil)
-	checkErr(t, "", err)
+	assert.NoError(t, err)
 	expected := &GetInfo_Output{
 		Version: "dev",
 		Commit:  "n/a",
@@ -21,5 +22,5 @@ func TestSvc_ToolInfo(t *testing.T) {
 		BuiltBy: "n/a",
 	}
 	expected.Uptime = status.Uptime // may vary
-	testSameDeep(t, "", expected, status)
+	assert.Equal(t, expected, status)
 }

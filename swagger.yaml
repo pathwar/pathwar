@@ -92,6 +92,19 @@ definitions:
       challenge_validation:
         $ref: '#/definitions/dbChallengeValidation'
     type: object
+  apiCouponValidateInput:
+    properties:
+      hash:
+        type: string
+      team_id:
+        format: int64
+        type: string
+    type: object
+  apiCouponValidateOutput:
+    properties:
+      coupon_validation:
+        $ref: '#/definitions/dbCouponValidation'
+    type: object
   apiGetInfoOutput:
     properties:
       built_at:
@@ -1251,6 +1264,31 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiChallengeListOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Service
+  /coupon-validation:
+    post:
+      operationId: CouponValidate
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiCouponValidateInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiCouponValidateOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.

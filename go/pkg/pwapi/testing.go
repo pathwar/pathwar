@@ -53,7 +53,7 @@ func TestingServer(t *testing.T, ctx context.Context, opts ServerOpts) (*Server,
 
 	go func() {
 		if err := server.Run(); err != nil {
-			t.Logf("server shutdown, err: %v", err)
+			opts.Logger.Warn("server shutdown", zap.Error(err))
 		}
 	}()
 

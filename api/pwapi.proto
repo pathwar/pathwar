@@ -53,6 +53,12 @@ service Service {
   rpc TeamAcceptInvite(TeamAcceptInvite.Input) returns (TeamAcceptInvite.Output) { option (google.api.http) = {post: "/team/invite/accept"; body: "*"}; };
 
   //
+  // Coupon
+  //
+
+  rpc CouponValidate(CouponValidate.Input) returns (CouponValidate.Output) { option (google.api.http) = {post: "/coupon-validation"; body: "*"}; };
+
+  //
   // Tool
   //
 
@@ -285,6 +291,16 @@ message GetInfo {
     string commit = 3;   // git sha
     string built_at = 4; // date
     string built_by = 5; // builder
+  }
+}
+
+message CouponValidate {
+  message Input {
+    string hash = 1;
+    int64 team_id = 2 [(gogoproto.customname) = "TeamID"];
+  }
+  message Output {
+    pathwar.db.CouponValidation coupon_validation = 1;
   }
 }
 
