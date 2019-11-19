@@ -528,6 +528,9 @@ definitions:
       created_at:
         format: date-time
         type: string
+      deleted_at:
+        format: date-time
+        type: string
       deletion_status:
         $ref: '#/definitions/dbDeletionStatus'
       gravatar_url:
@@ -661,6 +664,9 @@ definitions:
       created_at:
         format: date-time
         type: string
+      deleted_at:
+        format: date-time
+        type: string
       deletion_status:
         $ref: '#/definitions/dbDeletionStatus'
       id:
@@ -755,6 +761,9 @@ definitions:
         format: int64
         type: string
       created_at:
+        format: date-time
+        type: string
+      deleted_at:
         format: date-time
         type: string
       deletion_reason:
