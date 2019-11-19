@@ -28,13 +28,15 @@ const ChallengeRow = ({
     hasSubscriptions &&
     challenge.subscriptions.find(item => item.status === "Active")
 
+  const subscriptionHasValidations = subscription && subscription.validations
+
   const submitValidate = event => {
     event.preventDefault()
     const validateDataSet = {
       ...formData,
       subscriptionID: subscription.id,
     }
-    validateChallenge(validateDataSet)
+    validateChallenge(validateDataSet, seasonId)
   }
 
   const handleChange = event => {
@@ -88,18 +90,25 @@ const ChallengeRow = ({
             value="Validate"
             size="sm"
             color="warning"
-            icon="check"
-            disabled={!hasSubscriptions}
+            icon={subscriptionHasValidations ? "check-circle" : "circle"}
+            disabled={!hasSubscriptions || subscriptionHasValidations}
             onClick={() => setValidateOpen(!isValidateOpen)}
           >
-            Validate
+            {subscriptionHasValidations ? "Validated" : "Validate"}
           </Button>
         </Table.Col>
         <Table.Col className="w-1">
           <Button value="Github page" social="github" size="sm" />
         </Table.Col>
         <Table.Col className="w-1">
-          <Button onClick={closeChallengeHandle} value="Close" size="sm" color="danger" icon="x-circle" />
+          <Button
+            onClick={closeChallengeHandle}
+            disabled={!hasSubscriptions || !subscriptionHasValidations}
+            value="Close"
+            size="sm"
+            color="danger"
+            icon="x-circle"
+          />
         </Table.Col>
       </Table.Row>
       {isValidateOpen && (
@@ -160,9 +169,10 @@ const ChallengeTable = ({
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {challenges.map(challenge => {
+        {challenges.map((challenge, idx) => {
           return (
             <ChallengeRow
+              key={Math.random() + idx}
               challenge={challenge}
               buyChallenge={buyChallenge}
               validateChallenge={validateChallenge}
@@ -218,8 +228,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   buyChallengeAction: (challengeID, teamID, seasonId) =>
     buyChallengeAction(challengeID, teamID, seasonId),
-  validateChallengeAction: validationData =>
-    validateChallengeAction(validationData),
+  validateChallengeAction: (validationData, seasonId) =>
+    validateChallengeAction(validationData, seasonId),
   closeChallengeAction: subscriptionID => closeChallengeAction(subscriptionID),
 }
 
