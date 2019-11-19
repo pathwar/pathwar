@@ -5,11 +5,13 @@
   "version": "0.1.0",
   "scripts": {
     "test": "env-cmd --file ../.env.test jest",
-    "docker-integration": "env-cmd --file ../.env.docker-integration jest",
+    "docker-integration": "env-cmd --file ./.env.docker-integration jest",
     "integration": "env-cmd --file ../.env.integration jest"
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "babel-preset-gatsby": "^0.2.22",
+    "dotenv": "^8.2.0",
     "env-cmd": "^10.0.1"
   },
   "devDependencies": {
