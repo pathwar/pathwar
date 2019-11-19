@@ -13,6 +13,7 @@ func (e *engine) UserDeleteAccount(ctx context.Context, in *UserDeleteAccount_In
 	if err != nil {
 		return nil, fmt.Errorf("get userid from context: %w", err)
 	}
+	now := time.Now()
 
 	// get user
 	var user pwdb.User
@@ -31,9 +32,10 @@ func (e *engine) UserDeleteAccount(ctx context.Context, in *UserDeleteAccount_In
 
 	// update user
 	updates := pwdb.User{
-		OAuthSubject:   fmt.Sprintf("deleted_%s_%d", user.OAuthSubject, time.Now().Unix()),
+		OAuthSubject:   fmt.Sprintf("deleted_%s_%d", user.OAuthSubject, now.Unix()),
 		DeletionReason: in.Reason,
 		DeletionStatus: pwdb.DeletionStatus_Requested,
+		DeletedAt:      &now,
 	}
 	err = e.db.Model(&user).Updates(updates).Error
 	if err != nil {
@@ -55,6 +57,7 @@ func (e *engine) UserDeleteAccount(ctx context.Context, in *UserDeleteAccount_In
 		if !haveAnotherActiveMember {
 			updates := pwdb.Team{
 				DeletionStatus: pwdb.DeletionStatus_Requested,
+				DeletedAt:      &now,
 			}
 			err = e.db.Model(&teamMembership.Team).Updates(updates).Error
 			if err != nil {
@@ -77,8 +80,9 @@ func (e *engine) UserDeleteAccount(ctx context.Context, in *UserDeleteAccount_In
 		}
 		if !haveAnotherActiveMember {
 			updates := pwdb.Organization{
-				Name:           fmt.Sprintf("deleted_%s_%d", organizationMembership.Organization.Name, time.Now().Unix()),
+				Name:           fmt.Sprintf("deleted_%s_%d", organizationMembership.Organization.Name, now.Unix()),
 				DeletionStatus: pwdb.DeletionStatus_Requested,
+				DeletedAt:      &now,
 			}
 			err = e.db.Model(&organizationMembership.Organization).Updates(updates).Error
 			if err != nil {
