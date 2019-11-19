@@ -100,6 +100,8 @@ message SeasonChallenge {
   repeated ChallengeSubscription subscriptions = 205 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
+message SeasonChallengeList { repeated SeasonChallenge items = 1; }
+
 message ChallengeInstance {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
@@ -340,10 +342,10 @@ message Team {
   //
 
   Season season = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:SeasonID\""];
-  int64 season_id = 201 [(gogoproto.customname) = "SeasonID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 season_id = 201 [(gogoproto.customname) = "SeasonID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index;unique_index:idx_team_season_organization\""];
 
   Organization organization = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:OrganizationID\""];
-  int64 organization_id = 203 [(gogoproto.customname) = "OrganizationID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 organization_id = 203 [(gogoproto.customname) = "OrganizationID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index;unique_index:idx_team_season_organization\""];
 
   repeated ChallengeSubscription challenge_subscriptions = 205 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated TeamMember members = 206 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];

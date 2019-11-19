@@ -10,6 +10,7 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "test": "env-cmd --file ./.env.test jest",
+    "docker-integration": "env-cmd --file ./.env.docker-integration jest",
     "integration": "env-cmd --file ./.env.integration jest"
   },
   "dependencies": {

@@ -7,7 +7,7 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) TeamList(ctx context.Context, in *TeamListInput) (*TeamListOutput, error) {
+func (e *engine) TeamList(ctx context.Context, in *TeamList_Input) (*TeamList_Output, error) {
 	{ // validation
 		if in.SeasonID == 0 {
 			return nil, ErrMissingArgument
@@ -28,7 +28,7 @@ func (e *engine) TeamList(ctx context.Context, in *TeamListInput) (*TeamListOutp
 		}
 	}
 
-	var ret TeamListOutput
+	var ret TeamList_Output
 	err := e.db.
 		Set("gorm:auto_preload", true).
 		Where(pwdb.Team{SeasonID: in.SeasonID}).

@@ -29,7 +29,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 
 func request_Engine_UserGetSession_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserGetSessionInput
+	var protoReq UserGetSession_Input
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.UserGetSession(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -38,7 +38,7 @@ func request_Engine_UserGetSession_0(ctx context.Context, marshaler runtime.Mars
 }
 
 func local_request_Engine_UserGetSession_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserGetSessionInput
+	var protoReq UserGetSession_Input
 	var metadata runtime.ServerMetadata
 
 	msg, err := server.UserGetSession(ctx, &protoReq)
@@ -47,7 +47,7 @@ func local_request_Engine_UserGetSession_0(ctx context.Context, marshaler runtim
 }
 
 func request_Engine_UserSetPreferences_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserSetPreferencesInput
+	var protoReq UserSetPreferences_Input
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -64,7 +64,7 @@ func request_Engine_UserSetPreferences_0(ctx context.Context, marshaler runtime.
 }
 
 func local_request_Engine_UserSetPreferences_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserSetPreferencesInput
+	var protoReq UserSetPreferences_Input
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -81,7 +81,7 @@ func local_request_Engine_UserSetPreferences_0(ctx context.Context, marshaler ru
 }
 
 func request_Engine_UserDeleteAccount_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserDeleteAccountInput
+	var protoReq UserDeleteAccount_Input
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -98,7 +98,7 @@ func request_Engine_UserDeleteAccount_0(ctx context.Context, marshaler runtime.M
 }
 
 func local_request_Engine_UserDeleteAccount_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserDeleteAccountInput
+	var protoReq UserDeleteAccount_Input
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -115,7 +115,7 @@ func local_request_Engine_UserDeleteAccount_0(ctx context.Context, marshaler run
 }
 
 func request_Engine_ChallengeList_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChallengeListInput
+	var protoReq ChallengeList_Input
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.ChallengeList(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -124,7 +124,7 @@ func request_Engine_ChallengeList_0(ctx context.Context, marshaler runtime.Marsh
 }
 
 func local_request_Engine_ChallengeList_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChallengeListInput
+	var protoReq ChallengeList_Input
 	var metadata runtime.ServerMetadata
 
 	msg, err := server.ChallengeList(ctx, &protoReq)
@@ -137,7 +137,7 @@ var (
 )
 
 func request_Engine_ChallengeGet_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChallengeGetInput
+	var protoReq ChallengeGet_Input
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -153,7 +153,7 @@ func request_Engine_ChallengeGet_0(ctx context.Context, marshaler runtime.Marsha
 }
 
 func local_request_Engine_ChallengeGet_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChallengeGetInput
+	var protoReq ChallengeGet_Input
 	var metadata runtime.ServerMetadata
 
 	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Engine_ChallengeGet_0); err != nil {
@@ -170,7 +170,7 @@ var (
 )
 
 func request_Engine_SeasonChallengeList_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SeasonChallengeListInput
+	var protoReq SeasonChallengeList_Input
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -186,7 +186,7 @@ func request_Engine_SeasonChallengeList_0(ctx context.Context, marshaler runtime
 }
 
 func local_request_Engine_SeasonChallengeList_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SeasonChallengeListInput
+	var protoReq SeasonChallengeList_Input
 	var metadata runtime.ServerMetadata
 
 	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Engine_SeasonChallengeList_0); err != nil {
@@ -203,7 +203,7 @@ var (
 )
 
 func request_Engine_SeasonChallengeGet_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SeasonChallengeGetInput
+	var protoReq SeasonChallengeGet_Input
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -219,7 +219,7 @@ func request_Engine_SeasonChallengeGet_0(ctx context.Context, marshaler runtime.
 }
 
 func local_request_Engine_SeasonChallengeGet_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SeasonChallengeGetInput
+	var protoReq SeasonChallengeGet_Input
 	var metadata runtime.ServerMetadata
 
 	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Engine_SeasonChallengeGet_0); err != nil {
@@ -232,7 +232,7 @@ func local_request_Engine_SeasonChallengeGet_0(ctx context.Context, marshaler ru
 }
 
 func request_Engine_SeasonChallengeBuy_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SeasonChallengeBuyInput
+	var protoReq SeasonChallengeBuy_Input
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -249,7 +249,7 @@ func request_Engine_SeasonChallengeBuy_0(ctx context.Context, marshaler runtime.
 }
 
 func local_request_Engine_SeasonChallengeBuy_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SeasonChallengeBuyInput
+	var protoReq SeasonChallengeBuy_Input
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -266,7 +266,7 @@ func local_request_Engine_SeasonChallengeBuy_0(ctx context.Context, marshaler ru
 }
 
 func request_Engine_ChallengeSubscriptionValidate_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChallengeSubscriptionValidateInput
+	var protoReq ChallengeSubscriptionValidate_Input
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -283,7 +283,7 @@ func request_Engine_ChallengeSubscriptionValidate_0(ctx context.Context, marshal
 }
 
 func local_request_Engine_ChallengeSubscriptionValidate_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChallengeSubscriptionValidateInput
+	var protoReq ChallengeSubscriptionValidate_Input
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -300,7 +300,7 @@ func local_request_Engine_ChallengeSubscriptionValidate_0(ctx context.Context, m
 }
 
 func request_Engine_ChallengeSubscriptionClose_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChallengeSubscriptionCloseInput
+	var protoReq ChallengeSubscriptionClose_Input
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -317,7 +317,7 @@ func request_Engine_ChallengeSubscriptionClose_0(ctx context.Context, marshaler 
 }
 
 func local_request_Engine_ChallengeSubscriptionClose_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChallengeSubscriptionCloseInput
+	var protoReq ChallengeSubscriptionClose_Input
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -334,7 +334,7 @@ func local_request_Engine_ChallengeSubscriptionClose_0(ctx context.Context, mars
 }
 
 func request_Engine_OrganizationList_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq OrganizationListInput
+	var protoReq OrganizationList_Input
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.OrganizationList(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -343,7 +343,7 @@ func request_Engine_OrganizationList_0(ctx context.Context, marshaler runtime.Ma
 }
 
 func local_request_Engine_OrganizationList_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq OrganizationListInput
+	var protoReq OrganizationList_Input
 	var metadata runtime.ServerMetadata
 
 	msg, err := server.OrganizationList(ctx, &protoReq)
@@ -356,7 +356,7 @@ var (
 )
 
 func request_Engine_TeamList_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq TeamListInput
+	var protoReq TeamList_Input
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -372,7 +372,7 @@ func request_Engine_TeamList_0(ctx context.Context, marshaler runtime.Marshaler,
 }
 
 func local_request_Engine_TeamList_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq TeamListInput
+	var protoReq TeamList_Input
 	var metadata runtime.ServerMetadata
 
 	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Engine_TeamList_0); err != nil {
@@ -389,7 +389,7 @@ var (
 )
 
 func request_Engine_TeamGet_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq TeamGetInput
+	var protoReq TeamGet_Input
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -405,7 +405,7 @@ func request_Engine_TeamGet_0(ctx context.Context, marshaler runtime.Marshaler, 
 }
 
 func local_request_Engine_TeamGet_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq TeamGetInput
+	var protoReq TeamGet_Input
 	var metadata runtime.ServerMetadata
 
 	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Engine_TeamGet_0); err != nil {
@@ -413,6 +413,108 @@ func local_request_Engine_TeamGet_0(ctx context.Context, marshaler runtime.Marsh
 	}
 
 	msg, err := server.TeamGet(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_Engine_TeamCreate_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq TeamCreate_Input
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.TeamCreate(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Engine_TeamCreate_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq TeamCreate_Input
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.TeamCreate(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_Engine_TeamSendInvite_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq TeamSendInvite_Input
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.TeamSendInvite(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Engine_TeamSendInvite_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq TeamSendInvite_Input
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.TeamSendInvite(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_Engine_TeamAcceptInvite_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq TeamAcceptInvite_Input
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.TeamAcceptInvite(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Engine_TeamAcceptInvite_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq TeamAcceptInvite_Input
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.TeamAcceptInvite(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -436,7 +538,7 @@ func local_request_Engine_ToolPing_0(ctx context.Context, marshaler runtime.Mars
 }
 
 func request_Engine_ToolStatus_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Void
+	var protoReq GetStatus_Input
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.ToolStatus(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -445,7 +547,7 @@ func request_Engine_ToolStatus_0(ctx context.Context, marshaler runtime.Marshale
 }
 
 func local_request_Engine_ToolStatus_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Void
+	var protoReq GetStatus_Input
 	var metadata runtime.ServerMetadata
 
 	msg, err := server.ToolStatus(ctx, &protoReq)
@@ -454,7 +556,7 @@ func local_request_Engine_ToolStatus_0(ctx context.Context, marshaler runtime.Ma
 }
 
 func request_Engine_ToolInfo_0(ctx context.Context, marshaler runtime.Marshaler, client EngineClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Void
+	var protoReq GetInfo_Input
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.ToolInfo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -463,7 +565,7 @@ func request_Engine_ToolInfo_0(ctx context.Context, marshaler runtime.Marshaler,
 }
 
 func local_request_Engine_ToolInfo_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Void
+	var protoReq GetInfo_Input
 	var metadata runtime.ServerMetadata
 
 	msg, err := server.ToolInfo(ctx, &protoReq)
@@ -475,6 +577,14 @@ func request_Engine_ToolGenerateFakeData_0(ctx context.Context, marshaler runtim
 	var protoReq Void
 	var metadata runtime.ServerMetadata
 
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
 	msg, err := client.ToolGenerateFakeData(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -483,6 +593,14 @@ func request_Engine_ToolGenerateFakeData_0(ctx context.Context, marshaler runtim
 func local_request_Engine_ToolGenerateFakeData_0(ctx context.Context, marshaler runtime.Marshaler, server EngineServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Void
 	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 
 	msg, err := server.ToolGenerateFakeData(ctx, &protoReq)
 	return msg, metadata, err
@@ -769,6 +887,66 @@ func RegisterEngineHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		}
 
 		forward_Engine_TeamGet_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_Engine_TeamCreate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Engine_TeamCreate_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Engine_TeamCreate_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_Engine_TeamSendInvite_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Engine_TeamSendInvite_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Engine_TeamSendInvite_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_Engine_TeamAcceptInvite_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Engine_TeamAcceptInvite_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Engine_TeamAcceptInvite_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1173,6 +1351,66 @@ func RegisterEngineHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 
 	})
 
+	mux.Handle("POST", pattern_Engine_TeamCreate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Engine_TeamCreate_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Engine_TeamCreate_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_Engine_TeamSendInvite_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Engine_TeamSendInvite_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Engine_TeamSendInvite_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_Engine_TeamAcceptInvite_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Engine_TeamAcceptInvite_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Engine_TeamAcceptInvite_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("GET", pattern_Engine_ToolPing_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -1303,6 +1541,12 @@ var (
 
 	pattern_Engine_TeamGet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"team"}, "", runtime.AssumeColonVerbOpt(true)))
 
+	pattern_Engine_TeamCreate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"team"}, "", runtime.AssumeColonVerbOpt(true)))
+
+	pattern_Engine_TeamSendInvite_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"team", "invite"}, "", runtime.AssumeColonVerbOpt(true)))
+
+	pattern_Engine_TeamAcceptInvite_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"team", "invite", "accept"}, "", runtime.AssumeColonVerbOpt(true)))
+
 	pattern_Engine_ToolPing_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"ping"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Engine_ToolStatus_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"status"}, "", runtime.AssumeColonVerbOpt(true)))
@@ -1340,6 +1584,12 @@ var (
 	forward_Engine_TeamList_0 = runtime.ForwardResponseMessage
 
 	forward_Engine_TeamGet_0 = runtime.ForwardResponseMessage
+
+	forward_Engine_TeamCreate_0 = runtime.ForwardResponseMessage
+
+	forward_Engine_TeamSendInvite_0 = runtime.ForwardResponseMessage
+
+	forward_Engine_TeamAcceptInvite_0 = runtime.ForwardResponseMessage
 
 	forward_Engine_ToolPing_0 = runtime.ForwardResponseMessage
 

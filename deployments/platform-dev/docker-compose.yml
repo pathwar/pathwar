@@ -87,27 +87,6 @@ services:
     networks:
       - internal
 
-  forestadmin:
-    image: pathwar/forestadmin:latest
-    restart: on-failure
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
-    environment:
-      # specific to prod
-      - VIRTUAL_HOST=admin-dev.pathwar.land
-      - VIRTUAL_PORT=3000
-      # loaded from .env
-      - APPLICATION_HOST
-      - APPLICATION_PORT
-      - DATABASE_URL
-      - FOREST_ENV_SECRET
-      - FOREST_AUTH_SECRET
-    depends_on:
-      - db
-    networks:
-      - service-proxy
-      - internal
-
 volumes:
   db_data:
     driver: local
