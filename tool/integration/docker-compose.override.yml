@@ -1,15 +1,15 @@
 version: '3.7'
 
 services:
-  web:
-    build: ../../web
+  webtests:
+    build: ../../web/tests
     depends_on:
       - server
 
   server:
     build: ../../go
     ports:
-      - 8000:8000
+      - 8000
 
   wait-for-it:
     image: willwill/wait-for-it
