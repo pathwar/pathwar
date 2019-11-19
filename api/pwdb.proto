@@ -241,6 +241,7 @@ message User {
   string locale = 104;
   string oauth_subject = 105 [(gogoproto.customname) = "OAuthSubject", (gogoproto.moretags) = "gorm:\"unique_index\""];
   string deletion_reason = 106;
+  DeletionStatus deletion_status = 107;
 
   //
   // associations
@@ -270,6 +271,7 @@ message Organization {
   string name = 100;
   string gravatar_url = 101 [(gogoproto.customname) = "GravatarURL"];
   string locale = 102;
+  DeletionStatus deletion_status = 103;
 
   //
   // associations
@@ -331,6 +333,7 @@ message Team {
   //
 
   bool is_default = 100;
+  DeletionStatus deletion_status = 101;
 
   /* statistics
   int64 cash = ;
@@ -656,4 +659,15 @@ message Dump {
 
 message Info {
   map<string, uint32> table_rows = 1;
+}
+
+//
+// constants
+//
+
+enum DeletionStatus {
+  Unknown = 0;
+  Active = 1;     // for a non-deleted content
+  Requested = 2;  // recent deletion request, not yet fully deleted
+  Anonymized = 3; // final step of Deletion for content that cannot be deleted
 }

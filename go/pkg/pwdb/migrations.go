@@ -78,13 +78,15 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 	//
 
 	staffOrg := &Organization{
-		Name: "Staff",
+		Name:           "Staff",
+		DeletionStatus: DeletionStatus_Active,
 		// GravatarURL: staff
 	}
 	staffTeam := &Team{
-		IsDefault:    true,
-		Season:       solo,
-		Organization: staffOrg,
+		IsDefault:      true,
+		Season:         solo,
+		Organization:   staffOrg,
+		DeletionStatus: DeletionStatus_Active,
 		// GravatarURL: staff
 	}
 	hackSparrow := &User{
@@ -92,6 +94,7 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 		OAuthSubject:            "Hack Sparrow",
 		OrganizationMemberships: []*OrganizationMember{{Organization: staffOrg}},
 		TeamMemberships:         []*TeamMember{{Team: staffTeam}},
+		DeletionStatus:          DeletionStatus_Active,
 		// State: special
 		// GravatarURL: m1ch3l
 	}
