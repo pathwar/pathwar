@@ -8,4 +8,5 @@ var (
 	ErrInvalidArgument           = errors.New("invalid argument(s)")
 	ErrDuplicate                 = errors.New("duplicate")
 	ErrMissingRequiredValidation = errors.New("missing required validation")
+	ErrInternalServerError       = errors.New("internal server error")
 )

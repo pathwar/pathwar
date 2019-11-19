@@ -22,7 +22,7 @@ func (e *engine) ChallengeSubscriptionClose(ctx context.Context, in *ChallengeSu
 	// fetch subscription
 	var subscription pwdb.ChallengeSubscription
 	err = e.db.
-		Preload("Team").
+		Preload("Team", "team.deletion_status = ?", pwdb.DeletionStatus_Active).
 		Preload("SeasonChallenge").
 		Preload("Validations").
 		Joins("JOIN team ON team.id = challenge_subscription.team_id").

@@ -362,6 +362,14 @@ definitions:
         format: date-time
         type: string
     type: object
+  dbDeletionStatus:
+    default: Unknown
+    enum:
+    - Unknown
+    - Active
+    - Requested
+    - Anonymized
+    type: string
   dbDump:
     properties:
       achievements:
@@ -520,6 +528,8 @@ definitions:
       created_at:
         format: date-time
         type: string
+      deletion_status:
+        $ref: '#/definitions/dbDeletionStatus'
       gravatar_url:
         type: string
       id:
@@ -651,6 +661,8 @@ definitions:
       created_at:
         format: date-time
         type: string
+      deletion_status:
+        $ref: '#/definitions/dbDeletionStatus'
       id:
         format: int64
         type: string
@@ -747,6 +759,8 @@ definitions:
         type: string
       deletion_reason:
         type: string
+      deletion_status:
+        $ref: '#/definitions/dbDeletionStatus'
       email:
         type: string
       gravatar_url:
