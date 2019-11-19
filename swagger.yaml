@@ -15,15 +15,7 @@ definitions:
     enum:
     - Unknown
     type: string
-  SeasonVisibility:
-    default: UnknownVisibility
-    enum:
-    - UnknownVisibility
-    - Private
-    - Unlisted
-    - Public
-    type: string
-  UserGetSessionOutputSeasonAndTeam:
+  OutputSeasonAndTeam:
     properties:
       is_active:
         format: boolean
@@ -33,6 +25,14 @@ definitions:
       team:
         $ref: '#/definitions/dbTeam'
     type: object
+  SeasonVisibility:
+    default: UnknownVisibility
+    enum:
+    - UnknownVisibility
+    - Private
+    - Unlisted
+    - Public
+    type: string
   dbAchievement:
     properties:
       argument:
@@ -854,6 +854,26 @@ definitions:
       challenge_validation:
         $ref: '#/definitions/dbChallengeValidation'
     type: object
+  engineGetInfoOutput:
+    properties:
+      built_at:
+        type: string
+      built_by:
+        type: string
+      commit:
+        type: string
+      uptime:
+        format: int32
+        type: integer
+      version:
+        type: string
+    type: object
+  engineGetStatusOutput:
+    properties:
+      everything_is_ok:
+        format: boolean
+        type: boolean
+    type: object
   engineOrganizationListOutput:
     properties:
       items:
@@ -887,6 +907,33 @@ definitions:
           $ref: '#/definitions/dbSeasonChallenge'
         type: array
     type: object
+  engineTeamAcceptInviteInput:
+    properties:
+      team_member_id:
+        format: int64
+        type: string
+    type: object
+  engineTeamAcceptInviteOutput:
+    properties:
+      team_member:
+        $ref: '#/definitions/dbTeamMember'
+    type: object
+  engineTeamCreateInput:
+    properties:
+      name:
+        type: string
+      organization_id:
+        format: int64
+        type: string
+      season_id:
+        format: int64
+        type: string
+    type: object
+  engineTeamCreateOutput:
+    properties:
+      team:
+        $ref: '#/definitions/dbTeam'
+    type: object
   engineTeamGetOutput:
     properties:
       item:
@@ -898,6 +945,20 @@ definitions:
         items:
           $ref: '#/definitions/dbTeam'
         type: array
+    type: object
+  engineTeamSendInviteInput:
+    properties:
+      team_id:
+        format: int64
+        type: string
+      user_id:
+        format: int64
+        type: string
+    type: object
+  engineTeamSendInviteOutput:
+    properties:
+      team_member:
+        $ref: '#/definitions/dbTeamMember'
     type: object
   engineUserDeleteAccountInput:
     properties:
@@ -918,7 +979,7 @@ definitions:
         type: integer
       seasons:
         items:
-          $ref: '#/definitions/UserGetSessionOutputSeasonAndTeam'
+          $ref: '#/definitions/OutputSeasonAndTeam'
         type: array
       user:
         $ref: '#/definitions/dbUser'
@@ -934,26 +995,6 @@ definitions:
   engineVoid:
     example: {}
     title: Void is an empty message
-    type: object
-  pathwarengineInfo:
-    properties:
-      built_at:
-        type: string
-      built_by:
-        type: string
-      commit:
-        type: string
-      uptime:
-        format: int32
-        type: integer
-      version:
-        type: string
-    type: object
-  pathwarengineStatus:
-    properties:
-      everything_is_ok:
-        format: boolean
-        type: boolean
     type: object
   ssoActionToken:
     properties:
@@ -1124,7 +1165,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/pathwarengineInfo'
+            $ref: '#/definitions/engineGetInfoOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1256,7 +1297,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/pathwarengineStatus'
+            $ref: '#/definitions/engineGetStatusOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1282,6 +1323,80 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/engineTeamGetOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+    post:
+      operationId: TeamCreate
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineTeamCreateInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineTeamCreateOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /team/invite:
+    post:
+      operationId: TeamSendInvite
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineTeamSendInviteInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineTeamSendInviteOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Engine
+  /team/invite/accept:
+    post:
+      operationId: TeamAcceptInvite
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineTeamAcceptInviteInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/engineTeamAcceptInviteOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1321,6 +1436,12 @@ paths:
   /tool/generate-fake-data:
     post:
       operationId: ToolGenerateFakeData
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/engineVoid'
       responses:
         "200":
           description: A successful response.

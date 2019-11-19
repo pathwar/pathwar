@@ -8,7 +8,7 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) UserDeleteAccount(ctx context.Context, in *UserDeleteAccountInput) (*UserDeleteAccountOutput, error) {
+func (e *engine) UserDeleteAccount(ctx context.Context, in *UserDeleteAccount_Input) (*UserDeleteAccount_Output, error) {
 	userID, err := userIDFromContext(ctx, e.db)
 	if err != nil {
 		return nil, fmt.Errorf("get userid from context: %w", err)
@@ -34,6 +34,6 @@ func (e *engine) UserDeleteAccount(ctx context.Context, in *UserDeleteAccountInp
 	// FIXME: invalide current JWT token
 	// FIXME: add another task that pseudonymize the data
 
-	ret := &UserDeleteAccountOutput{}
+	ret := &UserDeleteAccount_Output{}
 	return ret, nil
 }

@@ -4,11 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/jinzhu/gorm"
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) SeasonChallengeList(ctx context.Context, in *SeasonChallengeListInput) (*SeasonChallengeListOutput, error) {
+func (e *engine) SeasonChallengeList(ctx context.Context, in *SeasonChallengeList_Input) (*SeasonChallengeList_Output, error) {
 	if in == nil || in.SeasonID == 0 {
 		return nil, ErrMissingArgument
 	}
@@ -37,12 +36,13 @@ func (e *engine) SeasonChallengeList(ctx context.Context, in *SeasonChallengeLis
 		return nil, ErrInvalidArgument // user does not have team for this season
 	}
 
-	var ret SeasonChallengeListOutput
+	var ret SeasonChallengeList_Output
 	err = e.db.
 		Preload("Season").
 		Preload("Flavor").
 		Preload("Flavor.Challenge").
 		Preload("Subscriptions", "team_id = ?", team.ID).
+		Preload("Subscriptions.Validations").
 		Where(pwdb.SeasonChallenge{SeasonID: in.SeasonID}).
 		Find(&ret.Items).
 		Error
@@ -51,16 +51,4 @@ func (e *engine) SeasonChallengeList(ctx context.Context, in *SeasonChallengeLis
 	}
 
 	return &ret, nil
-}
-
-func userTeamForSeason(db *gorm.DB, userID, seasonID int64) (*pwdb.Team, error) {
-	var team pwdb.Team
-
-	err := db.
-		Where(pwdb.Team{SeasonID: seasonID}).
-		Joins("JOIN team_member ON team.id = team_member.team_id AND team_member.user_id = ?", userID).
-		First(&team).
-		Error
-
-	return &team, err
 }

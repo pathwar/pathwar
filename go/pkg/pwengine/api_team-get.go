@@ -7,7 +7,7 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) TeamGet(ctx context.Context, in *TeamGetInput) (*TeamGetOutput, error) {
+func (e *engine) TeamGet(ctx context.Context, in *TeamGet_Input) (*TeamGet_Output, error) {
 	{ // validation
 		if in.TeamID == 0 {
 			return nil, ErrMissingArgument
@@ -28,7 +28,7 @@ func (e *engine) TeamGet(ctx context.Context, in *TeamGetInput) (*TeamGetOutput,
 		return nil, fmt.Errorf("fetch team from db: %w", err)
 	}
 
-	ret := TeamGetOutput{
+	ret := TeamGet_Output{
 		Item: &item,
 	}
 

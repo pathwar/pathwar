@@ -7,7 +7,7 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) ChallengeSubscriptionValidate(ctx context.Context, in *ChallengeSubscriptionValidateInput) (*ChallengeSubscriptionValidateOutput, error) {
+func (e *engine) ChallengeSubscriptionValidate(ctx context.Context, in *ChallengeSubscriptionValidate_Input) (*ChallengeSubscriptionValidate_Output, error) {
 	// validation
 	if in == nil || in.ChallengeSubscriptionID == 0 || in.Passphrase == "" {
 		return nil, ErrMissingArgument
@@ -55,6 +55,7 @@ func (e *engine) ChallengeSubscriptionValidate(ctx context.Context, in *Challeng
 		Preload("Author").
 		Preload("ChallengeSubscription").
 		Preload("ChallengeSubscription.SeasonChallenge").
+		Preload("ChallengeSubscription.Validations").
 		Preload("ChallengeSubscription.Team").
 		First(&validation, validation.ID).
 		Error
@@ -62,6 +63,6 @@ func (e *engine) ChallengeSubscriptionValidate(ctx context.Context, in *Challeng
 		return nil, fmt.Errorf("fetch challenge validation: %w", err)
 	}
 
-	ret := ChallengeSubscriptionValidateOutput{ChallengeValidation: &validation}
+	ret := ChallengeSubscriptionValidate_Output{ChallengeValidation: &validation}
 	return &ret, nil
 }
