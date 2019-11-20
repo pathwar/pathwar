@@ -43,7 +43,7 @@ func (e *engine) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCre
 	var existingSeasonMembership pwdb.TeamMember
 	err = e.db.
 		Model(pwdb.TeamMember{}).
-		Joins("JOIN team on team.id = team_member.team_id AND team.season_id = ?", in.SeasonID).
+		Joins("JOIN team on team.id = team_member.team_id AND team.season_id = ? AND team.deletion_status = ?", in.SeasonID, pwdb.DeletionStatus_Active).
 		Preload("Team").
 		Where(pwdb.TeamMember{UserID: userID}).
 		First(&existingSeasonMembership).
@@ -79,6 +79,7 @@ func (e *engine) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCre
 			Members: []*pwdb.OrganizationMember{
 				{UserID: userID},
 			},
+			DeletionStatus: pwdb.DeletionStatus_Active,
 			// GravatarURL
 			// Locale
 		}
@@ -96,6 +97,7 @@ func (e *engine) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCre
 	existingTeam := pwdb.Team{
 		SeasonID:       in.SeasonID,
 		OrganizationID: in.OrganizationID,
+		DeletionStatus: pwdb.DeletionStatus_Active,
 	}
 	err = e.db.Model(pwdb.Team{}).Where(existingTeam).Count(&count).Error
 	if err != nil {
@@ -126,6 +128,7 @@ func (e *engine) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCre
 	team := pwdb.Team{
 		SeasonID:       in.SeasonID,
 		OrganizationID: in.OrganizationID,
+		DeletionStatus: pwdb.DeletionStatus_Active,
 		Members: []*pwdb.TeamMember{
 			{UserID: userID},
 		},

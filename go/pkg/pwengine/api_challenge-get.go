@@ -15,7 +15,7 @@ func (e *engine) ChallengeGet(ctx context.Context, in *ChallengeGet_Input) (*Cha
 
 	var item pwdb.Challenge
 	err := e.db.
-		Set("gorm:auto_preload", true).
+		Preload("Flavors").
 		Where(pwdb.Challenge{ID: in.ChallengeID}).
 		First(&item).
 		Error

@@ -75,7 +75,7 @@ func (e *engine) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuy_
 
 	// load and return the freshly inserted entry
 	err = e.db.
-		Preload("Team").
+		Preload("Team", "team.deletion_status = ?", pwdb.DeletionStatus_Active).
 		Preload("Team.Season").
 		Preload("Buyer").
 		Preload("SeasonChallenge").

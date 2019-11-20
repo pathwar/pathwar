@@ -180,15 +180,20 @@ export const buyChallenge = (challengeID, teamID, seasonId) => async dispatch =>
   }
 }
 
-export const validateChallenge = (validateData) => async dispatch => {
+export const validateChallenge = (validateData, seasonId) => async dispatch => {
   try {
     const response = await postValidateChallenge(validateData);
+    const validation = response.data.challenge_validation
+    const { challenge_subscription } = validation
+
     dispatch({
       type: VALIDATE_CHALLENGE_SUCCESS,
-      payload: { data: response.data }
+      payload: { challengeSubscription: challenge_subscription }
     });
 
-    toast.success(`Validate challenge success!`)
+    dispatch(fetchChallenges(seasonId)).then(() =>{
+      toast.success(`Validate challenge success!`)
+    });
   } catch (error) {
     dispatch({ type: VALIDATE_CHALLENGE_FAILED, payload: { error } });
     toast.error(`Validate challenge ERROR!`)

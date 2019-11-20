@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Cookies from "js-cookie";
+import { toast } from 'react-toastify';
 import {
   LOGIN_FAILED,
   SET_USER_SESSION,
@@ -82,8 +83,9 @@ export const deleteAccount = (reason) => async dispatch => {
       type: DELETE_ACCOUNT_SUCCESS,
       payload: { activeChallenges: response.data.items }
     });
+    toast.success("Delete account SUCCESS!")
   } catch (error) {
     dispatch({ type: DELETE_ACCOUNT_FAILED, payload: { error } });
-    alert("Delete account failed!")
+    toast.error("Delete account FAILED!")
   }
 }

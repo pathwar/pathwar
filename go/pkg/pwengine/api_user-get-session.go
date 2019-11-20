@@ -144,10 +144,12 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 
 		TeamMemberships:         []*pwdb.TeamMember{},
 		OrganizationMemberships: []*pwdb.OrganizationMember{},
+		DeletionStatus:          pwdb.DeletionStatus_Active,
 	}
 	organization := pwdb.Organization{
-		Name:        claims.PreferredUsername,
-		GravatarURL: gravatarURL,
+		Name:           claims.PreferredUsername,
+		GravatarURL:    gravatarURL,
+		DeletionStatus: pwdb.DeletionStatus_Active,
 		// Locale
 	}
 	organizationMember := pwdb.OrganizationMember{
@@ -156,9 +158,10 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 		Role:         pwdb.OrganizationMember_Owner,
 	}
 	seasonOrganization := pwdb.Team{
-		Season:       &season,
-		IsDefault:    true,
-		Organization: &organization,
+		Season:         &season,
+		IsDefault:      true,
+		Organization:   &organization,
+		DeletionStatus: pwdb.DeletionStatus_Active,
 	}
 	seasonMember := pwdb.TeamMember{
 		User: &user,

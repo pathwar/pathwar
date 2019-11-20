@@ -16,7 +16,6 @@ message Challenge {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -45,7 +44,6 @@ message ChallengeFlavor {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -80,7 +78,6 @@ message SeasonChallenge {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -106,7 +103,6 @@ message ChallengeInstance {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -135,7 +131,6 @@ message Hypervisor {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -162,8 +157,6 @@ message OrganizationMember {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
-
 
   //
   // fields
@@ -191,7 +184,6 @@ message TeamMember {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -228,7 +220,7 @@ message User {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
+  google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 
   //
   // fields
@@ -241,6 +233,7 @@ message User {
   string locale = 104;
   string oauth_subject = 105 [(gogoproto.customname) = "OAuthSubject", (gogoproto.moretags) = "gorm:\"unique_index\""];
   string deletion_reason = 106;
+  DeletionStatus deletion_status = 107;
 
   //
   // associations
@@ -261,7 +254,7 @@ message Organization {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
+  google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 
   //
   // fields
@@ -270,6 +263,7 @@ message Organization {
   string name = 100;
   string gravatar_url = 101 [(gogoproto.customname) = "GravatarURL"];
   string locale = 102;
+  DeletionStatus deletion_status = 103;
 
   //
   // associations
@@ -286,7 +280,6 @@ message Season {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -324,13 +317,14 @@ message Team {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
+  google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 
   //
   // fields
   //
 
   bool is_default = 100;
+  DeletionStatus deletion_status = 101;
 
   /* statistics
   int64 cash = ;
@@ -357,7 +351,6 @@ message WhoswhoAttempt {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -385,7 +378,6 @@ message ChallengeValidation {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -423,7 +415,6 @@ message ChallengeSubscription {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -460,7 +451,6 @@ message InventoryItem {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -485,7 +475,6 @@ message Notification {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   // FIXME: get inspiration from push notifications
 
@@ -510,7 +499,6 @@ message Coupon {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -532,7 +520,6 @@ message CouponValidation {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -557,7 +544,6 @@ message Achievement {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  //google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true];
 
   //
   // fields
@@ -656,4 +642,15 @@ message Dump {
 
 message Info {
   map<string, uint32> table_rows = 1;
+}
+
+//
+// constants
+//
+
+enum DeletionStatus {
+  Unknown = 0;
+  Active = 1;     // for a non-deleted content
+  Requested = 2;  // recent deletion request, not yet fully deleted
+  Anonymized = 3; // final step of Deletion for content that cannot be deleted
 }

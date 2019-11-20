@@ -31,7 +31,6 @@ func (e *engine) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGet_
 
 	var item pwdb.SeasonChallenge
 	err = e.db.
-		Set("gorm:auto_preload", true).
 		Where(pwdb.SeasonChallenge{ID: in.SeasonChallengeID}).
 		Preload("Season").
 		Preload("Flavor").
@@ -51,6 +50,5 @@ func (e *engine) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGet_
 	ret := SeasonChallengeGet_Output{
 		Item: &item,
 	}
-
 	return &ret, nil
 }

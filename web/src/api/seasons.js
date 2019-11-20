@@ -34,9 +34,9 @@ export function postBuyChallenge(challengeID, teamID) {
 
 export function postValidateChallenge(validateData) {
   const { subscriptionID, passphrase, comment } = validateData;
-  return baseApi.post(`/season-challenge/validate`, { "challenge_subscription_id": subscriptionID, "passphrase": passphrase, "comment": comment }  )
+  return baseApi.post(`/challenge-subscription/validate`, { "challenge_subscription_id": subscriptionID, "passphrase": passphrase, "comment": comment }  )
 }
 
 export function postCloseChallenge(subscriptionID) {
-  return baseApi.post(`/season-challenge/close`, { "challenge_subscription_id": subscriptionID }  )
+  return baseApi.post(`/challenge-subscription/close`, { "challenge_subscription_id": subscriptionID }  )
 }

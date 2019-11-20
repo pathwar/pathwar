@@ -88,7 +88,7 @@ var (
 	serverRequestTimeout     = serverFlags.Duration("request-timeout", 5*time.Second, "request timeout")
 	serverShutdownTimeout    = serverFlags.Duration("shutdown-timeout", 6*time.Second, "shutdown timeout")
 	serverCORSAllowedOrigins = serverFlags.String("cors-allowed-origins", "*", "allowed CORS origins")
-	serverWithPprof          = serverFlags.Bool("with-pprof", false, "enable pprof server")
+	serverWithPprof          = serverFlags.Bool("with-pprof", false, "enable pprof endpoints")
 
 	// misc flags
 	miscFlags = flag.NewFlagSet("misc", flag.ExitOnError)
@@ -160,8 +160,9 @@ func main() {
 			defer closer()
 
 			var (
-				ctx = context.Background()
-				g   run.Group
+				ctx    = context.Background()
+				g      run.Group
+				server *pwserver.Server
 			)
 			{ // server
 				opts := pwserver.Opts{
@@ -173,7 +174,8 @@ func main() {
 					ShutdownTimeout:    *serverShutdownTimeout,
 					WithPprof:          *serverWithPprof,
 				}
-				server, err := pwserver.New(ctx, engine, opts)
+				var err error
+				server, err = pwserver.New(ctx, engine, opts)
 				if err != nil {
 					return fmt.Errorf("init server: %w", err)
 				}
@@ -198,8 +200,8 @@ func main() {
 			}
 
 			logger.Info("server started",
-				zap.String("http-bind", *serverHTTPBind),
-				zap.String("grpc-bind", *serverGRPCBind),
+				zap.String("http-bind", server.HTTPListenerAddr()),
+				zap.String("grpc-bind", server.GRPCListenerAddr()),
 			)
 
 			if err := g.Run(); err != nil {

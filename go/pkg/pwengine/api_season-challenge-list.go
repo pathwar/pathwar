@@ -17,18 +17,12 @@ func (e *engine) SeasonChallengeList(ctx context.Context, in *SeasonChallengeLis
 		return nil, fmt.Errorf("get userid from context: %w", err)
 	}
 
-	var c int
-	err = e.db.
-		Table("season").
-		Select("id").
-		Where(&pwdb.Season{ID: in.SeasonID}).
-		Count(&c).
-		Error
+	exists, err := seasonIDExists(e.db, in.SeasonID)
 	if err != nil {
-		return nil, fmt.Errorf("fetch season: %w", err)
+		return nil, ErrInternalServerError
 	}
-	if c == 0 {
-		return nil, ErrInvalidArgument // invalid in.SeasonID
+	if !exists {
+		return nil, ErrInvalidArgument
 	}
 
 	team, err := userTeamForSeason(e.db, userID, in.SeasonID)
