@@ -226,14 +226,16 @@ func Down(ids []string, logger *zap.Logger) error {
 func PS(depth int, logger *zap.Logger) error {
 	logger.Debug("ps", zap.Int("depth", depth))
 
+	ctx := context.TODO()
+
 	cli, err := client.NewEnvClient()
 	if err != nil {
-		return fmt.Errorf("error creating docker client: %w", err)
+		return fmt.Errorf("create docker client: %w", err)
 	}
 
-	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
+	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
 	if err != nil {
-		return fmt.Errorf("error listing containers: %w", err)
+		return fmt.Errorf("list containers: %w", err)
 	}
 
 	pwInfos := pathwarInfos{
@@ -261,5 +263,5 @@ func PS(depth int, logger *zap.Logger) error {
 		}
 	}
 
-	return fmt.Errorf("not implemented")
+	return nil
 }
