@@ -1,6 +1,7 @@
 package pwcompose
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -10,19 +11,22 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/client"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 )
 
 const (
-	labelPrefix        = "land.pathwar.compose."
-	serviceNameLabel   = labelPrefix + "service-name"
-	challengeNameLabel = labelPrefix + "challenge-name"
-	instanceKeyLabel   = labelPrefix + "instance-key"
+	labelPrefix           = "land.pathwar.compose."
+	serviceNameLabel      = labelPrefix + "service-name"
+	challengeNameLabel    = labelPrefix + "challenge-name"
+	challengeVersionLabel = labelPrefix + "challenge-version"
+	instanceKeyLabel      = labelPrefix + "instance-key"
 )
 
-func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger) error {
-	logger.Debug("prepare", zap.Bool("no-push", noPush), zap.String("challenge-dir", challengeDir), zap.String("prefix", prefix))
+func Prepare(challengeDir string, prefix string, noPush bool, version string, logger *zap.Logger) error {
+	logger.Debug("prepare", zap.Bool("no-push", noPush), zap.String("challenge-dir", challengeDir), zap.String("prefix", prefix), zap.String("version", version))
 
 	cleanPath, err := filepath.Abs(filepath.Clean(challengeDir))
 	if err != nil {
@@ -62,6 +66,7 @@ func Prepare(challengeDir string, prefix string, noPush bool, logger *zap.Logger
 		}
 		service.Labels[challengeNameLabel] = challengeName
 		service.Labels[serviceNameLabel] = name
+		service.Labels[challengeVersionLabel] = version
 		composeStruct.Services[name] = service
 	}
 
@@ -220,5 +225,43 @@ func Down(ids []string, logger *zap.Logger) error {
 
 func PS(depth int, logger *zap.Logger) error {
 	logger.Debug("ps", zap.Int("depth", depth))
-	return fmt.Errorf("not implemented")
+
+	ctx := context.TODO()
+
+	cli, err := client.NewEnvClient()
+	if err != nil {
+		return fmt.Errorf("create docker client: %w", err)
+	}
+
+	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
+	if err != nil {
+		return fmt.Errorf("list containers: %w", err)
+	}
+
+	pwInfos := pathwarInfos{
+		RunningFlavors: map[string]challengeFlavors{},
+	}
+
+	for _, container := range containers {
+		flavor := container.Labels[challengeNameLabel] + ":" + container.Labels[challengeVersionLabel]
+		if _, found := pwInfos.RunningFlavors[flavor]; !found {
+			challengeFlavor := challengeFlavors{
+				Instances: map[string]types.Container{},
+			}
+			challengeFlavor.Name = container.Labels[challengeNameLabel]
+			challengeFlavor.Version = container.Labels[challengeVersionLabel]
+			pwInfos.RunningFlavors[flavor] = challengeFlavor
+		}
+		pwInfos.RunningFlavors[flavor].Instances[container.ID] = container
+	}
+
+	for _, flavor := range pwInfos.RunningFlavors {
+		fmt.Println("")
+		fmt.Println(flavor.Name + " version " + flavor.Version + ":")
+		for _, container := range flavor.Instances {
+			fmt.Println("  " + container.Labels[serviceNameLabel])
+		}
+	}
+
+	return nil
 }

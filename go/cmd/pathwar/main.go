@@ -63,9 +63,10 @@ var (
 	composeFlags = flag.NewFlagSet("compose", flag.ExitOnError)
 
 	// compose prepare flags
-	composePrepareFlags  = flag.NewFlagSet("compose prepare", flag.ExitOnError)
-	composePrepareNoPush = composePrepareFlags.Bool("no-push", false, "don't push images")
-	composePreparePrefix = composePrepareFlags.String("prefix", defaultDockerPrefix, "docker image prefix")
+	composePrepareFlags   = flag.NewFlagSet("compose prepare", flag.ExitOnError)
+	composePrepareNoPush  = composePrepareFlags.Bool("no-push", false, "don't push images")
+	composePreparePrefix  = composePrepareFlags.String("prefix", defaultDockerPrefix, "docker image prefix")
+	composePrepareVersion = composePrepareFlags.String("version", "1.0.0", "challenge version")
 
 	// compose up flags
 	composeUpFlags       = flag.NewFlagSet("compose up", flag.ExitOnError)
@@ -396,6 +397,7 @@ func main() {
 				path,
 				*composePreparePrefix,
 				*composePrepareNoPush,
+				*composePrepareVersion,
 				logger,
 			)
 		},

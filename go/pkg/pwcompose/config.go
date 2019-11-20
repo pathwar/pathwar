@@ -1,5 +1,9 @@
 package pwcompose
 
+import (
+	"github.com/docker/docker/api/types"
+)
+
 // https://github.com/digibib/docker-compose-dot/blob/master/docker-compose-dot.go
 type config struct {
 	Version  string
@@ -36,4 +40,14 @@ type dabfile struct {
 
 type dabservice struct {
 	Image string
+}
+
+type pathwarInfos struct {
+	RunningFlavors map[string]challengeFlavors
+}
+
+type challengeFlavors struct {
+	Name      string
+	Version   string
+	Instances map[string]types.Container
 }
