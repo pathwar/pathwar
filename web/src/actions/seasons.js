@@ -143,7 +143,7 @@ export const createTeam = (seasonID, name) => async dispatch => {
       }
     })
 
-    toast.success(`Create team success!`)
+    toast.success(`Create team ${name} success!`)
 
   } catch (error) {
     dispatch({
