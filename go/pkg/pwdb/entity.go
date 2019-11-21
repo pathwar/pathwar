@@ -41,7 +41,7 @@ func ForeignKeys() [][3]string {
 		// {"User", "active_team_member_id", "team_member(id)"}, // FIXME: check why this cause an error!?
 		{"Achievement", "author_id", "user(id)"},
 		{"Achievement", "team_id", "team(id)"},
-		{"Achievement", "challenge_validation_id", "challenge_validation(id)"},
+		// {"Achievement", "challenge_validation_id", "challenge_validation(id)"}, // optional
 		{"ChallengeFlavor", "challenge_id", "challenge(id)"},
 		{"ChallengeInstance", "flavor_id", "challenge_flavor(id)"},
 		{"ChallengeInstance", "hypervisor_id", "hypervisor(id)"},
