@@ -177,5 +177,29 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 		}
 	}
 
+	//
+	// Achievements
+	//
+
+	achievements := []*Achievement{
+		{
+			AuthorID: hackSparrow.ID,
+			TeamID:   staffTeam.ID,
+			IsGlobal: true,
+			Comment:  ":)",
+			Type:     Achievement_Staff,
+		}, {
+			AuthorID: hackSparrow.ID,
+			TeamID:   staffTeam.ID,
+			Type:     Achievement_Moderator,
+		},
+	}
+	for _, achievement := range achievements {
+		err = tx.Create(achievement).Error
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }

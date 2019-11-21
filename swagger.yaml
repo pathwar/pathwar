@@ -660,6 +660,16 @@ definitions:
     type: string
   dbTeam:
     properties:
+      achievements:
+        items:
+          $ref: '#/definitions/dbAchievement'
+        type: array
+      bronze_medals:
+        format: int64
+        type: string
+      cash:
+        format: int64
+        type: string
       challenge_subscriptions:
         items:
           $ref: '#/definitions/dbChallengeSubscription'
@@ -672,6 +682,9 @@ definitions:
         type: string
       deletion_status:
         $ref: '#/definitions/dbDeletionStatus'
+      gold_medals:
+        format: int64
+        type: string
       id:
         format: int64
         type: string
@@ -682,14 +695,23 @@ definitions:
         items:
           $ref: '#/definitions/dbTeamMember'
         type: array
+      nb_achievements:
+        format: int64
+        type: string
       organization:
         $ref: '#/definitions/dbOrganization'
       organization_id:
         format: int64
         type: string
+      score:
+        format: int64
+        type: string
       season:
         $ref: '#/definitions/dbSeason'
       season_id:
+        format: int64
+        type: string
+      silver_medals:
         format: int64
         type: string
       updated_at:

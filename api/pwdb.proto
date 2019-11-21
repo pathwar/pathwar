@@ -326,11 +326,12 @@ message Team {
 
   bool is_default = 100;
   DeletionStatus deletion_status = 101;
-
-  /* statistics
-  int64 cash = ;
-  int64 score = ;
-  */
+  int64 cash = 102;
+  int64 score = 103;
+  int64 gold_medals = 104;
+  int64 silver_medals = 105;
+  int64 bronze_medals = 106;
+  int64 nb_achievements = 107;
 
   //
   // associations
@@ -344,6 +345,8 @@ message Team {
 
   repeated ChallengeSubscription challenge_subscriptions = 205 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated TeamMember members = 206 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+
+  repeated Achievement achievements = 207 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
 message TeamList { repeated Team items = 1; }
