@@ -33,6 +33,25 @@ func TestEngine_TeamCreate(t *testing.T) {
 		t.Fatalf("err: %v", err)
 	}
 
+	// create a non-solo organization
+	nonSoloOrganization := pwdb.Organization{
+		Name:       "non solo",
+		SoloSeason: false,
+		Members:    []*pwdb.OrganizationMember{{UserID: session.User.ID}},
+	}
+	err = db.Create(&nonSoloOrganization).Error
+	if err != nil {
+		t.Fatalf("err: %v", err)
+	}
+	nonMemberOrganization := pwdb.Organization{
+		Name:       "non member",
+		SoloSeason: false,
+	}
+	err = db.Create(&nonMemberOrganization).Error
+	if err != nil {
+		t.Fatalf("err: %v", err)
+	}
+
 	seasonMap := map[string]*UserGetSession_Output_SeasonAndTeam{}
 	for _, item := range session.Seasons {
 		seasonMap[item.Season.Name] = item
@@ -53,7 +72,9 @@ func TestEngine_TeamCreate(t *testing.T) {
 		{"new-team-in-solo-mode-with-name", &TeamCreate_Input{SeasonID: seasonMap["Solo Mode"].Season.ID, Name: "yolo"}, ErrInvalidArgument},
 		{"too-many-arguments", &TeamCreate_Input{SeasonID: seasonMap["Solo Mode"].Season.ID, Name: "yolo", OrganizationID: session.User.ActiveTeamMember.Team.OrganizationID}, ErrInvalidArgument},
 		{"conflict-org-name", &TeamCreate_Input{SeasonID: seasonMap["Test1"].Season.ID, Name: session.User.ActiveTeamMember.Team.Organization.Name}, ErrInvalidArgument},
-		{"valid-with-organization", &TeamCreate_Input{SeasonID: seasonMap["Test2"].Season.ID, OrganizationID: session.User.ActiveTeamMember.Team.OrganizationID}, nil},
+		{"from-solo-organization", &TeamCreate_Input{SeasonID: seasonMap["Test2"].Season.ID, OrganizationID: session.User.ActiveTeamMember.Team.OrganizationID}, ErrInvalidArgument},
+		{"non-member-organization", &TeamCreate_Input{SeasonID: seasonMap["Test2"].Season.ID, OrganizationID: nonMemberOrganization.ID}, ErrInvalidArgument},
+		{"valid-with-organization", &TeamCreate_Input{SeasonID: seasonMap["Test2"].Season.ID, OrganizationID: nonSoloOrganization.ID}, nil},
 		{"valid-with-name", &TeamCreate_Input{SeasonID: seasonMap["Test3"].Season.ID, Name: "yolo"}, nil},
 		{"closed-season", &TeamCreate_Input{SeasonID: seasonMap["Test4"].Season.ID, Name: "yolo2"}, ErrInvalidArgument},
 	}
@@ -80,6 +101,9 @@ func TestEngine_TeamCreate(t *testing.T) {
 			}
 			if test.input.OrganizationID != 0 && test.input.OrganizationID != ret.Team.OrganizationID {
 				t.Errorf("Expected %d, got %d.", test.input.OrganizationID, ret.Team.OrganizationID)
+			}
+			if ret.Team.Organization.SoloSeason {
+				t.Errorf("Expected non-solo organization.")
 			}
 		})
 	}
