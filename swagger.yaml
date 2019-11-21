@@ -550,6 +550,9 @@ definitions:
         items:
           $ref: '#/definitions/dbWhoswhoAttempt'
         type: array
+      solo_season:
+        format: boolean
+        type: boolean
       teams:
         items:
           $ref: '#/definitions/dbTeam'

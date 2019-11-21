@@ -150,6 +150,7 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 		Name:           claims.PreferredUsername,
 		GravatarURL:    gravatarURL,
 		DeletionStatus: pwdb.DeletionStatus_Active,
+		SoloSeason:     true,
 		// Locale
 	}
 	organizationMember := pwdb.OrganizationMember{

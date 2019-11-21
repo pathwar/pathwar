@@ -113,6 +113,9 @@ func (e *engine) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCre
 	if err != nil {
 		return nil, ErrInvalidArgument
 	}
+	if organization.SoloSeason {
+		return nil, ErrInvalidArgument // cannot create team based on a solo organization
+	}
 	found := false
 	for _, member := range organization.Members {
 		if member.UserID == userID {

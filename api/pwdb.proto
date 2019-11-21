@@ -264,6 +264,7 @@ message Organization {
   string gravatar_url = 101 [(gogoproto.customname) = "GravatarURL"];
   string locale = 102;
   DeletionStatus deletion_status = 103;
+  bool solo_season = 104;
 
   //
   // associations
