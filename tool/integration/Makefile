@@ -10,7 +10,7 @@ run:
 
 .PHONY: tmp
 tmp:
-	$(COMPOSE) run --no-deps wait-for-it -t 30 server:8000 -- echo "API is up"
+	$(COMPOSE) run --no-deps wait-for-it -t 60 server:8000 -- echo "API is up"
 	$(COMPOSE) run --no-deps webtests npm run docker-integration # first run
 	$(COMPOSE) run --no-deps webtests npm run docker-integration # second run
 	$(COMPOSE) run --no-deps webtests npm run docker-integration # third run
