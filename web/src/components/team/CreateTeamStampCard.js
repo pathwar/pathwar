@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "gatsby";
-import { isEmpty } from "ramda";
-import { StampCard, Form, Button } from "tabler-react";
+import React, { useState, useEffect } from "react"
+import { Link } from "gatsby"
+import { isEmpty } from "ramda"
+import { StampCard, Form, Button } from "tabler-react"
 
 const CreateTeamStampCard = ({ activeSeason, createTeam }) => {
   const [isFormOpen, setFormOpen] = useState(false)
@@ -14,27 +14,26 @@ const CreateTeamStampCard = ({ activeSeason, createTeam }) => {
     }
   }, [name])
 
-  const handleChange = (event) => setName(event.target.value)
-  const handleFormOpen = (event) => {
-    event.preventDefault();
-    setFormOpen(!isFormOpen);
+  const handleChange = event => setName(event.target.value)
+  const handleFormOpen = event => {
+    event.preventDefault()
+    setFormOpen(!isFormOpen)
   }
 
-
-  const submitTeamCreate = async (event) => {
-    event.preventDefault();
+  const submitTeamCreate = async event => {
+    event.preventDefault()
     if (isEmpty(name)) {
       setError(true)
-      return;
+      return
     } else {
-      await createTeam(activeSeason.id, name);
+      await createTeam(activeSeason.id, name)
       setFormOpen(false)
     }
   }
 
-    return (
-      <>
-        <StampCard
+  return (
+    <>
+      <StampCard
         color="blue"
         icon="users"
         header={
@@ -46,21 +45,26 @@ const CreateTeamStampCard = ({ activeSeason, createTeam }) => {
       />
       {isFormOpen && (
         <form onSubmit={submitTeamCreate}>
-        <Form.FieldSet>
-          <Form.Group isRequired label="Name">
-            <Form.Input name="name" onChange={handleChange} invalid={error} cross={error} feedback={error && "Please, insert a name"} />
-          </Form.Group>
-          <Form.Group>
-            <Button type="submit" color="primary" className="ml-auto">
-              Send
-            </Button>
-          </Form.Group>
-        </Form.FieldSet>
-      </form>
-
+          <Form.FieldSet>
+            <Form.Group isRequired label="Name">
+              <Form.Input
+                name="name"
+                onChange={handleChange}
+                invalid={error}
+                cross={error}
+                feedback={error && "Please, insert a name"}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Button type="submit" color="primary" className="ml-auto">
+                Send
+              </Button>
+            </Form.Group>
+          </Form.FieldSet>
+        </form>
       )}
-      </>
-    )
+    </>
+  )
 }
 
-export default CreateTeamStampCard;
+export default CreateTeamStampCard
