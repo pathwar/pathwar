@@ -1,12 +1,8 @@
 import { baseApi } from "./index"
 
+//Season main calls
 export function postPreferences(seasonID) {
   return baseApi.post(`/user/preferences`, { active_season_id: seasonID })
-}
-
-export function getAllSeasonTeams(seasonID) {
-  const urlIdParam = encodeURIComponent(seasonID)
-  return baseApi.get(`/teams?season_id=${urlIdParam}`)
 }
 
 //TODO: Verify endpoint to return all seasons
@@ -14,13 +10,25 @@ export function getAllSeasons() {
   return baseApi.get(`/seasons`)
 }
 
-export function getChallenges(seasonID) {
-  return baseApi.get(`/season-challenges?season_id=${seasonID}`)
-}
-
+//Team calls
 export function getTeamDetails(teamID) {
   const urlIdParam = encodeURIComponent(teamID)
   return baseApi.get(`/team?team_id=${urlIdParam}`)
+}
+
+export function getAllSeasonTeams(seasonID) {
+  const urlIdParam = encodeURIComponent(seasonID)
+  return baseApi.get(`/teams?season_id=${urlIdParam}`)
+}
+
+export function postCreateTeam(seasonID, name) {
+  return baseApi.post(`/team`, {"season_id": seasonID, "name": name})
+}
+
+
+//Challenge calls
+export function getChallenges(seasonID) {
+  return baseApi.get(`/season-challenges?season_id=${seasonID}`)
 }
 
 export function getChallengeDetails(challengeID) {

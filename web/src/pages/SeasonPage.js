@@ -6,7 +6,9 @@ import { isNil } from "ramda";
 
 import AllTeamsOnSeasonList from "../components/season/AllTeamsOnSeasonList"
 import ChallengesCardPreview from "../components/challenges/ChallengeCardPreview";
-import ValidationCouponStamp from "../components/coupon/ValidateCouponStampCard";
+import ValidationCouponStampCard from "../components/coupon/ValidateCouponStampCard";
+import CreateTeamStampCard from "../components/team/CreateTeamStampCard";
+
 import {
   fetchChallenges as fetchChallengesAction ,
   fetchAllSeasonTeams as fetchAllSeasonTeamsAction,
@@ -34,7 +36,8 @@ class SeasonPage extends React.Component {
                 <Grid.Row>
                   <Grid.Col xs={12} sm={3} lg={3}>
                   <h3>Actions</h3>
-                    <ValidationCouponStamp />
+                    <ValidationCouponStampCard />
+                    <CreateTeamStampCard />
                     <h3>Teams</h3>
                     <AllTeamsOnSeasonList activeSeason={activeSeason} allTeamsOnSeason={allTeamsOnSeason} />
                   </Grid.Col>
