@@ -43,7 +43,8 @@ type dabservice struct {
 }
 
 type pathwarInfo struct {
-	RunningFlavors map[string]challengeFlavors
+	RunningFlavors   map[string]challengeFlavors
+	RunningInstances map[string]types.Container
 }
 
 type challengeFlavors struct {

@@ -225,24 +225,83 @@ func Up(preparedCompose string, instanceKey string, logger *zap.Logger) error {
 	return nil
 }
 
-func Down(ids []string, logger *zap.Logger) error {
-	logger.Debug("down", zap.Strings("ids", ids))
-	// id can be an instance_id or a flavor_id
-	return fmt.Errorf("not implemented")
+func Down(
+	ctx context.Context,
+	ids []string,
+	removeImages bool,
+	removeVolumes bool,
+	cli *client.Client,
+	logger *zap.Logger,
+) error {
+	logger.Debug("down", zap.Strings("ids", ids), zap.Bool("rmi", removeImages), zap.Bool("rm -v", removeVolumes))
+
+	pwInfo, err := getPathwarInfo(ctx, cli)
+	if err != nil {
+		return fmt.Errorf("error retrieving pathwar containers info: %w", err)
+	}
+
+	var (
+		containersToRemove []string
+		imagesToRemove     []string
+	)
+
+	for _, id := range ids {
+		for _, flavor := range pwInfo.RunningFlavors {
+			if id == flavor.Name || id == flavor.Name+":"+flavor.Version {
+				for _, instance := range flavor.Instances {
+					containersToRemove = append(containersToRemove, instance.ID)
+					if removeImages == true {
+						imagesToRemove = append(imagesToRemove, instance.ImageID)
+					}
+				}
+			}
+		}
+		for _, container := range pwInfo.RunningInstances {
+			if id == container.ID || id == container.ID[0:6] {
+				containersToRemove = append(containersToRemove, container.ID)
+				if removeImages == true {
+					imagesToRemove = append(imagesToRemove, container.ImageID)
+				}
+			}
+		}
+	}
+
+	for _, instanceID := range containersToRemove {
+		err := cli.ContainerRemove(ctx, instanceID, types.ContainerRemoveOptions{
+			Force:         true,
+			RemoveVolumes: removeVolumes,
+		})
+		if err != nil {
+			return fmt.Errorf("error while removing container: %w", err)
+		}
+		fmt.Println("removed container " + instanceID)
+	}
+
+	for _, imageID := range imagesToRemove {
+		_, err := cli.ImageRemove(ctx, imageID, types.ImageRemoveOptions{
+			Force:         true,
+			PruneChildren: true,
+		})
+		if err != nil {
+			return fmt.Errorf("error while removing container: %w", err)
+		}
+		fmt.Println("removed image " + imageID)
+	}
+
+	return nil
 }
 
-func PS(depth int, logger *zap.Logger) error {
+func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) error {
 	logger.Debug("ps", zap.Int("depth", depth))
 
-	ctx := context.TODO()
-	pwInfos, err := getPathwarInfo(ctx)
+	pwInfo, err := getPathwarInfo(ctx, cli)
 	if err != nil {
 		return fmt.Errorf("retrieve containers info: %w", err)
 	}
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"ID", "CHALLENGE", "SVC", "PORTS", "STATUS", "CREATED"})
 
-	for _, flavor := range pwInfos.RunningFlavors {
+	for _, flavor := range pwInfo.RunningFlavors {
 		for uid, container := range flavor.Instances {
 
 			ports := []string{}
@@ -267,22 +326,26 @@ func PS(depth int, logger *zap.Logger) error {
 	return nil
 }
 
-func getPathwarInfo(ctx context.Context) (*pathwarInfo, error) {
-	cli, err := client.NewEnvClient()
-	if err != nil {
-		return nil, fmt.Errorf("create docker client: %w", err)
-	}
-
+func getPathwarInfo(ctx context.Context, cli *client.Client) (*pathwarInfo, error) {
 	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
 	if err != nil {
 		return nil, fmt.Errorf("list containers: %w", err)
 	}
 
 	pwInfo := pathwarInfo{
-		RunningFlavors: map[string]challengeFlavors{},
+		RunningFlavors:   map[string]challengeFlavors{},
+		RunningInstances: map[string]types.Container{},
 	}
+
 	for _, container := range containers {
-		flavor := fmt.Sprintf("%s:%s", container.Labels[challengeNameLabel], container.Labels[challengeVersionLabel])
+		if _, pwcontainer := container.Labels[challengeNameLabel]; !pwcontainer {
+			continue
+		}
+		flavor := fmt.Sprintf(
+			"%s:%s",
+			container.Labels[challengeNameLabel],
+			container.Labels[challengeVersionLabel],
+		)
 		if _, found := pwInfo.RunningFlavors[flavor]; !found {
 			challengeFlavor := challengeFlavors{
 				Instances: map[string]types.Container{},
@@ -292,6 +355,7 @@ func getPathwarInfo(ctx context.Context) (*pathwarInfo, error) {
 			pwInfo.RunningFlavors[flavor] = challengeFlavor
 		}
 		pwInfo.RunningFlavors[flavor].Instances[container.ID] = container
+		pwInfo.RunningInstances[container.ID] = container
 	}
 
 	return &pwInfo, nil
