@@ -22,6 +22,19 @@ func testingSeasons(t *testing.T, e Engine) *pwdb.SeasonList {
 	return &list
 }
 
+func testingSeasonChallenges(t *testing.T, e Engine) *pwdb.SeasonChallengeList {
+	t.Helper()
+
+	db := testingEngineDB(t, e)
+	var list pwdb.SeasonChallengeList
+	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
+	if err != nil {
+		t.Fatalf("list season challenges: %v", err)
+	}
+
+	return &list
+}
+
 func testingSoloSeason(t *testing.T, e Engine) *pwdb.Season {
 	t.Helper()
 

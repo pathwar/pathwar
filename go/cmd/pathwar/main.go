@@ -6,6 +6,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
@@ -21,6 +22,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"pathwar.land/go/pkg/pwchallenge"
+	"pathwar.land/go/pkg/pwcompose"
 	"pathwar.land/go/pkg/pwdb"
 	"pathwar.land/go/pkg/pwengine"
 	"pathwar.land/go/pkg/pwserver"
@@ -29,10 +31,11 @@ import (
 )
 
 const (
-	defaultSSOPubKey   = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlEFxLlywsbI5BQ7DVkA66fICWGIYPpD+aZNYRR7SIc0zdtJR4xMOt5CjM0vbYT4z2a1U2yl0ewunyxFm8niS8w6mKYFnOS4nnSchQyIAmJkpLC4eAjijCdEHdr8mSqamThSrVRGSYEEsa+adidC13kRDy7NDKhvZb8F0YqnktNk6WHSlb8r2QRLPJ1DX534jjXPY6l/eoHuLJAOZxBlfwV5Dg37TVmf2xAH812E7ZigycLAvhsMvr5x2jLavAEEnZZmlQf4cyQ4tlMzKS1Zp0NcdOGS/i6lrndc5pNtZQuGr8IGBrEbTRFUiavn/HDnyalYZy8T5LakXRdVaKdshAQIDAQAB"
-	defaultSSORealm    = "Pathwar-Dev"
-	defaultSSOClientID = "platform-cli"
-	defaultDBURN       = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8&parseTime=true"
+	defaultSSOPubKey    = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlEFxLlywsbI5BQ7DVkA66fICWGIYPpD+aZNYRR7SIc0zdtJR4xMOt5CjM0vbYT4z2a1U2yl0ewunyxFm8niS8w6mKYFnOS4nnSchQyIAmJkpLC4eAjijCdEHdr8mSqamThSrVRGSYEEsa+adidC13kRDy7NDKhvZb8F0YqnktNk6WHSlb8r2QRLPJ1DX534jjXPY6l/eoHuLJAOZxBlfwV5Dg37TVmf2xAH812E7ZigycLAvhsMvr5x2jLavAEEnZZmlQf4cyQ4tlMzKS1Zp0NcdOGS/i6lrndc5pNtZQuGr8IGBrEbTRFUiavn/HDnyalYZy8T5LakXRdVaKdshAQIDAQAB"
+	defaultSSORealm     = "Pathwar-Dev"
+	defaultSSOClientID  = "platform-cli"
+	defaultDBURN        = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8&parseTime=true"
+	defaultDockerPrefix = "pathwar/"
 )
 
 var (
@@ -59,6 +62,23 @@ var (
 	// compose flags
 	composeFlags = flag.NewFlagSet("compose", flag.ExitOnError)
 
+	// compose prepare flags
+	composePrepareFlags   = flag.NewFlagSet("compose prepare", flag.ExitOnError)
+	composePrepareNoPush  = composePrepareFlags.Bool("no-push", false, "don't push images")
+	composePreparePrefix  = composePrepareFlags.String("prefix", defaultDockerPrefix, "docker image prefix")
+	composePrepareVersion = composePrepareFlags.String("version", "1.0.0", "challenge version")
+
+	// compose up flags
+	composeUpFlags       = flag.NewFlagSet("compose up", flag.ExitOnError)
+	composeUpInstanceKey = composeUpFlags.String("instance-key", "default", "instance key used to generate instance ID")
+
+	// compose down flags
+	composeDownFlags = flag.NewFlagSet("compose down", flag.ExitOnError)
+
+	// compose ps flags
+	composePSFlags = flag.NewFlagSet("compose ps", flag.ExitOnError)
+	composePSDepth = composePSFlags.Int("depth", 0, "depth to display")
+
 	// hypervisor flags
 	hypervisorFlags = flag.NewFlagSet("hypervisor", flag.ExitOnError)
 
@@ -69,7 +89,7 @@ var (
 	serverRequestTimeout     = serverFlags.Duration("request-timeout", 5*time.Second, "request timeout")
 	serverShutdownTimeout    = serverFlags.Duration("shutdown-timeout", 6*time.Second, "shutdown timeout")
 	serverCORSAllowedOrigins = serverFlags.String("cors-allowed-origins", "*", "allowed CORS origins")
-	serverWithPprof          = serverFlags.Bool("with-pprof", false, "enable pprof server")
+	serverWithPprof          = serverFlags.Bool("with-pprof", false, "enable pprof endpoints")
 
 	// misc flags
 	miscFlags = flag.NewFlagSet("misc", flag.ExitOnError)
@@ -89,7 +109,7 @@ func main() {
 		if *globalDebug {
 			config := zap.NewDevelopmentConfig()
 			config.Level.SetLevel(zap.DebugLevel)
-			config.DisableStacktrace = false
+			config.DisableStacktrace = true
 			config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 			var err error
 			logger, err = config.Build()
@@ -141,8 +161,9 @@ func main() {
 			defer closer()
 
 			var (
-				ctx = context.Background()
-				g   run.Group
+				ctx    = context.Background()
+				g      run.Group
+				server *pwserver.Server
 			)
 			{ // server
 				opts := pwserver.Opts{
@@ -154,7 +175,8 @@ func main() {
 					ShutdownTimeout:    *serverShutdownTimeout,
 					WithPprof:          *serverWithPprof,
 				}
-				server, err := pwserver.New(ctx, engine, opts)
+				var err error
+				server, err = pwserver.New(ctx, engine, opts)
 				if err != nil {
 					return fmt.Errorf("init server: %w", err)
 				}
@@ -179,8 +201,8 @@ func main() {
 			}
 
 			logger.Info("server started",
-				zap.String("http-bind", *serverHTTPBind),
-				zap.String("grpc-bind", *serverGRPCBind),
+				zap.String("http-bind", server.HTTPListenerAddr()),
+				zap.String("grpc-bind", server.GRPCListenerAddr()),
 			)
 
 			if err := g.Run(); err != nil {
@@ -359,10 +381,82 @@ func main() {
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
 
+	composePrepare := &ffcli.Command{
+		Name:    "prepare",
+		Usage:   "pathwar [global flags] compose [compose flags] prepare [flags] PATH",
+		FlagSet: composePrepareFlags,
+		Exec: func(args []string) error {
+			if len(args) < 1 {
+				return flag.ErrHelp
+			}
+			path := args[0]
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			return pwcompose.Prepare(
+				path,
+				*composePreparePrefix,
+				*composePrepareNoPush,
+				*composePrepareVersion,
+				logger,
+			)
+		},
+	}
+
+	composeUp := &ffcli.Command{
+		Name:    "up",
+		Usage:   "pathwar [global flags] compose [compose flags] up [flags] PATH",
+		FlagSet: composeUpFlags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			if len(args) < 1 {
+				return flag.ErrHelp
+			}
+
+			path := args[0]
+			f, err := os.Open(path)
+			if err != nil {
+				return err
+			}
+			preparedCompose, err := ioutil.ReadAll(f)
+			if err != nil {
+				return err
+			}
+
+			return pwcompose.Up(string(preparedCompose), *composeUpInstanceKey, logger)
+		},
+	}
+
+	composeDown := &ffcli.Command{
+		Name:    "down",
+		Usage:   "pathwar [global flags] compose [compose flags] down [flags] ID [ID...]",
+		FlagSet: composeDownFlags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			return pwcompose.Down(args, logger)
+		},
+	}
+
+	composePS := &ffcli.Command{
+		Name:    "ps",
+		Usage:   "pathwar [global flags] compose [compose flags] ps [flags]",
+		FlagSet: composePSFlags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			return pwcompose.PS(*composePSDepth, logger)
+		},
+	}
+
 	compose := &ffcli.Command{
 		Name:        "compose",
 		Usage:       "pathwar [global flags] compose [sso flags] <subcommand> [flags] [args...]",
-		Subcommands: []*ffcli.Command{},
+		Subcommands: []*ffcli.Command{composePrepare, composeUp, composePS, composeDown},
 		ShortHelp:   "manage a challenge",
 		FlagSet:     composeFlags,
 		Exec:        func([]string) error { return flag.ErrHelp },

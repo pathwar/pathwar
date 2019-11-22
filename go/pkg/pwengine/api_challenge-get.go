@@ -7,7 +7,7 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) ChallengeGet(ctx context.Context, in *ChallengeGetInput) (*ChallengeGetOutput, error) {
+func (e *engine) ChallengeGet(ctx context.Context, in *ChallengeGet_Input) (*ChallengeGet_Output, error) {
 	// validation
 	if in == nil || in.ChallengeID == 0 {
 		return nil, ErrMissingArgument
@@ -15,7 +15,7 @@ func (e *engine) ChallengeGet(ctx context.Context, in *ChallengeGetInput) (*Chal
 
 	var item pwdb.Challenge
 	err := e.db.
-		Set("gorm:auto_preload", true).
+		Preload("Flavors").
 		Where(pwdb.Challenge{ID: in.ChallengeID}).
 		First(&item).
 		Error
@@ -26,7 +26,7 @@ func (e *engine) ChallengeGet(ctx context.Context, in *ChallengeGetInput) (*Chal
 		return nil, fmt.Errorf("query challenge: %w", err)
 	}
 
-	ret := ChallengeGetOutput{Item: &item}
+	ret := ChallengeGet_Output{Item: &item}
 
 	return &ret, nil
 }

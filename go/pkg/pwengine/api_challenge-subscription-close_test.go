@@ -15,12 +15,6 @@ func TestEngine_ChallengeSubscriptionClose(t *testing.T) {
 
 	solo := testingSoloSeason(t, engine)
 
-	// fetch challenges
-	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeListInput{solo.ID})
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
-
 	// fetch user session
 	session, err := engine.UserGetSession(ctx, nil)
 	if err != nil {
@@ -28,15 +22,21 @@ func TestEngine_ChallengeSubscriptionClose(t *testing.T) {
 	}
 	activeTeam := session.User.ActiveTeamMember.Team
 
+	// fetch challenges
+	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
+	if err != nil {
+		t.Fatalf("err: %v", err)
+	}
+
 	// buy two challenges
-	subscription1, err := engine.SeasonChallengeBuy(ctx, &SeasonChallengeBuyInput{
+	subscription1, err := engine.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{
 		SeasonChallengeID: challenges.Items[0].ID,
 		TeamID:            activeTeam.ID,
 	})
 	if err != nil {
 		t.Fatalf("err: %v", err)
 	}
-	subscription2, err := engine.SeasonChallengeBuy(ctx, &SeasonChallengeBuyInput{
+	subscription2, err := engine.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{
 		SeasonChallengeID: challenges.Items[1].ID,
 		TeamID:            activeTeam.ID,
 	})
@@ -45,7 +45,7 @@ func TestEngine_ChallengeSubscriptionClose(t *testing.T) {
 	}
 
 	// validate second challenge
-	_, err = engine.ChallengeSubscriptionValidate(ctx, &ChallengeSubscriptionValidateInput{
+	_, err = engine.ChallengeSubscriptionValidate(ctx, &ChallengeSubscriptionValidate_Input{
 		ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID,
 		Passphrase:              "secret",
 	})
@@ -55,14 +55,14 @@ func TestEngine_ChallengeSubscriptionClose(t *testing.T) {
 
 	var tests = []struct {
 		name        string
-		input       *ChallengeSubscriptionCloseInput
+		input       *ChallengeSubscriptionClose_Input
 		expectedErr error
 	}{
 		{"nil", nil, ErrMissingArgument},
-		{"empty", &ChallengeSubscriptionCloseInput{}, ErrMissingArgument},
-		{"subscription1", &ChallengeSubscriptionCloseInput{ChallengeSubscriptionID: subscription1.ChallengeSubscription.ID}, ErrMissingRequiredValidation},
-		{"subscription2", &ChallengeSubscriptionCloseInput{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID}, nil},
-		{"subscription2", &ChallengeSubscriptionCloseInput{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID}, ErrInvalidArgument},
+		{"empty", &ChallengeSubscriptionClose_Input{}, ErrMissingArgument},
+		{"subscription1", &ChallengeSubscriptionClose_Input{ChallengeSubscriptionID: subscription1.ChallengeSubscription.ID}, ErrMissingRequiredValidation},
+		{"subscription2", &ChallengeSubscriptionClose_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID}, nil},
+		{"subscription2", &ChallengeSubscriptionClose_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID}, ErrInvalidArgument},
 	}
 	for _, test := range tests {
 		ret, err := engine.ChallengeSubscriptionClose(ctx, test.input)

@@ -10,14 +10,14 @@ import (
 	"pathwar.land/go/pkg/pwsso"
 )
 
-func (e *engine) UserGetSession(ctx context.Context, _ *UserGetSessionInput) (*UserGetSessionOutput, error) {
+func (e *engine) UserGetSession(ctx context.Context, _ *UserGetSession_Input) (*UserGetSession_Output, error) {
 	token, err := tokenFromContext(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("get token from context: %w", err)
 	}
 	zap.L().Debug("token", zap.Any("token", token))
 
-	output := &UserGetSessionOutput{}
+	output := &UserGetSession_Output{}
 	output.Claims = pwsso.ClaimsFromToken(token)
 
 	// try loading it from database
@@ -53,7 +53,7 @@ func (e *engine) UserGetSession(ctx context.Context, _ *UserGetSessionInput) (*U
 	return output, nil
 }
 
-func (e *engine) seasons(ctx context.Context) ([]*UserGetSessionOutput_SeasonAndTeam, error) {
+func (e *engine) seasons(ctx context.Context) ([]*UserGetSession_Output_SeasonAndTeam, error) {
 	var (
 		seasons     []*pwdb.Season
 		memberships []*pwdb.TeamMember
@@ -85,9 +85,9 @@ func (e *engine) seasons(ctx context.Context) ([]*UserGetSessionOutput_SeasonAnd
 		return nil, fmt.Errorf("fetch seasons: %w", err)
 	}
 
-	output := []*UserGetSessionOutput_SeasonAndTeam{}
+	output := []*UserGetSession_Output_SeasonAndTeam{}
 	for _, season := range seasons {
-		item := &UserGetSessionOutput_SeasonAndTeam{
+		item := &UserGetSession_Output_SeasonAndTeam{
 			Season: season,
 		}
 
@@ -144,10 +144,13 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 
 		TeamMemberships:         []*pwdb.TeamMember{},
 		OrganizationMemberships: []*pwdb.OrganizationMember{},
+		DeletionStatus:          pwdb.DeletionStatus_Active,
 	}
 	organization := pwdb.Organization{
-		Name:        claims.PreferredUsername,
-		GravatarURL: gravatarURL,
+		Name:           claims.PreferredUsername,
+		GravatarURL:    gravatarURL,
+		DeletionStatus: pwdb.DeletionStatus_Active,
+		SoloSeason:     true,
 		// Locale
 	}
 	organizationMember := pwdb.OrganizationMember{
@@ -156,9 +159,10 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 		Role:         pwdb.OrganizationMember_Owner,
 	}
 	seasonOrganization := pwdb.Team{
-		Season:       &season,
-		IsDefault:    true,
-		Organization: &organization,
+		Season:         &season,
+		IsDefault:      true,
+		Organization:   &organization,
+		DeletionStatus: pwdb.DeletionStatus_Active,
 	}
 	seasonMember := pwdb.TeamMember{
 		User: &user,

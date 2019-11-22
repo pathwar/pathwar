@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 import {
   GET_ALL_SEASONS_SUCCESS,
   GET_ALL_SEASONS_FAILED,
@@ -13,7 +15,14 @@ import {
   GET_CHALLENGE_DETAILS_SUCCESS,
   GET_CHALLENGE_DETAILS_FAILED,
   GET_TEAM_DETAILS_SUCCESS,
-  GET_TEAM_DETAILS_FAILED
+  GET_TEAM_DETAILS_FAILED,
+  BUY_CHALLENGE_SUCCESS,
+  BUY_CHALLENGE_FAILED,
+  VALIDATE_CHALLENGE_SUCCESS,
+  VALIDATE_CHALLENGE_FAILED,
+  CLOSE_CHALLENGE_SUCCESS,
+  CLOSE_CHALLENGE_FAILED,
+  SET_ACTIVE_TEAM
 } from "../constants/actionTypes"
 
 import {
@@ -22,7 +31,10 @@ import {
   postPreferences,
   getChallenges,
   getChallengeDetails,
-  getTeamDetails
+  getTeamDetails,
+  postBuyChallenge,
+  postValidateChallenge,
+  postCloseChallenge
 } from "../api/seasons"
 
 import { fetchUserSession as fetchUserSessionAction } from "./userSession";
@@ -100,6 +112,15 @@ export const fetchTeamDetails = (teamID) => async dispatch => {
   }
 }
 
+export const setActiveTeam = (teamData) => async dispatch => {
+  dispatch({
+    type: SET_ACTIVE_TEAM,
+    payload: {
+      team: teamData,
+    }
+  })
+}
+
 export const fetchAllSeasons = () => async dispatch => {
   try {
     const response = await getAllSeasons();
@@ -128,9 +149,9 @@ export const fetchChallengeDetail = (challengeID) => async dispatch => {
   }
 };
 
-export const fetchChallenges = () => async dispatch => {
+export const fetchChallenges = (seasonID) => async dispatch => {
   try {
-    const response = await getChallenges();
+    const response = await getChallenges(seasonID);
     dispatch({
       type: SET_CHALLENGES_LIST,
       payload: { activeChallenges: response.data.items }
@@ -139,3 +160,57 @@ export const fetchChallenges = () => async dispatch => {
     dispatch({ type: SET_CHALLENGES_LIST_FAILED, payload: { error } });
   }
 };
+
+export const buyChallenge = (challengeID, teamID, seasonId) => async dispatch => {
+  try {
+    const response = await postBuyChallenge(challengeID, teamID);
+    const subscription = response.data.challenge_subscription
+    const { season_challenge: { flavor: { challenge } } } = subscription
+    dispatch({
+      type: BUY_CHALLENGE_SUCCESS,
+      payload: { challengeSubscription: subscription }
+    });
+
+    dispatch(fetchChallenges(seasonId)).then(() =>{
+        toast.success(`Buy challenge ${challenge.name} success!`)
+    });
+  } catch (error) {
+    dispatch({ type: BUY_CHALLENGE_FAILED, payload: { error } });
+    toast.error(`Buy challenge ERROR!`)
+  }
+}
+
+export const validateChallenge = (validateData, seasonId) => async dispatch => {
+  try {
+    const response = await postValidateChallenge(validateData);
+    const validation = response.data.challenge_validation
+    const { challenge_subscription } = validation
+
+    dispatch({
+      type: VALIDATE_CHALLENGE_SUCCESS,
+      payload: { challengeSubscription: challenge_subscription }
+    });
+
+    dispatch(fetchChallenges(seasonId)).then(() =>{
+      toast.success(`Validate challenge success!`)
+    });
+  } catch (error) {
+    dispatch({ type: VALIDATE_CHALLENGE_FAILED, payload: { error } });
+    toast.error(`Validate challenge ERROR!`)
+  }
+}
+
+export const closeChallenge = (subscriptionID) => async dispatch => {
+  try {
+    const response = await postCloseChallenge(subscriptionID);
+    dispatch({
+      type: CLOSE_CHALLENGE_SUCCESS,
+      payload: { data: response.data }
+    });
+
+    toast.success(`Close challenge success!`)
+  } catch (error) {
+    dispatch({ type: CLOSE_CHALLENGE_FAILED, payload: { error } });
+    toast.error(`Close challenge ERROR!`)
+  }
+}

@@ -22,26 +22,26 @@ func TestEngine_ChallengeGet(t *testing.T) {
 
 	var tests = []struct {
 		name                  string
-		input                 *ChallengeGetInput
+		input                 *ChallengeGet_Input
 		expectedErr           error
 		expectedChallengeName string
 		expectedAuthor        string
 	}{
 		{
 			"empty",
-			&ChallengeGetInput{},
+			&ChallengeGet_Input{},
 			ErrMissingArgument,
 			"",
 			"",
 		}, {
 			"unknown-season-id",
-			&ChallengeGetInput{ChallengeID: -42}, // -42 should not exists
+			&ChallengeGet_Input{ChallengeID: -42}, // -42 should not exists
 			ErrInvalidArgument,
 			"",
 			"",
 		}, {
 			"Staff",
-			&ChallengeGetInput{ChallengeID: challenges["Hello World"]},
+			&ChallengeGet_Input{ChallengeID: challenges["Hello World"]},
 			nil,
 			"Hello World",
 			"Staff Team",

@@ -10,6 +10,7 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "test": "env-cmd --file ./.env.test jest",
+    "docker-integration": "env-cmd --file ./.env.docker-integration jest",
     "integration": "env-cmd --file ./.env.integration jest"
   },
   "dependencies": {
@@ -36,6 +37,7 @@
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
     "react-redux": "^7.1.0",
+    "react-toastify": "^5.4.1",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "tabler-react": "^1.30.1"

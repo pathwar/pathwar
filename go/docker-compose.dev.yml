@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  server:
+    ports:
+      - 8000:8000
+
+  mysql:
+    ports:
+      - 3306:3306

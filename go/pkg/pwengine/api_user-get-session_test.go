@@ -31,6 +31,7 @@ func TestEngine_UserGetSession(t *testing.T) {
 		{".IsNewUser", session.IsNewUser, `true`},
 		{".User.ActiveTeamMember.Team.Season.Name", session.User.ActiveTeamMember.Team.Season.Name, `"Solo Mode"`},
 		{".User.ActiveTeamMember.Team.Organization.Name", session.User.ActiveTeamMember.Team.Organization.Name, `"moul"`},
+		{".User.ActiveTeamMember.Team.Organization.SoloSeason", session.User.ActiveTeamMember.Team.Organization.SoloSeason, `true`},
 	}
 
 	for _, test := range tests {

@@ -1,18 +1,22 @@
 /* eslint-disable no-unused-vars */
 import Cookies from "js-cookie";
+import { toast } from 'react-toastify';
 import {
   LOGIN_FAILED,
   SET_USER_SESSION,
   SET_USER_SESSION_FAILED,
   SET_KEYCLOAK_SESSION,
-  LOGOUT
+  LOGOUT,
+  DELETE_ACCOUNT_FAILED,
+  DELETE_ACCOUNT_SUCCESS
 } from "../constants/actionTypes"
 import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
-import { getUserSession } from "../api/userSession"
+import { getUserSession, deleteUserAccount } from "../api/userSession"
 import { setActiveOrganization as setActiveOrganizationAction } from "./organizations";
 import {
   setActiveSeason as setActiveSeasonAction,
-  fetchPreferences as fetchPreferencesAction
+  fetchPreferences as fetchPreferencesAction,
+  setActiveTeam as setActiveTeamAction
 } from "./seasons"
 
 export const logoutUser = () => async dispatch => {
@@ -32,25 +36,21 @@ export const fetchUserSession = (postPreferences) => async dispatch => {
 
   try {
     const userSessionResponse = await getUserSession();
-    const userSessionData = userSessionResponse.data;
-    const defaultSeasonSet = userSessionData.seasons.find((item) => item.season.is_default);
-    const defaultTeamSet = userSessionData.seasons.find((item) => item.team.is_default);
-
-    const defaultSeason = defaultSeasonSet.season;
-    const defaultTeam = defaultTeamSet.team;
-
+    const { data: userSessionData} = userSessionResponse;
+    const defaultSeasonTeamSet = userSessionData.seasons.find((item) => item.season.is_default);
     const activeSeasonId = userSessionData.user.active_season_id
 
     dispatch(setUserSession(userSessionData))
 
     if (postPreferences) {
-      dispatch(fetchPreferencesAction(defaultSeason.id))
+      dispatch(fetchPreferencesAction(defaultSeasonTeamSet.season.id))
     }
 
     if (activeSeasonId) {
       const activeSeason = userSessionData.seasons.find((item) => item.season.id === activeSeasonId);
       dispatch(setActiveSeasonAction(activeSeason.season));
-      dispatch(setActiveOrganizationAction(defaultTeam));
+      dispatch(setActiveTeamAction(activeSeason.team));
+      dispatch(setActiveOrganizationAction(activeSeason.team.organization));
     }
 
   }
@@ -75,3 +75,17 @@ export const setKeycloakSession = (keycloakInstance, authenticated) => async dis
     dispatch({ type: LOGIN_FAILED, payload: { error } });
   }
 };
+
+export const deleteAccount = (reason) => async dispatch => {
+  try {
+    const response = await deleteUserAccount(reason);
+    dispatch({
+      type: DELETE_ACCOUNT_SUCCESS,
+      payload: { activeChallenges: response.data.items }
+    });
+    toast.success("Delete account SUCCESS!")
+  } catch (error) {
+    dispatch({ type: DELETE_ACCOUNT_FAILED, payload: { error } });
+    toast.error("Delete account FAILED!")
+  }
+}

@@ -7,17 +7,36 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGetInput) (*SeasonChallengeGetOutput, error) {
+func (e *engine) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGet_Input) (*SeasonChallengeGet_Output, error) {
 	{ // validation
 		if in.SeasonChallengeID == 0 {
 			return nil, ErrMissingArgument
 		}
 	}
 
+	userID, err := userIDFromContext(ctx, e.db)
+	if err != nil {
+		return nil, fmt.Errorf("get userid from context: %w", err)
+	}
+
+	season, err := seasonFromSeasonChallengeID(e.db, in.SeasonChallengeID)
+	if err != nil {
+		return nil, ErrInvalidArgument // season challenge is malformed
+	}
+
+	team, err := userTeamForSeason(e.db, userID, season.ID)
+	if err != nil {
+		return nil, ErrInvalidArgument // user does not have team for this season
+	}
+
 	var item pwdb.SeasonChallenge
-	err := e.db.
-		Set("gorm:auto_preload", true).
+	err = e.db.
 		Where(pwdb.SeasonChallenge{ID: in.SeasonChallengeID}).
+		Preload("Season").
+		Preload("Flavor").
+		Preload("Flavor.Challenge").
+		Preload("Subscriptions", "team_id = ?", team.ID).
+		Preload("Subscriptions.Validations").
 		First(&item).
 		Error
 
@@ -28,9 +47,8 @@ func (e *engine) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGetI
 		return nil, fmt.Errorf("query season challenge: %w", err)
 	}
 
-	ret := SeasonChallengeGetOutput{
+	ret := SeasonChallengeGet_Output{
 		Item: &item,
 	}
-
 	return &ret, nil
 }

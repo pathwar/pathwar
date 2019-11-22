@@ -1,0 +1,29 @@
+{{/* NOTE: Make sure to remove white space by adding "-" */}}
+
+{{- $page := .page -}}
+{{- $ctx := .ctx -}}
+{{- $width := .width -}}
+
+{{- $shown_assets := .ctx.Site.Params.shown_assets -}}
+{{- $resizable_assets := slice "jpg" "jpeg" "png" -}}
+
+{{- $asset := resources.Get $page.Params.file_path -}}
+{{- $asset_type := $page.Params.media_type_sub -}}
+
+{{- if in $shown_assets $asset_type -}}
+
+  {{/* Use non-image icon if defined */}}
+  {{- $placeholder := index $ctx.Site.Params.nonimage_icons $asset_type -}}
+  {{- if $placeholder -}}
+    {{- $asset = resources.Get $placeholder -}}
+    {{- $asset = $asset.Resize "200x" -}}
+  {{- end }}
+
+  {{- if and $width (in $resizable_assets $asset_type) -}}
+    {{- $size := cond (ge $asset.Width $width) $width $asset.Width -}}
+    {{- $asset = $asset.Resize (print $size "x") -}}
+  {{- end -}}
+
+  {{- $asset.RelPermalink -}}
+
+{{- end -}}

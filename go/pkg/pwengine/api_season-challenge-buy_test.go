@@ -15,12 +15,6 @@ func TestEngine_ChallengeBuy(t *testing.T) {
 
 	solo := testingSoloSeason(t, engine)
 
-	// fetch challenges
-	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeListInput{solo.ID})
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
-
 	// fetch user session
 	session, err := engine.UserGetSession(ctx, nil)
 	if err != nil {
@@ -28,31 +22,37 @@ func TestEngine_ChallengeBuy(t *testing.T) {
 	}
 	activeTeam := session.User.ActiveTeamMember.Team
 
+	// fetch challenges
+	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
+	if err != nil {
+		t.Fatalf("err: %v", err)
+	}
+
 	var tests = []struct {
 		name        string
-		input       *SeasonChallengeBuyInput
+		input       *SeasonChallengeBuy_Input
 		expectedErr error
 	}{
 		{"nil", nil, ErrMissingArgument},
-		{"empty", &SeasonChallengeBuyInput{}, ErrMissingArgument},
+		{"empty", &SeasonChallengeBuy_Input{}, ErrMissingArgument},
 		{
 			"invalid season challenge ID",
-			&SeasonChallengeBuyInput{SeasonChallengeID: 42, TeamID: activeTeam.ID},
+			&SeasonChallengeBuy_Input{SeasonChallengeID: 42, TeamID: activeTeam.ID},
 			ErrInvalidArgument,
 		},
 		{
 			"invalid team ID",
-			&SeasonChallengeBuyInput{SeasonChallengeID: challenges.Items[0].ID, TeamID: 42},
+			&SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: 42},
 			ErrInvalidArgument,
 		},
 		{
 			"valid 1",
-			&SeasonChallengeBuyInput{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID},
+			&SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID},
 			nil,
 		},
 		{
 			"valid 2 (duplicate)",
-			&SeasonChallengeBuyInput{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID},
+			&SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID},
 			ErrDuplicate,
 		},
 		// FIXME: check for a team and a challenge in different seasons
@@ -77,6 +77,32 @@ func TestEngine_ChallengeBuy(t *testing.T) {
 		}
 		if subscription.ChallengeSubscription.BuyerID != session.User.ID {
 			t.Errorf("%s: Expected %d, got %d.", test.name, session.User.ID, subscription.ChallengeSubscription.BuyerID)
+		}
+
+		// check if challenge subscription is now visible in season challenge list
+		challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
+		if err != nil {
+			t.Fatalf("err: %v", err)
+		}
+		found := 0
+		for _, challenge := range challenges.Items {
+			if challenge.ID == subscription.ChallengeSubscription.SeasonChallengeID {
+				found++
+				if len(challenge.Subscriptions) != 1 {
+					t.Errorf("%s: Expected only one subscription, got %d.", test.name, len(challenge.Subscriptions))
+				}
+
+				if challenge.Subscriptions[0].ID != subscription.ChallengeSubscription.ID {
+					t.Errorf("%s: Expected %d, got %d.", test.name, subscription.ChallengeSubscription.ID, challenge.Subscriptions[0].ID)
+				}
+
+				if challenge.Subscriptions[0].TeamID != test.input.TeamID {
+					t.Errorf("%s: Expected %d, got %d.", test.name, test.input.TeamID, challenge.Subscriptions[0].TeamID)
+				}
+			}
+		}
+		if found != 1 {
+			t.Errorf("%s: Expected 1 found, got %d.", test.name, found)
 		}
 	}
 }

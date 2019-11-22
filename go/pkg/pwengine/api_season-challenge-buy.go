@@ -7,7 +7,7 @@ import (
 	"pathwar.land/go/pkg/pwdb"
 )
 
-func (e *engine) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuyInput) (*SeasonChallengeBuyOutput, error) {
+func (e *engine) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuy_Input) (*SeasonChallengeBuy_Output, error) {
 	// validation
 	if in == nil || in.SeasonChallengeID == 0 || in.TeamID == 0 {
 		return nil, ErrMissingArgument
@@ -75,7 +75,7 @@ func (e *engine) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuyI
 
 	// load and return the freshly inserted entry
 	err = e.db.
-		Preload("Team").
+		Preload("Team", "team.deletion_status = ?", pwdb.DeletionStatus_Active).
 		Preload("Team.Season").
 		Preload("Buyer").
 		Preload("SeasonChallenge").
@@ -87,6 +87,6 @@ func (e *engine) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuyI
 		return nil, fmt.Errorf("fetch challenge subscription: %w", err)
 	}
 
-	ret := SeasonChallengeBuyOutput{ChallengeSubscription: &subscription}
+	ret := SeasonChallengeBuy_Output{ChallengeSubscription: &subscription}
 	return &ret, nil
 }
