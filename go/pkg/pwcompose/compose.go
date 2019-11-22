@@ -10,9 +10,13 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"time"
+	"strconv"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
+	"github.com/olekukonko/tablewriter"
+	"github.com/dustin/go-humanize"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 )
@@ -230,15 +234,31 @@ func PS(depth int, logger *zap.Logger) error {
 	if err != nil {
 		return fmt.Errorf("error retrieving pathwar containers infos: %w", err)
 	}
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"CHALLENGE NAME", "CONTAINER ID", "NAME", "VERSION", "PORTS", "STATUS", "CREATED",   })
 
 	for _, flavor := range pwInfos.RunningFlavors {
-		fmt.Println(flavor.Name + " version " + flavor.Version + ":")
-		for _, container := range flavor.Instances {
-			fmt.Println("  " + container.Labels[serviceNameLabel])
-		}
-		fmt.Println("")
-	}
+		for uid, container := range flavor.Instances {
 
+			ports := []string{}
+			for _, port := range container.Ports {
+				if port.PublicPort != 0 {
+					ports = append(ports, strconv.Itoa(int(port.PublicPort)))
+				}
+			}
+
+			table.Append([]string{
+				flavor.Name,
+				uid[:12],
+				container.Labels[serviceNameLabel],
+				flavor.Version,
+				strings.Join(ports, ", "),
+				strings.Replace(container.Status, "Up ", "", 1),
+				strings.Replace(humanize.Time(time.Unix(container.Created, 0)), " ago", "", 1)})
+
+		}
+	}
+	table.Render()
 	return nil
 }
 
