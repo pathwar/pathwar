@@ -226,20 +226,38 @@ func Down(ids []string, logger *zap.Logger) error {
 func PS(depth int, logger *zap.Logger) error {
 	logger.Debug("ps", zap.Int("depth", depth))
 
+	pwInfos, err := updatePathwarInfos()
+	if err != nil {
+		return fmt.Errorf("error retrieving pathwar containers infos: %w", err)
+	}
+
+	for _, flavor := range pwInfos.RunningFlavors {
+		fmt.Println(flavor.Name + " version " + flavor.Version + ":")
+		for _, container := range flavor.Instances {
+			fmt.Println("  " + container.Labels[serviceNameLabel])
+		}
+		fmt.Println("")
+	}
+
+	return nil
+}
+
+func updatePathwarInfos() (pathwarInfos, error) {
+
+	pwInfos := pathwarInfos{
+		RunningFlavors: map[string]challengeFlavors{},
+	}
+
 	ctx := context.TODO()
 
 	cli, err := client.NewEnvClient()
 	if err != nil {
-		return fmt.Errorf("create docker client: %w", err)
+		return pwInfos, fmt.Errorf("create docker client: %w", err)
 	}
 
 	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
 	if err != nil {
-		return fmt.Errorf("list containers: %w", err)
-	}
-
-	pwInfos := pathwarInfos{
-		RunningFlavors: map[string]challengeFlavors{},
+		return pwInfos, fmt.Errorf("list containers: %w", err)
 	}
 
 	for _, container := range containers {
@@ -255,13 +273,5 @@ func PS(depth int, logger *zap.Logger) error {
 		pwInfos.RunningFlavors[flavor].Instances[container.ID] = container
 	}
 
-	for _, flavor := range pwInfos.RunningFlavors {
-		fmt.Println("")
-		fmt.Println(flavor.Name + " version " + flavor.Version + ":")
-		for _, container := range flavor.Instances {
-			fmt.Println("  " + container.Labels[serviceNameLabel])
-		}
-	}
-
-	return nil
+	return pwInfos, nil
 }
