@@ -42,7 +42,7 @@ type dabservice struct {
 	Image string
 }
 
-type pathwarInfo struct {
+type PathwarInfo struct {
 	RunningFlavors   map[string]challengeFlavors
 	RunningInstances map[string]types.Container
 }
