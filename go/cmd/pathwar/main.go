@@ -26,6 +26,7 @@ import (
 	"pathwar.land/go/pkg/pwcompose"
 	"pathwar.land/go/pkg/pwdb"
 	"pathwar.land/go/pkg/pwengine"
+	"pathwar.land/go/pkg/pwhypervisor"
 	"pathwar.land/go/pkg/pwserver"
 	"pathwar.land/go/pkg/pwsso"
 	"pathwar.land/go/pkg/pwversion"
@@ -63,27 +64,31 @@ var (
 	// compose flags
 	composeFlags = flag.NewFlagSet("compose", flag.ExitOnError)
 
-	// compose prepare flags
 	composePrepareFlags   = flag.NewFlagSet("compose prepare", flag.ExitOnError)
 	composePrepareNoPush  = composePrepareFlags.Bool("no-push", false, "don't push images")
 	composePreparePrefix  = composePrepareFlags.String("prefix", defaultDockerPrefix, "docker image prefix")
 	composePrepareVersion = composePrepareFlags.String("version", "1.0.0", "challenge version")
 
-	// compose up flags
 	composeUpFlags       = flag.NewFlagSet("compose up", flag.ExitOnError)
 	composeUpInstanceKey = composeUpFlags.String("instance-key", "default", "instance key used to generate instance ID")
 
-	// compose down flags
 	composeDownFlags        = flag.NewFlagSet("compose down", flag.ExitOnError)
 	composeDownRemoveImages = composePrepareFlags.Bool("rmi", false, "remove images as well")
 	composeDownKeepVolumes  = composePrepareFlags.Bool("keep-volumes", false, "keep volumes")
 
-	// compose ps flags
 	composePSFlags = flag.NewFlagSet("compose ps", flag.ExitOnError)
 	composePSDepth = composePSFlags.Int("depth", 0, "depth to display")
 
 	// hypervisor flags
 	hypervisorFlags = flag.NewFlagSet("hypervisor", flag.ExitOnError)
+
+	hypervisorDaemonFlags = flag.NewFlagSet("hypervisor daemon", flag.ExitOnError)
+
+	hypervisorNginxFlags             = flag.NewFlagSet("hypervisor nginx", flag.ExitOnError)
+	hypervisorNginxHTTPBind          = hypervisorNginxFlags.String("http-bind", ":8000", "HTTP listening addr")
+	hypervisorNginxDomainSuffix      = hypervisorNginxFlags.String("domain-suffix", ".127.0.0.0.xip.io", "Domain suffix to append")
+	hypervisorNginxModeratorPassword = hypervisorNginxFlags.String("moderator-password", "s3cur3", "Challenge moderator password")
+	hypervisorNginxSalt              = hypervisorNginxFlags.String("salt", "s3cur3-t0o", "salt used to generate secure hashes")
 
 	// server flags
 	serverFlags              = flag.NewFlagSet("server", flag.ExitOnError)
@@ -490,11 +495,63 @@ func main() {
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
 
+	hypervisorDaemon := &ffcli.Command{
+		Name:    "daemon",
+		Usage:   "pathwar [global flags] hypervisor [hypervisor flags] daemon [flags]",
+		FlagSet: hypervisorDaemonFlags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			ctx := context.Background()
+			cli, err := client.NewEnvClient()
+			if err != nil {
+				return fmt.Errorf("docker client: %w", err)
+			}
+			return pwhypervisor.Daemon(ctx, cli, logger)
+		},
+	}
+
+	hypervisorNginx := &ffcli.Command{
+		Name:    "nginx",
+		Usage:   "pathwar [global flags] hypervisor [hypervisor flags] nginx [flags] ALLOWED_USERS",
+		FlagSet: hypervisorNginxFlags,
+		Exec: func(args []string) error {
+			if len(args) < 1 {
+				return flag.ErrHelp
+			}
+
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			// prepare NginxConfig
+			config := pwhypervisor.NginxConfig{
+				HTTPBind:          *hypervisorNginxHTTPBind,
+				DomainSuffix:      *hypervisorNginxDomainSuffix,
+				ModeratorPassword: *hypervisorNginxModeratorPassword,
+				Salt:              *hypervisorNginxSalt,
+			}
+			err := json.Unmarshal([]byte(args[0]), &config.AllowedUsers)
+			if err != nil {
+				return fmt.Errorf("parse ALLOWED_USERS: %w", err)
+			}
+
+			ctx := context.Background()
+			cli, err := client.NewEnvClient()
+			if err != nil {
+				return fmt.Errorf("docker client: %w", err)
+			}
+
+			return pwhypervisor.Nginx(ctx, config, cli, logger)
+		},
+	}
+
 	hypervisor := &ffcli.Command{
 		Name:        "hypervisor",
 		Usage:       "pathwar [global flags] hypervisor [sso flags] <subcommand> [flags] [args...]",
 		ShortHelp:   "manage an hypervisor node (multiple challenges)",
-		Subcommands: []*ffcli.Command{},
+		Subcommands: []*ffcli.Command{hypervisorDaemon, hypervisorNginx},
 		FlagSet:     hypervisorFlags,
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}

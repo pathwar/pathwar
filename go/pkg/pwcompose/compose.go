@@ -235,7 +235,7 @@ func Down(
 ) error {
 	logger.Debug("down", zap.Strings("ids", ids), zap.Bool("rmi", removeImages), zap.Bool("rm -v", removeVolumes))
 
-	pwInfo, err := getPathwarInfo(ctx, cli)
+	pwInfo, err := GetPathwarInfo(ctx, cli)
 	if err != nil {
 		return fmt.Errorf("error retrieving pathwar containers info: %w", err)
 	}
@@ -294,7 +294,7 @@ func Down(
 func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) error {
 	logger.Debug("ps", zap.Int("depth", depth))
 
-	pwInfo, err := getPathwarInfo(ctx, cli)
+	pwInfo, err := GetPathwarInfo(ctx, cli)
 	if err != nil {
 		return fmt.Errorf("retrieve containers info: %w", err)
 	}
@@ -310,7 +310,6 @@ func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) 
 					ports = append(ports, strconv.Itoa(int(port.PublicPort)))
 				}
 			}
-			fmt.Println("AAA", ports, "BBB")
 
 			table.Append([]string{
 				uid[:7],
@@ -326,13 +325,13 @@ func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) 
 	return nil
 }
 
-func getPathwarInfo(ctx context.Context, cli *client.Client) (*pathwarInfo, error) {
+func GetPathwarInfo(ctx context.Context, cli *client.Client) (*PathwarInfo, error) {
 	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
 	if err != nil {
 		return nil, fmt.Errorf("list containers: %w", err)
 	}
 
-	pwInfo := pathwarInfo{
+	pwInfo := PathwarInfo{
 		RunningFlavors:   map[string]challengeFlavors{},
 		RunningInstances: map[string]types.Container{},
 	}
