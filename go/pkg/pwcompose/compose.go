@@ -37,6 +37,10 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 		return fmt.Errorf("get challenge dir: %w", err)
 	}
 
+	if prefix[len(prefix)-1:] != "/" {
+		prefix += "/"
+	}
+
 	var (
 		challengeName   = filepath.Base(cleanPath)
 		origComposePath = path.Join(cleanPath, "docker-compose.yml")
