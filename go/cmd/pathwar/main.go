@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/bwmarrin/snowflake"
+	"github.com/docker/docker/client"
 	_ "github.com/go-sql-driver/mysql" // required by gorm
 	"github.com/jinzhu/gorm"
 	"github.com/oklog/run"
@@ -73,7 +74,9 @@ var (
 	composeUpInstanceKey = composeUpFlags.String("instance-key", "default", "instance key used to generate instance ID")
 
 	// compose down flags
-	composeDownFlags = flag.NewFlagSet("compose down", flag.ExitOnError)
+	composeDownFlags        = flag.NewFlagSet("compose down", flag.ExitOnError)
+	composeDownRemoveImages = composePrepareFlags.Bool("rmi", false, "remove images as well")
+	composeDownKeepVolumes  = composePrepareFlags.Bool("keep-volumes", false, "keep volumes")
 
 	// compose ps flags
 	composePSFlags = flag.NewFlagSet("compose ps", flag.ExitOnError)
@@ -434,10 +437,28 @@ func main() {
 		Usage:   "pathwar [global flags] compose [compose flags] down [flags] ID [ID...]",
 		FlagSet: composeDownFlags,
 		Exec: func(args []string) error {
+			if len(args) < 1 {
+				return flag.ErrHelp
+			}
+
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			return pwcompose.Down(args, logger)
+
+			ctx := context.Background()
+			cli, err := client.NewEnvClient()
+			if err != nil {
+				return fmt.Errorf("docker client: %w", err)
+			}
+
+			return pwcompose.Down(
+				ctx,
+				args,
+				*composeDownRemoveImages,
+				!*composeDownKeepVolumes,
+				cli,
+				logger,
+			)
 		},
 	}
 
@@ -449,7 +470,14 @@ func main() {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			return pwcompose.PS(*composePSDepth, logger)
+
+			ctx := context.Background()
+			cli, err := client.NewEnvClient()
+			if err != nil {
+				return fmt.Errorf("docker client: %w", err)
+			}
+
+			return pwcompose.PS(ctx, *composePSDepth, cli, logger)
 		},
 	}
 
