@@ -9,10 +9,14 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
+	"github.com/dustin/go-humanize"
+	"github.com/olekukonko/tablewriter"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 )
@@ -227,41 +231,64 @@ func PS(depth int, logger *zap.Logger) error {
 	logger.Debug("ps", zap.Int("depth", depth))
 
 	ctx := context.TODO()
+	pwInfos, err := getPathwarInfo(ctx)
+	if err != nil {
+		return fmt.Errorf("retrieve containers info: %w", err)
+	}
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"ID", "CHALLENGE", "SVC", "PORTS", "STATUS", "CREATED"})
 
+	for _, flavor := range pwInfos.RunningFlavors {
+		for uid, container := range flavor.Instances {
+
+			ports := []string{}
+			for _, port := range container.Ports {
+				if port.PublicPort != 0 {
+					ports = append(ports, strconv.Itoa(int(port.PublicPort)))
+				}
+			}
+			fmt.Println("AAA", ports, "BBB")
+
+			table.Append([]string{
+				uid[:7],
+				fmt.Sprintf("%s@%s", flavor.Name, flavor.Version),
+				container.Labels[serviceNameLabel],
+				strings.Join(ports, ", "),
+				strings.Replace(container.Status, "Up ", "", 1),
+				strings.Replace(humanize.Time(time.Unix(container.Created, 0)), " ago", "", 1),
+			})
+		}
+	}
+	table.Render()
+	return nil
+}
+
+func getPathwarInfo(ctx context.Context) (*pathwarInfo, error) {
 	cli, err := client.NewEnvClient()
 	if err != nil {
-		return fmt.Errorf("create docker client: %w", err)
+		return nil, fmt.Errorf("create docker client: %w", err)
 	}
 
 	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
 	if err != nil {
-		return fmt.Errorf("list containers: %w", err)
+		return nil, fmt.Errorf("list containers: %w", err)
 	}
 
-	pwInfos := pathwarInfos{
+	pwInfo := pathwarInfo{
 		RunningFlavors: map[string]challengeFlavors{},
 	}
-
 	for _, container := range containers {
-		flavor := container.Labels[challengeNameLabel] + ":" + container.Labels[challengeVersionLabel]
-		if _, found := pwInfos.RunningFlavors[flavor]; !found {
+		flavor := fmt.Sprintf("%s:%s", container.Labels[challengeNameLabel], container.Labels[challengeVersionLabel])
+		if _, found := pwInfo.RunningFlavors[flavor]; !found {
 			challengeFlavor := challengeFlavors{
 				Instances: map[string]types.Container{},
 			}
 			challengeFlavor.Name = container.Labels[challengeNameLabel]
 			challengeFlavor.Version = container.Labels[challengeVersionLabel]
-			pwInfos.RunningFlavors[flavor] = challengeFlavor
+			pwInfo.RunningFlavors[flavor] = challengeFlavor
 		}
-		pwInfos.RunningFlavors[flavor].Instances[container.ID] = container
+		pwInfo.RunningFlavors[flavor].Instances[container.ID] = container
 	}
 
-	for _, flavor := range pwInfos.RunningFlavors {
-		fmt.Println("")
-		fmt.Println(flavor.Name + " version " + flavor.Version + ":")
-		for _, container := range flavor.Instances {
-			fmt.Println("  " + container.Labels[serviceNameLabel])
-		}
-	}
-
-	return nil
+	return &pwInfo, nil
 }
