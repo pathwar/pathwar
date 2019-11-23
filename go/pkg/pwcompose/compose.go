@@ -9,14 +9,14 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
-	"strconv"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
-	"github.com/olekukonko/tablewriter"
 	"github.com/dustin/go-humanize"
+	"github.com/olekukonko/tablewriter"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 )
@@ -230,12 +230,13 @@ func Down(ids []string, logger *zap.Logger) error {
 func PS(depth int, logger *zap.Logger) error {
 	logger.Debug("ps", zap.Int("depth", depth))
 
-	pwInfos, err := updatePathwarInfos()
+	ctx := context.TODO()
+	pwInfos, err := getPathwarInfo(ctx)
 	if err != nil {
-		return fmt.Errorf("error retrieving pathwar containers infos: %w", err)
+		return fmt.Errorf("retrieve containers info: %w", err)
 	}
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"CHALLENGE NAME", "CONTAINER ID", "NAME", "VERSION", "PORTS", "STATUS", "CREATED",   })
+	table.SetHeader([]string{"ID", "CHALLENGE", "SVC", "PORTS", "STATUS", "CREATED"})
 
 	for _, flavor := range pwInfos.RunningFlavors {
 		for uid, container := range flavor.Instances {
@@ -246,52 +247,48 @@ func PS(depth int, logger *zap.Logger) error {
 					ports = append(ports, strconv.Itoa(int(port.PublicPort)))
 				}
 			}
+			fmt.Println("AAA", ports, "BBB")
 
 			table.Append([]string{
-				flavor.Name,
-				uid[:12],
+				uid[:7],
+				fmt.Sprintf("%s@%s", flavor.Name, flavor.Version),
 				container.Labels[serviceNameLabel],
-				flavor.Version,
 				strings.Join(ports, ", "),
 				strings.Replace(container.Status, "Up ", "", 1),
-				strings.Replace(humanize.Time(time.Unix(container.Created, 0)), " ago", "", 1)})
-
+				strings.Replace(humanize.Time(time.Unix(container.Created, 0)), " ago", "", 1),
+			})
 		}
 	}
 	table.Render()
 	return nil
 }
 
-func updatePathwarInfos() (pathwarInfos, error) {
-
-	pwInfos := pathwarInfos{
-		RunningFlavors: map[string]challengeFlavors{},
-	}
-
-	ctx := context.TODO()
-
+func getPathwarInfo(ctx context.Context) (*pathwarInfo, error) {
 	cli, err := client.NewEnvClient()
 	if err != nil {
-		return pwInfos, fmt.Errorf("create docker client: %w", err)
+		return nil, fmt.Errorf("create docker client: %w", err)
 	}
 
 	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
 	if err != nil {
-		return pwInfos, fmt.Errorf("list containers: %w", err)
+		return nil, fmt.Errorf("list containers: %w", err)
 	}
 
+	pwInfo := pathwarInfo{
+		RunningFlavors: map[string]challengeFlavors{},
+	}
 	for _, container := range containers {
-		flavor := container.Labels[challengeNameLabel] + ":" + container.Labels[challengeVersionLabel]
-		if _, found := pwInfos.RunningFlavors[flavor]; !found {
+		flavor := fmt.Sprintf("%s:%s", container.Labels[challengeNameLabel], container.Labels[challengeVersionLabel])
+		if _, found := pwInfo.RunningFlavors[flavor]; !found {
 			challengeFlavor := challengeFlavors{
 				Instances: map[string]types.Container{},
 			}
 			challengeFlavor.Name = container.Labels[challengeNameLabel]
 			challengeFlavor.Version = container.Labels[challengeVersionLabel]
-			pwInfos.RunningFlavors[flavor] = challengeFlavor
+			pwInfo.RunningFlavors[flavor] = challengeFlavor
 		}
-		pwInfos.RunningFlavors[flavor].Instances[container.ID] = container
+		pwInfo.RunningFlavors[flavor].Instances[container.ID] = container
 	}
 
-	return pwInfos, nil
+	return &pwInfo, nil
 }
