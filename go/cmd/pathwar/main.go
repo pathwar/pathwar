@@ -73,8 +73,8 @@ var (
 	composeUpInstanceKey = composeUpFlags.String("instance-key", "default", "instance key used to generate instance ID")
 
 	composeDownFlags        = flag.NewFlagSet("compose down", flag.ExitOnError)
-	composeDownRemoveImages = composePrepareFlags.Bool("rmi", false, "remove images as well")
-	composeDownKeepVolumes  = composePrepareFlags.Bool("keep-volumes", false, "keep volumes")
+	composeDownRemoveImages = composeDownFlags.Bool("rmi", false, "remove images as well")
+	composeDownKeepVolumes  = composeDownFlags.Bool("keep-volumes", false, "keep volumes")
 
 	composePSFlags = flag.NewFlagSet("compose ps", flag.ExitOnError)
 	composePSDepth = composePSFlags.Int("depth", 0, "depth to display")
