@@ -9,6 +9,7 @@ import (
 )
 
 func TestEngine_ChallengeSubscriptionValidate(t *testing.T) {
+	t.Parallel()
 	engine, cleanup := TestingEngine(t, Opts{Logger: testutil.Logger(t)})
 	defer cleanup()
 	ctx := testingSetContextToken(context.Background(), t)

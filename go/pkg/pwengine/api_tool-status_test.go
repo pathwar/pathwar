@@ -9,6 +9,7 @@ import (
 )
 
 func TestEngine_GetStatus(t *testing.T) {
+	t.Parallel()
 	engine, cleanup := TestingEngine(t, Opts{Logger: testutil.Logger(t)})
 	defer cleanup()
 	ctx := context.Background()
