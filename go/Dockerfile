@@ -1,7 +1,7 @@
 # builder
 FROM            golang:1.13-alpine as builder
 RUN             apk --no-cache --update add nodejs-npm make gcc g++ musl-dev openssl-dev git
-ENV             GO111MODULE=on GOPROXY=https://goproxy.io
+ENV             GO111MODULE=on GOPROXY=https://proxy.golang.org,direct
 COPY            go.mod go.sum /go/src/pathwar.land/go/
 WORKDIR         /go/src/pathwar.land/go
 RUN             go mod download
