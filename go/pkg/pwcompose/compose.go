@@ -247,7 +247,7 @@ func Down(
 
 	for _, id := range ids {
 		for _, flavor := range pwInfo.RunningFlavors {
-			if id == flavor.Name || id == flavor.Name+":"+flavor.Version {
+			if id == flavor.Name || id == flavor.Name+"@"+flavor.Version {
 				for _, instance := range flavor.Instances {
 					containersToRemove = append(containersToRemove, instance.ID)
 					if removeImages == true {
@@ -257,7 +257,7 @@ func Down(
 			}
 		}
 		for _, container := range pwInfo.RunningInstances {
-			if id == container.ID || id == container.ID[0:6] {
+			if id == container.ID || id == container.ID[0:7] {
 				containersToRemove = append(containersToRemove, container.ID)
 				if removeImages == true {
 					imagesToRemove = append(imagesToRemove, container.ImageID)
