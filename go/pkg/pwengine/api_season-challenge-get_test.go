@@ -33,31 +33,10 @@ func TestEngine_SeasonChallengeGet(t *testing.T) {
 		expectedSeasonName    string
 		expectedChallengeName string
 	}{
-		{
-			"empty",
-			&SeasonChallengeGet_Input{},
-			ErrMissingArgument,
-			"",
-			"",
-		}, {
-			"unknown-season-id",
-			&SeasonChallengeGet_Input{SeasonChallengeID: -42}, // -42 should not exists
-			ErrInvalidArgument,
-			"",
-			"",
-		}, {
-			"solo-mode-hello-world",
-			&SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Solo Mode/Hello World"]},
-			nil,
-			"Solo Mode",
-			"Hello World",
-		}, {
-			"test-season-hello-world",
-			&SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Test Season/Hello World"]},
-			ErrInvalidArgument, // no team in this season
-			"Test Season",
-			"Hello World",
-		},
+		{"empty", &SeasonChallengeGet_Input{}, ErrMissingArgument, "", ""},
+		{"unknown-season-id", &SeasonChallengeGet_Input{SeasonChallengeID: -42}, ErrInvalidArgument, "", ""},
+		{"solo-mode-hello-world", &SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Solo Mode/Hello World"]}, nil, "Solo Mode", "Hello World"},
+		{"no-team-in-season", &SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Test Season/Hello World"]}, ErrInvalidArgument, "Test Season", "Hello World"},
 	}
 
 	for _, test := range tests {

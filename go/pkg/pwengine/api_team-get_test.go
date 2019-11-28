@@ -27,25 +27,9 @@ func TestEngine_TeamGet(t *testing.T) {
 		expectedOrganizationName string
 		expectedSeasonName       string
 	}{
-		{
-			"empty",
-			&TeamGet_Input{},
-			ErrMissingArgument,
-			"",
-			"",
-		}, {
-			"unknown-season-id",
-			&TeamGet_Input{TeamID: -42}, // -42 should not exists
-			ErrInvalidArgument,
-			"",
-			"",
-		}, {
-			"Staff",
-			&TeamGet_Input{TeamID: organizations["Staff"]},
-			nil,
-			"Staff",
-			"Solo Mode",
-		},
+		{"empty", &TeamGet_Input{}, ErrMissingArgument, "", ""},
+		{"unknown-season-id", &TeamGet_Input{TeamID: -42}, ErrInvalidArgument, "", ""},
+		{"Staff", &TeamGet_Input{TeamID: organizations["Staff"]}, nil, "Staff", "Solo Mode"},
 	}
 
 	for _, test := range tests {

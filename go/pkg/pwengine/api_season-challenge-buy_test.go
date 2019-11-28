@@ -35,26 +35,10 @@ func TestEngine_ChallengeBuy(t *testing.T) {
 	}{
 		{"nil", nil, ErrMissingArgument},
 		{"empty", &SeasonChallengeBuy_Input{}, ErrMissingArgument},
-		{
-			"invalid season challenge ID",
-			&SeasonChallengeBuy_Input{SeasonChallengeID: 42, TeamID: activeTeam.ID},
-			ErrInvalidArgument,
-		},
-		{
-			"invalid team ID",
-			&SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: 42},
-			ErrInvalidArgument,
-		},
-		{
-			"valid 1",
-			&SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID},
-			nil,
-		},
-		{
-			"valid 2 (duplicate)",
-			&SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID},
-			ErrDuplicate,
-		},
+		{"invalid season challenge ID", &SeasonChallengeBuy_Input{SeasonChallengeID: 42, TeamID: activeTeam.ID}, ErrInvalidArgument},
+		{"invalid team ID", &SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: 42}, ErrInvalidArgument},
+		{"valid 1", &SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID}, nil},
+		{"valid 2 (duplicate)", &SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID}, ErrDuplicate},
 		// FIXME: check for a team and a challenge in different seasons
 		// FIXME: check for a team from another user
 		// FIXME: check for a challenge in draft mode
