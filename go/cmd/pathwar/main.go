@@ -442,10 +442,6 @@ func main() {
 		Usage:   "pathwar [global flags] compose [compose flags] down [flags] ID [ID...]",
 		FlagSet: composeDownFlags,
 		Exec: func(args []string) error {
-			if len(args) < 1 {
-				return flag.ErrHelp
-			}
-
 			if err := globalPreRun(); err != nil {
 				return err
 			}
