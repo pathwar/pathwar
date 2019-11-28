@@ -30,37 +30,11 @@ func TestEngine_UserSetPreferences(t *testing.T) {
 		expectedSeasonID     int64
 		expectedTeamMemberID int64
 	}{
-		{
-			"empty",
-			&UserSetPreferences_Input{},
-			ErrMissingArgument,
-			seasons["Solo Mode"],
-			beforeSession.User.ActiveTeamMemberID,
-		}, {
-			"unknown-season-id",
-			&UserSetPreferences_Input{ActiveSeasonID: -42}, // should not exists
-			ErrInvalidArgument,
-			seasons["Solo Mode"],
-			beforeSession.User.ActiveTeamMemberID,
-		}, {
-			"solo-mode",
-			&UserSetPreferences_Input{ActiveSeasonID: seasons["Solo Mode"]},
-			nil,
-			seasons["Solo Mode"],
-			beforeSession.User.ActiveTeamMemberID,
-		}, {
-			"test-season",
-			&UserSetPreferences_Input{ActiveSeasonID: seasons["Test Season"]},
-			nil,
-			seasons["Test Season"],
-			0,
-		}, {
-			"solo-mode-again",
-			&UserSetPreferences_Input{ActiveSeasonID: seasons["Solo Mode"]},
-			nil,
-			seasons["Solo Mode"],
-			beforeSession.User.ActiveTeamMemberID,
-		},
+		{"empty", &UserSetPreferences_Input{}, ErrMissingArgument, seasons["Solo Mode"], beforeSession.User.ActiveTeamMemberID},
+		{"unknown-season-id", &UserSetPreferences_Input{ActiveSeasonID: -42}, ErrInvalidArgument, seasons["Solo Mode"], beforeSession.User.ActiveTeamMemberID},
+		{"solo-mode", &UserSetPreferences_Input{ActiveSeasonID: seasons["Solo Mode"]}, nil, seasons["Solo Mode"], beforeSession.User.ActiveTeamMemberID},
+		{"test-season", &UserSetPreferences_Input{ActiveSeasonID: seasons["Test Season"]}, nil, seasons["Test Season"], 0},
+		{"solo-mode-again", &UserSetPreferences_Input{ActiveSeasonID: seasons["Solo Mode"]}, nil, seasons["Solo Mode"], beforeSession.User.ActiveTeamMemberID},
 	}
 
 	for _, test := range tests {

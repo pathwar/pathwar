@@ -46,16 +46,7 @@ func TestEngine_ChallengeSubscriptionValidate(t *testing.T) {
 		{"nil", nil, ErrMissingArgument, ""},
 		{"empty", &ChallengeSubscriptionValidate_Input{}, ErrMissingArgument, ""},
 		{"invalid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: 42, Passphrase: "secret", Comment: "explanation"}, ErrInvalidArgument, ""},
-		{
-			"valid",
-			&ChallengeSubscriptionValidate_Input{
-				ChallengeSubscriptionID: subscription.ChallengeSubscription.ID,
-				Passphrase:              "secret",
-				Comment:                 "ultra cool explanation",
-			},
-			nil,
-			"test",
-		},
+		{"valid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription.ChallengeSubscription.ID, Passphrase: "secret", Comment: "ultra cool explanation"}, nil, "test"},
 	}
 
 	for _, test := range tests {

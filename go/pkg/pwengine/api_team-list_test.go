@@ -27,27 +27,10 @@ func TestEngine_TeamList(t *testing.T) {
 		expectedOrganizations int
 		// expectedOwnedOrganizations int?
 	}{
-		{
-			"empty",
-			&TeamList_Input{},
-			ErrMissingArgument,
-			0,
-		}, {
-			"unknown-season-id",
-			&TeamList_Input{SeasonID: -42}, // -42 should not exists
-			ErrInvalidArgument,
-			0,
-		}, {
-			"solo-mode",
-			&TeamList_Input{SeasonID: seasons["Solo Mode"]},
-			nil,
-			1,
-		}, {
-			"test-season",
-			&TeamList_Input{SeasonID: seasons["Test Season"]},
-			nil,
-			0,
-		},
+		{"empty", &TeamList_Input{}, ErrMissingArgument, 0},
+		{"unknown-season-id", &TeamList_Input{SeasonID: -42}, ErrInvalidArgument, 0},
+		{"solo-mode", &TeamList_Input{SeasonID: seasons["Solo Mode"]}, nil, 1},
+		{"test-season", &TeamList_Input{SeasonID: seasons["Test Season"]}, nil, 0},
 	}
 
 	for _, test := range tests {

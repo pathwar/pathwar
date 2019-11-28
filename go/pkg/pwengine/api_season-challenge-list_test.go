@@ -30,27 +30,10 @@ func TestEngine_SeasonChallengeList(t *testing.T) {
 		expectedErr   error
 		expectedItems int
 	}{
-		{
-			"empty",
-			&SeasonChallengeList_Input{},
-			ErrMissingArgument,
-			0,
-		}, {
-			"unknown-season-id",
-			&SeasonChallengeList_Input{SeasonID: -42}, // -42 should not exists
-			ErrInvalidArgument,
-			0,
-		}, {
-			"solo-mode",
-			&SeasonChallengeList_Input{SeasonID: seasons["Solo Mode"]},
-			nil,
-			5,
-		}, {
-			"test-season",
-			&SeasonChallengeList_Input{SeasonID: seasons["Test Season"]},
-			ErrInvalidArgument,
-			0,
-		},
+		{"empty", &SeasonChallengeList_Input{}, ErrMissingArgument, 0},
+		{"unknown-season-id", &SeasonChallengeList_Input{SeasonID: -42}, ErrInvalidArgument, 0},
+		{"solo-mode", &SeasonChallengeList_Input{SeasonID: seasons["Solo Mode"]}, nil, 5},
+		{"test-season", &SeasonChallengeList_Input{SeasonID: seasons["Test Season"]}, ErrInvalidArgument, 0},
 	}
 
 	for _, test := range tests {

@@ -27,25 +27,9 @@ func TestEngine_ChallengeGet(t *testing.T) {
 		expectedChallengeName string
 		expectedAuthor        string
 	}{
-		{
-			"empty",
-			&ChallengeGet_Input{},
-			ErrMissingArgument,
-			"",
-			"",
-		}, {
-			"unknown-season-id",
-			&ChallengeGet_Input{ChallengeID: -42}, // -42 should not exists
-			ErrInvalidArgument,
-			"",
-			"",
-		}, {
-			"Staff",
-			&ChallengeGet_Input{ChallengeID: challenges["Hello World"]},
-			nil,
-			"Hello World",
-			"Staff Team",
-		},
+		{"empty", &ChallengeGet_Input{}, ErrMissingArgument, "", ""},
+		{"unknown-season-id", &ChallengeGet_Input{ChallengeID: -42}, ErrInvalidArgument, "", ""}, // -42 should not exists
+		{"Staff", &ChallengeGet_Input{ChallengeID: challenges["Hello World"]}, nil, "Hello World", "Staff Team"},
 	}
 
 	for _, test := range tests {
