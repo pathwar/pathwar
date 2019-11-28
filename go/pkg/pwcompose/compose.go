@@ -24,6 +24,7 @@ import (
 const (
 	labelPrefix           = "land.pathwar.compose."
 	serviceNameLabel      = labelPrefix + "service-name"
+	serviceOrigin         = labelPrefix + "origin"
 	challengeNameLabel    = labelPrefix + "challenge-name"
 	challengeVersionLabel = labelPrefix + "challenge-version"
 	instanceKeyLabel      = labelPrefix + "instance-key"
@@ -52,6 +53,16 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 		return fmt.Errorf("challenge dir does not exist: %w", err)
 	}
 
+	// check for error in docker-compose file
+	logger.Debug("docker-compose", zap.String("-f", origComposePath), zap.String("action", "config"))
+	cmd := exec.Command("docker-compose", "-f", origComposePath, "config", "-q")
+	cmd.Stdout = os.Stderr
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		return fmt.Errorf("docker-compose config: %w", err)
+	}
+
 	// parse docker-compose.yml file
 	composeData, err := ioutil.ReadFile(origComposePath)
 	if err != nil {
@@ -66,11 +77,14 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 
 	// check yaml and add image name if not defined
 	for name, service := range composeStruct.Services {
-		if service.Image == "" {
-			service.Image = prefix + challengeName + ":" + name
-		}
 		if service.Labels == nil {
 			service.Labels = map[string]string{}
+		}
+		if service.Image == "" {
+			service.Image = prefix + challengeName + ":" + name
+			service.Labels[serviceOrigin] = "was-built"
+		} else {
+			service.Labels[serviceOrigin] = "was-pulled"
 		}
 		service.Labels[challengeNameLabel] = challengeName
 		service.Labels[serviceNameLabel] = name
@@ -100,7 +114,7 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 
 	// build and push images to dockerhub (don't forget to setup your credentials just type : "docker login" in bash)
 	logger.Debug("docker-compose", zap.String("-f", tmpComposePath), zap.String("action", "build"))
-	cmd := exec.Command("docker-compose", "-f", tmpComposePath, "build")
+	cmd = exec.Command("docker-compose", "-f", tmpComposePath, "build")
 	cmd.Dir = cleanPath
 	cmd.Stdout = os.Stderr
 	cmd.Stderr = os.Stderr
@@ -108,7 +122,6 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 	if err != nil {
 		return fmt.Errorf("docker-compose build: %w", err)
 	}
-
 	cmdArgs := []string{"docker-compose", "-f", tmpComposePath, "bundle"}
 	if !noPush {
 		cmdArgs = append(cmdArgs, "--push-images")
