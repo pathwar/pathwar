@@ -2,7 +2,6 @@ package pwserver
 
 import (
 	"context"
-	"fmt"
 	"net"
 	"net/http"
 	"net/http/pprof"
@@ -22,6 +21,7 @@ import (
 	chilogger "github.com/treastech/logger"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwengine"
 )
 
@@ -73,7 +73,9 @@ func New(ctx context.Context, engine pwengine.Engine, opts Opts) (*Server, error
 	)
 
 	{ // local gRPC server
-		authFunc := func(context.Context) (context.Context, error) { return nil, pwengine.ErrNotImplemented }
+		authFunc := func(context.Context) (context.Context, error) {
+			return nil, errcode.ErrNotImplemented
+		}
 		serverStreamOpts := []grpc.StreamServerInterceptor{
 			grpc_recovery.StreamServerInterceptor(),
 			grpc_auth.StreamServerInterceptor(authFunc),
@@ -99,7 +101,7 @@ func New(ctx context.Context, engine pwengine.Engine, opts Opts) (*Server, error
 	if opts.HTTPBind != "" || opts.GRPCBind != "" { // grpcbind is required for grpc-gateway (for now)
 		grpcListener, err := net.Listen("tcp", opts.GRPCBind)
 		if err != nil {
-			return nil, fmt.Errorf("start gRPC listener: %w", err)
+			return nil, errcode.ErrServerListen.Wrap(err)
 		}
 		server.grpcListenerAddr = grpcListener.Addr().String()
 
@@ -139,7 +141,7 @@ func New(ctx context.Context, engine pwengine.Engine, opts Opts) (*Server, error
 		)
 		grpcOpts := []grpc.DialOption{grpc.WithInsecure()}
 		if err := pwengine.RegisterEngineHandlerFromEndpoint(ctx, gwmux, server.grpcListenerAddr, grpcOpts); err != nil {
-			return nil, fmt.Errorf("register service on gateway: %w", err)
+			return nil, errcode.ErrServerRegisterGateway.Wrap(err)
 		}
 		r.Mount("/", gwmux)
 		if opts.WithPprof {
@@ -152,7 +154,7 @@ func New(ctx context.Context, engine pwengine.Engine, opts Opts) (*Server, error
 		http.DefaultServeMux = http.NewServeMux() // disables default handlers registere by importing net/http/pprof for security reasons
 		listener, err := net.Listen("tcp", opts.HTTPBind)
 		if err != nil {
-			return nil, fmt.Errorf("start HTTP listener: %w", err)
+			return nil, errcode.ErrServerListen.Wrap(err)
 		}
 		server.httpListenerAddr = listener.Addr().String()
 		srv := http.Server{

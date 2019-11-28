@@ -22,6 +22,7 @@ import (
 	"github.com/peterbourgon/ff/ffcli"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwchallenge"
 	"pathwar.land/go/pkg/pwcompose"
 	"pathwar.land/go/pkg/pwdb"
@@ -122,7 +123,7 @@ func main() {
 			var err error
 			logger, err = config.Build()
 			if err != nil {
-				return fmt.Errorf("init logger: %w", err)
+				return errcode.ErrInitLogger.Wrap(err)
 			}
 		} else {
 			config := zap.NewDevelopmentConfig()
@@ -132,7 +133,7 @@ func main() {
 			var err error
 			logger, err = config.Build()
 			if err != nil {
-				return fmt.Errorf("init logger: %w", err)
+				return errcode.ErrInitLogger.Wrap(err)
 			}
 		}
 		return nil
@@ -164,7 +165,7 @@ func main() {
 			// init engine
 			engine, _, _, closer, err := engineFromFlags()
 			if err != nil {
-				return fmt.Errorf("start engine: %w", err)
+				return errcode.ErrStartEngine.Wrap(err)
 			}
 			defer closer()
 
@@ -186,7 +187,7 @@ func main() {
 				var err error
 				server, err = pwserver.New(ctx, engine, opts)
 				if err != nil {
-					return fmt.Errorf("init server: %w", err)
+					return errcode.ErrInitServer.Wrap(err)
 				}
 				g.Add(
 					server.Run,
@@ -214,7 +215,7 @@ func main() {
 			)
 
 			if err := g.Run(); err != nil {
-				return fmt.Errorf("the group was terminated with: %w", err)
+				return errcode.ErrGroupTerminated.Wrap(err)
 			}
 			return nil
 		},
@@ -231,13 +232,13 @@ func main() {
 			// init engine
 			_, db, _, closer, err := engineFromFlags()
 			if err != nil {
-				return fmt.Errorf("start engine: %w", err)
+				return errcode.ErrStartEngine.Wrap(err)
 			}
 			defer closer()
 
 			dump, err := pwdb.GetDump(db)
 			if err != nil {
-				return fmt.Errorf("dump database: %w", err)
+				return errcode.ErrDumpDatabase.Wrap(err)
 			}
 
 			out, _ := json.MarshalIndent(dump, "", "  ")
@@ -257,13 +258,13 @@ func main() {
 			// init engine
 			_, db, _, closer, err := engineFromFlags()
 			if err != nil {
-				return fmt.Errorf("start engine: %w", err)
+				return errcode.ErrStartEngine.Wrap(err)
 			}
 			defer closer()
 
 			info, err := pwdb.GetInfo(db, logger)
 			if err != nil {
-				return fmt.Errorf("get database info: %w", err)
+				return errcode.ErrGetDBInfo.Wrap(err)
 			}
 
 			out, _ := json.MarshalIndent(info, "", "  ")
@@ -315,13 +316,13 @@ func main() {
 			}
 			sso, err := ssoFromFlags()
 			if err != nil {
-				return fmt.Errorf("get sso client from flags: %w", err)
+				return errcode.ErrGetSSOClientFromFlags.Wrap(err)
 			}
 
 			// whoami
 			info, err := sso.Whoami(args[0])
 			if err != nil {
-				return fmt.Errorf("get 'whoami' from SSO: %w", err)
+				return errcode.ErrGetSSOWhoami.Wrap(err)
 			}
 			for k, v := range info {
 				fmt.Printf("- %s: %v\n", k, v)
@@ -342,12 +343,12 @@ func main() {
 			}
 			sso, err := ssoFromFlags()
 			if err != nil {
-				return fmt.Errorf("get sso client from flags: %w", err)
+				return errcode.ErrGetSSOClientFromFlags.Wrap(err)
 			}
 
 			// logout
 			if err := sso.Logout(args[0]); err != nil {
-				return fmt.Errorf("logout from SSO: %w", err)
+				return errcode.ErrGetSSOLogout.Wrap(err)
 			}
 			return nil
 		},
@@ -365,13 +366,13 @@ func main() {
 			}
 			sso, err := ssoFromFlags()
 			if err != nil {
-				return fmt.Errorf("get sso client from flags: %w", err)
+				return errcode.ErrGetSSOClientFromFlags.Wrap(err)
 			}
 
 			// token
 			token, _, err := sso.TokenWithClaims(args[0])
 			if err != nil {
-				return fmt.Errorf("get claims: %w", err)
+				return errcode.ErrGetSSOClaims.Wrap(err)
 			}
 			out, _ := json.MarshalIndent(token, "", "  ")
 			fmt.Println(string(out))
@@ -449,7 +450,7 @@ func main() {
 			ctx := context.Background()
 			cli, err := client.NewEnvClient()
 			if err != nil {
-				return fmt.Errorf("docker client: %w", err)
+				return errcode.ErrInitDockerClient.Wrap(err)
 			}
 
 			return pwcompose.Down(
@@ -475,7 +476,7 @@ func main() {
 			ctx := context.Background()
 			cli, err := client.NewEnvClient()
 			if err != nil {
-				return fmt.Errorf("docker client: %w", err)
+				return errcode.ErrInitDockerClient.Wrap(err)
 			}
 
 			return pwcompose.PS(ctx, *composePSDepth, cli, logger)
@@ -502,7 +503,7 @@ func main() {
 			ctx := context.Background()
 			cli, err := client.NewEnvClient()
 			if err != nil {
-				return fmt.Errorf("docker client: %w", err)
+				return errcode.ErrInitDockerClient.Wrap(err)
 			}
 			return pwhypervisor.Daemon(ctx, cli, logger)
 		},
@@ -530,13 +531,13 @@ func main() {
 			}
 			err := json.Unmarshal([]byte(args[0]), &config.AllowedUsers)
 			if err != nil {
-				return fmt.Errorf("parse ALLOWED_USERS: %w", err)
+				return errcode.ErrInvalidInput.Wrap(err)
 			}
 
 			ctx := context.Background()
 			cli, err := client.NewEnvClient()
 			if err != nil {
-				return fmt.Errorf("docker client: %w", err)
+				return errcode.ErrInitDockerClient.Wrap(err)
 			}
 
 			return pwhypervisor.Nginx(ctx, config, cli, logger)
@@ -573,18 +574,18 @@ func engineFromFlags() (pwengine.Engine, *gorm.DB, pwsso.Client, func(), error) 
 	// init database
 	db, err := gorm.Open("mysql", *engineDBURN)
 	if err != nil {
-		return nil, nil, nil, nil, fmt.Errorf("init database: %w", err)
+		return nil, nil, nil, nil, errcode.ErrInitDB.Wrap(err)
 	}
 	sfn, err := snowflake.NewNode(1)
 	if err != nil {
-		return nil, nil, nil, nil, fmt.Errorf("init snowflake: %w", err)
+		return nil, nil, nil, nil, errcode.ErrInitSnowflake.Wrap(err)
 	}
 	dbOpts := pwdb.Opts{
 		Logger: logger.Named("gorm"),
 	}
 	db, err = pwdb.Configure(db, sfn, dbOpts)
 	if err != nil {
-		return nil, nil, nil, nil, fmt.Errorf("configure database: %w", err)
+		return nil, nil, nil, nil, errcode.ErrConfigureDB.Wrap(err)
 	}
 
 	// init SSO
@@ -598,7 +599,7 @@ func engineFromFlags() (pwengine.Engine, *gorm.DB, pwsso.Client, func(), error) 
 	}
 	sso, err := pwsso.New(*engineSSOPubkey, *engineSSORealm, ssoOpts)
 	if err != nil {
-		return nil, nil, nil, nil, fmt.Errorf("init SSO client: %w", err)
+		return nil, nil, nil, nil, errcode.ErrInitSSOClient.Wrap(err)
 	}
 
 	// init engine
@@ -608,7 +609,7 @@ func engineFromFlags() (pwengine.Engine, *gorm.DB, pwsso.Client, func(), error) 
 
 	engine, err := pwengine.New(db, sso, engineOpts)
 	if err != nil {
-		return nil, nil, nil, nil, fmt.Errorf("init engine: %w", err)
+		return nil, nil, nil, nil, errcode.ErrInitEngine.Wrap(err)
 	}
 
 	closeFunc := func() {
@@ -635,7 +636,7 @@ func ssoFromFlags() (pwsso.Client, error) {
 	}
 	sso, err := pwsso.New(*ssoPubkey, *ssoRealm, ssoOpts)
 	if err != nil {
-		return nil, fmt.Errorf("init SSO client: %w", err)
+		return nil, errcode.ErrInitSSOClient.Wrap(err)
 	}
 	return sso, nil
 }

@@ -2,30 +2,27 @@ package pwengine
 
 import (
 	"context"
-	"fmt"
 	"math/rand"
 
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 )
 
 func (e *engine) TeamList(ctx context.Context, in *TeamList_Input) (*TeamList_Output, error) {
-	// validation
-	if in.SeasonID == 0 {
-		return nil, ErrMissingArgument
+	if in == nil || in.SeasonID == 0 {
+		return nil, errcode.ErrMissingInput
 	}
+
 	exists, err := seasonIDExists(e.db, in.SeasonID)
-	if err != nil {
-		return nil, ErrInternalServerError
-	}
-	if !exists {
-		return nil, ErrInvalidArgument
+	if err != nil || !exists {
+		return nil, errcode.ErrInvalidSeasonID.Wrap(err)
 	}
 
 	// query
 	var ret TeamList_Output
 	err = e.db.
-		//Preload("Season").
 		Preload("Organization").
+		//Preload("Season").
 		//Preload("Members").
 		//Preload("ChallengeSubscription").
 		//Preload("Achievements").
@@ -36,7 +33,7 @@ func (e *engine) TeamList(ctx context.Context, in *TeamList_Input) (*TeamList_Ou
 		Find(&ret.Items).
 		Error
 	if err != nil {
-		return nil, fmt.Errorf("fetch teams: %w", err)
+		return nil, errcode.ErrGetTeams.Wrap(err)
 	}
 
 	// add fake data

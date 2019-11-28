@@ -1,7 +1,6 @@
 package pwdb
 
 import (
-	"fmt"
 	"math/rand"
 
 	"github.com/brianvoe/gofakeit"
@@ -31,37 +30,37 @@ func GetInfo(db *gorm.DB, logger *zap.Logger) (*Info, error) {
 func GetDump(db *gorm.DB) (*Dump, error) {
 	dump := Dump{}
 	if err := db.Find(&dump.Challenges).Error; err != nil {
-		return nil, err
+		return nil, GormToErrcode(err)
 	}
 	if err := db.Find(&dump.ChallengeFlavors).Error; err != nil {
-		return nil, err
+		return nil, GormToErrcode(err)
 	}
 	if err := db.Find(&dump.ChallengeInstances).Error; err != nil {
-		return nil, err
+		return nil, GormToErrcode(err)
 	}
 	if err := db.Find(&dump.Hypervisors).Error; err != nil {
-		return nil, err
+		return nil, GormToErrcode(err)
 	}
 	if err := db.Find(&dump.Users).Error; err != nil {
-		return nil, err
+		return nil, GormToErrcode(err)
 	}
 	if err := db.Find(&dump.Organizations).Error; err != nil {
-		return nil, err
+		return nil, GormToErrcode(err)
 	}
 	if err := db.Find(&dump.OrganizationMembers).Error; err != nil {
-		return nil, err
+		return nil, GormToErrcode(err)
 	}
 	if err := db.Find(&dump.Seasons).Error; err != nil {
-		return nil, err
+		return nil, GormToErrcode(err)
 	}
 	if err := db.Find(&dump.Teams).Error; err != nil {
-		return nil, err
+		return nil, GormToErrcode(err)
 	}
 	if err := db.Find(&dump.TeamMembers).Error; err != nil {
-		return nil, err
+		return nil, GormToErrcode(err)
 	}
 	if err := db.Find(&dump.Coupons).Error; err != nil {
-		return nil, err
+		return nil, GormToErrcode(err)
 	}
 	return &dump, nil
 }
@@ -83,7 +82,7 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 	logger.Debug("Generating hypervisors")
 	for _, entity := range hypervisors {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("create hypervisors: %w", err)
+			return GormToErrcode(err)
 		}
 	}
 
@@ -105,7 +104,7 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 	logger.Debug("Generating seasons")
 	for _, entity := range seasons {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("create seasons: %w", err)
+			return GormToErrcode(err)
 		}
 	}
 
@@ -154,7 +153,7 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 	logger.Debug("Generating challenges")
 	for _, entity := range challenges {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("create challenges: %w", err)
+			return GormToErrcode(err)
 		}
 	}
 
@@ -175,7 +174,7 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 	logger.Debug("Generating organizations")
 	for _, entity := range organizations {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("create organizations: %w", err)
+			return GormToErrcode(err)
 		}
 	}
 
@@ -198,7 +197,7 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 	logger.Debug("Generating users")
 	for _, entity := range users {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("create users: %w", err)
+			return GormToErrcode(err)
 		}
 	}
 
@@ -220,7 +219,7 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 	logger.Debug("Generating coupons")
 	for _, entity := range coupons {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("create coupons: %w", err)
+			return GormToErrcode(err)
 		}
 	}
 
@@ -245,7 +244,7 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 	logger.Debug("Generating memberships")
 	for _, entity := range memberships {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
-			return fmt.Errorf("create memberships: %w", err)
+			return GormToErrcode(err)
 		}
 	}
 

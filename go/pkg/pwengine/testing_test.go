@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/jinzhu/gorm"
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 	"pathwar.land/go/pkg/pwsso"
 )
@@ -102,10 +103,58 @@ func checkErr(t *testing.T, name string, err error) {
 	}
 }
 
+func testSameErrcodes(t *testing.T, name string, expected, got error) {
+	t.Helper()
+
+	if errcode.Code(expected) != errcode.Code(got) {
+		prefix := ""
+		if name != "" {
+			prefix = name + ": "
+		}
+		t.Errorf("%sExpected %+v, got %+v.", prefix, expected, got)
+	}
+}
+
+func testIsNil(t *testing.T, name string, got interface{}) {
+	t.Helper()
+
+	if got != nil {
+		prefix := ""
+		if name != "" {
+			prefix = name + ": "
+		}
+		t.Errorf("%sExpected %+v to be nil.", prefix, got)
+	}
+}
+
+func testIsNotNil(t *testing.T, name string, got interface{}) {
+	t.Helper()
+
+	if got == nil {
+		prefix := ""
+		if name != "" {
+			prefix = name + ": "
+		}
+		t.Errorf("%sExpected %+v to be not nil.", prefix, got)
+	}
+}
+
 func testSameErrs(t *testing.T, name string, expected, got error) {
 	t.Helper()
 
 	if !errors.Is(got, expected) {
+		prefix := ""
+		if name != "" {
+			prefix = name + ": "
+		}
+		t.Errorf("%sExpected %+v, got %+v.", prefix, expected, got)
+	}
+}
+
+func testSameAnys(t *testing.T, name string, expected, got interface{}) {
+	t.Helper()
+
+	if expected != got {
 		prefix := ""
 		if name != "" {
 			prefix = name + ": "
@@ -123,6 +172,18 @@ func testSameInt64s(t *testing.T, name string, expected, got int64) {
 			prefix = name + ": "
 		}
 		t.Errorf("%sExpected %d, got %d.", prefix, expected, got)
+	}
+}
+
+func testDifferentInt64s(t *testing.T, name string, expected, got int64) {
+	t.Helper()
+
+	if expected == got {
+		prefix := ""
+		if name != "" {
+			prefix = name + ": "
+		}
+		t.Errorf("%sExpected different values, got %d two times.", prefix, expected)
 	}
 }
 

@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"time"
 
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 )
 
 func (e *engine) UserDeleteAccount(ctx context.Context, in *UserDeleteAccount_Input) (*UserDeleteAccount_Output, error) {
 	userID, err := userIDFromContext(ctx, e.db)
 	if err != nil {
-		return nil, fmt.Errorf("get userid from context: %w", err)
+		return nil, errcode.ErrUnauthenticated.Wrap(err)
 	}
-	now := time.Now()
 
 	// get user
 	var user pwdb.User
@@ -25,21 +25,23 @@ func (e *engine) UserDeleteAccount(ctx context.Context, in *UserDeleteAccount_In
 		First(&user, userID).
 		Error
 	if err != nil {
-		return nil, err
+		return nil, errcode.ErrGetUser.Wrap(err)
 	}
 
 	//fmt.Println(godev.PrettyJSON(user))
 
 	// update user
+	now := time.Now()
 	updates := pwdb.User{
 		OAuthSubject:   fmt.Sprintf("deleted_%s_%d", user.OAuthSubject, now.Unix()),
 		DeletionReason: in.Reason,
 		DeletionStatus: pwdb.DeletionStatus_Requested,
 		DeletedAt:      &now,
 	}
+	// FIXME: use transaction
 	err = e.db.Model(&user).Updates(updates).Error
 	if err != nil {
-		return nil, err
+		return nil, errcode.ErrUpdateUser.Wrap(err)
 	}
 
 	// update teams
@@ -61,7 +63,7 @@ func (e *engine) UserDeleteAccount(ctx context.Context, in *UserDeleteAccount_In
 			}
 			err = e.db.Model(&teamMembership.Team).Updates(updates).Error
 			if err != nil {
-				return nil, err
+				return nil, errcode.ErrUpdateTeam.Wrap(err)
 			}
 		}
 	}
@@ -86,7 +88,7 @@ func (e *engine) UserDeleteAccount(ctx context.Context, in *UserDeleteAccount_In
 			}
 			err = e.db.Model(&organizationMembership.Organization).Updates(updates).Error
 			if err != nil {
-				return nil, err
+				return nil, errcode.ErrUpdateOrganization
 			}
 		}
 	}

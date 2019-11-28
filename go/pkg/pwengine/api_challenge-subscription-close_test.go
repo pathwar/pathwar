@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"pathwar.land/go/internal/testutil"
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 )
 
@@ -17,77 +18,55 @@ func TestEngine_ChallengeSubscriptionClose(t *testing.T) {
 
 	// fetch user session
 	session, err := engine.UserGetSession(ctx, nil)
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
+	checkErr(t, "", err)
 	activeTeam := session.User.ActiveTeamMember.Team
 
 	// fetch challenges
 	challenges, err := engine.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
+	checkErr(t, "", err)
 
 	// buy two challenges
 	subscription1, err := engine.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{
 		SeasonChallengeID: challenges.Items[0].ID,
 		TeamID:            activeTeam.ID,
 	})
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
+	checkErr(t, "", err)
 	subscription2, err := engine.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{
 		SeasonChallengeID: challenges.Items[1].ID,
 		TeamID:            activeTeam.ID,
 	})
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
+	checkErr(t, "", err)
 
 	// validate second challenge
 	_, err = engine.ChallengeSubscriptionValidate(ctx, &ChallengeSubscriptionValidate_Input{
 		ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID,
 		Passphrase:              "secret",
 	})
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
+	checkErr(t, "", err)
 
 	var tests = []struct {
 		name        string
 		input       *ChallengeSubscriptionClose_Input
 		expectedErr error
 	}{
-		{"nil", nil, ErrMissingArgument},
-		{"empty", &ChallengeSubscriptionClose_Input{}, ErrMissingArgument},
-		{"subscription1", &ChallengeSubscriptionClose_Input{ChallengeSubscriptionID: subscription1.ChallengeSubscription.ID}, ErrMissingRequiredValidation},
+		{"nil", nil, errcode.ErrMissingInput},
+		{"empty", &ChallengeSubscriptionClose_Input{}, errcode.ErrMissingInput},
+		{"subscription1", &ChallengeSubscriptionClose_Input{ChallengeSubscriptionID: subscription1.ChallengeSubscription.ID}, errcode.ErrMissingChallengeValidation},
 		{"subscription2", &ChallengeSubscriptionClose_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID}, nil},
-		{"subscription2", &ChallengeSubscriptionClose_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID}, ErrInvalidArgument},
+		{"subscription2-again", &ChallengeSubscriptionClose_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID}, errcode.ErrChallengeAlreadyClosed},
 	}
 	for _, test := range tests {
 		ret, err := engine.ChallengeSubscriptionClose(ctx, test.input)
-		if test.expectedErr != err {
-			t.Errorf("%s: Expected %v, got %v.", test.name, test.expectedErr, err)
-		}
+		testSameErrcodes(t, test.name, test.expectedErr, err)
 		if err != nil {
 			continue
 		}
 
-		if ret.ChallengeSubscription.ClosedAt == nil {
-			t.Errorf("%s: Expected ClosedAt != nil.", test.name)
-		}
-		if ret.ChallengeSubscription.CloserID != session.User.ID {
-			t.Errorf("%s: Expected %d, got %d.", test.name, session.User.ID, ret.ChallengeSubscription.CloserID)
-		}
-		if ret.ChallengeSubscription.Status != pwdb.ChallengeSubscription_Closed {
-			t.Errorf("%s: Expected %v, got %v.", test.name, pwdb.ChallengeSubscription_Closed, ret.ChallengeSubscription.Status)
-		}
-		if ret.ChallengeSubscription.Team.ID != activeTeam.ID {
-			t.Errorf("%s: Expected %d, got %d.", test.name, activeTeam.ID, ret.ChallengeSubscription.Team.ID)
-		}
-		if test.input.ChallengeSubscriptionID != ret.ChallengeSubscription.ID {
-			t.Errorf("%s: Expected %d, got %d.", test.name, test.input.ChallengeSubscriptionID, ret.ChallengeSubscription.ID)
-		}
+		testIsNotNil(t, test.name, ret.ChallengeSubscription.ClosedAt)
+		testSameInt64s(t, test.name, session.User.ID, ret.ChallengeSubscription.CloserID)
+		testSameAnys(t, test.name, pwdb.ChallengeSubscription_Closed, ret.ChallengeSubscription.Status)
+		testSameInt64s(t, test.name, activeTeam.ID, ret.ChallengeSubscription.Team.ID)
+		testSameInt64s(t, test.name, test.input.ChallengeSubscriptionID, ret.ChallengeSubscription.ID)
 		if len(ret.ChallengeSubscription.Validations) == 0 {
 			t.Errorf("%s: should have at least one validation", test.name)
 		}

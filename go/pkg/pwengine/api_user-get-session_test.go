@@ -15,9 +15,7 @@ func TestEngine_UserGetSession(t *testing.T) {
 	ctx := testingSetContextToken(context.Background(), t)
 
 	session, err := engine.UserGetSession(ctx, nil)
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
+	checkErr(t, "", err)
 
 	//fmt.Println(godev.PrettyJSON(session))
 	var tests = []struct {

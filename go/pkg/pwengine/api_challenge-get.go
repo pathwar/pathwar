@@ -2,15 +2,15 @@ package pwengine
 
 import (
 	"context"
-	"fmt"
 
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 )
 
 func (e *engine) ChallengeGet(ctx context.Context, in *ChallengeGet_Input) (*ChallengeGet_Output, error) {
 	// validation
 	if in == nil || in.ChallengeID == 0 {
-		return nil, ErrMissingArgument
+		return nil, errcode.ErrMissingInput
 	}
 
 	var item pwdb.Challenge
@@ -19,14 +19,12 @@ func (e *engine) ChallengeGet(ctx context.Context, in *ChallengeGet_Input) (*Cha
 		Where(pwdb.Challenge{ID: in.ChallengeID}).
 		First(&item).
 		Error
-	switch {
-	case err != nil && pwdb.IsRecordNotFoundError(err):
-		return nil, ErrInvalidArgument // FIXME: wrap original error
-	case err != nil:
-		return nil, fmt.Errorf("query challenge: %w", err)
+	if err != nil {
+		return nil, pwdb.GormToErrcode(err)
 	}
 
-	ret := ChallengeGet_Output{Item: &item}
-
+	ret := ChallengeGet_Output{
+		Item: &item,
+	}
 	return &ret, nil
 }

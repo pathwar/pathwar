@@ -1,11 +1,10 @@
 package pwdb
 
 import (
-	"fmt"
-
 	"github.com/bwmarrin/snowflake"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/gormigrate.v1"
+	"pathwar.land/go/pkg/errcode"
 )
 
 func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
@@ -16,7 +15,7 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 		err := tx.AutoMigrate(All()...).Error
 		if err != nil {
 			tx.Rollback()
-			return fmt.Errorf("automigrate: %w", err)
+			return errcode.ErrDBAutoMigrate.Wrap(err)
 		}
 
 		if !opts.skipFK {
@@ -24,14 +23,14 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 				e := ByName(fk[0])
 				if err := tx.Model(e).AddForeignKey(fk[1], fk[2], "RESTRICT", "RESTRICT").Error; err != nil {
 					tx.Rollback()
-					return fmt.Errorf("addforeignkey %q %q: %w", fk[1], fk[2], err)
+					return errcode.ErrDBAddForeignKey.Wrap(err)
 				}
 			}
 		}
 
 		err = createFirstEntities(tx, sfn)
 		if err != nil {
-			return fmt.Errorf("create first entities: %w", err)
+			return GormToErrcode(err)
 		}
 
 		return nil
@@ -39,13 +38,15 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 
 	// FIXME: add new migrations here...
 
-	if err := m.Migrate(); err != nil {
-		return fmt.Errorf("run migrations: %w", err)
+	err := m.Migrate()
+	if err != nil {
+		return errcode.ErrDBRunMigrations.Wrap(err)
 	}
 
 	// anyway, call db.automigrate
-	if err := db.AutoMigrate(All()...).Error; err != nil {
-		return fmt.Errorf("automigrate: %w", err)
+	err = db.AutoMigrate(All()...).Error
+	if err != nil {
+		return errcode.ErrDBAutoMigrate.Wrap(err)
 	}
 
 	return nil
@@ -69,7 +70,7 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 	}
 	for _, season := range []*Season{solo, testSeason} {
 		if err := tx.Create(season).Error; err != nil {
-			return err
+			return GormToErrcode(err)
 		}
 	}
 
@@ -103,7 +104,7 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 		Create(hackSparrow).
 		Error
 	if err != nil {
-		return err
+		return GormToErrcode(err)
 	}
 
 	//
@@ -117,7 +118,7 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 	}
 	err = tx.Create(localhost).Error
 	if err != nil {
-		return err
+		return GormToErrcode(err)
 	}
 
 	//
@@ -161,7 +162,7 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 			Create(flavor).
 			Error
 		if err != nil {
-			return err
+			return GormToErrcode(err)
 		}
 
 		// FIXME: should not be necessary, should be done automatically thanks to association_autoupdate
@@ -172,7 +173,7 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 				Create(seasonChallenge).
 				Error
 			if err != nil {
-				return err
+				return GormToErrcode(err)
 			}
 		}
 	}
@@ -197,7 +198,7 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 	for _, achievement := range achievements {
 		err = tx.Create(achievement).Error
 		if err != nil {
-			return err
+			return GormToErrcode(err)
 		}
 	}
 

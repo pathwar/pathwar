@@ -2,10 +2,10 @@ package pwengine
 
 import (
 	"context"
-	"errors"
 	"testing"
 
 	"pathwar.land/go/internal/testutil"
+	"pathwar.land/go/pkg/errcode"
 )
 
 func TestEngine_TeamList(t *testing.T) {
@@ -27,8 +27,8 @@ func TestEngine_TeamList(t *testing.T) {
 		expectedOrganizations int
 		// expectedOwnedOrganizations int?
 	}{
-		{"empty", &TeamList_Input{}, ErrMissingArgument, 0},
-		{"unknown-season-id", &TeamList_Input{SeasonID: -42}, ErrInvalidArgument, 0},
+		{"empty", &TeamList_Input{}, errcode.ErrMissingInput, 0},
+		{"unknown-season-id", &TeamList_Input{SeasonID: -42}, errcode.ErrInvalidSeasonID, 0},
 		{"solo-mode", &TeamList_Input{SeasonID: seasons["Solo Mode"]}, nil, 1},
 		{"test-season", &TeamList_Input{SeasonID: seasons["Test Season"]}, nil, 0},
 	}
@@ -36,22 +36,16 @@ func TestEngine_TeamList(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			ret, err := engine.TeamList(ctx, test.input)
-			if !errors.Is(err, test.expectedErr) {
-				t.Fatalf("Expected %#v, got %#v.", test.expectedErr, err)
-			}
+			testSameErrcodes(t, "", test.expectedErr, err)
 			if err != nil {
 				return
 			}
 
+			testSameAnys(t, "", test.expectedOrganizations, len(ret.Items))
+
 			// fmt.Println(godev.PrettyJSON(ret))
 			for _, organization := range ret.Items {
-				if organization.SeasonID != test.input.SeasonID {
-					t.Fatalf("Expected %q, got %q.", test.input.SeasonID, organization.SeasonID)
-				}
-			}
-
-			if len(ret.Items) != test.expectedOrganizations {
-				t.Fatalf("Expected %d, got %d.", test.expectedOrganizations, len(ret.Items))
+				testSameInt64s(t, "", test.input.SeasonID, organization.SeasonID)
 			}
 		})
 	}

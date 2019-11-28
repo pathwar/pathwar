@@ -26,6 +26,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.3
 	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
 	github.com/peterbourgon/ff v1.6.1-0.20190916204019-6cd704ec2eeb
+	github.com/pkg/errors v0.8.1
 	github.com/rogpeppe/go-internal v1.5.0 // indirect
 	github.com/rs/cors v1.7.0
 	github.com/treastech/logger v0.0.0-20180705232552-e381e9ecf2e3

@@ -4,8 +4,10 @@ import (
 	"context"
 	"crypto/md5"
 	"fmt"
+	"math/rand"
 
 	"go.uber.org/zap"
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 	"pathwar.land/go/pkg/pwsso"
 )
@@ -13,7 +15,7 @@ import (
 func (e *engine) UserGetSession(ctx context.Context, _ *UserGetSession_Input) (*UserGetSession_Output, error) {
 	token, err := tokenFromContext(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("get token from context: %w", err)
+		return nil, errcode.ErrUnauthenticated.Wrap(err)
 	}
 	zap.L().Debug("token", zap.Any("token", token))
 
@@ -23,37 +25,36 @@ func (e *engine) UserGetSession(ctx context.Context, _ *UserGetSession_Input) (*
 	// try loading it from database
 	output.User, err = e.loadOAuthUser(output.Claims.ActionToken.Sub)
 	if err != nil && !pwdb.IsRecordNotFoundError(err) {
-		// internal error
-		return nil, fmt.Errorf("load oauth user: %w", err)
+		return nil, errcode.ErrGetOAuthUser.Wrap(err)
 	}
 
 	// new user
 	if pwdb.IsRecordNotFoundError(err) {
 		output.IsNewUser = true
 		if _, err = e.newUserFromClaims(output.Claims); err != nil {
-			return nil, fmt.Errorf("new user from claims: %w", err)
+			return nil, errcode.ErrNewUserFromClaims.Wrap(err)
 		}
 		if output.User, err = e.loadOAuthUser(output.Claims.ActionToken.Sub); err != nil {
-			return nil, fmt.Errorf("load oauth user: %w", err)
+			return nil, errcode.ErrGetOAuthUser.Wrap(err)
 		}
 	}
 
 	if output.User.Username != output.Claims.PreferredUsername {
-		return nil, fmt.Errorf("username differs from JWT token and database")
+		return nil, errcode.ErrDifferentUserBetweenTokenAndDatabase
 	}
 
 	// FIXME: output.Notifications = COUNT
-	output.Notifications = 42
+	output.Notifications = int32(rand.Intn(10))
 
-	output.Seasons, err = e.seasons(ctx)
+	output.Seasons, err = e.loadUserSeasons(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("get seasons: %w", err)
+		return nil, errcode.ErrLoadUserSeasons.Wrap(err)
 	}
 
 	return output, nil
 }
 
-func (e *engine) seasons(ctx context.Context) ([]*UserGetSession_Output_SeasonAndTeam, error) {
+func (e *engine) loadUserSeasons(ctx context.Context) ([]*UserGetSession_Output_SeasonAndTeam, error) {
 	var (
 		seasons     []*pwdb.Season
 		memberships []*pwdb.TeamMember
@@ -61,7 +62,7 @@ func (e *engine) seasons(ctx context.Context) ([]*UserGetSession_Output_SeasonAn
 
 	userID, err := userIDFromContext(ctx, e.db)
 	if err != nil {
-		return nil, fmt.Errorf("get userid from context: %w", err)
+		return nil, errcode.ErrUnauthenticated
 	}
 
 	// get season organizations for user
@@ -71,8 +72,8 @@ func (e *engine) seasons(ctx context.Context) ([]*UserGetSession_Output_SeasonAn
 		Where(pwdb.TeamMember{UserID: userID}).
 		Find(&memberships).
 		Error
-	if err != nil && !pwdb.IsRecordNotFoundError(err) {
-		return nil, fmt.Errorf("fetch season organizations: %w", err)
+	if err != nil {
+		return nil, errcode.ErrGetUserOrganizations.Wrap(err)
 	}
 
 	// get all available seasons
@@ -82,7 +83,7 @@ func (e *engine) seasons(ctx context.Context) ([]*UserGetSession_Output_SeasonAn
 		Find(&seasons).
 		Error
 	if err != nil {
-		return nil, fmt.Errorf("fetch seasons: %w", err)
+		return nil, errcode.ErrGetSeasons.Wrap(err)
 	}
 
 	output := []*UserGetSession_Output_SeasonAndTeam{}
@@ -114,9 +115,8 @@ func (e *engine) loadOAuthUser(subject string) (*pwdb.User, error) {
 		Where(pwdb.User{OAuthSubject: subject}).
 		First(&user).
 		Error
-
 	if err != nil {
-		return nil, fmt.Errorf("fetch user from subject %q: %w", subject, err)
+		return nil, errcode.ErrGetUserBySubject.Wrap(err)
 	}
 
 	return &user, nil
@@ -124,14 +124,14 @@ func (e *engine) loadOAuthUser(subject string) (*pwdb.User, error) {
 
 func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 	if claims.EmailVerified == false {
-		return nil, fmt.Errorf("you need to verify your email address")
+		return nil, errcode.ErrEmailAddressNotVerified
 	}
 
 	gravatarURL := fmt.Sprintf("https://www.gravatar.com/avatar/%x", md5.Sum([]byte(claims.Email)))
 
 	var season pwdb.Season
 	if err := e.db.Where(pwdb.Season{IsDefault: true}).First(&season).Error; err != nil {
-		return nil, fmt.Errorf("get default season: %w", err)
+		return nil, errcode.ErrGetDefaultSeason.Wrap(err)
 	}
 
 	user := pwdb.User{
@@ -178,7 +178,7 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 	// FIXME: create a "welcome" notification
 
 	if err := tx.Commit().Error; err != nil {
-		return nil, fmt.Errorf("commit transaction: %w", err)
+		return nil, errcode.ErrCommitUserTransaction.Wrap(err)
 	}
 
 	// set active season
@@ -190,7 +190,7 @@ func (e *engine) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
 		}).
 		Error
 	if err != nil {
-		return nil, fmt.Errorf("update active season: %w", err)
+		return nil, errcode.ErrUpdateActiveSeason.Wrap(err)
 	}
 
 	return &user, nil

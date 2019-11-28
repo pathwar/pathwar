@@ -2,41 +2,34 @@ package pwengine
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 )
 
 func (e *engine) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCreate_Output, error) {
-	// validation
-	if in == nil {
-		return nil, ErrMissingArgument
-	}
-	if in.SeasonID == 0 {
-		return nil, ErrMissingArgument
-	}
-	if in.OrganizationID == 0 && in.Name == "" {
-		return nil, ErrMissingArgument // requires existing organization OR a new name
+	if in == nil || in.SeasonID == 0 || (in.OrganizationID == 0 && in.Name == "") {
+		return nil, errcode.ErrMissingInput
 	}
 	if in.OrganizationID != 0 && in.Name != "" {
-		return nil, ErrInvalidArgument
+		return nil, errcode.ErrInvalidInput
 	}
 	userID, err := userIDFromContext(ctx, e.db)
 	if err != nil {
-		return nil, fmt.Errorf("get userid from context: %w", err)
+		return nil, errcode.ErrUnauthenticated.Wrap(err)
 	}
 
 	// fetch season
 	var season pwdb.Season
 	err = e.db.First(&season, in.SeasonID).Error
 	if err != nil {
-		return nil, ErrInvalidArgument
+		return nil, errcode.ErrGetSeason.Wrap(err)
 	}
 
 	// check if season is available for this user
 	if season.Status != pwdb.Season_Started {
-		return nil, ErrInvalidArgument
+		return nil, errcode.ErrSeasonDenied
 	}
 
 	// check if user already has a team in this season
@@ -48,29 +41,21 @@ func (e *engine) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCre
 		Where(pwdb.TeamMember{UserID: userID}).
 		First(&existingSeasonMembership).
 		Error
-	switch {
-	case err == nil:
-		return nil, ErrInvalidArgument // user already has a team for this season
-	case pwdb.IsRecordNotFoundError(err):
-		// everything is okay!
-	default:
-		return nil, err // 500
+	if !pwdb.IsRecordNotFoundError(err) {
+		return nil, errcode.ErrAlreadyHasTeamForSeason.Wrap(err)
 	}
 
 	if in.OrganizationID == 0 && in.Name != "" {
 		in.Name = normalizeName(in.Name)
 		if isReservedName(in.Name) {
-			return nil, ErrInvalidArgument
+			return nil, errcode.ErrReservedName
 		}
 
 		// check for existing organization with that name
 		var count int
 		err = e.db.Model(pwdb.Organization{}).Where(pwdb.Organization{Name: in.Name}).Count(&count).Error
-		if err != nil {
-			return nil, err
-		}
-		if count != 0 {
-			return nil, ErrInvalidArgument
+		if err != nil || count != 0 {
+			return nil, errcode.ErrCheckOrganizationUniqueName.Wrap(err)
 		}
 
 		// create new organization
@@ -83,10 +68,9 @@ func (e *engine) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCre
 			// GravatarURL
 			// Locale
 		}
-
 		err = e.db.Create(&organization).Error
 		if err != nil {
-			return nil, err
+			return nil, errcode.ErrCreateOrganization.Wrap(err)
 		}
 
 		in.OrganizationID = organization.ID
@@ -100,22 +84,23 @@ func (e *engine) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCre
 		DeletionStatus: pwdb.DeletionStatus_Active,
 	}
 	err = e.db.Model(pwdb.Team{}).Where(existingTeam).Count(&count).Error
-	if err != nil {
-		return nil, err
-	}
-	if count != 0 {
-		return nil, ErrInvalidArgument
+	if err != nil || count != 0 {
+		return nil, errcode.ErrOrganizationAlreadyHasTeamForSeason.Wrap(err)
 	}
 
 	// load organization
 	var organization pwdb.Organization
 	err = e.db.Preload("Members").First(&organization, in.OrganizationID).Error
 	if err != nil {
-		return nil, ErrInvalidArgument
+		return nil, errcode.ErrGetOrganization.Wrap(err)
 	}
+
+	// check if organization is in solo season
 	if organization.SoloSeason {
-		return nil, ErrInvalidArgument // cannot create team based on a solo organization
+		return nil, errcode.ErrCannotCreateTeamForSoloOrganization
 	}
+
+	// check if user belongs to the organization
 	found := false
 	for _, member := range organization.Members {
 		if member.UserID == userID {
@@ -124,7 +109,7 @@ func (e *engine) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCre
 		}
 	}
 	if !found {
-		return nil, ErrInvalidArgument
+		return nil, errcode.ErrUserNotInOrganization
 	}
 
 	// construct new team object
@@ -140,9 +125,10 @@ func (e *engine) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCre
 	// save new team object in DB
 	err = e.db.Create(&team).Error
 	if err != nil {
-		return nil, err
+		return nil, errcode.ErrCreateTeam.Wrap(err)
 	}
 
+	// reload with associations
 	var preloadedTeam pwdb.Team
 	err = e.db.
 		Preload("Members").
@@ -151,7 +137,7 @@ func (e *engine) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCre
 		First(&preloadedTeam, team.ID).
 		Error
 	if err != nil {
-		return nil, err
+		return nil, errcode.ErrGetTeam.Wrap(err)
 	}
 
 	ret := TeamCreate_Output{Team: &preloadedTeam}

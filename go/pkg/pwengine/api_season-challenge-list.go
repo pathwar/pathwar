@@ -2,32 +2,29 @@ package pwengine
 
 import (
 	"context"
-	"fmt"
 
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 )
 
 func (e *engine) SeasonChallengeList(ctx context.Context, in *SeasonChallengeList_Input) (*SeasonChallengeList_Output, error) {
 	if in == nil || in.SeasonID == 0 {
-		return nil, ErrMissingArgument
+		return nil, errcode.ErrMissingInput
 	}
 
 	userID, err := userIDFromContext(ctx, e.db)
 	if err != nil {
-		return nil, fmt.Errorf("get userid from context: %w", err)
+		return nil, errcode.ErrUnauthenticated.Wrap(err)
 	}
 
 	exists, err := seasonIDExists(e.db, in.SeasonID)
-	if err != nil {
-		return nil, ErrInternalServerError
-	}
-	if !exists {
-		return nil, ErrInvalidArgument
+	if err != nil || !exists {
+		return nil, errcode.ErrInvalidSeasonID.Wrap(err)
 	}
 
 	team, err := userTeamForSeason(e.db, userID, in.SeasonID)
 	if err != nil {
-		return nil, ErrInvalidArgument // user does not have team for this season
+		return nil, errcode.ErrUserHasNoTeamForSeason.Wrap(err)
 	}
 
 	var ret SeasonChallengeList_Output
@@ -41,7 +38,7 @@ func (e *engine) SeasonChallengeList(ctx context.Context, in *SeasonChallengeLis
 		Find(&ret.Items).
 		Error
 	if err != nil {
-		return nil, fmt.Errorf("fetch season challenges: %w", err)
+		return nil, errcode.ErrGetSeasonChallenges.Wrap(err)
 	}
 
 	return &ret, nil
