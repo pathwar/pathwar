@@ -2,6 +2,8 @@ package pwengine
 
 import (
 	"context"
+	"errors"
+	"reflect"
 	"testing"
 
 	"github.com/jinzhu/gorm"
@@ -86,4 +88,64 @@ func testingSetContextToken(ctx context.Context, t *testing.T) context.Context {
 	t.Helper()
 
 	return context.WithValue(ctx, userTokenCtx, pwsso.TestingToken(t))
+}
+
+func checkErr(t *testing.T, name string, err error) {
+	t.Helper()
+
+	if err != nil {
+		prefix := ""
+		if name != "" {
+			prefix = name + ": "
+		}
+		t.Fatalf("%serror: %#v.", prefix, err)
+	}
+}
+
+func testSameErrs(t *testing.T, name string, expected, got error) {
+	t.Helper()
+
+	if !errors.Is(got, expected) {
+		prefix := ""
+		if name != "" {
+			prefix = name + ": "
+		}
+		t.Errorf("%sExpected %#v, got %#v.", prefix, expected, got)
+	}
+}
+
+func testSameInt64s(t *testing.T, name string, expected, got int64) {
+	t.Helper()
+
+	if expected != got {
+		prefix := ""
+		if name != "" {
+			prefix = name + ": "
+		}
+		t.Errorf("%sExpected %d, got %d.", prefix, expected, got)
+	}
+}
+
+func testSameStrings(t *testing.T, name string, expected, got string) {
+	t.Helper()
+
+	if expected != got {
+		prefix := ""
+		if name != "" {
+			prefix = name + ": "
+		}
+		t.Errorf("%sExpected %q, got %q.", prefix, expected, got)
+	}
+}
+
+func testSameDeep(t *testing.T, name string, expected, got interface{}) {
+	t.Helper()
+
+	if !reflect.DeepEqual(expected, got) {
+		prefix := ""
+		if name != "" {
+			prefix = name + ": "
+		}
+		t.Errorf("%sExpected %#v, got %#v.", prefix, expected, got)
+	}
 }
