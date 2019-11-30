@@ -80,6 +80,7 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 		if err != nil {
 			return errcode.ErrBuildNginxContainer.Wrap(err)
 		}
+		running = false
 	}
 
 	if !running {
@@ -149,6 +150,7 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 	if err != nil {
 		return errcode.ErrNginxSendCommandNewConfigCheck.Wrap(err)
 	}
+	logger.Debug("nginx -c result", zap.String("res", string(res)))
 	resultStr := string(res)
 	if resultStr[len(resultStr)-11:] != "successful\n" {
 		args := []string{"rm", filepath.Join("/etc/nginx/conf.d", tmpNewNginxConfigFileName)}
