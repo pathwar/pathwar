@@ -58,9 +58,6 @@ enum ErrCode {
   ErrComposeCreateTempDir = 3013;
   ErrComposeRunUp = 3014;
   ErrComposeGetPathwarInfo = 3015;
-  ErrComposeRemoveContainer = 3016;
-  ErrComposeRemoveImage = 3017;
-  ErrComposeListContainers = 3018;
 
   //// Pathwar Engine (starting at 4001)
 
@@ -143,4 +140,34 @@ enum ErrCode {
   ErrConfigureDB = 6013;
   ErrInitSSOClient = 6014;
   ErrInitEngine = 6015;
+
+  //// Pathwar Hypervisor (starting at 7001)
+
+  ErrHypervisorGetPathwarInfo = 7001;
+  ErrCheckNginxContainer = 7002;
+  ErrRemoveNginxContainer = 7003;
+  ErrBuildNginxContainer = 7004;
+  ErrStartNginxContainer = 7005;
+  ErrParsingTemplate = 7006;
+  ErrWriteConfigFileHeader = 7007;
+  ErrWriteConfigFile = 7008;
+  ErrCloseTarWriter = 7009;
+  ErrCopyNginxConfigToContainer = 7010;
+  ErrNginxNewConfigCheckFailed= 7011;
+  ErrNginxSendCommandNewConfigCheck = 7012;
+  ErrNginxSendCommandNewConfigRemove = 7013;
+  ErrNginxSendCommandConfigReplace = 7014;
+  ErrNginxSendCommandReloadConfig = 7015;
+  ErrNatPortOpening = 7016;
+
+  //// Pathwar Docker API (starting at 8001)
+
+  ErrDockerAPIContainerList = 8001;
+  ErrDockerAPIContainerRemove = 8002;
+  ErrDockerAPIImageRemove = 8003;
+  ErrDockerAPIContainerCreate = 8004;
+  ErrDockerAPIContainerExecCreate = 8005;
+  ErrDockerAPIContainerExecAttach = 8006;
+  ErrDockerAPIContainerExecStart = 8007;
+  ErrDockerAPIImagePull = 8008;
 }

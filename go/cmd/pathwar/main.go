@@ -86,10 +86,13 @@ var (
 	hypervisorDaemonFlags = flag.NewFlagSet("hypervisor daemon", flag.ExitOnError)
 
 	hypervisorNginxFlags             = flag.NewFlagSet("hypervisor nginx", flag.ExitOnError)
-	hypervisorNginxHTTPBind          = hypervisorNginxFlags.String("http-bind", ":8000", "HTTP listening addr")
+	hypervisorNginxHostIP            = hypervisorNginxFlags.String("host", "0.0.0.0", "HTTP listening addr")
+	hypervisorNginxHostPort          = hypervisorNginxFlags.String("port", "8000", "HTTP listening port")
 	hypervisorNginxDomainSuffix      = hypervisorNginxFlags.String("domain-suffix", ".127.0.0.0.xip.io", "Domain suffix to append")
-	hypervisorNginxModeratorPassword = hypervisorNginxFlags.String("moderator-password", "s3cur3", "Challenge moderator password")
-	hypervisorNginxSalt              = hypervisorNginxFlags.String("salt", "s3cur3-t0o", "salt used to generate secure hashes")
+	hypervisorNginxModeratorPassword = hypervisorNginxFlags.String("moderator-password", "", "Challenge moderator password")
+	hypervisorNginxSalt              = hypervisorNginxFlags.String("salt", "", "salt used to generate secure hashes (random if empty)")
+	hypervisorForceRecreate          = hypervisorNginxFlags.Bool("force-recreate", false, "remove existing nginx container")
+	hypervisorNginxDockerImage       = hypervisorNginxFlags.String("docker-image", "nginx:stable-alpine", "docker image used to generate nginx proxy container")
 
 	// server flags
 	serverFlags              = flag.NewFlagSet("server", flag.ExitOnError)
@@ -522,12 +525,15 @@ func main() {
 				return err
 			}
 
-			// prepare NginxConfig
-			config := pwhypervisor.NginxConfig{
-				HTTPBind:          *hypervisorNginxHTTPBind,
+			// prepare HypervisorOpts
+			config := pwhypervisor.HypervisorOpts{
+				HostIP:            *hypervisorNginxHostIP,
+				HostPort:          *hypervisorNginxHostPort,
 				DomainSuffix:      *hypervisorNginxDomainSuffix,
 				ModeratorPassword: *hypervisorNginxModeratorPassword,
 				Salt:              *hypervisorNginxSalt,
+				ForceRecreate:     *hypervisorForceRecreate,
+				NginxDockerImage:  *hypervisorNginxDockerImage,
 			}
 			err := json.Unmarshal([]byte(args[0]), &config.AllowedUsers)
 			if err != nil {
