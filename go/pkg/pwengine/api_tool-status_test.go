@@ -2,7 +2,6 @@ package pwengine
 
 import (
 	"context"
-	"reflect"
 	"testing"
 
 	"pathwar.land/go/internal/testutil"
@@ -14,13 +13,11 @@ func TestEngine_GetStatus(t *testing.T) {
 	ctx := context.Background()
 
 	status, err := engine.ToolStatus(ctx, nil)
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
+	checkErr(t, "", err)
+
 	expected := &GetStatus_Output{
 		EverythingIsOK: true,
 	}
-	if !reflect.DeepEqual(expected, status) {
-		t.Fatalf("Expected: %#v, got %#v instead.", expected, status)
-	}
+
+	testSameDeep(t, "", expected, status)
 }

@@ -2,7 +2,6 @@ package pwengine
 
 import (
 	"context"
-	"reflect"
 	"testing"
 
 	"pathwar.land/go/internal/testutil"
@@ -14,9 +13,7 @@ func TestEngine_ToolInfo(t *testing.T) {
 	ctx := context.Background()
 
 	status, err := engine.ToolInfo(ctx, nil)
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
+	checkErr(t, "", err)
 	expected := &GetInfo_Output{
 		Version: "dev",
 		Commit:  "n/a",
@@ -24,7 +21,5 @@ func TestEngine_ToolInfo(t *testing.T) {
 		BuiltBy: "n/a",
 	}
 	expected.Uptime = status.Uptime // may vary
-	if !reflect.DeepEqual(expected, status) {
-		t.Fatalf("Expected: %#v, got %#v instead.", expected, status)
-	}
+	testSameDeep(t, "", expected, status)
 }

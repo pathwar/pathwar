@@ -2,8 +2,8 @@ package pwengine
 
 import (
 	"context"
-	"fmt"
 
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 )
 
@@ -18,7 +18,7 @@ func (e *engine) OrganizationList(context.Context, *OrganizationList_Input) (*Or
 		Find(&organizations.Items).
 		Error
 	if err != nil {
-		return nil, fmt.Errorf("query organizations: %w", err)
+		return nil, errcode.ErrFindOrganizations.Wrap(err)
 	}
 
 	return &organizations, nil

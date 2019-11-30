@@ -2,20 +2,19 @@ package pwengine
 
 import (
 	"context"
-	"fmt"
 
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 )
 
 func (e *engine) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuy_Input) (*SeasonChallengeBuy_Output, error) {
-	// validation
 	if in == nil || in.SeasonChallengeID == 0 || in.TeamID == 0 {
-		return nil, ErrMissingArgument
+		return nil, errcode.ErrMissingInput
 	}
 
 	userID, err := userIDFromContext(ctx, e.db)
 	if err != nil {
-		return nil, fmt.Errorf("get userid from context: %w", err)
+		return nil, errcode.ErrUnauthenticated.Wrap(err)
 	}
 
 	// check if user belongs to team
@@ -27,19 +26,19 @@ func (e *engine) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuy_
 		First(&team, in.TeamID).
 		Error
 	if err != nil {
-		return nil, ErrInvalidArgument // fmt.Errorf("fetch team: %w", err)
+		return nil, errcode.ErrInvalidTeam.Wrap(err)
 	}
 
 	// check if season is valid
 	var seasonChallenge pwdb.SeasonChallenge
 	err = e.db.First(&seasonChallenge, in.SeasonChallengeID).Error
 	if err != nil {
-		return nil, ErrInvalidArgument // fmt.Errorf("fetch season challenge: %w", err)
+		return nil, errcode.ErrInvalidSeason.Wrap(err)
 	}
 
 	// check if challenge and team belongs to the same season
 	if seasonChallenge.SeasonID != team.SeasonID {
-		return nil, fmt.Errorf("team and challenge should be on the same season")
+		return nil, errcode.ErrTeamNotInSeason
 	}
 
 	// check for duplicate
@@ -53,10 +52,10 @@ func (e *engine) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuy_
 		Count(&c).
 		Error
 	if err != nil {
-		return nil, fmt.Errorf("check for duplicate: %w", err)
+		return nil, errcode.ErrChallengeAlreadySubscribed.Wrap(err)
 	}
 	if c > 0 {
-		return nil, ErrDuplicate
+		return nil, errcode.ErrChallengeAlreadySubscribed
 	}
 
 	// FIXME: validate if team has enough money
@@ -70,7 +69,7 @@ func (e *engine) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuy_
 	}
 	err = e.db.Create(&subscription).Error
 	if err != nil {
-		return nil, fmt.Errorf("create challenge subscription: %w", err)
+		return nil, errcode.ErrCreateChallengeSubscription.Wrap(err)
 	}
 
 	// load and return the freshly inserted entry
@@ -84,7 +83,7 @@ func (e *engine) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuy_
 		First(&subscription, subscription.ID).
 		Error
 	if err != nil {
-		return nil, fmt.Errorf("fetch challenge subscription: %w", err)
+		return nil, errcode.ErrGetChallengeSubscription.Wrap(err)
 	}
 
 	ret := SeasonChallengeBuy_Output{ChallengeSubscription: &subscription}

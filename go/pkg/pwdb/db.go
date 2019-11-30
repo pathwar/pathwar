@@ -1,12 +1,11 @@
 package pwdb
 
 import (
-	"fmt"
-
 	"github.com/bwmarrin/snowflake"
 	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
 	"moul.io/zapgorm"
+	"pathwar.land/go/pkg/errcode"
 )
 
 type Opts struct {
@@ -27,7 +26,7 @@ func Configure(db *gorm.DB, sfn *snowflake.Node, opts Opts) (*gorm.DB, error) {
 	db.SingularTable(true)
 	db.LogMode(true)
 	if err := migrate(db, sfn, opts); err != nil {
-		return nil, fmt.Errorf("run db migrations: %w", err)
+		return nil, errcode.ErrDBRunMigrations.Wrap(err)
 	}
 	return db, nil
 }

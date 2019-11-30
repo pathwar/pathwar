@@ -2,15 +2,19 @@ package pwengine
 
 import (
 	"context"
-	"fmt"
 
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 )
 
 func (e *engine) UserSetPreferences(ctx context.Context, in *UserSetPreferences_Input) (*UserSetPreferences_Output, error) {
+	if in == nil {
+		return nil, errcode.ErrMissingInput
+	}
+
 	userID, err := userIDFromContext(ctx, e.db)
 	if err != nil {
-		return nil, fmt.Errorf("get userid from context: %w", err)
+		return nil, errcode.ErrUnauthenticated
 	}
 
 	var (
@@ -22,23 +26,13 @@ func (e *engine) UserSetPreferences(ctx context.Context, in *UserSetPreferences_
 	if in.ActiveSeasonID != 0 {
 		hasChanges = true
 
-		// get active season
-		var seasonIDs []string
-		err := e.db.
-			Table("season").
-			Where("id = ?", in.ActiveSeasonID).
-			Pluck("id", &seasonIDs).
-			Error
-		switch {
-		case err == nil && len(seasonIDs) == 1:
-			updates["active_season_id"] = seasonIDs[0]
-		case err == nil && len(seasonIDs) == 0:
-			return nil, ErrInvalidArgument
-		default:
-			return nil, fmt.Errorf("get season: %w", err)
+		exists, err := seasonIDExists(e.db, in.ActiveSeasonID)
+		if err != nil || !exists {
+			return nil, errcode.ErrInvalidSeasonID.Wrap(err)
 		}
+		updates["active_season_id"] = in.ActiveSeasonID
 
-		// get active season membership (optional)
+		// get active season membership (if user already has a team for this season)
 		var seasonMemberIDs []int64
 		err = e.db.
 			Table("team_member").
@@ -47,23 +41,24 @@ func (e *engine) UserSetPreferences(ctx context.Context, in *UserSetPreferences_
 			Where("team.season_id = ?", in.ActiveSeasonID).
 			Pluck("team_member.id", &seasonMemberIDs).
 			Error
-		switch {
-		case err == nil && len(seasonMemberIDs) == 1:
+		if err != nil || len(seasonMemberIDs) > 1 {
+			return nil, errcode.ErrGetActiveSeasonMembership.Wrap(err)
+		}
+		if len(seasonMemberIDs) == 1 {
 			updates["active_team_member_id"] = seasonMemberIDs[0]
-		case err == nil && len(seasonMemberIDs) == 0:
+		}
+		if len(seasonMemberIDs) == 0 {
 			updates["active_team_member_id"] = 0 // nil instead?
-		default:
-			return nil, fmt.Errorf("get season organization: %w", err)
 		}
 	}
 
 	if !hasChanges {
-		return nil, ErrMissingArgument
+		return nil, errcode.ErrMissingInput
 	}
 
 	err = e.db.Model(pwdb.User{}).Where("id = ?", userID).Updates(updates).Error
 	if err != nil {
-		return nil, fmt.Errorf("update user: %w", err)
+		return nil, errcode.ErrUpdateUser.Wrap(err)
 	}
 	// FIXME: check amount of updated rows
 

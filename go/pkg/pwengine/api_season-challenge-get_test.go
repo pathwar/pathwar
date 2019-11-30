@@ -2,11 +2,11 @@ package pwengine
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"testing"
 
 	"pathwar.land/go/internal/testutil"
+	"pathwar.land/go/pkg/errcode"
 )
 
 func TestEngine_SeasonChallengeGet(t *testing.T) {
@@ -16,9 +16,7 @@ func TestEngine_SeasonChallengeGet(t *testing.T) {
 
 	// fetch user session to ensure account is created
 	_, err := engine.UserGetSession(ctx, nil)
-	if err != nil {
-		t.Fatalf("err: %v", err)
-	}
+	checkErr(t, "", err)
 
 	seasonChallenges := map[string]int64{}
 	for _, seasonChallenge := range testingSeasonChallenges(t, engine).Items {
@@ -33,33 +31,24 @@ func TestEngine_SeasonChallengeGet(t *testing.T) {
 		expectedSeasonName    string
 		expectedChallengeName string
 	}{
-		{"empty", &SeasonChallengeGet_Input{}, ErrMissingArgument, "", ""},
-		{"unknown-season-id", &SeasonChallengeGet_Input{SeasonChallengeID: -42}, ErrInvalidArgument, "", ""},
+		{"empty", &SeasonChallengeGet_Input{}, errcode.ErrMissingInput, "", ""},
+		{"unknown-season-id", &SeasonChallengeGet_Input{SeasonChallengeID: -42}, errcode.ErrGetSeasonFromSeasonChallenge, "", ""},
 		{"solo-mode-hello-world", &SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Solo Mode/Hello World"]}, nil, "Solo Mode", "Hello World"},
-		{"no-team-in-season", &SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Test Season/Hello World"]}, ErrInvalidArgument, "Test Season", "Hello World"},
+		{"no-team-in-season", &SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Test Season/Hello World"]}, errcode.ErrGetUserTeamFromSeason, "Test Season", "Hello World"},
 	}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			ret, err := engine.SeasonChallengeGet(ctx, test.input)
-			if !errors.Is(err, test.expectedErr) {
-				t.Fatalf("Expected %#v, got %#v.", test.expectedErr, err)
-			}
+			testSameErrcodes(t, "", test.expectedErr, err)
 			if err != nil {
 				return
 			}
 
-			//fmt.Println(godev.PrettyJSON(ret.Item))
 			sc := ret.Item
-			if test.input.SeasonChallengeID != sc.ID {
-				t.Errorf("Expected %d, got %d.", test.input.SeasonChallengeID, sc.ID)
-			}
-			if sc.Flavor.Challenge.Name != test.expectedChallengeName {
-				t.Errorf("Expected %q, got %q.", test.expectedChallengeName, sc.Flavor.Challenge.Name)
-			}
-			if sc.Season.Name != test.expectedSeasonName {
-				t.Errorf("Expected %q, got %q.", test.expectedSeasonName, sc.Season.Name)
-			}
+			testSameInt64s(t, "", test.input.SeasonChallengeID, sc.ID)
+			testSameStrings(t, "", test.expectedChallengeName, sc.Flavor.Challenge.Name)
+			testSameStrings(t, "", test.expectedSeasonName, sc.Season.Name)
 		})
 	}
 }

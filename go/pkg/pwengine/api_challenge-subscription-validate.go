@@ -2,20 +2,20 @@ package pwengine
 
 import (
 	"context"
-	"fmt"
 
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 )
 
 func (e *engine) ChallengeSubscriptionValidate(ctx context.Context, in *ChallengeSubscriptionValidate_Input) (*ChallengeSubscriptionValidate_Output, error) {
 	// validation
 	if in == nil || in.ChallengeSubscriptionID == 0 || in.Passphrase == "" {
-		return nil, ErrMissingArgument
+		return nil, errcode.ErrMissingInput
 	}
 
 	userID, err := userIDFromContext(ctx, e.db)
 	if err != nil {
-		return nil, fmt.Errorf("get userid from context: %w", err)
+		return nil, errcode.ErrGetUserIDFromContext.Wrap(err)
 	}
 
 	// check input challenge subscription
@@ -29,7 +29,7 @@ func (e *engine) ChallengeSubscriptionValidate(ctx context.Context, in *Challeng
 		First(&challengeSubscription, in.ChallengeSubscriptionID).
 		Error
 	if err != nil {
-		return nil, ErrInvalidArgument // fmt.Errorf("fetch challenge subscription: %w", err)
+		return nil, errcode.ErrGetChallengeSubscription.Wrap(err)
 	}
 
 	// FIXME: check if passphrase is valid
@@ -47,7 +47,7 @@ func (e *engine) ChallengeSubscriptionValidate(ctx context.Context, in *Challeng
 	}
 	err = e.db.Create(&validation).Error
 	if err != nil {
-		return nil, fmt.Errorf("create challenge validation: %w", err)
+		return nil, errcode.ErrCreateChallengeValidation.Wrap(err)
 	}
 
 	// load and return the freshly inserted entry
@@ -60,7 +60,7 @@ func (e *engine) ChallengeSubscriptionValidate(ctx context.Context, in *Challeng
 		First(&validation, validation.ID).
 		Error
 	if err != nil {
-		return nil, fmt.Errorf("fetch challenge validation: %w", err)
+		return nil, errcode.ErrGetChallengeValidation.Wrap(err)
 	}
 
 	ret := ChallengeSubscriptionValidate_Output{ChallengeValidation: &validation}

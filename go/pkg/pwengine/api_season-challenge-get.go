@@ -2,31 +2,29 @@ package pwengine
 
 import (
 	"context"
-	"fmt"
 
+	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
 )
 
 func (e *engine) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGet_Input) (*SeasonChallengeGet_Output, error) {
-	{ // validation
-		if in.SeasonChallengeID == 0 {
-			return nil, ErrMissingArgument
-		}
+	if in == nil || in.SeasonChallengeID == 0 {
+		return nil, errcode.ErrMissingInput
 	}
 
 	userID, err := userIDFromContext(ctx, e.db)
 	if err != nil {
-		return nil, fmt.Errorf("get userid from context: %w", err)
+		return nil, errcode.ErrUnauthenticated.Wrap(err)
 	}
 
 	season, err := seasonFromSeasonChallengeID(e.db, in.SeasonChallengeID)
 	if err != nil {
-		return nil, ErrInvalidArgument // season challenge is malformed
+		return nil, errcode.ErrGetSeasonFromSeasonChallenge.Wrap(err)
 	}
 
 	team, err := userTeamForSeason(e.db, userID, season.ID)
 	if err != nil {
-		return nil, ErrInvalidArgument // user does not have team for this season
+		return nil, errcode.ErrGetUserTeamFromSeason.Wrap(err)
 	}
 
 	var item pwdb.SeasonChallenge
@@ -39,16 +37,10 @@ func (e *engine) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeGet_
 		Preload("Subscriptions.Validations").
 		First(&item).
 		Error
-
-	switch {
-	case err != nil && pwdb.IsRecordNotFoundError(err):
-		return nil, ErrInvalidArgument // FIXME: wrap original error
-	case err != nil:
-		return nil, fmt.Errorf("query season challenge: %w", err)
+	if err != nil {
+		return nil, errcode.ErrGetSeasonChallenge.Wrap(err)
 	}
 
-	ret := SeasonChallengeGet_Output{
-		Item: &item,
-	}
+	ret := SeasonChallengeGet_Output{Item: &item}
 	return &ret, nil
 }

@@ -14,38 +14,26 @@ func TestEngine_UserDeleteAccount(t *testing.T) {
 
 	// ensure account is created
 	beforeDelete, err := engine.UserGetSession(ctx, nil)
-	if err != nil {
-		t.Errorf("err: %v", err)
-	}
+	checkErr(t, "", err)
 	beforeDeleteID := beforeDelete.User.ID
 	beforeDeleteSubject := beforeDelete.User.OAuthSubject
 
 	// delete account
 	_, err = engine.UserDeleteAccount(ctx, &UserDeleteAccount_Input{Reason: "just a test"})
-	if err != nil {
-		t.Errorf("err: %v", err)
-	}
+	checkErr(t, "", err)
 
 	// create new account
 	afterDelete, err := engine.UserGetSession(ctx, nil)
-	if err != nil {
-		t.Errorf("err: %v", err)
-	}
+	checkErr(t, "", err)
 	if !afterDelete.IsNewUser {
 		t.Errorf("Expected session.IsNewUser==true, got false.")
 	}
-	if beforeDeleteID == afterDelete.User.ID {
-		t.Errorf("Expected different user id, got same.")
-	}
-	if beforeDeleteSubject != afterDelete.User.OAuthSubject {
-		t.Errorf("Expected same OAuth subject, got different.")
-	}
+	testDifferentInt64s(t, "", beforeDeleteID, afterDelete.User.ID)
+	testSameStrings(t, "", beforeDeleteSubject, afterDelete.User.OAuthSubject)
 
 	// retrieve already created account
 	afterAfterDelete, err := engine.UserGetSession(ctx, nil)
-	if err != nil {
-		t.Errorf("err: %v", err)
-	}
+	checkErr(t, "", err)
 	if afterAfterDelete.IsNewUser {
 		t.Errorf("Expected session.IsNewUser==false, got true.")
 	}
