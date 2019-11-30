@@ -34,8 +34,7 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 		opts.ModeratorPassword = randstring.RandString(10)
 		logger.Warn("random moderator password generated", zap.String("password", opts.ModeratorPassword))
 	}
-
-	logger.Debug("nginx", zap.Any("opts", opts))
+	logger.Debug("hypervisor nginx", zap.Any("opts", opts))
 
 	pwInfo, err := pwcompose.GetPathwarInfo(ctx, cli)
 	if err != nil {
@@ -64,6 +63,7 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 	}
 
 	if opts.ForceRecreate && nginxContainerID != "" {
+		logger.Debug("nginx container remove", zap.String("id", nginxContainerID))
 		err := cli.ContainerRemove(ctx, nginxContainerID, types.ContainerRemoveOptions{
 			Force:         true,
 			RemoveVolumes: true,
@@ -75,6 +75,7 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 	}
 
 	if nginxContainerID == "" {
+		logger.Debug("build nginx container", zap.Any("opts", opts))
 		nginxContainerID, err = buildNginxContainer(ctx, cli, opts)
 		if err != nil {
 			return errcode.ErrBuildNginxContainer.Wrap(err)
@@ -82,6 +83,7 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 	}
 
 	if !running {
+		logger.Debug("start nginx container", zap.String("id", nginxContainerID))
 		err = cli.ContainerStart(ctx, nginxContainerID, types.ContainerStartOptions{})
 		if err != nil {
 			return errcode.ErrStartNginxContainer.Wrap(err)
@@ -134,20 +136,24 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 	if err != nil {
 		return errcode.ErrCloseTarWriter.Wrap(err)
 	}
-	zap.L().Debug("copying nginx config into the container", zap.String("container-id", nginxContainerID))
+	logger.Debug("copy nginx config into the container", zap.String("container-id", nginxContainerID))
 	err = cli.CopyToContainer(ctx, nginxContainerID, "/", &buf, types.CopyToContainerOptions{})
 	if err != nil {
 		return errcode.ErrCopyNginxConfigToContainer.Wrap(err)
 	}
 
 	// check new nginx config
-	res, err := nginxSendCommand(ctx, cli, nginxContainerID, "nginx", "-c", filepath.Join("conf.d", tmpNewNginxConfigFileName))
+	args := []string{"nginx", "-c", filepath.Join("conf.d", tmpNewNginxConfigFileName)}
+	logger.Debug("send nginx command", zap.Strings("args", args))
+	res, err := nginxSendCommand(ctx, cli, nginxContainerID, args...)
 	if err != nil {
 		return errcode.ErrNginxSendCommandNewConfigCheck.Wrap(err)
 	}
 	resultStr := string(res)
 	if resultStr[len(resultStr)-11:] != "successful\n" {
-		_, err := nginxSendCommand(ctx, cli, nginxContainerID, "rm", filepath.Join("/etc/nginx/conf.d", tmpNewNginxConfigFileName))
+		args := []string{"rm", filepath.Join("/etc/nginx/conf.d", tmpNewNginxConfigFileName)}
+		logger.Debug("send nginx command", zap.Strings("args", args))
+		_, err := nginxSendCommand(ctx, cli, nginxContainerID, args...)
 		if err != nil {
 			return errcode.ErrNginxSendCommandNewConfigRemove.Wrap(err)
 		}
@@ -155,13 +161,17 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 	}
 
 	// replace nginx config with new one that we just generated
-	_, err = nginxSendCommand(ctx, cli, nginxContainerID, "mv", filepath.Join("/etc/nginx/conf.d", tmpNewNginxConfigFileName), "/etc/nginx/conf.d/default.conf")
+	args = []string{"mv", filepath.Join("/etc/nginx/conf.d", tmpNewNginxConfigFileName), "/etc/nginx/conf.d/default.conf"}
+	logger.Debug("send nginx command", zap.Strings("args", args))
+	_, err = nginxSendCommand(ctx, cli, nginxContainerID, args...)
 	if err != nil {
 		return errcode.ErrNginxSendCommandConfigReplace.Wrap(err)
 	}
 
 	// new config hot reload
-	_, err = nginxSendCommand(ctx, cli, nginxContainerID, "nginx", "-s", "reload")
+	args = []string{"nginx", "-s", "reload"}
+	logger.Debug("send nginx command", zap.Strings("args", args))
+	_, err = nginxSendCommand(ctx, cli, nginxContainerID, args...)
 	if err != nil {
 		return errcode.ErrNginxSendCommandReloadConfig.Wrap(err)
 	}
