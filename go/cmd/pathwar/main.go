@@ -92,7 +92,7 @@ var (
 	hypervisorNginxModeratorPassword = hypervisorNginxFlags.String("moderator-password", "", "Challenge moderator password")
 	hypervisorNginxSalt              = hypervisorNginxFlags.String("salt", "", "salt used to generate secure hashes (random if empty)")
 	hypervisorForceRecreate          = hypervisorNginxFlags.Bool("force-recreate", false, "remove existing nginx container")
-	hypervisorNginxDockerImage       = hypervisorNginxFlags.String("docker-image", "nginx:stable-alpine", "docker image used to generate nginx proxy container")
+	hypervisorNginxDockerImage       = hypervisorNginxFlags.String("docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
 
 	// server flags
 	serverFlags              = flag.NewFlagSet("server", flag.ExitOnError)

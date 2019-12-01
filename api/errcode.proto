@@ -160,7 +160,7 @@ enum ErrCode {
   ErrNginxSendCommandReloadConfig = 7015;
   ErrNatPortOpening = 7016;
 
-  //// Pathwar Docker API (starting at 8001)
+  //// Docker API (starting at 8001)
 
   ErrDockerAPIContainerList = 8001;
   ErrDockerAPIContainerRemove = 8002;
@@ -169,5 +169,7 @@ enum ErrCode {
   ErrDockerAPIContainerExecCreate = 8005;
   ErrDockerAPIContainerExecAttach = 8006;
   ErrDockerAPIContainerExecStart = 8007;
-  ErrDockerAPIImagePull = 8008;
+  ErrDockerAPIContainerExecInspect = 8008;
+  ErrDockerAPIImagePull = 8009;
+  ErrDockerAPIExitCode = 8010;
 }
