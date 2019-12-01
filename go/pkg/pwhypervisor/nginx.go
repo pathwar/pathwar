@@ -274,8 +274,7 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 	}
 
 	// check new nginx config
-	//args := []string{"nginx", "-t"}
-	args := []string{"head", "/etc/nginx/nginx.conf"}
+	args := []string{"nginx", "-t", "-c", "/etc/nginx/nginx.conf"}
 	logger.Debug("send nginx command", zap.Strings("args", args))
 	err = nginxSendCommand(ctx, cli, nginxContainer.ID, logger, args...)
 	if err != nil {
