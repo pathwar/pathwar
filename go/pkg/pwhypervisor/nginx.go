@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"strconv"
 	"text/template"
 
 	"github.com/docker/docker/api/types"
@@ -20,7 +21,10 @@ import (
 	"pathwar.land/go/pkg/pwcompose"
 )
 
-const nginxContainerName = "pathwar-hypervisor-nginx"
+const (
+	nginxContainerName = "pathwar-hypervisor-nginx"
+	proxyNetworkName   = "pathwar-proxy-network"
+)
 
 const nginxConfigTemplate = `
 {{$root := .}}
@@ -110,29 +114,30 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 	}
 	logger.Debug("hypervisor nginx", zap.Any("opts", opts))
 
-	pwInfo, err := pwcompose.GetPathwarInfo(ctx, cli)
+	// check if proxy network has been created
+	proxyNetworkID := ""
+	networkResources, err := cli.NetworkList(ctx, types.NetworkListOptions{})
 	if err != nil {
-		return errcode.ErrHypervisorGetPathwarInfo.Wrap(err)
+		return errcode.ErrDockerAPINetworkList.Wrap(err)
 	}
-
-	for _, flavor := range pwInfo.RunningFlavors {
-		for _, instance := range flavor.Instances {
-			for _, port := range instance.Ports {
-				// FIXME: support non-standard ports using labels (later)
-				if port.PublicPort != 0 {
-					// add [hash(allowed_user+salt)].[domainsuffix] for each allowed user in config
-					_ = port.PublicPort
-				}
-			}
-
-			// add status-[instance].[domainsuffix] delivering a static file -> will be used to check if an instance is configured (i.e., for monitoring) in config
-
-			// add moderator-[instance].[domainsuffix] with passphrase authentication -> used to check if an instance is working even without being in the AllowedUsers list in config
+	for _, networkResource := range networkResources {
+		if networkResource.Name == proxyNetworkName {
+			proxyNetworkID = networkResource.ID
+		}
+	}
+	if proxyNetworkID == "" {
+		logger.Debug("proxy network create", zap.String("name", proxyNetworkName))
+		response, err := cli.NetworkCreate(ctx, proxyNetworkName, types.NetworkCreate{
+			CheckDuplicate: true,
+		})
+		proxyNetworkID = response.ID
+		if err != nil {
+			return errcode.ErrDockerAPINetworkCreate.Wrap(err)
 		}
 	}
 
 	// check if nginx server is started, build and start it if needed
-	nginxContainerID, running, err := checkNginxContainer(ctx, cli)
+	nginxContainerID, running, onProxyNetwork, err := checkNginxContainer(ctx, cli)
 	if err != nil {
 		return errcode.ErrCheckNginxContainer.Wrap(err)
 	}
@@ -166,29 +171,74 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 		}
 	}
 
-	// generate config
-	configData := NginxConfigData{
-		Upstreams: []NginxUpstream{
-			{
-				Name: "instance1",
-				Host: "1.2.3.4",
-				Port: "1337",
-			},
-			{
-				Name: "instance2",
-				Host: "2.3.4.5",
-				Port: "1338",
-				Hashes: []string{
-					"123",
-					"456",
-				},
-			},
-		},
-		Opts: opts,
+	if !onProxyNetwork {
+		logger.Debug("connect nginx to proxy network", zap.String("nginx-id", nginxContainerID), zap.String("network-id", proxyNetworkID))
+		err = cli.NetworkConnect(ctx, proxyNetworkID, nginxContainerID, nil)
+		if err != nil {
+			return errcode.ErrNginxConnectNetwork.Wrap(err)
+		}
 	}
+
+	// make sure that exposed containers are connected to proxy network
+	pwInfo, err := pwcompose.GetPathwarInfo(ctx, cli)
+	if err != nil {
+		return errcode.ErrHypervisorGetPathwarInfo.Wrap(err)
+	}
+	for _, flavor := range pwInfo.RunningFlavors {
+		for _, instance := range flavor.Instances {
+			for _, port := range instance.Ports {
+				if port.PublicPort != 0 {
+					if _, onProxyNetwork = instance.NetworkSettings.Networks[proxyNetworkName]; !onProxyNetwork {
+						logger.Debug("connect container to proxy network", zap.String("container-id", instance.ID), zap.String("network-id", proxyNetworkID))
+						err = cli.NetworkConnect(ctx, proxyNetworkID, instance.ID, nil)
+						if err != nil {
+							return errcode.ErrContainerConnectNetwork.Wrap(err)
+						}
+					}
+				}
+			}
+		}
+	}
+
+	configData := NginxConfigData{
+		Upstreams: []NginxUpstream{},
+		Opts:      opts,
+	}
+
+	// update config data with containers infos
+	pwInfo, err = pwcompose.GetPathwarInfo(ctx, cli)
+	if err != nil {
+		return errcode.ErrHypervisorGetPathwarInfo.Wrap(err)
+	}
+	for _, flavor := range pwInfo.RunningFlavors {
+		for _, instance := range flavor.Instances {
+			for _, port := range instance.Ports {
+				// FIXME: support non-standard ports using labels (later)
+				upstream := NginxUpstream{
+					Hashes: []string{},
+				}
+				if port.PublicPort != 0 {
+					upstream.Name = instance.Names[0][1:]
+					upstream.Host = instance.NetworkSettings.Networks[proxyNetworkName].IPAddress
+					upstream.Port = strconv.Itoa(int(port.PublicPort))
+
+					// add hash per users to proxy configuration
+					if _, found := opts.AllowedUsers[instance.Names[0][1:]]; found {
+						for _, hash := range opts.AllowedUsers[instance.Names[0][1:]] {
+							upstream.Hashes = append(upstream.Hashes, strconv.Itoa(int(hash)))
+						}
+					}
+					configData.Upstreams = append(configData.Upstreams, upstream)
+					// FIXME: doesn't handle multiple port per instance yet
+					break
+				}
+			}
+		}
+	}
+
 	buf, err := buildNginxConfigTar(configData)
 	if err != nil {
-		return errcode.TODO.Wrap(err)
+		return errcode.ErrBuildNginxConfig.Wrap(err)
 	}
 
 	logger.Debug("copy nginx config into the container", zap.String("container-id", nginxContainerID))
@@ -246,7 +296,7 @@ func buildNginxConfigTar(data interface{}) (*bytes.Buffer, error) {
 	var configBuf bytes.Buffer
 	err = configTemplate.Execute(&configBuf, data)
 	if err != nil {
-		return nil, errcode.TODO.Wrap(err)
+		return nil, errcode.ErrExecuteTemplate.Wrap(err)
 	}
 	config := configBuf.Bytes()
 	// fmt.Println(string(config))
@@ -309,21 +359,22 @@ func buildNginxContainer(ctx context.Context, cli *client.Client, opts Hyperviso
 	return cont.ID, nil
 }
 
-func checkNginxContainer(ctx context.Context, cli *client.Client) (string, bool, error) {
+func checkNginxContainer(ctx context.Context, cli *client.Client) (string, bool, bool, error) {
 	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{
 		All: true,
 	})
 	if err != nil {
-		return "", false, errcode.ErrDockerAPIContainerList.Wrap(err)
+		return "", false, false, errcode.ErrDockerAPIContainerList.Wrap(err)
 	}
 	for _, container := range containers {
 		for _, name := range container.Names {
 			if name[1:] == nginxContainerName {
-				return container.ID, container.State == "running", nil
+				_, onProxyNetwork := container.NetworkSettings.Networks[proxyNetworkName]
+				return container.ID, container.State == "running", onProxyNetwork, nil
 			}
 		}
 	}
-	return "", false, nil
+	return "", false, false, nil
 }
 
 func nginxSendCommand(ctx context.Context, cli *client.Client, nginxContainerID string, logger *zap.Logger, args ...string) error {

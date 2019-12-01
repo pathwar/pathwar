@@ -349,7 +349,9 @@ func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) 
 }
 
 func GetPathwarInfo(ctx context.Context, cli *client.Client) (*PathwarInfo, error) {
-	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
+	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{
+		All: true,
+	})
 	if err != nil {
 		return nil, errcode.ErrDockerAPIContainerList.Wrap(err)
 	}
