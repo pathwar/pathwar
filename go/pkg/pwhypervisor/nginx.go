@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"path"
 	"strconv"
 	"text/template"
 
@@ -25,6 +26,7 @@ import (
 const (
 	nginxContainerName = "pathwar-hypervisor-nginx"
 	proxyNetworkName   = "pathwar-proxy-network"
+	nginxConfigTmpName = "nginx.tmp.conf"
 )
 
 const nginxConfigTemplate = `
@@ -274,12 +276,19 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 	}
 
 	// check new nginx config
-	//args := []string{"nginx", "-t"}
-	args := []string{"head", "/etc/nginx/nginx.conf"}
+	args := []string{"nginx", "-t", "-c", path.Join("/etc/nginx/", nginxConfigTmpName)}
 	logger.Debug("send nginx command", zap.Strings("args", args))
 	err = nginxSendCommand(ctx, cli, nginxContainer.ID, logger, args...)
 	if err != nil {
 		return errcode.ErrNginxSendCommandNewConfigCheck.Wrap(err)
+	}
+
+	// copy new config instead of old one if check passed
+	args = []string{"mv", path.Join("/etc/nginx/", nginxConfigTmpName), "/etc/nginx/nginx.conf"}
+	logger.Debug("send nginx command", zap.Strings("args", args))
+	err = nginxSendCommand(ctx, cli, nginxContainer.ID, logger, args...)
+	if err != nil {
+		return errcode.ErrNginxSendCommandConfigReplace.Wrap(err)
 	}
 
 	// new config hot reload
@@ -315,7 +324,7 @@ func buildNginxConfigTar(data interface{}) (*bytes.Buffer, error) {
 	var buf bytes.Buffer
 	tw := tar.NewWriter(&buf)
 	err = tw.WriteHeader(&tar.Header{
-		Name: "nginx.conf",
+		Name: nginxConfigTmpName,
 		Mode: 0755,
 		Size: int64(len(config)),
 	})
