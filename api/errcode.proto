@@ -158,7 +158,11 @@ enum ErrCode {
   ErrNginxSendCommandNewConfigRemove = 7013;
   ErrNginxSendCommandConfigReplace = 7014;
   ErrNginxSendCommandReloadConfig = 7015;
-  ErrNatPortOpening = 7016;
+  ErrNginxConnectNetwork = 7016;
+  ErrContainerConnectNetwork = 7017;
+  ErrNatPortOpening = 7018;
+  ErrBuildNginxConfig = 7019;
+  ErrExecuteTemplate = 7020;
 
   //// Docker API (starting at 8001)
 
@@ -171,5 +175,7 @@ enum ErrCode {
   ErrDockerAPIContainerExecStart = 8007;
   ErrDockerAPIContainerExecInspect = 8008;
   ErrDockerAPIImagePull = 8009;
-  ErrDockerAPIExitCode = 8010;
+  ErrDockerAPINetworkList = 8010;
+  ErrDockerAPINetworkCreate = 8011;
+  ErrDockerAPIExitCode = 8012;
 }
