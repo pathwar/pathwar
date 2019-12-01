@@ -295,7 +295,7 @@ func Down(
 			RemoveVolumes: removeVolumes,
 		})
 		if err != nil {
-			return errcode.ErrComposeRemoveContainer.Wrap(err)
+			return errcode.ErrDockerAPIContainerRemove.Wrap(err)
 		}
 		fmt.Println("removed container " + instanceID)
 	}
@@ -306,7 +306,7 @@ func Down(
 			PruneChildren: true,
 		})
 		if err != nil {
-			return errcode.ErrComposeRemoveImage.Wrap(err)
+			return errcode.ErrDockerAPIImageRemove.Wrap(err)
 		}
 		fmt.Println("removed image " + imageID)
 	}
@@ -349,9 +349,11 @@ func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) 
 }
 
 func GetPathwarInfo(ctx context.Context, cli *client.Client) (*PathwarInfo, error) {
-	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
+	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{
+		All: true,
+	})
 	if err != nil {
-		return nil, errcode.ErrComposeListContainers.Wrap(err)
+		return nil, errcode.ErrDockerAPIContainerList.Wrap(err)
 	}
 
 	pwInfo := PathwarInfo{

@@ -7,7 +7,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/docker/distribution v2.7.1+incompatible // indirect
 	github.com/docker/docker v1.13.1
-	github.com/docker/go-connections v0.4.0 // indirect
+	github.com/docker/go-connections v0.4.0
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/dustin/go-humanize v1.0.0
 	github.com/go-chi/chi v4.0.2+incompatible
@@ -22,6 +22,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.12.1
 	github.com/jinzhu/gorm v1.9.11
 	github.com/keycloak/kcinit v0.0.0-20181010192927-f85c3c5390ea
+	github.com/moby/moby v1.13.1
 	github.com/oklog/run v1.0.0
 	github.com/olekukonko/tablewriter v0.0.3
 	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
