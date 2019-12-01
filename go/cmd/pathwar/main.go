@@ -88,7 +88,7 @@ var (
 	hypervisorNginxFlags             = flag.NewFlagSet("hypervisor nginx", flag.ExitOnError)
 	hypervisorNginxHostIP            = hypervisorNginxFlags.String("host", "0.0.0.0", "HTTP listening addr")
 	hypervisorNginxHostPort          = hypervisorNginxFlags.String("port", "8000", "HTTP listening port")
-	hypervisorNginxDomainSuffix      = hypervisorNginxFlags.String("domain-suffix", ".127.0.0.0.xip.io", "Domain suffix to append")
+	hypervisorNginxDomainSuffix      = hypervisorNginxFlags.String("domain-suffix", "local", "Domain suffix to append")
 	hypervisorNginxModeratorPassword = hypervisorNginxFlags.String("moderator-password", "", "Challenge moderator password")
 	hypervisorNginxSalt              = hypervisorNginxFlags.String("salt", "", "salt used to generate secure hashes (random if empty)")
 	hypervisorForceRecreate          = hypervisorNginxFlags.Bool("force-recreate", false, "remove existing nginx container")

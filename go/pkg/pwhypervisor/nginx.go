@@ -4,6 +4,7 @@ import (
 	"archive/tar"
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -136,48 +137,68 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 		}
 	}
 
-	// check if nginx server is started, build and start it if needed
-	nginxContainerID, running, onProxyNetwork, err := checkNginxContainer(ctx, cli)
+	// check if nginx server is started
+	nginxContainer, err := checkNginxContainer(ctx, cli)
 	if err != nil {
 		return errcode.ErrCheckNginxContainer.Wrap(err)
 	}
 
-	if opts.ForceRecreate && nginxContainerID != "" {
-		logger.Debug("nginx container remove", zap.String("id", nginxContainerID))
-		err := cli.ContainerRemove(ctx, nginxContainerID, types.ContainerRemoveOptions{
+	// remove nginx container if forced
+	if opts.ForceRecreate && nginxContainer != nil {
+		logger.Debug("nginx container remove", zap.String("id", nginxContainer.ID))
+		err := cli.ContainerRemove(ctx, nginxContainer.ID, types.ContainerRemoveOptions{
 			Force:         true,
 			RemoveVolumes: true,
 		})
 		if err != nil {
 			return errcode.ErrRemoveNginxContainer.Wrap(err)
 		}
-		nginxContainerID = ""
+		nginxContainer = nil
 	}
 
-	if nginxContainerID == "" {
+	// build nginx container if needed
+	var nginxContainerID string
+	running := false
+	if nginxContainer == nil {
 		logger.Debug("build nginx container", zap.Any("opts", opts))
 		nginxContainerID, err = buildNginxContainer(ctx, cli, opts)
 		if err != nil {
 			return errcode.ErrBuildNginxContainer.Wrap(err)
 		}
-		running = false
+	} else {
+		nginxContainerID = nginxContainer.ID
+		running = (nginxContainer.State == "running")
 	}
 
+	// start nginx container if needed
 	if !running {
 		logger.Debug("start nginx container", zap.String("id", nginxContainerID))
 		err = cli.ContainerStart(ctx, nginxContainerID, types.ContainerStartOptions{})
 		if err != nil {
 			return errcode.ErrStartNginxContainer.Wrap(err)
 		}
+		nginxContainer, err = checkNginxContainer(ctx, cli)
+		if err != nil {
+			return errcode.ErrCheckNginxContainer.Wrap(err)
+		}
 	}
 
-	if !onProxyNetwork {
-		logger.Debug("connect nginx to proxy network", zap.String("nginx-id", nginxContainerID), zap.String("network-id", proxyNetworkID))
-		err = cli.NetworkConnect(ctx, proxyNetworkID, nginxContainerID, nil)
+	// connect nginx container to proxy network
+	if _, onProxyNetwork := nginxContainer.NetworkSettings.Networks[proxyNetworkName]; !onProxyNetwork {
+		logger.Debug("connect nginx to proxy network", zap.String("nginx-id", nginxContainer.ID), zap.String("network-id", proxyNetworkID))
+		err = cli.NetworkConnect(ctx, proxyNetworkID, nginxContainer.ID, nil)
 		if err != nil {
 			return errcode.ErrNginxConnectNetwork.Wrap(err)
 		}
+		// refresh container struct so it contains network configuration
+		nginxContainer, err = checkNginxContainer(ctx, cli)
+		if err != nil {
+			return errcode.ErrCheckNginxContainer.Wrap(err)
+		}
 	}
+
+	// update proxy network nginx container IP
+	proxyNetworkIP := nginxContainer.NetworkSettings.Networks[proxyNetworkName].IPAddress
 
 	// make sure that exposed containers are connected to proxy network
 	pwInfo, err := pwcompose.GetPathwarInfo(ctx, cli)
@@ -187,8 +208,8 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 	for _, flavor := range pwInfo.RunningFlavors {
 		for _, instance := range flavor.Instances {
 			for _, port := range instance.Ports {
-				if port.PublicPort != 0 {
-					if _, onProxyNetwork = instance.NetworkSettings.Networks[proxyNetworkName]; !onProxyNetwork {
+				if port.PrivatePort != 0 {
+					if _, onProxyNetwork := instance.NetworkSettings.Networks[proxyNetworkName]; !onProxyNetwork {
 						logger.Debug("connect container to proxy network", zap.String("container-id", instance.ID), zap.String("network-id", proxyNetworkID))
 						err = cli.NetworkConnect(ctx, proxyNetworkID, instance.ID, nil)
 						if err != nil {
@@ -198,6 +219,11 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 				}
 			}
 		}
+	}
+
+	// update domainsuffix for local use if needed
+	if opts.DomainSuffix == "local" {
+		opts.DomainSuffix = "." + proxyNetworkIP + ".xip.io"
 	}
 
 	configData := NginxConfigData{
@@ -217,10 +243,10 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 				upstream := NginxUpstream{
 					Hashes: []string{},
 				}
-				if port.PublicPort != 0 {
+				if port.PrivatePort != 0 {
 					upstream.Name = instance.Names[0][1:]
 					upstream.Host = instance.NetworkSettings.Networks[proxyNetworkName].IPAddress
-					upstream.Port = strconv.Itoa(int(port.PublicPort))
+					upstream.Port = strconv.Itoa(int(port.PrivatePort))
 
 					// add hash per users to proxy configuration
 					if _, found := opts.AllowedUsers[instance.Names[0][1:]]; found {
@@ -241,8 +267,8 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 		return errcode.ErrBuildNginxConfig.Wrap(err)
 	}
 
-	logger.Debug("copy nginx config into the container", zap.String("container-id", nginxContainerID))
-	err = cli.CopyToContainer(ctx, nginxContainerID, "/etc/nginx/", buf, types.CopyToContainerOptions{})
+	logger.Debug("copy nginx config into the container", zap.String("container-id", nginxContainer.ID))
+	err = cli.CopyToContainer(ctx, nginxContainer.ID, "/etc/nginx/", buf, types.CopyToContainerOptions{})
 	if err != nil {
 		return errcode.ErrCopyNginxConfigToContainer.Wrap(err)
 	}
@@ -251,7 +277,7 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 	//args := []string{"nginx", "-t"}
 	args := []string{"head", "/etc/nginx/nginx.conf"}
 	logger.Debug("send nginx command", zap.Strings("args", args))
-	err = nginxSendCommand(ctx, cli, nginxContainerID, logger, args...)
+	err = nginxSendCommand(ctx, cli, nginxContainer.ID, logger, args...)
 	if err != nil {
 		return errcode.ErrNginxSendCommandNewConfigCheck.Wrap(err)
 	}
@@ -259,31 +285,17 @@ func Nginx(ctx context.Context, opts HypervisorOpts, cli *client.Client, logger 
 	// new config hot reload
 	args = []string{"nginx", "-s", "reload"}
 	logger.Debug("send nginx command", zap.Strings("args", args))
-	err = nginxSendCommand(ctx, cli, nginxContainerID, logger, args...)
+	err = nginxSendCommand(ctx, cli, nginxContainer.ID, logger, args...)
 	if err != nil {
 		return errcode.ErrNginxSendCommandReloadConfig.Wrap(err)
 	}
 
-	// check config by sending it to NGINX container and call command for that
+	for _, upstream := range configData.Upstreams {
+		for _, hash := range upstream.Hashes {
+			fmt.Println(upstream.Name + ": " + hash + opts.DomainSuffix)
+		}
 
-	// if config is OK, smart reload
-
-	// bonus: generate a status page that contains information about the configuration
-
-	// usage example:
-	//   pathwar --debug hypervisor nginx '{"instance1": [123, 456], "instance2": [789]}'
-
-	// 1: get pathwar info: pwcompose.GetPathwarInfo(ctx, cli)
-	// 2: generate an entire nginx configuration file based on pathwar info and NginxConfig)
-	//
-	//    for each running instances we need to have:
-	//      - a status-[instance].[domainsuffix] delivering a static file -> will be used to check if an instance is configured (i.e., for monitoring)
-	//      - a moderator-[instance].[domainsuffix] with passphrase authentication -> used to check if an instance is working even without being in the AllowedUsers list
-	//      - one [hash(allowed_user+salt)].[domainsuffix] without authentication for each allowed users of each instances
-
-	// 3: check that new config file is valid -> there is an nginx command for that
-	// 4: smart start/reload -> try to never shutdown the nginx server, if the server is already started, "nginx reload" can update the config, else we need to start it by ourselve
-	// 5: bonus: generate a status page that contains information about the configuration
+	}
 
 	return nil
 }
@@ -299,7 +311,6 @@ func buildNginxConfigTar(data interface{}) (*bytes.Buffer, error) {
 		return nil, errcode.ErrExecuteTemplate.Wrap(err)
 	}
 	config := configBuf.Bytes()
-	// fmt.Println(string(config))
 
 	var buf bytes.Buffer
 	tw := tar.NewWriter(&buf)
@@ -359,22 +370,21 @@ func buildNginxContainer(ctx context.Context, cli *client.Client, opts Hyperviso
 	return cont.ID, nil
 }
 
-func checkNginxContainer(ctx context.Context, cli *client.Client) (string, bool, bool, error) {
+func checkNginxContainer(ctx context.Context, cli *client.Client) (*types.Container, error) {
 	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{
 		All: true,
 	})
 	if err != nil {
-		return "", false, false, errcode.ErrDockerAPIContainerList.Wrap(err)
+		return nil, errcode.ErrDockerAPIContainerList.Wrap(err)
 	}
 	for _, container := range containers {
 		for _, name := range container.Names {
 			if name[1:] == nginxContainerName {
-				_, onProxyNetwork := container.NetworkSettings.Networks[proxyNetworkName]
-				return container.ID, container.State == "running", onProxyNetwork, nil
+				return &container, nil
 			}
 		}
 	}
-	return "", false, false, nil
+	return nil, nil
 }
 
 func nginxSendCommand(ctx context.Context, cli *client.Client, nginxContainerID string, logger *zap.Logger, args ...string) error {
@@ -387,11 +397,6 @@ func nginxSendCommand(ctx context.Context, cli *client.Client, nginxContainerID 
 	if err != nil {
 		return errcode.ErrDockerAPIContainerExecCreate.Wrap(err)
 	}
-
-	/*err = cli.ContainerExecStart(ctx, execRes.ID, types.ExecStartCheck{})
-	if err != nil {
-		return errcode.ErrDockerAPIContainerExecStart.Wrap(err)
-	}*/
 
 	res, err := cli.ContainerExecAttach(ctx, execRes.ID, execConfig)
 	if err != nil {
