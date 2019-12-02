@@ -189,6 +189,7 @@ func Up(preparedCompose string, instanceKey string, logger *zap.Logger) error {
 		serviceName := service.Labels[serviceNameLabel]
 		imageHash := strings.Split(service.Image, "@sha256:")[1]
 		service.ContainerName = fmt.Sprintf("%s.%s.%s.%s", challengeName, serviceName, imageHash[:6], instanceKey)
+		service.Restart = "unless-stopped"
 		service.Labels[instanceKeyLabel] = instanceKey
 		preparedComposeStruct.Services[name] = service
 	}
