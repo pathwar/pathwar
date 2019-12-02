@@ -30,6 +30,7 @@ type service struct {
 	DependsOn                                 []string          `yaml:"depends_on,omitempty"`
 	CapAdd                                    []string          `yaml:"cap_add,omitempty"`
 	Build                                     string            `yaml:",omitempty"`
+	Restart                                   string            `yaml:",omitempty"`
 	Environment                               map[string]string `yaml:",omitempty"`
 	Labels                                    map[string]string `yaml:"labels,omitempty"`
 }
