@@ -139,7 +139,7 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 				for k := 0; k < 2; k++ {
 					instance := &ChallengeInstance{
 						AgentID: agents[rand.Int()%len(agents)].ID,
-						Status:  ChallengeInstance_Active,
+						Status:  ChallengeInstance_Available,
 					}
 					seasonChallenge.Instances = append(seasonChallenge.Instances, instance)
 				}
