@@ -108,13 +108,13 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 	}
 
 	//
-	// hypervisors
+	// agents
 	//
 
-	localhost := &Hypervisor{
+	localhost := &Agent{
 		Name:    "default",
-		Address: "default-hypervisor.pathwar.land",
-		Status:  Hypervisor_Active, // only useful during dev
+		Address: "default-agent.pathwar.land",
+		Status:  Agent_Active, // only useful during dev
 	}
 	err = tx.Create(localhost).Error
 	if err != nil {

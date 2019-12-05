@@ -38,7 +38,7 @@ func GetDump(db *gorm.DB) (*Dump, error) {
 	if err := db.Find(&dump.ChallengeInstances).Error; err != nil {
 		return nil, GormToErrcode(err)
 	}
-	if err := db.Find(&dump.Hypervisors).Error; err != nil {
+	if err := db.Find(&dump.Agents).Error; err != nil {
 		return nil, GormToErrcode(err)
 	}
 	if err := db.Find(&dump.Users).Error; err != nil {
@@ -67,20 +67,20 @@ func GetDump(db *gorm.DB) (*Dump, error) {
 
 func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) error {
 	//
-	// hypervisors
+	// agents
 	//
 
-	hypervisors := []*Hypervisor{}
+	agents := []*Agent{}
 	for i := 0; i < 3; i++ {
-		hypervisor := &Hypervisor{
+		agent := &Agent{
 			Name:    gofakeit.HipsterWord(),
 			Address: gofakeit.IPv4Address(),
-			Status:  Hypervisor_Active,
+			Status:  Agent_Active,
 		}
-		hypervisors = append(hypervisors, hypervisor)
+		agents = append(agents, agent)
 	}
-	logger.Debug("Generating hypervisors")
-	for _, entity := range hypervisors {
+	logger.Debug("Generating agents")
+	for _, entity := range agents {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
 			return GormToErrcode(err)
 		}
@@ -138,8 +138,8 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 				}
 				for k := 0; k < 2; k++ {
 					instance := &ChallengeInstance{
-						HypervisorID: hypervisors[rand.Int()%len(hypervisors)].ID,
-						Status:       ChallengeInstance_Active,
+						AgentID: agents[rand.Int()%len(agents)].ID,
+						Status:  ChallengeInstance_Active,
 					}
 					seasonChallenge.Instances = append(seasonChallenge.Instances, instance)
 				}
