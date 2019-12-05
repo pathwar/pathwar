@@ -14,7 +14,7 @@ func AllMap() map[string]interface{} {
 		"ChallengeValidation":   ChallengeValidation{},
 		"Coupon":                Coupon{},
 		"CouponValidation":      CouponValidation{},
-		"Hypervisor":            Hypervisor{},
+		"Agent":                 Agent{},
 		"InventoryItem":         InventoryItem{},
 		"Notification":          Notification{},
 		"Organization":          Organization{},
@@ -44,7 +44,7 @@ func ForeignKeys() [][3]string {
 		// {"Achievement", "challenge_validation_id", "challenge_validation(id)"}, // optional
 		{"ChallengeFlavor", "challenge_id", "challenge(id)"},
 		{"ChallengeInstance", "flavor_id", "challenge_flavor(id)"},
-		{"ChallengeInstance", "hypervisor_id", "hypervisor(id)"},
+		{"ChallengeInstance", "agent_id", "agent(id)"},
 		{"ChallengeSubscription", "season_challenge_id", "season_challenge(id)"},
 		{"ChallengeSubscription", "team_id", "team(id)"},
 		{"ChallengeSubscription", "buyer_id", "user(id)"},

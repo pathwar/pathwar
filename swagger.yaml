@@ -33,6 +33,186 @@ definitions:
     - Unlisted
     - Public
     type: string
+  apiChallengeGetOutput:
+    properties:
+      item:
+        $ref: '#/definitions/dbChallenge'
+    type: object
+  apiChallengeListOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbChallenge'
+        type: array
+    type: object
+  apiChallengeSubscriptionCloseInput:
+    properties:
+      challenge_subscription_id:
+        format: int64
+        type: string
+    type: object
+  apiChallengeSubscriptionCloseOutput:
+    properties:
+      challenge_subscription:
+        $ref: '#/definitions/dbChallengeSubscription'
+    type: object
+  apiChallengeSubscriptionValidateInput:
+    properties:
+      challenge_subscription_id:
+        format: int64
+        type: string
+      comment:
+        type: string
+      passphrase:
+        type: string
+    type: object
+  apiChallengeSubscriptionValidateOutput:
+    properties:
+      challenge_validation:
+        $ref: '#/definitions/dbChallengeValidation'
+    type: object
+  apiGetInfoOutput:
+    properties:
+      built_at:
+        type: string
+      built_by:
+        type: string
+      commit:
+        type: string
+      uptime:
+        format: int32
+        type: integer
+      version:
+        type: string
+    type: object
+  apiGetStatusOutput:
+    properties:
+      everything_is_ok:
+        format: boolean
+        type: boolean
+    type: object
+  apiOrganizationListOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbOrganization'
+        type: array
+    type: object
+  apiSeasonChallengeBuyInput:
+    properties:
+      season_challenge_id:
+        format: int64
+        type: string
+      team_id:
+        format: int64
+        type: string
+    type: object
+  apiSeasonChallengeBuyOutput:
+    properties:
+      challenge_subscription:
+        $ref: '#/definitions/dbChallengeSubscription'
+    type: object
+  apiSeasonChallengeGetOutput:
+    properties:
+      item:
+        $ref: '#/definitions/dbSeasonChallenge'
+    type: object
+  apiSeasonChallengeListOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbSeasonChallenge'
+        type: array
+    type: object
+  apiTeamAcceptInviteInput:
+    properties:
+      team_member_id:
+        format: int64
+        type: string
+    type: object
+  apiTeamAcceptInviteOutput:
+    properties:
+      team_member:
+        $ref: '#/definitions/dbTeamMember'
+    type: object
+  apiTeamCreateInput:
+    properties:
+      name:
+        type: string
+      organization_id:
+        format: int64
+        type: string
+      season_id:
+        format: int64
+        type: string
+    type: object
+  apiTeamCreateOutput:
+    properties:
+      team:
+        $ref: '#/definitions/dbTeam'
+    type: object
+  apiTeamGetOutput:
+    properties:
+      item:
+        $ref: '#/definitions/dbTeam'
+    type: object
+  apiTeamListOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbTeam'
+        type: array
+    type: object
+  apiTeamSendInviteInput:
+    properties:
+      team_id:
+        format: int64
+        type: string
+      user_id:
+        format: int64
+        type: string
+    type: object
+  apiTeamSendInviteOutput:
+    properties:
+      team_member:
+        $ref: '#/definitions/dbTeamMember'
+    type: object
+  apiUserDeleteAccountInput:
+    properties:
+      reason:
+        type: string
+    type: object
+  apiUserDeleteAccountOutput:
+    type: object
+  apiUserGetSessionOutput:
+    properties:
+      claims:
+        $ref: '#/definitions/ssoClaims'
+      is_new_user:
+        format: boolean
+        type: boolean
+      notifications:
+        format: int32
+        type: integer
+      seasons:
+        items:
+          $ref: '#/definitions/OutputSeasonAndTeam'
+        type: array
+      user:
+        $ref: '#/definitions/dbUser'
+    type: object
+  apiUserSetPreferencesInput:
+    properties:
+      active_season_id:
+        format: int64
+        type: string
+    type: object
+  apiUserSetPreferencesOutput:
+    type: object
+  apiVoid:
+    example: {}
+    title: Void is an empty message
+    type: object
   dbAchievement:
     properties:
       argument:
@@ -107,6 +287,35 @@ definitions:
     - HackThePlatform
     title: fields
     type: string
+  dbAgent:
+    properties:
+      address:
+        type: string
+      challenge_instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
+      created_at:
+        format: date-time
+        type: string
+      id:
+        format: int64
+        type: string
+      name:
+        type: string
+      status:
+        $ref: '#/definitions/dbAgentStatus'
+      updated_at:
+        format: date-time
+        type: string
+    type: object
+  dbAgentStatus:
+    default: Unknown
+    enum:
+    - Unknown
+    - Active
+    - Inactive
+    type: string
   dbChallenge:
     properties:
       author:
@@ -177,17 +386,17 @@ definitions:
     type: object
   dbChallengeInstance:
     properties:
+      agent:
+        $ref: '#/definitions/dbAgent'
+      agent_id:
+        format: int64
+        type: string
       created_at:
         format: date-time
         type: string
       flavor:
         $ref: '#/definitions/dbChallengeFlavor'
       flavor_id:
-        format: int64
-        type: string
-      hypervisor:
-        $ref: '#/definitions/dbHypervisor'
-      hypervisor_id:
         format: int64
         type: string
       id:
@@ -376,6 +585,10 @@ definitions:
         items:
           $ref: '#/definitions/dbAchievement'
         type: array
+      agents:
+        items:
+          $ref: '#/definitions/dbAgent'
+        type: array
       challenge_flavors:
         items:
           $ref: '#/definitions/dbChallengeFlavor'
@@ -403,10 +616,6 @@ definitions:
       coupons:
         items:
           $ref: '#/definitions/dbCoupon'
-        type: array
-      hypervisors:
-        items:
-          $ref: '#/definitions/dbHypervisor'
         type: array
       inventory_items:
         items:
@@ -449,35 +658,6 @@ definitions:
           $ref: '#/definitions/dbWhoswhoAttempt'
         type: array
     type: object
-  dbHypervisor:
-    properties:
-      address:
-        type: string
-      challenge_instances:
-        items:
-          $ref: '#/definitions/dbChallengeInstance'
-        type: array
-      created_at:
-        format: date-time
-        type: string
-      id:
-        format: int64
-        type: string
-      name:
-        type: string
-      status:
-        $ref: '#/definitions/dbHypervisorStatus'
-      updated_at:
-        format: date-time
-        type: string
-    type: object
-  dbHypervisorStatus:
-    default: Unknown
-    enum:
-    - Unknown
-    - Active
-    - Inactive
-    type: string
   dbInventoryItem:
     properties:
       created_at:
@@ -864,186 +1044,6 @@ definitions:
         format: date-time
         type: string
     type: object
-  engineChallengeGetOutput:
-    properties:
-      item:
-        $ref: '#/definitions/dbChallenge'
-    type: object
-  engineChallengeListOutput:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/dbChallenge'
-        type: array
-    type: object
-  engineChallengeSubscriptionCloseInput:
-    properties:
-      challenge_subscription_id:
-        format: int64
-        type: string
-    type: object
-  engineChallengeSubscriptionCloseOutput:
-    properties:
-      challenge_subscription:
-        $ref: '#/definitions/dbChallengeSubscription'
-    type: object
-  engineChallengeSubscriptionValidateInput:
-    properties:
-      challenge_subscription_id:
-        format: int64
-        type: string
-      comment:
-        type: string
-      passphrase:
-        type: string
-    type: object
-  engineChallengeSubscriptionValidateOutput:
-    properties:
-      challenge_validation:
-        $ref: '#/definitions/dbChallengeValidation'
-    type: object
-  engineGetInfoOutput:
-    properties:
-      built_at:
-        type: string
-      built_by:
-        type: string
-      commit:
-        type: string
-      uptime:
-        format: int32
-        type: integer
-      version:
-        type: string
-    type: object
-  engineGetStatusOutput:
-    properties:
-      everything_is_ok:
-        format: boolean
-        type: boolean
-    type: object
-  engineOrganizationListOutput:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/dbOrganization'
-        type: array
-    type: object
-  engineSeasonChallengeBuyInput:
-    properties:
-      season_challenge_id:
-        format: int64
-        type: string
-      team_id:
-        format: int64
-        type: string
-    type: object
-  engineSeasonChallengeBuyOutput:
-    properties:
-      challenge_subscription:
-        $ref: '#/definitions/dbChallengeSubscription'
-    type: object
-  engineSeasonChallengeGetOutput:
-    properties:
-      item:
-        $ref: '#/definitions/dbSeasonChallenge'
-    type: object
-  engineSeasonChallengeListOutput:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/dbSeasonChallenge'
-        type: array
-    type: object
-  engineTeamAcceptInviteInput:
-    properties:
-      team_member_id:
-        format: int64
-        type: string
-    type: object
-  engineTeamAcceptInviteOutput:
-    properties:
-      team_member:
-        $ref: '#/definitions/dbTeamMember'
-    type: object
-  engineTeamCreateInput:
-    properties:
-      name:
-        type: string
-      organization_id:
-        format: int64
-        type: string
-      season_id:
-        format: int64
-        type: string
-    type: object
-  engineTeamCreateOutput:
-    properties:
-      team:
-        $ref: '#/definitions/dbTeam'
-    type: object
-  engineTeamGetOutput:
-    properties:
-      item:
-        $ref: '#/definitions/dbTeam'
-    type: object
-  engineTeamListOutput:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/dbTeam'
-        type: array
-    type: object
-  engineTeamSendInviteInput:
-    properties:
-      team_id:
-        format: int64
-        type: string
-      user_id:
-        format: int64
-        type: string
-    type: object
-  engineTeamSendInviteOutput:
-    properties:
-      team_member:
-        $ref: '#/definitions/dbTeamMember'
-    type: object
-  engineUserDeleteAccountInput:
-    properties:
-      reason:
-        type: string
-    type: object
-  engineUserDeleteAccountOutput:
-    type: object
-  engineUserGetSessionOutput:
-    properties:
-      claims:
-        $ref: '#/definitions/ssoClaims'
-      is_new_user:
-        format: boolean
-        type: boolean
-      notifications:
-        format: int32
-        type: integer
-      seasons:
-        items:
-          $ref: '#/definitions/OutputSeasonAndTeam'
-        type: array
-      user:
-        $ref: '#/definitions/dbUser'
-    type: object
-  engineUserSetPreferencesInput:
-    properties:
-      active_season_id:
-        format: int64
-        type: string
-    type: object
-  engineUserSetPreferencesOutput:
-    type: object
-  engineVoid:
-    example: {}
-    title: Void is an empty message
-    type: object
   ssoActionToken:
     properties:
       asid:
@@ -1125,7 +1125,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineChallengeGetOutput'
+            $ref: '#/definitions/apiChallengeGetOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1136,7 +1136,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /challenge-subscription/close:
     post:
       operationId: ChallengeSubscriptionClose
@@ -1145,12 +1145,12 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/engineChallengeSubscriptionCloseInput'
+          $ref: '#/definitions/apiChallengeSubscriptionCloseInput'
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineChallengeSubscriptionCloseOutput'
+            $ref: '#/definitions/apiChallengeSubscriptionCloseOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1161,7 +1161,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /challenge-subscription/validate:
     post:
       operationId: ChallengeSubscriptionValidate
@@ -1170,12 +1170,12 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/engineChallengeSubscriptionValidateInput'
+          $ref: '#/definitions/apiChallengeSubscriptionValidateInput'
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineChallengeSubscriptionValidateOutput'
+            $ref: '#/definitions/apiChallengeSubscriptionValidateOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1186,7 +1186,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /challenges:
     get:
       operationId: ChallengeList
@@ -1194,7 +1194,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineChallengeListOutput'
+            $ref: '#/definitions/apiChallengeListOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1205,7 +1205,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /info:
     get:
       operationId: ToolInfo
@@ -1213,7 +1213,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineGetInfoOutput'
+            $ref: '#/definitions/apiGetInfoOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1224,7 +1224,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /organizations:
     get:
       operationId: OrganizationList
@@ -1232,7 +1232,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineOrganizationListOutput'
+            $ref: '#/definitions/apiOrganizationListOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1243,7 +1243,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /ping:
     get:
       operationId: ToolPing
@@ -1251,7 +1251,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineVoid'
+            $ref: '#/definitions/apiVoid'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1262,7 +1262,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /season-challenge:
     get:
       operationId: SeasonChallengeGet
@@ -1276,7 +1276,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineSeasonChallengeGetOutput'
+            $ref: '#/definitions/apiSeasonChallengeGetOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1287,7 +1287,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /season-challenge/buy:
     post:
       operationId: SeasonChallengeBuy
@@ -1296,12 +1296,12 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/engineSeasonChallengeBuyInput'
+          $ref: '#/definitions/apiSeasonChallengeBuyInput'
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineSeasonChallengeBuyOutput'
+            $ref: '#/definitions/apiSeasonChallengeBuyOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1312,7 +1312,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /season-challenges:
     get:
       operationId: SeasonChallengeList
@@ -1326,7 +1326,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineSeasonChallengeListOutput'
+            $ref: '#/definitions/apiSeasonChallengeListOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1337,7 +1337,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /status:
     get:
       operationId: ToolStatus
@@ -1345,7 +1345,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineGetStatusOutput'
+            $ref: '#/definitions/apiGetStatusOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1356,7 +1356,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /team:
     get:
       operationId: TeamGet
@@ -1370,7 +1370,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineTeamGetOutput'
+            $ref: '#/definitions/apiTeamGetOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1381,7 +1381,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
     post:
       operationId: TeamCreate
       parameters:
@@ -1389,12 +1389,12 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/engineTeamCreateInput'
+          $ref: '#/definitions/apiTeamCreateInput'
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineTeamCreateOutput'
+            $ref: '#/definitions/apiTeamCreateOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1405,7 +1405,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /team/invite:
     post:
       operationId: TeamSendInvite
@@ -1414,12 +1414,12 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/engineTeamSendInviteInput'
+          $ref: '#/definitions/apiTeamSendInviteInput'
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineTeamSendInviteOutput'
+            $ref: '#/definitions/apiTeamSendInviteOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1430,7 +1430,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /team/invite/accept:
     post:
       operationId: TeamAcceptInvite
@@ -1439,12 +1439,12 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/engineTeamAcceptInviteInput'
+          $ref: '#/definitions/apiTeamAcceptInviteInput'
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineTeamAcceptInviteOutput'
+            $ref: '#/definitions/apiTeamAcceptInviteOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1455,7 +1455,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /teams:
     get:
       operationId: TeamList
@@ -1469,7 +1469,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineTeamListOutput'
+            $ref: '#/definitions/apiTeamListOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1480,7 +1480,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /tool/generate-fake-data:
     post:
       operationId: ToolGenerateFakeData
@@ -1489,12 +1489,12 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/engineVoid'
+          $ref: '#/definitions/apiVoid'
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineVoid'
+            $ref: '#/definitions/apiVoid'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1505,7 +1505,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /tool/sql-dump:
     get:
       operationId: ToolDBDump
@@ -1524,7 +1524,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /user/delete-account:
     post:
       operationId: UserDeleteAccount
@@ -1533,12 +1533,12 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/engineUserDeleteAccountInput'
+          $ref: '#/definitions/apiUserDeleteAccountInput'
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineUserDeleteAccountOutput'
+            $ref: '#/definitions/apiUserDeleteAccountOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1549,7 +1549,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /user/preferences:
     post:
       operationId: UserSetPreferences
@@ -1558,12 +1558,12 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/engineUserSetPreferencesInput'
+          $ref: '#/definitions/apiUserSetPreferencesInput'
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineUserSetPreferencesOutput'
+            $ref: '#/definitions/apiUserSetPreferencesOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1574,7 +1574,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
   /user/session:
     get:
       operationId: UserGetSession
@@ -1582,7 +1582,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/engineUserGetSessionOutput'
+            $ref: '#/definitions/apiUserGetSessionOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
@@ -1593,7 +1593,7 @@ paths:
             format: string
             type: string
       tags:
-      - Engine
+      - Service
 produces:
 - application/json
 schemes:

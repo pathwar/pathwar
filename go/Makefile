@@ -1,7 +1,7 @@
 ## moul/rules.mk
 GOPATH ?= $(HOME)/go
 GOPKG =		pathwar.land/go
-GOBINS =	./cmd/pathwar ./cmd/pwchallenge
+GOBINS =	./cmd/pathwar ./cmd/pwinit
 DOCKER_IMAGE =	pathwar/pathwar
 
 GO_INSTALL_OPTS = -v -ldflags "-s -w -X pathwar.land/go/pkg/pwversion.Version=`git describe --tags --abbrev` -X pathwar.land/go/pkg/pwversion.Commit=`git rev-parse HEAD` -X pathwar.land/go/pkg/pwversion.Date=`date +%s` -X pathwar.land/go/pkg/pwversion.BuiltBy=makefile"
@@ -12,16 +12,16 @@ PRE_BUILD_STEPS += generate
 PRE_LINT_STEPS += generate
 PRE_TIDY_STEPS += generate
 PRE_BUMPDEPS_STEPS += generate
-PRE_INSTALL_STEPS += ./out/pwchallenge-linux-amd64
+PRE_INSTALL_STEPS += ./out/pwinit-linux-amd64
 
 COMPOSE_OPTS = -f docker-compose.yml -f docker-compose.dev.yml
 include ../rules.mk  # see https://github.com/moul/rules.mk
 ##
 
-.PHONY: ./out/pwchallenge-linux-amd64
-./out/pwchallenge-linux-amd64:
+.PHONY: ./out/pwinit-linux-amd64
+./out/pwinit-linux-amd64:
 	mkdir -p out
-	GOOS=linux GOARCH=amd64 $(GO) build -mod=readonly -o $@ ./cmd/pwchallenge
+	GOOS=linux GOARCH=amd64 $(GO) build -mod=readonly -o $@ ./cmd/pwinit
 
 ##
 ## mysql
@@ -35,7 +35,7 @@ up:
 
 .PHONY: run
 run: install mysql.up
-	pathwar --debug engine --sso-unsafe server --with-pprof
+	pathwar --debug api --sso-unsafe server --with-pprof
 
 .PHONY: mysql.up
 mysql.up:

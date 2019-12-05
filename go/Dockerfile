@@ -15,5 +15,5 @@ RUN             apk --no-cache --update add openssl wget bash
 RUN             wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && chmod +x wait-for-it.sh
 COPY            --from=builder /go/bin/pathwar /bin/pathwar
 ENTRYPOINT      ["/bin/pathwar"]
-CMD             ["server"]
+CMD             ["api", "server"]
 EXPOSE          8000 9111

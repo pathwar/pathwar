@@ -24,10 +24,10 @@ gen.sum: $(GEN_SRC)
 
 .PHONY: generate_local
 generate_local:
-	protoc -I ../go/vendor/github.com/grpc-ecosystem/grpc-gateway:../api:../go/vendor:/protobuf --swagger_out=logtostderr=true:. ../api/pwengine.proto
+	protoc -I ../go/vendor/github.com/grpc-ecosystem/grpc-gateway:../api:../go/vendor:/protobuf --swagger_out=logtostderr=true:. ../api/pwapi.proto
 	echo 'swagger: "2.0"' > swagger.yaml.tmp
-	cat ./pwengine.swagger.json | json2yaml | grep -v 'swagger: "2.0"' >> swagger.yaml.tmp
-	rm -f ./pwengine.swagger.json
+	cat ./pwapi.swagger.json | json2yaml | grep -v 'swagger: "2.0"' >> swagger.yaml.tmp
+	rm -f ./pwapi.swagger.json
 	mv swagger.yaml.tmp ../swagger.yaml
 	eclint fix ../swagger.yaml
 	shasum $(GEN_SRC) | sort > gen.sum.tmp

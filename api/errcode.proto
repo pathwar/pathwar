@@ -59,7 +59,7 @@ enum ErrCode {
   ErrComposeRunUp = 3014;
   ErrComposeGetPathwarInfo = 3015;
 
-  //// Pathwar Engine (starting at 4001)
+  //// Pathwar API (starting at 4001)
 
   ErrGetUserIDFromContext = 4001;
   ErrMissingChallengeValidation = 4002;
@@ -126,7 +126,7 @@ enum ErrCode {
   //// Pathwar Main (starting at 6001)
 
   ErrInitLogger = 6001;
-  ErrStartEngine = 6002;
+  ErrStartService = 6002;
   ErrInitServer = 6003;
   ErrGroupTerminated = 6004;
   ErrGetSSOClientFromFlags = 6005;
@@ -139,11 +139,11 @@ enum ErrCode {
   ErrInitDB = 6012;
   ErrConfigureDB = 6013;
   ErrInitSSOClient = 6014;
-  ErrInitEngine = 6015;
+  ErrInitService = 6015;
 
-  //// Pathwar Hypervisor (starting at 7001)
+  //// Pathwar Agent (starting at 7001)
 
-  ErrHypervisorGetPathwarInfo = 7001;
+  ErrAgentGetPathwarInfo = 7001;
   ErrCheckNginxContainer = 7002;
   ErrRemoveNginxContainer = 7003;
   ErrBuildNginxContainer = 7004;
@@ -178,4 +178,8 @@ enum ErrCode {
   ErrDockerAPINetworkList = 8010;
   ErrDockerAPINetworkCreate = 8011;
   ErrDockerAPIExitCode = 8012;
+
+  //// Pathwar Init (starting at 9001)
+
+  ErrExecuteOnInitHook = 9001;
 }

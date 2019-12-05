@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package pathwar.init;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option go_package = "pathwar.land/go/pkg/pwinit";
+option (gogoproto.sizer_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+
+message InitConfig {
+  repeated string passphrases = 1;
+}

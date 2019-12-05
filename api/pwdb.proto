@@ -120,14 +120,14 @@ message ChallengeInstance {
   // associations
   //
 
-  Hypervisor hypervisor = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:HypervisorID\""];
-  int64 hypervisor_id = 201 [(gogoproto.customname) = "HypervisorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Agent agent = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:AgentID\""];
+  int64 agent_id = 201 [(gogoproto.customname) = "AgentID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
   ChallengeFlavor flavor = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:FlavorID\""];
   int64 flavor_id = 203 [(gogoproto.customname) = "FlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
-message Hypervisor {
+message Agent {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
@@ -631,7 +631,7 @@ message Dump {
   repeated ChallengeValidation challenge_validations = 6;
   repeated Coupon coupons = 7;
   repeated CouponValidation coupon_validations = 8;
-  repeated Hypervisor hypervisors = 9;
+  repeated Agent agents = 9;
   repeated InventoryItem inventory_items = 10;
   repeated Notification notifications = 11;
   repeated Organization organizations = 12;
