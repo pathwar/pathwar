@@ -110,11 +110,24 @@ message ChallengeInstance {
 
   enum Status {
     Unknown = 0;
-    Active = 1;
-    Inactive = 2;
+    IsNew = 1;           // instance freshly created and never started before
+    AcceptedByAgent = 2; // an agent accepted the job
+    Available = 3;         // agent set the status at started
+    NeedRedump = 4;      // instance needs to be restarted (broken
+    Disabled = 5;        // instance is disabled
+    // Booting
   }
-
   Status status = 100;
+  google.protobuf.Timestamp last_started_at = 101 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  google.protobuf.Timestamp last_stopped_at = 102 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  google.protobuf.Timestamp last_redump_requested_at = 103 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  string startup_error = 104;
+  int32 redump_count = 105;
+  int32 validation_count = 106;
+  bytes instance_config = 107; // marshalled configuration containing the passphrases, etc
+  // usage metrics to be updated by the agent (unique users, requests, etc)
+  // timestamp last_marked_as_tainted
+  // driver (docker)
 
   //
   // associations
@@ -145,6 +158,8 @@ message Agent {
   string name = 100;
   string address = 101;
   Status status = 102;
+  google.protobuf.Timestamp last_seen_at = 103 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  // metrics -> cpu/memory/containers/etc
 
   //
   // associations
@@ -486,7 +501,7 @@ message Notification {
   // fields
   //
 
-  bool is_read = 100;
+  google.protobuf.Timestamp read_at = 100 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   string click_url = 101;
   string msg = 102;
   string args = 103; // marshaled args

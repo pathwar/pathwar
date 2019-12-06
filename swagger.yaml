@@ -33,6 +33,27 @@ definitions:
     - Unlisted
     - Public
     type: string
+  apiAgentListInstancesOutput:
+    properties:
+      instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
+    type: object
+  apiAgentListOutput:
+    properties:
+      agents:
+        items:
+          $ref: '#/definitions/dbAgent'
+        type: array
+    type: object
+  apiAgentRegisterOutput:
+    properties:
+      agent:
+        $ref: '#/definitions/dbAgent'
+    type: object
+  apiAgentUpdateStateOutput:
+    type: object
   apiChallengeGetOutput:
     properties:
       item:
@@ -301,6 +322,9 @@ definitions:
       id:
         format: int64
         type: string
+      last_seen_at:
+        format: date-time
+        type: string
       name:
         type: string
       status:
@@ -402,18 +426,41 @@ definitions:
       id:
         format: int64
         type: string
+      instance_config:
+        format: byte
+        type: string
+      last_redump_requested_at:
+        format: date-time
+        type: string
+      last_started_at:
+        format: date-time
+        type: string
+      last_stopped_at:
+        format: date-time
+        type: string
+      redump_count:
+        format: int32
+        type: integer
+      startup_error:
+        type: string
       status:
         $ref: '#/definitions/dbChallengeInstanceStatus'
       updated_at:
         format: date-time
         type: string
+      validation_count:
+        format: int32
+        type: integer
     type: object
   dbChallengeInstanceStatus:
     default: Unknown
     enum:
     - Unknown
-    - Active
-    - Inactive
+    - IsNew
+    - AcceptedByAgent
+    - Available
+    - NeedRedump
+    - Disabled
     type: string
   dbChallengeSubscription:
     properties:
@@ -689,10 +736,10 @@ definitions:
       id:
         format: int64
         type: string
-      is_read:
-        format: boolean
-        type: boolean
       msg:
+        type: string
+      read_at:
+        format: date-time
         type: string
       updated_at:
         format: date-time

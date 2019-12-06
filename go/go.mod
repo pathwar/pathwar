@@ -13,7 +13,7 @@ require (
 	github.com/go-chi/chi v4.0.2+incompatible
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/gobuffalo/envy v1.8.1 // indirect
-	github.com/gobuffalo/logger v1.0.2 // indirect
+	github.com/gobuffalo/logger v1.0.3 // indirect
 	github.com/gobuffalo/packr/v2 v2.7.1
 	github.com/gogo/gateway v1.1.0
 	github.com/gogo/protobuf v1.3.1
@@ -24,7 +24,7 @@ require (
 	github.com/keycloak/kcinit v0.0.0-20181010192927-f85c3c5390ea
 	github.com/moby/moby v1.13.1
 	github.com/oklog/run v1.0.0
-	github.com/olekukonko/tablewriter v0.0.3
+	github.com/olekukonko/tablewriter v0.0.4
 	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
 	github.com/peterbourgon/ff v1.6.1-0.20190916204019-6cd704ec2eeb
 	github.com/pkg/errors v0.8.1
@@ -34,12 +34,13 @@ require (
 	go.uber.org/atomic v1.5.1 // indirect
 	go.uber.org/multierr v1.4.0 // indirect
 	go.uber.org/zap v1.13.0
-	golang.org/x/crypto v0.0.0-20191122220453-ac88ee75c92c // indirect
-	golang.org/x/net v0.0.0-20191119073136-fc4aabc6c914 // indirect
-	golang.org/x/sys v0.0.0-20191120155948-bd437916bb0e // indirect
-	golang.org/x/tools v0.0.0-20191124021906-f5828fc9a103 // indirect
+	golang.org/x/crypto v0.0.0-20191202143827-86a70503ff7e // indirect
+	golang.org/x/lint v0.0.0-20191125180803-fdd1cda4f05f // indirect
+	golang.org/x/net v0.0.0-20191204025024-5ee1b9f4859a // indirect
+	golang.org/x/sys v0.0.0-20191204072324-ce4227a45e2e // indirect
+	golang.org/x/tools v0.0.0-20191205060818-73c7173a9f7d // indirect
 	google.golang.org/appengine v1.6.5 // indirect
-	google.golang.org/genproto v0.0.0-20191115221424-83cc0476cb11
+	google.golang.org/genproto v0.0.0-20191203220235-3fa9dbf08042
 	google.golang.org/grpc v1.25.1
 	gopkg.in/gormigrate.v1 v1.6.0
 	gopkg.in/yaml.v3 v3.0.0-20191120175047-4206685974f2
