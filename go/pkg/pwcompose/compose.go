@@ -169,12 +169,15 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 	return nil
 }
 
-func Up(preparedCompose string, instanceKey string, logger *zap.Logger) error {
-	logger.Debug(
-		"up",
-		zap.String("compose", preparedCompose),
-		zap.String("instance-key", instanceKey),
-	)
+func Up(
+	ctx context.Context,
+	preparedCompose string,
+	instanceKey string,
+	forceRecreate bool,
+	cli *client.Client,
+	logger *zap.Logger,
+) error {
+	logger.Debug("up", zap.String("compose", preparedCompose), zap.String("instance-key", instanceKey))
 
 	// parse prepared compose yaml
 	preparedComposeStruct := config{}
@@ -184,6 +187,7 @@ func Up(preparedCompose string, instanceKey string, logger *zap.Logger) error {
 	}
 
 	// generate instanceIDs and set them as container_name
+	var challengeID string
 	for name, service := range preparedComposeStruct.Services {
 		challengeName := service.Labels[challengeNameLabel]
 		serviceName := service.Labels[serviceNameLabel]
@@ -191,6 +195,7 @@ func Up(preparedCompose string, instanceKey string, logger *zap.Logger) error {
 		service.ContainerName = fmt.Sprintf("%s.%s.%s.%s", challengeName, serviceName, imageHash[:6], instanceKey)
 		service.Restart = "unless-stopped"
 		service.Labels[instanceKeyLabel] = instanceKey
+		challengeID = fmt.Sprintf("%s@%s", service.Labels[challengeNameLabel], service.Labels[challengeVersionLabel])
 		preparedComposeStruct.Services[name] = service
 	}
 
@@ -222,6 +227,14 @@ func Up(preparedCompose string, instanceKey string, logger *zap.Logger) error {
 	}
 	tmpFile.Close()
 
+	// down instances if force recreate
+	if forceRecreate {
+		err = Down(ctx, []string{challengeID}, false, false, cli, logger)
+		if err != nil {
+			return errcode.ErrComposeForceRecreateDown.Wrap(err)
+		}
+	}
+
 	// start instances
 	logger.Debug("docker-compose", zap.String("action", "up"))
 	cmd := exec.Command("docker-compose", "-f", tmpPreparedComposePath, "up", "-d")
@@ -229,6 +242,7 @@ func Up(preparedCompose string, instanceKey string, logger *zap.Logger) error {
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
 	if err != nil {
+		logger.Error("Error detected while starting containers, it's probably due to a conflict with previously created containers that share the same name. You should retry with --force-recreate flag")
 		return errcode.ErrComposeRunUp.Wrap(err)
 	}
 
