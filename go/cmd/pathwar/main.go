@@ -43,73 +43,38 @@ const (
 var (
 	logger     *zap.Logger
 	flagOutput = os.Stderr
-	// global flags
-	globalFlags = flag.NewFlagSet("pathwar", flag.ExitOnError)
-	globalDebug = globalFlags.Bool("debug", false, "debug mode")
 
-	// API flags
-	apiFlags          = flag.NewFlagSet("api", flag.ExitOnError)
-	apiDBURN          = apiFlags.String("urn", defaultDBURN, "MySQL URN")
-	apiSSOPubkey      = apiFlags.String("sso-pubkey", "", "SSO Public Key")
-	apiSSORealm       = apiFlags.String("sso-realm", defaultSSORealm, "SSO Realm")
-	apiSSOClientID    = apiFlags.String("sso-clientid", defaultSSOClientID, "SSO ClientID")
-	apiSSOAllowUnsafe = apiFlags.Bool("sso-unsafe", false, "Allow unsafe SSO")
-
-	// SSO flags
-	ssoFlags       = flag.NewFlagSet("sso", flag.ExitOnError)
-	ssoPubkey      = ssoFlags.String("pubkey", "", "SSO Public Key")
-	ssoRealm       = ssoFlags.String("realm", defaultSSORealm, "SSO Realm")
-	ssoClientID    = ssoFlags.String("clientid", defaultSSOClientID, "SSO ClientID")
-	ssoAllowUnsafe = ssoFlags.Bool("unsafe", false, "Allow unsafe SSO")
-
-	// compose flags
-	composeFlags = flag.NewFlagSet("compose", flag.ExitOnError)
-
-	composePrepareFlags   = flag.NewFlagSet("compose prepare", flag.ExitOnError)
-	composePrepareNoPush  = composePrepareFlags.Bool("no-push", false, "don't push images")
-	composePreparePrefix  = composePrepareFlags.String("prefix", defaultDockerPrefix, "docker image prefix")
-	composePrepareVersion = composePrepareFlags.String("version", "1.0.0", "challenge version")
-
-	composeUpFlags       = flag.NewFlagSet("compose up", flag.ExitOnError)
-	composeUpInstanceKey = composeUpFlags.String("instance-key", "default", "instance key used to generate instance ID")
-
-	composeDownFlags        = flag.NewFlagSet("compose down", flag.ExitOnError)
-	composeDownRemoveImages = composeDownFlags.Bool("rmi", false, "remove images as well")
-	composeDownKeepVolumes  = composeDownFlags.Bool("keep-volumes", false, "keep volumes")
-
-	composePSFlags = flag.NewFlagSet("compose ps", flag.ExitOnError)
-	composePSDepth = composePSFlags.Int("depth", 0, "depth to display")
-
-	// agent flags
-	agentFlags = flag.NewFlagSet("agent", flag.ExitOnError)
-
-	agentDaemonFlags = flag.NewFlagSet("agent daemon", flag.ExitOnError)
-
-	agentNginxFlags             = flag.NewFlagSet("agent nginx", flag.ExitOnError)
-	agentNginxHostIP            = agentNginxFlags.String("host", "0.0.0.0", "HTTP listening addr")
-	agentNginxHostPort          = agentNginxFlags.String("port", "8000", "HTTP listening port")
-	agentNginxDomainSuffix      = agentNginxFlags.String("domain-suffix", "local", "Domain suffix to append")
-	agentNginxModeratorPassword = agentNginxFlags.String("moderator-password", "", "Challenge moderator password")
-	agentNginxSalt              = agentNginxFlags.String("salt", "", "salt used to generate secure hashes (random if empty)")
-	agentForceRecreate          = agentNginxFlags.Bool("force-recreate", false, "remove existing nginx container")
-	agentNginxDockerImage       = agentNginxFlags.String("docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
-
-	// server flags
-	serverFlags              = flag.NewFlagSet("server", flag.ExitOnError)
-	serverHTTPBind           = serverFlags.String("http-bind", ":8000", "HTTP server address")
-	serverGRPCBind           = serverFlags.String("grpc-bind", ":9111", "gRPC server address")
-	serverRequestTimeout     = serverFlags.Duration("request-timeout", 5*time.Second, "request timeout")
-	serverShutdownTimeout    = serverFlags.Duration("shutdown-timeout", 6*time.Second, "shutdown timeout")
-	serverCORSAllowedOrigins = serverFlags.String("cors-allowed-origins", "*", "allowed CORS origins")
-	serverWithPprof          = serverFlags.Bool("with-pprof", false, "enable pprof endpoints")
-
-	// misc flags
-	miscFlags = flag.NewFlagSet("misc", flag.ExitOnError)
+	// flag vars
+	globalDebug                 bool
+	agentForceRecreate          bool
+	agentNginxDockerImage       string
+	agentNginxDomainSuffix      string
+	agentNginxHostIP            string
+	agentNginxHostPort          string
+	agentNginxModeratorPassword string
+	agentNginxSalt              string
+	apiDBURN                    string
+	composeDownKeepVolumes      bool
+	composeDownRemoveImages     bool
+	composePSDepth              int
+	composePrepareNoPush        bool
+	composePreparePrefix        string
+	composePrepareVersion       string
+	composeUpInstanceKey        string
+	serverCORSAllowedOrigins    string
+	serverGRPCBind              string
+	serverHTTPBind              string
+	serverRequestTimeout        time.Duration
+	serverShutdownTimeout       time.Duration
+	serverWithPprof             bool
+	ssoAllowUnsafe              bool
+	ssoClientID                 string
+	ssoPubkey                   string
+	ssoRealm                    string
 )
 
 func main() {
 	log.SetFlags(0)
-	globalFlags.SetOutput(flagOutput)
 
 	defer func() {
 		if logger != nil {
@@ -117,31 +82,53 @@ func main() {
 		}
 	}()
 
-	globalPreRun := func() error {
-		rand.Seed(time.Now().UnixNano())
-		if *globalDebug {
-			config := zap.NewDevelopmentConfig()
-			config.Level.SetLevel(zap.DebugLevel)
-			config.DisableStacktrace = true
-			config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-			var err error
-			logger, err = config.Build()
-			if err != nil {
-				return errcode.ErrInitLogger.Wrap(err)
-			}
-		} else {
-			config := zap.NewDevelopmentConfig()
-			config.Level.SetLevel(zap.InfoLevel)
-			config.DisableStacktrace = true
-			config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-			var err error
-			logger, err = config.Build()
-			if err != nil {
-				return errcode.ErrInitLogger.Wrap(err)
-			}
-		}
-		return nil
-	}
+	// setup flags
+	var (
+		globalFlags         = flag.NewFlagSet("pathwar", flag.ExitOnError)
+		agentDaemonFlags    = flag.NewFlagSet("agent daemon", flag.ExitOnError)
+		agentFlags          = flag.NewFlagSet("agent", flag.ExitOnError)
+		agentNginxFlags     = flag.NewFlagSet("agent nginx", flag.ExitOnError)
+		apiFlags            = flag.NewFlagSet("api", flag.ExitOnError)
+		composeDownFlags    = flag.NewFlagSet("compose down", flag.ExitOnError)
+		composeFlags        = flag.NewFlagSet("compose", flag.ExitOnError)
+		composePSFlags      = flag.NewFlagSet("compose ps", flag.ExitOnError)
+		composePrepareFlags = flag.NewFlagSet("compose prepare", flag.ExitOnError)
+		composeUpFlags      = flag.NewFlagSet("compose up", flag.ExitOnError)
+		miscFlags           = flag.NewFlagSet("misc", flag.ExitOnError)
+		serverFlags         = flag.NewFlagSet("server", flag.ExitOnError)
+		ssoFlags            = flag.NewFlagSet("sso", flag.ExitOnError)
+	)
+	globalFlags.SetOutput(flagOutput) // used in main_test.go
+	globalFlags.BoolVar(&globalDebug, "debug", false, "debug mode")
+	agentNginxFlags.BoolVar(&agentForceRecreate, "force-recreate", false, "remove existing nginx container")
+	agentNginxFlags.StringVar(&agentNginxDockerImage, "docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
+	agentNginxFlags.StringVar(&agentNginxDomainSuffix, "domain-suffix", "local", "Domain suffix to append")
+	agentNginxFlags.StringVar(&agentNginxHostIP, "host", "0.0.0.0", "HTTP listening addr")
+	agentNginxFlags.StringVar(&agentNginxHostPort, "port", "8000", "HTTP listening port")
+	agentNginxFlags.StringVar(&agentNginxModeratorPassword, "moderator-password", "", "Challenge moderator password")
+	agentNginxFlags.StringVar(&agentNginxSalt, "salt", "", "salt used to generate secure hashes (random if empty)")
+	apiFlags.BoolVar(&ssoAllowUnsafe, "sso-unsafe", false, "Allow unsafe SSO")
+	apiFlags.StringVar(&apiDBURN, "urn", defaultDBURN, "MySQL URN")
+	apiFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
+	apiFlags.StringVar(&ssoPubkey, "sso-pubkey", "", "SSO Public Key")
+	apiFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
+	composeDownFlags.BoolVar(&composeDownKeepVolumes, "keep-volumes", false, "keep volumes")
+	composeDownFlags.BoolVar(&composeDownRemoveImages, "rmi", false, "remove images as well")
+	composePSFlags.IntVar(&composePSDepth, "depth", 0, "depth to display")
+	composePrepareFlags.BoolVar(&composePrepareNoPush, "no-push", false, "don't push images")
+	composePrepareFlags.StringVar(&composePreparePrefix, "prefix", defaultDockerPrefix, "docker image prefix")
+	composePrepareFlags.StringVar(&composePrepareVersion, "version", "1.0.0", "challenge version")
+	composeUpFlags.StringVar(&composeUpInstanceKey, "instance-key", "default", "instance key used to generate instance ID")
+	serverFlags.BoolVar(&serverWithPprof, "with-pprof", false, "enable pprof endpoints")
+	serverFlags.DurationVar(&serverRequestTimeout, "request-timeout", 5*time.Second, "request timeout")
+	serverFlags.DurationVar(&serverShutdownTimeout, "shutdown-timeout", 6*time.Second, "shutdown timeout")
+	serverFlags.StringVar(&serverCORSAllowedOrigins, "cors-allowed-origins", "*", "allowed CORS origins")
+	serverFlags.StringVar(&serverGRPCBind, "grpc-bind", ":9111", "gRPC server address")
+	serverFlags.StringVar(&serverHTTPBind, "http-bind", ":8000", "HTTP server address")
+	ssoFlags.BoolVar(&ssoAllowUnsafe, "unsafe", false, "Allow unsafe SSO")
+	ssoFlags.StringVar(&ssoClientID, "clientid", defaultSSOClientID, "SSO ClientID")
+	ssoFlags.StringVar(&ssoPubkey, "pubkey", "", "SSO Public Key")
+	ssoFlags.StringVar(&ssoRealm, "realm", defaultSSORealm, "SSO Realm")
 
 	version := &ffcli.Command{
 		Name:      "version",
@@ -181,12 +168,12 @@ func main() {
 			{ // server
 				opts := pwapi.ServerOpts{
 					Logger:             logger.Named("server"),
-					GRPCBind:           *serverGRPCBind,
-					HTTPBind:           *serverHTTPBind,
-					CORSAllowedOrigins: *serverCORSAllowedOrigins,
-					RequestTimeout:     *serverRequestTimeout,
-					ShutdownTimeout:    *serverShutdownTimeout,
-					WithPprof:          *serverWithPprof,
+					GRPCBind:           serverGRPCBind,
+					HTTPBind:           serverHTTPBind,
+					CORSAllowedOrigins: serverCORSAllowedOrigins,
+					RequestTimeout:     serverRequestTimeout,
+					ShutdownTimeout:    serverShutdownTimeout,
+					WithPprof:          serverWithPprof,
 				}
 				var err error
 				server, err = pwapi.NewServer(ctx, svc, opts)
@@ -408,9 +395,9 @@ func main() {
 			}
 			return pwcompose.Prepare(
 				path,
-				*composePreparePrefix,
-				*composePrepareNoPush,
-				*composePrepareVersion,
+				composePreparePrefix,
+				composePrepareNoPush,
+				composePrepareVersion,
 				logger,
 			)
 		},
@@ -438,7 +425,7 @@ func main() {
 				return err
 			}
 
-			return pwcompose.Up(string(preparedCompose), *composeUpInstanceKey, logger)
+			return pwcompose.Up(string(preparedCompose), composeUpInstanceKey, logger)
 		},
 	}
 
@@ -460,8 +447,8 @@ func main() {
 			return pwcompose.Down(
 				ctx,
 				args,
-				*composeDownRemoveImages,
-				!*composeDownKeepVolumes,
+				composeDownRemoveImages,
+				!composeDownKeepVolumes,
 				cli,
 				logger,
 			)
@@ -483,7 +470,7 @@ func main() {
 				return errcode.ErrInitDockerClient.Wrap(err)
 			}
 
-			return pwcompose.PS(ctx, *composePSDepth, cli, logger)
+			return pwcompose.PS(ctx, composePSDepth, cli, logger)
 		},
 	}
 
@@ -528,13 +515,13 @@ func main() {
 
 			// prepare AgentOpts
 			config := pwagent.AgentOpts{
-				HostIP:            *agentNginxHostIP,
-				HostPort:          *agentNginxHostPort,
-				DomainSuffix:      *agentNginxDomainSuffix,
-				ModeratorPassword: *agentNginxModeratorPassword,
-				Salt:              *agentNginxSalt,
-				ForceRecreate:     *agentForceRecreate,
-				NginxDockerImage:  *agentNginxDockerImage,
+				HostIP:            agentNginxHostIP,
+				HostPort:          agentNginxHostPort,
+				DomainSuffix:      agentNginxDomainSuffix,
+				ModeratorPassword: agentNginxModeratorPassword,
+				Salt:              agentNginxSalt,
+				ForceRecreate:     agentForceRecreate,
+				NginxDockerImage:  agentNginxDockerImage,
 			}
 			err := json.Unmarshal([]byte(args[0]), &config.AllowedUsers)
 			if err != nil {
@@ -579,7 +566,7 @@ func main() {
 
 func svcFromFlags() (pwapi.Service, *gorm.DB, pwsso.Client, func(), error) {
 	// init database
-	db, err := gorm.Open("mysql", *apiDBURN)
+	db, err := gorm.Open("mysql", apiDBURN)
 	if err != nil {
 		return nil, nil, nil, nil, errcode.ErrInitDB.Wrap(err)
 	}
@@ -596,15 +583,7 @@ func svcFromFlags() (pwapi.Service, *gorm.DB, pwsso.Client, func(), error) {
 	}
 
 	// init SSO
-	ssoOpts := pwsso.Opts{
-		AllowUnsafe: *apiSSOAllowUnsafe,
-		Logger:      logger.Named("sso"),
-		ClientID:    *apiSSOClientID,
-	}
-	if *apiSSOPubkey == "" {
-		*apiSSOPubkey = defaultSSOPubKey
-	}
-	sso, err := pwsso.New(*apiSSOPubkey, *apiSSORealm, ssoOpts)
+	sso, err := ssoFromFlags()
 	if err != nil {
 		return nil, nil, nil, nil, errcode.ErrInitSSOClient.Wrap(err)
 	}
@@ -634,16 +613,42 @@ func svcFromFlags() (pwapi.Service, *gorm.DB, pwsso.Client, func(), error) {
 
 func ssoFromFlags() (pwsso.Client, error) {
 	ssoOpts := pwsso.Opts{
-		AllowUnsafe: *ssoAllowUnsafe,
+		AllowUnsafe: ssoAllowUnsafe,
 		Logger:      logger.Named("sso"),
-		ClientID:    *ssoClientID,
+		ClientID:    ssoClientID,
 	}
-	if *ssoPubkey == "" {
-		*ssoPubkey = defaultSSOPubKey
+	if ssoPubkey == "" {
+		ssoPubkey = defaultSSOPubKey
 	}
-	sso, err := pwsso.New(*ssoPubkey, *ssoRealm, ssoOpts)
+	sso, err := pwsso.New(ssoPubkey, ssoRealm, ssoOpts)
 	if err != nil {
 		return nil, errcode.ErrInitSSOClient.Wrap(err)
 	}
 	return sso, nil
+}
+
+func globalPreRun() error {
+	rand.Seed(time.Now().UnixNano())
+	if globalDebug {
+		config := zap.NewDevelopmentConfig()
+		config.Level.SetLevel(zap.DebugLevel)
+		config.DisableStacktrace = true
+		config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+		var err error
+		logger, err = config.Build()
+		if err != nil {
+			return errcode.ErrInitLogger.Wrap(err)
+		}
+	} else {
+		config := zap.NewDevelopmentConfig()
+		config.Level.SetLevel(zap.InfoLevel)
+		config.DisableStacktrace = true
+		config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+		var err error
+		logger, err = config.Build()
+		if err != nil {
+			return errcode.ErrInitLogger.Wrap(err)
+		}
+	}
+	return nil
 }
