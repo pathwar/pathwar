@@ -58,6 +58,7 @@ enum ErrCode {
   ErrComposeCreateTempDir = 3013;
   ErrComposeRunUp = 3014;
   ErrComposeGetPathwarInfo = 3015;
+  ErrComposeForceRecreateDown  = 3016;
 
   //// Pathwar API (starting at 4001)
 

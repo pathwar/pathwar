@@ -61,6 +61,7 @@ var (
 	composePreparePrefix        string
 	composePrepareVersion       string
 	composeUpInstanceKey        string
+	composeUpForceRecreate      bool
 	serverCORSAllowedOrigins    string
 	serverGRPCBind              string
 	serverHTTPBind              string
@@ -119,6 +120,7 @@ func main() {
 	composePrepareFlags.StringVar(&composePreparePrefix, "prefix", defaultDockerPrefix, "docker image prefix")
 	composePrepareFlags.StringVar(&composePrepareVersion, "version", "1.0.0", "challenge version")
 	composeUpFlags.StringVar(&composeUpInstanceKey, "instance-key", "default", "instance key used to generate instance ID")
+	composeUpFlags.BoolVar(&composeUpForceRecreate, "force-recreate", false, "down previously created instances of challenge")
 	serverFlags.BoolVar(&serverWithPprof, "with-pprof", false, "enable pprof endpoints")
 	serverFlags.DurationVar(&serverRequestTimeout, "request-timeout", 5*time.Second, "request timeout")
 	serverFlags.DurationVar(&serverShutdownTimeout, "shutdown-timeout", 6*time.Second, "shutdown timeout")
@@ -425,7 +427,13 @@ func main() {
 				return err
 			}
 
-			return pwcompose.Up(string(preparedCompose), composeUpInstanceKey, logger)
+			ctx := context.Background()
+			cli, err := client.NewEnvClient()
+			if err != nil {
+				return errcode.ErrInitDockerClient.Wrap(err)
+			}
+
+			return pwcompose.Up(ctx, string(preparedCompose), composeUpInstanceKey, composeUpForceRecreate, cli, logger)
 		},
 	}
 
