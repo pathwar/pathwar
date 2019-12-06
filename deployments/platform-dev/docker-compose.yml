@@ -13,12 +13,12 @@ services:
       - VIRTUAL_HOST=api-dev.pathwar.land
       - VIRTUAL_PORT=8000
       # loaded from .env
-      - ENGINE_URN
+      - API_URN
     command:
       - pathwar
       - --debug
-      - engine
-      - --urn=$ENGINE_URN
+      - api
+      - --urn=$API_URN
       - server
       - --http-bind=0.0.0.0:8000
       - --grpc-bind=0.0.0.0:9111
@@ -44,12 +44,12 @@ services:
       - VIRTUAL_HOST=api-unsafe.pathwar.land
       - VIRTUAL_PORT=8000
       # loaded from .env
-      - ENGINE_URN
+      - API_URN
     command:
       - pathwar
       - --debug
-      - engine
-      - --urn=$ENGINE_URN
+      - api
+      - --urn=$API_URN
       - --sso-unsafe
       - server
       - --http-bind=0.0.0.0:8000
