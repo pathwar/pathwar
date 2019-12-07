@@ -1,6 +1,8 @@
 package pwcompose
 
 import (
+	"archive/tar"
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -20,6 +22,7 @@ import (
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 	"pathwar.land/go/pkg/errcode"
+	"pathwar.land/go/pkg/pwinit"
 )
 
 const (
@@ -195,7 +198,7 @@ func Up(
 		service.ContainerName = fmt.Sprintf("%s.%s.%s.%s", challengeName, serviceName, imageHash[:6], instanceKey)
 		service.Restart = "unless-stopped"
 		service.Labels[instanceKeyLabel] = instanceKey
-		challengeID = fmt.Sprintf("%s@%s", service.Labels[challengeNameLabel], service.Labels[challengeVersionLabel])
+		challengeID = challengeIDFormatted(service.Labels[challengeNameLabel], service.Labels[challengeVersionLabel])
 		preparedComposeStruct.Services[name] = service
 	}
 
@@ -235,14 +238,44 @@ func Up(
 		}
 	}
 
-	// start instances
-	logger.Debug("docker-compose", zap.String("action", "up"))
-	cmd := exec.Command("docker-compose", "-f", tmpPreparedComposePath, "up", "-d")
+	// create instances
+	logger.Debug("docker-compose", zap.String("action", "up --no-start"))
+	cmd := exec.Command("docker-compose", "-f", tmpPreparedComposePath, "up", "--no-start")
 	cmd.Stdout = os.Stderr
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
 	if err != nil {
-		logger.Error("Error detected while starting containers, it's probably due to a conflict with previously created containers that share the same name. You should retry with --force-recreate flag")
+		logger.Error("Error detected while creating containers, it's probably due to a conflict with previously created containers that share the same name. You should retry with --force-recreate flag")
+		return errcode.ErrComposeRunCreate.Wrap(err)
+	}
+
+	// copy pathwar binary inside all containers
+	pwInfo, err := GetPathwarInfo(ctx, cli)
+	if err != nil {
+		return errcode.ErrComposeGetPathwarInfo.Wrap(err)
+	}
+
+	for _, container := range pwInfo.RunningInstances {
+		if challengeID == challengeIDFormatted(container.Labels[challengeNameLabel], container.Labels[challengeVersionLabel]) {
+			buf, err := buildPWInitTar()
+			if err != nil {
+				return errcode.ErrCopyPWInitToContainer.Wrap(err)
+			}
+			logger.Debug("copy pwinit into the container", zap.String("container-id", container.ID))
+			err = cli.CopyToContainer(ctx, container.ID, "/", buf, types.CopyToContainerOptions{})
+			if err != nil {
+				return errcode.ErrCopyPWInitToContainer.Wrap(err)
+			}
+		}
+	}
+
+	// start instances
+	logger.Debug("docker-compose", zap.String("action", "up"))
+	cmd = exec.Command("docker-compose", "-f", tmpPreparedComposePath, "up", "-d")
+	cmd.Stdout = os.Stderr
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
 		return errcode.ErrComposeRunUp.Wrap(err)
 	}
 
@@ -285,7 +318,7 @@ func Down(
 
 	for _, id := range ids {
 		for _, flavor := range pwInfo.RunningFlavors {
-			if id == flavor.Name || id == flavor.Name+"@"+flavor.Version {
+			if id == flavor.Name || id == challengeIDFormatted(flavor.Name, flavor.Version) {
 				for _, instance := range flavor.Instances {
 					containersToRemove = append(containersToRemove, instance.ID)
 					if removeImages == true {
@@ -351,7 +384,7 @@ func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) 
 
 			table.Append([]string{
 				uid[:7],
-				fmt.Sprintf("%s@%s", flavor.Name, flavor.Version),
+				challengeIDFormatted(flavor.Name, flavor.Version),
 				container.Labels[serviceNameLabel],
 				strings.Join(ports, ", "),
 				strings.Replace(container.Status, "Up ", "", 1),
@@ -361,6 +394,36 @@ func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) 
 	}
 	table.Render()
 	return nil
+}
+
+func buildPWInitTar() (*bytes.Buffer, error) {
+	var pwInitBuf []byte
+	pwInitBuf, err := pwinit.Binary()
+	if err != nil {
+		return nil, errcode.ErrGetPWInitBinary.Wrap(err)
+	}
+
+	var buf bytes.Buffer
+	tw := tar.NewWriter(&buf)
+	err = tw.WriteHeader(&tar.Header{
+		Name: "pwinit",
+		Mode: 0755,
+		Size: int64(len(pwInitBuf)),
+	})
+	if err != nil {
+		return nil, errcode.ErrWritePWInitFileHeader.Wrap(err)
+	}
+
+	if _, err := tw.Write(pwInitBuf); err != nil {
+		return nil, errcode.ErrWritePWInitFile.Wrap(err)
+	}
+
+	err = tw.Close()
+	if err != nil {
+		return nil, errcode.ErrWritePWInitCloseTarWriter.Wrap(err)
+	}
+
+	return &buf, nil
 }
 
 func GetPathwarInfo(ctx context.Context, cli *client.Client) (*PathwarInfo, error) {
@@ -398,4 +461,8 @@ func GetPathwarInfo(ctx context.Context, cli *client.Client) (*PathwarInfo, erro
 	}
 
 	return &pwInfo, nil
+}
+
+func challengeIDFormatted(challengeNameLabel string, challengeVersionLabel string) string {
+	return fmt.Sprintf("%s@%s", challengeNameLabel, challengeVersionLabel)
 }
