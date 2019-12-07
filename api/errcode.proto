@@ -56,9 +56,16 @@ enum ErrCode {
   ErrComposeParseDab = 3011;
   ErrComposeParseConfig = 3012;
   ErrComposeCreateTempDir = 3013;
-  ErrComposeRunUp = 3014;
-  ErrComposeGetPathwarInfo = 3015;
-  ErrComposeForceRecreateDown  = 3016;
+  ErrComposeForceRecreateDown  = 3014;
+  ErrComposeRunCreate = 3015;
+  ErrComposeRunUp = 3016;
+  ErrGetPWInitBinary = 3017;
+  ErrWritePWInitFileHeader = 3018;
+  ErrWritePWInitFile = 3019;
+  ErrWritePWInitCloseTarWriter = 3020;
+  ErrCopyPWInitToContainer = 3021;
+  ErrComposeGetPathwarInfo = 3022;
+  
 
   //// Pathwar API (starting at 4001)
 
