@@ -21,6 +21,7 @@ import (
 	"github.com/olekukonko/tablewriter"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
+	"pathwar.land/go/internal/randstring"
 	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwinit"
 )
@@ -177,6 +178,7 @@ func Up(
 	preparedCompose string,
 	instanceKey string,
 	forceRecreate bool,
+	pwinitConfigData *pwInitConfig,
 	cli *client.Client,
 	logger *zap.Logger,
 ) error {
@@ -257,7 +259,23 @@ func Up(
 
 	for _, container := range pwInfo.RunningInstances {
 		if challengeID == challengeIDFormatted(container.Labels[challengeNameLabel], container.Labels[challengeVersionLabel]) {
-			buf, err := buildPWInitTar()
+			if pwinitConfigData == nil {
+				pwinitConfigData = &pwInitConfig{
+					Passphrases: []string{
+						fmt.Sprintf("dev-%s", randstring.RandString(10)),
+						fmt.Sprintf("dev-%s", randstring.RandString(10)),
+						fmt.Sprintf("dev-%s", randstring.RandString(10)),
+						fmt.Sprintf("dev-%s", randstring.RandString(10)),
+						fmt.Sprintf("dev-%s", randstring.RandString(10)),
+						fmt.Sprintf("dev-%s", randstring.RandString(10)),
+						fmt.Sprintf("dev-%s", randstring.RandString(10)),
+						fmt.Sprintf("dev-%s", randstring.RandString(10)),
+						fmt.Sprintf("dev-%s", randstring.RandString(10)),
+						fmt.Sprintf("dev-%s", randstring.RandString(10)),
+					},
+				}
+			}
+			buf, err := buildPWInitTar(*pwinitConfigData)
 			if err != nil {
 				return errcode.ErrCopyPWInitToContainer.Wrap(err)
 			}
@@ -396,7 +414,7 @@ func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) 
 	return nil
 }
 
-func buildPWInitTar() (*bytes.Buffer, error) {
+func buildPWInitTar(pwinitConfigData pwInitConfig) (*bytes.Buffer, error) {
 	var pwInitBuf []byte
 	pwInitBuf, err := pwinit.Binary()
 	if err != nil {
@@ -405,6 +423,8 @@ func buildPWInitTar() (*bytes.Buffer, error) {
 
 	var buf bytes.Buffer
 	tw := tar.NewWriter(&buf)
+
+	// write pwinit binary into tar file
 	err = tw.WriteHeader(&tar.Header{
 		Name: "pwinit",
 		Mode: 0755,
@@ -413,13 +433,31 @@ func buildPWInitTar() (*bytes.Buffer, error) {
 	if err != nil {
 		return nil, errcode.ErrWritePWInitFileHeader.Wrap(err)
 	}
-
-	if _, err := tw.Write(pwInitBuf); err != nil {
+	_, err = tw.Write(pwInitBuf)
+	if err != nil {
 		return nil, errcode.ErrWritePWInitFile.Wrap(err)
 	}
 
-	err = tw.Close()
+	// write pwinit json config into tar file
+	pwInitConfigJSON, err := json.Marshal(pwinitConfigData)
 	if err != nil {
+		return nil, errcode.ErrMarshalPWInitConfigFile.Wrap(err)
+	}
+	err = tw.WriteHeader(&tar.Header{
+		Name: "pwinit.json",
+		Mode: 0755,
+		Size: int64(len(pwInitConfigJSON)),
+		// FIXME: chown it to container's default user
+	})
+	if err != nil {
+		return nil, errcode.ErrWritePWInitConfigFileHeader.Wrap(err)
+	}
+	_, err = tw.Write(pwInitConfigJSON)
+	if err != nil {
+		return nil, errcode.ErrWritePWInitConfigFile.Wrap(err)
+	}
+
+	if err = tw.Close(); err != nil {
 		return nil, errcode.ErrWritePWInitCloseTarWriter.Wrap(err)
 	}
 

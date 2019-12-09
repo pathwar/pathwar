@@ -53,3 +53,7 @@ type challengeFlavors struct {
 	Version   string
 	Instances map[string]types.Container
 }
+
+type pwInitConfig struct {
+	Passphrases []string
+}
