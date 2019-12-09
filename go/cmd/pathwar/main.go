@@ -500,11 +500,12 @@ func main() {
 				return err
 			}
 			ctx := context.Background()
-			cli, err := client.NewEnvClient()
+			dockerCli, err := client.NewEnvClient()
 			if err != nil {
 				return errcode.ErrInitDockerClient.Wrap(err)
 			}
-			return pwagent.Daemon(ctx, cli, logger)
+
+			return pwagent.Daemon(ctx, dockerCli, logger)
 		},
 	}
 
