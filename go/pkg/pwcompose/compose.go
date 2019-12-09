@@ -86,8 +86,13 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 			service.Labels = map[string]string{}
 		}
 		if service.Image == "" {
-			service.Image = prefix + challengeName + ":" + name
-			service.Labels[serviceOrigin] = "was-built"
+			if !noPush {
+				service.Image = prefix + challengeName + ":" + name
+				service.Labels[serviceOrigin] = "was-built"
+			} else {
+				service.Build = path.Join(cleanPath, service.Build)
+				service.Labels[serviceOrigin] = "was-built-dev"
+			}
 		} else {
 			service.Labels[serviceOrigin] = "was-pulled"
 		}
@@ -117,50 +122,51 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 	}
 	tmpFile.Close()
 
-	// build and push images to dockerhub (don't forget to setup your credentials just type : "docker login" in bash)
-	logger.Debug("docker-compose", zap.String("-f", tmpComposePath), zap.String("action", "build"))
-	cmd = exec.Command("docker-compose", "-f", tmpComposePath, "build")
-	cmd.Dir = cleanPath
-	cmd.Stdout = os.Stderr
-	cmd.Stderr = os.Stderr
-	err = cmd.Run()
-	if err != nil {
-		return errcode.ErrComposeBuild.Wrap(err)
-	}
-	cmdArgs := []string{"docker-compose", "-f", tmpComposePath, "bundle"}
 	if !noPush {
-		cmdArgs = append(cmdArgs, "--push-images")
-	}
-	logger.Debug("docker-compose", zap.Strings("args", cmdArgs[1:]))
-	cmd = exec.Command(cmdArgs[0], cmdArgs[1:]...)
-	cmd.Dir = cleanPath
-	cmd.Stdout = os.Stderr
-	cmd.Stderr = os.Stderr
-	err = cmd.Run()
-	if err != nil {
-		return errcode.ErrComposeBundle.Wrap(err)
-	}
-	defer func() {
-		if err = os.Remove(dabPath); err != nil {
-			logger.Warn("rm dab file", zap.Error(err))
+		// build and push images to dockerhub (don't forget to setup your credentials just type : "docker login" in bash)
+		logger.Debug("docker-compose", zap.String("-f", tmpComposePath), zap.String("action", "build"))
+		cmd = exec.Command("docker-compose", "-f", tmpComposePath, "build")
+		cmd.Dir = cleanPath
+		cmd.Stdout = os.Stderr
+		cmd.Stderr = os.Stderr
+		err = cmd.Run()
+		if err != nil {
+			return errcode.ErrComposeBuild.Wrap(err)
 		}
-	}()
 
-	// parse json from .dab file
-	composeDabfileJSON := dabfile{}
-	composeDabfile, err := ioutil.ReadFile(dabPath)
-	if err != nil {
-		return errcode.ErrComposeReadDab.Wrap(err)
-	}
-	if err = json.Unmarshal(composeDabfile, &composeDabfileJSON); err != nil {
-		return errcode.ErrComposeParseDab.Wrap(err)
-	}
+		cmdArgs := []string{"docker-compose", "-f", tmpComposePath, "bundle"}
+		cmdArgs = append(cmdArgs, "--push-images")
+		logger.Debug("docker-compose", zap.Strings("args", cmdArgs[1:]))
+		cmd = exec.Command(cmdArgs[0], cmdArgs[1:]...)
+		cmd.Dir = cleanPath
+		cmd.Stdout = os.Stderr
+		cmd.Stderr = os.Stderr
+		err = cmd.Run()
+		if err != nil {
+			return errcode.ErrComposeBundle.Wrap(err)
+		}
+		defer func() {
+			if err = os.Remove(dabPath); err != nil {
+				logger.Warn("rm dab file", zap.Error(err))
+			}
+		}()
 
-	// replace images from original docker-compose file with the one pushed to dockerhub
-	for name, service := range composeStruct.Services {
-		service.Image = composeDabfileJSON.Services[name].Image
-		service.Build = "" // ensure service only has an `image:` without a `build:`
-		composeStruct.Services[name] = service
+		// parse json from .dab file
+		composeDabfileJSON := dabfile{}
+		composeDabfile, err := ioutil.ReadFile(dabPath)
+		if err != nil {
+			return errcode.ErrComposeReadDab.Wrap(err)
+		}
+		if err = json.Unmarshal(composeDabfile, &composeDabfileJSON); err != nil {
+			return errcode.ErrComposeParseDab.Wrap(err)
+		}
+
+		// replace images from original docker-compose file with the one pushed to dockerhub
+		for name, service := range composeStruct.Services {
+			service.Image = composeDabfileJSON.Services[name].Image
+			service.Build = "" // ensure service only has an `image:` without a `build:`
+			composeStruct.Services[name] = service
+		}
 	}
 
 	// print yaml
@@ -196,8 +202,11 @@ func Up(
 	for name, service := range preparedComposeStruct.Services {
 		challengeName := service.Labels[challengeNameLabel]
 		serviceName := service.Labels[serviceNameLabel]
-		imageHash := strings.Split(service.Image, "@sha256:")[1]
-		service.ContainerName = fmt.Sprintf("%s.%s.%s.%s", challengeName, serviceName, imageHash[:6], instanceKey)
+		imageHash := "local"
+		if strings.Contains(service.Image, "@sha256:") {
+			imageHash = strings.Split(service.Image, "@sha256:")[1][:6]
+		}
+		service.ContainerName = fmt.Sprintf("%s.%s.%s.%s", challengeName, serviceName, imageHash, instanceKey)
 		service.Restart = "unless-stopped"
 		service.Labels[instanceKeyLabel] = instanceKey
 		challengeID = challengeIDFormatted(service.Labels[challengeNameLabel], service.Labels[challengeVersionLabel])
