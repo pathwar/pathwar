@@ -62,9 +62,12 @@ enum ErrCode {
   ErrGetPWInitBinary = 3017;
   ErrWritePWInitFileHeader = 3018;
   ErrWritePWInitFile = 3019;
-  ErrWritePWInitCloseTarWriter = 3020;
-  ErrCopyPWInitToContainer = 3021;
-  ErrComposeGetPathwarInfo = 3022;
+  ErrMarshalPWInitConfigFile = 3020;
+  ErrWritePWInitConfigFileHeader = 3021;
+  ErrWritePWInitConfigFile = 3022;
+  ErrWritePWInitCloseTarWriter = 3023;
+  ErrCopyPWInitToContainer = 3024;
+  ErrComposeGetPathwarInfo = 3025;
   
 
   //// Pathwar API (starting at 4001)

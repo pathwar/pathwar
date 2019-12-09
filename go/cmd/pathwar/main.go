@@ -433,7 +433,7 @@ func main() {
 				return errcode.ErrInitDockerClient.Wrap(err)
 			}
 
-			return pwcompose.Up(ctx, string(preparedCompose), composeUpInstanceKey, composeUpForceRecreate, cli, logger)
+			return pwcompose.Up(ctx, string(preparedCompose), composeUpInstanceKey, composeUpForceRecreate, nil, cli, logger)
 		},
 	}
 
