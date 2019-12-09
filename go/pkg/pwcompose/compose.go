@@ -178,7 +178,7 @@ func Up(
 	preparedCompose string,
 	instanceKey string,
 	forceRecreate bool,
-	pwinitConfigData *pwInitConfig,
+	pwinitConfig *pwinit.InitConfig,
 	cli *client.Client,
 	logger *zap.Logger,
 ) error {
@@ -259,8 +259,8 @@ func Up(
 
 	for _, container := range pwInfo.RunningInstances {
 		if challengeID == challengeIDFormatted(container.Labels[challengeNameLabel], container.Labels[challengeVersionLabel]) {
-			if pwinitConfigData == nil {
-				pwinitConfigData = &pwInitConfig{
+			if pwinitConfig == nil {
+				pwinitConfig = &pwinit.InitConfig{
 					Passphrases: []string{
 						fmt.Sprintf("dev-%s", randstring.RandString(10)),
 						fmt.Sprintf("dev-%s", randstring.RandString(10)),
@@ -275,7 +275,7 @@ func Up(
 					},
 				}
 			}
-			buf, err := buildPWInitTar(*pwinitConfigData)
+			buf, err := buildPWInitTar(*pwinitConfig)
 			if err != nil {
 				return errcode.ErrCopyPWInitToContainer.Wrap(err)
 			}
@@ -414,7 +414,7 @@ func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) 
 	return nil
 }
 
-func buildPWInitTar(pwinitConfigData pwInitConfig) (*bytes.Buffer, error) {
+func buildPWInitTar(config pwinit.InitConfig) (*bytes.Buffer, error) {
 	var pwInitBuf []byte
 	pwInitBuf, err := pwinit.Binary()
 	if err != nil {
@@ -439,7 +439,7 @@ func buildPWInitTar(pwinitConfigData pwInitConfig) (*bytes.Buffer, error) {
 	}
 
 	// write pwinit json config into tar file
-	pwInitConfigJSON, err := json.Marshal(pwinitConfigData)
+	pwInitConfigJSON, err := json.Marshal(config)
 	if err != nil {
 		return nil, errcode.ErrMarshalPWInitConfigFile.Wrap(err)
 	}
