@@ -49,7 +49,8 @@ type PathwarInfo struct {
 }
 
 type challengeFlavors struct {
-	Name      string
-	Version   string
-	Instances map[string]types.Container
+	Name        string
+	Version     string
+	InstanceKey string
+	Instances   map[string]types.Container
 }

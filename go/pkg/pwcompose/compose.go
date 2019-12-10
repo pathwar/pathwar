@@ -35,12 +35,12 @@ const (
 	instanceKeyLabel      = labelPrefix + "instance-key"
 )
 
-func Prepare(challengeDir string, prefix string, noPush bool, version string, logger *zap.Logger) error {
+func Prepare(challengeDir string, prefix string, noPush bool, version string, logger *zap.Logger) (string, error) {
 	logger.Debug("prepare", zap.Bool("no-push", noPush), zap.String("challenge-dir", challengeDir), zap.String("prefix", prefix), zap.String("version", version))
 
 	cleanPath, err := filepath.Abs(filepath.Clean(challengeDir))
 	if err != nil {
-		return errcode.ErrComposeInvalidPath.Wrap(err)
+		return "", errcode.ErrComposeInvalidPath.Wrap(err)
 	}
 
 	if prefix[len(prefix)-1:] != "/" {
@@ -55,13 +55,13 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 	)
 
 	if _, err := os.Stat(cleanPath); os.IsNotExist(err) {
-		return errcode.ErrComposeDirectoryNotFound.Wrap(err)
+		return "", errcode.ErrComposeDirectoryNotFound.Wrap(err)
 	}
 
 	// parse docker-compose.yml file
 	composeData, err := ioutil.ReadFile(origComposePath)
 	if err != nil {
-		return errcode.ErrComposeReadConfig.Wrap(err)
+		return "", errcode.ErrComposeReadConfig.Wrap(err)
 	}
 
 	// check for error in docker-compose file
@@ -71,13 +71,13 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
 	if err != nil {
-		return errcode.ErrComposeInvalidConfig.Wrap(err)
+		return "", errcode.ErrComposeInvalidConfig.Wrap(err)
 	}
 
 	composeStruct := config{}
 	err = yaml.Unmarshal(composeData, &composeStruct)
 	if err != nil {
-		return errcode.ErrComposeInvalidConfig.Wrap(err)
+		return "", errcode.ErrComposeInvalidConfig.Wrap(err)
 	}
 
 	// check yaml and add image name if not defined
@@ -105,11 +105,11 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 	// create tmp docker-compose file
 	tmpData, err := yaml.Marshal(&composeStruct)
 	if err != nil {
-		return errcode.ErrComposeMarshalConfig.Wrap(err)
+		return "", errcode.ErrComposeMarshalConfig.Wrap(err)
 	}
 	tmpFile, err := os.Create(tmpComposePath)
 	if err != nil {
-		return errcode.ErrComposeCreateTempFile.Wrap(err)
+		return "", errcode.ErrComposeCreateTempFile.Wrap(err)
 	}
 	defer func() {
 		if err = os.Remove(tmpComposePath); err != nil {
@@ -118,7 +118,7 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 	}()
 	_, err = tmpFile.Write(tmpData)
 	if err != nil {
-		return errcode.ErrComposeWriteTempFile.Wrap(err)
+		return "", errcode.ErrComposeWriteTempFile.Wrap(err)
 	}
 	tmpFile.Close()
 
@@ -131,7 +131,7 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 		cmd.Stderr = os.Stderr
 		err = cmd.Run()
 		if err != nil {
-			return errcode.ErrComposeBuild.Wrap(err)
+			return "", errcode.ErrComposeBuild.Wrap(err)
 		}
 
 		cmdArgs := []string{"docker-compose", "-f", tmpComposePath, "bundle"}
@@ -143,7 +143,7 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 		cmd.Stderr = os.Stderr
 		err = cmd.Run()
 		if err != nil {
-			return errcode.ErrComposeBundle.Wrap(err)
+			return "", errcode.ErrComposeBundle.Wrap(err)
 		}
 		defer func() {
 			if err = os.Remove(dabPath); err != nil {
@@ -155,10 +155,10 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 		composeDabfileJSON := dabfile{}
 		composeDabfile, err := ioutil.ReadFile(dabPath)
 		if err != nil {
-			return errcode.ErrComposeReadDab.Wrap(err)
+			return "", errcode.ErrComposeReadDab.Wrap(err)
 		}
 		if err = json.Unmarshal(composeDabfile, &composeDabfileJSON); err != nil {
-			return errcode.ErrComposeParseDab.Wrap(err)
+			return "", errcode.ErrComposeParseDab.Wrap(err)
 		}
 
 		// replace images from original docker-compose file with the one pushed to dockerhub
@@ -172,11 +172,10 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 	// print yaml
 	finalData, err := yaml.Marshal(&composeStruct)
 	if err != nil {
-		return errcode.ErrComposeMarshalConfig.Wrap(err)
+		return "", errcode.ErrComposeMarshalConfig.Wrap(err)
 	}
-	fmt.Println(string(finalData))
 
-	return nil
+	return string(finalData), nil
 }
 
 func Up(
@@ -501,6 +500,7 @@ func GetPathwarInfo(ctx context.Context, cli *client.Client) (*PathwarInfo, erro
 			}
 			challengeFlavor.Name = container.Labels[challengeNameLabel]
 			challengeFlavor.Version = container.Labels[challengeVersionLabel]
+			challengeFlavor.InstanceKey = container.Labels[instanceKeyLabel]
 			pwInfo.RunningFlavors[flavor] = challengeFlavor
 		}
 		pwInfo.RunningFlavors[flavor].Instances[container.ID] = container

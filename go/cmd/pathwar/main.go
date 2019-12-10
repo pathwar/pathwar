@@ -47,6 +47,9 @@ var (
 	// flag vars
 	globalDebug                 bool
 	agentForceRecreate          bool
+	agentDaemonClean            bool
+	agentDaemonRunOnce          bool
+	agentDaemonLoopDelay        time.Duration
 	agentNginxDockerImage       string
 	agentNginxDomainSuffix      string
 	agentNginxHostIP            string
@@ -101,7 +104,9 @@ func main() {
 	)
 	globalFlags.SetOutput(flagOutput) // used in main_test.go
 	globalFlags.BoolVar(&globalDebug, "debug", false, "debug mode")
-	agentNginxFlags.BoolVar(&agentForceRecreate, "force-recreate", false, "remove existing nginx container")
+	agentDaemonFlags.BoolVar(&agentDaemonClean, "clean", false, "remove all pathwar instances before executing")
+	agentDaemonFlags.BoolVar(&agentDaemonRunOnce, "once", false, "run once and don't start daemon loop")
+	agentDaemonFlags.DurationVar(&agentDaemonLoopDelay, "delay", 10*time.Second, "delay between each loop iteration")
 	agentNginxFlags.StringVar(&agentNginxDockerImage, "docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
 	agentNginxFlags.StringVar(&agentNginxDomainSuffix, "domain-suffix", "local", "Domain suffix to append")
 	agentNginxFlags.StringVar(&agentNginxHostIP, "host", "0.0.0.0", "HTTP listening addr")
@@ -395,13 +400,18 @@ func main() {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			return pwcompose.Prepare(
+
+			preparedComposeData, err := pwcompose.Prepare(
 				path,
 				composePreparePrefix,
 				composePrepareNoPush,
 				composePrepareVersion,
 				logger,
 			)
+
+			fmt.Println(preparedComposeData)
+
+			return err
 		},
 	}
 
@@ -505,7 +515,7 @@ func main() {
 				return errcode.ErrInitDockerClient.Wrap(err)
 			}
 
-			return pwagent.Daemon(ctx, dockerCli, logger)
+			return pwagent.Daemon(ctx, agentDaemonClean, agentDaemonRunOnce, agentDaemonLoopDelay, dockerCli, logger)
 		},
 	}
 

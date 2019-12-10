@@ -9,14 +9,17 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
+	"strings"
 	"text/template"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
+	"github.com/martinlindhe/base36"
 	"github.com/moby/moby/pkg/stdcopy"
 	"go.uber.org/zap"
+	"golang.org/x/crypto/sha3"
 	"pathwar.land/go/internal/randstring"
 	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwcompose"
@@ -216,6 +219,7 @@ func Nginx(ctx context.Context, opts AgentOpts, cli *client.Client, logger *zap.
 							return errcode.ErrContainerConnectNetwork.Wrap(err)
 						}
 					}
+					break
 				}
 			}
 		}
@@ -250,8 +254,12 @@ func Nginx(ctx context.Context, opts AgentOpts, cli *client.Client, logger *zap.
 
 					// add hash per users to proxy configuration
 					if _, found := opts.AllowedUsers[instance.Names[0][1:]]; found {
-						for _, hash := range opts.AllowedUsers[instance.Names[0][1:]] {
-							upstream.Hashes = append(upstream.Hashes, strconv.Itoa(int(hash)))
+						for _, userID := range opts.AllowedUsers[instance.Names[0][1:]] {
+							hash, err := generatePrefixHash(instance.ID, userID, opts.Salt)
+							if err != nil {
+								return errcode.ErrGeneratePrefixHash.Wrap(err)
+							}
+							upstream.Hashes = append(upstream.Hashes, hash)
 						}
 					}
 					configData.Upstreams = append(configData.Upstreams, upstream)
@@ -446,4 +454,20 @@ func nginxSendCommand(ctx context.Context, cli *client.Client, nginxContainerID 
 	}
 
 	return nil
+}
+
+func generatePrefixHash(instanceID string, userID int64, salt string) (string, error) {
+	stringToHash := fmt.Sprintf("%s%d%s", instanceID, userID, salt)
+	hashBytes := make([]byte, 8)
+	hasher := sha3.NewShake256()
+	_, err := hasher.Write([]byte(stringToHash))
+	if err != nil {
+		return "", errcode.ErrWriteBytesToHashBuilder.Wrap(err)
+	}
+	_, err = hasher.Read(hashBytes)
+	if err != nil {
+		return "", errcode.ErrReadBytesFromHashBuilder.Wrap(err)
+	}
+	userHash := strings.ToLower(base36.EncodeBytes(hashBytes))[:8] // we voluntarily expect short hashes here
+	return userHash, nil
 }
