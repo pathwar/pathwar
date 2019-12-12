@@ -336,10 +336,6 @@ func Down(
 		imagesToRemove     []string
 	)
 
-	if withNginx && containersInfo.NginxProxyInstance.ID != "" {
-		ids = append(ids, containersInfo.NginxProxyInstance.ID)
-	}
-
 	if len(ids) == 0 {
 		for _, container := range containersInfo.RunningInstances {
 			containersToRemove = append(containersToRemove, container.ID)
@@ -349,12 +345,19 @@ func Down(
 		}
 	}
 
+	if withNginx && containersInfo.NginxProxyInstance.ID != "" {
+		containersToRemove = append(containersToRemove, containersInfo.NginxProxyInstance.ID)
+		if removeImages {
+			imagesToRemove = append(imagesToRemove, containersInfo.NginxProxyInstance.ImageID)
+		}
+	}
+
 	for _, id := range ids {
 		for _, flavor := range containersInfo.RunningFlavors {
 			if id == flavor.Name || id == challengeIDFormatted(flavor.Name, flavor.Version) {
 				for _, instance := range flavor.Instances {
 					containersToRemove = append(containersToRemove, instance.ID)
-					if removeImages == true {
+					if removeImages {
 						imagesToRemove = append(imagesToRemove, instance.ImageID)
 					}
 				}
@@ -363,7 +366,7 @@ func Down(
 		for _, container := range containersInfo.RunningInstances {
 			if id == container.ID || id == container.ID[0:7] {
 				containersToRemove = append(containersToRemove, container.ID)
-				if removeImages == true {
+				if removeImages {
 					imagesToRemove = append(imagesToRemove, container.ImageID)
 				}
 			}
