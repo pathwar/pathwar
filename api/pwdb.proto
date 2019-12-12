@@ -61,7 +61,8 @@ message ChallengeFlavor {
   bool is_draft = 102;
   bool is_latest = 103;
   string source_url = 104 [(gogoproto.customname) = "SourceURL"];
-  Driver driver = 105;
+  string compose_bundle  = 105;
+  Driver driver = 106;
 
   //
   // associations

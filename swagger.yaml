@@ -382,6 +382,8 @@ definitions:
         type: string
       changelog:
         type: string
+      compose_bundle:
+        type: string
       created_at:
         format: date-time
         type: string

@@ -250,3 +250,21 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 
 	return nil
 }
+
+func (m *SeasonChallenge) GetActiveSubscriptions() []*ChallengeSubscription {
+	var cs []*ChallengeSubscription = nil
+	if m != nil {
+		if m.GetSubscriptions() != nil {
+			for _, subscription := range m.Subscriptions {
+				if subscription.GetStatus() == ChallengeSubscription_Active {
+					if cs == nil {
+						cs = []*ChallengeSubscription{subscription}
+					} else {
+						cs = append(cs, subscription)
+					}
+				}
+			}
+		}
+	}
+	return cs
+}

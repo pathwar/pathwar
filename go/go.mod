@@ -22,6 +22,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.12.1
 	github.com/jinzhu/gorm v1.9.11
 	github.com/keycloak/kcinit v0.0.0-20181010192927-f85c3c5390ea
+	github.com/martinlindhe/base36 v1.0.0
 	github.com/moby/moby v1.13.1
 	github.com/oklog/run v1.0.0
 	github.com/olekukonko/tablewriter v0.0.4
@@ -34,7 +35,7 @@ require (
 	go.uber.org/atomic v1.5.1 // indirect
 	go.uber.org/multierr v1.4.0 // indirect
 	go.uber.org/zap v1.13.0
-	golang.org/x/crypto v0.0.0-20191202143827-86a70503ff7e // indirect
+	golang.org/x/crypto v0.0.0-20191202143827-86a70503ff7e
 	golang.org/x/lint v0.0.0-20191125180803-fdd1cda4f05f // indirect
 	golang.org/x/net v0.0.0-20191204025024-5ee1b9f4859a // indirect
 	golang.org/x/sys v0.0.0-20191204072324-ce4227a45e2e // indirect
