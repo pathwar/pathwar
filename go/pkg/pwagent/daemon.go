@@ -59,7 +59,7 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 	}
 
 	if clean {
-		err := pwcompose.Down(ctx, []string{}, true, true, cli, logger)
+		err := pwcompose.Down(ctx, []string{}, true, true, true, cli, logger)
 		if err != nil {
 			return errcode.ErrCleanPathwarInstances.Wrap(err)
 		}
@@ -83,9 +83,9 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 
 func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli *client.Client, logger *zap.Logger) error {
 	// fetch local info from docker daemon
-	pathwarInfo, err := pwcompose.GetPathwarInfo(ctx, cli)
+	containersInfo, err := pwcompose.GetContainersInfo(ctx, cli)
 	if err != nil {
-		return errcode.ErrComposeGetPathwarInfo.Wrap(err)
+		return errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
 
 	agentOpts := AgentOpts{
@@ -103,7 +103,7 @@ func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli
 	for _, apiInstance := range apiInstances.GetInstances() {
 		found := false
 		needRedump := false
-		for _, flavor := range pathwarInfo.RunningFlavors {
+		for _, flavor := range containersInfo.RunningFlavors {
 			if apiInstanceFlavor := apiInstance.GetFlavor(); apiInstanceFlavor != nil {
 				if apiInstanceFlavorChallenge := apiInstanceFlavor.GetChallenge(); apiInstanceFlavorChallenge != nil {
 					if flavor.InstanceKey == strconv.FormatInt(apiInstance.GetID(), 10) {
@@ -123,7 +123,7 @@ func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli
 				return errcode.ErrParseInitConfig.Wrap(err)
 			}
 
-			err = pwcompose.Up(ctx, apiInstance.GetFlavor().GetComposeBundle(), strconv.FormatInt(apiInstance.GetID(), 10), needRedump, &configData, cli, logger)
+			err = pwcompose.Up(ctx, apiInstance.GetFlavor().GetComposeBundle(), strconv.FormatInt(apiInstance.GetID(), 10), true, &configData, cli, logger)
 			if err != nil {
 				return errcode.ErrUpPathwarInstance.Wrap(err)
 			}
@@ -131,9 +131,9 @@ func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli
 	}
 
 	// update pathwar infos
-	pathwarInfo, err = pwcompose.GetPathwarInfo(ctx, cli)
+	containersInfo, err = pwcompose.GetContainersInfo(ctx, cli)
 	if err != nil {
-		return errcode.ErrComposeGetPathwarInfo.Wrap(err)
+		return errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
 
 	// update nginx configuration
@@ -146,7 +146,7 @@ func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli
 							if team := subscription.GetTeam(); team != nil {
 								if members := team.GetMembers(); members != nil {
 									for _, member := range members {
-										for _, flavor := range pathwarInfo.RunningFlavors {
+										for _, flavor := range containersInfo.RunningFlavors {
 											if flavor.InstanceKey == strconv.FormatInt(apiInstance.GetID(), 10) {
 												for _, instance := range flavor.Instances {
 													for _, port := range instance.Ports {

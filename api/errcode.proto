@@ -67,7 +67,7 @@ enum ErrCode {
   ErrWritePWInitConfigFile = 3022;
   ErrWritePWInitCloseTarWriter = 3023;
   ErrCopyPWInitToContainer = 3024;
-  ErrComposeGetPathwarInfo = 3025;
+  ErrComposeGetContainersInfo = 3025;
   
 
   //// Pathwar API (starting at 4001)
@@ -154,7 +154,7 @@ enum ErrCode {
 
   //// Pathwar Agent (starting at 7001)
 
-  ErrAgentGetPathwarInfo = 7001;
+  ErrAgentGetContainersInfo = 7001;
   ErrCheckNginxContainer = 7002;
   ErrRemoveNginxContainer = 7003;
   ErrBuildNginxContainer = 7004;
@@ -195,7 +195,8 @@ enum ErrCode {
   ErrDockerAPIImagePull = 8009;
   ErrDockerAPINetworkList = 8010;
   ErrDockerAPINetworkCreate = 8011;
-  ErrDockerAPIExitCode = 8012;
+  ErrDockerAPINetworkRemove = 8012;
+  ErrDockerAPIExitCode = 8013;
 
   //// Pathwar Init (starting at 9001)
 

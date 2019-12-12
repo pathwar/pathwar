@@ -25,11 +25,6 @@ import (
 	"pathwar.land/go/pkg/pwcompose"
 )
 
-const (
-	nginxContainerName = "pathwar-agent-nginx"
-	proxyNetworkName   = "pathwar-proxy-network"
-)
-
 const nginxConfigTemplate = `
 {{$root := .}}
 #user                 www www;
@@ -125,13 +120,13 @@ func Nginx(ctx context.Context, opts AgentOpts, cli *client.Client, logger *zap.
 		return errcode.ErrDockerAPINetworkList.Wrap(err)
 	}
 	for _, networkResource := range networkResources {
-		if networkResource.Name == proxyNetworkName {
+		if networkResource.Name == pwcompose.ProxyNetworkName {
 			proxyNetworkID = networkResource.ID
 		}
 	}
 	if proxyNetworkID == "" {
-		logger.Debug("proxy network create", zap.String("name", proxyNetworkName))
-		response, err := cli.NetworkCreate(ctx, proxyNetworkName, types.NetworkCreate{
+		logger.Debug("proxy network create", zap.String("name", pwcompose.ProxyNetworkName))
+		response, err := cli.NetworkCreate(ctx, pwcompose.ProxyNetworkName, types.NetworkCreate{
 			CheckDuplicate: true,
 		})
 		proxyNetworkID = response.ID
@@ -187,7 +182,7 @@ func Nginx(ctx context.Context, opts AgentOpts, cli *client.Client, logger *zap.
 	}
 
 	// connect nginx container to proxy network
-	if _, onProxyNetwork := nginxContainer.NetworkSettings.Networks[proxyNetworkName]; !onProxyNetwork {
+	if _, onProxyNetwork := nginxContainer.NetworkSettings.Networks[pwcompose.ProxyNetworkName]; !onProxyNetwork {
 		logger.Debug("connect nginx to proxy network", zap.String("nginx-id", nginxContainer.ID), zap.String("network-id", proxyNetworkID))
 		err = cli.NetworkConnect(ctx, proxyNetworkID, nginxContainer.ID, nil)
 		if err != nil {
@@ -201,18 +196,18 @@ func Nginx(ctx context.Context, opts AgentOpts, cli *client.Client, logger *zap.
 	}
 
 	// update proxy network nginx container IP
-	proxyNetworkIP := nginxContainer.NetworkSettings.Networks[proxyNetworkName].IPAddress
+	proxyNetworkIP := nginxContainer.NetworkSettings.Networks[pwcompose.ProxyNetworkName].IPAddress
 
 	// make sure that exposed containers are connected to proxy network
-	pwInfo, err := pwcompose.GetPathwarInfo(ctx, cli)
+	containersInfo, err := pwcompose.GetContainersInfo(ctx, cli)
 	if err != nil {
-		return errcode.ErrAgentGetPathwarInfo.Wrap(err)
+		return errcode.ErrAgentGetContainersInfo.Wrap(err)
 	}
-	for _, flavor := range pwInfo.RunningFlavors {
+	for _, flavor := range containersInfo.RunningFlavors {
 		for _, instance := range flavor.Instances {
 			for _, port := range instance.Ports {
 				if port.PrivatePort != 0 {
-					if _, onProxyNetwork := instance.NetworkSettings.Networks[proxyNetworkName]; !onProxyNetwork {
+					if _, onProxyNetwork := instance.NetworkSettings.Networks[pwcompose.ProxyNetworkName]; !onProxyNetwork {
 						logger.Debug("connect container to proxy network", zap.String("container-id", instance.ID), zap.String("network-id", proxyNetworkID))
 						err = cli.NetworkConnect(ctx, proxyNetworkID, instance.ID, nil)
 						if err != nil {
@@ -236,11 +231,11 @@ func Nginx(ctx context.Context, opts AgentOpts, cli *client.Client, logger *zap.
 	}
 
 	// update config data with containers infos
-	pwInfo, err = pwcompose.GetPathwarInfo(ctx, cli)
+	containersInfo, err = pwcompose.GetContainersInfo(ctx, cli)
 	if err != nil {
-		return errcode.ErrAgentGetPathwarInfo.Wrap(err)
+		return errcode.ErrAgentGetContainersInfo.Wrap(err)
 	}
-	for _, flavor := range pwInfo.RunningFlavors {
+	for _, flavor := range containersInfo.RunningFlavors {
 		for _, instance := range flavor.Instances {
 			for _, port := range instance.Ports {
 				// FIXME: support non-standard ports using labels (later)
@@ -249,7 +244,7 @@ func Nginx(ctx context.Context, opts AgentOpts, cli *client.Client, logger *zap.
 				}
 				if port.PrivatePort != 0 {
 					upstream.Name = instance.Names[0][1:]
-					upstream.Host = instance.NetworkSettings.Networks[proxyNetworkName].IPAddress
+					upstream.Host = instance.NetworkSettings.Networks[pwcompose.ProxyNetworkName].IPAddress
 					upstream.Port = strconv.Itoa(int(port.PrivatePort))
 
 					// add hash per users to proxy configuration
@@ -369,7 +364,7 @@ func buildNginxContainer(ctx context.Context, cli *client.Client, opts AgentOpts
 		},
 		&container.HostConfig{
 			PortBindings: portBinding,
-		}, nil, nginxContainerName)
+		}, nil, pwcompose.NginxContainerName)
 	if err != nil {
 		return "", errcode.ErrDockerAPIContainerCreate.Wrap(err)
 	}
@@ -386,7 +381,7 @@ func checkNginxContainer(ctx context.Context, cli *client.Client) (*types.Contai
 	}
 	for _, container := range containers {
 		for _, name := range container.Names {
-			if name[1:] == nginxContainerName {
+			if name[1:] == pwcompose.NginxContainerName {
 				return &container, nil
 			}
 		}
