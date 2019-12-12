@@ -68,7 +68,6 @@ enum ErrCode {
   ErrWritePWInitCloseTarWriter = 3023;
   ErrCopyPWInitToContainer = 3024;
   ErrComposeGetContainersInfo = 3025;
-  
 
   //// Pathwar API (starting at 4001)
 
@@ -128,6 +127,8 @@ enum ErrCode {
   ErrGetActiveSeasonMembership = 4054;
   ErrGetTokenFromContext = 4055;
   ErrChallengeAlreadyClosed = 4056;
+  ErrGetAgent = 4057;
+  ErrSaveAgent = 4058;
 
   //// Pathwar Server (starting at 5001)
 

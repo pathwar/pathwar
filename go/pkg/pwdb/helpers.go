@@ -73,9 +73,9 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 	agents := []*Agent{}
 	for i := 0; i < 3; i++ {
 		agent := &Agent{
-			Name:    gofakeit.HipsterWord(),
-			Address: gofakeit.IPv4Address(),
-			Status:  Agent_Active,
+			Name:     gofakeit.HipsterWord(),
+			Hostname: gofakeit.IPv4Address(),
+			Status:   Agent_Active,
 		}
 		agents = append(agents, agent)
 	}

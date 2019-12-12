@@ -112,9 +112,9 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 	//
 
 	localhost := &Agent{
-		Name:    "default",
-		Address: "default-agent.pathwar.land",
-		Status:  Agent_Active, // only useful during dev
+		Name:     "default",
+		Hostname: "default-agent.pathwar.land",
+		Status:   Agent_Active, // only useful during dev
 	}
 	err = tx.Create(localhost).Error
 	if err != nil {

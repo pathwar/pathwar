@@ -310,7 +310,7 @@ definitions:
     type: string
   dbAgent:
     properties:
-      address:
+      arch:
         type: string
       challenge_instances:
         items:
@@ -319,18 +319,31 @@ definitions:
       created_at:
         format: date-time
         type: string
+      err_msg:
+        type: string
+      hostname:
+        type: string
       id:
         format: int64
+        type: string
+      last_registration_at:
+        format: date-time
         type: string
       last_seen_at:
         format: date-time
         type: string
       name:
         type: string
+      os:
+        type: string
       status:
         $ref: '#/definitions/dbAgentStatus'
+      tags:
+        type: string
       updated_at:
         format: date-time
+        type: string
+      version:
         type: string
     type: object
   dbAgentStatus:
@@ -339,6 +352,8 @@ definitions:
     - Unknown
     - Active
     - Inactive
+    - Timeout
+    - Error
     type: string
   dbChallenge:
     properties:

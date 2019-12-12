@@ -104,6 +104,18 @@ func testSameErrcodes(t *testing.T, name string, expected, got error) {
 	}
 }
 
+func testIsTrue(t *testing.T, name string, got bool) {
+	t.Helper()
+
+	if !got {
+		prefix := ""
+		if name != "" {
+			prefix = name + ": "
+		}
+		t.Errorf("%sExpected %v to be true.", prefix, got)
+	}
+}
+
 func testIsNil(t *testing.T, name string, got interface{}) {
 	t.Helper()
 
