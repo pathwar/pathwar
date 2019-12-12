@@ -33,6 +33,8 @@ const (
 	challengeNameLabel    = labelPrefix + "challenge-name"
 	challengeVersionLabel = labelPrefix + "challenge-version"
 	instanceKeyLabel      = labelPrefix + "instance-key"
+	NginxContainerName    = "pathwar-agent-nginx"
+	ProxyNetworkName      = "pathwar-proxy-network"
 )
 
 func Prepare(challengeDir string, prefix string, noPush bool, version string, logger *zap.Logger) (string, error) {
@@ -242,7 +244,7 @@ func Up(
 
 	// down instances if force recreate
 	if forceRecreate {
-		err = Down(ctx, []string{challengeID}, false, false, cli, logger)
+		err = Down(ctx, []string{challengeID}, false, false, false, cli, logger)
 		if err != nil {
 			return errcode.ErrComposeForceRecreateDown.Wrap(err)
 		}
@@ -260,12 +262,12 @@ func Up(
 	}
 
 	// copy pathwar binary inside all containers
-	pwInfo, err := GetPathwarInfo(ctx, cli)
+	containersInfo, err := GetContainersInfo(ctx, cli)
 	if err != nil {
-		return errcode.ErrComposeGetPathwarInfo.Wrap(err)
+		return errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
 
-	for _, container := range pwInfo.RunningInstances {
+	for _, container := range containersInfo.RunningInstances {
 		if challengeID == challengeIDFormatted(container.Labels[challengeNameLabel], container.Labels[challengeVersionLabel]) {
 			if pwinitConfig == nil {
 				pwinitConfig = &pwinit.InitConfig{
@@ -318,14 +320,15 @@ func Down(
 	ids []string,
 	removeImages bool,
 	removeVolumes bool,
+	withNginx bool,
 	cli *client.Client,
 	logger *zap.Logger,
 ) error {
-	logger.Debug("down", zap.Strings("ids", ids), zap.Bool("rmi", removeImages), zap.Bool("rm -v", removeVolumes))
+	logger.Debug("down", zap.Strings("ids", ids), zap.Bool("rmi", removeImages), zap.Bool("rm -v", removeVolumes), zap.Bool("with-nginx", withNginx))
 
-	pwInfo, err := GetPathwarInfo(ctx, cli)
+	containersInfo, err := GetContainersInfo(ctx, cli)
 	if err != nil {
-		return errcode.ErrComposeGetPathwarInfo.Wrap(err)
+		return errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
 
 	var (
@@ -333,8 +336,12 @@ func Down(
 		imagesToRemove     []string
 	)
 
+	if withNginx && containersInfo.NginxProxyInstance.ID != "" {
+		ids = append(ids, containersInfo.NginxProxyInstance.ID)
+	}
+
 	if len(ids) == 0 {
-		for _, container := range pwInfo.RunningInstances {
+		for _, container := range containersInfo.RunningInstances {
 			containersToRemove = append(containersToRemove, container.ID)
 			if removeImages == true {
 				imagesToRemove = append(imagesToRemove, container.ImageID)
@@ -343,7 +350,7 @@ func Down(
 	}
 
 	for _, id := range ids {
-		for _, flavor := range pwInfo.RunningFlavors {
+		for _, flavor := range containersInfo.RunningFlavors {
 			if id == flavor.Name || id == challengeIDFormatted(flavor.Name, flavor.Version) {
 				for _, instance := range flavor.Instances {
 					containersToRemove = append(containersToRemove, instance.ID)
@@ -353,7 +360,7 @@ func Down(
 				}
 			}
 		}
-		for _, container := range pwInfo.RunningInstances {
+		for _, container := range containersInfo.RunningInstances {
 			if id == container.ID || id == container.ID[0:7] {
 				containersToRemove = append(containersToRemove, container.ID)
 				if removeImages == true {
@@ -385,20 +392,28 @@ func Down(
 		fmt.Println("removed image " + imageID)
 	}
 
+	if withNginx && containersInfo.NginxProxyNetwork.ID != "" {
+		err = cli.NetworkRemove(ctx, containersInfo.NginxProxyNetwork.ID)
+		if err != nil {
+			return errcode.ErrDockerAPINetworkRemove.Wrap(err)
+		}
+		fmt.Println("removed proxy network " + containersInfo.NginxProxyNetwork.ID)
+	}
+
 	return nil
 }
 
 func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) error {
 	logger.Debug("ps", zap.Int("depth", depth))
 
-	pwInfo, err := GetPathwarInfo(ctx, cli)
+	containersInfo, err := GetContainersInfo(ctx, cli)
 	if err != nil {
-		return errcode.ErrComposeGetPathwarInfo.Wrap(err)
+		return errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"ID", "CHALLENGE", "SVC", "PORTS", "STATUS", "CREATED"})
 
-	for _, flavor := range pwInfo.RunningFlavors {
+	for _, flavor := range containersInfo.RunningFlavors {
 		for uid, container := range flavor.Instances {
 
 			ports := []string{}
@@ -472,7 +487,7 @@ func buildPWInitTar(config pwinit.InitConfig) (*bytes.Buffer, error) {
 	return &buf, nil
 }
 
-func GetPathwarInfo(ctx context.Context, cli *client.Client) (*PathwarInfo, error) {
+func GetContainersInfo(ctx context.Context, cli *client.Client) (*ContainersInfo, error) {
 	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{
 		All: true,
 	})
@@ -480,34 +495,54 @@ func GetPathwarInfo(ctx context.Context, cli *client.Client) (*PathwarInfo, erro
 		return nil, errcode.ErrDockerAPIContainerList.Wrap(err)
 	}
 
-	pwInfo := PathwarInfo{
+	containersInfo := ContainersInfo{
 		RunningFlavors:   map[string]challengeFlavors{},
 		RunningInstances: map[string]types.Container{},
 	}
 
 	for _, container := range containers {
+		// find nginx proxy
+		for _, name := range container.Names {
+			if name[1:] == NginxContainerName {
+				containersInfo.NginxProxyInstance = container
+			}
+		}
+		// continue if container is not a challenge
 		if _, pwcontainer := container.Labels[challengeNameLabel]; !pwcontainer {
 			continue
 		}
+		// handle and sort challenge
 		flavor := fmt.Sprintf(
 			"%s:%s",
 			container.Labels[challengeNameLabel],
 			container.Labels[challengeVersionLabel],
 		)
-		if _, found := pwInfo.RunningFlavors[flavor]; !found {
+		if _, found := containersInfo.RunningFlavors[flavor]; !found {
 			challengeFlavor := challengeFlavors{
 				Instances: map[string]types.Container{},
 			}
 			challengeFlavor.Name = container.Labels[challengeNameLabel]
 			challengeFlavor.Version = container.Labels[challengeVersionLabel]
 			challengeFlavor.InstanceKey = container.Labels[instanceKeyLabel]
-			pwInfo.RunningFlavors[flavor] = challengeFlavor
+			containersInfo.RunningFlavors[flavor] = challengeFlavor
 		}
-		pwInfo.RunningFlavors[flavor].Instances[container.ID] = container
-		pwInfo.RunningInstances[container.ID] = container
+		containersInfo.RunningFlavors[flavor].Instances[container.ID] = container
+		containersInfo.RunningInstances[container.ID] = container
 	}
 
-	return &pwInfo, nil
+	// find proxy network
+	networks, err := cli.NetworkList(ctx, types.NetworkListOptions{})
+	if err != nil {
+		return nil, errcode.ErrDockerAPINetworkList.Wrap(err)
+	}
+	for _, networkResource := range networks {
+		if networkResource.Name == ProxyNetworkName {
+			containersInfo.NginxProxyNetwork = networkResource
+			break
+		}
+	}
+
+	return &containersInfo, nil
 }
 
 func challengeIDFormatted(challengeNameLabel string, challengeVersionLabel string) string {

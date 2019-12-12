@@ -1,4 +1,4 @@
-3d22ad8b6e564e338f2d8d17e09a90c743c95801  ../api/errcode.proto
+320ad79533fd1456c4f9b5e6bcc8b582165c875d  ../api/errcode.proto
 4362a2715e8c2053c4bec93585b01ca252dae2e7  ../api/pwagent.proto
 58eb4b1d9b5be40a69ffdab1a13b9fb90b669839  ../api/pwsso.proto
 70d67f1cebb3b7f9e86fd0197d43db4c1f795f65  ../api/pwinit.proto

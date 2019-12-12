@@ -59,6 +59,7 @@ var (
 	apiDBURN                    string
 	composeDownKeepVolumes      bool
 	composeDownRemoveImages     bool
+	composeDownWithNginx        bool
 	composePSDepth              int
 	composePrepareNoPush        bool
 	composePreparePrefix        string
@@ -120,6 +121,7 @@ func main() {
 	apiFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
 	composeDownFlags.BoolVar(&composeDownKeepVolumes, "keep-volumes", false, "keep volumes")
 	composeDownFlags.BoolVar(&composeDownRemoveImages, "rmi", false, "remove images as well")
+	composeDownFlags.BoolVar(&composeDownWithNginx, "with-nginx", false, "down nginx container and proxy network as well")
 	composePSFlags.IntVar(&composePSDepth, "depth", 0, "depth to display")
 	composePrepareFlags.BoolVar(&composePrepareNoPush, "no-push", false, "don't push images")
 	composePrepareFlags.StringVar(&composePreparePrefix, "prefix", defaultDockerPrefix, "docker image prefix")
@@ -467,6 +469,7 @@ func main() {
 				args,
 				composeDownRemoveImages,
 				!composeDownKeepVolumes,
+				composeDownWithNginx,
 				cli,
 				logger,
 			)

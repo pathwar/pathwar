@@ -43,9 +43,11 @@ type dabservice struct {
 	Image string
 }
 
-type PathwarInfo struct {
-	RunningFlavors   map[string]challengeFlavors
-	RunningInstances map[string]types.Container
+type ContainersInfo struct {
+	RunningFlavors     map[string]challengeFlavors
+	RunningInstances   map[string]types.Container
+	NginxProxyInstance types.Container
+	NginxProxyNetwork  types.NetworkResource
 }
 
 type challengeFlavors struct {
