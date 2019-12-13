@@ -96,25 +96,15 @@ func testingSetContextToken(ctx context.Context, t *testing.T) context.Context {
 func checkErr(t *testing.T, name string, err error) {
 	t.Helper()
 
-	if err != nil {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Fatalf("%serror: %#v.", prefix, err)
+	if !assert.NoError(t, err) {
+		t.Fatal(name)
 	}
 }
 
 func testSameErrcodes(t *testing.T, name string, expected, got error) {
 	t.Helper()
 
-	if errcode.Code(expected) != errcode.Code(got) {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Errorf("%sExpected %+v, got %+v.", prefix, expected, got)
-	}
+	assert.Equal(t, errcode.Code(expected), errcode.Code(got))
 }
 
 func testIsTrue(t *testing.T, name string, got bool) {

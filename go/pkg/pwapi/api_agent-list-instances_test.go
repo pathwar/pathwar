@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"moul.io/godev"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
@@ -38,17 +39,17 @@ func TestService_AgentListInstances(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			ret, err := svc.AgentListInstances(ctx, test.input)
-			testSameErrcodes(t, "", test.expectedErr, err)
+			assert.Equal(t, errcode.Code(test.expectedErr), errcode.Code(err))
 			if err != nil {
 				return
 			}
 
-			testSameInts(t, "", 2, len(ret.Instances)) // FIXME: should be 1 if we keep only active ones
+			assert.Len(t, ret.Instances, 2) // FIXME: should be 1 if we keep only active ones
 			for _, instance := range ret.Instances {
-				testIsNotNil(t, "", instance.Agent)
-				testSameInt64s(t, "", test.input.AgentID, instance.AgentID)
-				testIsNotNil(t, "", instance.Flavor)
-				testIsNotNil(t, "", instance.Flavor.Challenge)
+				assert.NotNil(t, instance.Agent)
+				assert.Equal(t, test.input.AgentID, instance.AgentID)
+				assert.NotNil(t, instance.Flavor)
+				assert.NotNil(t, instance.Flavor.Challenge)
 			}
 			fmt.Println(godev.PrettyJSON(ret))
 		})

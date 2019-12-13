@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -29,21 +30,21 @@ func TestService_AgentRegister(t *testing.T) {
 		for _, test := range tests {
 			t.Run(test.name, func(t *testing.T) {
 				ret, err := svc.AgentRegister(ctx, test.input)
-				testSameErrcodes(t, "", test.expectedErr, err)
+				assert.Equal(t, errcode.Code(test.expectedErr), errcode.Code(err))
 				if err != nil {
 					return
 				}
 
-				testSameStrings(t, "", test.input.Name, ret.Agent.Name)
-				testSameStrings(t, "", test.input.Hostname, ret.Agent.Hostname)
-				testSameStrings(t, "", test.input.Arch, ret.Agent.Arch)
-				testSameStrings(t, "", test.input.OS, ret.Agent.OS)
-				testSameDeep(t, "", test.input.Tags, ret.Agent.TagSlice())
-				testSameStrings(t, "", test.input.Version, ret.Agent.Version)
-				testIsTrue(t, "", ret.Agent.CreatedAt != nil && !ret.Agent.CreatedAt.IsZero())
-				testIsTrue(t, "", ret.Agent.UpdatedAt != nil && !ret.Agent.UpdatedAt.IsZero())
-				testIsTrue(t, "", ret.Agent.LastSeenAt != nil && !ret.Agent.LastSeenAt.IsZero())
-				testIsTrue(t, "", ret.Agent.LastRegistrationAt != nil && !ret.Agent.LastRegistrationAt.IsZero())
+				assert.Equal(t, test.input.Name, ret.Agent.Name)
+				assert.Equal(t, test.input.Hostname, ret.Agent.Hostname)
+				assert.Equal(t, test.input.Arch, ret.Agent.Arch)
+				assert.Equal(t, test.input.OS, ret.Agent.OS)
+				assert.Equal(t, test.input.Tags, ret.Agent.TagSlice())
+				assert.Equal(t, test.input.Version, ret.Agent.Version)
+				assert.NotEmpty(t, ret.Agent.CreatedAt)
+				assert.NotEmpty(t, ret.Agent.UpdatedAt)
+				assert.NotEmpty(t, ret.Agent.LastSeenAt)
+				assert.NotEmpty(t, ret.Agent.LastRegistrationAt)
 			})
 		}
 	})
@@ -54,18 +55,18 @@ func TestService_AgentRegister(t *testing.T) {
 
 		first, err := svc.AgentRegister(ctx, &AgentRegister_Input{Name: "test", Hostname: "lorem ipsum"})
 		checkErr(t, "", err)
-		testIsTrue(t, "", first.Agent.CreatedAt.Equal(*first.Agent.UpdatedAt))
-		testIsTrue(t, "", first.Agent.LastSeenAt.Equal(*first.Agent.LastRegistrationAt))
-		testSameStrings(t, "", "lorem ipsum", first.Agent.Hostname)
+		assert.Equal(t, first.Agent.CreatedAt, first.Agent.UpdatedAt)
+		assert.Equal(t, first.Agent.LastSeenAt, first.Agent.LastRegistrationAt)
+		assert.Equal(t, "lorem ipsum", first.Agent.Hostname)
 
 		second, err := svc.AgentRegister(ctx, &AgentRegister_Input{Name: "test"})
 		checkErr(t, "", err)
-		testIsTrue(t, "", first.Agent.CreatedAt.Equal(*second.Agent.CreatedAt))
-		testIsTrue(t, "", !second.Agent.CreatedAt.Equal(*second.Agent.UpdatedAt))
-		testIsTrue(t, "", !first.Agent.UpdatedAt.Equal(*second.Agent.UpdatedAt))
-		testIsTrue(t, "", second.Agent.LastSeenAt.Equal(*second.Agent.LastRegistrationAt))
-		testIsTrue(t, "", !first.Agent.LastSeenAt.Equal(*second.Agent.LastSeenAt))
-		testIsTrue(t, "", !first.Agent.LastRegistrationAt.Equal(*second.Agent.LastRegistrationAt))
-		testSameStrings(t, "", "", second.Agent.Hostname)
+		assert.Equal(t, first.Agent.CreatedAt, second.Agent.CreatedAt)
+		assert.NotEqual(t, second.Agent.CreatedAt, second.Agent.UpdatedAt)
+		assert.NotEqual(t, first.Agent.UpdatedAt, second.Agent.UpdatedAt)
+		assert.Equal(t, second.Agent.LastSeenAt, second.Agent.LastRegistrationAt)
+		assert.NotEqual(t, first.Agent.LastSeenAt, second.Agent.LastSeenAt)
+		assert.NotEqual(t, first.Agent.LastRegistrationAt, second.Agent.LastRegistrationAt)
+		assert.Empty(t, second.Agent.Hostname)
 	})
 }
