@@ -203,5 +203,6 @@ enum ErrCode {
   //// Pathwar Init (starting at 9001)
 
   ErrExecuteOnInitHook = 9001;
+  ErrRemoveInitConfig = 9002;
 
 }

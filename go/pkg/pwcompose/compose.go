@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/strslice"
 	"github.com/docker/docker/client"
 	"github.com/dustin/go-humanize"
 	"github.com/olekukonko/tablewriter"
@@ -224,23 +225,14 @@ func Up(
 		}
 	}()
 
+	// generate tmp path
 	tmpPreparedComposePath := filepath.Join(tmpDir, "docker-compose.yml")
 
 	// create tmp docker-compose file
-	tmpData, err := yaml.Marshal(&preparedComposeStruct)
+	err = updateDockerComposeTmpFile(preparedComposeStruct, tmpPreparedComposePath)
 	if err != nil {
-		return errcode.ErrComposeMarshalConfig.Wrap(err)
+		return errcode.TODO.Wrap(err)
 	}
-	tmpFile, err := os.Create(tmpPreparedComposePath)
-	if err != nil {
-		return errcode.ErrComposeCreateTempFile.Wrap(err)
-	}
-
-	_, err = tmpFile.Write(tmpData)
-	if err != nil {
-		return errcode.ErrComposeWriteTempFile.Wrap(err)
-	}
-	tmpFile.Close()
 
 	// down instances if force recreate
 	if forceRecreate {
@@ -261,14 +253,62 @@ func Up(
 		return errcode.ErrComposeRunCreate.Wrap(err)
 	}
 
-	// copy pathwar binary inside all containers
+	// update entrypoints to run pwinit
 	containersInfo, err := GetContainersInfo(ctx, cli)
 	if err != nil {
 		return errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
+	for _, instance := range containersInfo.RunningInstances {
+		if challengeID == challengeIDFormatted(instance.Labels[challengeNameLabel], instance.Labels[challengeVersionLabel]) {
+			// update entrypoints to run pwinit first
+			imageInspect, _, err := cli.ImageInspectWithRaw(ctx, instance.ImageID)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+			for name, service := range preparedComposeStruct.Services {
+				// find service from compose file of current instance
+				if instance.Image == path.Base(tmpDir)+"_"+instance.Labels[serviceNameLabel] {
+					//service.Command = append(service.Command, "pwinit", "entrypoint")
+					service.Command = append(service.Command, imageInspect.Config.Entrypoint...)
+					service.Command = append(service.Command, imageInspect.Config.Cmd...)
+					service.Entrypoint = strslice.StrSlice{""}
+					preparedComposeStruct.Services[name] = service
+				}
+			}
+		}
+	}
 
-	for _, container := range containersInfo.RunningInstances {
-		if challengeID == challengeIDFormatted(container.Labels[challengeNameLabel], container.Labels[challengeVersionLabel]) {
+	// down temp instances
+	err = Down(ctx, []string{challengeID}, false, true, false, cli, logger)
+	if err != nil {
+		return errcode.ErrComposeForceRecreateDown.Wrap(err)
+	}
+
+	// update tmp docker-compose file with new entrypoints
+	err = updateDockerComposeTmpFile(preparedComposeStruct, tmpPreparedComposePath)
+	if err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+
+	// build definitive instances
+	logger.Debug("docker-compose", zap.String("action", "up --no-start"))
+	cmd = exec.Command("docker-compose", "-f", tmpPreparedComposePath, "up", "--no-start")
+	cmd.Stdout = os.Stderr
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		logger.Error("Error detected while creating containers, it's probably due to a conflict with previously created containers that share the same name. You should retry with --force-recreate flag")
+		return errcode.ErrComposeRunCreate.Wrap(err)
+	}
+
+	// copy pathwar binary inside all containers
+	containersInfo, err = GetContainersInfo(ctx, cli)
+	if err != nil {
+		return errcode.ErrComposeGetContainersInfo.Wrap(err)
+	}
+
+	for _, instance := range containersInfo.RunningInstances {
+		if challengeID == challengeIDFormatted(instance.Labels[challengeNameLabel], instance.Labels[challengeVersionLabel]) {
 			if pwinitConfig == nil {
 				pwinitConfig = &pwinit.InitConfig{
 					Passphrases: []string{
@@ -289,8 +329,8 @@ func Up(
 			if err != nil {
 				return errcode.ErrCopyPWInitToContainer.Wrap(err)
 			}
-			logger.Debug("copy pwinit into the container", zap.String("container-id", container.ID))
-			err = cli.CopyToContainer(ctx, container.ID, "/", buf, types.CopyToContainerOptions{})
+			logger.Debug("copy pwinit into the container", zap.String("container-id", instance.ID))
+			err = cli.CopyToContainer(ctx, instance.ID, "/", buf, types.CopyToContainerOptions{})
 			if err != nil {
 				return errcode.ErrCopyPWInitToContainer.Wrap(err)
 			}
@@ -331,49 +371,38 @@ func Down(
 		return errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
 
-	var (
-		containersToRemove []string
-		imagesToRemove     []string
-	)
+	removalLists := dockerRemovalLists{
+		containersToRemove: []string{},
+		imagesToRemove:     []string{},
+		networksToRemove:   []string{},
+	}
 
 	if len(ids) == 0 {
 		for _, container := range containersInfo.RunningInstances {
-			containersToRemove = append(containersToRemove, container.ID)
-			if removeImages == true {
-				imagesToRemove = append(imagesToRemove, container.ImageID)
-			}
+			removalLists = updateDockerRemovalLists(removalLists, container, removeImages)
 		}
 	}
 
 	if withNginx && containersInfo.NginxProxyInstance.ID != "" {
-		containersToRemove = append(containersToRemove, containersInfo.NginxProxyInstance.ID)
-		if removeImages {
-			imagesToRemove = append(imagesToRemove, containersInfo.NginxProxyInstance.ImageID)
-		}
+		removalLists = updateDockerRemovalLists(removalLists, containersInfo.NginxProxyInstance, removeImages)
 	}
 
 	for _, id := range ids {
 		for _, flavor := range containersInfo.RunningFlavors {
 			if id == flavor.Name || id == challengeIDFormatted(flavor.Name, flavor.Version) {
 				for _, instance := range flavor.Instances {
-					containersToRemove = append(containersToRemove, instance.ID)
-					if removeImages {
-						imagesToRemove = append(imagesToRemove, instance.ImageID)
-					}
+					removalLists = updateDockerRemovalLists(removalLists, instance, removeImages)
 				}
 			}
 		}
 		for _, container := range containersInfo.RunningInstances {
 			if id == container.ID || id == container.ID[0:7] {
-				containersToRemove = append(containersToRemove, container.ID)
-				if removeImages {
-					imagesToRemove = append(imagesToRemove, container.ImageID)
-				}
+				removalLists = updateDockerRemovalLists(removalLists, container, removeImages)
 			}
 		}
 	}
 
-	for _, instanceID := range containersToRemove {
+	for _, instanceID := range removalLists.containersToRemove {
 		err := cli.ContainerRemove(ctx, instanceID, types.ContainerRemoveOptions{
 			Force:         true,
 			RemoveVolumes: removeVolumes,
@@ -384,7 +413,7 @@ func Down(
 		fmt.Println("removed container " + instanceID)
 	}
 
-	for _, imageID := range imagesToRemove {
+	for _, imageID := range removalLists.imagesToRemove {
 		_, err := cli.ImageRemove(ctx, imageID, types.ImageRemoveOptions{
 			Force:         true,
 			PruneChildren: true,
@@ -393,6 +422,14 @@ func Down(
 			return errcode.ErrDockerAPIImageRemove.Wrap(err)
 		}
 		fmt.Println("removed image " + imageID)
+	}
+
+	for _, networkID := range removalLists.networksToRemove {
+		err := cli.NetworkRemove(ctx, networkID)
+		if err != nil {
+			return errcode.TODO.Wrap(err)
+		}
+		fmt.Println("removed network " + networkID)
 	}
 
 	if withNginx && containersInfo.NginxProxyNetwork.ID != "" {
@@ -404,6 +441,19 @@ func Down(
 	}
 
 	return nil
+}
+
+func updateDockerRemovalLists(removalLists dockerRemovalLists, container types.Container, removeImages bool) dockerRemovalLists {
+	removalLists.containersToRemove = append(removalLists.containersToRemove, container.ID)
+	if removeImages {
+		removalLists.imagesToRemove = append(removalLists.imagesToRemove, container.ImageID)
+	}
+	for _, network := range container.NetworkSettings.Networks {
+		if network.NetworkID != "" {
+			removalLists.networksToRemove = append(removalLists.networksToRemove, network.NetworkID)
+		}
+	}
+	return removalLists
 }
 
 func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) error {
@@ -452,7 +502,7 @@ func buildPWInitTar(config pwinit.InitConfig) (*bytes.Buffer, error) {
 
 	// write pwinit binary into tar file
 	err = tw.WriteHeader(&tar.Header{
-		Name: "pwinit",
+		Name: "/bin/pwinit",
 		Mode: 0755,
 		Size: int64(len(pwInitBuf)),
 	})
@@ -470,7 +520,7 @@ func buildPWInitTar(config pwinit.InitConfig) (*bytes.Buffer, error) {
 		return nil, errcode.ErrMarshalPWInitConfigFile.Wrap(err)
 	}
 	err = tw.WriteHeader(&tar.Header{
-		Name: "pwinit.json",
+		Name: "/pwinit/config.json",
 		Mode: 0755,
 		Size: int64(len(pwInitConfigJSON)),
 		// FIXME: chown it to container's default user
@@ -546,6 +596,28 @@ func GetContainersInfo(ctx context.Context, cli *client.Client) (*ContainersInfo
 	}
 
 	return &containersInfo, nil
+}
+
+func updateDockerComposeTmpFile(preparedComposeStruct config, tmpPreparedComposePath string) error {
+	// create tmp docker-compose file
+	tmpData, err := yaml.Marshal(&preparedComposeStruct)
+	if err != nil {
+		return errcode.ErrComposeMarshalConfig.Wrap(err)
+	}
+	tmpFile, err := os.Create(tmpPreparedComposePath)
+	if err != nil {
+		return errcode.ErrComposeCreateTempFile.Wrap(err)
+	}
+
+	_, err = tmpFile.Write(tmpData)
+	if err != nil {
+		return errcode.ErrComposeWriteTempFile.Wrap(err)
+	}
+	err = tmpFile.Close()
+	if err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+	return nil
 }
 
 func challengeIDFormatted(challengeNameLabel string, challengeVersionLabel string) string {

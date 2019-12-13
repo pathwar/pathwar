@@ -10,7 +10,6 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
-	"syscall"
 
 	"github.com/peterbourgon/ff/ffcli"
 	"pathwar.land/go/pkg/errcode"
@@ -32,10 +31,16 @@ func main() {
 				return errcode.ErrExecuteOnInitHook.Wrap(err)
 			}
 
+			// clean pwinit config file that contains passphrases
+			cmd = exec.Command("rm", "/pwinit/config.json")
+			if err := cmd.Run(); err != nil {
+				return errcode.ErrRemoveInitConfig.Wrap(err)
+			}
+
 			// FIXME: add a self-destruct mode that allows having root access only at runtime
 
 			// switch to original's entrypoint
-			binary, err := exec.LookPath(args[0])
+			/*binary, err := exec.LookPath(args[0])
 			if err != nil {
 				return err
 			}
@@ -43,7 +48,7 @@ func main() {
 			env := os.Environ()
 			if err := syscall.Exec(binary, args, env); err != nil {
 				return err
-			}
+			}*/
 			return nil
 		},
 	}
