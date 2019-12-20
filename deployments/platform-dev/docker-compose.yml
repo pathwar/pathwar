@@ -20,8 +20,7 @@ services:
       - api
       - --urn=$API_URN
       - server
-      - --http-bind=0.0.0.0:8000
-      - --grpc-bind=0.0.0.0:9111
+      - --bind=0.0.0.0:8000
       # - --cors-allowed-origins=https://www.pathwar.land ## FIXME: enable in production
     depends_on:
       - db
@@ -52,8 +51,7 @@ services:
       - --urn=$API_URN
       - --sso-unsafe
       - server
-      - --http-bind=0.0.0.0:8000
-      - --grpc-bind=0.0.0.0:9111
+      - --bind=0.0.0.0:8000
       # - --cors-allowed-origins=https://www.pathwar.land ## FIXME: enable in production
     depends_on:
       - db

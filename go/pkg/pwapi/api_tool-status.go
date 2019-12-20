@@ -1,6 +1,8 @@
 package pwapi
 
-import "context"
+import (
+	"context"
+)
 
 func (svc *service) ToolStatus(context.Context, *GetStatus_Input) (*GetStatus_Output, error) {
 	return &GetStatus_Output{
