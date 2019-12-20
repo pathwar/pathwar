@@ -67,8 +67,7 @@ var (
 	composeUpInstanceKey        string
 	composeUpForceRecreate      bool
 	serverCORSAllowedOrigins    string
-	serverGRPCBind              string
-	serverHTTPBind              string
+	serverBind                  string
 	serverRequestTimeout        time.Duration
 	serverShutdownTimeout       time.Duration
 	serverWithPprof             bool
@@ -132,8 +131,7 @@ func main() {
 	serverFlags.DurationVar(&serverRequestTimeout, "request-timeout", 5*time.Second, "request timeout")
 	serverFlags.DurationVar(&serverShutdownTimeout, "shutdown-timeout", 6*time.Second, "shutdown timeout")
 	serverFlags.StringVar(&serverCORSAllowedOrigins, "cors-allowed-origins", "*", "allowed CORS origins")
-	serverFlags.StringVar(&serverGRPCBind, "grpc-bind", ":9111", "gRPC server address")
-	serverFlags.StringVar(&serverHTTPBind, "http-bind", ":8000", "HTTP server address")
+	serverFlags.StringVar(&serverBind, "bind", ":8000", "server address")
 	ssoFlags.BoolVar(&ssoAllowUnsafe, "unsafe", false, "Allow unsafe SSO")
 	ssoFlags.StringVar(&ssoClientID, "clientid", defaultSSOClientID, "SSO ClientID")
 	ssoFlags.StringVar(&ssoPubkey, "pubkey", "", "SSO Public Key")
@@ -177,8 +175,7 @@ func main() {
 			{ // server
 				opts := pwapi.ServerOpts{
 					Logger:             logger.Named("server"),
-					GRPCBind:           serverGRPCBind,
-					HTTPBind:           serverHTTPBind,
+					Bind:               serverBind,
 					CORSAllowedOrigins: serverCORSAllowedOrigins,
 					RequestTimeout:     serverRequestTimeout,
 					ShutdownTimeout:    serverShutdownTimeout,
@@ -210,8 +207,7 @@ func main() {
 			}
 
 			logger.Info("server started",
-				zap.String("http-bind", server.HTTPListenerAddr()),
-				zap.String("grpc-bind", server.GRPCListenerAddr()),
+				zap.String("bind", server.ListenerAddr()),
 			)
 
 			if err := g.Run(); err != nil {

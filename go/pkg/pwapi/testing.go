@@ -3,8 +3,11 @@ package pwapi
 import (
 	"context"
 	"testing"
+	"time"
 
+	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
+	"google.golang.org/grpc"
 	"pathwar.land/go/pkg/pwdb"
 	"pathwar.land/go/pkg/pwsso"
 )
@@ -37,17 +40,11 @@ func TestingServer(t *testing.T, ctx context.Context, opts ServerOpts) (*Server,
 
 	svc, svcCleanup := TestingService(t, ServiceOpts{Logger: opts.Logger})
 
-	if opts.HTTPBind == "" {
-		opts.HTTPBind = "127.0.0.1:0"
+	if opts.Bind == "" {
+		opts.Bind = "127.0.0.1:0"
 	}
-	if opts.GRPCBind == "" {
-		opts.GRPCBind = "127.0.0.1:0"
-	}
-
 	server, err := NewServer(ctx, svc, opts)
-	if err != nil {
-		t.Fatalf("init server: %v", err)
-	}
+	assert.NoError(t, err)
 
 	cleanup := func() {
 		server.Close()
@@ -61,4 +58,22 @@ func TestingServer(t *testing.T, ctx context.Context, opts ServerOpts) (*Server,
 	}()
 
 	return server, cleanup
+}
+
+func TestingClient(t *testing.T, address string) (ServiceClient, func()) {
+	t.Helper()
+
+	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
+	go func() {
+		for {
+			time.Sleep(time.Second)
+		}
+	}()
+	assert.NoError(t, err)
+	c := NewServiceClient(conn)
+
+	cleanup := func() {
+		conn.Close()
+	}
+	return c, cleanup
 }
