@@ -45,7 +45,7 @@ message ChallengeFlavor {
 
   Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
   int64 challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
-  repeated SeasonChallenge season_challenges = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated SeasonChallenge season_challenges = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false;foreignkey:FlavorID\""];
   //repeated ChallengeSubscription subscriptions = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 
   enum Driver {

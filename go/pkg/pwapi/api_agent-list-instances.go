@@ -28,8 +28,11 @@ func (svc *service) AgentListInstances(ctx context.Context, in *AgentListInstanc
 		Where(pwdb.ChallengeInstance{AgentID: in.AgentID}). // FIXME: status is active
 		Preload("Agent").
 		Preload("Flavor").
-		Preload("Flavor.SeasonChallenges").
 		Preload("Flavor.Challenge").
+		Preload("Flavor.SeasonChallenges").
+		Preload("Flavor.SeasonChallenges.Subscriptions", pwdb.ChallengeSubscription{Status: pwdb.ChallengeSubscription_Active}).
+		Preload("Flavor.SeasonChallenges.Subscriptions.Team").
+		Preload("Flavor.SeasonChallenges.Subscriptions.Team.Members").
 		Find(&instances).Error
 	if err != nil {
 		return nil, errcode.ErrListChallengeInstances.Wrap(err)

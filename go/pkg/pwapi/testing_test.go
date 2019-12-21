@@ -104,7 +104,12 @@ func checkErr(t *testing.T, name string, err error) {
 func testSameErrcodes(t *testing.T, name string, expected, got error) {
 	t.Helper()
 
-	assert.Equal(t, errcode.Code(expected), errcode.Code(got))
+	assert.Equalf(
+		t,
+		errcode.ErrCode_name[errcode.Code(expected)],
+		errcode.ErrCode_name[errcode.Code(got)],
+		"%v", got,
+	)
 }
 
 func testIsTrue(t *testing.T, name string, got bool) {

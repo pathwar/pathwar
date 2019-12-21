@@ -2,11 +2,9 @@ package pwapi
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"moul.io/godev"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -39,7 +37,7 @@ func TestService_AgentListInstances(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			ret, err := svc.AgentListInstances(ctx, test.input)
-			assert.Equal(t, errcode.Code(test.expectedErr), errcode.Code(err))
+			testSameErrcodes(t, "", test.expectedErr, err)
 			if err != nil {
 				return
 			}
@@ -50,8 +48,12 @@ func TestService_AgentListInstances(t *testing.T) {
 				assert.Equal(t, test.input.AgentID, instance.AgentID)
 				assert.NotNil(t, instance.Flavor)
 				assert.NotNil(t, instance.Flavor.Challenge)
+				for _, seasonChallenge := range instance.Flavor.SeasonChallenges {
+					assert.Equal(t, instance.Flavor.ID, seasonChallenge.FlavorID)
+					// FIXME: verify seasonChallenge.ChallengeSubscriptions...
+				}
 			}
-			fmt.Println(godev.PrettyJSON(ret))
+			//fmt.Println(godev.PrettyJSON(ret))
 		})
 	}
 }
