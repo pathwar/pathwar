@@ -297,6 +297,7 @@ definitions:
     - EarlyAdopterTop100
     - EarlyAdopterTop1000
     - Old1Year
+    - Old2Years
     - Send1PullRequest
     - Send2PullRequests
     - Send5PullRequests
@@ -306,11 +307,10 @@ definitions:
     - BugHunter
     - Moderator
     - HackThePlatform
-    title: fields
     type: string
   dbAgent:
     properties:
-      address:
+      arch:
         type: string
       challenge_instances:
         items:
@@ -319,18 +319,31 @@ definitions:
       created_at:
         format: date-time
         type: string
+      err_msg:
+        type: string
+      hostname:
+        type: string
       id:
         format: int64
+        type: string
+      last_registration_at:
+        format: date-time
         type: string
       last_seen_at:
         format: date-time
         type: string
       name:
         type: string
+      os:
+        type: string
       status:
         $ref: '#/definitions/dbAgentStatus'
+      tags:
+        type: string
       updated_at:
         format: date-time
+        type: string
+      version:
         type: string
     type: object
   dbAgentStatus:
@@ -339,6 +352,8 @@ definitions:
     - Unknown
     - Active
     - Inactive
+    - Timeout
+    - Error
     type: string
   dbChallenge:
     properties:
@@ -354,7 +369,6 @@ definitions:
           $ref: '#/definitions/dbChallengeFlavor'
         type: array
       homepage:
-        title: repeated string tags = ;
         type: string
       id:
         format: int64
@@ -363,7 +377,6 @@ definitions:
         format: boolean
         type: boolean
       locale:
-        title: AuthorProfile
         type: string
       name:
         type: string
@@ -564,7 +577,6 @@ definitions:
         format: date-time
         type: string
       hash:
-        title: fields
         type: string
       id:
         format: int64
@@ -574,7 +586,6 @@ definitions:
         type: integer
       season:
         $ref: '#/definitions/dbSeason'
-        title: associations
       season_id:
         format: int64
         type: string
@@ -593,12 +604,10 @@ definitions:
     properties:
       author:
         $ref: '#/definitions/dbUser'
-        title: associations
       author_id:
         format: int64
         type: string
       comment:
-        title: fields
         type: string
       coupon:
         $ref: '#/definitions/dbCoupon'
@@ -1060,7 +1069,6 @@ definitions:
     properties:
       author:
         $ref: '#/definitions/dbUser'
-        title: associations
       author_id:
         format: int64
         type: string
@@ -1077,7 +1085,6 @@ definitions:
         type: string
       success:
         format: boolean
-        title: fields
         type: boolean
       target_team:
         $ref: '#/definitions/dbTeam'

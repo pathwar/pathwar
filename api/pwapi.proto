@@ -100,7 +100,9 @@ message AgentRegister {
 }
 
 message AgentListInstances {
-  message Input {}
+  message Input {
+    int64 agent_id = 1 [(gogoproto.customname) = "AgentID"];
+  }
   message Output {
     repeated pathwar.db.ChallengeInstance instances = 1;
   }

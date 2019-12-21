@@ -73,9 +73,9 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 	agents := []*Agent{}
 	for i := 0; i < 3; i++ {
 		agent := &Agent{
-			Name:    gofakeit.HipsterWord(),
-			Address: gofakeit.IPv4Address(),
-			Status:  Agent_Active,
+			Name:     gofakeit.HipsterWord(),
+			Hostname: gofakeit.IPv4Address(),
+			Status:   Agent_Active,
 		}
 		agents = append(agents, agent)
 	}
@@ -252,19 +252,13 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 }
 
 func (m *SeasonChallenge) GetActiveSubscriptions() []*ChallengeSubscription {
-	var cs []*ChallengeSubscription = nil
-	if m != nil {
-		if m.GetSubscriptions() != nil {
-			for _, subscription := range m.Subscriptions {
-				if subscription.GetStatus() == ChallengeSubscription_Active {
-					if cs == nil {
-						cs = []*ChallengeSubscription{subscription}
-					} else {
-						cs = append(cs, subscription)
-					}
-				}
-			}
+	cs := make([]*ChallengeSubscription, 0)
+
+	for _, subscription := range m.GetSubscriptions() {
+		if subscription.GetStatus() == ChallengeSubscription_Active {
+			cs = append(cs, subscription)
 		}
 	}
+
 	return cs
 }

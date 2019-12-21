@@ -112,13 +112,25 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 	//
 
 	localhost := &Agent{
-		Name:    "default",
-		Address: "default-agent.pathwar.land",
-		Status:  Agent_Active, // only useful during dev
+		Name:     "localhost",
+		Hostname: "localhost",
+		Status:   Agent_Active, // only useful during dev
 	}
-	err = tx.Create(localhost).Error
-	if err != nil {
-		return GormToErrcode(err)
+	localhost2 := &Agent{
+		Name:     "localhost-2",
+		Hostname: "localhost",
+		Status:   Agent_Active,
+	}
+	localhost3 := &Agent{
+		Name:     "localhost-3",
+		Hostname: "localhost",
+		Status:   Agent_Inactive,
+	}
+	for _, agent := range []*Agent{localhost, localhost2, localhost3} {
+		err = tx.Create(agent).Error
+		if err != nil {
+			return GormToErrcode(err)
+		}
 	}
 
 	//
@@ -175,6 +187,24 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 			if err != nil {
 				return GormToErrcode(err)
 			}
+		}
+	}
+
+	//// Challenge Instances
+	instances := []*ChallengeInstance{
+		{Status: ChallengeInstance_Available, AgentID: localhost.ID, FlavorID: trainingSQLI.ID},
+		{Status: ChallengeInstance_Available, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID},
+		{Status: ChallengeInstance_Available, AgentID: localhost3.ID, FlavorID: trainingSQLI.ID},
+		{Status: ChallengeInstance_Disabled, AgentID: localhost.ID, FlavorID: trainingSQLI.ID},
+		{Status: ChallengeInstance_Disabled, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID},
+		{Status: ChallengeInstance_Disabled, AgentID: localhost3.ID, FlavorID: trainingSQLI.ID},
+	}
+	for _, instance := range instances {
+		err := tx.Set("gorm:association_autoupdate", true).
+			Create(instance).
+			Error
+		if err != nil {
+			return GormToErrcode(err)
 		}
 	}
 

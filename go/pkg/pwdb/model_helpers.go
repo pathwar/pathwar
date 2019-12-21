@@ -1,5 +1,7 @@
 package pwdb
 
+import "strings"
+
 func newOfficialChallengeWithFlavor(name string, homepage string) *ChallengeFlavor {
 	return &ChallengeFlavor{
 		Challenge: &Challenge{
@@ -24,4 +26,11 @@ func (cf *ChallengeFlavor) addSeasonChallengeByID(seasonID int64) {
 	cf.SeasonChallenges = append(cf.SeasonChallenges, &SeasonChallenge{
 		SeasonID: seasonID,
 	})
+}
+
+func (a *Agent) TagSlice() []string {
+	if a.Tags == "" {
+		return nil
+	}
+	return strings.Split(a.Tags, ", ")
 }

@@ -23,6 +23,19 @@ func testingSeasons(t *testing.T, svc Service) *pwdb.SeasonList {
 	return &list
 }
 
+func testingAgents(t *testing.T, svc Service) *pwdb.AgentList {
+	t.Helper()
+
+	db := testingSvcDB(t, svc)
+	var list pwdb.AgentList
+	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
+	if err != nil {
+		t.Fatalf("list agents: %v", err)
+	}
+
+	return &list
+}
+
 func testingSeasonChallenges(t *testing.T, svc Service) *pwdb.SeasonChallengeList {
 	t.Helper()
 
@@ -83,24 +96,31 @@ func testingSetContextToken(ctx context.Context, t *testing.T) context.Context {
 func checkErr(t *testing.T, name string, err error) {
 	t.Helper()
 
-	if err != nil {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Fatalf("%serror: %#v.", prefix, err)
+	if !assert.NoError(t, err) {
+		t.Fatal(name)
 	}
 }
 
 func testSameErrcodes(t *testing.T, name string, expected, got error) {
 	t.Helper()
 
-	if errcode.Code(expected) != errcode.Code(got) {
+	assert.Equalf(
+		t,
+		errcode.ErrCode_name[errcode.Code(expected)],
+		errcode.ErrCode_name[errcode.Code(got)],
+		"%v", got,
+	)
+}
+
+func testIsTrue(t *testing.T, name string, got bool) {
+	t.Helper()
+
+	if !got {
 		prefix := ""
 		if name != "" {
 			prefix = name + ": "
 		}
-		t.Errorf("%sExpected %+v, got %+v.", prefix, expected, got)
+		t.Errorf("%sExpected %v to be true.", prefix, got)
 	}
 }
 
@@ -153,6 +173,18 @@ func testSameAnys(t *testing.T, name string, expected, got interface{}) {
 }
 
 func testSameInt64s(t *testing.T, name string, expected, got int64) {
+	t.Helper()
+
+	if expected != got {
+		prefix := ""
+		if name != "" {
+			prefix = name + ": "
+		}
+		t.Errorf("%sExpected %d, got %d.", prefix, expected, got)
+	}
+}
+
+func testSameInts(t *testing.T, name string, expected, got int) {
 	t.Helper()
 
 	if expected != got {
