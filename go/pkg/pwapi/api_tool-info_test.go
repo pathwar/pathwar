@@ -8,13 +8,13 @@ import (
 	"pathwar.land/go/internal/testutil"
 )
 
-func TestSvc_ToolInfo(t *testing.T) {
+func TestEngine_ToolInfo(t *testing.T) {
 	svc, cleanup := TestingService(t, ServiceOpts{Logger: testutil.Logger(t)})
 	defer cleanup()
-	ctx := context.Background()
+	ctx := testingSetContextToken(context.Background(), t)
 
 	status, err := svc.ToolInfo(ctx, nil)
-	checkErr(t, "", err)
+	assert.NoError(t, err)
 	expected := &GetInfo_Output{
 		Version: "dev",
 		Commit:  "n/a",

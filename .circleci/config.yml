@@ -29,8 +29,8 @@ jobs:
       - moul/mod-download
       - gotools/mod-tidy-check
       - run: make install
-      - run: SKIP_SLOW_TESTS=1 make unittest GO_TEST_OPTS="-test.timeout=30s -count=10"
-      - run: SKIP_SLOW_TESTS=0 make unittest GO_TEST_OPTS="-test.timeout=30s -count=2"
+      - run: SKIP_SLOW_TESTS=1 make unittest GO_TEST_OPTS="-test.timeout=60s -count=10"
+      - run: SKIP_SLOW_TESTS=0 make unittest GO_TEST_OPTS="-test.timeout=60s -count=2"
       - moul/install_golangci-lint
       - run: PATH=$PATH:$(pwd)/bin make lint
       - codecov/upload:
