@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -44,11 +45,9 @@ func TestSvc_SeasonChallengeList(t *testing.T) {
 
 			//fmt.Println(godev.PrettyJSON(ret.Items))
 			for _, item := range ret.Items {
-				testSameInt64s(t, "", test.input.SeasonID, item.SeasonID)
+				assert.Equal(t, test.input.SeasonID, item.SeasonID)
 			}
-			if len(ret.Items) != test.expectedItems {
-				t.Errorf("Expected %d, got %d.", test.expectedItems, len(ret.Items))
-			}
+			assert.Len(t, ret.Items, test.expectedItems)
 		})
 	}
 }

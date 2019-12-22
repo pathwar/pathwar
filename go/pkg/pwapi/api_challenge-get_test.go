@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -41,9 +42,9 @@ func TestService_ChallengeGet(t *testing.T) {
 			}
 
 			// FIXME: check for ChallengeVersions and ChallengeInstances
-			testSameInt64s(t, test.name, test.input.ChallengeID, ret.Item.ID)
-			testSameStrings(t, test.name, test.expectedChallengeName, ret.Item.Name)
-			testSameStrings(t, test.name, test.expectedAuthor, ret.Item.Author)
+			assert.Equalf(t, test.input.ChallengeID, ret.Item.ID, test.name)
+			assert.Equalf(t, test.expectedChallengeName, ret.Item.Name, test.name)
+			assert.Equalf(t, test.expectedAuthor, ret.Item.Author, test.name)
 		})
 	}
 }

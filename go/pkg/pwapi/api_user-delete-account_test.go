@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 )
 
@@ -25,16 +26,12 @@ func TestSvc_UserDeleteAccount(t *testing.T) {
 	// create new account
 	afterDelete, err := svc.UserGetSession(ctx, nil)
 	checkErr(t, "", err)
-	if !afterDelete.IsNewUser {
-		t.Errorf("Expected session.IsNewUser==true, got false.")
-	}
-	testDifferentInt64s(t, "", beforeDeleteID, afterDelete.User.ID)
-	testSameStrings(t, "", beforeDeleteSubject, afterDelete.User.OAuthSubject)
+	assert.True(t, afterDelete.IsNewUser)
+	assert.NotEqual(t, beforeDeleteID, afterDelete.User.ID)
+	assert.Equal(t, beforeDeleteSubject, afterDelete.User.OAuthSubject)
 
 	// retrieve already created account
 	afterAfterDelete, err := svc.UserGetSession(ctx, nil)
 	checkErr(t, "", err)
-	if afterAfterDelete.IsNewUser {
-		t.Errorf("Expected session.IsNewUser==false, got true.")
-	}
+	assert.False(t, afterAfterDelete.IsNewUser)
 }

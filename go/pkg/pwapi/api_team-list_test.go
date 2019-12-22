@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -41,11 +42,11 @@ func TestSvc_TeamList(t *testing.T) {
 				return
 			}
 
-			testSameAnys(t, "", test.expectedOrganizations, len(ret.Items))
+			assert.Equal(t, test.expectedOrganizations, len(ret.Items))
 
 			// fmt.Println(godev.PrettyJSON(ret))
 			for _, organization := range ret.Items {
-				testSameInt64s(t, "", test.input.SeasonID, organization.SeasonID)
+				assert.Equal(t, test.input.SeasonID, organization.SeasonID)
 			}
 		})
 	}
