@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"moul.io/godev"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/pwsso"
@@ -35,9 +36,7 @@ func TestSvc_UserGetSession(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			actual := godev.JSON(test.actual)
-			if test.expected != actual {
-				t.Fatalf("Expected: %q, got %q instead.", test.expected, actual)
-			}
+			assert.Equal(t, test.expected, actual)
 		})
 	}
 }

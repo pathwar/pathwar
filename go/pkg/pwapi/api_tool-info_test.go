@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 )
 
@@ -21,5 +22,5 @@ func TestSvc_ToolInfo(t *testing.T) {
 		BuiltBy: "n/a",
 	}
 	expected.Uptime = status.Uptime // may vary
-	testSameDeep(t, "", expected, status)
+	assert.Equal(t, expected, status)
 }

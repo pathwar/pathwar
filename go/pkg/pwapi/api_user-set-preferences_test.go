@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -42,7 +43,7 @@ func TestSvc_UserSetPreferences(t *testing.T) {
 		session, err := svc.UserGetSession(ctx, nil)
 		checkErr(t, test.name, err)
 
-		testSameInt64s(t, test.name, test.expectedSeasonID, session.User.ActiveSeasonID)
-		testSameInt64s(t, test.name, test.expectedTeamMemberID, session.User.ActiveTeamMemberID)
+		assert.Equalf(t, test.expectedSeasonID, session.User.ActiveSeasonID, test.name)
+		assert.Equalf(t, test.expectedTeamMemberID, session.User.ActiveTeamMemberID, test.name)
 	}
 }

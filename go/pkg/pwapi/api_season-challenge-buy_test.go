@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -47,9 +48,9 @@ func TestSvc_ChallengeBuy(t *testing.T) {
 			continue
 		}
 
-		testSameInt64s(t, test.name, test.input.TeamID, subscription.ChallengeSubscription.TeamID)
-		testSameInt64s(t, test.name, test.input.SeasonChallengeID, subscription.ChallengeSubscription.SeasonChallengeID)
-		testSameInt64s(t, test.name, session.User.ID, subscription.ChallengeSubscription.BuyerID)
+		assert.Equalf(t, test.input.TeamID, subscription.ChallengeSubscription.TeamID, test.name)
+		assert.Equalf(t, test.input.SeasonChallengeID, subscription.ChallengeSubscription.SeasonChallengeID, test.name)
+		assert.Equalf(t, session.User.ID, subscription.ChallengeSubscription.BuyerID, test.name)
 
 		// check if challenge subscription is now visible in season challenge list
 		challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
@@ -59,16 +60,13 @@ func TestSvc_ChallengeBuy(t *testing.T) {
 		for _, challenge := range challenges.Items {
 			if challenge.ID == subscription.ChallengeSubscription.SeasonChallengeID {
 				found++
-				if len(challenge.Subscriptions) != 1 {
-					t.Errorf("%s: Expected only one subscription, got %d.", test.name, len(challenge.Subscriptions))
+				if !assert.Lenf(t, challenge.Subscriptions, 1, test.name) {
+					continue
 				}
-
-				testSameInt64s(t, test.name, subscription.ChallengeSubscription.ID, challenge.Subscriptions[0].ID)
-				testSameInt64s(t, test.name, test.input.TeamID, challenge.Subscriptions[0].TeamID)
+				assert.Equalf(t, subscription.ChallengeSubscription.ID, challenge.Subscriptions[0].ID, test.name)
+				assert.Equalf(t, test.input.TeamID, challenge.Subscriptions[0].TeamID, test.name)
 			}
 		}
-		if found != 1 {
-			t.Errorf("%s: Expected 1 found, got %d.", test.name, found)
-		}
+		assert.Equalf(t, 1, found, test.name)
 	}
 }

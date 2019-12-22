@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
@@ -51,15 +52,13 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 			continue
 		}
 
-		testSameInt64s(t, test.name, subscription.ChallengeSubscription.ID, ret.ChallengeValidation.ChallengeSubscriptionID)
-		testSameInt64s(t, test.name, session.User.ID, ret.ChallengeValidation.AuthorID)
-		testSameAnys(t, test.name, pwdb.ChallengeValidation_NeedReview, ret.ChallengeValidation.Status)
-		testSameStrings(t, test.name, test.input.Comment, ret.ChallengeValidation.AuthorComment)
-		testSameStrings(t, test.name, test.input.Passphrase, ret.ChallengeValidation.Passphrase)
-		testSameStrings(t, test.name, test.expectedPassphraseKey, ret.ChallengeValidation.PassphraseKey)
-		if len(ret.ChallengeValidation.ChallengeSubscription.Validations) == 0 {
-			t.Errorf("%s: should have at least one validation", test.name)
-		}
+		assert.Equalf(t, subscription.ChallengeSubscription.ID, ret.ChallengeValidation.ChallengeSubscriptionID, test.name)
+		assert.Equalf(t, session.User.ID, ret.ChallengeValidation.AuthorID, test.name)
+		assert.Equalf(t, pwdb.ChallengeValidation_NeedReview, ret.ChallengeValidation.Status, test.name)
+		assert.Equalf(t, test.input.Comment, ret.ChallengeValidation.AuthorComment, test.name)
+		assert.Equalf(t, test.input.Passphrase, ret.ChallengeValidation.Passphrase, test.name)
+		assert.Equalf(t, test.expectedPassphraseKey, ret.ChallengeValidation.PassphraseKey, test.name)
+		assert.NotEmptyf(t, ret.ChallengeValidation.ChallengeSubscription.Validations, test.name)
 		// fmt.Println(godev.PrettyJSON(ret))
 	}
 }

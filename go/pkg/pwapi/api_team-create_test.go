@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
@@ -80,17 +81,13 @@ func TestSvc_TeamCreate(t *testing.T) {
 				return
 			}
 
-			if 1 != len(ret.Team.Members) {
-				t.Errorf("Expected 1 team member, got %d.", len(ret.Team.Members))
-			}
-			testSameInt64s(t, "", session.User.ID, ret.Team.Members[0].UserID)
-			testSameInt64s(t, "", test.input.SeasonID, ret.Team.SeasonID)
+			assert.Len(t, ret.Team.Members, 1)
+			assert.Equal(t, session.User.ID, ret.Team.Members[0].UserID)
+			assert.Equal(t, test.input.SeasonID, ret.Team.SeasonID)
 			if test.input.OrganizationID != 0 {
-				testSameInt64s(t, "", test.input.OrganizationID, ret.Team.OrganizationID)
+				assert.Equal(t, test.input.OrganizationID, ret.Team.OrganizationID)
 			}
-			if ret.Team.Organization.SoloSeason {
-				t.Errorf("Expected non-solo organization.")
-			}
+			assert.False(t, ret.Team.Organization.SoloSeason)
 		})
 	}
 }

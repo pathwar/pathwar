@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
@@ -62,13 +63,11 @@ func TestSvc_ChallengeSubscriptionClose(t *testing.T) {
 			continue
 		}
 
-		testIsNotNil(t, test.name, ret.ChallengeSubscription.ClosedAt)
-		testSameInt64s(t, test.name, session.User.ID, ret.ChallengeSubscription.CloserID)
-		testSameAnys(t, test.name, pwdb.ChallengeSubscription_Closed, ret.ChallengeSubscription.Status)
-		testSameInt64s(t, test.name, activeTeam.ID, ret.ChallengeSubscription.Team.ID)
-		testSameInt64s(t, test.name, test.input.ChallengeSubscriptionID, ret.ChallengeSubscription.ID)
-		if len(ret.ChallengeSubscription.Validations) == 0 {
-			t.Errorf("%s: should have at least one validation", test.name)
-		}
+		assert.NotNilf(t, ret.ChallengeSubscription.ClosedAt, test.name)
+		assert.Equalf(t, session.User.ID, ret.ChallengeSubscription.CloserID, test.name)
+		assert.Equalf(t, pwdb.ChallengeSubscription_Closed, ret.ChallengeSubscription.Status, test.name)
+		assert.Equalf(t, activeTeam.ID, ret.ChallengeSubscription.Team.ID, test.name)
+		assert.Equalf(t, test.input.ChallengeSubscriptionID, ret.ChallengeSubscription.ID, test.name)
+		assert.NotEmptyf(t, ret.ChallengeSubscription.Validations, test.name)
 	}
 }

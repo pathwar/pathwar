@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 )
 
@@ -19,5 +20,5 @@ func TestSvc_GetStatus(t *testing.T) {
 		EverythingIsOK: true,
 	}
 
-	testSameDeep(t, "", expected, status)
+	assert.Equal(t, expected, status)
 }

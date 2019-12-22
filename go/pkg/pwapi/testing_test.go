@@ -2,8 +2,6 @@ package pwapi
 
 import (
 	"context"
-	"errors"
-	"reflect"
 	"testing"
 
 	"github.com/jinzhu/gorm"
@@ -104,130 +102,14 @@ func checkErr(t *testing.T, name string, err error) {
 func testSameErrcodes(t *testing.T, name string, expected, got error) {
 	t.Helper()
 
+	prefix := ""
+	if name != "" {
+		prefix = name + ": "
+	}
 	assert.Equalf(
 		t,
 		errcode.ErrCode_name[errcode.Code(expected)],
 		errcode.ErrCode_name[errcode.Code(got)],
-		"%v", got,
+		"%s%v", prefix, got,
 	)
-}
-
-func testIsTrue(t *testing.T, name string, got bool) {
-	t.Helper()
-
-	if !got {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Errorf("%sExpected %v to be true.", prefix, got)
-	}
-}
-
-func testIsNil(t *testing.T, name string, got interface{}) {
-	t.Helper()
-
-	if got != nil {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Errorf("%sExpected %+v to be nil.", prefix, got)
-	}
-}
-
-func testIsNotNil(t *testing.T, name string, got interface{}) {
-	t.Helper()
-
-	if got == nil {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Errorf("%sExpected %+v to be not nil.", prefix, got)
-	}
-}
-
-func testSameErrs(t *testing.T, name string, expected, got error) {
-	t.Helper()
-
-	if !errors.Is(got, expected) {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Errorf("%sExpected %+v, got %+v.", prefix, expected, got)
-	}
-}
-
-func testSameAnys(t *testing.T, name string, expected, got interface{}) {
-	t.Helper()
-
-	if expected != got {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Errorf("%sExpected %#v, got %#v.", prefix, expected, got)
-	}
-}
-
-func testSameInt64s(t *testing.T, name string, expected, got int64) {
-	t.Helper()
-
-	if expected != got {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Errorf("%sExpected %d, got %d.", prefix, expected, got)
-	}
-}
-
-func testSameInts(t *testing.T, name string, expected, got int) {
-	t.Helper()
-
-	if expected != got {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Errorf("%sExpected %d, got %d.", prefix, expected, got)
-	}
-}
-
-func testDifferentInt64s(t *testing.T, name string, expected, got int64) {
-	t.Helper()
-
-	if expected == got {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Errorf("%sExpected different values, got %d two times.", prefix, expected)
-	}
-}
-
-func testSameStrings(t *testing.T, name string, expected, got string) {
-	t.Helper()
-
-	if expected != got {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Errorf("%sExpected %q, got %q.", prefix, expected, got)
-	}
-}
-
-func testSameDeep(t *testing.T, name string, expected, got interface{}) {
-	t.Helper()
-
-	if !reflect.DeepEqual(expected, got) {
-		prefix := ""
-		if name != "" {
-			prefix = name + ": "
-		}
-		t.Errorf("%sExpected %#v, got %#v.", prefix, expected, got)
-	}
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -40,9 +41,9 @@ func TestSvc_TeamGet(t *testing.T) {
 				return
 			}
 
-			testSameInt64s(t, "", test.input.TeamID, ret.Item.ID)
-			testSameStrings(t, "", test.expectedOrganizationName, ret.Item.Organization.Name)
-			testSameStrings(t, "", test.expectedSeasonName, ret.Item.Season.Name)
+			assert.Equal(t, test.input.TeamID, ret.Item.ID)
+			assert.Equal(t, test.expectedOrganizationName, ret.Item.Organization.Name)
+			assert.Equal(t, test.expectedSeasonName, ret.Item.Season.Name)
 		})
 	}
 }

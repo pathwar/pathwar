@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -46,9 +47,9 @@ func TestSvc_SeasonChallengeGet(t *testing.T) {
 			}
 
 			sc := ret.Item
-			testSameInt64s(t, "", test.input.SeasonChallengeID, sc.ID)
-			testSameStrings(t, "", test.expectedChallengeName, sc.Flavor.Challenge.Name)
-			testSameStrings(t, "", test.expectedSeasonName, sc.Season.Name)
+			assert.Equal(t, test.input.SeasonChallengeID, sc.ID)
+			assert.Equal(t, test.expectedChallengeName, sc.Flavor.Challenge.Name)
+			assert.Equal(t, test.expectedSeasonName, sc.Season.Name)
 		})
 	}
 }
