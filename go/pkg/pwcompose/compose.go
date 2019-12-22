@@ -34,8 +34,11 @@ const (
 	challengeNameLabel    = labelPrefix + "challenge-name"
 	challengeVersionLabel = labelPrefix + "challenge-version"
 	instanceKeyLabel      = labelPrefix + "instance-key"
-	NginxContainerName    = "pathwar-agent-nginx"
-	ProxyNetworkName      = "pathwar-proxy-network"
+)
+
+const (
+	NginxContainerName = "pathwar-agent-nginx"
+	ProxyNetworkName   = "pathwar-proxy-network"
 )
 
 func Prepare(challengeDir string, prefix string, noPush bool, version string, logger *zap.Logger) (string, error) {
@@ -68,8 +71,9 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 	}
 
 	// check for error in docker-compose file
-	logger.Debug("docker-compose", zap.String("-f", origComposePath), zap.String("action", "config"))
-	cmd := exec.Command("docker-compose", "-f", origComposePath, "config", "-q")
+	args := []string{"-f", origComposePath, "config", "-q"}
+	logger.Debug("docker-compose", zap.Strings("args", args))
+	cmd := exec.Command("docker-compose", args...)
 	cmd.Stdout = os.Stderr
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
@@ -127,8 +131,9 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 
 	if !noPush {
 		// build and push images to dockerhub (don't forget to setup your credentials just type : "docker login" in bash)
-		logger.Debug("docker-compose", zap.String("-f", tmpComposePath), zap.String("action", "build"))
-		cmd = exec.Command("docker-compose", "-f", tmpComposePath, "build")
+		args = []string{"-f", tmpComposePath, "build"}
+		logger.Debug("docker-compose", zap.Strings("args", args))
+		cmd = exec.Command("docker-compose", args...)
 		cmd.Dir = cleanPath
 		cmd.Stdout = os.Stderr
 		cmd.Stderr = os.Stderr
@@ -137,10 +142,9 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 			return "", errcode.ErrComposeBuild.Wrap(err)
 		}
 
-		cmdArgs := []string{"docker-compose", "-f", tmpComposePath, "bundle"}
-		cmdArgs = append(cmdArgs, "--push-images")
-		logger.Debug("docker-compose", zap.Strings("args", cmdArgs[1:]))
-		cmd = exec.Command(cmdArgs[0], cmdArgs[1:]...)
+		args := []string{"-f", tmpComposePath, "bundle", "--push-images"}
+		logger.Debug("docker-compose", zap.Strings("args", args))
+		cmd = exec.Command("docker-compose", args...)
 		cmd.Dir = cleanPath
 		cmd.Stdout = os.Stderr
 		cmd.Stderr = os.Stderr
@@ -215,6 +219,15 @@ func Up(
 		preparedComposeStruct.Services[name] = service
 	}
 
+	// down instances if force recreate
+	if forceRecreate {
+		err = Down(ctx, []string{challengeID}, false, false, false, cli, logger)
+		if err != nil {
+			return errcode.ErrComposeForceRecreateDown.Wrap(err)
+		}
+	}
+
+	// create temp dir
 	tmpDir, err := ioutil.TempDir("", "pwcompose")
 	if err != nil {
 		return errcode.ErrComposeCreateTempDir.Wrap(err)
@@ -234,17 +247,10 @@ func Up(
 		return errcode.TODO.Wrap(err)
 	}
 
-	// down instances if force recreate
-	if forceRecreate {
-		err = Down(ctx, []string{challengeID}, false, false, false, cli, logger)
-		if err != nil {
-			return errcode.ErrComposeForceRecreateDown.Wrap(err)
-		}
-	}
-
 	// create instances
-	logger.Debug("docker-compose", zap.String("action", "up --no-start"))
-	cmd := exec.Command("docker-compose", "-f", tmpPreparedComposePath, "up", "--no-start")
+	args := []string{"-f", tmpPreparedComposePath, "up", "--no-start"}
+	logger.Debug("docker-compose", zap.Strings("args", args))
+	cmd := exec.Command("docker-compose", args...)
 	cmd.Stdout = os.Stderr
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
@@ -259,7 +265,8 @@ func Up(
 		return errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
 	for _, instance := range containersInfo.RunningInstances {
-		if challengeID == challengeIDFormatted(instance.Labels[challengeNameLabel], instance.Labels[challengeVersionLabel]) {
+		instanceChallengeID := challengeIDFormatted(instance.Labels[challengeNameLabel], instance.Labels[challengeVersionLabel])
+		if challengeID == instanceChallengeID {
 			// update entrypoints to run pwinit first
 			imageInspect, _, err := cli.ImageInspectWithRaw(ctx, instance.ImageID)
 			if err != nil {
@@ -267,21 +274,25 @@ func Up(
 			}
 			for name, service := range preparedComposeStruct.Services {
 				// find service from compose file of current instance
-				if instance.Image == path.Base(tmpDir)+"_"+instance.Labels[serviceNameLabel] {
-					//service.Command = append(service.Command, "pwinit", "entrypoint")
-					service.Command = append(service.Command, imageInspect.Config.Entrypoint...)
-					service.Command = append(service.Command, imageInspect.Config.Cmd...)
-					service.Entrypoint = strslice.StrSlice{""}
-					preparedComposeStruct.Services[name] = service
+				entrypoint := []string{}
+				if len(imageInspect.Config.Entrypoint) > 0 {
+					entrypoint = imageInspect.Config.Entrypoint
 				}
+				if len(service.Entrypoint) > 0 {
+					entrypoint = service.Entrypoint
+				}
+				command := []string{}
+				if len(imageInspect.Config.Cmd) > 0 {
+					command = imageInspect.Config.Cmd
+				}
+				if len(service.Command) > 0 {
+					command = service.Command
+				}
+				service.Entrypoint = strslice.StrSlice{"/bin/pwinit", "entrypoint"}
+				service.Command = append(entrypoint, command...)
+				preparedComposeStruct.Services[name] = service
 			}
 		}
-	}
-
-	// down temp instances
-	err = Down(ctx, []string{challengeID}, false, true, false, cli, logger)
-	if err != nil {
-		return errcode.ErrComposeForceRecreateDown.Wrap(err)
 	}
 
 	// update tmp docker-compose file with new entrypoints
@@ -291,8 +302,9 @@ func Up(
 	}
 
 	// build definitive instances
-	logger.Debug("docker-compose", zap.String("action", "up --no-start"))
-	cmd = exec.Command("docker-compose", "-f", tmpPreparedComposePath, "up", "--no-start")
+	args = []string{"-f", tmpPreparedComposePath, "up", "--no-start"}
+	logger.Debug("docker-compose", zap.Strings("args", args))
+	cmd = exec.Command("docker-compose", args...)
 	cmd.Stdout = os.Stderr
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
@@ -338,8 +350,9 @@ func Up(
 	}
 
 	// start instances
-	logger.Debug("docker-compose", zap.String("action", "up"))
-	cmd = exec.Command("docker-compose", "-f", tmpPreparedComposePath, "up", "-d")
+	args = []string{"-f", tmpPreparedComposePath, "up", "-d"}
+	logger.Debug("docker-compose", zap.Strings("args", args))
+	cmd = exec.Command("docker-compose", args...)
 	cmd.Stdout = os.Stderr
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()

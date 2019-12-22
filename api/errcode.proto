@@ -68,6 +68,7 @@ enum ErrCode {
   ErrWritePWInitCloseTarWriter = 3023;
   ErrCopyPWInitToContainer = 3024;
   ErrComposeGetContainersInfo = 3025;
+  ErrMissingPwinitConfig = 3026;
 
   //// Pathwar API (starting at 4001)
 
