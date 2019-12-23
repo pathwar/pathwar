@@ -244,7 +244,7 @@ func Up(
 	// create tmp docker-compose file
 	err = updateDockerComposeTmpFile(preparedComposeStruct, tmpPreparedComposePath)
 	if err != nil {
-		return errcode.TODO.Wrap(err)
+		return errcode.ErrComposeUpdateTmpFile.Wrap(err)
 	}
 
 	// create instances
@@ -270,7 +270,7 @@ func Up(
 			// update entrypoints to run pwinit first
 			imageInspect, _, err := cli.ImageInspectWithRaw(ctx, instance.ImageID)
 			if err != nil {
-				return errcode.TODO.Wrap(err)
+				return errcode.ErrDockerAPIImageInspect.Wrap(err)
 			}
 			for name, service := range preparedComposeStruct.Services {
 				// find service from compose file of current instance
@@ -298,7 +298,7 @@ func Up(
 	// update tmp docker-compose file with new entrypoints
 	err = updateDockerComposeTmpFile(preparedComposeStruct, tmpPreparedComposePath)
 	if err != nil {
-		return errcode.TODO.Wrap(err)
+		return errcode.ErrComposeUpdateTmpFile.Wrap(err)
 	}
 
 	// build definitive instances
@@ -440,7 +440,7 @@ func Down(
 	for _, networkID := range removalLists.networksToRemove {
 		err := cli.NetworkRemove(ctx, networkID)
 		if err != nil {
-			return errcode.TODO.Wrap(err)
+			return errcode.ErrDockerAPINetworkRemove.Wrap(err)
 		}
 		fmt.Println("removed network " + networkID)
 	}
@@ -628,7 +628,7 @@ func updateDockerComposeTmpFile(preparedComposeStruct config, tmpPreparedCompose
 	}
 	err = tmpFile.Close()
 	if err != nil {
-		return errcode.TODO.Wrap(err)
+		return errcode.ErrComposeCloseTempFile.Wrap(err)
 	}
 	return nil
 }
