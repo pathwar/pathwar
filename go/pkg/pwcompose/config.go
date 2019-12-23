@@ -30,6 +30,7 @@ type service struct {
 	DependsOn                                 []string          `yaml:"depends_on,omitempty"`
 	CapAdd                                    []string          `yaml:"cap_add,omitempty"`
 	Build                                     string            `yaml:",omitempty"`
+	Entrypoint                                []string          `yaml:",omitempty"`
 	Restart                                   string            `yaml:",omitempty"`
 	Environment                               map[string]string `yaml:",omitempty"`
 	Labels                                    map[string]string `yaml:"labels,omitempty"`
@@ -55,4 +56,10 @@ type challengeFlavors struct {
 	Version     string
 	InstanceKey string
 	Instances   map[string]types.Container
+}
+
+type dockerRemovalLists struct {
+	containersToRemove []string
+	imagesToRemove     []string
+	networksToRemove   []string
 }

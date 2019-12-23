@@ -50,24 +50,27 @@ enum ErrCode {
   ErrComposeMarshalConfig = 3005;
   ErrComposeCreateTempFile = 3006;
   ErrComposeWriteTempFile = 3007;
-  ErrComposeBuild = 3008;
-  ErrComposeBundle = 3009;
-  ErrComposeReadDab = 3010;
-  ErrComposeParseDab = 3011;
-  ErrComposeParseConfig = 3012;
-  ErrComposeCreateTempDir = 3013;
-  ErrComposeForceRecreateDown  = 3014;
-  ErrComposeRunCreate = 3015;
-  ErrComposeRunUp = 3016;
-  ErrGetPWInitBinary = 3017;
-  ErrWritePWInitFileHeader = 3018;
-  ErrWritePWInitFile = 3019;
-  ErrMarshalPWInitConfigFile = 3020;
-  ErrWritePWInitConfigFileHeader = 3021;
-  ErrWritePWInitConfigFile = 3022;
-  ErrWritePWInitCloseTarWriter = 3023;
-  ErrCopyPWInitToContainer = 3024;
-  ErrComposeGetContainersInfo = 3025;
+  ErrComposeCloseTempFile = 3008;
+  ErrComposeBuild = 3009;
+  ErrComposeBundle = 30010;
+  ErrComposeReadDab = 3011;
+  ErrComposeParseDab = 3012;
+  ErrComposeParseConfig = 3013;
+  ErrComposeCreateTempDir = 3014;
+  ErrComposeUpdateTmpFile = 3015;
+  ErrComposeForceRecreateDown  = 3016;
+  ErrComposeRunCreate = 3017;
+  ErrComposeRunUp = 3018;
+  ErrGetPWInitBinary = 3019;
+  ErrWritePWInitFileHeader = 3020;
+  ErrWritePWInitFile = 3021;
+  ErrMarshalPWInitConfigFile = 3022;
+  ErrWritePWInitConfigFileHeader = 3023;
+  ErrWritePWInitConfigFile = 3024;
+  ErrWritePWInitCloseTarWriter = 3025;
+  ErrCopyPWInitToContainer = 3026;
+  ErrComposeGetContainersInfo = 3027;
+  ErrMissingPwinitConfig = 3028;
 
   //// Pathwar API (starting at 4001)
 
@@ -195,13 +198,15 @@ enum ErrCode {
   ErrDockerAPIContainerExecStart = 8007;
   ErrDockerAPIContainerExecInspect = 8008;
   ErrDockerAPIImagePull = 8009;
-  ErrDockerAPINetworkList = 8010;
-  ErrDockerAPINetworkCreate = 8011;
-  ErrDockerAPINetworkRemove = 8012;
-  ErrDockerAPIExitCode = 8013;
+  ErrDockerAPIImageInspect = 8010;
+  ErrDockerAPINetworkList = 8011;
+  ErrDockerAPINetworkCreate = 8012;
+  ErrDockerAPINetworkRemove = 8013;
+  ErrDockerAPIExitCode = 8014;
 
   //// Pathwar Init (starting at 9001)
 
   ErrExecuteOnInitHook = 9001;
+  ErrRemoveInitConfig = 9002;
 
 }

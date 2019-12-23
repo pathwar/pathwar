@@ -26,10 +26,25 @@ func main() {
 		Exec: func(args []string) error {
 			// FIXME: lock to block other commands
 
-			// prepare the challenge
-			cmd := exec.Command("/pwinit/on-init")
-			if err := cmd.Run(); err != nil {
-				return errcode.ErrExecuteOnInitHook.Wrap(err)
+			_, err := os.Stat("/pwinit/config.json")
+			if err != nil {
+				log.Printf("no such config file, skipping on-init hook (%v)", err)
+			} else {
+				log.Print("starting on-init hook")
+				// prepare the challenge
+				cmd := exec.Command("/pwinit/on-init")
+				err = cmd.Run()
+				if err != nil {
+					return errcode.ErrExecuteOnInitHook.Wrap(err)
+				}
+
+				// clean pwinit config file that contains passphrases
+				for _, filename := range []string{"/pwinit/config.json", "/pwinit/on-init"} {
+					err = os.Remove(filename)
+					if err != nil {
+						return errcode.ErrRemoveInitConfig.Wrap(err)
+					}
+				}
 			}
 
 			// FIXME: add a self-destruct mode that allows having root access only at runtime
@@ -39,7 +54,6 @@ func main() {
 			if err != nil {
 				return err
 			}
-
 			env := os.Environ()
 			if err := syscall.Exec(binary, args, env); err != nil {
 				return err
