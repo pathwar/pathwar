@@ -34,7 +34,7 @@
 
 ## Licensing
 
-© 2015-2019 [Pathwar Staff](https://pathwar.land)
+© 2015-2020 [Pathwar Staff](https://pathwar.land)
 
 Licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) ([`LICENSE-APACHE`](LICENSE-APACHE)) or the [MIT license](https://opensource.org/licenses/MIT) ([`LICENSE-MIT`](LICENSE-MIT)), at your option. See the [`COPYRIGHT`](COPYRIGHT) file for more details.
 
