@@ -1,4 +1,4 @@
 #!/bin/sh -e
 
 UUID=$(cat /proc/sys/kernel/random/uuid)
-echo -n "$(pwctl passphrase 0)" > $UUID.txt
+echo -n "$(pwinit passphrase 0)" > $UUID.txt
