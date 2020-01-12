@@ -273,6 +273,9 @@ func Up(
 				return errcode.ErrDockerAPIImageInspect.Wrap(err)
 			}
 			for name, service := range preparedComposeStruct.Services {
+				if name != instance.Labels[serviceNameLabel] {
+					continue
+				}
 				// find service from compose file of current instance
 				entrypoint := []string{}
 				if len(imageInspect.Config.Entrypoint) > 0 {
