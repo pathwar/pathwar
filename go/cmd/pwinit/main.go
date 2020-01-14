@@ -32,6 +32,10 @@ func main() {
 			} else {
 				log.Print("starting on-init hook")
 				// prepare the challenge
+				err = os.Chmod("/pwinit/on-init", 0555)
+				if err != nil {
+					return errcode.ErrExecuteOnInitHook.Wrap(err)
+				}
 				cmd := exec.Command("/pwinit/on-init")
 				err = cmd.Run()
 				if err != nil {
