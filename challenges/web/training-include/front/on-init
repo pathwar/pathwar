@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/sh -e
 
-echo -n "$(pwctl passphrase 0)" > /var/www/html/passphrase.txt
+echo -n "$(pwinit passphrase 0)" > /var/www/html/passphrase.txt

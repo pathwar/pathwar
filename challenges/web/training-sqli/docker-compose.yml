@@ -10,5 +10,5 @@ services:
 
   mysql:
     build: mysql
-    expose:
+    ports:
       - 3306
