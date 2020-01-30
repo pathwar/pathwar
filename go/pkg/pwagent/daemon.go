@@ -3,11 +3,13 @@ package pwagent
 import (
 	"context"
 	"encoding/json"
+	fmt "fmt"
 	"strconv"
 	"time"
 
 	"github.com/docker/docker/client"
 	"go.uber.org/zap"
+	"moul.io/godev"
 	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwapi"
 	"pathwar.land/go/pkg/pwcompose"
@@ -15,7 +17,7 @@ import (
 	"pathwar.land/go/pkg/pwinit"
 )
 
-func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Duration, cli *client.Client, logger *zap.Logger) error {
+func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Duration, cli *client.Client, grpcClient pwapi.ServiceClient, logger *zap.Logger) error {
 	// call API register in gRPC
 	// ret, err := api.AgentRegister(ctx, &pwapi.AgentRegister_Input{Name: "dev", Hostname: "localhost", OS: "lorem ipsum", Arch: "x86_64", Version: "dev", Tags: []string{"dev"}})
 
@@ -57,6 +59,28 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 			},
 		},
 	}
+
+	fmt.Println(godev.PrettyJSON(apiInstances))
+
+	{
+		in := &pwapi.AgentRegister_Input{}
+		ret, err := grpcClient.AgentRegister(ctx, in)
+		fmt.Println(godev.PrettyJSON(ret), err)
+	}
+
+	{
+		in := &pwapi.AgentListInstances_Input{}
+		ret, err := grpcClient.AgentListInstances(ctx, in)
+		fmt.Println(godev.PrettyJSON(ret), err)
+	}
+
+	{
+		in := &pwapi.AgentUpdateState_Input{}
+		ret, err := grpcClient.AgentUpdateState(ctx, in)
+		fmt.Println(godev.PrettyJSON(ret), err)
+	}
+
+	return fmt.Errorf("tmp: stop here")
 
 	if clean {
 		err := pwcompose.Down(ctx, []string{}, true, true, true, cli, logger)

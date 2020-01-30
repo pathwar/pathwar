@@ -22,6 +22,7 @@ import (
 	"github.com/peterbourgon/ff/ffcli"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"google.golang.org/grpc"
 	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwagent"
 	"pathwar.land/go/pkg/pwapi"
@@ -56,6 +57,7 @@ var (
 	agentNginxHostPort          string
 	agentNginxModeratorPassword string
 	agentNginxSalt              string
+	apiGRPCAddr                 string
 	apiDBURN                    string
 	composeDownKeepVolumes      bool
 	composeDownRemoveImages     bool
@@ -107,6 +109,7 @@ func main() {
 	agentDaemonFlags.BoolVar(&agentDaemonClean, "clean", false, "remove all pathwar instances before executing")
 	agentDaemonFlags.BoolVar(&agentDaemonRunOnce, "once", false, "run once and don't start daemon loop")
 	agentDaemonFlags.DurationVar(&agentDaemonLoopDelay, "delay", 10*time.Second, "delay between each loop iteration")
+	agentDaemonFlags.StringVar(&apiGRPCAddr, "api-grpc-addr", "api-dev.pathwar.land:443", "API gRPC address")
 	agentNginxFlags.StringVar(&agentNginxDockerImage, "docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
 	agentNginxFlags.StringVar(&agentNginxDomainSuffix, "domain-suffix", "local", "Domain suffix to append")
 	agentNginxFlags.StringVar(&agentNginxHostIP, "host", "0.0.0.0", "HTTP listening addr")
@@ -514,7 +517,13 @@ func main() {
 				return errcode.ErrInitDockerClient.Wrap(err)
 			}
 
-			return pwagent.Daemon(ctx, agentDaemonClean, agentDaemonRunOnce, agentDaemonLoopDelay, dockerCli, logger)
+			grpcClient, closer, err := grpcClientFromFlags()
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+			defer closer()
+
+			return pwagent.Daemon(ctx, agentDaemonClean, agentDaemonRunOnce, agentDaemonLoopDelay, dockerCli, grpcClient, logger)
 		},
 	}
 
@@ -643,6 +652,20 @@ func ssoFromFlags() (pwsso.Client, error) {
 		return nil, errcode.ErrInitSSOClient.Wrap(err)
 	}
 	return sso, nil
+}
+
+func grpcClientFromFlags() (pwapi.ServiceClient, func(), error) {
+	var opts []grpc.DialOption
+	opts = append(opts, grpc.WithInsecure())
+	conn, err := grpc.Dial(apiGRPCAddr, opts...)
+	if err != nil {
+		return nil, nil, errcode.TODO.Wrap(err)
+	}
+	closer := func() {
+		conn.Close()
+	}
+	client := pwapi.NewServiceClient(conn)
+	return client, closer, nil
 }
 
 func globalPreRun() error {
