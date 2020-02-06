@@ -4,5 +4,5 @@
 93969dfee1c9098bb0f6ccab4520caad33e93b8b  ../api/pwdb.proto
 a45fa08c595709dd752f52ded4493ceb3a191de2  ../api/pwcompose.proto
 a4e42f9d8ad42bafd735b21b535c5a16d8ca365e  ../api/errcode.proto
+b7830ceacc4030e7987231426c45753f67285fda  ../api/pwapi.proto
 c8444667ef9df6d47212692aac536dd272bd4c16  Makefile
-e764af2e992316ed9f29eb755a0921acd1fcca39  ../api/pwapi.proto

@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"math/rand"
+	"net/http"
 	"os"
 	"os/signal"
 	"time"
@@ -22,7 +23,7 @@ import (
 	"github.com/peterbourgon/ff/ffcli"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"google.golang.org/grpc"
+	"golang.org/x/oauth2"
 	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwagent"
 	"pathwar.land/go/pkg/pwapi"
@@ -34,11 +35,15 @@ import (
 )
 
 const (
-	defaultSSOPubKey    = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlEFxLlywsbI5BQ7DVkA66fICWGIYPpD+aZNYRR7SIc0zdtJR4xMOt5CjM0vbYT4z2a1U2yl0ewunyxFm8niS8w6mKYFnOS4nnSchQyIAmJkpLC4eAjijCdEHdr8mSqamThSrVRGSYEEsa+adidC13kRDy7NDKhvZb8F0YqnktNk6WHSlb8r2QRLPJ1DX534jjXPY6l/eoHuLJAOZxBlfwV5Dg37TVmf2xAH812E7ZigycLAvhsMvr5x2jLavAEEnZZmlQf4cyQ4tlMzKS1Zp0NcdOGS/i6lrndc5pNtZQuGr8IGBrEbTRFUiavn/HDnyalYZy8T5LakXRdVaKdshAQIDAQAB"
-	defaultSSORealm     = "Pathwar-Dev"
-	defaultSSOClientID  = "platform-cli"
-	defaultDBURN        = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8&parseTime=true"
-	defaultDockerPrefix = "pathwar/"
+	defaultSSOPubKey       = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlEFxLlywsbI5BQ7DVkA66fICWGIYPpD+aZNYRR7SIc0zdtJR4xMOt5CjM0vbYT4z2a1U2yl0ewunyxFm8niS8w6mKYFnOS4nnSchQyIAmJkpLC4eAjijCdEHdr8mSqamThSrVRGSYEEsa+adidC13kRDy7NDKhvZb8F0YqnktNk6WHSlb8r2QRLPJ1DX534jjXPY6l/eoHuLJAOZxBlfwV5Dg37TVmf2xAH812E7ZigycLAvhsMvr5x2jLavAEEnZZmlQf4cyQ4tlMzKS1Zp0NcdOGS/i6lrndc5pNtZQuGr8IGBrEbTRFUiavn/HDnyalYZy8T5LakXRdVaKdshAQIDAQAB"
+	defaultSSORealm        = "Pathwar-Dev"
+	defaultSSOClientID     = "platform-cli"
+	defaultSSOClientSecret = ""
+	defaultDBURN           = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8&parseTime=true"
+	defaultDockerPrefix    = "pathwar/"
+	defaultTokenFile       = "pathwar_oauth_token.json"
+	defaultHTTPApiAddr     = "https://api-dev.pathwar.land"
+	defaultAgentName       = "localhost"
 )
 
 var (
@@ -51,6 +56,7 @@ var (
 	agentDaemonClean            bool
 	agentDaemonRunOnce          bool
 	agentDaemonLoopDelay        time.Duration
+	agentName                   string
 	agentNginxDockerImage       string
 	agentNginxDomainSuffix      string
 	agentNginxHostIP            string
@@ -68,6 +74,7 @@ var (
 	composePrepareVersion       string
 	composeUpInstanceKey        string
 	composeUpForceRecreate      bool
+	httpAPIAddr                 string
 	serverCORSAllowedOrigins    string
 	serverBind                  string
 	serverRequestTimeout        time.Duration
@@ -75,8 +82,10 @@ var (
 	serverWithPprof             bool
 	ssoAllowUnsafe              bool
 	ssoClientID                 string
+	ssoClientSecret             string
 	ssoPubkey                   string
 	ssoRealm                    string
+	ssoTokenFile                string
 )
 
 func main() {
@@ -109,7 +118,12 @@ func main() {
 	agentDaemonFlags.BoolVar(&agentDaemonClean, "clean", false, "remove all pathwar instances before executing")
 	agentDaemonFlags.BoolVar(&agentDaemonRunOnce, "once", false, "run once and don't start daemon loop")
 	agentDaemonFlags.DurationVar(&agentDaemonLoopDelay, "delay", 10*time.Second, "delay between each loop iteration")
-	agentDaemonFlags.StringVar(&apiGRPCAddr, "api-grpc-addr", "api-dev.pathwar.land:443", "API gRPC address")
+	agentDaemonFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
+	agentDaemonFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
+	agentDaemonFlags.StringVar(&ssoClientSecret, "sso-clientsecret", defaultSSOClientSecret, "SSO ClientSecret")
+	agentDaemonFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
+	agentDaemonFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultTokenFile, "Token file")
+	agentDaemonFlags.StringVar(&agentName, "agent-name", defaultAgentName, "Agent Name")
 	agentNginxFlags.StringVar(&agentNginxDockerImage, "docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
 	agentNginxFlags.StringVar(&agentNginxDomainSuffix, "domain-suffix", "local", "Domain suffix to append")
 	agentNginxFlags.StringVar(&agentNginxHostIP, "host", "0.0.0.0", "HTTP listening addr")
@@ -517,13 +531,12 @@ func main() {
 				return errcode.ErrInitDockerClient.Wrap(err)
 			}
 
-			grpcClient, closer, err := grpcClientFromFlags()
+			apiClient, err := oauthClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
 			}
-			defer closer()
 
-			return pwagent.Daemon(ctx, agentDaemonClean, agentDaemonRunOnce, agentDaemonLoopDelay, dockerCli, grpcClient, logger)
+			return pwagent.Daemon(ctx, agentDaemonClean, agentDaemonRunOnce, agentDaemonLoopDelay, dockerCli, apiClient, httpAPIAddr, agentName, logger)
 		},
 	}
 
@@ -654,20 +667,6 @@ func ssoFromFlags() (pwsso.Client, error) {
 	return sso, nil
 }
 
-func grpcClientFromFlags() (pwapi.ServiceClient, func(), error) {
-	var opts []grpc.DialOption
-	opts = append(opts, grpc.WithInsecure())
-	conn, err := grpc.Dial(apiGRPCAddr, opts...)
-	if err != nil {
-		return nil, nil, errcode.TODO.Wrap(err)
-	}
-	closer := func() {
-		conn.Close()
-	}
-	client := pwapi.NewServiceClient(conn)
-	return client, closer, nil
-}
-
 func globalPreRun() error {
 	rand.Seed(time.Now().UnixNano())
 	if globalDebug {
@@ -692,4 +691,57 @@ func globalPreRun() error {
 		}
 	}
 	return nil
+}
+
+func oauthClientFromEnv(ctx context.Context) (*http.Client, error) {
+	ctx = context.WithValue(ctx, oauth2.HTTPClient, &http.Client{Timeout: 5 * time.Second})
+
+	conf := &oauth2.Config{
+		ClientID:     ssoClientID,
+		ClientSecret: ssoClientSecret,
+		Scopes:       []string{"email", "offline_access", "profile"},
+		Endpoint: oauth2.Endpoint{
+			AuthURL:  pwsso.KeycloakBaseURL + "/auth/realms/" + ssoRealm + "/protocol/openid-connect/auth",
+			TokenURL: pwsso.KeycloakBaseURL + "/auth/realms/" + ssoRealm + "/protocol/openid-connect/token",
+		},
+	}
+
+	if _, err := os.Stat(ssoTokenFile); err != nil {
+		url := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
+		fmt.Printf("Visit the URL for the auth dialog: %v\n\nthen, write the code in the terminal.\n\n", url)
+		var code string
+		if _, err := fmt.Scan(&code); err != nil {
+			return nil, err
+		}
+
+		tok, err := conf.Exchange(ctx, code)
+		if err != nil {
+			return nil, err
+		}
+
+		jsonText, err := json.Marshal(tok)
+		if err != nil {
+			return nil, err
+		}
+
+		if err := ioutil.WriteFile(ssoTokenFile, jsonText, 0777); err != nil {
+			return nil, err
+		}
+	}
+
+	byt, err := ioutil.ReadFile(ssoTokenFile)
+	if err != nil {
+		return nil, err
+	}
+	tok := new(oauth2.Token)
+	if err = json.Unmarshal(byt, tok); err != nil {
+		return nil, err
+	}
+	ts := conf.TokenSource(ctx, tok)
+	_, err = ts.Token()
+	if err != nil {
+		return nil, err
+	}
+
+	return oauth2.NewClient(ctx, ts), nil
 }

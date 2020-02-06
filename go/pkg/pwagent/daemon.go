@@ -4,10 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	fmt "fmt"
+	"io/ioutil"
+	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/docker/docker/client"
+	"github.com/gogo/protobuf/jsonpb"
 	"go.uber.org/zap"
 	"moul.io/godev"
 	"pathwar.land/go/pkg/errcode"
@@ -17,7 +20,7 @@ import (
 	"pathwar.land/go/pkg/pwinit"
 )
 
-func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Duration, cli *client.Client, grpcClient pwapi.ServiceClient, logger *zap.Logger) error {
+func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Duration, cli *client.Client, apiClient *http.Client, httpApiAddr string, agentName string, logger *zap.Logger) error {
 	// call API register in gRPC
 	// ret, err := api.AgentRegister(ctx, &pwapi.AgentRegister_Input{Name: "dev", Hostname: "localhost", OS: "lorem ipsum", Arch: "x86_64", Version: "dev", Tags: []string{"dev"}})
 
@@ -59,28 +62,29 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 			},
 		},
 	}
+	fmt.Println("fake response", godev.JSON(apiInstances))
 
-	fmt.Println(godev.PrettyJSON(apiInstances))
+	// FIXME: agent register (later)
 
-	{
-		in := &pwapi.AgentRegister_Input{"supmyman", "host", "Windows 95", "Arch Windows", "version 007", []string{"sup"}}
-		ret, err := grpcClient.AgentRegister(ctx, in)
-		fmt.Println(godev.PrettyJSON(ret), err)
+	// fetch list-instances from the API
+	resp, err := apiClient.Get(httpApiAddr + "/agent/list-instances?agent_name=" + agentName)
+	if err != nil {
+		return errcode.TODO.Wrap(err)
 	}
-
-	{
-		in := &pwapi.AgentListInstances_Input{}
-		ret, err := grpcClient.AgentListInstances(ctx, in)
-		fmt.Println(godev.PrettyJSON(ret), err)
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return errcode.TODO.Wrap(err)
 	}
-
-	{
-		in := &pwapi.AgentUpdateState_Input{}
-		ret, err := grpcClient.AgentUpdateState(ctx, in)
-		fmt.Println(godev.PrettyJSON(ret), err)
+	if resp.StatusCode != http.StatusOK {
+		logger.Error("received API error", zap.String("body", string(body)), zap.Int("code", resp.StatusCode))
+		return errcode.TODO.Wrap(fmt.Errorf("received API error"))
 	}
-
-	return fmt.Errorf("tmp: stop here")
+	var ret pwapi.AgentListInstances_Output
+	if err := jsonpb.UnmarshalString(string(body), &ret); err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+	fmt.Println("api response", godev.JSON(ret))
 
 	if clean {
 		err := pwcompose.Down(ctx, []string{}, true, true, true, cli, logger)
@@ -102,7 +106,7 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 		time.Sleep(loopDelay)
 	}
 
-	// later: for each updated instances -> call api to update status
+	// FIXME: agent update state for each updated instances
 }
 
 func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli *client.Client, logger *zap.Logger) error {

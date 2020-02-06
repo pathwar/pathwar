@@ -25,11 +25,7 @@ func (svc *service) AuthFuncOverride(ctx context.Context, path string) (context.
 	switch path { // always allow public endpoints
 	case "/pathwar.api.Service/ToolPing",
 		"/pathwar.api.Service/ToolStatus",
-		"/pathwar.api.Service/ToolInfo",
-		"/pathwar.api.Service/AgentRegister",      // FIXME: delete this line once auth is working properly
-		"/pathwar.api.Service/AgentListInstances", // FIXME: delete this line once auth is working properly
-		"/pathwar.api.Service/AgentUpdateState":   // FIXME: delete this line once auth is working properly
-
+		"/pathwar.api.Service/ToolInfo":
 		return ctx, nil
 	}
 

@@ -9,9 +9,7 @@ import (
 	"pathwar.land/go/pkg/errcode"
 )
 
-const (
-	keycloakBaseURL = "https://id.pathwar.land/auth"
-)
+const KeycloakBaseURL = "https://id.pathwar.land"
 
 func (c *client) Whoami(token string) (map[string]interface{}, error) {
 	oidc, err := c.oidc()
@@ -59,7 +57,7 @@ func (c *client) Logout(token string) error {
 
 func (c *client) oidc() (*rest.WebTarget, error) {
 	keycloak := rest.New()
-	realmURL := fmt.Sprintf("%s/realms/%s", keycloakBaseURL, c.realm)
+	realmURL := fmt.Sprintf("%s/auth/realms/%s", KeycloakBaseURL, c.realm)
 	base := keycloak.Target(realmURL)
 	if base == nil {
 		return nil, errcode.ErrSSOInitKeycloakClient
