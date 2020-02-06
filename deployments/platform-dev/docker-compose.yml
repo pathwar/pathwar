@@ -78,10 +78,12 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD
+      - MYSQL_ROOT_PASSWORD=uns3cur3
       - MYSQL_PASSWORD
       - MYSQL_USER
-      - MYSQL_DATABASE
+      - MYSQL_DATABASE=pathwar
+    ports:
+      - 3306:3306
     networks:
       - internal
 
