@@ -63,7 +63,7 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 	fmt.Println(godev.PrettyJSON(apiInstances))
 
 	{
-		in := &pwapi.AgentRegister_Input{}
+		in := &pwapi.AgentRegister_Input{"supmyman", "host", "Windows 95", "Arch Windows", "version 007", []string{"sup"}}
 		ret, err := grpcClient.AgentRegister(ctx, in)
 		fmt.Println(godev.PrettyJSON(ret), err)
 	}
