@@ -1181,6 +1181,74 @@ info:
   title: Pathwar API
   version: "1.0"
 paths:
+  /agent/list-instances:
+    get:
+      operationId: AgentListInstances
+      parameters:
+      - format: int64
+        in: query
+        name: agent_id
+        required: false
+        type: string
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAgentListInstancesOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Service
+  /agent/register:
+    post:
+      operationId: AgentRegister
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAgentRegisterOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Service
+  /agent/update-state:
+    get:
+      operationId: AgentUpdateState
+      parameters:
+      - in: query
+        name: message
+        required: false
+        type: string
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAgentUpdateStateOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+      tags:
+      - Service
   /challenge:
     get:
       operationId: ChallengeGet
