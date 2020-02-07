@@ -72,9 +72,9 @@ service Service {
   // Agent
   //
 
-  rpc AgentRegister(AgentRegister.Input) returns (AgentRegister.Output); // agent only
-  rpc AgentListInstances(AgentListInstances.Input) returns (AgentListInstances.Output); // agent only
-  rpc AgentUpdateState(AgentUpdateState.Input) returns (AgentUpdateState.Output); // agent only
+  rpc AgentRegister(AgentRegister.Input) returns (AgentRegister.Output) { option (google.api.http) = {post: "/agent/register"}; }; // agent only
+  rpc AgentListInstances(AgentListInstances.Input) returns (AgentListInstances.Output) { option (google.api.http) = {get: "/agent/list-instances"}; }; // agent only
+  rpc AgentUpdateState(AgentUpdateState.Input) returns (AgentUpdateState.Output) { option (google.api.http) = {get: "/agent/update-state"}; }; // agent only
   rpc AgentList(AgentList.Input) returns (AgentList.Output); // admin only
   // rpc AgentEventSubscribe(AgentEventSubscribe.Input) returns (stream AgentEventSubscribe.Output);
 }
