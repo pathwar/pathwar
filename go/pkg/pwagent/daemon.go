@@ -26,7 +26,7 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 
 	// list expected state from the output
 	// apiInstances, err := api.AgentListInstances(ctx, &pwapi.AgentListInstances_Input{AgentID: ret.ID})
-	apiInstances := &pwapi.AgentListInstances_Output{ // FIXME: tmp fake data; feel free to update it to match more cases
+	/*apiInstances := &pwapi.AgentListInstances_Output{ // FIXME: tmp fake data; feel free to update it to match more cases
 		Instances: []*pwdb.ChallengeInstance{
 			{
 				ID:             1,
@@ -62,7 +62,7 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 			},
 		},
 	}
-	fmt.Println("fake response", godev.JSON(apiInstances))
+	fmt.Println("fake response", godev.JSON(apiInstances))*/
 
 	// FIXME: agent register (later)
 
@@ -94,11 +94,11 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 	}
 
 	if runOnce {
-		return run(ctx, apiInstances, cli, logger)
+		return run(ctx, &ret, cli, logger)
 	}
 
 	for {
-		err := run(ctx, apiInstances, cli, logger)
+		err := run(ctx, &ret, cli, logger)
 		if err != nil {
 			logger.Error("pwdaemon", zap.Error(err))
 		}
@@ -134,6 +134,7 @@ func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli
 		for _, flavor := range containersInfo.RunningFlavors {
 			if apiInstanceFlavor := apiInstance.GetFlavor(); apiInstanceFlavor != nil {
 				if apiInstanceFlavorChallenge := apiInstanceFlavor.GetChallenge(); apiInstanceFlavorChallenge != nil {
+					fmt.Println("FLAVOR ID: ", flavor.InstanceKey)
 					if flavor.InstanceKey == strconv.FormatInt(apiInstance.GetID(), 10) {
 						found = true
 						if apiInstance.GetStatus() == pwdb.ChallengeInstance_NeedRedump {
@@ -151,6 +152,7 @@ func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli
 				return errcode.ErrParseInitConfig.Wrap(err)
 			}
 
+			fmt.Println("Not found: ", strconv.FormatInt(apiInstance.GetID(), 10))
 			err = pwcompose.Up(ctx, apiInstance.GetFlavor().GetComposeBundle(), strconv.FormatInt(apiInstance.GetID(), 10), true, &configData, cli, logger)
 			if err != nil {
 				return errcode.ErrUpPathwarInstance.Wrap(err)

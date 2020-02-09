@@ -1185,9 +1185,8 @@ paths:
     get:
       operationId: AgentListInstances
       parameters:
-      - format: int64
-        in: query
-        name: agent_id
+      - in: query
+        name: agent_name
         required: false
         type: string
       responses:

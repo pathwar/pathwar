@@ -5,6 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"gopkg.in/gormigrate.v1"
 	"pathwar.land/go/pkg/errcode"
+	"pathwar.land/go/pkg/pwcompose"
 )
 
 func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
@@ -28,7 +29,7 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 			}
 		}
 
-		err = createFirstEntities(tx, sfn)
+		err = createFirstEntities(tx, sfn, opts)
 		if err != nil {
 			return GormToErrcode(err)
 		}
@@ -52,7 +53,7 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 	return nil
 }
 
-func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
+func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 	//
 	// seasons
 	//
@@ -136,33 +137,68 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 	//
 	// challenges
 	//
-
-	helloworld := newOfficialChallengeWithFlavor("Hello World", "https://github.com/pathwar/pathwar/tree/master/challenges/web/helloworld")
+	bundle, err := pwcompose.Prepare("challenges/web/helloworld", "pathwar/", false, "1.0.0", opts.Logger)
+	if err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+	helloworld := newOfficialChallengeWithFlavor("Hello World", "https://github.com/pathwar/pathwar/tree/master/challenges/web/helloworld", bundle)
 	helloworld.addSeasonChallengeByID(solo.ID)
 	helloworld.addSeasonChallengeByID(testSeason.ID)
 
-	trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http")
+	bundle, err = pwcompose.Prepare("challenges/web/training-http", "pathwar/", false, "1.0.0", opts.Logger)
+	if err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+	trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http", bundle)
 	trainingHTTP.addSeasonChallengeByID(solo.ID)
 
-	trainingSQLI := newOfficialChallengeWithFlavor("Training SQLI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-sqli")
+	bundle, err = pwcompose.Prepare("challenges/web/training-sqli", "pathwar/", false, "1.0.0", opts.Logger)
+	if err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+	trainingSQLI := newOfficialChallengeWithFlavor("Training SQLI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-sqli", bundle)
 	trainingSQLI.addSeasonChallengeByID(solo.ID)
 
-	trainingInclude := newOfficialChallengeWithFlavor("Training Include", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-include")
+	bundle, err = pwcompose.Prepare("challenges/web/training-include", "pathwar/", false, "1.0.0", opts.Logger)
+	if err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+	trainingInclude := newOfficialChallengeWithFlavor("Training Include", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-include", bundle)
 	trainingInclude.addSeasonChallengeByID(solo.ID)
 
-	trainingBrute := newOfficialChallengeWithFlavor("Training Brute", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-brute")
+	bundle, err = pwcompose.Prepare("challenges/web/training-brute", "pathwar/", false, "1.0.0", opts.Logger)
+	if err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+	trainingBrute := newOfficialChallengeWithFlavor("Training Brute", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-brute", bundle)
 	trainingBrute.addSeasonChallengeByID(solo.ID)
 
-	captchaLuigi := newOfficialChallengeWithFlavor("Captcha Luigi", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-luigi")
+	bundle, err = pwcompose.Prepare("challenges/web/captcha-luigi", "pathwar/", false, "1.0.0", opts.Logger)
+	if err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+	captchaLuigi := newOfficialChallengeWithFlavor("Captcha Luigi", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-luigi", bundle)
 	captchaLuigi.addSeasonChallengeByID(testSeason.ID)
 
-	captchaMario := newOfficialChallengeWithFlavor("Captcha Mario", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-mario")
+	bundle, err = pwcompose.Prepare("challenges/web/captcha-mario", "pathwar/", false, "1.0.0", opts.Logger)
+	if err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+	captchaMario := newOfficialChallengeWithFlavor("Captcha Mario", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-mario", bundle)
 	captchaMario.addSeasonChallengeByID(testSeason.ID)
 
-	uploadHi := newOfficialChallengeWithFlavor("Upload HI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/upload-hi")
+	bundle, err = pwcompose.Prepare("challenges/web/upload-hi", "pathwar/", false, "1.0.0", opts.Logger)
+	if err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+	uploadHi := newOfficialChallengeWithFlavor("Upload HI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/upload-hi", bundle)
 	uploadHi.addSeasonChallengeByID(testSeason.ID)
 
-	imageboard := newOfficialChallengeWithFlavor("Image Board", "https://github.com/pathwar/pathwar/tree/master/challenges/web/imageboard")
+	bundle, err = pwcompose.Prepare("challenges/web/imageboard", "pathwar/", false, "1.0.0", opts.Logger)
+	if err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+	imageboard := newOfficialChallengeWithFlavor("Image Board", "https://github.com/pathwar/pathwar/tree/master/challenges/web/imageboard", bundle)
 	imageboard.addSeasonChallengeByID(testSeason.ID)
 
 	for _, flavor := range []*ChallengeFlavor{
@@ -191,13 +227,14 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 	}
 
 	//// Challenge Instances
+	devConfig := []byte(`{"passphrases": ["a", "b", "c", "d"]}`)
 	instances := []*ChallengeInstance{
-		{Status: ChallengeInstance_Available, AgentID: localhost.ID, FlavorID: trainingSQLI.ID},
-		{Status: ChallengeInstance_Available, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID},
-		{Status: ChallengeInstance_Available, AgentID: localhost3.ID, FlavorID: trainingSQLI.ID},
-		{Status: ChallengeInstance_Disabled, AgentID: localhost.ID, FlavorID: trainingSQLI.ID},
-		{Status: ChallengeInstance_Disabled, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID},
-		{Status: ChallengeInstance_Disabled, AgentID: localhost3.ID, FlavorID: trainingSQLI.ID},
+		{Status: ChallengeInstance_Available, AgentID: localhost.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
+		{Status: ChallengeInstance_Available, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
+		{Status: ChallengeInstance_Available, AgentID: localhost3.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
+		{Status: ChallengeInstance_Disabled, AgentID: localhost.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
+		{Status: ChallengeInstance_Disabled, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
+		{Status: ChallengeInstance_Disabled, AgentID: localhost3.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
 	}
 	for _, instance := range instances {
 		err := tx.Set("gorm:association_autoupdate", true).
