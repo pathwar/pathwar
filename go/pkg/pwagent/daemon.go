@@ -12,7 +12,6 @@ import (
 	"github.com/docker/docker/client"
 	"github.com/gogo/protobuf/jsonpb"
 	"go.uber.org/zap"
-	"moul.io/godev"
 	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwapi"
 	"pathwar.land/go/pkg/pwcompose"
@@ -21,71 +20,10 @@ import (
 )
 
 func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Duration, cli *client.Client, apiClient *http.Client, httpApiAddr string, agentName string, logger *zap.Logger) error {
-	// call API register in gRPC
+	// FIXME: call API register in gRPC
 	// ret, err := api.AgentRegister(ctx, &pwapi.AgentRegister_Input{Name: "dev", Hostname: "localhost", OS: "lorem ipsum", Arch: "x86_64", Version: "dev", Tags: []string{"dev"}})
 
-	// list expected state from the output
-	// apiInstances, err := api.AgentListInstances(ctx, &pwapi.AgentListInstances_Input{AgentID: ret.ID})
-	/*apiInstances := &pwapi.AgentListInstances_Output{ // FIXME: tmp fake data; feel free to update it to match more cases
-		Instances: []*pwdb.ChallengeInstance{
-			{
-				ID:             1,
-				Status:         pwdb.ChallengeInstance_IsNew,
-				InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
-				Flavor: &pwdb.ChallengeFlavor{
-					ID:            2,
-					Version:       "latest",
-					ComposeBundle: "result of compose prepare",
-					Challenge: &pwdb.Challenge{
-						ID:   3,
-						Name: "training-sqli",
-					},
-					SeasonChallenges: []*pwdb.SeasonChallenge{
-						{
-							ID: 4,
-							Subscriptions: []*pwdb.ChallengeSubscription{
-								{
-									ID:     5,
-									Status: pwdb.ChallengeSubscription_Active,
-									Team: &pwdb.Team{
-										ID: 6,
-										Members: []*pwdb.TeamMember{
-											{ID: 7},
-											{ID: 8},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	}
-	fmt.Println("fake response", godev.JSON(apiInstances))*/
-
-	// FIXME: agent register (later)
-
-	// fetch list-instances from the API
-	resp, err := apiClient.Get(httpApiAddr + "/agent/list-instances?agent_name=" + agentName)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		logger.Error("received API error", zap.String("body", string(body)), zap.Int("code", resp.StatusCode))
-		return errcode.TODO.Wrap(fmt.Errorf("received API error"))
-	}
-	var ret pwapi.AgentListInstances_Output
-	if err := jsonpb.UnmarshalString(string(body), &ret); err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	fmt.Println("api response", godev.JSON(ret))
-
+	// cleanup
 	if clean {
 		err := pwcompose.Down(ctx, []string{}, true, true, true, cli, logger)
 		if err != nil {
@@ -93,20 +31,49 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 		}
 	}
 
-	if runOnce {
-		return run(ctx, &ret, cli, logger)
-	}
-
 	for {
-		err := run(ctx, &ret, cli, logger)
+		instances, err := fetchApiInstances(ctx, apiClient, httpApiAddr, agentName, logger)
 		if err != nil {
-			logger.Error("pwdaemon", zap.Error(err))
+			logger.Error("fetch instances", zap.Error(err))
+
+		} else {
+			if err := run(ctx, instances, cli, logger); err != nil {
+				logger.Error("pwdaemon", zap.Error(err))
+			}
+		}
+
+		if runOnce {
+			break
 		}
 
 		time.Sleep(loopDelay)
 	}
 
 	// FIXME: agent update state for each updated instances
+	return nil
+}
+
+func fetchApiInstances(ctx context.Context, apiClient *http.Client, httpApiAddr string, agentName string, logger *zap.Logger) (*pwapi.AgentListInstances_Output, error) {
+	var instances pwapi.AgentListInstances_Output
+
+	resp, err := apiClient.Get(httpApiAddr + "/agent/list-instances?agent_name=" + agentName)
+	if err != nil {
+		return nil, errcode.TODO.Wrap(err)
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errcode.TODO.Wrap(err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		logger.Error("received API error", zap.String("body", string(body)), zap.Int("code", resp.StatusCode))
+		return nil, errcode.TODO.Wrap(fmt.Errorf("received API error"))
+	}
+	if err := jsonpb.UnmarshalString(string(body), &instances); err != nil {
+		return nil, errcode.TODO.Wrap(err)
+	}
+
+	return &instances, nil
 }
 
 func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli *client.Client, logger *zap.Logger) error {
