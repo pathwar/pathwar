@@ -57,7 +57,7 @@ enum ErrCode {
   ErrComposeParseDab = 3012;
   ErrComposeParseConfig = 3013;
   ErrComposeCreateTempDir = 3014;
-  ErrComposeUpdateTmpFile = 3015;
+  ErrComposeUpdateTempFile = 3015;
   ErrComposeForceRecreateDown  = 3016;
   ErrComposeRunCreate = 3017;
   ErrComposeRunUp = 3018;
