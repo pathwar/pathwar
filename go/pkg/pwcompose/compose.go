@@ -392,6 +392,10 @@ func Down(
 		imagesToRemove:     []string{},
 	}
 
+	if withNginx && containersInfo.NginxProxyInstance.ID != "" {
+		removalLists = updateDockerRemovalLists(removalLists, containersInfo.NginxProxyInstance, removeImages)
+	}
+
 	if len(ids) == 0 {
 		for _, container := range containersInfo.RunningInstances {
 			removalLists = updateDockerRemovalLists(removalLists, container, removeImages)
