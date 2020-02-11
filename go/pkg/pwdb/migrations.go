@@ -5,7 +5,6 @@ import (
 	"github.com/jinzhu/gorm"
 	"gopkg.in/gormigrate.v1"
 	"pathwar.land/go/pkg/errcode"
-	"pathwar.land/go/pkg/pwcompose"
 )
 
 func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
@@ -137,27 +136,58 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 	//
 	// challenges
 	//
-	bundle, err := pwcompose.Prepare("challenges/web/helloworld", "pathwar/", false, "1.0.0", opts.Logger)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
+	bundle := `version: "3.7"
+networks: {}
+volumes: {}
+services:
+    front:
+        image: pathwar/helloworld@sha256:00247fcdcad9336f9cbfcde74a56650b6ffd7c27037957a1e8048d02eb7bdbe3
+        ports:
+            - "80"
+        labels:
+            land.pathwar.compose.challenge-name: helloworld
+            land.pathwar.compose.challenge-version: 1.0.0
+            land.pathwar.compose.origin: was-built
+            land.pathwar.compose.service-name: front
+`
 	helloworld := newOfficialChallengeWithFlavor("Hello World", "https://github.com/pathwar/pathwar/tree/master/challenges/web/helloworld", bundle)
 	helloworld.addSeasonChallengeByID(solo.ID)
 	helloworld.addSeasonChallengeByID(testSeason.ID)
 
-	bundle, err = pwcompose.Prepare("challenges/web/training-http", "pathwar/", false, "1.0.0", opts.Logger)
+	bundle = `version: "3.7"
+networks: {}
+volumes: {}
+services:
+    front:
+        image: pathwar/training-sqli@sha256:77c49c7907e19cd92baf2d6278dd017d2f5f6b9d6214d308694fba1572693545
+        ports:
+            - "80"
+        depends_on:
+            - mysql
+        labels:
+            land.pathwar.compose.challenge-name: training-sqli
+            land.pathwar.compose.challenge-version: 1.0.0
+            land.pathwar.compose.origin: was-built
+            land.pathwar.compose.service-name: front
+    mysql:
+        image: pathwar/training-sqli@sha256:914ee0d8bf48e176b378c43ad09751c341d0266381e76ae12c385fbc6beb5983
+        expose:
+            - "3306"
+        labels:
+            land.pathwar.compose.challenge-name: training-sqli
+            land.pathwar.compose.challenge-version: 1.0.0
+            land.pathwar.compose.origin: was-built
+            land.pathwar.compose.service-name: mysql
+`
+	trainingSQLI := newOfficialChallengeWithFlavor("Training SQLI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-sqli", bundle)
+	trainingSQLI.addSeasonChallengeByID(solo.ID)
+
+	/*bundle, err = pwcompose.Prepare("challenges/web/training-http", "pathwar/", false, "1.0.0", opts.Logger)
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
 	trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http", bundle)
 	trainingHTTP.addSeasonChallengeByID(solo.ID)
-
-	bundle, err = pwcompose.Prepare("challenges/web/training-sqli", "pathwar/", false, "1.0.0", opts.Logger)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	trainingSQLI := newOfficialChallengeWithFlavor("Training SQLI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-sqli", bundle)
-	trainingSQLI.addSeasonChallengeByID(solo.ID)
 
 	bundle, err = pwcompose.Prepare("challenges/web/training-include", "pathwar/", false, "1.0.0", opts.Logger)
 	if err != nil {
@@ -199,11 +229,11 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 		return errcode.TODO.Wrap(err)
 	}
 	imageboard := newOfficialChallengeWithFlavor("Image Board", "https://github.com/pathwar/pathwar/tree/master/challenges/web/imageboard", bundle)
-	imageboard.addSeasonChallengeByID(testSeason.ID)
+	imageboard.addSeasonChallengeByID(testSeason.ID)*/
 
 	for _, flavor := range []*ChallengeFlavor{
-		helloworld, trainingHTTP, trainingSQLI, trainingInclude, trainingBrute,
-		captchaLuigi, captchaMario, uploadHi, imageboard,
+		helloworld, trainingSQLI, /*trainingHTTP, trainingInclude, trainingBrute,
+		captchaLuigi, captchaMario, uploadHi, imageboard,*/
 	} {
 		err := tx.
 			Set("gorm:association_autoupdate", true).
@@ -231,10 +261,10 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 	instances := []*ChallengeInstance{
 		{Status: ChallengeInstance_Available, AgentID: localhost.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
 		{Status: ChallengeInstance_Available, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
-		{Status: ChallengeInstance_Available, AgentID: localhost3.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
+		{Status: ChallengeInstance_Available, AgentID: localhost3.ID, FlavorID: helloworld.ID, InstanceConfig: devConfig},
 		{Status: ChallengeInstance_Disabled, AgentID: localhost.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
 		{Status: ChallengeInstance_Disabled, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
-		{Status: ChallengeInstance_Disabled, AgentID: localhost3.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
+		{Status: ChallengeInstance_Disabled, AgentID: localhost3.ID, FlavorID: helloworld.ID, InstanceConfig: devConfig},
 	}
 	for _, instance := range instances {
 		err := tx.Set("gorm:association_autoupdate", true).
