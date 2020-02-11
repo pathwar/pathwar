@@ -63,7 +63,6 @@ var (
 	agentNginxHostPort          string
 	agentNginxModeratorPassword string
 	agentNginxSalt              string
-	apiGRPCAddr                 string
 	apiDBURN                    string
 	composeDownKeepVolumes      bool
 	composeDownRemoveImages     bool

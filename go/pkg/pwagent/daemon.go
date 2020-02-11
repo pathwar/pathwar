@@ -19,7 +19,7 @@ import (
 	"pathwar.land/go/pkg/pwinit"
 )
 
-func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Duration, cli *client.Client, apiClient *http.Client, httpApiAddr string, agentName string, logger *zap.Logger) error {
+func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Duration, cli *client.Client, apiClient *http.Client, httpAPIAddr string, agentName string, logger *zap.Logger) error {
 	// FIXME: call API register in gRPC
 	// ret, err := api.AgentRegister(ctx, &pwapi.AgentRegister_Input{Name: "dev", Hostname: "localhost", OS: "lorem ipsum", Arch: "x86_64", Version: "dev", Tags: []string{"dev"}})
 
@@ -32,7 +32,7 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 	}
 
 	for {
-		instances, err := fetchApiInstances(ctx, apiClient, httpApiAddr, agentName, logger)
+		instances, err := fetchAPIInstances(ctx, apiClient, httpAPIAddr, agentName, logger)
 		if err != nil {
 			logger.Error("fetch instances", zap.Error(err))
 
@@ -53,10 +53,10 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 	return nil
 }
 
-func fetchApiInstances(ctx context.Context, apiClient *http.Client, httpApiAddr string, agentName string, logger *zap.Logger) (*pwapi.AgentListInstances_Output, error) {
+func fetchAPIInstances(ctx context.Context, apiClient *http.Client, httpAPIAddr string, agentName string, logger *zap.Logger) (*pwapi.AgentListInstances_Output, error) {
 	var instances pwapi.AgentListInstances_Output
 
-	resp, err := apiClient.Get(httpApiAddr + "/agent/list-instances?agent_name=" + agentName)
+	resp, err := apiClient.Get(httpAPIAddr + "/agent/list-instances?agent_name=" + agentName)
 	if err != nil {
 		return nil, errcode.TODO.Wrap(err)
 	}
@@ -99,14 +99,13 @@ func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli
 		found := false
 		needRedump := false
 		for _, flavor := range containersInfo.RunningFlavors {
-			if apiInstanceFlavor := apiInstance.GetFlavor(); apiInstanceFlavor != nil {
-				if apiInstanceFlavorChallenge := apiInstanceFlavor.GetChallenge(); apiInstanceFlavorChallenge != nil {
-					fmt.Println("FLAVOR ID: ", flavor.InstanceKey)
-					if flavor.InstanceKey == strconv.FormatInt(apiInstance.GetID(), 10) {
-						found = true
-						if apiInstance.GetStatus() == pwdb.ChallengeInstance_NeedRedump {
-							needRedump = true
-						}
+			apiInstanceFlavor := apiInstance.GetFlavor()
+			apiInstanceFlavorChallenge := apiInstanceFlavor.GetChallenge()
+			if apiInstanceFlavor != nil && apiInstanceFlavorChallenge != nil {
+				if flavor.InstanceKey == strconv.FormatInt(apiInstance.GetID(), 10) {
+					found = true
+					if apiInstance.GetStatus() == pwdb.ChallengeInstance_NeedRedump {
+						needRedump = true
 					}
 				}
 			}
@@ -119,7 +118,6 @@ func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli
 				return errcode.ErrParseInitConfig.Wrap(err)
 			}
 
-			fmt.Println("Not found: ", strconv.FormatInt(apiInstance.GetID(), 10))
 			err = pwcompose.Up(ctx, apiInstance.GetFlavor().GetComposeBundle(), strconv.FormatInt(apiInstance.GetID(), 10), true, &configData, cli, logger)
 			if err != nil {
 				return errcode.ErrUpPathwarInstance.Wrap(err)
@@ -173,6 +171,7 @@ func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli
 			}
 		}
 	}
+
 	err = Nginx(ctx, agentOpts, cli, logger)
 	if err != nil {
 		return errcode.ErrUpdateNginx.Wrap(err)
