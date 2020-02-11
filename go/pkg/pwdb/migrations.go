@@ -182,58 +182,32 @@ services:
 	trainingSQLI := newOfficialChallengeWithFlavor("Training SQLI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-sqli", bundle)
 	trainingSQLI.addSeasonChallengeByID(solo.ID)
 
-	/*bundle, err = pwcompose.Prepare("challenges/web/training-http", "pathwar/", false, "1.0.0", opts.Logger)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http", bundle)
+	nopBundle := ``
+
+	trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http", nopBundle)
 	trainingHTTP.addSeasonChallengeByID(solo.ID)
 
-	bundle, err = pwcompose.Prepare("challenges/web/training-include", "pathwar/", false, "1.0.0", opts.Logger)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	trainingInclude := newOfficialChallengeWithFlavor("Training Include", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-include", bundle)
+	trainingInclude := newOfficialChallengeWithFlavor("Training Include", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-include", nopBundle)
 	trainingInclude.addSeasonChallengeByID(solo.ID)
 
-	bundle, err = pwcompose.Prepare("challenges/web/training-brute", "pathwar/", false, "1.0.0", opts.Logger)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	trainingBrute := newOfficialChallengeWithFlavor("Training Brute", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-brute", bundle)
+	trainingBrute := newOfficialChallengeWithFlavor("Training Brute", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-brute", nopBundle)
 	trainingBrute.addSeasonChallengeByID(solo.ID)
 
-	bundle, err = pwcompose.Prepare("challenges/web/captcha-luigi", "pathwar/", false, "1.0.0", opts.Logger)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	captchaLuigi := newOfficialChallengeWithFlavor("Captcha Luigi", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-luigi", bundle)
+	captchaLuigi := newOfficialChallengeWithFlavor("Captcha Luigi", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-luigi", nopBundle)
 	captchaLuigi.addSeasonChallengeByID(testSeason.ID)
 
-	bundle, err = pwcompose.Prepare("challenges/web/captcha-mario", "pathwar/", false, "1.0.0", opts.Logger)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	captchaMario := newOfficialChallengeWithFlavor("Captcha Mario", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-mario", bundle)
+	captchaMario := newOfficialChallengeWithFlavor("Captcha Mario", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-mario", nopBundle)
 	captchaMario.addSeasonChallengeByID(testSeason.ID)
 
-	bundle, err = pwcompose.Prepare("challenges/web/upload-hi", "pathwar/", false, "1.0.0", opts.Logger)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	uploadHi := newOfficialChallengeWithFlavor("Upload HI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/upload-hi", bundle)
+	uploadHi := newOfficialChallengeWithFlavor("Upload HI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/upload-hi", nopBundle)
 	uploadHi.addSeasonChallengeByID(testSeason.ID)
 
-	bundle, err = pwcompose.Prepare("challenges/web/imageboard", "pathwar/", false, "1.0.0", opts.Logger)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	imageboard := newOfficialChallengeWithFlavor("Image Board", "https://github.com/pathwar/pathwar/tree/master/challenges/web/imageboard", bundle)
-	imageboard.addSeasonChallengeByID(testSeason.ID)*/
+	imageboard := newOfficialChallengeWithFlavor("Image Board", "https://github.com/pathwar/pathwar/tree/master/challenges/web/imageboard", nopBundle)
+	imageboard.addSeasonChallengeByID(testSeason.ID)
 
 	for _, flavor := range []*ChallengeFlavor{
-		helloworld, trainingSQLI, /*trainingHTTP, trainingInclude, trainingBrute,
-		captchaLuigi, captchaMario, uploadHi, imageboard,*/
+		helloworld, trainingSQLI, trainingHTTP, trainingInclude, trainingBrute,
+		captchaLuigi, captchaMario, uploadHi, imageboard,
 	} {
 		err := tx.
 			Set("gorm:association_autoupdate", true).
