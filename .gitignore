@@ -20,3 +20,4 @@ tmp-*/
 vendor/
 gen.sum.tmp
 go/cmd/pathwar/pathwar
+pathwar_oauth_token.json

@@ -61,5 +61,4 @@ type challengeFlavors struct {
 type dockerRemovalLists struct {
 	containersToRemove []string
 	imagesToRemove     []string
-	networksToRemove   []string
 }

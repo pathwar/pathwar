@@ -2,7 +2,7 @@ package pwdb
 
 import "strings"
 
-func newOfficialChallengeWithFlavor(name string, homepage string) *ChallengeFlavor {
+func newOfficialChallengeWithFlavor(name string, homepage string, composeBundle string) *ChallengeFlavor {
 	return &ChallengeFlavor{
 		Challenge: &Challenge{
 			Name:     name,
@@ -10,12 +10,13 @@ func newOfficialChallengeWithFlavor(name string, homepage string) *ChallengeFlav
 			Homepage: homepage,
 			IsDraft:  false,
 		},
-		SourceURL: homepage,
-		IsLatest:  true,
-		IsDraft:   false,
-		Changelog: "Initial Version",
-		Version:   "v1",
-		Driver:    ChallengeFlavor_DockerCompose,
+		SourceURL:     homepage,
+		IsLatest:      true,
+		IsDraft:       false,
+		Changelog:     "Initial Version",
+		Version:       "v1",
+		ComposeBundle: composeBundle,
+		Driver:        ChallengeFlavor_DockerCompose,
 	}
 }
 

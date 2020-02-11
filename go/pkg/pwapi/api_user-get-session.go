@@ -17,7 +17,7 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 	if err != nil {
 		return nil, errcode.ErrUnauthenticated.Wrap(err)
 	}
-	zap.L().Debug("token", zap.Any("token", token))
+	svc.logger.Debug("token", zap.Any("token", token))
 
 	output := &UserGetSession_Output{}
 	output.Claims = pwsso.ClaimsFromToken(token)

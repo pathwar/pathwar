@@ -28,7 +28,7 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 			}
 		}
 
-		err = createFirstEntities(tx, sfn)
+		err = createFirstEntities(tx, sfn, opts)
 		if err != nil {
 			return GormToErrcode(err)
 		}
@@ -52,7 +52,7 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 	return nil
 }
 
-func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
+func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 	//
 	// seasons
 	//
@@ -136,37 +136,77 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 	//
 	// challenges
 	//
-
-	helloworld := newOfficialChallengeWithFlavor("Hello World", "https://github.com/pathwar/pathwar/tree/master/challenges/web/helloworld")
+	bundle := `version: "3.7"
+networks: {}
+volumes: {}
+services:
+    front:
+        image: pathwar/helloworld@sha256:00247fcdcad9336f9cbfcde74a56650b6ffd7c27037957a1e8048d02eb7bdbe3
+        ports:
+            - "80"
+        labels:
+            land.pathwar.compose.challenge-name: helloworld
+            land.pathwar.compose.challenge-version: 1.0.0
+            land.pathwar.compose.origin: was-built
+            land.pathwar.compose.service-name: front
+`
+	helloworld := newOfficialChallengeWithFlavor("Hello World", "https://github.com/pathwar/pathwar/tree/master/challenges/web/helloworld", bundle)
 	helloworld.addSeasonChallengeByID(solo.ID)
 	helloworld.addSeasonChallengeByID(testSeason.ID)
 
-	trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http")
-	trainingHTTP.addSeasonChallengeByID(solo.ID)
-
-	trainingSQLI := newOfficialChallengeWithFlavor("Training SQLI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-sqli")
+	bundle = `version: "3.7"
+networks: {}
+volumes: {}
+services:
+    front:
+        image: pathwar/training-sqli@sha256:77c49c7907e19cd92baf2d6278dd017d2f5f6b9d6214d308694fba1572693545
+        ports:
+            - "80"
+        depends_on:
+            - mysql
+        labels:
+            land.pathwar.compose.challenge-name: training-sqli
+            land.pathwar.compose.challenge-version: 1.0.0
+            land.pathwar.compose.origin: was-built
+            land.pathwar.compose.service-name: front
+    mysql:
+        image: pathwar/training-sqli@sha256:914ee0d8bf48e176b378c43ad09751c341d0266381e76ae12c385fbc6beb5983
+        expose:
+            - "3306"
+        labels:
+            land.pathwar.compose.challenge-name: training-sqli
+            land.pathwar.compose.challenge-version: 1.0.0
+            land.pathwar.compose.origin: was-built
+            land.pathwar.compose.service-name: mysql
+`
+	trainingSQLI := newOfficialChallengeWithFlavor("Training SQLI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-sqli", bundle)
 	trainingSQLI.addSeasonChallengeByID(solo.ID)
 
-	trainingInclude := newOfficialChallengeWithFlavor("Training Include", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-include")
+	nopBundle := ``
+
+	trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http", nopBundle)
+	trainingHTTP.addSeasonChallengeByID(solo.ID)
+
+	trainingInclude := newOfficialChallengeWithFlavor("Training Include", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-include", nopBundle)
 	trainingInclude.addSeasonChallengeByID(solo.ID)
 
-	trainingBrute := newOfficialChallengeWithFlavor("Training Brute", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-brute")
+	trainingBrute := newOfficialChallengeWithFlavor("Training Brute", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-brute", nopBundle)
 	trainingBrute.addSeasonChallengeByID(solo.ID)
 
-	captchaLuigi := newOfficialChallengeWithFlavor("Captcha Luigi", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-luigi")
+	captchaLuigi := newOfficialChallengeWithFlavor("Captcha Luigi", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-luigi", nopBundle)
 	captchaLuigi.addSeasonChallengeByID(testSeason.ID)
 
-	captchaMario := newOfficialChallengeWithFlavor("Captcha Mario", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-mario")
+	captchaMario := newOfficialChallengeWithFlavor("Captcha Mario", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-mario", nopBundle)
 	captchaMario.addSeasonChallengeByID(testSeason.ID)
 
-	uploadHi := newOfficialChallengeWithFlavor("Upload HI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/upload-hi")
+	uploadHi := newOfficialChallengeWithFlavor("Upload HI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/upload-hi", nopBundle)
 	uploadHi.addSeasonChallengeByID(testSeason.ID)
 
-	imageboard := newOfficialChallengeWithFlavor("Image Board", "https://github.com/pathwar/pathwar/tree/master/challenges/web/imageboard")
+	imageboard := newOfficialChallengeWithFlavor("Image Board", "https://github.com/pathwar/pathwar/tree/master/challenges/web/imageboard", nopBundle)
 	imageboard.addSeasonChallengeByID(testSeason.ID)
 
 	for _, flavor := range []*ChallengeFlavor{
-		helloworld, trainingHTTP, trainingSQLI, trainingInclude, trainingBrute,
+		helloworld, trainingSQLI, trainingHTTP, trainingInclude, trainingBrute,
 		captchaLuigi, captchaMario, uploadHi, imageboard,
 	} {
 		err := tx.
@@ -191,13 +231,14 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node) error {
 	}
 
 	//// Challenge Instances
+	devConfig := []byte(`{"passphrases": ["a", "b", "c", "d"]}`)
 	instances := []*ChallengeInstance{
-		{Status: ChallengeInstance_Available, AgentID: localhost.ID, FlavorID: trainingSQLI.ID},
-		{Status: ChallengeInstance_Available, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID},
-		{Status: ChallengeInstance_Available, AgentID: localhost3.ID, FlavorID: trainingSQLI.ID},
-		{Status: ChallengeInstance_Disabled, AgentID: localhost.ID, FlavorID: trainingSQLI.ID},
-		{Status: ChallengeInstance_Disabled, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID},
-		{Status: ChallengeInstance_Disabled, AgentID: localhost3.ID, FlavorID: trainingSQLI.ID},
+		{Status: ChallengeInstance_Available, AgentID: localhost.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
+		{Status: ChallengeInstance_Available, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
+		{Status: ChallengeInstance_Available, AgentID: localhost3.ID, FlavorID: helloworld.ID, InstanceConfig: devConfig},
+		{Status: ChallengeInstance_Disabled, AgentID: localhost.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
+		{Status: ChallengeInstance_Disabled, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
+		{Status: ChallengeInstance_Disabled, AgentID: localhost3.ID, FlavorID: helloworld.ID, InstanceConfig: devConfig},
 	}
 	for _, instance := range instances {
 		err := tx.Set("gorm:association_autoupdate", true).

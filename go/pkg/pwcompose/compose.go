@@ -390,17 +390,12 @@ func Down(
 	removalLists := dockerRemovalLists{
 		containersToRemove: []string{},
 		imagesToRemove:     []string{},
-		networksToRemove:   []string{},
 	}
 
 	if len(ids) == 0 {
 		for _, container := range containersInfo.RunningInstances {
 			removalLists = updateDockerRemovalLists(removalLists, container, removeImages)
 		}
-	}
-
-	if withNginx && containersInfo.NginxProxyInstance.ID != "" {
-		removalLists = updateDockerRemovalLists(removalLists, containersInfo.NginxProxyInstance, removeImages)
 	}
 
 	for _, id := range ids {
@@ -440,14 +435,6 @@ func Down(
 		fmt.Println("removed image " + imageID)
 	}
 
-	for _, networkID := range removalLists.networksToRemove {
-		err := cli.NetworkRemove(ctx, networkID)
-		if err != nil {
-			return errcode.ErrDockerAPINetworkRemove.Wrap(err)
-		}
-		fmt.Println("removed network " + networkID)
-	}
-
 	if withNginx && containersInfo.NginxProxyNetwork.ID != "" {
 		err = cli.NetworkRemove(ctx, containersInfo.NginxProxyNetwork.ID)
 		if err != nil {
@@ -463,11 +450,6 @@ func updateDockerRemovalLists(removalLists dockerRemovalLists, container types.C
 	removalLists.containersToRemove = append(removalLists.containersToRemove, container.ID)
 	if removeImages {
 		removalLists.imagesToRemove = append(removalLists.imagesToRemove, container.ImageID)
-	}
-	for _, network := range container.NetworkSettings.Networks {
-		if network.NetworkID != "" {
-			removalLists.networksToRemove = append(removalLists.networksToRemove, network.NetworkID)
-		}
 	}
 	return removalLists
 }

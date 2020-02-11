@@ -3,10 +3,14 @@ package pwagent
 import (
 	"context"
 	"encoding/json"
+	fmt "fmt"
+	"io/ioutil"
+	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/docker/docker/client"
+	"github.com/gogo/protobuf/jsonpb"
 	"go.uber.org/zap"
 	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwapi"
@@ -15,49 +19,11 @@ import (
 	"pathwar.land/go/pkg/pwinit"
 )
 
-func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Duration, cli *client.Client, logger *zap.Logger) error {
-	// call API register in gRPC
+func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Duration, cli *client.Client, apiClient *http.Client, httpAPIAddr string, agentName string, logger *zap.Logger) error {
+	// FIXME: call API register in gRPC
 	// ret, err := api.AgentRegister(ctx, &pwapi.AgentRegister_Input{Name: "dev", Hostname: "localhost", OS: "lorem ipsum", Arch: "x86_64", Version: "dev", Tags: []string{"dev"}})
 
-	// list expected state from the output
-	// apiInstances, err := api.AgentListInstances(ctx, &pwapi.AgentListInstances_Input{AgentID: ret.ID})
-	apiInstances := &pwapi.AgentListInstances_Output{ // FIXME: tmp fake data; feel free to update it to match more cases
-		Instances: []*pwdb.ChallengeInstance{
-			{
-				ID:             1,
-				Status:         pwdb.ChallengeInstance_IsNew,
-				InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
-				Flavor: &pwdb.ChallengeFlavor{
-					ID:            2,
-					Version:       "latest",
-					ComposeBundle: "result of compose prepare",
-					Challenge: &pwdb.Challenge{
-						ID:   3,
-						Name: "training-sqli",
-					},
-					SeasonChallenges: []*pwdb.SeasonChallenge{
-						{
-							ID: 4,
-							Subscriptions: []*pwdb.ChallengeSubscription{
-								{
-									ID:     5,
-									Status: pwdb.ChallengeSubscription_Active,
-									Team: &pwdb.Team{
-										ID: 6,
-										Members: []*pwdb.TeamMember{
-											{ID: 7},
-											{ID: 8},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	}
-
+	// cleanup
 	if clean {
 		err := pwcompose.Down(ctx, []string{}, true, true, true, cli, logger)
 		if err != nil {
@@ -65,20 +31,49 @@ func Daemon(ctx context.Context, clean bool, runOnce bool, loopDelay time.Durati
 		}
 	}
 
-	if runOnce {
-		return run(ctx, apiInstances, cli, logger)
-	}
-
 	for {
-		err := run(ctx, apiInstances, cli, logger)
+		instances, err := fetchAPIInstances(ctx, apiClient, httpAPIAddr, agentName, logger)
 		if err != nil {
-			logger.Error("pwdaemon", zap.Error(err))
+			logger.Error("fetch instances", zap.Error(err))
+
+		} else {
+			if err := run(ctx, instances, cli, logger); err != nil {
+				logger.Error("pwdaemon", zap.Error(err))
+			}
+		}
+
+		if runOnce {
+			break
 		}
 
 		time.Sleep(loopDelay)
 	}
 
-	// later: for each updated instances -> call api to update status
+	// FIXME: agent update state for each updated instances
+	return nil
+}
+
+func fetchAPIInstances(ctx context.Context, apiClient *http.Client, httpAPIAddr string, agentName string, logger *zap.Logger) (*pwapi.AgentListInstances_Output, error) {
+	var instances pwapi.AgentListInstances_Output
+
+	resp, err := apiClient.Get(httpAPIAddr + "/agent/list-instances?agent_name=" + agentName)
+	if err != nil {
+		return nil, errcode.TODO.Wrap(err)
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errcode.TODO.Wrap(err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		logger.Error("received API error", zap.String("body", string(body)), zap.Int("code", resp.StatusCode))
+		return nil, errcode.TODO.Wrap(fmt.Errorf("received API error"))
+	}
+	if err := jsonpb.UnmarshalString(string(body), &instances); err != nil {
+		return nil, errcode.TODO.Wrap(err)
+	}
+
+	return &instances, nil
 }
 
 func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli *client.Client, logger *zap.Logger) error {
@@ -104,13 +99,13 @@ func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli
 		found := false
 		needRedump := false
 		for _, flavor := range containersInfo.RunningFlavors {
-			if apiInstanceFlavor := apiInstance.GetFlavor(); apiInstanceFlavor != nil {
-				if apiInstanceFlavorChallenge := apiInstanceFlavor.GetChallenge(); apiInstanceFlavorChallenge != nil {
-					if flavor.InstanceKey == strconv.FormatInt(apiInstance.GetID(), 10) {
-						found = true
-						if apiInstance.GetStatus() == pwdb.ChallengeInstance_NeedRedump {
-							needRedump = true
-						}
+			apiInstanceFlavor := apiInstance.GetFlavor()
+			apiInstanceFlavorChallenge := apiInstanceFlavor.GetChallenge()
+			if apiInstanceFlavor != nil && apiInstanceFlavorChallenge != nil {
+				if flavor.InstanceKey == strconv.FormatInt(apiInstance.GetID(), 10) {
+					found = true
+					if apiInstance.GetStatus() == pwdb.ChallengeInstance_NeedRedump {
+						needRedump = true
 					}
 				}
 			}
@@ -176,6 +171,7 @@ func run(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli
 			}
 		}
 	}
+
 	err = Nginx(ctx, agentOpts, cli, logger)
 	if err != nil {
 		return errcode.ErrUpdateNginx.Wrap(err)
