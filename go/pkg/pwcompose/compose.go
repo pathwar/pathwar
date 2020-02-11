@@ -237,14 +237,19 @@ func Up(
 			logger.Warn("rm tmp dir", zap.Error(err))
 		}
 	}()
+	tmpDirCompose := path.Join(tmpDir, challengeID)
+	err = os.MkdirAll(tmpDirCompose, os.ModePerm)
+	if err != nil {
+		return errcode.ErrComposeCreateTempDir.Wrap(err)
+	}
 
 	// generate tmp path
-	tmpPreparedComposePath := filepath.Join(tmpDir, "docker-compose.yml")
+	tmpPreparedComposePath := filepath.Join(tmpDirCompose, "docker-compose.yml")
 
 	// create tmp docker-compose file
-	err = updateDockerComposeTmpFile(preparedComposeStruct, tmpPreparedComposePath)
+	err = updateDockerComposeTempFile(preparedComposeStruct, tmpPreparedComposePath)
 	if err != nil {
-		return errcode.ErrComposeUpdateTmpFile.Wrap(err)
+		return errcode.ErrComposeUpdateTempFile.Wrap(err)
 	}
 
 	// create instances
@@ -299,9 +304,9 @@ func Up(
 	}
 
 	// update tmp docker-compose file with new entrypoints
-	err = updateDockerComposeTmpFile(preparedComposeStruct, tmpPreparedComposePath)
+	err = updateDockerComposeTempFile(preparedComposeStruct, tmpPreparedComposePath)
 	if err != nil {
-		return errcode.ErrComposeUpdateTmpFile.Wrap(err)
+		return errcode.ErrComposeUpdateTempFile.Wrap(err)
 	}
 
 	// build definitive instances
@@ -600,7 +605,7 @@ func GetContainersInfo(ctx context.Context, cli *client.Client) (*ContainersInfo
 	return &containersInfo, nil
 }
 
-func updateDockerComposeTmpFile(preparedComposeStruct config, tmpPreparedComposePath string) error {
+func updateDockerComposeTempFile(preparedComposeStruct config, tmpPreparedComposePath string) error {
 	// create tmp docker-compose file
 	tmpData, err := yaml.Marshal(&preparedComposeStruct)
 	if err != nil {
