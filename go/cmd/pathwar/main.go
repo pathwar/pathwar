@@ -51,40 +51,40 @@ var (
 	flagOutput = os.Stderr
 
 	// flag vars
-	globalDebug                 bool
-	agentForceRecreate          bool
-	agentDaemonClean            bool
-	agentDaemonRunOnce          bool
-	agentDaemonLoopDelay        time.Duration
-	agentName                   string
-	agentNginxDockerImage       string
-	agentNginxDomainSuffix      string
-	agentNginxHostIP            string
-	agentNginxHostPort          string
-	agentNginxModeratorPassword string
-	agentNginxSalt              string
-	apiDBURN                    string
-	composeDownKeepVolumes      bool
-	composeDownRemoveImages     bool
-	composeDownWithNginx        bool
-	composePSDepth              int
-	composePrepareNoPush        bool
-	composePreparePrefix        string
-	composePrepareVersion       string
-	composeUpInstanceKey        string
-	composeUpForceRecreate      bool
-	httpAPIAddr                 string
-	serverCORSAllowedOrigins    string
-	serverBind                  string
-	serverRequestTimeout        time.Duration
-	serverShutdownTimeout       time.Duration
-	serverWithPprof             bool
-	ssoAllowUnsafe              bool
-	ssoClientID                 string
-	ssoClientSecret             string
-	ssoPubkey                   string
-	ssoRealm                    string
-	ssoTokenFile                string
+	globalDebug              bool
+	agentClean               bool
+	agentDomainSuffix        string
+	agentForceRecreate       bool
+	agentHostIP              string
+	agentHostPort            string
+	agentLoopDelay           time.Duration
+	agentModeratorPassword   string
+	agentName                string
+	agentNginxDockerImage    string
+	agentRunOnce             bool
+	agentSalt                string
+	apiDBURN                 string
+	composeDownKeepVolumes   bool
+	composeDownRemoveImages  bool
+	composeDownWithNginx     bool
+	composePSDepth           int
+	composePrepareNoPush     bool
+	composePreparePrefix     string
+	composePrepareVersion    string
+	composeUpForceRecreate   bool
+	composeUpInstanceKey     string
+	httpAPIAddr              string
+	serverBind               string
+	serverCORSAllowedOrigins string
+	serverRequestTimeout     time.Duration
+	serverShutdownTimeout    time.Duration
+	serverWithPprof          bool
+	ssoAllowUnsafe           bool
+	ssoClientID              string
+	ssoClientSecret          string
+	ssoPubkey                string
+	ssoRealm                 string
+	ssoTokenFile             string
 )
 
 func main() {
@@ -99,9 +99,7 @@ func main() {
 	// setup flags
 	var (
 		globalFlags         = flag.NewFlagSet("pathwar", flag.ExitOnError)
-		agentDaemonFlags    = flag.NewFlagSet("agent daemon", flag.ExitOnError)
 		agentFlags          = flag.NewFlagSet("agent", flag.ExitOnError)
-		agentNginxFlags     = flag.NewFlagSet("agent nginx", flag.ExitOnError)
 		apiFlags            = flag.NewFlagSet("api", flag.ExitOnError)
 		composeDownFlags    = flag.NewFlagSet("compose down", flag.ExitOnError)
 		composeFlags        = flag.NewFlagSet("compose", flag.ExitOnError)
@@ -114,40 +112,49 @@ func main() {
 	)
 	globalFlags.SetOutput(flagOutput) // used in main_test.go
 	globalFlags.BoolVar(&globalDebug, "debug", false, "debug mode")
-	agentDaemonFlags.BoolVar(&agentDaemonClean, "clean", false, "remove all pathwar instances before executing")
-	agentDaemonFlags.BoolVar(&agentDaemonRunOnce, "once", false, "run once and don't start daemon loop")
-	agentDaemonFlags.DurationVar(&agentDaemonLoopDelay, "delay", 10*time.Second, "delay between each loop iteration")
-	agentDaemonFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
-	agentDaemonFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
-	agentDaemonFlags.StringVar(&ssoClientSecret, "sso-clientsecret", defaultSSOClientSecret, "SSO ClientSecret")
-	agentDaemonFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
-	agentDaemonFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultTokenFile, "Token file")
-	agentDaemonFlags.StringVar(&agentName, "agent-name", defaultAgentName, "Agent Name")
-	agentNginxFlags.StringVar(&agentNginxDockerImage, "docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
-	agentNginxFlags.StringVar(&agentNginxDomainSuffix, "domain-suffix", "local", "Domain suffix to append")
-	agentNginxFlags.StringVar(&agentNginxHostIP, "host", "0.0.0.0", "HTTP listening addr")
-	agentNginxFlags.StringVar(&agentNginxHostPort, "port", "8000", "HTTP listening port")
-	agentNginxFlags.StringVar(&agentNginxModeratorPassword, "moderator-password", "", "Challenge moderator password")
-	agentNginxFlags.StringVar(&agentNginxSalt, "salt", "", "salt used to generate secure hashes (random if empty)")
+
+	agentFlags.BoolVar(&agentClean, "clean", false, "remove all pathwar instances before executing")
+	agentFlags.BoolVar(&agentRunOnce, "once", false, "run once and don't start daemon loop")
+	agentFlags.DurationVar(&agentLoopDelay, "delay", 10*time.Second, "delay between each loop iteration")
+	agentFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
+	agentFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
+	agentFlags.StringVar(&ssoClientSecret, "sso-clientsecret", defaultSSOClientSecret, "SSO ClientSecret")
+	agentFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
+	agentFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultTokenFile, "Token file")
+	agentFlags.StringVar(&agentName, "agent-name", defaultAgentName, "Agent Name")
+	agentFlags.StringVar(&agentDomainSuffix, "nginx-domain-suffix", "local", "Domain suffix to append")
+	agentFlags.StringVar(&agentNginxDockerImage, "docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
+	agentFlags.StringVar(&agentDomainSuffix, "domain-suffix", "local", "Domain suffix to append")
+	agentFlags.StringVar(&agentHostIP, "host", "0.0.0.0", "HTTP listening addr")
+	agentFlags.StringVar(&agentHostPort, "port", "8000", "HTTP listening port")
+	agentFlags.StringVar(&agentModeratorPassword, "moderator-password", "", "Challenge moderator password")
+	agentFlags.StringVar(&agentSalt, "salt", "", "salt used to generate secure hashes (random if empty)")
+
 	apiFlags.BoolVar(&ssoAllowUnsafe, "sso-unsafe", false, "Allow unsafe SSO")
 	apiFlags.StringVar(&apiDBURN, "urn", defaultDBURN, "MySQL URN")
 	apiFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
 	apiFlags.StringVar(&ssoPubkey, "sso-pubkey", "", "SSO Public Key")
 	apiFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
+
 	composeDownFlags.BoolVar(&composeDownKeepVolumes, "keep-volumes", false, "keep volumes")
 	composeDownFlags.BoolVar(&composeDownRemoveImages, "rmi", false, "remove images as well")
 	composeDownFlags.BoolVar(&composeDownWithNginx, "with-nginx", false, "down nginx container and proxy network as well")
+
 	composePSFlags.IntVar(&composePSDepth, "depth", 0, "depth to display")
+
 	composePrepareFlags.BoolVar(&composePrepareNoPush, "no-push", false, "don't push images")
 	composePrepareFlags.StringVar(&composePreparePrefix, "prefix", defaultDockerPrefix, "docker image prefix")
 	composePrepareFlags.StringVar(&composePrepareVersion, "version", "1.0.0", "challenge version")
+
 	composeUpFlags.StringVar(&composeUpInstanceKey, "instance-key", "default", "instance key used to generate instance ID")
 	composeUpFlags.BoolVar(&composeUpForceRecreate, "force-recreate", false, "down previously created instances of challenge")
+
 	serverFlags.BoolVar(&serverWithPprof, "with-pprof", false, "enable pprof endpoints")
 	serverFlags.DurationVar(&serverRequestTimeout, "request-timeout", 5*time.Second, "request timeout")
 	serverFlags.DurationVar(&serverShutdownTimeout, "shutdown-timeout", 6*time.Second, "shutdown timeout")
 	serverFlags.StringVar(&serverCORSAllowedOrigins, "cors-allowed-origins", "*", "allowed CORS origins")
 	serverFlags.StringVar(&serverBind, "bind", ":8000", "server address")
+
 	ssoFlags.BoolVar(&ssoAllowUnsafe, "unsafe", false, "Allow unsafe SSO")
 	ssoFlags.StringVar(&ssoClientID, "clientid", defaultSSOClientID, "SSO ClientID")
 	ssoFlags.StringVar(&ssoPubkey, "pubkey", "", "SSO Public Key")
@@ -457,7 +464,16 @@ func main() {
 				return errcode.ErrInitDockerClient.Wrap(err)
 			}
 
-			return pwcompose.Up(ctx, string(preparedCompose), composeUpInstanceKey, composeUpForceRecreate, nil, cli, logger)
+			services, err := pwcompose.Up(ctx, string(preparedCompose), composeUpInstanceKey, composeUpForceRecreate, "", nil, cli, logger)
+			if err != nil {
+				return err
+			}
+
+			for _, service := range services {
+				fmt.Println(service.ContainerName)
+			}
+
+			return nil
 		},
 	}
 
@@ -476,7 +492,7 @@ func main() {
 				return errcode.ErrInitDockerClient.Wrap(err)
 			}
 
-			return pwcompose.Down(
+			return pwcompose.Clean(
 				ctx,
 				args,
 				composeDownRemoveImages,
@@ -509,17 +525,18 @@ func main() {
 
 	compose := &ffcli.Command{
 		Name:        "compose",
-		Usage:       "pathwar [global flags] compose [sso flags] <subcommand> [flags] [args...]",
+		Usage:       "pathwar [global flags] compose [compose flags] <subcommand> [flags] [args...]",
 		Subcommands: []*ffcli.Command{composePrepare, composeUp, composePS, composeDown},
 		ShortHelp:   "manage a challenge",
 		FlagSet:     composeFlags,
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
 
-	agentDaemon := &ffcli.Command{
-		Name:    "daemon",
-		Usage:   "pathwar [global flags] agent [agent flags] daemon [flags]",
-		FlagSet: agentDaemonFlags,
+	agent := &ffcli.Command{
+		Name:      "agent",
+		Usage:     "pathwar [global flags] agent [agent flags] <subcommand> [flags] [args...]",
+		ShortHelp: "manage an agent node (multiple challenges)",
+		FlagSet:   agentFlags,
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -535,55 +552,24 @@ func main() {
 				return errcode.TODO.Wrap(err)
 			}
 
-			return pwagent.Daemon(ctx, agentDaemonClean, agentDaemonRunOnce, agentDaemonLoopDelay, dockerCli, apiClient, httpAPIAddr, agentName, logger)
-		},
-	}
-
-	agentNginx := &ffcli.Command{
-		Name:    "nginx",
-		Usage:   "pathwar [global flags] agent [agent flags] nginx [flags] ALLOWED_USERS",
-		FlagSet: agentNginxFlags,
-		Exec: func(args []string) error {
-			if len(args) < 1 {
-				return flag.ErrHelp
-			}
-
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-
-			// prepare AgentOpts
-			config := pwagent.AgentOpts{
-				HostIP:            agentNginxHostIP,
-				HostPort:          agentNginxHostPort,
-				DomainSuffix:      agentNginxDomainSuffix,
-				ModeratorPassword: agentNginxModeratorPassword,
-				Salt:              agentNginxSalt,
+			opts := pwagent.Opts{
+				HostIP:            agentHostIP,
+				HostPort:          agentHostPort,
+				DomainSuffix:      agentDomainSuffix,
+				ModeratorPassword: agentModeratorPassword,
+				Salt:              agentSalt,
 				ForceRecreate:     agentForceRecreate,
 				NginxDockerImage:  agentNginxDockerImage,
-			}
-			err := json.Unmarshal([]byte(args[0]), &config.AllowedUsers)
-			if err != nil {
-				return errcode.ErrInvalidInput.Wrap(err)
-			}
-
-			ctx := context.Background()
-			cli, err := client.NewEnvClient()
-			if err != nil {
-				return errcode.ErrInitDockerClient.Wrap(err)
+				Cleanup:           agentClean,
+				RunOnce:           agentRunOnce,
+				LoopDelay:         agentLoopDelay,
+				HTTPAPIAddr:       httpAPIAddr,
+				Name:              agentName,
+				Logger:            logger,
 			}
 
-			return pwagent.Nginx(ctx, config, cli, logger)
+			return pwagent.Daemon(ctx, dockerCli, apiClient, opts)
 		},
-	}
-
-	agent := &ffcli.Command{
-		Name:        "agent",
-		Usage:       "pathwar [global flags] agent [sso flags] <subcommand> [flags] [args...]",
-		ShortHelp:   "manage an agent node (multiple challenges)",
-		Subcommands: []*ffcli.Command{agentDaemon, agentNginx},
-		FlagSet:     agentFlags,
-		Exec:        func([]string) error { return flag.ErrHelp },
 	}
 
 	root := &ffcli.Command{
