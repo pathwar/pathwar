@@ -9,3 +9,5 @@ https://www.pathwar.info/* https://www.pathwar.land/:splat 301!
 https://www.pathwar.net/* https://www.pathwar.land/:splat 301!
 https://www.pathwar.org/* https://www.pathwar.land/:splat 301!
 https://www.pathwar.pw/* https://www.pathwar.land/:splat 301!
+
+/* go-get=1 /goget-pathwar-land.html 200!
