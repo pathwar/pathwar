@@ -1,1 +1,1 @@
-package pwapi // import "pathwar.land/go/pkg/pkgapi"
+package pwapi // import "pathwar.land/go/pkg/pwapi"
