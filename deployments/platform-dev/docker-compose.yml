@@ -82,8 +82,23 @@ services:
       - MYSQL_PASSWORD
       - MYSQL_USER
       - MYSQL_DATABASE=pathwar
+    networks:
+      - internal
+
+  forestadmin:
+    build:
+      context: ../../tool/forestadmin
+      dockerfile: Dockerfile
+    environment:
+      - APPLICATION_PORT=3310
+      - DATABASE_URL=mysql://$MYSQL_USER:$MYSQL_PASSWORD@db:3306/pathwar
+      - DATABASE_SSL=false
+      - FOREST_AUTH_SECRET
+      - FOREST_ENV_SECRET
     ports:
-      - 3306:3306
+      - "3310:3310"
+    volumes:
+      - ../../tool/forestadmin/:/usr/src/app
     networks:
       - internal
 
