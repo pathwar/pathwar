@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -17,7 +18,7 @@ func TestSvc_SeasonChallengeGet(t *testing.T) {
 
 	// fetch user session to ensure account is created
 	_, err := svc.UserGetSession(ctx, nil)
-	checkErr(t, "", err)
+	require.NoError(t, err)
 
 	seasonChallenges := map[string]int64{}
 	for _, seasonChallenge := range testingSeasonChallenges(t, svc).Items {

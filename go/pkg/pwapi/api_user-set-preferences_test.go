@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -16,7 +17,7 @@ func TestSvc_UserSetPreferences(t *testing.T) {
 
 	// get user session before setting preferences
 	beforeSession, err := svc.UserGetSession(ctx, nil)
-	checkErr(t, "", err)
+	require.NoError(t, err)
 	seasons := map[string]int64{}
 	for _, season := range beforeSession.Seasons {
 		seasons[season.Season.Name] = season.Season.ID
@@ -41,9 +42,9 @@ func TestSvc_UserSetPreferences(t *testing.T) {
 		testSameErrcodes(t, test.name, test.expectedErr, err)
 
 		session, err := svc.UserGetSession(ctx, nil)
-		checkErr(t, test.name, err)
-
-		assert.Equalf(t, test.expectedSeasonID, session.User.ActiveSeasonID, test.name)
-		assert.Equalf(t, test.expectedTeamMemberID, session.User.ActiveTeamMemberID, test.name)
+		if assert.NoError(t, err, test.name) {
+			assert.Equalf(t, test.expectedSeasonID, session.User.ActiveSeasonID, test.name)
+			assert.Equalf(t, test.expectedTeamMemberID, session.User.ActiveTeamMemberID, test.name)
+		}
 	}
 }

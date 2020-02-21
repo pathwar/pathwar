@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -18,12 +19,12 @@ func TestSvc_ChallengeBuy(t *testing.T) {
 
 	// fetch user session
 	session, err := svc.UserGetSession(ctx, nil)
-	checkErr(t, "", err)
+	require.NoError(t, err)
 	activeTeam := session.User.ActiveTeamMember.Team
 
 	// fetch challenges
 	challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
-	checkErr(t, "", err)
+	require.NoError(t, err)
 
 	var tests = []struct {
 		name        string
@@ -54,19 +55,19 @@ func TestSvc_ChallengeBuy(t *testing.T) {
 
 		// check if challenge subscription is now visible in season challenge list
 		challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
-		checkErr(t, test.name, err)
-
-		found := 0
-		for _, challenge := range challenges.Items {
-			if challenge.ID == subscription.ChallengeSubscription.SeasonChallengeID {
-				found++
-				if !assert.Lenf(t, challenge.Subscriptions, 1, test.name) {
-					continue
+		if assert.NoError(t, err, test.name) {
+			found := 0
+			for _, challenge := range challenges.Items {
+				if challenge.ID == subscription.ChallengeSubscription.SeasonChallengeID {
+					found++
+					if !assert.Lenf(t, challenge.Subscriptions, 1, test.name) {
+						continue
+					}
+					assert.Equalf(t, subscription.ChallengeSubscription.ID, challenge.Subscriptions[0].ID, test.name)
+					assert.Equalf(t, test.input.TeamID, challenge.Subscriptions[0].TeamID, test.name)
 				}
-				assert.Equalf(t, subscription.ChallengeSubscription.ID, challenge.Subscriptions[0].ID, test.name)
-				assert.Equalf(t, test.input.TeamID, challenge.Subscriptions[0].TeamID, test.name)
 			}
+			assert.Equalf(t, 1, found, test.name)
 		}
-		assert.Equalf(t, 1, found, test.name)
 	}
 }
