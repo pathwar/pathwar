@@ -249,6 +249,20 @@ services:
 		}
 	}
 
+	// challenge subscription
+	subscription := ChallengeSubscription{
+		SeasonChallengeID: trainingSQLI.SeasonChallenges[0].ID,
+		TeamID:            staffTeam.ID,
+		BuyerID:           hackSparrow.ID,
+		Status:            ChallengeSubscription_Active,
+	}
+	err = tx.Set("gorm:association_autoupdate", true).
+		Create(&subscription).
+		Error
+	if err != nil {
+		return GormToErrcode(err)
+	}
+
 	//
 	// Achievements
 	//

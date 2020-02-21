@@ -1,6 +1,8 @@
 package pwcompose
 
 import (
+	fmt "fmt"
+
 	"github.com/docker/docker/api/types"
 )
 
@@ -9,7 +11,7 @@ type config struct {
 	Version  string
 	Networks map[string]network
 	Volumes  map[string]volume
-	Services map[string]service
+	Services map[string]Service
 }
 
 type network struct {
@@ -22,7 +24,7 @@ type volume struct {
 	DriverOpts       map[string]string `yaml:"driver_opts,omitempty"`
 }
 
-type service struct {
+type Service struct {
 	ContainerName                             string            `yaml:"container_name,omitempty"`
 	Image                                     string            `yaml:",omitempty"`
 	Networks, Ports, Expose, Volumes, Command []string          `yaml:",omitempty"`
@@ -36,6 +38,10 @@ type service struct {
 	Labels                                    map[string]string `yaml:"labels,omitempty"`
 }
 
+func (s Service) ChallengeID() string {
+	return fmt.Sprintf("%s@%s", s.Labels[challengeNameLabel], s.Labels[challengeVersionLabel])
+}
+
 type dabfile struct {
 	Services map[string]dabservice
 }
@@ -46,19 +52,33 @@ type dabservice struct {
 
 type ContainersInfo struct {
 	RunningFlavors     map[string]challengeFlavors
-	RunningInstances   map[string]types.Container
-	NginxProxyInstance types.Container
+	RunningInstances   map[string]container
+	NginxProxyInstance container
 	NginxProxyNetwork  types.NetworkResource
+}
+
+type container types.Container
+
+func (c container) ChallengeID() string {
+	return fmt.Sprintf("%s@%s", c.Labels[challengeNameLabel], c.Labels[challengeVersionLabel])
+}
+
+func (c container) NeedsNginxProxy() bool {
+	for _, port := range c.Ports {
+		if port.PrivatePort != 0 {
+			return true
+		}
+	}
+	return false
 }
 
 type challengeFlavors struct {
 	Name        string
 	Version     string
 	InstanceKey string
-	Instances   map[string]types.Container
+	Instances   map[string]container
 }
 
-type dockerRemovalLists struct {
-	containersToRemove []string
-	imagesToRemove     []string
+func (cf challengeFlavors) ChallengeID() string {
+	return fmt.Sprintf("%s@%s", cf.Name, cf.Version)
 }

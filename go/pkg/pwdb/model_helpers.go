@@ -1,6 +1,9 @@
 package pwdb
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 func newOfficialChallengeWithFlavor(name string, homepage string, composeBundle string) *ChallengeFlavor {
 	return &ChallengeFlavor{
@@ -34,4 +37,8 @@ func (a *Agent) TagSlice() []string {
 		return nil
 	}
 	return strings.Split(a.Tags, ", ")
+}
+
+func (cf ChallengeFlavor) NameAndVersion() string {
+	return fmt.Sprintf("%s@%s", cf.Challenge.Name, cf.Version)
 }
