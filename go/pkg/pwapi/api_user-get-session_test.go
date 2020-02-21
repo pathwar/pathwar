@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"moul.io/godev"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/pwsso"
@@ -16,7 +17,7 @@ func TestSvc_UserGetSession(t *testing.T) {
 	ctx := testingSetContextToken(context.Background(), t)
 
 	session, err := svc.UserGetSession(ctx, nil)
-	checkErr(t, "", err)
+	require.NoError(t, err)
 
 	//fmt.Println(godev.PrettyJSON(session))
 	var tests = []struct {

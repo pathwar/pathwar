@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
@@ -25,11 +26,11 @@ func TestSvc_TeamCreate(t *testing.T) {
 	}
 	for _, season := range populate {
 		err := db.Create(season).Error
-		checkErr(t, "", err)
+		require.NoError(t, err)
 	}
 
 	session, err := svc.UserGetSession(ctx, nil)
-	checkErr(t, "", err)
+	require.NoError(t, err)
 
 	// create a non-solo organization
 	nonSoloOrganization := pwdb.Organization{
@@ -38,13 +39,13 @@ func TestSvc_TeamCreate(t *testing.T) {
 		Members:    []*pwdb.OrganizationMember{{UserID: session.User.ID}},
 	}
 	err = db.Create(&nonSoloOrganization).Error
-	checkErr(t, "", err)
+	require.NoError(t, err)
 	nonMemberOrganization := pwdb.Organization{
 		Name:       "non member",
 		SoloSeason: false,
 	}
 	err = db.Create(&nonMemberOrganization).Error
-	checkErr(t, "", err)
+	require.NoError(t, err)
 
 	seasonMap := map[string]*UserGetSession_Output_SeasonAndTeam{}
 	for _, item := range session.Seasons {

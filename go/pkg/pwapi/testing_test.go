@@ -91,14 +91,6 @@ func testingSetContextToken(ctx context.Context, t *testing.T) context.Context {
 	return context.WithValue(ctx, userTokenCtx, pwsso.TestingToken(t))
 }
 
-func checkErr(t *testing.T, name string, err error) {
-	t.Helper()
-
-	if !assert.NoError(t, err) {
-		t.Fatal(name)
-	}
-}
-
 func testSameErrcodes(t *testing.T, name string, expected, got error) {
 	t.Helper()
 

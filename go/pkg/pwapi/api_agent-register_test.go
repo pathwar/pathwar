@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 )
@@ -54,13 +55,13 @@ func TestService_AgentRegister(t *testing.T) {
 		ctx := testingSetContextToken(context.Background(), t)
 
 		first, err := svc.AgentRegister(ctx, &AgentRegister_Input{Name: "test", Hostname: "lorem ipsum"})
-		checkErr(t, "", err)
+		require.NoError(t,err)
 		assert.Equal(t, first.Agent.CreatedAt, first.Agent.UpdatedAt)
 		assert.Equal(t, first.Agent.LastSeenAt, first.Agent.LastRegistrationAt)
 		assert.Equal(t, "lorem ipsum", first.Agent.Hostname)
 
 		second, err := svc.AgentRegister(ctx, &AgentRegister_Input{Name: "test"})
-		checkErr(t, "", err)
+		require.NoError(t,err)
 		assert.Equal(t, first.Agent.CreatedAt, second.Agent.CreatedAt)
 		assert.NotEqual(t, second.Agent.CreatedAt, second.Agent.UpdatedAt)
 		assert.NotEqual(t, first.Agent.UpdatedAt, second.Agent.UpdatedAt)

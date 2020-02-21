@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"pathwar.land/go/internal/testutil"
 	"pathwar.land/go/pkg/errcode"
 	"pathwar.land/go/pkg/pwdb"
@@ -19,31 +20,31 @@ func TestSvc_ChallengeSubscriptionClose(t *testing.T) {
 
 	// fetch user session
 	session, err := svc.UserGetSession(ctx, nil)
-	checkErr(t, "", err)
+	require.NoError(t, err)
 	activeTeam := session.User.ActiveTeamMember.Team
 
 	// fetch challenges
 	challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
-	checkErr(t, "", err)
+	require.NoError(t, err)
 
 	// buy two challenges
 	subscription1, err := svc.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{
 		SeasonChallengeID: challenges.Items[0].ID,
 		TeamID:            activeTeam.ID,
 	})
-	checkErr(t, "", err)
+	require.NoError(t, err)
 	subscription2, err := svc.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{
 		SeasonChallengeID: challenges.Items[1].ID,
 		TeamID:            activeTeam.ID,
 	})
-	checkErr(t, "", err)
+	require.NoError(t, err)
 
 	// validate second challenge
 	_, err = svc.ChallengeSubscriptionValidate(ctx, &ChallengeSubscriptionValidate_Input{
 		ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID,
 		Passphrase:              "secret",
 	})
-	checkErr(t, "", err)
+	require.NoError(t, err)
 
 	var tests = []struct {
 		name        string

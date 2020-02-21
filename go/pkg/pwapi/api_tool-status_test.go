@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"pathwar.land/go/internal/testutil"
 )
 
@@ -14,7 +15,7 @@ func TestSvc_GetStatus(t *testing.T) {
 	ctx := context.Background()
 
 	status, err := svc.ToolStatus(ctx, nil)
-	checkErr(t, "", err)
+	require.NoError(t, err)
 
 	expected := &GetStatus_Output{
 		EverythingIsOK: true,
