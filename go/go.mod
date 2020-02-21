@@ -1,4 +1,4 @@
-module pathwar.land/go
+module pathwar.land/go/v2
 
 require (
 	github.com/Microsoft/go-winio v0.4.14 // indirect

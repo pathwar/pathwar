@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/jinzhu/gorm"
-	"pathwar.land/go/pkg/errcode"
+	"pathwar.land/go/v2/pkg/errcode"
 )
 
 func IsRecordNotFoundError(err error) bool {

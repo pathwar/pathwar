@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"go.uber.org/zap"
-	"pathwar.land/go/pkg/errcode"
-	"pathwar.land/go/pkg/pwdb"
+	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/go/v2/pkg/pwdb"
 )
 
 func (svc *service) AgentListInstances(ctx context.Context, in *AgentListInstances_Input) (*AgentListInstances_Output, error) {

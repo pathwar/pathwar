@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"pathwar.land/go/internal/testutil"
-	"pathwar.land/go/pkg/errcode"
+	"pathwar.land/go/v2/internal/testutil"
+	"pathwar.land/go/v2/pkg/errcode"
 )
 
 func TestSvc_UserSetPreferences(t *testing.T) {

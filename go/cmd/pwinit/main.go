@@ -1,4 +1,4 @@
-package main // import "pathwar.land/go/cmd/pwinit"
+package main
 
 import (
 	"encoding/json"
@@ -13,8 +13,8 @@ import (
 	"syscall"
 
 	"github.com/peterbourgon/ff/ffcli"
-	"pathwar.land/go/pkg/errcode"
-	"pathwar.land/go/pkg/pwinit"
+	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/go/v2/pkg/pwinit"
 )
 
 func main() {

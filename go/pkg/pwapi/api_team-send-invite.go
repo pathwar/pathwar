@@ -3,7 +3,7 @@ package pwapi
 import (
 	"context"
 
-	"pathwar.land/go/pkg/errcode"
+	"pathwar.land/go/v2/pkg/errcode"
 )
 
 func (svc *service) TeamSendInvite(ctx context.Context, in *TeamSendInvite_Input) (*TeamSendInvite_Output, error) {

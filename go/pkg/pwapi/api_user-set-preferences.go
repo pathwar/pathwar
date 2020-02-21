@@ -3,8 +3,8 @@ package pwapi
 import (
 	"context"
 
-	"pathwar.land/go/pkg/errcode"
-	"pathwar.land/go/pkg/pwdb"
+	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/go/v2/pkg/pwdb"
 )
 
 func (svc *service) UserSetPreferences(ctx context.Context, in *UserSetPreferences_Input) (*UserSetPreferences_Output, error) {

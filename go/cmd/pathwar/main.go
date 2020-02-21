@@ -1,4 +1,4 @@
-package main // import "pathwar.land/go/cmd/pathwar"
+package main
 
 import (
 	"context"
@@ -24,14 +24,14 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"golang.org/x/oauth2"
-	"pathwar.land/go/pkg/errcode"
-	"pathwar.land/go/pkg/pwagent"
-	"pathwar.land/go/pkg/pwapi"
-	"pathwar.land/go/pkg/pwcompose"
-	"pathwar.land/go/pkg/pwdb"
-	"pathwar.land/go/pkg/pwinit"
-	"pathwar.land/go/pkg/pwsso"
-	"pathwar.land/go/pkg/pwversion"
+	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/go/v2/pkg/pwagent"
+	"pathwar.land/go/v2/pkg/pwapi"
+	"pathwar.land/go/v2/pkg/pwcompose"
+	"pathwar.land/go/v2/pkg/pwdb"
+	"pathwar.land/go/v2/pkg/pwinit"
+	"pathwar.land/go/v2/pkg/pwsso"
+	"pathwar.land/go/v2/pkg/pwversion"
 )
 
 const (

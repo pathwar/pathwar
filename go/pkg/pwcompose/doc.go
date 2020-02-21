@@ -1,1 +1,1 @@
-package pwcompose // import "pathwar.land/go/pkg/pwcompose"
+package pwcompose // import "pathwar.land/go/v2/pkg/pwcompose"

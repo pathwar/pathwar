@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"pathwar.land/go/internal/testutil"
+	"pathwar.land/go/v2/internal/testutil"
 )
 
 func TestSvc_UserDeleteAccount(t *testing.T) {

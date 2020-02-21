@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"pathwar.land/go/pkg/errcode"
-	"pathwar.land/go/pkg/pwdb"
+	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/go/v2/pkg/pwdb"
 )
 
 func (svc *service) CouponValidate(ctx context.Context, in *CouponValidate_Input) (*CouponValidate_Output, error) {
