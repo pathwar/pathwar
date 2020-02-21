@@ -6,8 +6,8 @@ import (
 	"github.com/bwmarrin/snowflake"
 	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
-	"pathwar.land/go/pkg/errcode"
-	"pathwar.land/go/pkg/pwsso"
+	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/go/v2/pkg/pwsso"
 )
 
 type Service interface {

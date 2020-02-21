@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"pathwar.land/go/internal/testutil"
+	"pathwar.land/go/v2/internal/testutil"
 )
 
 func TestEngine_ToolInfo(t *testing.T) {

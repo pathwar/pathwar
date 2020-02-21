@@ -9,11 +9,11 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"go.uber.org/zap"
-	"pathwar.land/go/pkg/errcode"
-	"pathwar.land/go/pkg/pwapi"
-	"pathwar.land/go/pkg/pwcompose"
-	"pathwar.land/go/pkg/pwdb"
-	"pathwar.land/go/pkg/pwinit"
+	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/go/v2/pkg/pwapi"
+	"pathwar.land/go/v2/pkg/pwcompose"
+	"pathwar.land/go/v2/pkg/pwdb"
+	"pathwar.land/go/v2/pkg/pwinit"
 )
 
 func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, dockerClient *client.Client, opts Opts) error {

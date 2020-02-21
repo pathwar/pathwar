@@ -21,10 +21,10 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/crypto/sha3"
 	"moul.io/godev"
-	"pathwar.land/go/pkg/errcode"
-	"pathwar.land/go/pkg/pwapi"
-	"pathwar.land/go/pkg/pwcompose"
-	"pathwar.land/go/pkg/pwdb"
+	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/go/v2/pkg/pwapi"
+	"pathwar.land/go/v2/pkg/pwcompose"
+	"pathwar.land/go/v2/pkg/pwdb"
 )
 
 func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, dockerClient *client.Client, opts Opts) error {

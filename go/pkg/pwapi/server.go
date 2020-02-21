@@ -23,7 +23,7 @@ import (
 	chilogger "github.com/treastech/logger"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
-	"pathwar.land/go/pkg/errcode"
+	"pathwar.land/go/v2/pkg/errcode"
 )
 
 func NewServer(ctx context.Context, svc Service, opts ServerOpts) (*Server, error) {

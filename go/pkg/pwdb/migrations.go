@@ -4,7 +4,7 @@ import (
 	"github.com/bwmarrin/snowflake"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/gormigrate.v1"
-	"pathwar.land/go/pkg/errcode"
+	"pathwar.land/go/v2/pkg/errcode"
 )
 
 func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {

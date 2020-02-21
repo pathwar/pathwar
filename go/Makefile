@@ -4,7 +4,7 @@ GOPKG =		pathwar.land/go
 GOBINS =	./cmd/pathwar ./cmd/pwinit
 DOCKER_IMAGE =	pathwar/pathwar
 
-GO_INSTALL_OPTS = -v -ldflags "-s -w -X pathwar.land/go/pkg/pwversion.Version=`git describe --tags --abbrev` -X pathwar.land/go/pkg/pwversion.Commit=`git rev-parse HEAD` -X pathwar.land/go/pkg/pwversion.Date=`date +%s` -X pathwar.land/go/pkg/pwversion.BuiltBy=makefile"
+GO_INSTALL_OPTS = -v -ldflags "-s -w -X pathwar.land/go/v2/pkg/pwversion.Version=`git describe --tags --abbrev` -X pathwar.land/go/pkg/pwversion.Commit=`git rev-parse HEAD` -X pathwar.land/go/pkg/pwversion.Date=`date +%s` -X pathwar.land/go/pkg/pwversion.BuiltBy=makefile"
 PRE_INSTALL_STEPS += generate
 PRE_UNITTEST_STEPS += generate
 PRE_TEST_STEPS += generate
@@ -94,6 +94,9 @@ generate_local:
 	@set -e; for proto in $(PROTOS_SRC); do ( set -xe; \
 	  protoc -I ../go/vendor/github.com/grpc-ecosystem/grpc-gateway:../api:../go/vendor:/protobuf --grpc-gateway_out=logtostderr=true:"$(GOPATH)/src" --gogofaster_out="plugins=grpc:$(GOPATH)/src" "$$proto" \
 	); done
+	@### custom
+	sed -i s@pathwar.land/go/pkg@pathwar.land/go/v2/pkg@ ./pkg/*/*.pb.go
+	@### end of custom
 	goimports -w ./pkg ./cmd ./internal
 	shasum $(GEN_SRC) | sort > gen.sum.tmp
 	mv gen.sum.tmp gen.sum

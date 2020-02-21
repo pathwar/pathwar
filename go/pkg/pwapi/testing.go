@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
-	"pathwar.land/go/pkg/pwdb"
-	"pathwar.land/go/pkg/pwsso"
+	"pathwar.land/go/v2/pkg/pwdb"
+	"pathwar.land/go/v2/pkg/pwsso"
 )
 
 func TestingService(t *testing.T, opts ServiceOpts) (Service, func()) {

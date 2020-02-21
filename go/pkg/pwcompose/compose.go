@@ -22,9 +22,9 @@ import (
 	"github.com/olekukonko/tablewriter"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
-	"pathwar.land/go/internal/randstring"
-	"pathwar.land/go/pkg/errcode"
-	"pathwar.land/go/pkg/pwinit"
+	"pathwar.land/go/v2/internal/randstring"
+	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/go/v2/pkg/pwinit"
 )
 
 const (
