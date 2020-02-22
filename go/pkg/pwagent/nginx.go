@@ -121,26 +121,26 @@ func ensureNginxContainer(ctx context.Context, dockerClient *client.Client, opts
 		if err != nil {
 			return errcode.ErrBuildNginxContainer.Wrap(err)
 		}
-		running = true
+		running = false
 	} else {
 		nginxContainerID = nginxContainer.ID
 		running = nginxContainer.State == "running"
 	}
 
 	// start nginx container if needed
-	if running {
+	if !running {
 		err = dockerClient.ContainerStart(ctx, nginxContainerID, types.ContainerStartOptions{})
 		if err != nil {
 			return errcode.ErrStartNginxContainer.Wrap(err)
-		}
-		nginxContainer, err = checkNginxContainer(ctx, dockerClient)
-		if err != nil {
-			return errcode.ErrCheckNginxContainer.Wrap(err)
 		}
 		logger.Info("started nginx", zap.String("id", nginxContainerID))
 	}
 
 	// connect nginx container to proxy network
+	nginxContainer, err = checkNginxContainer(ctx, dockerClient)
+	if err != nil {
+		return errcode.ErrCheckNginxContainer.Wrap(err)
+	}
 	if _, found := nginxContainer.NetworkSettings.Networks[pwcompose.ProxyNetworkName]; !found {
 		var proxyNetworkID string
 		networkResources, err := dockerClient.NetworkList(ctx, types.NetworkListOptions{})

@@ -48,6 +48,9 @@ func Daemon(ctx context.Context, cli *client.Client, apiClient *http.Client, opt
 			break
 		}
 
+		opts.ForceRecreate = false // only do it once
+		opts.Cleanup = false       // only do it once
+
 		time.Sleep(opts.LoopDelay)
 	}
 	return nil
