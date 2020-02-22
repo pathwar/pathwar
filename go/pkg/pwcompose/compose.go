@@ -219,7 +219,7 @@ func Up(ctx context.Context, preparedCompose string, instanceKey string, forceRe
 		}
 	}
 
-	// down instances if force recreate
+	// down containers if force recreate
 	if forceRecreate {
 		err = Clean(ctx, []string{challengeID}, false, false, false, cli, logger)
 		if err != nil {
@@ -252,7 +252,7 @@ func Up(ctx context.Context, preparedCompose string, instanceKey string, forceRe
 		return nil, errcode.ErrComposeUpdateTempFile.Wrap(err)
 	}
 
-	// create instances
+	// create containers
 	args := append(composeCliCommonArgs(tmpPreparedComposePath), "up", "--no-start", "--quiet-pull")
 	logger.Debug("docker-compose", zap.Strings("args", args))
 	cmd := exec.Command("docker-compose", args...)
@@ -271,18 +271,18 @@ func Up(ctx context.Context, preparedCompose string, instanceKey string, forceRe
 	if err != nil {
 		return nil, errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
-	for _, instance := range containersInfo.RunningInstances {
-		if challengeID == instance.ChallengeID() {
+	for _, container := range containersInfo.RunningContainers {
+		if challengeID == container.ChallengeID() {
 			// update entrypoints to run pwinit first
-			imageInspect, _, err := cli.ImageInspectWithRaw(ctx, instance.ImageID)
+			imageInspect, _, err := cli.ImageInspectWithRaw(ctx, container.ImageID)
 			if err != nil {
 				return nil, errcode.ErrDockerAPIImageInspect.Wrap(err)
 			}
 			for name, service := range preparedComposeStruct.Services {
-				if name != instance.Labels[serviceNameLabel] {
+				if name != container.Labels[serviceNameLabel] {
 					continue
 				}
-				// find service from compose file of current instance
+				// find service from compose file of current container
 				entrypoint := []string{}
 				if len(imageInspect.Config.Entrypoint) > 0 {
 					entrypoint = imageInspect.Config.Entrypoint
@@ -310,7 +310,7 @@ func Up(ctx context.Context, preparedCompose string, instanceKey string, forceRe
 		return nil, errcode.ErrComposeUpdateTempFile.Wrap(err)
 	}
 
-	// build definitive instances
+	// build definitive containers
 	args = append(composeCliCommonArgs(tmpPreparedComposePath), "up", "--no-start")
 	logger.Debug("docker-compose", zap.Strings("args", args))
 	cmd = exec.Command("docker-compose", args...)
@@ -330,8 +330,8 @@ func Up(ctx context.Context, preparedCompose string, instanceKey string, forceRe
 		return nil, errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
 
-	for _, instance := range containersInfo.RunningInstances {
-		if challengeID != instance.ChallengeID() {
+	for _, container := range containersInfo.RunningContainers {
+		if challengeID != container.ChallengeID() {
 			continue
 		}
 
@@ -355,15 +355,15 @@ func Up(ctx context.Context, preparedCompose string, instanceKey string, forceRe
 		if err != nil {
 			return nil, errcode.ErrCopyPWInitToContainer.Wrap(err)
 		}
-		logger.Debug("copy pwinit into the container", zap.String("container-id", instance.ID))
-		err = cli.CopyToContainer(ctx, instance.ID, "/", buf, types.CopyToContainerOptions{})
+		logger.Debug("copy pwinit into the container", zap.String("container-id", container.ID))
+		err = cli.CopyToContainer(ctx, container.ID, "/", buf, types.CopyToContainerOptions{})
 		if err != nil {
 			return nil, errcode.ErrCopyPWInitToContainer.Wrap(err)
 		}
 
 	}
 
-	// start instances
+	// start containers
 	args = append(composeCliCommonArgs(tmpPreparedComposePath), "up", "-d")
 	logger.Debug("docker-compose", zap.Strings("args", args))
 	cmd = exec.Command("docker-compose", args...)
@@ -381,12 +381,12 @@ func Up(ctx context.Context, preparedCompose string, instanceKey string, forceRe
 	if err != nil {
 		return nil, errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
-	for _, instance := range containersInfo.RunningInstances {
-		if challengeID != instance.ChallengeID() {
+	for _, container := range containersInfo.RunningContainers {
+		if challengeID != container.ChallengeID() {
 			continue
 		}
-		if proxyNetworkID != "" && instance.NeedsNginxProxy() {
-			err = cli.NetworkConnect(ctx, proxyNetworkID, instance.ID, nil)
+		if proxyNetworkID != "" && container.NeedsNginxProxy() {
+			err = cli.NetworkConnect(ctx, proxyNetworkID, container.ID, nil)
 			if err != nil {
 				return nil, errcode.ErrContainerConnectNetwork.Wrap(err)
 			}
@@ -421,24 +421,25 @@ func Clean(ctx context.Context, containerIDs []string, removeImages bool, remove
 
 	toRemove := map[string]container{}
 
-	if withNginx && containersInfo.NginxProxyInstance.ID != "" {
-		toRemove[containersInfo.NginxProxyInstance.ID] = containersInfo.NginxProxyInstance
+	if withNginx && containersInfo.NginxContainer.ID != "" {
+		toRemove[containersInfo.NginxContainer.ID] = containersInfo.NginxContainer
 	}
 
 	if len(containerIDs) == 0 { // all containers
-		for _, container := range containersInfo.RunningInstances {
+		for _, container := range containersInfo.RunningContainers {
 			toRemove[container.ID] = container
 		}
 	} else { // only specific ones
 		for _, id := range containerIDs {
 			for _, flavor := range containersInfo.RunningFlavors {
 				if id == flavor.Name || id == flavor.ChallengeID() {
-					for _, instance := range flavor.Instances {
-						toRemove[instance.ID] = instance
+
+					for _, container := range flavor.Containers {
+						toRemove[container.ID] = container
 					}
 				}
 			}
-			for _, container := range containersInfo.RunningInstances {
+			for _, container := range containersInfo.RunningContainers {
 				if id == container.ID || id == container.ID[0:7] {
 					toRemove[container.ID] = container
 				}
@@ -467,12 +468,12 @@ func Clean(ctx context.Context, containerIDs []string, removeImages bool, remove
 		}
 	}
 
-	if withNginx && containersInfo.NginxProxyNetwork.ID != "" {
-		err = cli.NetworkRemove(ctx, containersInfo.NginxProxyNetwork.ID)
+	if withNginx && containersInfo.NginxNetwork.ID != "" {
+		err = cli.NetworkRemove(ctx, containersInfo.NginxNetwork.ID)
 		if err != nil {
 			return errcode.ErrDockerAPINetworkRemove.Wrap(err)
 		}
-		logger.Debug("network removed", zap.String("ID", containersInfo.NginxProxyNetwork.ID))
+		logger.Debug("network removed", zap.String("ID", containersInfo.NginxNetwork.ID))
 	}
 
 	return nil
@@ -489,7 +490,7 @@ func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) 
 	table.SetHeader([]string{"ID", "CHALLENGE", "SVC", "PORTS", "STATUS", "CREATED"})
 
 	for _, flavor := range containersInfo.RunningFlavors {
-		for uid, container := range flavor.Instances {
+		for uid, container := range flavor.Containers {
 
 			ports := []string{}
 			for _, port := range container.Ports {
@@ -571,8 +572,8 @@ func GetContainersInfo(ctx context.Context, cli *client.Client) (*ContainersInfo
 	}
 
 	containersInfo := ContainersInfo{
-		RunningFlavors:   map[string]challengeFlavors{},
-		RunningInstances: map[string]container{},
+		RunningFlavors:    map[string]challengeFlavors{},
+		RunningContainers: map[string]container{},
 	}
 
 	for _, dockerContainer := range containers {
@@ -581,7 +582,7 @@ func GetContainersInfo(ctx context.Context, cli *client.Client) (*ContainersInfo
 		// pathwar nginx proxy
 		for _, name := range c.Names {
 			if name[1:] == NginxContainerName {
-				containersInfo.NginxProxyInstance = c
+				containersInfo.NginxContainer = c
 			}
 		}
 
@@ -592,15 +593,15 @@ func GetContainersInfo(ctx context.Context, cli *client.Client) (*ContainersInfo
 		flavor := c.ChallengeID()
 		if _, found := containersInfo.RunningFlavors[flavor]; !found {
 			challengeFlavor := challengeFlavors{
-				Instances: map[string]container{},
+				Containers: map[string]container{},
 			}
 			challengeFlavor.Name = c.Labels[challengeNameLabel]
 			challengeFlavor.Version = c.Labels[challengeVersionLabel]
 			challengeFlavor.InstanceKey = c.Labels[instanceKeyLabel]
 			containersInfo.RunningFlavors[flavor] = challengeFlavor
 		}
-		containersInfo.RunningFlavors[flavor].Instances[c.ID] = c
-		containersInfo.RunningInstances[c.ID] = c
+		containersInfo.RunningFlavors[flavor].Containers[c.ID] = c
+		containersInfo.RunningContainers[c.ID] = c
 	}
 
 	// find proxy network
@@ -610,7 +611,7 @@ func GetContainersInfo(ctx context.Context, cli *client.Client) (*ContainersInfo
 	}
 	for _, networkResource := range networks {
 		if networkResource.Name == ProxyNetworkName {
-			containersInfo.NginxProxyNetwork = networkResource
+			containersInfo.NginxNetwork = networkResource
 			break
 		}
 	}
