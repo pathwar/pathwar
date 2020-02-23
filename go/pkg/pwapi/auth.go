@@ -40,9 +40,7 @@ func (svc *service) AuthFuncOverride(ctx context.Context, path string) (context.
 	}
 
 	// cleanup the authorization
-	if strings.HasPrefix(auth[0], "Bearer ") {
-		auth[0] = auth[0][7:]
-	}
+	auth[0] = strings.TrimPrefix(auth[0], "Bearer ")
 
 	token, _, err := svc.sso.TokenWithClaims(auth[0])
 	if err != nil {

@@ -21,7 +21,7 @@ func testingSeasons(t *testing.T, svc Service) *pwdb.SeasonList {
 	return &list
 }
 
-func testingAgents(t *testing.T, svc Service) *pwdb.AgentList {
+/*func testingAgents(t *testing.T, svc Service) *pwdb.AgentList {
 	t.Helper()
 
 	db := testingSvcDB(t, svc)
@@ -32,7 +32,7 @@ func testingAgents(t *testing.T, svc Service) *pwdb.AgentList {
 	}
 
 	return &list
-}
+}*/
 
 func testingSeasonChallenges(t *testing.T, svc Service) *pwdb.SeasonChallengeList {
 	t.Helper()

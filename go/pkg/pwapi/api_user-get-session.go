@@ -123,7 +123,7 @@ func (svc *service) loadOAuthUser(subject string) (*pwdb.User, error) {
 }
 
 func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
-	if claims.EmailVerified == false {
+	if !claims.EmailVerified {
 		return nil, errcode.ErrEmailAddressNotVerified
 	}
 

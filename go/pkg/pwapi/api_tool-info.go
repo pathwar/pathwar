@@ -13,6 +13,6 @@ func (svc *service) ToolInfo(context.Context, *GetInfo_Input) (*GetInfo_Output, 
 		Commit:  pwversion.Commit,
 		BuiltAt: pwversion.Date,
 		BuiltBy: pwversion.BuiltBy,
-		Uptime:  int32(time.Now().Sub(svc.startedAt).Seconds()),
+		Uptime:  int32(time.Since(svc.startedAt).Seconds()),
 	}, nil
 }

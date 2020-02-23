@@ -362,7 +362,7 @@ func nginxSendCommand(ctx context.Context, cli *client.Client, nginxContainerID 
 		return errcode.ErrDockerAPIContainerExecInspect.Wrap(err)
 	}
 
-	if stderr != nil && len(stderr) > 0 {
+	if len(stderr) > 0 {
 		logger.Debug("exec finished with stderr", zap.String("stderr", string(stderr)))
 	}
 	logger.Debug("exec finished",

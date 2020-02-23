@@ -134,7 +134,7 @@ go.fmt:
 	if ! command -v goimports &>/dev/null; then GO111MODULE=off go get golang.org/x/tools/cmd/goimports; fi
 	@set -e; for dir in `find $(GOMOD_DIR) -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
 	  cd $$dir; \
-	  goimports -w . \
+	  goimports -w `go list -f '{{.Dir}}' ./...)` \
 	); done
 
 BUILD_STEPS += go.build
