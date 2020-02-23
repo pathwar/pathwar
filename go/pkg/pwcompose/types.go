@@ -1,12 +1,11 @@
 package pwcompose
 
 import (
-	fmt "fmt"
+	"fmt"
 
 	"github.com/docker/docker/api/types"
 )
 
-// https://github.com/digibib/docker-compose-dot/blob/master/docker-compose-dot.go
 type config struct {
 	Version  string
 	Networks map[string]network
@@ -51,10 +50,10 @@ type dabservice struct {
 }
 
 type ContainersInfo struct {
-	RunningFlavors     map[string]challengeFlavors
-	RunningInstances   map[string]container
-	NginxProxyInstance container
-	NginxProxyNetwork  types.NetworkResource
+	RunningFlavors    map[string]challengeFlavors
+	RunningContainers map[string]container
+	NginxContainer    container
+	NginxNetwork      types.NetworkResource
 }
 
 type container types.Container
@@ -76,7 +75,7 @@ type challengeFlavors struct {
 	Name        string
 	Version     string
 	InstanceKey string
-	Instances   map[string]container
+	Containers  map[string]container
 }
 
 func (cf challengeFlavors) ChallengeID() string {

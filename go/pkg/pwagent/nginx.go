@@ -42,7 +42,7 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 		return errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
 	if opts.DomainSuffix == "local" {
-		proxyNetworkIP := containersInfo.NginxProxyInstance.NetworkSettings.Networks[pwcompose.ProxyNetworkName].IPAddress
+		proxyNetworkIP := containersInfo.NginxContainer.NetworkSettings.Networks[pwcompose.ProxyNetworkName].IPAddress
 		opts.DomainSuffix = proxyNetworkIP + ".xip.io"
 	}
 	config, err := genNginxConfig(apiInstances, containersInfo, opts)
@@ -58,7 +58,7 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 	if err != nil {
 		return errcode.ErrBuildNginxConfig.Wrap(err)
 	}
-	nginxContainer := containersInfo.NginxProxyInstance
+	nginxContainer := containersInfo.NginxContainer
 	logger.Debug("copy nginx config into the container", zap.String("container-id", nginxContainer.ID))
 	err = dockerClient.CopyToContainer(ctx, nginxContainer.ID, "/etc/nginx/", buf, types.CopyToContainerOptions{})
 	if err != nil {
@@ -193,14 +193,14 @@ func genNginxConfig(apiInstances *pwapi.AgentListInstances_Output, containersInf
 
 	// compute upstreams
 	for _, flavor := range containersInfo.RunningFlavors {
-		for _, instance := range flavor.Instances {
-			for idx, port := range instance.Ports {
+		for _, container := range flavor.Containers {
+			for idx, port := range container.Ports {
 				if port.PublicPort != 0 {
 					upstream := nginxUpstream{
-						Name:         fmt.Sprintf("%s.%d", instance.Names[0][1:], idx),
+						Name:         fmt.Sprintf("%s.%d", container.Names[0][1:], idx),
 						InstanceID:   flavor.InstanceKey,
 						AllowedUsers: allowedUsers[flavor.InstanceKey],
-						Host:         instance.NetworkSettings.Networks[pwcompose.ProxyNetworkName].IPAddress,
+						Host:         container.NetworkSettings.Networks[pwcompose.ProxyNetworkName].IPAddress,
 						Port:         strconv.Itoa(int(port.PrivatePort)),
 					}
 					config.Upstreams[upstream.Name] = upstream
@@ -405,7 +405,7 @@ type nginxUpstream struct {
 	Host         string
 	Port         string
 	Hashes       []string
-	AllowedUsers []int64 // map[INSTANCE_ID][]USER_ID, map[42][]string{4242, 4343}
+	AllowedUsers []int64
 }
 
 const nginxConfigTemplate = `
