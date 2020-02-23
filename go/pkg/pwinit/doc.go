@@ -1,1 +1,1 @@
-package pwinit // import "pathwar.land/go/v2/pkg/pwinit"
+package pwinit // import "pathwar.land/v2/go/pkg/pwinit"

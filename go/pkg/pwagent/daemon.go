@@ -7,8 +7,8 @@ import (
 
 	"github.com/docker/docker/client"
 	"go.uber.org/zap"
-	"pathwar.land/go/v2/pkg/errcode"
-	"pathwar.land/go/v2/pkg/pwcompose"
+	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/v2/go/pkg/pwcompose"
 )
 
 func Daemon(ctx context.Context, cli *client.Client, apiClient *http.Client, opts Opts) error {

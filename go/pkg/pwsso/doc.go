@@ -1,1 +1,1 @@
-package pwsso // import "pathwar.land/go/v2/pkg/pwsso"
+package pwsso // import "pathwar.land/v2/go/pkg/pwsso"

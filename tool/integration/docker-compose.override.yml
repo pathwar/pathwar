@@ -7,7 +7,7 @@ services:
       - server
 
   server:
-    build: ../../go
+    build: ../..
     ports:
       - 8000
 

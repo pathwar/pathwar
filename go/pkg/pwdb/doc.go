@@ -1,1 +1,1 @@
-package pwdb // import "pathwar.land/go/v2/pkg/pwdb"
+package pwdb // import "pathwar.land/v2/go/pkg/pwdb"

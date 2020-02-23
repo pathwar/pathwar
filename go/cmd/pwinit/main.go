@@ -13,8 +13,8 @@ import (
 	"syscall"
 
 	"github.com/peterbourgon/ff/ffcli"
-	"pathwar.land/go/v2/pkg/errcode"
-	"pathwar.land/go/v2/pkg/pwinit"
+	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/v2/go/pkg/pwinit"
 )
 
 func main() {

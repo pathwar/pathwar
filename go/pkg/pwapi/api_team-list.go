@@ -4,8 +4,8 @@ import (
 	"context"
 	"math/rand"
 
-	"pathwar.land/go/v2/pkg/errcode"
-	"pathwar.land/go/v2/pkg/pwdb"
+	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/v2/go/pkg/pwdb"
 )
 
 func (svc *service) TeamList(ctx context.Context, in *TeamList_Input) (*TeamList_Output, error) {

@@ -1,1 +1,1 @@
-package pwversion // import "pathwar.land/go/v2/pkg/pwversion"
+package pwversion // import "pathwar.land/v2/go/pkg/pwversion"

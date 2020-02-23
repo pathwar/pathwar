@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"pathwar.land/go/v2/pkg/pwversion"
+	"pathwar.land/v2/go/pkg/pwversion"
 )
 
 func (svc *service) ToolInfo(context.Context, *GetInfo_Input) (*GetInfo_Output, error) {

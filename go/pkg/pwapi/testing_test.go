@@ -6,9 +6,9 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
-	"pathwar.land/go/v2/pkg/errcode"
-	"pathwar.land/go/v2/pkg/pwdb"
-	"pathwar.land/go/v2/pkg/pwsso"
+	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/v2/go/pkg/pwdb"
+	"pathwar.land/v2/go/pkg/pwsso"
 )
 
 func testingSeasons(t *testing.T, svc Service) *pwdb.SeasonList {

@@ -8,8 +8,8 @@ import (
 
 	"github.com/gogo/protobuf/jsonpb"
 	"go.uber.org/zap"
-	"pathwar.land/go/v2/pkg/errcode"
-	"pathwar.land/go/v2/pkg/pwapi"
+	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/v2/go/pkg/pwapi"
 )
 
 func fetchAPIInstances(ctx context.Context, apiClient *http.Client, httpAPIAddr string, agentName string, logger *zap.Logger) (*pwapi.AgentListInstances_Output, error) {

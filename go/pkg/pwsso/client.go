@@ -7,7 +7,7 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"go.uber.org/zap"
-	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/v2/go/pkg/errcode"
 )
 
 type Opts struct {

@@ -3,8 +3,8 @@ package pwapi
 import (
 	"context"
 
-	"pathwar.land/go/v2/pkg/errcode"
-	"pathwar.land/go/v2/pkg/pwdb"
+	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/v2/go/pkg/pwdb"
 )
 
 func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuy_Input) (*SeasonChallengeBuy_Output, error) {

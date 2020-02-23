@@ -7,7 +7,7 @@ import (
 	"github.com/bwmarrin/snowflake"
 	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
-	"pathwar.land/go/v2/internal/randstring"
+	"pathwar.land/v2/go/internal/randstring"
 )
 
 func GetInfo(db *gorm.DB, logger *zap.Logger) (*Info, error) {

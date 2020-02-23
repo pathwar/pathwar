@@ -1,1 +1,1 @@
-package pathwar // import "pathwar.land/go/v2"
+package pathwar // import "pathwar.land/v2/go"

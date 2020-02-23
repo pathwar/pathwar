@@ -3,7 +3,7 @@ package pwapi
 import (
 	"context"
 
-	"pathwar.land/go/v2/pkg/pwdb"
+	"pathwar.land/v2/go/pkg/pwdb"
 )
 
 func (svc *service) ToolGenerateFakeData(context.Context, *Void) (*Void, error) {
