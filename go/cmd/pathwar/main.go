@@ -24,6 +24,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"golang.org/x/oauth2"
+	"moul.io/srand"
 	"pathwar.land/go/v2/pkg/errcode"
 	"pathwar.land/go/v2/pkg/pwagent"
 	"pathwar.land/go/v2/pkg/pwapi"
@@ -653,7 +654,7 @@ func ssoFromFlags() (pwsso.Client, error) {
 }
 
 func globalPreRun() error {
-	rand.Seed(time.Now().UnixNano())
+	rand.Seed(srand.Secure())
 	if globalDebug {
 		config := zap.NewDevelopmentConfig()
 		config.Level.SetLevel(zap.DebugLevel)

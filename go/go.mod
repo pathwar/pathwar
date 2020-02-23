@@ -50,6 +50,7 @@ require (
 	gopkg.in/yaml.v2 v2.2.7 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20191120175047-4206685974f2
 	moul.io/godev v1.3.0
+	moul.io/srand v1.4.0
 	moul.io/zapgorm v1.0.0
 )
 

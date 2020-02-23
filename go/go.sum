@@ -383,5 +383,7 @@ honnef.co/go/tools v0.0.1-2019.2.3 h1:3JgtbtFHMiCmsznwGVTUWbgGov+pVqnlf1dEJTNAXe
 honnef.co/go/tools v0.0.1-2019.2.3/go.mod h1:a3bituU0lyd329TUQxRnasdCoJDkEUEAqEt0JzvZhAg=
 moul.io/godev v1.3.0 h1:+GGk+scZhZ4citKb/lLubV/QJsu7OvB5UZhSYNQRCx4=
 moul.io/godev v1.3.0/go.mod h1:xsV3hXF1E9vy2T/1b1CLjSImJ1/nQeTfqTDhJHhJCWg=
+moul.io/srand v1.4.0 h1:r5ZMiWDN0ni0lTV7KzJR/jx0K7GivJYW5WaXmufgeik=
+moul.io/srand v1.4.0/go.mod h1:P2uaZB+GFstFNo8sEj6/U8FRV1n25kD0LLckFpJ+qvc=
 moul.io/zapgorm v1.0.0 h1:HpO9x1TmsKFd4JoLNHrSIc1uZn6kmyDxLQK4xjfz8JE=
 moul.io/zapgorm v1.0.0/go.mod h1:JDE3xz5BQ1ccnAijE5+T8Qin6T256Bw2Cpdi+qMfWgw=
