@@ -70,6 +70,7 @@ GO ?= go
 GOPATH ?= $(HOME)/go
 GO_INSTALL_OPTS ?=
 GO_TEST_OPTS ?= -test.timeout=30s
+GOMOD_DIR ?= .
 
 ifdef GOBINS
 .PHONY: go.install
@@ -91,7 +92,7 @@ endif
 .PHONY: go.unittest
 go.unittest:
 	echo "" > /tmp/coverage.txt
-	@set -e; for dir in `find . -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
+	@set -e; for dir in `find $(GOMOD_DIR) -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
 	  cd $$dir; \
 	  $(GO) test $(GO_TEST_OPTS) -cover -coverprofile=/tmp/profile.out -covermode=atomic -race ./...; \
 	  if [ -f /tmp/profile.out ]; then \
@@ -102,28 +103,28 @@ go.unittest:
 
 .PHONY: go.lint
 go.lint:
-	@set -e; for dir in `find . -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
+	@set -e; for dir in `find $(GOMOD_DIR) -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
 	  cd $$dir; \
 	  golangci-lint run --verbose ./...; \
 	); done
 
 .PHONY: go.tidy
 go.tidy:
-	@set -e; for dir in `find . -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
+	@set -e; for dir in `find $(GOMOD_DIR) -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
 	  cd $$dir; \
 	  $(GO)	mod tidy; \
 	); done
 
 .PHONY: go.build
 go.build:
-	@set -e; for dir in `find . -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
+	@set -e; for dir in `find $(GOMOD_DIR) -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
 	  cd $$dir; \
 	  $(GO)	build ./...; \
 	); done
 
 .PHONY: go.bump-deps
 go.bumpdeps:
-	@set -e; for dir in `find . -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
+	@set -e; for dir in `find $(GOMOD_DIR) -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
 	  cd $$dir; \
 	  $(GO)	get -u ./...; \
 	); done
@@ -131,9 +132,9 @@ go.bumpdeps:
 .PHONY: go.bump-deps
 go.fmt:
 	if ! command -v goimports &>/dev/null; then GO111MODULE=off go get golang.org/x/tools/cmd/goimports; fi
-	@set -e; for dir in `find . -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
+	@set -e; for dir in `find $(GOMOD_DIR) -type f -name "go.mod" | grep -v /vendor/ | sed 's@/[^/]*$$@@' | sort | uniq`; do ( set -xe; \
 	  cd $$dir; \
-	  goimports -w . \
+	  goimports -w `go list -f '{{.Dir}}' ./...)` \
 	); done
 
 BUILD_STEPS += go.build
@@ -170,6 +171,9 @@ endif
 ## Docker
 ##
 
+ifndef DOCKERFILE_PATH
+DOCKERFILE_PATH = ./Dockerfile
+endif
 ifndef DOCKER_IMAGE
 ifneq ($(wildcard Dockerfile),)
 DOCKER_IMAGE = $(notdir $(PWD))
@@ -183,7 +187,7 @@ docker.build:
 	  --build-arg VCS_REF=`git rev-parse --short HEAD` \
 	  --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 	  --build-arg VERSION=`git describe --tags --always` \
-	  -t $(DOCKER_IMAGE) .
+	  -t $(DOCKER_IMAGE) -f $(DOCKERFILE_PATH) $(dir $(DOCKERFILE_PATH))
 
 BUILD_STEPS += docker.build
 endif

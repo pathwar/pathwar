@@ -10,7 +10,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/stretchr/testify/assert"
 	"moul.io/godev"
-	"pathwar.land/go/v2/internal/testutil"
+	"pathwar.land/v2/go/internal/testutil"
 )
 
 func TestServer(t *testing.T) {

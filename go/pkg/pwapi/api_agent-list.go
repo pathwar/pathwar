@@ -3,7 +3,7 @@ package pwapi
 import (
 	"context"
 
-	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/v2/go/pkg/errcode"
 )
 
 func (svc *service) AgentList(context.Context, *AgentList_Input) (*AgentList_Output, error) {

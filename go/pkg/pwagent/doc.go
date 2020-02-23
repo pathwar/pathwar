@@ -1,1 +1,1 @@
-package pwagent // import "pathwar.land/go/v2/pkg/pwagent"
+package pwagent // import "pathwar.land/v2/go/pkg/pwagent"

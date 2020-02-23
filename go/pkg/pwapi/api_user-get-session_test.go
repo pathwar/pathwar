@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"moul.io/godev"
-	"pathwar.land/go/v2/internal/testutil"
-	"pathwar.land/go/v2/pkg/pwsso"
+	"pathwar.land/v2/go/internal/testutil"
+	"pathwar.land/v2/go/pkg/pwsso"
 )
 
 func TestSvc_UserGetSession(t *testing.T) {

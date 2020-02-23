@@ -1,1 +1,1 @@
-package errcode // import "pathwar.land/go/v2/pkg/errcode"
+package errcode // import "pathwar.land/v2/go/pkg/errcode"

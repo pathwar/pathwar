@@ -24,7 +24,7 @@ gen.sum: $(GEN_SRC)
 
 .PHONY: generate_local
 generate_local:
-	protoc -I ../go/vendor/github.com/grpc-ecosystem/grpc-gateway:../api:../go/vendor:/protobuf --swagger_out=logtostderr=true:. ../api/pwapi.proto
+	protoc -I ../vendor/github.com/grpc-ecosystem/grpc-gateway:../api:../vendor:/protobuf --swagger_out=logtostderr=true:. ../api/pwapi.proto
 	echo 'swagger: "2.0"' > swagger.yaml.tmp
 	cat ./pwapi.swagger.json | json2yaml | grep -v 'swagger: "2.0"' >> swagger.yaml.tmp
 	rm -f ./pwapi.swagger.json

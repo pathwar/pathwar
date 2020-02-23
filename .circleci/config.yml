@@ -20,7 +20,7 @@ jobs:
   #        image: pathwar/pathwar
 
   go-build:
-    working_directory: /go/src/pathwar.land/go
+    working_directory: /go/src/pathwar.land
     docker:
       - image: circleci/golang:1.13
     steps:
@@ -28,13 +28,13 @@ jobs:
           path: /go/src/pathwar.land
       - moul/mod-download
       - gotools/mod-tidy-check
-      - run: make install
-      - run: SKIP_SLOW_TESTS=1 make unittest GO_TEST_OPTS="-test.timeout=60s -count=10"
-      - run: SKIP_SLOW_TESTS=0 make unittest GO_TEST_OPTS="-test.timeout=60s -count=2"
+      - run: cd go && make install
+      - run: cd go && SKIP_SLOW_TESTS=1 make unittest GO_TEST_OPTS="-test.timeout=60s -count=10"
+      - run: cd go && SKIP_SLOW_TESTS=0 make unittest GO_TEST_OPTS="-test.timeout=60s -count=2"
       - moul/install_golangci-lint
-      - run: PATH=$PATH:$(pwd)/bin make lint
+      - run: cd go && PATH=$PATH:$(pwd)/bin make lint
       - codecov/upload:
-          file: coverage.txt
+          file: go/coverage.txt
 
   go-generate:
     working_directory: /go/src/pathwar.land

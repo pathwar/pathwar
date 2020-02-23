@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"go.uber.org/zap"
-	"pathwar.land/go/v2/internal/randstring"
+	"pathwar.land/v2/go/internal/randstring"
 )
 
 type Opts struct {

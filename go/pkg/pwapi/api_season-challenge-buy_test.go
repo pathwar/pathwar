@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"pathwar.land/go/v2/internal/testutil"
-	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/v2/go/internal/testutil"
+	"pathwar.land/v2/go/pkg/errcode"
 )
 
 func TestSvc_ChallengeBuy(t *testing.T) {

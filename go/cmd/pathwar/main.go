@@ -25,14 +25,14 @@ import (
 	"go.uber.org/zap/zapcore"
 	"golang.org/x/oauth2"
 	"moul.io/srand"
-	"pathwar.land/go/v2/pkg/errcode"
-	"pathwar.land/go/v2/pkg/pwagent"
-	"pathwar.land/go/v2/pkg/pwapi"
-	"pathwar.land/go/v2/pkg/pwcompose"
-	"pathwar.land/go/v2/pkg/pwdb"
-	"pathwar.land/go/v2/pkg/pwinit"
-	"pathwar.land/go/v2/pkg/pwsso"
-	"pathwar.land/go/v2/pkg/pwversion"
+	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/v2/go/pkg/pwagent"
+	"pathwar.land/v2/go/pkg/pwapi"
+	"pathwar.land/v2/go/pkg/pwcompose"
+	"pathwar.land/v2/go/pkg/pwdb"
+	"pathwar.land/v2/go/pkg/pwinit"
+	"pathwar.land/v2/go/pkg/pwsso"
+	"pathwar.land/v2/go/pkg/pwversion"
 )
 
 const (

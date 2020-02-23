@@ -21,10 +21,10 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/crypto/sha3"
 	"moul.io/godev"
-	"pathwar.land/go/v2/pkg/errcode"
-	"pathwar.land/go/v2/pkg/pwapi"
-	"pathwar.land/go/v2/pkg/pwcompose"
-	"pathwar.land/go/v2/pkg/pwdb"
+	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/v2/go/pkg/pwapi"
+	"pathwar.land/v2/go/pkg/pwcompose"
+	"pathwar.land/v2/go/pkg/pwdb"
 )
 
 func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, dockerClient *client.Client, opts Opts) error {
@@ -362,7 +362,7 @@ func nginxSendCommand(ctx context.Context, cli *client.Client, nginxContainerID 
 		return errcode.ErrDockerAPIContainerExecInspect.Wrap(err)
 	}
 
-	if stderr != nil && len(stderr) > 0 {
+	if len(stderr) > 0 {
 		logger.Debug("exec finished with stderr", zap.String("stderr", string(stderr)))
 	}
 	logger.Debug("exec finished",

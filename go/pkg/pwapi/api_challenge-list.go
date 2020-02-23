@@ -3,7 +3,7 @@ package pwapi
 import (
 	"context"
 
-	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/v2/go/pkg/errcode"
 )
 
 func (svc *service) ChallengeList(context.Context, *ChallengeList_Input) (*ChallengeList_Output, error) {

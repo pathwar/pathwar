@@ -5,7 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
 	"moul.io/zapgorm"
-	"pathwar.land/go/v2/pkg/errcode"
+	"pathwar.land/v2/go/pkg/errcode"
 )
 
 type Opts struct {

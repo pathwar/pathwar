@@ -34,7 +34,7 @@ func main() {
 	var host, port, screenshotURL, imgQualityArg string
 	flag.StringVar(&host, "host", "localhost", "Chrome headless instance ip")
 	flag.StringVar(&port, "port", "9222", "Chrome headless instance debug port")
-	flag.StringVar(&screenshotURL, "screenshot-url", "https://www.google.com", "URL of the page to screenshoot")
+	flag.StringVar(&screenshotURL, "screenshot-url", "https://www.google.com", "URL of the page to screenshot")
 	flag.StringVar(&imgQualityArg, "img-quality", "90", "PNG Quality (default : 90)")
 	flag.Parse()
 
@@ -55,9 +55,9 @@ func main() {
 	resp.Body.Close()
 
 	var jsonElements chromeDebuggerJSON
-	json.Unmarshal(jsonResponse, &jsonElements)
+	err = json.Unmarshal(jsonResponse, &jsonElements)
 
-	if len(jsonElements) < 1 {
+	if err != nil || len(jsonElements) < 1 {
 		log.Fatal("Couldn't retrieve websocket headless instance URL from JSON")
 	}
 

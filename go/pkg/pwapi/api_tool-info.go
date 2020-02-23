@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"pathwar.land/go/v2/pkg/pwversion"
+	"pathwar.land/v2/go/pkg/pwversion"
 )
 
 func (svc *service) ToolInfo(context.Context, *GetInfo_Input) (*GetInfo_Output, error) {
@@ -13,6 +13,6 @@ func (svc *service) ToolInfo(context.Context, *GetInfo_Input) (*GetInfo_Output, 
 		Commit:  pwversion.Commit,
 		BuiltAt: pwversion.Date,
 		BuiltBy: pwversion.BuiltBy,
-		Uptime:  int32(time.Now().Sub(svc.startedAt).Seconds()),
+		Uptime:  int32(time.Since(svc.startedAt).Seconds()),
 	}, nil
 }

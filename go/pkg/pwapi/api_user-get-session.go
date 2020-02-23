@@ -7,9 +7,9 @@ import (
 	"math/rand"
 
 	"go.uber.org/zap"
-	"pathwar.land/go/v2/pkg/errcode"
-	"pathwar.land/go/v2/pkg/pwdb"
-	"pathwar.land/go/v2/pkg/pwsso"
+	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/v2/go/pkg/pwdb"
+	"pathwar.land/v2/go/pkg/pwsso"
 )
 
 func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input) (*UserGetSession_Output, error) {
@@ -123,7 +123,7 @@ func (svc *service) loadOAuthUser(subject string) (*pwdb.User, error) {
 }
 
 func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
-	if claims.EmailVerified == false {
+	if !claims.EmailVerified {
 		return nil, errcode.ErrEmailAddressNotVerified
 	}
 

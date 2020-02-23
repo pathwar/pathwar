@@ -17,8 +17,8 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	pwdb "pathwar.land/go/v2/pkg/pwdb"
-	pwsso "pathwar.land/go/v2/pkg/pwsso"
+	pwdb "pathwar.land/v2/go/pkg/pwdb"
+	pwsso "pathwar.land/v2/go/pkg/pwsso"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

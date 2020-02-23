@@ -3,7 +3,7 @@ version: '3.7'
 services:
   server:
     #image: pathwar/pathwar:latest
-    build: .
+    build: ..
     restart: unless-stopped
     entrypoint:
       - /bin/bash
