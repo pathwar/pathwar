@@ -2,16 +2,16 @@ package pwagent
 
 import (
 	"context"
-	"net/http"
 	"time"
 
 	"github.com/docker/docker/client"
 	"go.uber.org/zap"
 	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/v2/go/pkg/pwapi"
 	"pathwar.land/v2/go/pkg/pwcompose"
 )
 
-func Daemon(ctx context.Context, cli *client.Client, apiClient *http.Client, opts Opts) error {
+func Daemon(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClient, opts Opts) error {
 	started := time.Now()
 
 	err := opts.applyDefaults()
@@ -56,17 +56,17 @@ func Daemon(ctx context.Context, cli *client.Client, apiClient *http.Client, opt
 	return nil
 }
 
-func runOnce(ctx context.Context, cli *client.Client, apiClient *http.Client, opts Opts) error {
-	instances, err := fetchAPIInstances(ctx, apiClient, opts.HTTPAPIAddr, opts.Name, opts.Logger)
+func runOnce(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClient, opts Opts) error {
+	instances, err := apiClient.AgentListInstances(&pwapi.AgentListInstances_Input{AgentName: opts.Name})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
 
-	if err := applyDockerConfig(ctx, instances, cli, opts); err != nil {
+	if err := applyDockerConfig(ctx, &instances, cli, opts); err != nil {
 		return errcode.TODO.Wrap(err)
 	}
 
-	if err := applyNginxConfig(ctx, instances, cli, opts); err != nil {
+	if err := applyNginxConfig(ctx, &instances, cli, opts); err != nil {
 		return errcode.TODO.Wrap(err)
 	}
 

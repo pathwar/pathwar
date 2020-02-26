@@ -1,7 +1,7 @@
 module pathwar.land/v2
 
 require (
-	github.com/Bearer/bearer-go v1.2.0
+	github.com/Bearer/bearer-go v1.2.1
 	github.com/Microsoft/go-winio v0.4.14 // indirect
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/bwmarrin/snowflake v0.3.0
@@ -19,6 +19,7 @@ require (
 	github.com/gogo/gateway v1.1.0
 	github.com/gogo/protobuf v1.3.1
 	github.com/golang/protobuf v1.3.2
+	github.com/google/go-querystring v1.0.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.1.0
 	github.com/grpc-ecosystem/grpc-gateway v1.12.1
 	github.com/jinzhu/gorm v1.9.11
@@ -49,15 +50,17 @@ require (
 	google.golang.org/grpc v1.26.0
 	gopkg.in/gormigrate.v1 v1.6.0
 	gopkg.in/yaml.v2 v2.2.7 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20191120175047-4206685974f2
-	moul.io/godev v1.3.0
+	gopkg.in/yaml.v3 v3.0.0-20200121175148-a6ecf24a6d71
+	moul.io/godev v1.5.0
 	moul.io/srand v1.4.0
 	moul.io/zapgorm v1.0.0
 )
 
 replace (
+	//github.com/Bearer/bearer-go => ../github.com/Bearer/bearer-go
 	github.com/golang/lint => golang.org/x/lint v0.0.0-20190409202823-959b441ac422
 	gopkg.in/jcmturner/rpc.v1 => gopkg.in/jcmturner/rpc.v1 v1.1.0
+	//moul.io/godev => ../moul.io/godev
 	sourcegraph.com/sourcegraph/go-diff => github.com/sourcegraph/go-diff v0.5.1
 )
 

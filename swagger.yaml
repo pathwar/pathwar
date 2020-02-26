@@ -33,6 +33,22 @@ definitions:
     - Unlisted
     - Public
     type: string
+  apiAdminPSOutput:
+    properties:
+      instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
+    type: object
+  apiAdminRedumpInput:
+    properties:
+      identifiers:
+        items:
+          type: string
+        type: array
+    type: object
+  apiAdminRedumpOutput:
+    type: object
   apiAgentListInstancesOutput:
     properties:
       instances:
@@ -46,6 +62,23 @@ definitions:
         items:
           $ref: '#/definitions/dbAgent'
         type: array
+    type: object
+  apiAgentRegisterInput:
+    properties:
+      arch:
+        type: string
+      hostname:
+        type: string
+      name:
+        type: string
+      os:
+        type: string
+      tags:
+        items:
+          type: string
+        type: array
+      version:
+        type: string
     type: object
   apiAgentRegisterOutput:
     properties:
@@ -1312,6 +1345,58 @@ info:
   title: Pathwar API
   version: "1.0"
 paths:
+  /admin/ps:
+    get:
+      operationId: AdminPS
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminPSOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/redump:
+    post:
+      operationId: AdminRedump
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminRedumpInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminRedumpOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
   /agent/list-instances:
     get:
       operationId: AgentListInstances
@@ -1343,6 +1428,12 @@ paths:
   /agent/register:
     post:
       operationId: AgentRegister
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAgentRegisterInput'
       responses:
         "200":
           description: A successful response.
