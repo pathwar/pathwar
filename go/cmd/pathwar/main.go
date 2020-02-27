@@ -14,6 +14,7 @@ import (
 	"os/signal"
 	"time"
 
+	bearer "github.com/Bearer/bearer-go"
 	"github.com/bwmarrin/snowflake"
 	"github.com/docker/docker/client"
 	_ "github.com/go-sql-driver/mysql" // required by gorm
@@ -65,6 +66,7 @@ var (
 	agentRunOnce             bool
 	agentSalt                string
 	apiDBURN                 string
+	bearerSecretKey          string
 	composeDownKeepVolumes   bool
 	composeDownRemoveImages  bool
 	composeDownWithNginx     bool
@@ -113,6 +115,7 @@ func main() {
 	)
 	globalFlags.SetOutput(flagOutput) // used in main_test.go
 	globalFlags.BoolVar(&globalDebug, "debug", false, "debug mode")
+	globalFlags.StringVar(&bearerSecretKey, "bearer-secretkey", "", "bearer.sh secret key")
 
 	agentFlags.BoolVar(&agentClean, "clean", false, "remove all pathwar instances before executing")
 	agentFlags.BoolVar(&agentRunOnce, "once", false, "run once and don't start daemon loop")
@@ -179,6 +182,7 @@ func main() {
 		Usage:     "pathwar [global flags] server [server flags] <subcommand> [flags] [args...]",
 		ShortHelp: "start a server (HTTP + gRPC)",
 		FlagSet:   serverFlags,
+		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -298,6 +302,7 @@ func main() {
 		Usage:       "pathwar [global flags] api [api flags] <subcommand> [flags] [args...]",
 		ShortHelp:   "manage the Pathwar API",
 		FlagSet:     apiFlags,
+		Options:     []ff.Option{ff.WithEnvVarNoPrefix()},
 		Subcommands: []*ffcli.Command{server, sqldump, sqlinfo},
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
@@ -321,6 +326,7 @@ func main() {
 		ShortHelp:   "misc contains advanced commands",
 		Subcommands: []*ffcli.Command{pwinitBinary},
 		FlagSet:     miscFlags,
+		Options:     []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
 
@@ -407,6 +413,7 @@ func main() {
 		ShortHelp:   "manage SSO tokens",
 		Subcommands: []*ffcli.Command{ssoLogout, ssoToken, ssoWhoami},
 		FlagSet:     ssoFlags,
+		Options:     []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
 
@@ -414,6 +421,7 @@ func main() {
 		Name:    "prepare",
 		Usage:   "pathwar [global flags] compose [compose flags] prepare [flags] PATH",
 		FlagSet: composePrepareFlags,
+		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec: func(args []string) error {
 			if len(args) < 1 {
 				return flag.ErrHelp
@@ -441,6 +449,7 @@ func main() {
 		Name:    "up",
 		Usage:   "pathwar [global flags] compose [compose flags] up [flags] PATH",
 		FlagSet: composeUpFlags,
+		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -482,6 +491,7 @@ func main() {
 		Name:    "down",
 		Usage:   "pathwar [global flags] compose [compose flags] down [flags] ID [ID...]",
 		FlagSet: composeDownFlags,
+		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -509,6 +519,7 @@ func main() {
 		Name:    "ps",
 		Usage:   "pathwar [global flags] compose [compose flags] ps [flags]",
 		FlagSet: composePSFlags,
+		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -530,6 +541,7 @@ func main() {
 		Subcommands: []*ffcli.Command{composePrepare, composeUp, composePS, composeDown},
 		ShortHelp:   "manage a challenge",
 		FlagSet:     composeFlags,
+		Options:     []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
 
@@ -538,6 +550,7 @@ func main() {
 		Usage:     "pathwar [global flags] agent [agent flags] <subcommand> [flags] [args...]",
 		ShortHelp: "manage an agent node (multiple challenges)",
 		FlagSet:   agentFlags,
+		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -577,8 +590,8 @@ func main() {
 		Usage:       "pathwar [global flags] <subcommand> [flags] [args...]",
 		FlagSet:     globalFlags,
 		LongHelp:    "More info here: https://github.com/pathwar/pathwar/wiki/CLI",
-		Options:     []ff.Option{ff.WithEnvVarPrefix("PATHWAR")},
 		Subcommands: []*ffcli.Command{api, compose, agent, sso, misc, version},
+		Options:     []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
 
@@ -655,6 +668,9 @@ func ssoFromFlags() (pwsso.Client, error) {
 
 func globalPreRun() error {
 	rand.Seed(srand.Secure())
+	if bearerSecretKey != "" {
+		bearer.ReplaceGlobals(bearer.Init(bearerSecretKey))
+	}
 	if globalDebug {
 		config := zap.NewDevelopmentConfig()
 		config.Level.SetLevel(zap.DebugLevel)
