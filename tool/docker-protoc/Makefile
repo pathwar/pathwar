@@ -1,5 +1,5 @@
 IMAGE ?= 	pathwar/protoc
-VERSION ?= 	4
+VERSION ?= 	5
 
 build:
 	docker build -t $(IMAGE):$(VERSION) .

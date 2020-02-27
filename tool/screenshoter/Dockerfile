@@ -1,5 +1,5 @@
-# Start from golang:1.13-alpine base image
-FROM golang:1.13-alpine
+# Start from golang:1.14-alpine base image
+FROM golang:1.14-alpine
 
 # The latest alpine images don't have some tools like (`git` and `bash`).
 # Adding git, bash and openssh to the image

@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  moul: moul/build@1.13.0        # https://github.com/moul/build
+  moul: moul/build@1.16.0        # https://github.com/moul/build
   retry: moul/retry@0.6.0        # https://github.com/moul/retry
   codecov: codecov/codecov@1.0.5
   docker: circleci/docker@0.5.13
@@ -22,7 +22,7 @@ jobs:
   go-build:
     working_directory: /go/src/pathwar.land
     docker:
-      - image: circleci/golang:1.13
+      - image: circleci/golang:1.14
     steps:
       - checkout:
           path: /go/src/pathwar.land
@@ -39,7 +39,7 @@ jobs:
   go-generate:
     working_directory: /go/src/pathwar.land
     docker:
-      - image: pathwar/protoc:4
+      - image: pathwar/protoc:5
     steps:
       - checkout
       - run: find . -name gen.sum -delete
