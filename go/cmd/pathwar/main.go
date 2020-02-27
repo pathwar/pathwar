@@ -25,6 +25,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"golang.org/x/oauth2"
+	"moul.io/godev"
 	"moul.io/srand"
 	"pathwar.land/v2/go/pkg/errcode"
 	"pathwar.land/v2/go/pkg/pwagent"
@@ -43,7 +44,8 @@ const (
 	defaultSSOClientSecret = ""
 	defaultDBURN           = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8&parseTime=true"
 	defaultDockerPrefix    = "pathwar/"
-	defaultTokenFile       = "pathwar_oauth_token.json"
+	defaultAgentTokenFile  = "pathwar_agent_oauth_token.json"
+	defaultAdminTokenFile  = "pathwar_admin_oauth_token.json"
 	defaultHTTPApiAddr     = "https://api-dev.pathwar.land"
 	defaultAgentName       = "localhost"
 )
@@ -112,6 +114,9 @@ func main() {
 		miscFlags           = flag.NewFlagSet("misc", flag.ExitOnError)
 		serverFlags         = flag.NewFlagSet("server", flag.ExitOnError)
 		ssoFlags            = flag.NewFlagSet("sso", flag.ExitOnError)
+		adminFlags          = flag.NewFlagSet("admin", flag.ExitOnError)
+		adminPSFlags        = flag.NewFlagSet("admin ps", flag.ExitOnError)
+		adminRedumpFlags    = flag.NewFlagSet("admin redump", flag.ExitOnError)
 	)
 	globalFlags.SetOutput(flagOutput) // used in main_test.go
 	globalFlags.BoolVar(&globalDebug, "debug", false, "debug mode")
@@ -124,7 +129,7 @@ func main() {
 	agentFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
 	agentFlags.StringVar(&ssoClientSecret, "sso-clientsecret", defaultSSOClientSecret, "SSO ClientSecret")
 	agentFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
-	agentFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultTokenFile, "Token file")
+	agentFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultAgentTokenFile, "Token file")
 	agentFlags.StringVar(&agentName, "agent-name", defaultAgentName, "Agent Name")
 	agentFlags.StringVar(&agentDomainSuffix, "nginx-domain-suffix", "local", "Domain suffix to append")
 	agentFlags.StringVar(&agentNginxDockerImage, "docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
@@ -133,6 +138,9 @@ func main() {
 	agentFlags.StringVar(&agentHostPort, "port", "8000", "HTTP listening port")
 	agentFlags.StringVar(&agentModeratorPassword, "moderator-password", "", "Challenge moderator password")
 	agentFlags.StringVar(&agentSalt, "salt", "", "salt used to generate secure hashes (random if empty)")
+
+	adminFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
+	adminFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultAdminTokenFile, "Token file")
 
 	apiFlags.BoolVar(&ssoAllowUnsafe, "sso-unsafe", false, "Allow unsafe SSO")
 	apiFlags.StringVar(&apiDBURN, "urn", defaultDBURN, "MySQL URN")
@@ -177,372 +185,412 @@ func main() {
 		},
 	}
 
-	server := &ffcli.Command{
-		Name:      "server",
-		Usage:     "pathwar [global flags] server [server flags] <subcommand> [flags] [args...]",
-		ShortHelp: "start a server (HTTP + gRPC)",
-		FlagSet:   serverFlags,
-		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec: func(args []string) error {
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-
-			// init svc
-			svc, _, _, closer, err := svcFromFlags()
-			if err != nil {
-				return errcode.ErrStartService.Wrap(err)
-			}
-			defer closer()
-
-			var (
-				ctx    = context.Background()
-				g      run.Group
-				server *pwapi.Server
-			)
-			{ // server
-				opts := pwapi.ServerOpts{
-					Logger:             logger.Named("server"),
-					Bind:               serverBind,
-					CORSAllowedOrigins: serverCORSAllowedOrigins,
-					RequestTimeout:     serverRequestTimeout,
-					ShutdownTimeout:    serverShutdownTimeout,
-					WithPprof:          serverWithPprof,
-				}
-				var err error
-				server, err = pwapi.NewServer(ctx, svc, opts)
-				if err != nil {
-					return errcode.ErrInitServer.Wrap(err)
-				}
-				g.Add(
-					server.Run,
-					func(error) { server.Close() },
-				)
-			}
-			{ // signal handling and cancellation
-				ctx, cancel := context.WithCancel(ctx)
-				g.Add(func() error {
-					sigch := make(chan os.Signal, 1)
-					signal.Notify(sigch, os.Interrupt)
-					select {
-					case <-sigch:
-					case <-ctx.Done():
-					}
-					return nil
-				}, func(error) {
-					cancel()
-				})
-			}
-
-			logger.Info("server started",
-				zap.String("bind", server.ListenerAddr()),
-			)
-
-			if err := g.Run(); err != nil {
-				return errcode.ErrGroupTerminated.Wrap(err)
-			}
-			return nil
-		},
-	}
-
-	sqldump := &ffcli.Command{
-		Name:  "sqldump",
-		Usage: "pathwar [global flags] api [api flags] sqldump",
-		Exec: func([]string) error {
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-
-			// init svc
-			_, db, _, closer, err := svcFromFlags()
-			if err != nil {
-				return errcode.ErrStartService.Wrap(err)
-			}
-			defer closer()
-
-			dump, err := pwdb.GetDump(db)
-			if err != nil {
-				return errcode.ErrDumpDatabase.Wrap(err)
-			}
-
-			out, _ := json.MarshalIndent(dump, "", "  ")
-			fmt.Println(string(out))
-			return nil
-		},
-	}
-
-	sqlinfo := &ffcli.Command{
-		Name:  "sqlinfo",
-		Usage: "pathwar [global flags] api [api flags] sqlinfo",
-		Exec: func([]string) error {
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-
-			// init svc
-			_, db, _, closer, err := svcFromFlags()
-			if err != nil {
-				return errcode.ErrStartService.Wrap(err)
-			}
-			defer closer()
-
-			info, err := pwdb.GetInfo(db, logger)
-			if err != nil {
-				return errcode.ErrGetDBInfo.Wrap(err)
-			}
-
-			out, _ := json.MarshalIndent(info, "", "  ")
-			fmt.Println(string(out))
-			return nil
-		},
-	}
-
 	api := &ffcli.Command{
-		Name:        "api",
-		Usage:       "pathwar [global flags] api [api flags] <subcommand> [flags] [args...]",
-		ShortHelp:   "manage the Pathwar API",
-		FlagSet:     apiFlags,
-		Options:     []ff.Option{ff.WithEnvVarNoPrefix()},
-		Subcommands: []*ffcli.Command{server, sqldump, sqlinfo},
-		Exec:        func([]string) error { return flag.ErrHelp },
-	}
+		Name:      "api",
+		Usage:     "pathwar [global flags] api [api flags] <subcommand> [flags] [args...]",
+		ShortHelp: "manage the Pathwar API",
+		FlagSet:   apiFlags,
+		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
+		Subcommands: []*ffcli.Command{{
+			Name:      "server",
+			Usage:     "pathwar [global flags] server [server flags] <subcommand> [flags] [args...]",
+			ShortHelp: "start a server (HTTP + gRPC)",
+			FlagSet:   serverFlags,
+			Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
 
-	pwinitBinary := &ffcli.Command{
-		Name:  "pwinit-binary",
-		Usage: "pathwar [global flags] misc [misc flags] pwinit-binary",
-		Exec: func([]string) error {
-			binary, err := pwinit.Binary()
-			if err != nil {
-				return err
-			}
-			os.Stdout.Write(binary)
-			return nil
-		},
+				// init svc
+				svc, _, _, closer, err := svcFromFlags()
+				if err != nil {
+					return errcode.ErrStartService.Wrap(err)
+				}
+				defer closer()
+
+				var (
+					ctx    = context.Background()
+					g      run.Group
+					server *pwapi.Server
+				)
+				{ // server
+					opts := pwapi.ServerOpts{
+						Logger:             logger.Named("server"),
+						Bind:               serverBind,
+						CORSAllowedOrigins: serverCORSAllowedOrigins,
+						RequestTimeout:     serverRequestTimeout,
+						ShutdownTimeout:    serverShutdownTimeout,
+						WithPprof:          serverWithPprof,
+					}
+					var err error
+					server, err = pwapi.NewServer(ctx, svc, opts)
+					if err != nil {
+						return errcode.ErrInitServer.Wrap(err)
+					}
+					g.Add(
+						server.Run,
+						func(error) { server.Close() },
+					)
+				}
+				{ // signal handling and cancellation
+					ctx, cancel := context.WithCancel(ctx)
+					g.Add(func() error {
+						sigch := make(chan os.Signal, 1)
+						signal.Notify(sigch, os.Interrupt)
+						select {
+						case <-sigch:
+						case <-ctx.Done():
+						}
+						return nil
+					}, func(error) {
+						cancel()
+					})
+				}
+
+				logger.Info("server started",
+					zap.String("bind", server.ListenerAddr()),
+				)
+
+				if err := g.Run(); err != nil {
+					return errcode.ErrGroupTerminated.Wrap(err)
+				}
+				return nil
+			},
+		}, {
+			Name:  "sqlinfo",
+			Usage: "pathwar [global flags] api [api flags] sqlinfo",
+			Exec: func([]string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				// init svc
+				_, db, _, closer, err := svcFromFlags()
+				if err != nil {
+					return errcode.ErrStartService.Wrap(err)
+				}
+				defer closer()
+
+				info, err := pwdb.GetInfo(db, logger)
+				if err != nil {
+					return errcode.ErrGetDBInfo.Wrap(err)
+				}
+
+				out, _ := json.MarshalIndent(info, "", "  ")
+				fmt.Println(string(out))
+				return nil
+			},
+		}, {
+			Name:  "sqldump",
+			Usage: "pathwar [global flags] api [api flags] sqldump",
+			Exec: func([]string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				// init svc
+				_, db, _, closer, err := svcFromFlags()
+				if err != nil {
+					return errcode.ErrStartService.Wrap(err)
+				}
+				defer closer()
+
+				dump, err := pwdb.GetDump(db)
+				if err != nil {
+					return errcode.ErrDumpDatabase.Wrap(err)
+				}
+
+				out, _ := json.MarshalIndent(dump, "", "  ")
+				fmt.Println(string(out))
+				return nil
+			},
+		}},
+		Exec: func([]string) error { return flag.ErrHelp },
 	}
 
 	misc := &ffcli.Command{
-		Name:        "misc",
-		Usage:       "pathwar [global flags] misc [misc flags] <subcommand> [flags] [args...]",
-		ShortHelp:   "misc contains advanced commands",
-		Subcommands: []*ffcli.Command{pwinitBinary},
-		FlagSet:     miscFlags,
-		Options:     []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec:        func([]string) error { return flag.ErrHelp },
-	}
-
-	ssoWhoami := &ffcli.Command{
-		Name:  "whoami",
-		Usage: "pathwar [global flags] sso [sso flags] whoami TOKEN",
-		Exec: func(args []string) error {
-			if len(args) < 1 {
-				return flag.ErrHelp
-			}
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-			sso, err := ssoFromFlags()
-			if err != nil {
-				return errcode.ErrGetSSOClientFromFlags.Wrap(err)
-			}
-
-			// whoami
-			info, err := sso.Whoami(args[0])
-			if err != nil {
-				return errcode.ErrGetSSOWhoami.Wrap(err)
-			}
-			for k, v := range info {
-				fmt.Printf("- %s: %v\n", k, v)
-			}
-			return nil
-		},
-	}
-
-	ssoLogout := &ffcli.Command{
-		Name:  "logout",
-		Usage: "pathwar [global flags] sso [sso flags] logout TOKEN",
-		Exec: func(args []string) error {
-			if len(args) < 1 {
-				return flag.ErrHelp
-			}
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-			sso, err := ssoFromFlags()
-			if err != nil {
-				return errcode.ErrGetSSOClientFromFlags.Wrap(err)
-			}
-
-			// logout
-			if err := sso.Logout(args[0]); err != nil {
-				return errcode.ErrGetSSOLogout.Wrap(err)
-			}
-			return nil
-		},
-	}
-
-	ssoToken := &ffcli.Command{
-		Name:  "token",
-		Usage: "pathwar [global flags] sso [sso flags] token TOKEN",
-		Exec: func(args []string) error {
-			if len(args) < 1 {
-				return flag.ErrHelp
-			}
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-			sso, err := ssoFromFlags()
-			if err != nil {
-				return errcode.ErrGetSSOClientFromFlags.Wrap(err)
-			}
-
-			// token
-			token, _, err := sso.TokenWithClaims(args[0])
-			if err != nil {
-				return errcode.ErrGetSSOClaims.Wrap(err)
-			}
-			out, _ := json.MarshalIndent(token, "", "  ")
-			fmt.Println(string(out))
-
-			return nil
-		},
+		Name:      "misc",
+		Usage:     "pathwar [global flags] misc [misc flags] <subcommand> [flags] [args...]",
+		ShortHelp: "misc contains advanced commands",
+		Subcommands: []*ffcli.Command{{
+			Name:  "pwinit-binary",
+			Usage: "pathwar [global flags] misc [misc flags] pwinit-binary",
+			Exec: func([]string) error {
+				binary, err := pwinit.Binary()
+				if err != nil {
+					return err
+				}
+				os.Stdout.Write(binary)
+				return nil
+			},
+		}},
+		FlagSet: miscFlags,
+		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
+		Exec:    func([]string) error { return flag.ErrHelp },
 	}
 
 	sso := &ffcli.Command{
-		Name:        "sso",
-		Usage:       "pathwar [global flags] sso [sso flags] <subcommand> [flags] [args...]",
-		ShortHelp:   "manage SSO tokens",
-		Subcommands: []*ffcli.Command{ssoLogout, ssoToken, ssoWhoami},
-		FlagSet:     ssoFlags,
-		Options:     []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec:        func([]string) error { return flag.ErrHelp },
-	}
+		Name:      "sso",
+		Usage:     "pathwar [global flags] sso [sso flags] <subcommand> [flags] [args...]",
+		ShortHelp: "manage SSO tokens",
+		Subcommands: []*ffcli.Command{{
+			Name:  "token",
+			Usage: "pathwar [global flags] sso [sso flags] token TOKEN",
+			Exec: func(args []string) error {
+				if len(args) < 1 {
+					return flag.ErrHelp
+				}
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+				sso, err := ssoFromFlags()
+				if err != nil {
+					return errcode.ErrGetSSOClientFromFlags.Wrap(err)
+				}
 
-	composePrepare := &ffcli.Command{
-		Name:    "prepare",
-		Usage:   "pathwar [global flags] compose [compose flags] prepare [flags] PATH",
-		FlagSet: composePrepareFlags,
+				// token
+				token, _, err := sso.TokenWithClaims(args[0])
+				if err != nil {
+					return errcode.ErrGetSSOClaims.Wrap(err)
+				}
+				out, _ := json.MarshalIndent(token, "", "  ")
+				fmt.Println(string(out))
+
+				return nil
+			},
+		}, {
+			Name:  "logout",
+			Usage: "pathwar [global flags] sso [sso flags] logout TOKEN",
+			Exec: func(args []string) error {
+				if len(args) < 1 {
+					return flag.ErrHelp
+				}
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+				sso, err := ssoFromFlags()
+				if err != nil {
+					return errcode.ErrGetSSOClientFromFlags.Wrap(err)
+				}
+
+				// logout
+				if err := sso.Logout(args[0]); err != nil {
+					return errcode.ErrGetSSOLogout.Wrap(err)
+				}
+				return nil
+			},
+		}, {
+			Name:  "whoami",
+			Usage: "pathwar [global flags] sso [sso flags] whoami TOKEN",
+			Exec: func(args []string) error {
+				if len(args) < 1 {
+					return flag.ErrHelp
+				}
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+				sso, err := ssoFromFlags()
+				if err != nil {
+					return errcode.ErrGetSSOClientFromFlags.Wrap(err)
+				}
+
+				// whoami
+				info, err := sso.Whoami(args[0])
+				if err != nil {
+					return errcode.ErrGetSSOWhoami.Wrap(err)
+				}
+				for k, v := range info {
+					fmt.Printf("- %s: %v\n", k, v)
+				}
+				return nil
+			},
+		}},
+		FlagSet: ssoFlags,
 		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec: func(args []string) error {
-			if len(args) < 1 {
-				return flag.ErrHelp
-			}
-			path := args[0]
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-
-			preparedComposeData, err := pwcompose.Prepare(
-				path,
-				composePreparePrefix,
-				composePrepareNoPush,
-				composePrepareVersion,
-				logger,
-			)
-
-			fmt.Println(preparedComposeData)
-
-			return err
-		},
-	}
-
-	composeUp := &ffcli.Command{
-		Name:    "up",
-		Usage:   "pathwar [global flags] compose [compose flags] up [flags] PATH",
-		FlagSet: composeUpFlags,
-		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec: func(args []string) error {
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-			if len(args) < 1 {
-				return flag.ErrHelp
-			}
-
-			path := args[0]
-			f, err := os.Open(path)
-			if err != nil {
-				return err
-			}
-			preparedCompose, err := ioutil.ReadAll(f)
-			if err != nil {
-				return err
-			}
-
-			ctx := context.Background()
-			cli, err := client.NewEnvClient()
-			if err != nil {
-				return errcode.ErrInitDockerClient.Wrap(err)
-			}
-
-			services, err := pwcompose.Up(ctx, string(preparedCompose), composeUpInstanceKey, composeUpForceRecreate, "", nil, cli, logger)
-			if err != nil {
-				return err
-			}
-
-			for _, service := range services {
-				fmt.Println(service.ContainerName)
-			}
-
-			return nil
-		},
-	}
-
-	composeDown := &ffcli.Command{
-		Name:    "down",
-		Usage:   "pathwar [global flags] compose [compose flags] down [flags] ID [ID...]",
-		FlagSet: composeDownFlags,
-		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec: func(args []string) error {
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-
-			ctx := context.Background()
-			cli, err := client.NewEnvClient()
-			if err != nil {
-				return errcode.ErrInitDockerClient.Wrap(err)
-			}
-
-			return pwcompose.Clean(
-				ctx,
-				args,
-				composeDownRemoveImages,
-				!composeDownKeepVolumes,
-				composeDownWithNginx,
-				cli,
-				logger,
-			)
-		},
-	}
-
-	composePS := &ffcli.Command{
-		Name:    "ps",
-		Usage:   "pathwar [global flags] compose [compose flags] ps [flags]",
-		FlagSet: composePSFlags,
-		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec: func(args []string) error {
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-
-			ctx := context.Background()
-			cli, err := client.NewEnvClient()
-			if err != nil {
-				return errcode.ErrInitDockerClient.Wrap(err)
-			}
-
-			return pwcompose.PS(ctx, composePSDepth, cli, logger)
-		},
+		Exec:    func([]string) error { return flag.ErrHelp },
 	}
 
 	compose := &ffcli.Command{
-		Name:        "compose",
-		Usage:       "pathwar [global flags] compose [compose flags] <subcommand> [flags] [args...]",
-		Subcommands: []*ffcli.Command{composePrepare, composeUp, composePS, composeDown},
-		ShortHelp:   "manage a challenge",
-		FlagSet:     composeFlags,
-		Options:     []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec:        func([]string) error { return flag.ErrHelp },
+		Name:  "compose",
+		Usage: "pathwar [global flags] compose [compose flags] <subcommand> [flags] [args...]",
+		Subcommands: []*ffcli.Command{{
+			Name:    "up",
+			Usage:   "pathwar [global flags] compose [compose flags] up [flags] PATH",
+			FlagSet: composeUpFlags,
+			Options: []ff.Option{ff.WithEnvVarNoPrefix()},
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+				if len(args) < 1 {
+					return flag.ErrHelp
+				}
+
+				path := args[0]
+				f, err := os.Open(path)
+				if err != nil {
+					return err
+				}
+				preparedCompose, err := ioutil.ReadAll(f)
+				if err != nil {
+					return err
+				}
+
+				ctx := context.Background()
+				cli, err := client.NewEnvClient()
+				if err != nil {
+					return errcode.ErrInitDockerClient.Wrap(err)
+				}
+
+				services, err := pwcompose.Up(ctx, string(preparedCompose), composeUpInstanceKey, composeUpForceRecreate, "", nil, cli, logger)
+				if err != nil {
+					return err
+				}
+
+				for _, service := range services {
+					fmt.Println(service.ContainerName)
+				}
+
+				return nil
+			},
+		}, {
+			Name:    "prepare",
+			Usage:   "pathwar [global flags] compose [compose flags] prepare [flags] PATH",
+			FlagSet: composePrepareFlags,
+			Options: []ff.Option{ff.WithEnvVarNoPrefix()},
+			Exec: func(args []string) error {
+				if len(args) < 1 {
+					return flag.ErrHelp
+				}
+				path := args[0]
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				preparedComposeData, err := pwcompose.Prepare(
+					path,
+					composePreparePrefix,
+					composePrepareNoPush,
+					composePrepareVersion,
+					logger,
+				)
+
+				fmt.Println(preparedComposeData)
+
+				return err
+			},
+		}, {
+			Name:    "ps",
+			Usage:   "pathwar [global flags] compose [compose flags] ps [flags]",
+			FlagSet: composePSFlags,
+			Options: []ff.Option{ff.WithEnvVarNoPrefix()},
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				ctx := context.Background()
+				cli, err := client.NewEnvClient()
+				if err != nil {
+					return errcode.ErrInitDockerClient.Wrap(err)
+				}
+
+				return pwcompose.PS(ctx, composePSDepth, cli, logger)
+			},
+		}, {
+			Name:    "down",
+			Usage:   "pathwar [global flags] compose [compose flags] down [flags] ID [ID...]",
+			FlagSet: composeDownFlags,
+			Options: []ff.Option{ff.WithEnvVarNoPrefix()},
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				ctx := context.Background()
+				cli, err := client.NewEnvClient()
+				if err != nil {
+					return errcode.ErrInitDockerClient.Wrap(err)
+				}
+
+				return pwcompose.Clean(
+					ctx,
+					args,
+					composeDownRemoveImages,
+					!composeDownKeepVolumes,
+					composeDownWithNginx,
+					cli,
+					logger,
+				)
+			},
+		}},
+		ShortHelp: "manage a challenge",
+		FlagSet:   composeFlags,
+		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
+		Exec:      func([]string) error { return flag.ErrHelp },
+	}
+
+	admin := &ffcli.Command{
+		Name:  "admin",
+		Usage: "pathwar [global flags] admin [admin flags] <subcommand> [flags] [args...]",
+		Subcommands: []*ffcli.Command{{
+			Name:    "ps",
+			Usage:   "pathwar [global flags] admin [admin flags] ps [flags]",
+			FlagSet: adminPSFlags,
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				ctx := context.Background()
+				apiClient, err := httpClientFromEnv(ctx)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				ret, err := apiClient.AdminPS(&pwapi.AdminPS_Input{})
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			},
+		}, {
+			Name:    "redump",
+			Usage:   "pathwar [global flags] admin [admin flags] redump [flags] ID...",
+			FlagSet: adminRedumpFlags,
+			Exec: func(args []string) error {
+				if len(args) < 1 {
+					return flag.ErrHelp
+				}
+
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				ctx := context.Background()
+				apiClient, err := httpClientFromEnv(ctx)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				_, err = apiClient.AdminRedump(&pwapi.AdminRedump_Input{
+					Identifiers: args,
+				})
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				fmt.Println("OK")
+
+				return nil
+			},
+		}},
+		ShortHelp: "admin commands",
+		FlagSet:   adminFlags,
+		Exec:      func([]string) error { return flag.ErrHelp },
 	}
 
 	agent := &ffcli.Command{
@@ -561,7 +609,7 @@ func main() {
 				return errcode.ErrInitDockerClient.Wrap(err)
 			}
 
-			apiClient, err := oauthClientFromEnv(ctx)
+			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
 			}
@@ -577,7 +625,6 @@ func main() {
 				Cleanup:           agentClean,
 				RunOnce:           agentRunOnce,
 				LoopDelay:         agentLoopDelay,
-				HTTPAPIAddr:       httpAPIAddr,
 				Name:              agentName,
 				Logger:            logger,
 			}
@@ -590,7 +637,7 @@ func main() {
 		Usage:       "pathwar [global flags] <subcommand> [flags] [args...]",
 		FlagSet:     globalFlags,
 		LongHelp:    "More info here: https://github.com/pathwar/pathwar/wiki/CLI",
-		Subcommands: []*ffcli.Command{api, compose, agent, sso, misc, version},
+		Subcommands: []*ffcli.Command{api, compose, agent, sso, misc, version, admin},
 		Options:     []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
@@ -695,7 +742,7 @@ func globalPreRun() error {
 	return nil
 }
 
-func oauthClientFromEnv(ctx context.Context) (*http.Client, error) {
+func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 	ctx = context.WithValue(ctx, oauth2.HTTPClient, &http.Client{Timeout: 5 * time.Second})
 
 	conf := &oauth2.Config{
@@ -745,5 +792,5 @@ func oauthClientFromEnv(ctx context.Context) (*http.Client, error) {
 		return nil, err
 	}
 
-	return oauth2.NewClient(ctx, ts), nil
+	return pwapi.NewHTTPClient(oauth2.NewClient(ctx, ts), httpAPIAddr), nil
 }

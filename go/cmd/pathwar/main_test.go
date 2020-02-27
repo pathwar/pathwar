@@ -19,6 +19,7 @@ func Example() {
 	//   sso      manage SSO tokens
 	//   misc     misc contains advanced commands
 	//   version  show version
+	//   admin    admin commands
 	//
 	// FLAGS
 	//   -bearer-secretkey ...  bearer.sh secret key

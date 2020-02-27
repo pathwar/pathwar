@@ -18,7 +18,6 @@ type Opts struct {
 	Cleanup           bool
 	RunOnce           bool
 	LoopDelay         time.Duration
-	HTTPAPIAddr       string
 	Name              string
 
 	Logger *zap.Logger
