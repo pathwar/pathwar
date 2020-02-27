@@ -21,5 +21,6 @@ func Example() {
 	//   version  show version
 	//
 	// FLAGS
-	//   -debug false  debug mode
+	//   -bearer-secretkey ...  bearer.sh secret key
+	//   -debug false           debug mode
 }

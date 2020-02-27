@@ -1,6 +1,7 @@
 module pathwar.land/v2
 
 require (
+	github.com/Bearer/bearer-go v1.2.0
 	github.com/Microsoft/go-winio v0.4.14 // indirect
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/bwmarrin/snowflake v0.3.0
