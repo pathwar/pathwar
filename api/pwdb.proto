@@ -20,10 +20,10 @@ message Challenge {
   string name = 100;
   string description = 101;
   string author = 102;
-  string locale = 105;
-  bool is_draft = 106;
-  string preview_url = 107;
-  string homepage = 108;
+  string locale = 103;
+  bool is_draft = 104;
+  string preview_url = 105;
+  string homepage = 106;
   // AuthorProfile
   // repeated string tags = ;
 

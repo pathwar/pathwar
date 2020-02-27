@@ -42,6 +42,12 @@ func (c HTTPClient) AdminPS(input *AdminPS_Input) (AdminPS_Output, error) {
 	return result, err
 }
 
+func (c HTTPClient) AdminAddChallenge(input *AdminChallengeAdd_Input) (AdminChallengeAdd_Output, error) {
+	var result AdminChallengeAdd_Output
+	err := c.doPost("/admin/add-challenge", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) doPost(path string, input, output proto.Message) error {
 	marshaler := jsonpb.Marshaler{}
 	inputString, err := marshaler.MarshalToString(input)
