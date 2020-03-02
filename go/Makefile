@@ -1,10 +1,12 @@
 ## moul/rules.mk
 GOPATH ?= $(HOME)/go
-GOPKG =		pathwar.land/go
-GOBINS =	./cmd/pathwar ./cmd/pwchallenge
-DOCKER_IMAGE =	pathwar/pathwar
+GOMOD_DIR = ..
+GOPKG =	pathwar.land
+GOBINS = ./cmd/pathwar ./cmd/pwinit
+DOCKER_IMAGE =pathwar/pathwar
+DOCKERFILE_PATH = ../Dockerfile
 
-GO_INSTALL_OPTS = -v -ldflags "-s -w -X pathwar.land/go/pkg/pwversion.Version=`git describe --tags --abbrev` -X pathwar.land/go/pkg/pwversion.Commit=`git rev-parse HEAD` -X pathwar.land/go/pkg/pwversion.Date=`date +%s` -X pathwar.land/go/pkg/pwversion.BuiltBy=makefile"
+GO_INSTALL_OPTS = -v -ldflags "-s -w -X pathwar.land/v2/go/pkg/pwversion.Version=`git describe --tags --abbrev` -X pathwar.land/go/pkg/pwversion.Commit=`git rev-parse HEAD` -X pathwar.land/go/pkg/pwversion.Date=`date +%s` -X pathwar.land/go/pkg/pwversion.BuiltBy=makefile"
 PRE_INSTALL_STEPS += generate
 PRE_UNITTEST_STEPS += generate
 PRE_TEST_STEPS += generate
@@ -12,16 +14,16 @@ PRE_BUILD_STEPS += generate
 PRE_LINT_STEPS += generate
 PRE_TIDY_STEPS += generate
 PRE_BUMPDEPS_STEPS += generate
-PRE_INSTALL_STEPS += ./out/pwchallenge-linux-amd64
+PRE_INSTALL_STEPS += ./out/pwinit-linux-amd64
 
 COMPOSE_OPTS = -f docker-compose.yml -f docker-compose.dev.yml
 include ../rules.mk  # see https://github.com/moul/rules.mk
 ##
 
-.PHONY: ./out/pwchallenge-linux-amd64
-./out/pwchallenge-linux-amd64:
+.PHONY: ./out/pwinit-linux-amd64
+./out/pwinit-linux-amd64:
 	mkdir -p out
-	GOOS=linux GOARCH=amd64 $(GO) build -mod=readonly -o $@ ./cmd/pwchallenge
+	GOOS=linux GOARCH=amd64 $(GO) build -mod=readonly -o $@ ./cmd/pwinit
 
 ##
 ## mysql
@@ -35,7 +37,7 @@ up:
 
 .PHONY: run
 run: install mysql.up
-	pathwar --debug engine --sso-unsafe server --with-pprof
+	pathwar --debug api --sso-unsafe server --with-pprof
 
 .PHONY: mysql.up
 mysql.up:
@@ -74,9 +76,9 @@ GEN_SRC := $(PROTOS_SRC) Makefile
 .PHONY: generate
 generate: gen.sum
 gen.sum: $(GEN_SRC)
-	shasum $(GEN_SRC) | sort > gen.sum.tmp
-	diff -q gen.sum gen.sum.tmp || ( \
-	  set -e; \
+	@shasum $(GEN_SRC) | sort > gen.sum.tmp
+	@diff -q gen.sum gen.sum.tmp || ( \
+	  set -xe; \
 	  GO111MODULE=on go mod vendor; \
 	  docker run \
 	    --user=`id -u` \
@@ -84,7 +86,7 @@ gen.sum: $(GEN_SRC)
 	    --workdir="/go/src/pathwar.land/go" \
 	    --entrypoint="sh" \
 	    --rm \
-	    pathwar/protoc:4 \
+	    pathwar/protoc:5 \
 	    -xec 'make generate_local'; \
 	    make tidy \
 	)
@@ -92,8 +94,11 @@ gen.sum: $(GEN_SRC)
 .PHONY: generate_local
 generate_local:
 	@set -e; for proto in $(PROTOS_SRC); do ( set -xe; \
-	  protoc -I ../go/vendor/github.com/grpc-ecosystem/grpc-gateway:../api:../go/vendor:/protobuf --grpc-gateway_out=logtostderr=true:"$(GOPATH)/src" --gogofaster_out="plugins=grpc:$(GOPATH)/src" "$$proto" \
+	  protoc -I ../vendor/github.com/grpc-ecosystem/grpc-gateway:../api:../vendor:/protobuf --grpc-gateway_out=logtostderr=true:"$(GOPATH)/src" --gogofaster_out="plugins=grpc:$(GOPATH)/src" "$$proto" \
 	); done
+	@### custom
+	sed -i s@pathwar.land/go/pkg@pathwar.land/v2/go/pkg@ ./pkg/*/*.pb.go
+	@### end of custom
 	goimports -w ./pkg ./cmd ./internal
 	shasum $(GEN_SRC) | sort > gen.sum.tmp
 	mv gen.sum.tmp gen.sum

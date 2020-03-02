@@ -1,4 +1,4 @@
-package randstring // import "pathwar.land/go/internal/randstring"
+package randstring // import "pathwar.land/v2/go/internal/randstring"
 
 import "math/rand"
 

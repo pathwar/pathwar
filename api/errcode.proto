@@ -1,0 +1,212 @@
+syntax = "proto3";
+package pathwar.errcode;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option go_package = "pathwar.land/go/pkg/errcode";
+option (gogoproto.goproto_enum_prefix_all) = false;
+
+enum ErrCode {
+  Undefined = 0;
+
+  TODO = 666; // indicates that you plan to write a custom error code later
+  ErrNotImplemented = 777;
+  ErrDeprecated = 888;
+  ErrInternal = 999; // can be used to translate an "unknown" error (without Code), i.e., in gRPC
+
+  //// generic helpers
+
+  ErrInvalidInput = 101;
+  ErrMissingInput = 102;
+  ErrUnauthenticated = 103;
+
+  //// Pathwar SSO (starting at 1001)
+
+  ErrSSOGetOIDC = 1001;
+  ErrSSOInvalidPublicKey = 1002;
+  ErrSSOFailedKeycloakRequest = 1003;
+  ErrSSOInvalidKeycloakResponse = 1004;
+  ErrSSOLogout = 1005;
+  ErrSSOInitKeycloakClient = 1006;
+  ErrSSOInvalidBearer = 1007;
+  ErrSSOKeycloakError = 1008;
+
+  //// Pathwar DB (starting at 2001)
+
+  ErrDBNotFound = 2001;
+  ErrDBInternal = 2002;
+  ErrDBRunMigrations = 2003;
+  ErrDBInit = 2004;
+  ErrDBConnect = 2005;
+  ErrDBAutoMigrate = 2006;
+  ErrDBAddForeignKey = 2007;
+
+  //// Pathwar Compose (starting at 3001)
+
+  ErrComposeInvalidPath = 3001;
+  ErrComposeDirectoryNotFound = 3002;
+  ErrComposeReadConfig = 3003;
+  ErrComposeInvalidConfig = 3004;
+  ErrComposeMarshalConfig = 3005;
+  ErrComposeCreateTempFile = 3006;
+  ErrComposeWriteTempFile = 3007;
+  ErrComposeCloseTempFile = 3008;
+  ErrComposeBuild = 3009;
+  ErrComposeBundle = 30010;
+  ErrComposeReadDab = 3011;
+  ErrComposeParseDab = 3012;
+  ErrComposeParseConfig = 3013;
+  ErrComposeCreateTempDir = 3014;
+  ErrComposeUpdateTempFile = 3015;
+  ErrComposeForceRecreateDown  = 3016;
+  ErrComposeRunCreate = 3017;
+  ErrComposeRunUp = 3018;
+  ErrGetPWInitBinary = 3019;
+  ErrWritePWInitFileHeader = 3020;
+  ErrWritePWInitFile = 3021;
+  ErrMarshalPWInitConfigFile = 3022;
+  ErrWritePWInitConfigFileHeader = 3023;
+  ErrWritePWInitConfigFile = 3024;
+  ErrWritePWInitCloseTarWriter = 3025;
+  ErrCopyPWInitToContainer = 3026;
+  ErrComposeGetContainersInfo = 3027;
+  ErrMissingPwinitConfig = 3028;
+
+  //// Pathwar API (starting at 4001)
+
+  ErrGetUserIDFromContext = 4001;
+  ErrMissingChallengeValidation = 4002;
+  ErrInvalidSeason = 4003;
+  ErrTeamNotInSeason = 4004;
+  ErrGetChallengeSubscription = 4005;
+  ErrInitSnowflake = 4006;
+  ErrUpdateChallengeSubscription = 4007;
+  ErrCreateChallengeValidation = 4008;
+  ErrGetChallengeValidation = 4009;
+  ErrInvalidTeam = 4010;
+  ErrChallengeAlreadySubscribed = 4011;
+  ErrCreateChallengeSubscription = 4012;
+  ErrFindOrganizations = 4013;
+  ErrGetSeasonFromSeasonChallenge = 4014;
+  ErrGetUserTeamFromSeason = 4015;
+  ErrInvalidSeasonID = 4016;
+  ErrUserHasNoTeamForSeason = 4017;
+  ErrGetSeasonChallenges = 4018;
+  ErrGetSeason = 4019;
+  ErrSeasonDenied = 4020;
+  ErrAlreadyHasTeamForSeason = 4021;
+  ErrReservedName = 4022;
+  ErrCheckOrganizationUniqueName = 4023;
+  ErrCreateOrganization = 4024;
+  ErrOrganizationAlreadyHasTeamForSeason = 4025;
+  ErrGetOrganization = 4026;
+  ErrGetSeasonChallenge = 4027;
+  ErrCannotCreateTeamForSoloOrganization = 4028;
+  ErrUserNotInOrganization = 4029;
+  ErrCreateTeam = 4030;
+  ErrGetTeam = 4031;
+  ErrGetTeams = 4032;
+  ErrGetUser = 4033;
+  ErrUpdateUser = 4034;
+  ErrUpdateTeam = 4035;
+  ErrUpdateOrganization = 4036;
+  ErrNewUserFromClaims = 4037;
+  ErrGetOAuthUser = 4038;
+  ErrDifferentUserBetweenTokenAndDatabase = 4039;
+  ErrLoadUserSeasons = 4040;
+  ErrGetUserOrganizations = 4041;
+  ErrGetSeasons = 4042;
+  ErrGetUserBySubject = 4043;
+  ErrEmailAddressNotVerified = 4044;
+  ErrGetDefaultSeason = 4045;
+  ErrCommitUserTransaction = 4046;
+  ErrUpdateActiveSeason = 4047;
+  ErrMissingContextMetadata = 4048;
+  ErrNoTokenProvided = 4049;
+  ErrGetTokenWithClaims = 4050;
+  ErrNoTokenInContext = 4051;
+  ErrGetSubjectFromToken = 4052;
+  ErrGetSubjectFromContext = 4053;
+  ErrGetActiveSeasonMembership = 4054;
+  ErrGetTokenFromContext = 4055;
+  ErrChallengeAlreadyClosed = 4056;
+  ErrGetAgent = 4057;
+  ErrSaveAgent = 4058;
+  ErrListChallengeInstances = 4059;
+
+  //// Pathwar Server (starting at 5001)
+
+  ErrServerListen = 5001;
+  ErrServerRegisterGateway = 5002;
+
+  //// Pathwar Main (starting at 6001)
+
+  ErrInitLogger = 6001;
+  ErrStartService = 6002;
+  ErrInitServer = 6003;
+  ErrGroupTerminated = 6004;
+  ErrGetSSOClientFromFlags = 6005;
+  ErrDumpDatabase = 6006;
+  ErrGetDBInfo = 6007;
+  ErrGetSSOWhoami = 6008;
+  ErrGetSSOLogout = 6009;
+  ErrGetSSOClaims = 6010;
+  ErrInitDockerClient = 6011;
+  ErrInitDB = 6012;
+  ErrConfigureDB = 6013;
+  ErrInitSSOClient = 6014;
+  ErrInitService = 6015;
+
+  //// Pathwar Agent (starting at 7001)
+
+  ErrAgentGetContainersInfo = 7001;
+  ErrCheckNginxContainer = 7002;
+  ErrRemoveNginxContainer = 7003;
+  ErrBuildNginxContainer = 7004;
+  ErrStartNginxContainer = 7005;
+  ErrParsingTemplate = 7006;
+  ErrWriteConfigFileHeader = 7007;
+  ErrWriteConfigFile = 7008;
+  ErrCloseTarWriter = 7009;
+  ErrCopyNginxConfigToContainer = 7010;
+  ErrNginxNewConfigCheckFailed= 7011;
+  ErrNginxSendCommandNewConfigCheck = 7012;
+  ErrNginxSendCommandNewConfigRemove = 7013;
+  ErrNginxSendCommandConfigReplace = 7014;
+  ErrNginxSendCommandReloadConfig = 7015;
+  ErrNginxConnectNetwork = 7016;
+  ErrContainerConnectNetwork = 7017;
+  ErrNatPortOpening = 7018;
+  ErrBuildNginxConfig = 7019;
+  ErrExecuteTemplate = 7020;
+  ErrWriteBytesToHashBuilder = 7021;
+  ErrReadBytesFromHashBuilder = 7022;
+  ErrGeneratePrefixHash = 7023;
+  ErrCleanPathwarInstances = 7024;
+  ErrParseInitConfig = 7025;
+  ErrUpPathwarInstance = 7026;
+  ErrUpdateNginx = 7027;
+
+  //// Docker API (starting at 8001)
+
+  ErrDockerAPIContainerList = 8001;
+  ErrDockerAPIContainerRemove = 8002;
+  ErrDockerAPIImageRemove = 8003;
+  ErrDockerAPIContainerCreate = 8004;
+  ErrDockerAPIContainerExecCreate = 8005;
+  ErrDockerAPIContainerExecAttach = 8006;
+  ErrDockerAPIContainerExecStart = 8007;
+  ErrDockerAPIContainerExecInspect = 8008;
+  ErrDockerAPIImagePull = 8009;
+  ErrDockerAPIImageInspect = 8010;
+  ErrDockerAPINetworkList = 8011;
+  ErrDockerAPINetworkCreate = 8012;
+  ErrDockerAPINetworkRemove = 8013;
+  ErrDockerAPIExitCode = 8014;
+
+  //// Pathwar Init (starting at 9001)
+
+  ErrExecuteOnInitHook = 9001;
+  ErrRemoveInitConfig = 9002;
+
+}

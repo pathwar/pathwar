@@ -1,0 +1,409 @@
+syntax = "proto3";
+
+package pathwar.api;
+
+//import "github.com/golang/protobuf/ptypes/timestamp/timestamp.proto";
+import "google/api/annotations.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options/annotations.proto";
+
+import "pwsso.proto";
+import "pwdb.proto";
+
+option go_package = "pathwar.land/go/pkg/pwapi";
+option (gogoproto.sizer_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+
+service Service {
+  //
+  // User
+  //
+
+  rpc UserGetSession(UserGetSession.Input) returns (UserGetSession.Output) { option (google.api.http) = {get: "/user/session"}; };
+  rpc UserSetPreferences(UserSetPreferences.Input) returns (UserSetPreferences.Output) { option (google.api.http) = {post: "/user/preferences"; body: "*"}; };
+  rpc UserDeleteAccount(UserDeleteAccount.Input) returns (UserDeleteAccount.Output) { option (google.api.http) = {post: "/user/delete-account"; body: "*"}; };
+
+  //
+  // Challenge
+  //
+
+  rpc ChallengeList(ChallengeList.Input) returns (ChallengeList.Output) { option (google.api.http) = {get: "/challenges"}; };
+  rpc ChallengeGet(ChallengeGet.Input) returns (ChallengeGet.Output) { option (google.api.http) = {get: "/challenge"}; };
+  rpc SeasonChallengeList(SeasonChallengeList.Input) returns (SeasonChallengeList.Output) { option (google.api.http) = {get: "/season-challenges"}; };
+  rpc SeasonChallengeGet(SeasonChallengeGet.Input) returns (SeasonChallengeGet.Output) { option (google.api.http) = {get: "/season-challenge"}; };
+  rpc SeasonChallengeBuy(SeasonChallengeBuy.Input) returns (SeasonChallengeBuy.Output) { option (google.api.http) = {post: "/season-challenge/buy"; body: "*"}; };
+  rpc ChallengeSubscriptionValidate(ChallengeSubscriptionValidate.Input) returns (ChallengeSubscriptionValidate.Output) { option (google.api.http) = {post: "/challenge-subscription/validate"; body: "*"}; };
+  rpc ChallengeSubscriptionClose(ChallengeSubscriptionClose.Input) returns (ChallengeSubscriptionClose.Output) { option (google.api.http) = {post: "/challenge-subscription/close"; body: "*"}; };
+
+  //
+  // Organization
+  //
+
+  rpc OrganizationList(OrganizationList.Input) returns (OrganizationList.Output) { option (google.api.http) = {get: "/organizations"}; };
+
+  //
+  // Team
+  //
+
+  rpc TeamList(TeamList.Input) returns (TeamList.Output) { option (google.api.http) = {get: "/teams"}; };
+  rpc TeamGet(TeamGet.Input) returns (TeamGet.Output) { option (google.api.http) = {get: "/team"}; };
+  rpc TeamCreate(TeamCreate.Input) returns (TeamCreate.Output) { option (google.api.http) = {post: "/team"; body: "*"}; };
+  rpc TeamSendInvite(TeamSendInvite.Input) returns (TeamSendInvite.Output) { option (google.api.http) = {post: "/team/invite"; body: "*"}; };
+  rpc TeamAcceptInvite(TeamAcceptInvite.Input) returns (TeamAcceptInvite.Output) { option (google.api.http) = {post: "/team/invite/accept"; body: "*"}; };
+
+  //
+  // Coupon
+  //
+
+  rpc CouponValidate(CouponValidate.Input) returns (CouponValidate.Output) { option (google.api.http) = {post: "/coupon-validation"; body: "*"}; };
+
+  //
+  // Tool
+  //
+
+  rpc ToolPing(Void) returns (Void) { option (google.api.http) = {get: "/ping"}; };
+  rpc ToolStatus(GetStatus.Input) returns (GetStatus.Output) { option (google.api.http) = {get: "/status"}; }
+  rpc ToolInfo(GetInfo.Input) returns (GetInfo.Output) { option (google.api.http) = {get: "/info"}; };
+  rpc ToolGenerateFakeData(Void) returns (Void) { option (google.api.http) = {post: "/tool/generate-fake-data"; body: "*"}; };
+  rpc ToolDBDump(Void) returns (pathwar.db.Dump) { option (google.api.http) = {get: "/tool/sql-dump"}; };
+
+  //
+  // Agent
+  //
+
+  rpc AgentRegister(AgentRegister.Input) returns (AgentRegister.Output) { option (google.api.http) = {post: "/agent/register"; body: "*"}; }; // agent only
+  rpc AgentListInstances(AgentListInstances.Input) returns (AgentListInstances.Output) { option (google.api.http) = {get: "/agent/list-instances"}; }; // agent only
+  rpc AgentUpdateState(AgentUpdateState.Input) returns (AgentUpdateState.Output) { option (google.api.http) = {get: "/agent/update-state"}; }; // agent only
+  rpc AgentList(AgentList.Input) returns (AgentList.Output); // admin only
+  // rpc AgentEventSubscribe(AgentEventSubscribe.Input) returns (stream AgentEventSubscribe.Output);
+
+  //
+  // Admin
+  //
+
+  rpc AdminPS(AdminPS.Input) returns (AdminPS.Output) { option (google.api.http) = {get: "/admin/ps"}; }; // admin only
+  rpc AdminRedump(AdminRedump.Input) returns (AdminRedump.Output) { option (google.api.http) = {post: "/admin/redump"; body: "*"}; }; // admin only
+}
+
+//
+// Input/Output messages
+//
+
+message AdminRedump {
+  message Input {
+    repeated string identifiers = 1 [(gogoproto.customname) = "Identifiers", (gogoproto.moretags) = "url:\"identifiers\""];
+  }
+  message Output {}
+}
+
+message AdminPS {
+  message Input {}
+  message Output {
+    repeated pathwar.db.ChallengeInstance instances = 1;
+  }
+}
+
+message AgentList {
+  message Input {}
+  message Output {
+    repeated pathwar.db.Agent agents = 1;
+  }
+}
+
+message AgentRegister {
+  message Input {
+    string name = 1 [(gogoproto.moretags) = "url:\"name\""];
+    string hostname = 2 [(gogoproto.moretags) = "url:\"hostname\""];
+    string os = 3 [(gogoproto.customname) = "OS", (gogoproto.moretags) = "url:\"os\""];
+    string arch = 4 [(gogoproto.moretags) = "url:\"arch\""];
+    string version = 5 [(gogoproto.moretags) = "url:\"version\""];
+    repeated string tags = 6 [(gogoproto.moretags) = "url:\"tags\""];
+    // FIXME: capabilities
+  }
+  message Output {
+    pathwar.db.Agent agent = 1;
+  }
+}
+
+message AgentListInstances {
+  message Input {
+    string agent_name = 1 [(gogoproto.moretags) = "url:\"agent_name\""];
+  }
+  message Output {
+    repeated pathwar.db.ChallengeInstance instances = 1;
+  }
+}
+
+message AgentUpdateState {
+  message Input {
+    string message = 1 [(gogoproto.moretags) = "url:\"message\""];
+    repeated pathwar.db.ChallengeInstance instances = 2 [(gogoproto.moretags) = "url:\"instances\""];;
+    // FIXME: metrics
+    // FIXME: global state
+  }
+  message Output {}
+}
+
+message TeamGet {
+  message Input {
+    int64 team_id = 1 [(gogoproto.customname) = "TeamID"];
+  }
+  message Output {
+    pathwar.db.Team item = 1;
+  }
+}
+
+message SeasonChallengeList {
+  message Input {
+    int64 season_id = 1 [(gogoproto.customname) = "SeasonID"];
+  }
+  message Output {
+    repeated pathwar.db.SeasonChallenge items = 1;
+  }
+}
+
+message SeasonChallengeGet {
+  message Input {
+    int64 season_challenge_id = 1 [(gogoproto.customname) = "SeasonChallengeID"];
+  }
+  message Output {
+    pathwar.db.SeasonChallenge item = 1;
+  }
+}
+
+message ChallengeGet {
+  message Input {
+    int64 challenge_id = 1 [(gogoproto.customname) = "ChallengeID"];
+  }
+  message Output {
+    pathwar.db.Challenge item = 1;
+  }
+}
+
+message SeasonChallengeBuy {
+  message Input {
+    int64 season_challenge_id = 1 [(gogoproto.customname) = "SeasonChallengeID"];
+    int64 team_id = 2 [(gogoproto.customname) = "TeamID"];
+  }
+  message Output {
+    pathwar.db.ChallengeSubscription challenge_subscription = 1;
+  }
+}
+
+message ChallengeSubscriptionValidate {
+  message Input {
+    int64 challenge_subscription_id = 1 [(gogoproto.customname) = "ChallengeSubscriptionID"];
+    string passphrase = 2;
+    string comment = 3;
+  }
+  message Output {
+    pathwar.db.ChallengeValidation challenge_validation = 1;
+  }
+}
+
+message ChallengeSubscriptionClose {
+  message Input {
+    int64 challenge_subscription_id = 1 [(gogoproto.customname) = "ChallengeSubscriptionID"];
+  }
+  message Output {
+    pathwar.db.ChallengeSubscription challenge_subscription = 1;
+  }
+}
+
+message TeamList {
+  message Input {
+    int64 season_id = 1 [(gogoproto.customname) = "SeasonID"];
+  }
+  message Output {
+    repeated pathwar.db.Team items = 1;
+  }
+}
+
+message TeamCreate {
+  message Input {
+    int64 organization_id = 1 [(gogoproto.customname) = "OrganizationID"];
+    string name = 2;
+    int64 season_id = 3 [(gogoproto.customname) = "SeasonID"];
+  }
+  message Output {
+    pathwar.db.Team team = 1;
+  }
+}
+
+message TeamSendInvite {
+  message Input {
+    int64 team_id = 1 [(gogoproto.customname) = "TeamID"];
+    int64 user_id = 2 [(gogoproto.customname) = "UserID"];
+  }
+  message Output {
+    pathwar.db.TeamMember team_member = 1;
+  }
+}
+
+message TeamAcceptInvite {
+  message Input {
+    int64 team_member_id = 1 [(gogoproto.customname) = "TeamMemberID"];
+  }
+  message Output {
+    pathwar.db.TeamMember team_member = 1;
+  }
+}
+
+message UserSetPreferences {
+  message Input {
+    int64 active_season_id = 1 [(gogoproto.customname) = "ActiveSeasonID"];
+    // bool dark_mode
+  }
+  message Output {}
+}
+
+message UserDeleteAccount {
+  message Input {
+    string reason = 1;
+    // FIXME: captcha
+  }
+  message Output {}
+}
+
+message OrganizationList {
+  message Input {}
+  message Output {
+    repeated pathwar.db.Organization items = 1;
+  }
+}
+
+message ChallengeList {
+  message Input {}
+  message Output {
+    repeated pathwar.db.Challenge items = 1;
+  }
+}
+
+message UserGetSession {
+  message Input {}
+  message Output {
+    pathwar.db.User user = 1;
+    bool is_new_user = 2;
+    pathwar.sso.Claims claims = 3;
+    int32 notifications = 4;
+    repeated SeasonAndTeam seasons = 5;
+    message SeasonAndTeam {
+      pathwar.db.Season season = 1;
+      pathwar.db.Team team = 2;
+      bool is_active = 3;
+    }
+  }
+}
+
+message GetStatus {
+  message Input {}
+  message Output {
+    bool everything_is_ok = 1 [(gogoproto.customname) = "EverythingIsOK"];
+    // FIXME: add more tests
+  }
+}
+
+message GetInfo {
+  message Input {}
+  message Output {
+    string version = 1;  // git tag
+    int32 uptime = 2;    // seconds
+    string commit = 3;   // git sha
+    string built_at = 4; // date
+    string built_by = 5; // builder
+  }
+}
+
+message CouponValidate {
+  message Input {
+    string hash = 1;
+    int64 team_id = 2 [(gogoproto.customname) = "TeamID"];
+  }
+  message Output {
+    pathwar.db.CouponValidation coupon_validation = 1;
+  }
+}
+
+
+//
+// Swagger tuning
+//
+
+// Void is an empty message
+message Void {
+  option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+    example: { value: '{}' };
+  };
+}
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+  host: "api.pathwar.land";
+  base_path: "/";
+  info: {
+    title: "Pathwar API";
+    version: "1.0",
+    contact: {
+      name: "Pathwar Staff";
+      url: "https://github.com/pathwar/pathwar";
+      email: "staff@pathwar.land";
+    };
+    license: {
+      name: "(Apache-2.0 OR MIT)";
+      url: "https://github.com/pathwar/pathwar/blob/master/COPYRIGHT";
+    };
+  };
+  external_docs: {
+    url: "https://github.com/pathwar/pathwar";
+    description: "More about Pathwar";
+  };
+  //schemes: HTTP;
+  schemes: HTTPS;
+  schemes: WSS;
+  consumes: "application/json";
+  produces: "application/json";
+
+  security_definitions: {
+    security: {
+      key: "BasicAuth";
+      value: {
+        type: TYPE_BASIC;
+      };
+    };
+    security: {
+      key: "ApiKeyAuth";
+      value: {
+        type: TYPE_API_KEY;
+        in: IN_HEADER;
+        name: "X-API-Key";
+      };
+    };
+  };
+  security: {
+    security_requirement: {
+      key: "BasicAuth";
+      value: {};
+    };
+    security_requirement: {
+      key: "ApiKeyAuth";
+      value: {};
+    };
+  };
+  responses: {
+    key: "403";
+    value: {
+      description: "Returned when the user does not have permission to access the resource.";
+    };
+  };
+  responses: {
+    key: "404";
+    value: {
+      description: "Returned when the resource does not exist.";
+      schema: {
+        json_schema: {
+          type: STRING;
+        };
+      };
+    };
+  };
+};

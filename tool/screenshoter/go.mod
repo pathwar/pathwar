@@ -1,4 +1,4 @@
-module pathwar.land/tool/screenshoter
+module pathwar.land/tool/screenshoter/v2
 
 require (
 	github.com/chromedp/cdproto v0.0.0-20190926234355-1b4886c6fad6

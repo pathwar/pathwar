@@ -19,3 +19,5 @@ swagger.yaml.tmp
 tmp-*/
 vendor/
 gen.sum.tmp
+go/cmd/pathwar/pathwar
+*_oauth_token.json
