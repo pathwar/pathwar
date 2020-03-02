@@ -1,11 +1,11 @@
 package pwsso
 
 import (
-	"fmt"
 	time "time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"go.uber.org/zap"
+	"pathwar.land/v2/go/pkg/errcode"
 )
 
 func (c *client) TokenWithClaims(bearer string) (*jwt.Token, jwt.MapClaims, error) {
@@ -20,7 +20,10 @@ func TokenWithClaims(bearer string, pubkey interface{}, allowUnsafe bool) (*jwt.
 	// or
 	// https://id.pathwar.land/auth/realms/Pathwar-Dev
 
-	kf := func(token *jwt.Token) (interface{}, error) { return pubkey, nil }
+	kf := func(token *jwt.Token) (interface{}, error) {
+		return pubkey, nil
+	}
+
 	token, err := jwt.ParseWithClaims(bearer, claims, kf)
 	if err != nil {
 		if allowUnsafe {
@@ -31,9 +34,12 @@ func TokenWithClaims(bearer string, pubkey interface{}, allowUnsafe bool) (*jwt.
 			)
 			parser := new(jwt.Parser)
 			token, _, err := parser.ParseUnverified(bearer, claims)
-			return token, claims, err
+			if err != nil {
+				return nil, nil, errcode.ErrSSOInvalidBearer.Wrap(err)
+			}
+			return token, claims, nil
 		}
-		return nil, nil, fmt.Errorf("parse bearer: %w", err)
+		return nil, nil, errcode.ErrSSOInvalidBearer.Wrap(err)
 	}
 	return token, claims, nil
 }

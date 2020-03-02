@@ -3,11 +3,11 @@ package pwsso
 import (
 	"crypto/x509"
 	"encoding/pem"
-	"errors"
 	"fmt"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"go.uber.org/zap"
+	"pathwar.land/v2/go/pkg/errcode"
 )
 
 type Opts struct {
@@ -46,11 +46,12 @@ func New(publicKey string, realm string, opts Opts) (Client, error) {
 		key := []byte(fmt.Sprintf("-----BEGIN PUBLIC KEY-----\n%s\n-----END PUBLIC KEY-----\n", publicKey))
 		pubPem, _ := pem.Decode(key)
 		if pubPem == nil {
-			return nil, errors.New("invalid pubkey")
+			return nil, errcode.ErrSSOInvalidPublicKey
 		}
+
 		parsedKey, err := x509.ParsePKIXPublicKey(pubPem.Bytes)
 		if err != nil {
-			return nil, fmt.Errorf("parse public key: %w", err)
+			return nil, errcode.ErrSSOInvalidPublicKey.Wrap(err)
 		}
 		c.publicKey = parsedKey
 	}
