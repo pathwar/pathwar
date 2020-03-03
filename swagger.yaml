@@ -35,21 +35,8 @@ definitions:
     type: string
   apiAdminChallengeAddInput:
     properties:
-      author:
-        type: string
-      description:
-        type: string
-      homepage:
-        type: string
-      is_draft:
-        format: boolean
-        type: boolean
-      locale:
-        type: string
-      name:
-        type: string
-      preview_url:
-        type: string
+      challenge:
+        $ref: '#/definitions/dbChallenge'
     type: object
   apiAdminChallengeAddOutput:
     properties:
@@ -1368,7 +1355,7 @@ info:
   title: Pathwar API
   version: "1.0"
 paths:
-  /admin/add-challenge:
+  /admin/challenge/add:
     post:
       operationId: AdminChallengeAdd
       parameters:

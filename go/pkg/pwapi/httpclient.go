@@ -44,7 +44,7 @@ func (c HTTPClient) AdminPS(input *AdminPS_Input) (AdminPS_Output, error) {
 
 func (c HTTPClient) AdminAddChallenge(input *AdminChallengeAdd_Input) (AdminChallengeAdd_Output, error) {
 	var result AdminChallengeAdd_Output
-	err := c.doPost("/admin/add-challenge", input, &result)
+	err := c.doPost("/admin/challenge/add", input, &result)
 	return result, err
 }
 

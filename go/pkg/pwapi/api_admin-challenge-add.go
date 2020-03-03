@@ -15,13 +15,13 @@ func (svc *service) AdminChallengeAdd(ctx context.Context, in *AdminChallengeAdd
 	}
 
 	var challenge pwdb.Challenge
-	challenge.Name = in.Name
-	challenge.Description = in.Description
-	challenge.Author = in.Author
-	challenge.Locale = in.Locale
-	challenge.IsDraft = in.IsDraft
-	challenge.PreviewUrl = in.PreviewUrl
-	challenge.Homepage = in.Homepage
+	challenge.Name = in.Challenge.Name
+	challenge.Description = in.Challenge.Description
+	challenge.Author = in.Challenge.Author
+	challenge.Locale = in.Challenge.Locale
+	challenge.IsDraft = in.Challenge.IsDraft
+	challenge.PreviewUrl = in.Challenge.PreviewUrl
+	challenge.Homepage = in.Challenge.Homepage
 
 	err := svc.db.Create(&challenge).Error
 	if err != nil {

@@ -56,6 +56,13 @@ var (
 
 	// flag vars
 	globalDebug              bool
+	addChallengeName         string
+	addChallengeDescription  string
+	addChallengeAuthor       string
+	addChallengeLocale       string
+	addChallengeIsDraft      bool
+	addChallengePreviewURL   string
+	addChallengeHomepage     string
 	agentClean               bool
 	agentDomainSuffix        string
 	agentForceRecreate       bool
@@ -103,20 +110,21 @@ func main() {
 
 	// setup flags
 	var (
-		globalFlags         = flag.NewFlagSet("pathwar", flag.ExitOnError)
-		agentFlags          = flag.NewFlagSet("agent", flag.ExitOnError)
-		apiFlags            = flag.NewFlagSet("api", flag.ExitOnError)
-		composeDownFlags    = flag.NewFlagSet("compose down", flag.ExitOnError)
-		composeFlags        = flag.NewFlagSet("compose", flag.ExitOnError)
-		composePSFlags      = flag.NewFlagSet("compose ps", flag.ExitOnError)
-		composePrepareFlags = flag.NewFlagSet("compose prepare", flag.ExitOnError)
-		composeUpFlags      = flag.NewFlagSet("compose up", flag.ExitOnError)
-		miscFlags           = flag.NewFlagSet("misc", flag.ExitOnError)
-		serverFlags         = flag.NewFlagSet("server", flag.ExitOnError)
-		ssoFlags            = flag.NewFlagSet("sso", flag.ExitOnError)
-		adminFlags          = flag.NewFlagSet("admin", flag.ExitOnError)
-		adminPSFlags        = flag.NewFlagSet("admin ps", flag.ExitOnError)
-		adminRedumpFlags    = flag.NewFlagSet("admin redump", flag.ExitOnError)
+		globalFlags            = flag.NewFlagSet("pathwar", flag.ExitOnError)
+		agentFlags             = flag.NewFlagSet("agent", flag.ExitOnError)
+		apiFlags               = flag.NewFlagSet("api", flag.ExitOnError)
+		composeDownFlags       = flag.NewFlagSet("compose down", flag.ExitOnError)
+		composeFlags           = flag.NewFlagSet("compose", flag.ExitOnError)
+		composePSFlags         = flag.NewFlagSet("compose ps", flag.ExitOnError)
+		composePrepareFlags    = flag.NewFlagSet("compose prepare", flag.ExitOnError)
+		composeUpFlags         = flag.NewFlagSet("compose up", flag.ExitOnError)
+		miscFlags              = flag.NewFlagSet("misc", flag.ExitOnError)
+		serverFlags            = flag.NewFlagSet("server", flag.ExitOnError)
+		ssoFlags               = flag.NewFlagSet("sso", flag.ExitOnError)
+		adminFlags             = flag.NewFlagSet("admin", flag.ExitOnError)
+		adminPSFlags           = flag.NewFlagSet("admin ps", flag.ExitOnError)
+		adminRedumpFlags       = flag.NewFlagSet("admin redump", flag.ExitOnError)
+		adminChallengeAddFlags = flag.NewFlagSet("admin challenge add", flag.ExitOnError)
 	)
 	globalFlags.SetOutput(flagOutput) // used in main_test.go
 	globalFlags.BoolVar(&globalDebug, "debug", false, "debug mode")
@@ -141,6 +149,14 @@ func main() {
 
 	adminFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
 	adminFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultAdminTokenFile, "Token file")
+
+	adminChallengeAddFlags.StringVar(&addChallengeName, "name", "name", "Challenge name")
+	adminChallengeAddFlags.StringVar(&addChallengeDescription, "description", "description", "Challenge description")
+	adminChallengeAddFlags.StringVar(&addChallengeAuthor, "author", "author", "Challenge author")
+	adminChallengeAddFlags.StringVar(&addChallengeLocale, "locale", "locale", "Challenge Locale")
+	adminChallengeAddFlags.BoolVar(&addChallengeIsDraft, "is-draft", true, "Is challenge production ready ?")
+	adminChallengeAddFlags.StringVar(&addChallengePreviewURL, "preview-url", "", "Challenge preview URL")
+	adminChallengeAddFlags.StringVar(&addChallengeHomepage, "homepage", "", "Challenge homepage URL")
 
 	apiFlags.BoolVar(&ssoAllowUnsafe, "sso-unsafe", false, "Allow unsafe SSO")
 	apiFlags.StringVar(&apiDBURN, "urn", defaultDBURN, "MySQL URN")
@@ -587,6 +603,47 @@ func main() {
 
 				return nil
 			},
+		}, {
+			Name:  "challenge",
+			Usage: "pathwar [global flags] admin [admin flags] challenge <subcommand> [flags] [args...]",
+			Subcommands: []*ffcli.Command{{
+				Name:      "add",
+				Usage:     "pathwar [global flags] admin [admin flags] challenge [admin challenge flags] add [flags]",
+				ShortHelp: "add a challenge",
+				FlagSet:   adminChallengeAddFlags,
+				Exec: func(args []string) error {
+					if err := globalPreRun(); err != nil {
+						return err
+					}
+
+					ctx := context.Background()
+					apiClient, err := httpClientFromEnv(ctx)
+					if err != nil {
+						return errcode.TODO.Wrap(err)
+					}
+
+					_, err = apiClient.AdminAddChallenge(&pwapi.AdminChallengeAdd_Input{
+						Challenge: &pwdb.Challenge{
+							Name:        addChallengeName,
+							Description: addChallengeDescription,
+							Author:      addChallengeAuthor,
+							Locale:      addChallengeLocale,
+							IsDraft:     addChallengeIsDraft,
+							PreviewUrl:  addChallengePreviewURL,
+							Homepage:    addChallengeHomepage,
+						},
+					})
+					if err != nil {
+						return errcode.TODO.Wrap(err)
+					}
+
+					fmt.Println("OK")
+
+					return nil
+				},
+			}},
+			ShortHelp: "manage challenges",
+			Exec:      func([]string) error { return flag.ErrHelp },
 		}},
 		ShortHelp: "admin commands",
 		FlagSet:   adminFlags,

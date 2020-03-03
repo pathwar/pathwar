@@ -84,7 +84,7 @@ service Service {
 
   rpc AdminPS(AdminPS.Input) returns (AdminPS.Output) { option (google.api.http) = {get: "/admin/ps"}; }; // admin only
   rpc AdminRedump(AdminRedump.Input) returns (AdminRedump.Output) { option (google.api.http) = {post: "/admin/redump"; body: "*"}; }; // admin only
-  rpc AdminChallengeAdd(AdminChallengeAdd.Input) returns (AdminChallengeAdd.Output) { option (google.api.http) = {post: "/admin/add-challenge"; body: "*"}; }; // admin only
+  rpc AdminChallengeAdd(AdminChallengeAdd.Input) returns (AdminChallengeAdd.Output) { option (google.api.http) = {post: "/admin/challenge/add"; body: "*"}; }; // admin only
 }
 
 //
@@ -107,13 +107,7 @@ message AdminPS {
 
 message AdminChallengeAdd {
   message Input {
-    string name = 1 [(gogoproto.moretags) = "url:\"name\""];
-    string description = 2 [(gogoproto.moretags) = "url:\"description\""];
-    string author = 3 [(gogoproto.moretags) = "url:\"author\""];
-    string locale = 4 [(gogoproto.moretags) = "url:\"locale\""];
-    bool is_draft = 5 [(gogoproto.moretags) = "url:\"is_draft\""];
-    string preview_url = 6 [(gogoproto.moretags) = "url:\"preview_url\""];
-    string homepage = 7 [(gogoproto.moretags) = "url:\"homepage\""];
+    pathwar.db.Challenge challenge = 1;
   }
   message Output {
     pathwar.db.Challenge challenge = 1;
