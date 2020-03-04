@@ -16,14 +16,15 @@ func (svc *service) AdminChallengeAdd(ctx context.Context, in *AdminChallengeAdd
 		return nil, errcode.ErrMissingInput
 	}
 
-	var challenge pwdb.Challenge
-	challenge.Name = in.Challenge.Name
-	challenge.Description = in.Challenge.Description
-	challenge.Author = in.Challenge.Author
-	challenge.Locale = in.Challenge.Locale
-	challenge.IsDraft = in.Challenge.IsDraft
-	challenge.PreviewUrl = in.Challenge.PreviewUrl
-	challenge.Homepage = in.Challenge.Homepage
+	challenge := pwdb.Challenge{
+		Name:        in.Challenge.Name,
+		Description: in.Challenge.Description,
+		Author:      in.Challenge.Author,
+		Locale:      in.Challenge.Locale,
+		IsDraft:     in.Challenge.IsDraft,
+		PreviewUrl:  in.Challenge.PreviewUrl,
+		Homepage:    in.Challenge.Homepage,
+	}
 
 	err := svc.db.Create(&challenge).Error
 	if err != nil {
