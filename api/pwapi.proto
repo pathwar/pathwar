@@ -74,7 +74,7 @@ service Service {
 
   rpc AgentRegister(AgentRegister.Input) returns (AgentRegister.Output) { option (google.api.http) = {post: "/agent/register"; body: "*"}; }; // agent only
   rpc AgentListInstances(AgentListInstances.Input) returns (AgentListInstances.Output) { option (google.api.http) = {get: "/agent/list-instances"}; }; // agent only
-  rpc AgentUpdateState(AgentUpdateState.Input) returns (AgentUpdateState.Output) { option (google.api.http) = {get: "/agent/update-state"}; }; // agent only
+  rpc AgentUpdateState(AgentUpdateState.Input) returns (AgentUpdateState.Output) { option (google.api.http) = {post: "/agent/update-state"}; }; // agent only
   rpc AgentList(AgentList.Input) returns (AgentList.Output); // admin only
   // rpc AgentEventSubscribe(AgentEventSubscribe.Input) returns (stream AgentEventSubscribe.Output);
 
@@ -147,8 +147,7 @@ message AgentListInstances {
 
 message AgentUpdateState {
   message Input {
-    string message = 1 [(gogoproto.moretags) = "url:\"message\""];
-    repeated pathwar.db.ChallengeInstance instances = 2 [(gogoproto.moretags) = "url:\"instances\""];;
+    repeated pathwar.db.ChallengeInstance instances = 1 [(gogoproto.moretags) = "url:\"instances\""];;
     // FIXME: metrics
     // FIXME: global state
   }

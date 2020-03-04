@@ -1494,13 +1494,8 @@ paths:
       tags:
       - Service
   /agent/update-state:
-    get:
+    post:
       operationId: AgentUpdateState
-      parameters:
-      - in: query
-        name: message
-        required: false
-        type: string
       responses:
         "200":
           description: A successful response.
