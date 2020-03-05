@@ -8,7 +8,9 @@ import (
 )
 
 func (svc *service) AdminChallengeAdd(ctx context.Context, in *AdminChallengeAdd_Input) (*AdminChallengeAdd_Output, error) {
-	// FIXME: check if client is admin
+	if !isAdminContext(ctx) {
+		return nil, errcode.ErrRestrictedArea
+	}
 
 	if in == nil {
 		return nil, errcode.ErrMissingInput

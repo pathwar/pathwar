@@ -219,7 +219,7 @@ func httpServer(ctx context.Context, serverListenerAddr string, opts ServerOpts)
 	http.DefaultServeMux = http.NewServeMux() // disables default handlers registered by importing net/http/pprof for security reasons
 
 	return &http.Server{
-		Addr:    ":8000",
+		Addr:    opts.Bind,
 		Handler: r,
 	}, nil
 }

@@ -25,7 +25,6 @@ func TestService_AgentListInstances(t *testing.T) {
 		{"localhost", &AgentListInstances_Input{AgentName: "localhost"}, nil},
 		{"localhost-2", &AgentListInstances_Input{AgentName: "localhost-2"}, nil},
 		{"inactive-agent", &AgentListInstances_Input{AgentName: "localhost-3"}, errcode.ErrGetAgent},
-		// FIXME: check for permissions
 	}
 
 	for _, test := range tests {

@@ -19,6 +19,7 @@ enum ErrCode {
   ErrInvalidInput = 101;
   ErrMissingInput = 102;
   ErrUnauthenticated = 103;
+  ErrRestrictedArea = 104;
 
   //// Pathwar SSO (starting at 1001)
 

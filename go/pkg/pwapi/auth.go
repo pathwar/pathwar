@@ -14,8 +14,13 @@ import (
 
 type ctxKey string
 
-var (
+const (
 	userTokenCtx ctxKey = "user-token"
+)
+
+const (
+	adminSSORole = "admin"
+	agentSSORole = "agent"
 )
 
 // AuthFuncOverride exists to implement the grpc_auth.ServiceAuthFuncOverride interface
@@ -48,6 +53,24 @@ func (svc *service) AuthFuncOverride(ctx context.Context, path string) (context.
 	}
 	ctx = context.WithValue(ctx, userTokenCtx, token)
 	return ctx, nil
+}
+
+func contextHasRole(ctx context.Context, role string) bool {
+	token, err := tokenFromContext(ctx)
+	if err != nil {
+		return false
+	}
+
+	err = pwsso.TokenHasRole(token, role)
+	return err == nil
+}
+
+func isAdminContext(ctx context.Context) bool {
+	return contextHasRole(ctx, adminSSORole)
+}
+
+func isAgentContext(ctx context.Context) bool {
+	return contextHasRole(ctx, agentSSORole)
 }
 
 func tokenFromContext(ctx context.Context) (*jwt.Token, error) {

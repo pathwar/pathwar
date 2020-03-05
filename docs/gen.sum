@@ -3,6 +3,6 @@
 a45fa08c595709dd752f52ded4493ceb3a191de2  ../api/pwcompose.proto
 aa91d470259d4575fd1c2b2d340d32996e9992e1  ../api/pwdb.proto
 bad04556b7233d5c8ddbcc1a3b2bfd027b694bce  ../api/pwsso.proto
-c86010fe0ca0fc9cf543888793f93b592e7554cc  ../api/errcode.proto
 e954302d8badf46e34c0931d40593606e8e06245  Makefile
+ebcbbaf484625bd662eb1b895547eed1eba29ef6  ../api/errcode.proto
 eebf814a8c35327006cc45bf0ee824fe8d25e052  ../api/pwapi.proto
