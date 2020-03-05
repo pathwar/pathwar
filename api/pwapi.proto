@@ -84,7 +84,7 @@ service Service {
 
   rpc AdminPS(AdminPS.Input) returns (AdminPS.Output) { option (google.api.http) = {get: "/admin/ps"}; }; // admin only
   rpc AdminRedump(AdminRedump.Input) returns (AdminRedump.Output) { option (google.api.http) = {post: "/admin/redump"; body: "*"}; }; // admin only
-  rpc AdminChallengeAdd(AdminChallengeAdd.Input) returns (AdminChallengeAdd.Output) { option (google.api.http) = {post: "/admin/challenge/add"; body: "*"}; }; // admin only
+  rpc AdminChallengeAdd(AdminChallengeAdd.Input) returns (AdminChallengeAdd.Output) { option (google.api.http) = {post: "/admin/challenge-add"; body: "*"}; }; // admin only
 }
 
 //

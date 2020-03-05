@@ -1355,7 +1355,7 @@ info:
   title: Pathwar API
   version: "1.0"
 paths:
-  /admin/challenge/add:
+  /admin/challenge-add:
     post:
       operationId: AdminChallengeAdd
       parameters:

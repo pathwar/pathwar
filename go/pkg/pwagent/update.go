@@ -44,7 +44,7 @@ func updateAPIState(ctx context.Context, apiInstances *pwapi.AgentListInstances_
 	// FIXME: update state only if it changed
 	input := pwapi.AgentUpdateState_Input{Instances: apiInstances.Instances}
 	fmt.Println(godev.PrettyJSONPB(&input))
-	// apiClient.AgentUpdateState(&input)
+	apiClient.AgentUpdateState(&input)
 
 	return nil
 }

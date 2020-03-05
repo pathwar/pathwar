@@ -604,46 +604,40 @@ func main() {
 				return nil
 			},
 		}, {
-			Name:  "challenge",
-			Usage: "pathwar [global flags] admin [admin flags] challenge <subcommand> [flags] [args...]",
-			Subcommands: []*ffcli.Command{{
-				Name:      "add",
-				Usage:     "pathwar [global flags] admin [admin flags] challenge [admin challenge flags] add [flags]",
-				ShortHelp: "add a challenge",
-				FlagSet:   adminChallengeAddFlags,
-				Exec: func(args []string) error {
-					if err := globalPreRun(); err != nil {
-						return err
-					}
+			Name:      "challenge-add",
+			Usage:     "pathwar [global flags] admin [admin flags] challenge-add [flags] [args...]",
+			ShortHelp: "add a challenge",
+			FlagSet:   adminChallengeAddFlags,
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
 
-					ctx := context.Background()
-					apiClient, err := httpClientFromEnv(ctx)
-					if err != nil {
-						return errcode.TODO.Wrap(err)
-					}
+				ctx := context.Background()
+				apiClient, err := httpClientFromEnv(ctx)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
 
-					_, err = apiClient.AdminAddChallenge(&pwapi.AdminChallengeAdd_Input{
-						Challenge: &pwdb.Challenge{
-							Name:        addChallengeName,
-							Description: addChallengeDescription,
-							Author:      addChallengeAuthor,
-							Locale:      addChallengeLocale,
-							IsDraft:     addChallengeIsDraft,
-							PreviewUrl:  addChallengePreviewURL,
-							Homepage:    addChallengeHomepage,
-						},
-					})
-					if err != nil {
-						return errcode.TODO.Wrap(err)
-					}
+				_, err = apiClient.AdminAddChallenge(&pwapi.AdminChallengeAdd_Input{
+					Challenge: &pwdb.Challenge{
+						Name:        addChallengeName,
+						Description: addChallengeDescription,
+						Author:      addChallengeAuthor,
+						Locale:      addChallengeLocale,
+						IsDraft:     addChallengeIsDraft,
+						PreviewUrl:  addChallengePreviewURL,
+						Homepage:    addChallengeHomepage,
+					},
+				})
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
 
-					fmt.Println("OK")
+				fmt.Println("OK")
 
-					return nil
-				},
-			}},
-			ShortHelp: "manage challenges",
-			Exec:      func([]string) error { return flag.ErrHelp },
+				return nil
+			},
 		}},
 		ShortHelp: "admin commands",
 		FlagSet:   adminFlags,
