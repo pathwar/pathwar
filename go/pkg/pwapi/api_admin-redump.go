@@ -10,7 +10,9 @@ import (
 )
 
 func (svc *service) AdminRedump(ctx context.Context, in *AdminRedump_Input) (*AdminRedump_Output, error) {
-	// FIXME: check if client is admin
+	if !isAdminContext(ctx) {
+		return nil, errcode.ErrRestrictedArea
+	}
 
 	for _, identifier := range in.Identifiers {
 		nb, err := strconv.Atoi(identifier)

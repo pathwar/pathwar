@@ -805,7 +805,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 	conf := &oauth2.Config{
 		ClientID:     ssoClientID,
 		ClientSecret: ssoClientSecret,
-		Scopes:       []string{"email", "offline_access", "profile"},
+		Scopes:       []string{"email", "offline_access", "profile", "roles"},
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  pwsso.KeycloakBaseURL + "/auth/realms/" + ssoRealm + "/protocol/openid-connect/auth",
 			TokenURL: pwsso.KeycloakBaseURL + "/auth/realms/" + ssoRealm + "/protocol/openid-connect/token",
