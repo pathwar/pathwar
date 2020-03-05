@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/jinzhu/gorm"
 	"pathwar.land/v2/go/pkg/errcode"
 	"pathwar.land/v2/go/pkg/pwdb"
 )
@@ -19,6 +20,8 @@ func (svc *service) CouponValidate(ctx context.Context, in *CouponValidate_Input
 		return nil, fmt.Errorf("get userid from context: %w", err)
 	}
 
+	// FIXME: create transaction
+
 	// check if user belongs to team
 	// FIXME: or is admin
 	var team pwdb.Team
@@ -28,34 +31,47 @@ func (svc *service) CouponValidate(ctx context.Context, in *CouponValidate_Input
 		First(&team, in.TeamID).
 		Error
 	if err != nil {
-		return nil, errcode.TODO.Wrap(err)
+		return nil, errcode.ErrUserDoesNotBelongToTeam.Wrap(err)
 	}
 
 	// fetch coupon
 	var coupon pwdb.Coupon
 	err = svc.db.
-		Where(pwdb.Coupon{Hash: in.Hash}).
+		Where(pwdb.Coupon{Hash: in.Hash, SeasonID: team.SeasonID}).
 		First(&coupon).
 		Error
 	if err != nil {
-		return nil, errcode.TODO.Wrap(err)
+		return nil, errcode.ErrCouponNotFound.Wrap(err)
 	}
 
+	// is already validated by same team
 	var validations int32
+	err = svc.db.
+		Model(&pwdb.CouponValidation{}).
+		Where(&pwdb.CouponValidation{CouponID: coupon.ID, TeamID: team.ID}).
+		Count(&validations).
+		Error
+	if err != nil {
+		return nil, pwdb.GormToErrcode(err)
+	}
+	if validations > 0 {
+		return nil, errcode.ErrCouponAlreadyValidatedBySameTeam
+	}
+
+	// is expired
 	err = svc.db.
 		Model(&pwdb.CouponValidation{}).
 		Where(&pwdb.CouponValidation{CouponID: coupon.ID}).
 		Count(&validations).
 		Error
 	if err != nil {
-		return nil, errcode.TODO.Wrap(err)
+		return nil, pwdb.GormToErrcode(err)
 	}
 	if validations >= coupon.MaxValidationCount {
-		return nil, errcode.TODO.Wrap(err)
+		return nil, errcode.ErrCouponExpired
 	}
 
 	// FIXME: validate team
-	// FIXME: already validated by this team
 	// FIXME: inacitve user/team
 
 	// create validation
@@ -67,10 +83,14 @@ func (svc *service) CouponValidate(ctx context.Context, in *CouponValidate_Input
 	}
 	err = svc.db.Create(&validation).Error
 	if err != nil {
-		return nil, errcode.TODO.Wrap(err)
+		return nil, pwdb.GormToErrcode(err)
 	}
 
-	// FIXME: increment team.cash
+	// update team cash
+	err = svc.db.Model(&team).UpdateColumn("cash", gorm.Expr("cash + ?", coupon.Value)).Error
+	if err != nil {
+		return nil, pwdb.GormToErrcode(err)
+	}
 
 	// load it again with preload
 	err = svc.db.
@@ -80,7 +100,7 @@ func (svc *service) CouponValidate(ctx context.Context, in *CouponValidate_Input
 		First(&validation, validation.ID).
 		Error
 	if err != nil {
-		return nil, errcode.TODO.Wrap(err)
+		return nil, pwdb.GormToErrcode(err)
 	}
 
 	ret := CouponValidate_Output{
