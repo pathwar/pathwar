@@ -20,10 +20,6 @@ func (svc *service) AgentUpdateState(ctx context.Context, in *AgentUpdateState_I
 			return nil, errcode.ErrAgentUpdateState.Wrap(err)
 		}
 	}
-	/*err := svc.db.Update((&challenge).Error
-	if err != nil {
-		return nil, errcode.ErrChallengeAdd.Wrap(err)
-	}*/
 
 	return nil, errcode.ErrNotImplemented
 }

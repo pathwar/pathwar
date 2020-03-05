@@ -142,8 +142,8 @@ func main() {
 	agentFlags.StringVar(&agentDomainSuffix, "nginx-domain-suffix", "local", "Domain suffix to append")
 	agentFlags.StringVar(&agentNginxDockerImage, "docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
 	agentFlags.StringVar(&agentDomainSuffix, "domain-suffix", "local", "Domain suffix to append")
-	agentFlags.StringVar(&agentHostIP, "host", "0.0.0.0", "HTTP listening addr")
-	agentFlags.StringVar(&agentHostPort, "port", "8000", "HTTP listening port")
+	agentFlags.StringVar(&agentHostIP, "host", "0.0.0.0", "Nginx HTTP listening addr")
+	agentFlags.StringVar(&agentHostPort, "port", "8001", "Nginx HTTP listening port")
 	agentFlags.StringVar(&agentModeratorPassword, "moderator-password", "", "Challenge moderator password")
 	agentFlags.StringVar(&agentSalt, "salt", "", "salt used to generate secure hashes (random if empty)")
 

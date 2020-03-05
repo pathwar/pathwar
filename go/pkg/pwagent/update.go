@@ -13,8 +13,6 @@ import (
 )
 
 func updateAPIState(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, cli *client.Client, apiClient *pwapi.HTTPClient, opts Opts) error {
-	//logger := opts.Logger
-
 	containersInfo, err := pwcompose.GetContainersInfo(ctx, cli)
 	if err != nil {
 		return errcode.TODO.Wrap(err)
@@ -44,7 +42,9 @@ func updateAPIState(ctx context.Context, apiInstances *pwapi.AgentListInstances_
 	// FIXME: update state only if it changed
 	input := pwapi.AgentUpdateState_Input{Instances: apiInstances.Instances}
 	fmt.Println(godev.PrettyJSONPB(&input))
-	apiClient.AgentUpdateState(&input)
+	if _, err := apiClient.AgentUpdateState(&input); err != nil {
+		return errcode.TODO.Wrap(err)
+	}
 
 	return nil
 }
