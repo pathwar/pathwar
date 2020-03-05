@@ -70,10 +70,9 @@ func runOnce(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClien
 		return errcode.TODO.Wrap(err)
 	}
 
-	// FIXME: implement this
-	/*if err := updateAPIInstancesStatus(ctx, instances, cli, opts); err != nil {
+	if err := updateAPIState(ctx, &instances, cli, apiClient, opts); err != nil {
 		return errcode.TODO.Wrap(err)
-	}*/
+	}
 
 	return nil
 }

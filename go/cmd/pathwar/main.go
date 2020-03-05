@@ -142,8 +142,8 @@ func main() {
 	agentFlags.StringVar(&agentDomainSuffix, "nginx-domain-suffix", "local", "Domain suffix to append")
 	agentFlags.StringVar(&agentNginxDockerImage, "docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
 	agentFlags.StringVar(&agentDomainSuffix, "domain-suffix", "local", "Domain suffix to append")
-	agentFlags.StringVar(&agentHostIP, "host", "0.0.0.0", "HTTP listening addr")
-	agentFlags.StringVar(&agentHostPort, "port", "8000", "HTTP listening port")
+	agentFlags.StringVar(&agentHostIP, "host", "0.0.0.0", "Nginx HTTP listening addr")
+	agentFlags.StringVar(&agentHostPort, "port", "8001", "Nginx HTTP listening port")
 	agentFlags.StringVar(&agentModeratorPassword, "moderator-password", "", "Challenge moderator password")
 	agentFlags.StringVar(&agentSalt, "salt", "", "salt used to generate secure hashes (random if empty)")
 
@@ -604,46 +604,40 @@ func main() {
 				return nil
 			},
 		}, {
-			Name:  "challenge",
-			Usage: "pathwar [global flags] admin [admin flags] challenge <subcommand> [flags] [args...]",
-			Subcommands: []*ffcli.Command{{
-				Name:      "add",
-				Usage:     "pathwar [global flags] admin [admin flags] challenge [admin challenge flags] add [flags]",
-				ShortHelp: "add a challenge",
-				FlagSet:   adminChallengeAddFlags,
-				Exec: func(args []string) error {
-					if err := globalPreRun(); err != nil {
-						return err
-					}
+			Name:      "challenge-add",
+			Usage:     "pathwar [global flags] admin [admin flags] challenge-add [flags] [args...]",
+			ShortHelp: "add a challenge",
+			FlagSet:   adminChallengeAddFlags,
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
 
-					ctx := context.Background()
-					apiClient, err := httpClientFromEnv(ctx)
-					if err != nil {
-						return errcode.TODO.Wrap(err)
-					}
+				ctx := context.Background()
+				apiClient, err := httpClientFromEnv(ctx)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
 
-					_, err = apiClient.AdminAddChallenge(&pwapi.AdminChallengeAdd_Input{
-						Challenge: &pwdb.Challenge{
-							Name:        addChallengeName,
-							Description: addChallengeDescription,
-							Author:      addChallengeAuthor,
-							Locale:      addChallengeLocale,
-							IsDraft:     addChallengeIsDraft,
-							PreviewUrl:  addChallengePreviewURL,
-							Homepage:    addChallengeHomepage,
-						},
-					})
-					if err != nil {
-						return errcode.TODO.Wrap(err)
-					}
+				_, err = apiClient.AdminAddChallenge(&pwapi.AdminChallengeAdd_Input{
+					Challenge: &pwdb.Challenge{
+						Name:        addChallengeName,
+						Description: addChallengeDescription,
+						Author:      addChallengeAuthor,
+						Locale:      addChallengeLocale,
+						IsDraft:     addChallengeIsDraft,
+						PreviewUrl:  addChallengePreviewURL,
+						Homepage:    addChallengeHomepage,
+					},
+				})
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
 
-					fmt.Println("OK")
+				fmt.Println("OK")
 
-					return nil
-				},
-			}},
-			ShortHelp: "manage challenges",
-			Exec:      func([]string) error { return flag.ErrHelp },
+				return nil
+			},
 		}},
 		ShortHelp: "admin commands",
 		FlagSet:   adminFlags,

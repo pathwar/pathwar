@@ -192,6 +192,7 @@ enum ErrCode {
   ErrParseInitConfig = 7025;
   ErrUpPathwarInstance = 7026;
   ErrUpdateNginx = 7027;
+  ErrAgentUpdateState = 7028;
 
   //// Docker API (starting at 8001)
 
