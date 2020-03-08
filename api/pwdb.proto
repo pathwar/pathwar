@@ -456,6 +456,29 @@ message Achievement {
   }
 }
 
+message Activity {
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+
+  Type type = 100;
+  bytes content = 101;
+
+  User author = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:AuthorID\""];
+  int64 author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Team team = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamID\""];
+  int64 team_id = 203 [(gogoproto.customname) = "TeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Team user = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
+  int64 user_id = 203 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+
+  enum Type {
+    Unknown = 0;
+    BuyChallenge = 1;
+    ValidateChallenge = 2;
+    ValidateCoupon = 3;
+    // ...
+  }
+}
+
 message Dump {
   repeated Achievement achievements = 1;
   repeated Challenge challenges = 2;
@@ -476,6 +499,7 @@ message Dump {
   repeated TeamMember team_members = 17;
   repeated User users = 18;
   repeated WhoswhoAttempt whoswho_attempts = 19;
+  repeated Activity activities = 20;
 }
 
 message Info {
