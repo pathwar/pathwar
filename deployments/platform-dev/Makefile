@@ -19,4 +19,4 @@ logs:
 
 .PHONY: flushdb
 flushdb: down
-	docker volume rm platform_db_data
+	docker volume rm -f platform_db_data || true
