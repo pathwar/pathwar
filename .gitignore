@@ -22,3 +22,5 @@ gen.sum.tmp
 go/cmd/pathwar/pathwar
 tool/screenshoter/screenshoter
 *_oauth_token.json
+packrd/
+*-packr.go

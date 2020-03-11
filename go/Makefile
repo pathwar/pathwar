@@ -67,6 +67,10 @@ mysql.shell:
 mysql.dump:
 	mysqldump $(MYSQL_CONFIG) pathwar
 
+.PHONY: packr
+packr:
+	cd pkg/pwinit && packr2
+
 ##
 ## generate
 ##
@@ -105,4 +109,4 @@ generate_local:
 
 .PHONY: clean
 clean:
-	rm -f gen.sum $(wildcard */*/*.pb.go */*/*.pb.gw.go) $(wildcard out/*)
+	rm -f gen.sum $(wildcard */*/*.pb.go */*/*.pb.gw.go) $(wildcard out/*) $(wildcard */*/packrd/*) $(wildcard */*/*-packr.go)
