@@ -37,7 +37,13 @@ class SeasonPage extends React.Component {
     const {
       buyChallengeAction,
       createTeamAction,
-      seasons: { activeSeason, activeChallenges, allTeamsOnSeason },
+      seasons: {
+        activeSeason,
+        activeChallenges,
+        allTeamsOnSeason,
+        activeTeamInSeason,
+        activeTeam
+      },
     } = this.props
     const name = activeSeason ? activeSeason.name : undefined
 
@@ -49,7 +55,9 @@ class SeasonPage extends React.Component {
             <ValidationCouponStampCard />
             <CreateTeamStampCard
               activeSeason={activeSeason}
+              activeTeam={activeTeam}
               createTeam={createTeamAction}
+              activeTeamInSeason={activeTeamInSeason}
             />
             <h3>Teams</h3>
             <AllTeamsOnSeasonList

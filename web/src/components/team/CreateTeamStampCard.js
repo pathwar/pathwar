@@ -3,7 +3,12 @@ import { Link } from "gatsby"
 import { isEmpty } from "ramda"
 import { StampCard, Form, Button } from "tabler-react"
 
-const CreateTeamStampCard = ({ activeSeason, createTeam }) => {
+const CreateTeamStampCard = ({
+  activeSeason,
+  activeTeam,
+  activeTeamInSeason,
+  createTeam,
+}) => {
   const [isFormOpen, setFormOpen] = useState(false)
   const [name, setName] = useState("")
   const [error, setError] = useState(false)
@@ -31,17 +36,23 @@ const CreateTeamStampCard = ({ activeSeason, createTeam }) => {
     }
   }
 
+  const CardHeader = () => activeTeamInSeason ? (
+      <small>You can dock here!</small>
+    ) : (
+      <Link to="/" onClick={handleFormOpen}>
+        <small>Create new team</small>
+      </Link>
+  )
+
+  const cardFooterText = activeTeamInSeason ? `Enjoy ${activeTeam.organization.name}` : "Ahoy! Create a new team"
+
   return (
     <>
       <StampCard
-        color="blue"
-        icon="users"
-        header={
-          <Link to="/" onClick={handleFormOpen}>
-            <small>Create new team</small>
-          </Link>
-        }
-        footer={"Ahoy! Create a new team"}
+        color="green"
+        icon={activeTeamInSeason ? "anchor" : "users"}
+        header={<CardHeader />}
+        footer={cardFooterText}
       />
       {isFormOpen && (
         <form onSubmit={submitTeamCreate}>
