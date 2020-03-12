@@ -63,6 +63,18 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		return nil, errcode.ErrGetChallengeValidation.Wrap(err)
 	}
 
+	// FIXME: only redump the validated instance
+	for _, instance := range challengeSubscription.SeasonChallenge.Instances {
+		err = svc.db.Model(&instance).
+			Update(pwdb.ChallengeInstance{
+				Status: pwdb.ChallengeInstance_NeedRedump,
+			}).
+			Error
+		if err != nil {
+			return nil, errcode.ErrAgentUpdateState.Wrap(err)
+		}
+	}
+
 	ret := ChallengeSubscriptionValidate_Output{ChallengeValidation: &validation}
 	return &ret, nil
 }
