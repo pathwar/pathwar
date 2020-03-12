@@ -21,5 +21,6 @@ func (svc *service) AgentUpdateState(ctx context.Context, in *AgentUpdateState_I
 		}
 	}
 
-	return nil, errcode.ErrNotImplemented
+	ret := &AgentUpdateState_Output{}
+	return ret, nil
 }

@@ -816,6 +816,7 @@ func globalPreRun() error {
 			return errcode.ErrInitTracer.Wrap(err)
 		}
 		tracer = zipkinot.Wrap(nativeTracer)
+		opentracing.SetGlobalTracer(tracer)
 	}
 	return nil
 }

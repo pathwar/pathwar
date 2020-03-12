@@ -22,7 +22,7 @@ func Example() {
 	//   admin    admin commands
 	//
 	// FLAGS
-	//   -bearer-secretkey ...    bearer.sh secret key
-	//   -debug false             debug mode
-	//   -opentracing-server ...  optional opentracing server endpoint
+	//   -bearer-secretkey ...  bearer.sh secret key
+	//   -debug false           debug mode
+	//   -zipkin-endpoint ...   optional opentracing server
 }

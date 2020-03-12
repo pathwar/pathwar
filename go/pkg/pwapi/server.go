@@ -20,6 +20,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/oklog/run"
 	opentracing "github.com/opentracing/opentracing-go"
+	"github.com/opentracing/opentracing-go/ext"
 	"github.com/rs/cors"
 	"github.com/soheilhy/cmux"
 	chilogger "github.com/treastech/logger"
@@ -208,19 +209,56 @@ func httpServer(ctx context.Context, serverListenerAddr string, opts ServerOpts)
 	r.Use(middleware.Timeout(opts.RequestTimeout))
 	r.Use(middleware.RealIP)
 	r.Use(middleware.RequestID)
-	gwmux := runtime.NewServeMux(
+
+	runtimeMux := runtime.NewServeMux(
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, &gateway.JSONPb{
 			EmitDefaults: false,
 			Indent:       "  ",
 			OrigName:     true,
 		}),
 		runtime.WithProtoErrorHandler(runtime.DefaultHTTPProtoErrorHandler),
+		runtime.WithIncomingHeaderMatcher(incomingHeaderMatcherFunc),
 	)
-	grpcOpts := []grpc.DialOption{grpc.WithInsecure()}
-	err := RegisterServiceHandlerFromEndpoint(ctx, gwmux, serverListenerAddr, grpcOpts)
+	var gwmux http.Handler = runtimeMux
+	dialOpts := []grpc.DialOption{grpc.WithInsecure()}
+	if opts.Tracer != nil {
+		var grpcGatewayTag = opentracing.Tag{Key: string(ext.Component), Value: "grpc-gateway"}
+		tracingWrapper := func(h http.Handler) http.Handler {
+			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				parentSpanContext, err := opts.Tracer.Extract(
+					opentracing.HTTPHeaders,
+					opentracing.HTTPHeadersCarrier(r.Header),
+				)
+				if err == nil || err == opentracing.ErrSpanContextNotFound {
+					serverSpan := opts.Tracer.StartSpan(
+						"ServeHTTP",
+						ext.RPCServerOption(parentSpanContext),
+						grpcGatewayTag,
+					)
+					r = r.WithContext(opentracing.ContextWithSpan(r.Context(), serverSpan))
+					defer serverSpan.Finish()
+				}
+				fmt.Println(r.Context())
+				h.ServeHTTP(w, r)
+			})
+		}
+		gwmux = tracingWrapper(gwmux)
+
+		dialOpts = append(dialOpts,
+			grpc.WithStreamInterceptor(
+				grpc_opentracing.StreamClientInterceptor(
+					grpc_opentracing.WithTracer(opts.Tracer))),
+			grpc.WithUnaryInterceptor(
+				grpc_opentracing.UnaryClientInterceptor(
+					grpc_opentracing.WithTracer(opts.Tracer))),
+		)
+	}
+
+	err := RegisterServiceHandlerFromEndpoint(ctx, runtimeMux, serverListenerAddr, dialOpts)
 	if err != nil {
 		return nil, errcode.ErrServerRegisterGateway.Wrap(err)
 	}
+
 	r.Mount("/", gwmux)
 	if opts.WithPprof {
 		r.HandleFunc("/debug/pprof/*", pprof.Index)
