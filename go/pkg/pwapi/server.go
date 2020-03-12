@@ -3,9 +3,11 @@ package pwapi
 import (
 	"context"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 	"net/http/pprof"
+	"runtime/debug"
 	"strings"
 	"time"
 
@@ -26,6 +28,8 @@ import (
 	chilogger "github.com/treastech/logger"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"pathwar.land/v2/go/pkg/errcode"
 )
 
@@ -159,12 +163,15 @@ func grpcServer(svc Service, opts ServerOpts) (*grpc.Server, error) {
 	authFunc := func(context.Context) (context.Context, error) {
 		return nil, errcode.ErrNotImplemented
 	}
-	serverStreamOpts := []grpc.StreamServerInterceptor{
-		grpc_recovery.StreamServerInterceptor(),
+	recoveryOpts := []grpc_recovery.Option{}
+	if opts.Logger.Check(zap.DebugLevel, "") != nil {
+		recoveryOpts = append(recoveryOpts, grpc_recovery.WithRecoveryHandlerContext(func(ctx context.Context, p interface{}) error {
+			log.Println("stacktrace from panic: \n" + string(debug.Stack()))
+			return status.Errorf(codes.Internal, "recover: %s", p)
+		}))
 	}
-	serverUnaryOpts := []grpc.UnaryServerInterceptor{
-		grpc_recovery.UnaryServerInterceptor(),
-	}
+	serverStreamOpts := []grpc.StreamServerInterceptor{grpc_recovery.StreamServerInterceptor(recoveryOpts...)}
+	serverUnaryOpts := []grpc.UnaryServerInterceptor{grpc_recovery.UnaryServerInterceptor(recoveryOpts...)}
 	if opts.Tracer != nil {
 		tracingOpts := []grpc_opentracing.Option{grpc_opentracing.WithTracer(opts.Tracer)}
 		serverStreamOpts = append(serverStreamOpts, grpc_opentracing.StreamServerInterceptor(tracingOpts...))
@@ -174,15 +181,19 @@ func grpcServer(svc Service, opts ServerOpts) (*grpc.Server, error) {
 		grpc_auth.StreamServerInterceptor(authFunc),
 		//grpc_ctxtags.StreamServerInterceptor(),
 		grpc_zap.StreamServerInterceptor(logger),
-		grpc_recovery.StreamServerInterceptor(),
 	)
 	serverUnaryOpts = append(
 		serverUnaryOpts,
 		grpc_auth.UnaryServerInterceptor(authFunc),
 		//grpc_ctxtags.UnaryServerInterceptor(),
 		grpc_zap.UnaryServerInterceptor(logger),
-		grpc_recovery.UnaryServerInterceptor(),
 	)
+	if opts.Logger.Check(zap.DebugLevel, "") != nil {
+		serverStreamOpts = append(serverStreamOpts, grpcServerStreamInterceptor())
+		serverUnaryOpts = append(serverUnaryOpts, grpcServerUnaryInterceptor())
+	}
+	serverStreamOpts = append(serverStreamOpts, grpc_recovery.StreamServerInterceptor(recoveryOpts...))
+	serverUnaryOpts = append(serverUnaryOpts, grpc_recovery.UnaryServerInterceptor(recoveryOpts...))
 	grpcServer := grpc.NewServer(
 		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(serverStreamOpts...)),
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(serverUnaryOpts...)),
@@ -190,6 +201,26 @@ func grpcServer(svc Service, opts ServerOpts) (*grpc.Server, error) {
 	RegisterServiceServer(grpcServer, svc)
 
 	return grpcServer, nil
+}
+
+func grpcServerStreamInterceptor() grpc.StreamServerInterceptor {
+	return func(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+		err := handler(srv, stream)
+		if err != nil {
+			log.Printf("%+v", err)
+		}
+		return err
+	}
+}
+
+func grpcServerUnaryInterceptor() grpc.UnaryServerInterceptor {
+	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+		ret, err := handler(ctx, req)
+		if err != nil {
+			log.Printf("%+v", err)
+		}
+		return ret, err
+	}
 }
 
 func httpServer(ctx context.Context, serverListenerAddr string, opts ServerOpts) (*http.Server, error) {
