@@ -13,5 +13,5 @@ RUN             make install
 
 # runtime
 FROM devago/docker-compose
-COPY --from=builder /bin/pathwar /bin/
+COPY --from=builder /go/bin/pathwar /bin/
 ENTRYPOINT ["/bin/pathwar"]
