@@ -52,7 +52,6 @@ const (
 	defaultAgentTokenFile  = "pathwar_agent_oauth_token.json"
 	defaultAdminTokenFile  = "pathwar_admin_oauth_token.json"
 	defaultHTTPApiAddr     = "https://api-dev.pathwar.land"
-	defaultAgentName       = "localhost"
 )
 
 var (
@@ -149,7 +148,11 @@ func main() {
 	agentFlags.StringVar(&ssoClientSecret, "sso-clientsecret", defaultSSOClientSecret, "SSO ClientSecret")
 	agentFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
 	agentFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultAgentTokenFile, "Token file")
-	agentFlags.StringVar(&agentName, "agent-name", defaultAgentName, "Agent Name")
+	hostname, _ := os.Hostname()
+	if hostname == "" {
+		hostname = "dev"
+	}
+	agentFlags.StringVar(&agentName, "agent-name", hostname, "Agent Name")
 	agentFlags.StringVar(&agentDomainSuffix, "nginx-domain-suffix", "local", "Domain suffix to append")
 	agentFlags.StringVar(&agentNginxDockerImage, "docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
 	agentFlags.StringVar(&agentDomainSuffix, "domain-suffix", "local", "Domain suffix to append")
