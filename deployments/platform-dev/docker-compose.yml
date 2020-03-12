@@ -88,16 +88,18 @@ services:
   forestadmin:
     image: pathwar/forestadmin:latest
     environment:
+      # specific to prod
+      - VIRTUAL_HOST=admin-dev.pathwar.land
+      - VIRTUAL_PORT=3310
+      - APPLICATION_HOST=admin-dev.pathwar.land
       - APPLICATION_PORT=3310
       - DATABASE_URL=mysql://$MYSQL_USER:$MYSQL_PASSWORD@db:3306/pathwar
       - DATABASE_SSL=false
+      # loaded from .env
       - FOREST_AUTH_SECRET
       - FOREST_ENV_SECRET
-    ports:
-      - "3310:3310"
-    volumes:
-      - ../../tool/forestadmin/:/usr/src/app
     networks:
+      - service-proxy
       - internal
 
 volumes:
