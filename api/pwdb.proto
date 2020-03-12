@@ -46,6 +46,7 @@ message ChallengeFlavor {
   Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
   int64 challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   repeated SeasonChallenge season_challenges = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false;foreignkey:FlavorID\""];
+  repeated ChallengeInstance instances = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false;foreignkey:FlavorID\""];
   //repeated ChallengeSubscription subscriptions = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 
   enum Driver {
@@ -92,6 +93,10 @@ message ChallengeInstance {
   ChallengeFlavor flavor = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:FlavorID\""];
   int64 flavor_id = 203 [(gogoproto.customname) = "FlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 
+  /// non-db fields
+
+  string nginx_url = 250 [(gogoproto.moretags) = "gorm:\"-\"", (gogoproto.customname) = "NginxURL"];
+
   enum Status {
     Unknown = 0;
     IsNew = 1;           // instance freshly created and never started before
@@ -123,6 +128,7 @@ message Agent {
   int32 times_registered = 112;
   google.protobuf.Timestamp last_registration_at = 113 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp last_seen_at = 114 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  string auth_salt = 115;
   // FIXME: capabilities
   // FIXME: metrics -> cpu/memory/containers/etc
 

@@ -9,17 +9,14 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
-	"strings"
 	"text/template"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
-	"github.com/martinlindhe/base36"
 	"github.com/moby/moby/pkg/stdcopy"
 	"go.uber.org/zap"
-	"golang.org/x/crypto/sha3"
 	"pathwar.land/v2/go/pkg/errcode"
 	"pathwar.land/v2/go/pkg/pwapi"
 	"pathwar.land/v2/go/pkg/pwcompose"
@@ -211,7 +208,7 @@ func genNginxConfig(apiInstances *pwapi.AgentListInstances_Output, containersInf
 	for idx, upstream := range config.Upstreams {
 		upstream.Hashes = make([]string, len(upstream.AllowedUsers))
 		for j, userID := range upstream.AllowedUsers {
-			hash, err := generatePrefixHash(upstream.InstanceID, userID, opts.Salt)
+			hash, err := pwdb.ChallengeInstancePrefixHash(upstream.InstanceID, userID, opts.AuthSalt)
 			if err != nil {
 				return nil, errcode.ErrGeneratePrefixHash.Wrap(err)
 			}
@@ -379,22 +376,6 @@ func nginxSendCommand(ctx context.Context, cli *client.Client, nginxContainerID 
 	}
 
 	return nil
-}
-
-func generatePrefixHash(instanceID string, userID int64, salt string) (string, error) {
-	stringToHash := fmt.Sprintf("%s%d%s", instanceID, userID, salt)
-	hashBytes := make([]byte, 8)
-	hasher := sha3.NewShake256()
-	_, err := hasher.Write([]byte(stringToHash))
-	if err != nil {
-		return "", errcode.ErrWriteBytesToHashBuilder.Wrap(err)
-	}
-	_, err = hasher.Read(hashBytes)
-	if err != nil {
-		return "", errcode.ErrReadBytesFromHashBuilder.Wrap(err)
-	}
-	userHash := strings.ToLower(base36.EncodeBytes(hashBytes))[:8] // we voluntarily expect short hashes here
-	return userHash, nil
 }
 
 type nginxConfig struct {
