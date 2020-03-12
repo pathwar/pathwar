@@ -762,7 +762,7 @@ func main() {
 				HostPort:          agentHostPort,
 				DomainSuffix:      agentDomainSuffix,
 				ModeratorPassword: agentModeratorPassword,
-				Salt:              agentSalt,
+				AuthSalt:          agentSalt,
 				ForceRecreate:     agentForceRecreate,
 				NginxDockerImage:  agentNginxDockerImage,
 				Cleanup:           agentClean,

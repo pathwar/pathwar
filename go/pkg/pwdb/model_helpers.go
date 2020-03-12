@@ -3,6 +3,10 @@ package pwdb
 import (
 	"fmt"
 	"strings"
+
+	"github.com/martinlindhe/base36"
+	"golang.org/x/crypto/sha3"
+	"pathwar.land/v2/go/pkg/errcode"
 )
 
 func newOfficialChallengeWithFlavor(name string, homepage string, composeBundle string) *ChallengeFlavor {
@@ -41,4 +45,20 @@ func (a *Agent) TagSlice() []string {
 
 func (cf ChallengeFlavor) NameAndVersion() string {
 	return fmt.Sprintf("%s@%s", cf.Challenge.Name, cf.Version)
+}
+
+func ChallengeInstancePrefixHash(instanceID string, userID int64, salt string) (string, error) {
+	stringToHash := fmt.Sprintf("%s%d%s", instanceID, userID, salt)
+	hashBytes := make([]byte, 8)
+	hasher := sha3.NewShake256()
+	_, err := hasher.Write([]byte(stringToHash))
+	if err != nil {
+		return "", errcode.ErrWriteBytesToHashBuilder.Wrap(err)
+	}
+	_, err = hasher.Read(hashBytes)
+	if err != nil {
+		return "", errcode.ErrReadBytesFromHashBuilder.Wrap(err)
+	}
+	userHash := strings.ToLower(base36.EncodeBytes(hashBytes))[:8] // we voluntarily expect short hashes here
+	return userHash, nil
 }

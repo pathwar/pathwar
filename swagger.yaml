@@ -97,6 +97,8 @@ definitions:
     properties:
       arch:
         type: string
+      auth_salt:
+        type: string
       domain_suffix:
         type: string
       hostname:
@@ -395,6 +397,8 @@ definitions:
     properties:
       arch:
         type: string
+      auth_salt:
+        type: string
       challenge_instances:
         items:
           $ref: '#/definitions/dbChallengeInstance'
@@ -501,6 +505,10 @@ definitions:
       id:
         format: int64
         type: string
+      instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
       is_draft:
         format: boolean
         type: boolean
@@ -548,6 +556,8 @@ definitions:
         type: string
       last_stopped_at:
         format: date-time
+        type: string
+      nginx_url:
         type: string
       redump_count:
         format: int32

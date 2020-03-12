@@ -37,6 +37,7 @@ func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) 
 	agent.NginxPort = in.NginxPort
 	agent.Metadata = in.Metadata
 	agent.DomainSuffix = in.DomainSuffix
+	agent.AuthSalt = in.AuthSalt
 	agent.Status = pwdb.Agent_Active
 	now := time.Now()
 	agent.LastRegistrationAt = &now
