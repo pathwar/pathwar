@@ -81,6 +81,7 @@ var (
 	agentNginxDockerImage    string
 	agentRunOnce             bool
 	agentSalt                string
+	agentNoRun               bool
 	apiDBURN                 string
 	bearerSecretKey          string
 	composeDownKeepVolumes   bool
@@ -141,6 +142,7 @@ func main() {
 
 	agentFlags.BoolVar(&agentClean, "clean", false, "remove all pathwar instances before executing")
 	agentFlags.BoolVar(&agentRunOnce, "once", false, "run once and don't start daemon loop")
+	agentFlags.BoolVar(&agentNoRun, "no-run", false, "stop after agent initialization (register and cleanup)")
 	agentFlags.DurationVar(&agentLoopDelay, "delay", 10*time.Second, "delay between each loop iteration")
 	agentFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
 	agentFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
@@ -685,6 +687,7 @@ func main() {
 				NginxDockerImage:  agentNginxDockerImage,
 				Cleanup:           agentClean,
 				RunOnce:           agentRunOnce,
+				NoRun:             agentNoRun,
 				LoopDelay:         agentLoopDelay,
 				Name:              agentName,
 				Logger:            logger,

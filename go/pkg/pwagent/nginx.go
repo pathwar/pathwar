@@ -362,9 +362,13 @@ func nginxSendCommand(ctx context.Context, cli *client.Client, nginxContainerID 
 	}
 
 	if len(stderr) > 0 {
-		logger.Debug("exec finished with stderr", zap.String("stderr", string(stderr)))
+		logger.Debug("exec finished with stderr",
+			zap.Strings("args", args),
+			zap.String("stderr", string(stderr)),
+		)
 	}
 	logger.Debug("exec finished",
+		zap.Strings("args", args),
 		zap.String("stdout", string(stdout)),
 		zap.Int("exit-code", inspect.ExitCode),
 		zap.Bool("running", inspect.Running),

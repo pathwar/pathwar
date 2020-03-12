@@ -116,8 +116,13 @@ message Agent {
   string arch = 105;
   string version = 106;
   string tags = 107;
-  google.protobuf.Timestamp last_registration_at = 108 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  google.protobuf.Timestamp last_seen_at = 109 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  string domain_suffix = 108;
+  int32 nginx_port = 109;
+  string metadata = 110;
+  int32 times_seen = 111;
+  int32 times_registered = 112;
+  google.protobuf.Timestamp last_registration_at = 113 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  google.protobuf.Timestamp last_seen_at = 114 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   // FIXME: capabilities
   // FIXME: metrics -> cpu/memory/containers/etc
 

@@ -77,10 +77,17 @@ definitions:
     properties:
       arch:
         type: string
+      domain_suffix:
+        type: string
       hostname:
+        type: string
+      metadata:
         type: string
       name:
         type: string
+      nginx_port:
+        format: int32
+        type: integer
       os:
         type: string
       tags:
@@ -375,6 +382,8 @@ definitions:
       created_at:
         format: date-time
         type: string
+      domain_suffix:
+        type: string
       err_msg:
         type: string
       hostname:
@@ -388,14 +397,25 @@ definitions:
       last_seen_at:
         format: date-time
         type: string
+      metadata:
+        type: string
       name:
         type: string
+      nginx_port:
+        format: int32
+        type: integer
       os:
         type: string
       status:
         $ref: '#/definitions/dbAgentStatus'
       tags:
         type: string
+      times_registered:
+        format: int32
+        type: integer
+      times_seen:
+        format: int32
+        type: integer
       updated_at:
         format: date-time
         type: string
