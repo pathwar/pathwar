@@ -3,25 +3,20 @@ package pwapi
 import (
 	"context"
 
-	"go.uber.org/zap"
 	"pathwar.land/v2/go/pkg/errcode"
 	"pathwar.land/v2/go/pkg/pwdb"
 )
 
 func (svc *service) AgentListInstances(ctx context.Context, in *AgentListInstances_Input) (*AgentListInstances_Output, error) {
-	token, err := tokenFromContext(ctx)
-	if err != nil {
-		return nil, errcode.ErrUnauthenticated.Wrap(err)
+	if !isAgentContext(ctx) {
+		return nil, errcode.ErrRestrictedArea
 	}
-	svc.logger.Debug("token", zap.Any("token", token))
-
 	if in == nil || in.AgentName == "" {
 		return nil, errcode.ErrMissingInput
 	}
-	// FIXME: check if client is agent OR admin
 
 	var agent pwdb.Agent
-	err = svc.db.
+	err := svc.db.
 		Where(&pwdb.Agent{
 			Status: pwdb.Agent_Active,
 			Name:   in.AgentName,

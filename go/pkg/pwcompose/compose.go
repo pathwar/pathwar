@@ -33,7 +33,7 @@ const (
 	serviceOrigin         = labelPrefix + "origin"
 	challengeNameLabel    = labelPrefix + "challenge-name"
 	challengeVersionLabel = labelPrefix + "challenge-version"
-	instanceKeyLabel      = labelPrefix + "instance-key"
+	InstanceKeyLabel      = labelPrefix + "instance-key"
 )
 
 const (
@@ -212,7 +212,7 @@ func Up(ctx context.Context, preparedCompose string, instanceKey string, forceRe
 		}
 		service.ContainerName = fmt.Sprintf("%s.%s.%s.%s", challengeName, serviceName, imageHash, instanceKey)
 		service.Restart = "unless-stopped"
-		service.Labels[instanceKeyLabel] = instanceKey
+		service.Labels[InstanceKeyLabel] = instanceKey
 		preparedComposeStruct.Services[name] = service
 		if challengeID == "" {
 			challengeID = service.ChallengeID()
@@ -597,7 +597,7 @@ func GetContainersInfo(ctx context.Context, cli *client.Client) (*ContainersInfo
 			}
 			challengeFlavor.Name = c.Labels[challengeNameLabel]
 			challengeFlavor.Version = c.Labels[challengeVersionLabel]
-			challengeFlavor.InstanceKey = c.Labels[instanceKeyLabel]
+			challengeFlavor.InstanceKey = c.Labels[InstanceKeyLabel]
 			containersInfo.RunningFlavors[flavor] = challengeFlavor
 		}
 		containersInfo.RunningFlavors[flavor].Containers[c.ID] = c

@@ -9,6 +9,7 @@ Dockerfile
 .dockerignore
 .gitignore
 node_modules
+web/node_modules
 out/
 package-lock.json
 test/

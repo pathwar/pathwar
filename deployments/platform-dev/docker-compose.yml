@@ -86,9 +86,7 @@ services:
       - internal
 
   forestadmin:
-    build:
-      context: ../../tool/forestadmin
-      dockerfile: Dockerfile
+    image: pathwar/forestadmin:latest
     environment:
       - APPLICATION_PORT=3310
       - DATABASE_URL=mysql://$MYSQL_USER:$MYSQL_PASSWORD@db:3306/pathwar
