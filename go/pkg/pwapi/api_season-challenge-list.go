@@ -27,19 +27,22 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 		return nil, errcode.ErrUserHasNoTeamForSeason.Wrap(err)
 	}
 
-	var ret SeasonChallengeList_Output
+	var seasonChallenges []*pwdb.SeasonChallenge
 	err = svc.db.
-		Preload("Season").
+		//Preload("Season").
 		Preload("Flavor").
 		Preload("Flavor.Challenge").
 		Preload("Subscriptions", "team_id = ?", team.ID).
-		Preload("Subscriptions.Validations").
+		//Preload("Subscriptions.Validations").
 		Where(pwdb.SeasonChallenge{SeasonID: in.SeasonID}).
-		Find(&ret.Items).
+		Find(&seasonChallenges).
 		Error
 	if err != nil {
 		return nil, errcode.ErrGetSeasonChallenges.Wrap(err)
 	}
 
+	ret := SeasonChallengeList_Output{
+		Items: seasonChallenges,
+	}
 	return &ret, nil
 }
