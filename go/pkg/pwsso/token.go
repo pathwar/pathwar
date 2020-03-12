@@ -1,6 +1,7 @@
 package pwsso
 
 import (
+	"fmt"
 	time "time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -104,7 +105,12 @@ func ClaimsFromToken(token *jwt.Token) *Claims {
 		claims.ActionToken.Iss = v.(string)
 	}
 	if v := mc["aud"]; v != nil {
-		claims.ActionToken.Aud = v.(string)
+		switch typed := v.(type) {
+		case string:
+			claims.ActionToken.Aud = typed
+		default:
+			claims.ActionToken.Aud = fmt.Sprintf("%v", typed)
+		}
 	}
 	if v := mc["asid"]; v != nil {
 		claims.ActionToken.Asid = v.(string)
