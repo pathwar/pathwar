@@ -30,6 +30,12 @@ func (c HTTPClient) AgentListInstances(input *AgentListInstances_Input) (AgentLi
 	return result, err
 }
 
+func (c HTTPClient) AgentRegister(input *AgentRegister_Input) (AgentRegister_Output, error) {
+	var result AgentRegister_Output
+	err := c.doPost("/agent/register", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) AgentUpdateState(input *AgentUpdateState_Input) (AgentUpdateState_Output, error) {
 	var result AgentUpdateState_Output
 	err := c.doPost("/agent/update-state", input, &result)

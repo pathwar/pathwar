@@ -129,6 +129,9 @@ message AgentRegister {
     string arch = 4 [(gogoproto.moretags) = "url:\"arch\""];
     string version = 5 [(gogoproto.moretags) = "url:\"version\""];
     repeated string tags = 6 [(gogoproto.moretags) = "url:\"tags\""];
+    string domain_suffix = 7 [(gogoproto.moretags) = "url:\"domain_suffix\""];
+    string metadata = 8 [(gogoproto.moretags) = "url:\"metadata\""];
+    int32 nginx_port = 9 [(gogoproto.moretags) = "url:\"nginx_port\""];
     // FIXME: capabilities
   }
   message Output {

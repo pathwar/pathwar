@@ -19,6 +19,7 @@ type Opts struct {
 	RunOnce           bool
 	LoopDelay         time.Duration
 	Name              string
+	NoRun             bool
 
 	Logger *zap.Logger
 }
