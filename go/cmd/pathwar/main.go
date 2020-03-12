@@ -20,6 +20,11 @@ import (
 	_ "github.com/go-sql-driver/mysql" // required by gorm
 	"github.com/jinzhu/gorm"
 	"github.com/oklog/run"
+	opentracing "github.com/opentracing/opentracing-go"
+	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
+	zipkin "github.com/openzipkin/zipkin-go"
+	"github.com/openzipkin/zipkin-go/model"
+	reporterhttp "github.com/openzipkin/zipkin-go/reporter/http"
 	"github.com/peterbourgon/ff"
 	"github.com/peterbourgon/ff/ffcli"
 	"go.uber.org/zap"
@@ -51,7 +56,9 @@ const (
 )
 
 var (
-	logger     *zap.Logger
+	logger *zap.Logger
+	tracer opentracing.Tracer
+
 	flagOutput = os.Stderr
 
 	// flag vars
@@ -86,6 +93,7 @@ var (
 	composeUpForceRecreate   bool
 	composeUpInstanceKey     string
 	httpAPIAddr              string
+	zipkinEndpoint           string
 	serverBind               string
 	serverCORSAllowedOrigins string
 	serverRequestTimeout     time.Duration
@@ -128,6 +136,7 @@ func main() {
 	)
 	globalFlags.SetOutput(flagOutput) // used in main_test.go
 	globalFlags.BoolVar(&globalDebug, "debug", false, "debug mode")
+	globalFlags.StringVar(&zipkinEndpoint, "zipkin-endpoint", "", "optional opentracing server")
 	globalFlags.StringVar(&bearerSecretKey, "bearer-secretkey", "", "bearer.sh secret key")
 
 	agentFlags.BoolVar(&agentClean, "clean", false, "remove all pathwar instances before executing")
@@ -238,6 +247,7 @@ func main() {
 						RequestTimeout:     serverRequestTimeout,
 						ShutdownTimeout:    serverShutdownTimeout,
 						WithPprof:          serverWithPprof,
+						Tracer:             tracer,
 					}
 					var err error
 					server, err = pwapi.NewServer(ctx, svc, opts)
@@ -789,6 +799,24 @@ func globalPreRun() error {
 		if err != nil {
 			return errcode.ErrInitLogger.Wrap(err)
 		}
+	}
+	if zipkinEndpoint != "" {
+		reporter := reporterhttp.NewReporter(zipkinEndpoint)
+		localEndpoint := &model.Endpoint{ServiceName: "pathwar"}
+		sampler, err := zipkin.NewCountingSampler(1)
+		if err != nil {
+			return errcode.ErrInitTracer.Wrap(err)
+		}
+		nativeTracer, err := zipkin.NewTracer(
+			reporter,
+			zipkin.WithSampler(sampler),
+			zipkin.WithLocalEndpoint(localEndpoint),
+		)
+		if err != nil {
+			return errcode.ErrInitTracer.Wrap(err)
+		}
+		tracer = zipkinot.Wrap(nativeTracer)
+		opentracing.SetGlobalTracer(tracer)
 	}
 	return nil
 }

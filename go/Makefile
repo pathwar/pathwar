@@ -25,10 +25,6 @@ include ../rules.mk  # see https://github.com/moul/rules.mk
 	mkdir -p out
 	GOOS=linux GOARCH=amd64 $(GO) build -mod=readonly -o $@ ./cmd/pwinit
 
-##
-## mysql
-##
-
 MYSQL_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
 
 .PHONY: up
@@ -57,7 +53,7 @@ mysql.down:
 
 .PHONY: mysql.logs
 mysql.logs:
-	docker-compose logs -f mysql
+	docker-compose logs --tail=1000 -f mysql
 
 .PHONY: mysql.shell
 mysql.shell:
@@ -67,9 +63,18 @@ mysql.shell:
 mysql.dump:
 	mysqldump $(MYSQL_CONFIG) pathwar
 
-.PHONY: packr
-packr:
-	cd pkg/pwinit && packr2
+.PHONY: zipkin.up
+zipkin.up:
+	docker-compose $(COMPOSE_OPTS) up -d zipkin
+
+.PHONY: zipkin.logs
+zipkin.logs:
+	docker-compose $(COMPOSE_OPTS) logs --tail=1000 -f zipkin
+
+.PHONY: zipkin.down
+zipkin.down:
+	docker-compose $(COMPOSE_OPTS) stop zipkin || true
+	docker-compose $(COMPOSE_OPTS) rm -f -v zipkin || true
 
 ##
 ## generate
@@ -110,3 +115,7 @@ generate_local:
 .PHONY: clean
 clean:
 	rm -f gen.sum $(wildcard */*/*.pb.go */*/*.pb.gw.go) $(wildcard out/*) $(wildcard */*/packrd/*) $(wildcard */*/*-packr.go)
+
+.PHONY: packr
+packr:
+	cd pkg/pwinit && packr2

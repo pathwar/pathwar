@@ -20,7 +20,6 @@ import (
 	"github.com/moby/moby/pkg/stdcopy"
 	"go.uber.org/zap"
 	"golang.org/x/crypto/sha3"
-	"moul.io/godev"
 	"pathwar.land/v2/go/pkg/errcode"
 	"pathwar.land/v2/go/pkg/pwapi"
 	"pathwar.land/v2/go/pkg/pwcompose"
@@ -49,9 +48,9 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
-	if logger.Check(zap.DebugLevel, "") != nil {
+	/*if logger.Check(zap.DebugLevel, "") != nil {
 		fmt.Fprintln(os.Stderr, "config", godev.PrettyJSON(config))
-	}
+	}*/
 
 	// configure nginx binary
 	buf, err := buildNginxConfigTar(config, logger)
@@ -77,7 +76,7 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 	if err != nil {
 		return errcode.ErrNginxSendCommandReloadConfig.Wrap(err)
 	}
-	if logger.Check(zap.DebugLevel, "") != nil {
+	/*if logger.Check(zap.DebugLevel, "") != nil {
 		for _, upstream := range config.Upstreams {
 			fmt.Fprintf(os.Stderr, "- %s\n", upstream.Name)
 			for _, hash := range upstream.Hashes {
@@ -85,7 +84,7 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 			}
 
 		}
-	}
+	}*/
 
 	return nil
 }
@@ -236,9 +235,9 @@ func buildNginxConfigTar(config *nginxConfig, logger *zap.Logger) (*bytes.Buffer
 	}
 	configBytes := configBuf.Bytes()
 
-	if logger.Check(zap.DebugLevel, "") != nil {
+	/* if logger.Check(zap.DebugLevel, "") != nil {
 		fmt.Fprintln(os.Stderr, string(configBytes))
-	}
+	}*/
 
 	var buf bytes.Buffer
 	tw := tar.NewWriter(&buf)

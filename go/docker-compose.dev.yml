@@ -8,3 +8,7 @@ services:
   mysql:
     ports:
       - 3306:3306
+
+  zipkin:
+    ports:
+      - 9411:9411

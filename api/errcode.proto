@@ -162,6 +162,7 @@ enum ErrCode {
   ErrConfigureDB = 6013;
   ErrInitSSOClient = 6014;
   ErrInitService = 6015;
+  ErrInitTracer = 6016;
 
   //// Pathwar Agent (starting at 7001)
 

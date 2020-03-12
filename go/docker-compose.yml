@@ -38,6 +38,11 @@ services:
       MYSQL_USER: pathwar
       MYSQL_PASSWORD: uns3cur3
 
+  zipkin:
+    image: openzipkin/zipkin-slim:latest
+    ports:
+      - 9411
+
   mailserver:
     image: mailhog/mailhog
     restart: unless-stopped
