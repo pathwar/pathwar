@@ -19,11 +19,11 @@ logs:
 
 .PHONY: auth
 auth:
-	docker-compose run --rm agent-dev --debug agent --once
+	docker-compose run --rm agent-dev --debug agent --no-run
 
 .PHONY: clean
 clean:
-	docker-compose run --rm agent-dev --debug agent --once --clean
+	docker-compose run --rm agent-dev --debug agent --no-run --clean
 
 .PHONY: nginx-config
 nginx-config:
@@ -33,3 +33,7 @@ nginx-config:
 fclean:
 	docker kill `docker ps -q`
 	docker system prune -f
+
+.PHONY: agent-ps
+agent-ps:
+	docker-compose run --rm agent-dev --debug composez ps

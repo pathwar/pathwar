@@ -11,6 +11,7 @@ WORKDIR         /go/src/pathwar.land/go
 RUN             make packr
 RUN             make install
 
-# FROM devago/docker-compose
+# runtime
+FROM devago/docker-compose
 COPY --from=builder /bin/pathwar /bin/
 ENTRYPOINT ["/bin/pathwar"]
