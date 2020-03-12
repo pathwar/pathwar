@@ -29,7 +29,7 @@
     "gatsby-source-filesystem": "^2.1.5",
     "gatsby-transformer-sharp": "^2.2.4",
     "js-cookie": "^2.2.0",
-    "keycloak-js": "^6.0.1",
+    "keycloak-js": "^9.0.0",
     "object-assign": "4.1.1",
     "path": "^0.12.7",
     "prop-types": "^15.6.1",
