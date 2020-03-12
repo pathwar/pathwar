@@ -61,50 +61,55 @@ var (
 	flagOutput = os.Stderr
 
 	// flag vars
-	globalDebug              bool
-	addChallengeName         string
-	addChallengeDescription  string
-	addChallengeAuthor       string
-	addChallengeLocale       string
-	addChallengeIsDraft      bool
-	addChallengePreviewURL   string
-	addChallengeHomepage     string
-	agentClean               bool
-	agentDomainSuffix        string
-	agentForceRecreate       bool
-	agentHostIP              string
-	agentHostPort            string
-	agentLoopDelay           time.Duration
-	agentModeratorPassword   string
-	agentName                string
-	agentNginxDockerImage    string
-	agentRunOnce             bool
-	agentSalt                string
-	agentNoRun               bool
-	apiDBURN                 string
-	bearerSecretKey          string
-	composeDownKeepVolumes   bool
-	composeDownRemoveImages  bool
-	composeDownWithNginx     bool
-	composePSDepth           int
-	composePrepareNoPush     bool
-	composePreparePrefix     string
-	composePrepareVersion    string
-	composeUpForceRecreate   bool
-	composeUpInstanceKey     string
-	httpAPIAddr              string
-	zipkinEndpoint           string
-	serverBind               string
-	serverCORSAllowedOrigins string
-	serverRequestTimeout     time.Duration
-	serverShutdownTimeout    time.Duration
-	serverWithPprof          bool
-	ssoAllowUnsafe           bool
-	ssoClientID              string
-	ssoClientSecret          string
-	ssoPubkey                string
-	ssoRealm                 string
-	ssoTokenFile             string
+	addChallengeAuthor              string
+	addChallengeDescription         string
+	addChallengeFlavorChallengeID   int64
+	addChallengeFlavorComposeBundle string
+	addChallengeFlavorVersion       string
+	addChallengeHomepage            string
+	addChallengeInstanceAgentID     int64
+	addChallengeInstanceFlavorID    int64
+	addChallengeIsDraft             bool
+	addChallengeLocale              string
+	addChallengeName                string
+	addChallengePreviewURL          string
+	agentClean                      bool
+	agentDomainSuffix               string
+	agentForceRecreate              bool
+	agentHostIP                     string
+	agentHostPort                   string
+	agentLoopDelay                  time.Duration
+	agentModeratorPassword          string
+	agentName                       string
+	agentNginxDockerImage           string
+	agentNoRun                      bool
+	agentRunOnce                    bool
+	agentSalt                       string
+	apiDBURN                        string
+	bearerSecretKey                 string
+	composeDownKeepVolumes          bool
+	composeDownRemoveImages         bool
+	composeDownWithNginx            bool
+	composePSDepth                  int
+	composePrepareNoPush            bool
+	composePreparePrefix            string
+	composePrepareVersion           string
+	composeUpForceRecreate          bool
+	composeUpInstanceKey            string
+	globalDebug                     bool
+	httpAPIAddr                     string
+	serverBind                      string
+	serverCORSAllowedOrigins        string
+	serverRequestTimeout            time.Duration
+	serverShutdownTimeout           time.Duration
+	serverWithPprof                 bool
+	ssoAllowUnsafe                  bool
+	ssoClientID                     string
+	ssoClientSecret                 string
+	ssoPubkey                       string
+	ssoRealm                        string
+	ssoTokenFile                    string
+	zipkinEndpoint                  string
 )
 
 func main() {
@@ -118,21 +123,23 @@ func main() {
 
 	// setup flags
 	var (
-		globalFlags            = flag.NewFlagSet("pathwar", flag.ExitOnError)
-		agentFlags             = flag.NewFlagSet("agent", flag.ExitOnError)
-		apiFlags               = flag.NewFlagSet("api", flag.ExitOnError)
-		composeDownFlags       = flag.NewFlagSet("compose down", flag.ExitOnError)
-		composeFlags           = flag.NewFlagSet("compose", flag.ExitOnError)
-		composePSFlags         = flag.NewFlagSet("compose ps", flag.ExitOnError)
-		composePrepareFlags    = flag.NewFlagSet("compose prepare", flag.ExitOnError)
-		composeUpFlags         = flag.NewFlagSet("compose up", flag.ExitOnError)
-		miscFlags              = flag.NewFlagSet("misc", flag.ExitOnError)
-		serverFlags            = flag.NewFlagSet("server", flag.ExitOnError)
-		ssoFlags               = flag.NewFlagSet("sso", flag.ExitOnError)
-		adminFlags             = flag.NewFlagSet("admin", flag.ExitOnError)
-		adminPSFlags           = flag.NewFlagSet("admin ps", flag.ExitOnError)
-		adminRedumpFlags       = flag.NewFlagSet("admin redump", flag.ExitOnError)
-		adminChallengeAddFlags = flag.NewFlagSet("admin challenge add", flag.ExitOnError)
+		globalFlags                    = flag.NewFlagSet("pathwar", flag.ExitOnError)
+		agentFlags                     = flag.NewFlagSet("agent", flag.ExitOnError)
+		apiFlags                       = flag.NewFlagSet("api", flag.ExitOnError)
+		composeDownFlags               = flag.NewFlagSet("compose down", flag.ExitOnError)
+		composeFlags                   = flag.NewFlagSet("compose", flag.ExitOnError)
+		composePSFlags                 = flag.NewFlagSet("compose ps", flag.ExitOnError)
+		composePrepareFlags            = flag.NewFlagSet("compose prepare", flag.ExitOnError)
+		composeUpFlags                 = flag.NewFlagSet("compose up", flag.ExitOnError)
+		miscFlags                      = flag.NewFlagSet("misc", flag.ExitOnError)
+		serverFlags                    = flag.NewFlagSet("server", flag.ExitOnError)
+		ssoFlags                       = flag.NewFlagSet("sso", flag.ExitOnError)
+		adminFlags                     = flag.NewFlagSet("admin", flag.ExitOnError)
+		adminPSFlags                   = flag.NewFlagSet("admin ps", flag.ExitOnError)
+		adminRedumpFlags               = flag.NewFlagSet("admin redump", flag.ExitOnError)
+		adminChallengeAddFlags         = flag.NewFlagSet("admin challenge add", flag.ExitOnError)
+		adminChallengeFlavorAddFlags   = flag.NewFlagSet("admin challenge flavor add", flag.ExitOnError)
+		adminChallengeInstanceAddFlags = flag.NewFlagSet("admin challenge instance add", flag.ExitOnError)
 	)
 	globalFlags.SetOutput(flagOutput) // used in main_test.go
 	globalFlags.BoolVar(&globalDebug, "debug", false, "debug mode")
@@ -171,6 +178,13 @@ func main() {
 	adminChallengeAddFlags.BoolVar(&addChallengeIsDraft, "is-draft", true, "Is challenge production ready ?")
 	adminChallengeAddFlags.StringVar(&addChallengePreviewURL, "preview-url", "", "Challenge preview URL")
 	adminChallengeAddFlags.StringVar(&addChallengeHomepage, "homepage", "", "Challenge homepage URL")
+
+	adminChallengeFlavorAddFlags.StringVar(&addChallengeFlavorVersion, "version", "1.0.0", "Challenge flavor version")
+	adminChallengeFlavorAddFlags.StringVar(&addChallengeFlavorComposeBundle, "compose-bundle", "", "Challenge flavor compose bundle")
+	adminChallengeFlavorAddFlags.Int64Var(&addChallengeFlavorChallengeID, "challenge-id", 0, "Challenge id")
+
+	adminChallengeInstanceAddFlags.Int64Var(&addChallengeInstanceAgentID, "agent-id", 0, "Id of the agent that will host the instance")
+	adminChallengeInstanceAddFlags.Int64Var(&addChallengeInstanceFlavorID, "flavor-id", 0, "Challenge flavor id")
 
 	apiFlags.BoolVar(&ssoAllowUnsafe, "sso-unsafe", false, "Allow unsafe SSO")
 	apiFlags.StringVar(&apiDBURN, "urn", defaultDBURN, "MySQL URN")
@@ -643,6 +657,69 @@ func main() {
 						IsDraft:     addChallengeIsDraft,
 						PreviewUrl:  addChallengePreviewURL,
 						Homepage:    addChallengeHomepage,
+					},
+				})
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				fmt.Println("OK")
+
+				return nil
+			},
+		}, {
+			Name:      "challenge-flavor-add",
+			Usage:     "pathwar [global flags] admin [admin flags] challenge-flavor-add [flags] [args...]",
+			ShortHelp: "add a challenge flavor",
+			FlagSet:   adminChallengeFlavorAddFlags,
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				ctx := context.Background()
+				apiClient, err := httpClientFromEnv(ctx)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				input := &pwapi.AdminChallengeFlavorAdd_Input{
+					ChallengeFlavor: &pwdb.ChallengeFlavor{
+						Version:       addChallengeFlavorVersion,
+						ComposeBundle: addChallengeFlavorComposeBundle,
+						ChallengeID:   addChallengeFlavorChallengeID,
+					},
+				}
+
+				_, err = apiClient.AdminAddChallengeFlavor(input)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				fmt.Println("OK")
+
+				return nil
+			},
+		}, {
+			Name:      "challenge-instance-add",
+			Usage:     "pathwar [global flags] admin [admin flags] challenge-instance-add [flags] [args...]",
+			ShortHelp: "add a challenge instance",
+			FlagSet:   adminChallengeInstanceAddFlags,
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				ctx := context.Background()
+				apiClient, err := httpClientFromEnv(ctx)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				_, err = apiClient.AdminAddChallengeInstance(&pwapi.AdminChallengeInstanceAdd_Input{
+					ChallengeInstance: &pwdb.ChallengeInstance{
+						AgentID:  addChallengeInstanceAgentID,
+						FlavorID: addChallengeInstanceFlavorID,
 					},
 				})
 				if err != nil {

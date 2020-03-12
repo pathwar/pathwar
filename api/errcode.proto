@@ -140,6 +140,8 @@ enum ErrCode {
   ErrCouponNotFound = 4063;
   ErrUserDoesNotBelongToTeam = 4064;
   ErrInactiveAgent = 4065;
+  ErrChallengeFlavorAdd = 4066;
+  ErrChallengeInstanceAdd = 4067;
 
   //// Pathwar Server (starting at 5001)
 

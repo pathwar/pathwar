@@ -60,6 +60,18 @@ func (c HTTPClient) AdminAddChallenge(input *AdminChallengeAdd_Input) (AdminChal
 	return result, err
 }
 
+func (c HTTPClient) AdminAddChallengeFlavor(input *AdminChallengeFlavorAdd_Input) (AdminChallengeFlavorAdd_Output, error) {
+	var result AdminChallengeFlavorAdd_Output
+	err := c.doPost("/admin/challenge-flavor-add", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminAddChallengeInstance(input *AdminChallengeInstanceAdd_Input) (AdminChallengeInstanceAdd_Output, error) {
+	var result AdminChallengeInstanceAdd_Output
+	err := c.doPost("/admin/challenge-instance-add", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) doPost(path string, input, output proto.Message) error {
 	marshaler := jsonpb.Marshaler{}
 	inputString, err := marshaler.MarshalToString(input)

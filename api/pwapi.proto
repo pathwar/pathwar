@@ -85,6 +85,8 @@ service Service {
   rpc AdminPS(AdminPS.Input) returns (AdminPS.Output) { option (google.api.http) = {get: "/admin/ps"}; }; // admin only
   rpc AdminRedump(AdminRedump.Input) returns (AdminRedump.Output) { option (google.api.http) = {post: "/admin/redump"; body: "*"}; }; // admin only
   rpc AdminChallengeAdd(AdminChallengeAdd.Input) returns (AdminChallengeAdd.Output) { option (google.api.http) = {post: "/admin/challenge-add"; body: "*"}; }; // admin only
+  rpc AdminChallengeFlavorAdd(AdminChallengeFlavorAdd.Input) returns (AdminChallengeFlavorAdd.Output) { option (google.api.http) = {post: "/admin/challenge-flavor-add"; body: "*"}; }; // admin only
+  rpc AdminChallengeInstanceAdd(AdminChallengeInstanceAdd.Input) returns (AdminChallengeInstanceAdd.Output) { option (google.api.http) = {post: "/admin/challenge-instance-add"; body: "*"}; }; // admin only
 }
 
 //
@@ -111,6 +113,24 @@ message AdminChallengeAdd {
   }
   message Output {
     pathwar.db.Challenge challenge = 1;
+  }
+}
+
+message AdminChallengeFlavorAdd {
+  message Input {
+    pathwar.db.ChallengeFlavor challengeFlavor = 1;
+  }
+  message Output {
+    pathwar.db.ChallengeFlavor challengeFlavor = 1;
+  }
+}
+
+message AdminChallengeInstanceAdd {
+  message Input {
+    pathwar.db.ChallengeInstance challengeInstance = 1;
+  }
+  message Output {
+    pathwar.db.ChallengeInstance challengeInstance = 1;
   }
 }
 
@@ -150,7 +170,7 @@ message AgentListInstances {
 
 message AgentUpdateState {
   message Input {
-    repeated pathwar.db.ChallengeInstance instances = 1 [(gogoproto.moretags) = "url:\"instances\""];;
+    repeated pathwar.db.ChallengeInstance instances = 1 [(gogoproto.moretags) = "url:\"instances\""];
     // FIXME: metrics
     // FIXME: global state
   }

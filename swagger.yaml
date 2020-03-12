@@ -43,6 +43,26 @@ definitions:
       challenge:
         $ref: '#/definitions/dbChallenge'
     type: object
+  apiAdminChallengeFlavorAddInput:
+    properties:
+      challengeFlavor:
+        $ref: '#/definitions/dbChallengeFlavor'
+    type: object
+  apiAdminChallengeFlavorAddOutput:
+    properties:
+      challengeFlavor:
+        $ref: '#/definitions/dbChallengeFlavor'
+    type: object
+  apiAdminChallengeInstanceAddInput:
+    properties:
+      challengeInstance:
+        $ref: '#/definitions/dbChallengeInstance'
+    type: object
+  apiAdminChallengeInstanceAddOutput:
+    properties:
+      challengeInstance:
+        $ref: '#/definitions/dbChallengeInstance'
+    type: object
   apiAdminPSOutput:
     properties:
       instances:
@@ -1389,6 +1409,64 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiAdminChallengeAddOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/challenge-flavor-add:
+    post:
+      operationId: AdminChallengeFlavorAdd
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminChallengeFlavorAddInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminChallengeFlavorAddOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/challenge-instance-add:
+    post:
+      operationId: AdminChallengeInstanceAdd
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminChallengeInstanceAddInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminChallengeInstanceAddOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.
