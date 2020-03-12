@@ -74,7 +74,7 @@ service Service {
 
   rpc AgentRegister(AgentRegister.Input) returns (AgentRegister.Output) { option (google.api.http) = {post: "/agent/register"; body: "*"}; }; // agent only
   rpc AgentListInstances(AgentListInstances.Input) returns (AgentListInstances.Output) { option (google.api.http) = {get: "/agent/list-instances"}; }; // agent only
-  rpc AgentUpdateState(AgentUpdateState.Input) returns (AgentUpdateState.Output) { option (google.api.http) = {get: "/agent/update-state"}; }; // agent only
+  rpc AgentUpdateState(AgentUpdateState.Input) returns (AgentUpdateState.Output) { option (google.api.http) = {post: "/agent/update-state"}; }; // agent only
   rpc AgentList(AgentList.Input) returns (AgentList.Output); // admin only
   // rpc AgentEventSubscribe(AgentEventSubscribe.Input) returns (stream AgentEventSubscribe.Output);
 
@@ -84,6 +84,7 @@ service Service {
 
   rpc AdminPS(AdminPS.Input) returns (AdminPS.Output) { option (google.api.http) = {get: "/admin/ps"}; }; // admin only
   rpc AdminRedump(AdminRedump.Input) returns (AdminRedump.Output) { option (google.api.http) = {post: "/admin/redump"; body: "*"}; }; // admin only
+  rpc AdminChallengeAdd(AdminChallengeAdd.Input) returns (AdminChallengeAdd.Output) { option (google.api.http) = {post: "/admin/challenge-add"; body: "*"}; }; // admin only
 }
 
 //
@@ -101,6 +102,15 @@ message AdminPS {
   message Input {}
   message Output {
     repeated pathwar.db.ChallengeInstance instances = 1;
+  }
+}
+
+message AdminChallengeAdd {
+  message Input {
+    pathwar.db.Challenge challenge = 1;
+  }
+  message Output {
+    pathwar.db.Challenge challenge = 1;
   }
 }
 
@@ -137,8 +147,7 @@ message AgentListInstances {
 
 message AgentUpdateState {
   message Input {
-    string message = 1 [(gogoproto.moretags) = "url:\"message\""];
-    repeated pathwar.db.ChallengeInstance instances = 2 [(gogoproto.moretags) = "url:\"instances\""];;
+    repeated pathwar.db.ChallengeInstance instances = 1 [(gogoproto.moretags) = "url:\"instances\""];;
     // FIXME: metrics
     // FIXME: global state
   }

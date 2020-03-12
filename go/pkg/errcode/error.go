@@ -1,10 +1,16 @@
 package errcode
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+
+	"golang.org/x/xerrors"
+)
 
 type WithCode interface {
 	error
 	Code() int32
+	Format(fmt.State, rune)
 }
 
 // Code returns the code of the actual error without trying to unwrap it, or -1.
@@ -74,9 +80,9 @@ func genericCause(err error) error {
 func (e ErrCode) Error() string {
 	name, ok := ErrCode_name[int32(e)]
 	if ok {
-		return fmt.Sprintf("%s(#%d)", name, e)
+		return fmt.Sprintf("%s(#%d)", name, int32(e))
 	}
-	return fmt.Sprintf("UNKNOWN_ERRCODE(#%d)", e)
+	return fmt.Sprintf("UNKNOWN_ERRCODE(#%d)", int32(e))
 }
 
 func (e ErrCode) Code() int32 {
@@ -87,7 +93,17 @@ func (e ErrCode) Wrap(inner error) WithCode {
 	return wrappedError{
 		code:  int32(e),
 		inner: inner,
+		frame: xerrors.Caller(1),
 	}
+}
+
+func (e ErrCode) Format(f fmt.State, c rune) {
+	xerrors.FormatError(e, f, c)
+}
+
+func (e ErrCode) FormatError(p xerrors.Printer) error {
+	p.Print(e.Error())
+	return nil
 }
 
 //
@@ -97,6 +113,7 @@ func (e ErrCode) Wrap(inner error) WithCode {
 type wrappedError struct {
 	code  int32
 	inner error
+	frame xerrors.Frame
 }
 
 func (e wrappedError) Error() string {
@@ -105,6 +122,28 @@ func (e wrappedError) Error() string {
 
 func (e wrappedError) Code() int32 {
 	return e.code
+}
+
+func (e wrappedError) Format(f fmt.State, c rune) {
+	xerrors.FormatError(e, f, c)
+	if f.Flag('+') {
+		_, _ = io.WriteString(f, "\n\n")
+		sub := genericCause(e)
+		if sub != nil {
+			formatter, ok := sub.(fmt.Formatter)
+			if ok {
+				formatter.Format(f, c)
+			}
+		}
+	}
+}
+
+func (e wrappedError) FormatError(p xerrors.Printer) error {
+	p.Print(e.Error())
+	if p.Detail() {
+		e.frame.Format(p)
+	}
+	return nil
 }
 
 // Cause returns the inner error (github.com/pkg/errors)

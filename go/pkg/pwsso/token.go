@@ -44,6 +44,38 @@ func TokenWithClaims(bearer string, pubkey interface{}, allowUnsafe bool) (*jwt.
 	return token, claims, nil
 }
 
+func TokenHasRole(token *jwt.Token, expectedRole string) error {
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return errcode.TODO // Unable to get claims out of JWT token
+	}
+	resources, ok := claims["resource_access"]
+	if !ok {
+		return errcode.TODO // Unable to get resource_access of JWT token claims
+	}
+	clients, ok := resources.(map[string]interface{})
+	if !ok {
+		return errcode.TODO // Unable to get resources out of JWT token claims
+	}
+	for _, clientMap := range clients {
+		client, ok := clientMap.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		roles, ok := client["roles"].([]interface{})
+		if !ok {
+			continue
+		}
+		for _, role := range roles {
+			if role == expectedRole {
+				return nil
+			}
+		}
+	}
+
+	return errcode.TODO // Unable to get expected role from JWT token claims
+}
+
 func SubjectFromToken(token *jwt.Token) string {
 	mc := token.Claims.(jwt.MapClaims)
 	if v := mc["sub"]; v != nil {

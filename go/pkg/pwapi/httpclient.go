@@ -30,6 +30,12 @@ func (c HTTPClient) AgentListInstances(input *AgentListInstances_Input) (AgentLi
 	return result, err
 }
 
+func (c HTTPClient) AgentUpdateState(input *AgentUpdateState_Input) (AgentUpdateState_Output, error) {
+	var result AgentUpdateState_Output
+	err := c.doPost("/agent/update-state", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) AdminRedump(input *AdminRedump_Input) (AdminRedump_Output, error) {
 	var result AdminRedump_Output
 	err := c.doPost("/admin/redump", input, &result)
@@ -39,6 +45,12 @@ func (c HTTPClient) AdminRedump(input *AdminRedump_Input) (AdminRedump_Output, e
 func (c HTTPClient) AdminPS(input *AdminPS_Input) (AdminPS_Output, error) {
 	var result AdminPS_Output
 	err := c.doGet("/admin/ps", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminAddChallenge(input *AdminChallengeAdd_Input) (AdminChallengeAdd_Output, error) {
+	var result AdminChallengeAdd_Output
+	err := c.doPost("/admin/challenge-add", input, &result)
 	return result, err
 }
 

@@ -19,6 +19,7 @@ enum ErrCode {
   ErrInvalidInput = 101;
   ErrMissingInput = 102;
   ErrUnauthenticated = 103;
+  ErrRestrictedArea = 104;
 
   //// Pathwar SSO (starting at 1001)
 
@@ -133,6 +134,11 @@ enum ErrCode {
   ErrGetAgent = 4057;
   ErrSaveAgent = 4058;
   ErrListChallengeInstances = 4059;
+  ErrChallengeAdd = 4060;
+  ErrCouponAlreadyValidatedBySameTeam = 4061;
+  ErrCouponExpired = 4062;
+  ErrCouponNotFound = 4063;
+  ErrUserDoesNotBelongToTeam = 4064;
 
   //// Pathwar Server (starting at 5001)
 
@@ -186,6 +192,7 @@ enum ErrCode {
   ErrParseInitConfig = 7025;
   ErrUpPathwarInstance = 7026;
   ErrUpdateNginx = 7027;
+  ErrAgentUpdateState = 7028;
 
   //// Docker API (starting at 8001)
 

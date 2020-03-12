@@ -10,11 +10,12 @@ import (
 )
 
 func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) (*AgentRegister_Output, error) {
+	if !isAgentContext(ctx) {
+		return nil, errcode.ErrRestrictedArea
+	}
 	if in == nil || in.Name == "" {
 		return nil, errcode.ErrMissingInput
 	}
-
-	// FIXME: check if client is agent
 
 	// check if agent already exists
 	var agent pwdb.Agent

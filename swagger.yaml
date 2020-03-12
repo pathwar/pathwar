@@ -33,6 +33,16 @@ definitions:
     - Unlisted
     - Public
     type: string
+  apiAdminChallengeAddInput:
+    properties:
+      challenge:
+        $ref: '#/definitions/dbChallenge'
+    type: object
+  apiAdminChallengeAddOutput:
+    properties:
+      challenge:
+        $ref: '#/definitions/dbChallenge'
+    type: object
   apiAdminPSOutput:
     properties:
       instances:
@@ -1345,6 +1355,35 @@ info:
   title: Pathwar API
   version: "1.0"
 paths:
+  /admin/challenge-add:
+    post:
+      operationId: AdminChallengeAdd
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminChallengeAddInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminChallengeAddOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
   /admin/ps:
     get:
       operationId: AdminPS
@@ -1455,13 +1494,8 @@ paths:
       tags:
       - Service
   /agent/update-state:
-    get:
+    post:
       operationId: AgentUpdateState
-      parameters:
-      - in: query
-        name: message
-        required: false
-        type: string
       responses:
         "200":
           description: A successful response.
