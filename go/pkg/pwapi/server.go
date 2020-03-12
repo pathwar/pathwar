@@ -16,8 +16,10 @@ import (
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
+	grpc_opentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/oklog/run"
+	opentracing "github.com/opentracing/opentracing-go"
 	"github.com/rs/cors"
 	"github.com/soheilhy/cmux"
 	chilogger "github.com/treastech/logger"
@@ -133,6 +135,7 @@ type ServerOpts struct {
 	RequestTimeout     time.Duration
 	ShutdownTimeout    time.Duration
 	WithPprof          bool
+	Tracer             opentracing.Tracer
 }
 
 func (s *Server) Run() error {
@@ -157,18 +160,28 @@ func grpcServer(svc Service, opts ServerOpts) (*grpc.Server, error) {
 	}
 	serverStreamOpts := []grpc.StreamServerInterceptor{
 		grpc_recovery.StreamServerInterceptor(),
+	}
+	serverUnaryOpts := []grpc.UnaryServerInterceptor{
+		grpc_recovery.UnaryServerInterceptor(),
+	}
+	if opts.Tracer != nil {
+		tracingOpts := []grpc_opentracing.Option{grpc_opentracing.WithTracer(opts.Tracer)}
+		serverStreamOpts = append(serverStreamOpts, grpc_opentracing.StreamServerInterceptor(tracingOpts...))
+		serverUnaryOpts = append(serverUnaryOpts, grpc_opentracing.UnaryServerInterceptor(tracingOpts...))
+	}
+	serverStreamOpts = append(serverStreamOpts,
 		grpc_auth.StreamServerInterceptor(authFunc),
 		//grpc_ctxtags.StreamServerInterceptor(),
 		grpc_zap.StreamServerInterceptor(logger),
 		grpc_recovery.StreamServerInterceptor(),
-	}
-	serverUnaryOpts := []grpc.UnaryServerInterceptor{
-		grpc_recovery.UnaryServerInterceptor(),
+	)
+	serverUnaryOpts = append(
+		serverUnaryOpts,
 		grpc_auth.UnaryServerInterceptor(authFunc),
 		//grpc_ctxtags.UnaryServerInterceptor(),
 		grpc_zap.UnaryServerInterceptor(logger),
 		grpc_recovery.UnaryServerInterceptor(),
-	}
+	)
 	grpcServer := grpc.NewServer(
 		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(serverStreamOpts...)),
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(serverUnaryOpts...)),
