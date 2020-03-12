@@ -13,6 +13,7 @@ const initialState = {
     error: null,
     allSeasons: null,
     activeSeason: null,
+    activeTeamInSeason: null,
     activeTeam: null,
     teamInDetail: null,
     allTeamsOnSeason: null,
@@ -61,9 +62,13 @@ export default function seasonReducer(state = initialState.seasons, action) {
       }
 
     case SET_ACTIVE_TEAM:
+      const { payload: { team } } = action;
+      const { allTeamsOnSeason } = state;
+
       return {
         ...state,
-        activeTeam: action.payload.team
+        activeTeam: team,
+        activeTeamInSeason: allTeamsOnSeason && allTeamsOnSeason.some(item => item.id === team.id)
       }
 
     default:

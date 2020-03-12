@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Keycloak from 'keycloak-js';
+import { Redirect } from '@reach/router';
 import { Dimmer } from "tabler-react";
 import { setKeycloakSession } from '../actions/userSession';
 
@@ -13,16 +14,19 @@ class ProtectedRoute extends React.PureComponent {
         const { setKeycloakSession } = this.props;
         const keycloak = await Keycloak("/keycloak.json");
 
-        keycloak.init({onLoad: 'login-required'}).success(authenticated => {
+        keycloak.init({onLoad: 'login-required', checkLoginIframe: false}).success(authenticated => {
           setKeycloakSession(keycloak, authenticated);
         })
 
     }
 
     render() {
-        const { component: Component, location, userSession, ...rest } = this.props;
+        const { component: Component, userSession, path, to, redirect, ...rest } = this.props;
 
         if (userSession.activeKeycloakSession) {
+          if (redirect) {
+            return <Redirect from={path} to={to} />
+          }
           if (userSession.isAuthenticated) {
             return <Component {...rest} />
           } else return (<h3>Auth error, please try again!</h3>)
