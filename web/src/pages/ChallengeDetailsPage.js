@@ -4,9 +4,12 @@ import PropTypes from "prop-types";
 
 import {
   fetchChallengeDetail as fetchChallengeDetailAction,
-  buyChallenge as buyChallengeAction
+  buyChallenge as buyChallengeAction,
+  validateChallenge as validateChallengeAction
 } from "../actions/seasons";
 import ChallengeBuyStampCard from "../components/challenges/ChallengeBuyStampCard";
+import ChallengeValidateStampCard from "../components/challenges/ChallengeValidateStampCard";
+
 import styles from "./styles/ChallengeDetailsPage.module.css";
 
 import {
@@ -28,6 +31,7 @@ class ChallengeDetailsPage extends React.PureComponent {
           challenge,
           activeTeam: { id: teamID } = { id: "no id" },
           buyChallengeAction,
+          validateChallengeAction
         } = this.props;
 
         const { flavor: { challenge: flavorChallenge } = { challenge: "no challenge" } } = challenge || {};
@@ -57,6 +61,10 @@ class ChallengeDetailsPage extends React.PureComponent {
                       buyChallenge={buyChallengeAction}
                       teamID={teamID}
                     />
+                    <ChallengeValidateStampCard
+                      challenge={challenge}
+                      validateChallenge={validateChallengeAction}
+                    />
                   </Grid.Col>
                 </Grid.Row>
               </Page.Content>
@@ -75,6 +83,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   buyChallengeAction: (challengeID, teamID, seasonId) => buyChallengeAction(challengeID, teamID, seasonId),
+  validateChallengeAction: (validationData, seasonId) => validateChallengeAction(validationData, seasonId),
   fetchChallengeDetailAction: (challengeID) => fetchChallengeDetailAction(challengeID)
 };
 
