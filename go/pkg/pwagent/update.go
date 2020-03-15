@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/docker/docker/client"
-	"moul.io/godev"
 	"pathwar.land/v2/go/pkg/errcode"
 	"pathwar.land/v2/go/pkg/pwapi"
 	"pathwar.land/v2/go/pkg/pwcompose"
@@ -41,7 +40,10 @@ func updateAPIState(ctx context.Context, apiInstances *pwapi.AgentListInstances_
 
 	// FIXME: update state only if it changed
 	input := pwapi.AgentUpdateState_Input{Instances: apiInstances.Instances}
-	fmt.Println(godev.PrettyJSONPB(&input))
+	//if logger.Check(zap.DebugLevel, "") != nil {
+	//	fmt.Println(godev.PrettyJSONPB(&input))
+	//}
+
 	if _, err := apiClient.AgentUpdateState(&input); err != nil {
 		return errcode.TODO.Wrap(err)
 	}

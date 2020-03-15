@@ -85,6 +85,8 @@ service Service {
   rpc AdminPS(AdminPS.Input) returns (AdminPS.Output) { option (google.api.http) = {get: "/admin/ps"}; }; // admin only
   rpc AdminRedump(AdminRedump.Input) returns (AdminRedump.Output) { option (google.api.http) = {post: "/admin/redump"; body: "*"}; }; // admin only
   rpc AdminChallengeAdd(AdminChallengeAdd.Input) returns (AdminChallengeAdd.Output) { option (google.api.http) = {post: "/admin/challenge-add"; body: "*"}; }; // admin only
+  rpc AdminChallengeFlavorAdd(AdminChallengeFlavorAdd.Input) returns (AdminChallengeFlavorAdd.Output) { option (google.api.http) = {post: "/admin/challenge-flavor-add"; body: "*"}; }; // admin only
+  rpc AdminChallengeInstanceAdd(AdminChallengeInstanceAdd.Input) returns (AdminChallengeInstanceAdd.Output) { option (google.api.http) = {post: "/admin/challenge-instance-add"; body: "*"}; }; // admin only
 }
 
 //
@@ -114,6 +116,24 @@ message AdminChallengeAdd {
   }
 }
 
+message AdminChallengeFlavorAdd {
+  message Input {
+    pathwar.db.ChallengeFlavor challengeFlavor = 1;
+  }
+  message Output {
+    pathwar.db.ChallengeFlavor challengeFlavor = 1;
+  }
+}
+
+message AdminChallengeInstanceAdd {
+  message Input {
+    pathwar.db.ChallengeInstance challengeInstance = 1;
+  }
+  message Output {
+    pathwar.db.ChallengeInstance challengeInstance = 1;
+  }
+}
+
 message AgentList {
   message Input {}
   message Output {
@@ -129,6 +149,10 @@ message AgentRegister {
     string arch = 4 [(gogoproto.moretags) = "url:\"arch\""];
     string version = 5 [(gogoproto.moretags) = "url:\"version\""];
     repeated string tags = 6 [(gogoproto.moretags) = "url:\"tags\""];
+    string domain_suffix = 7 [(gogoproto.moretags) = "url:\"domain_suffix\""];
+    string metadata = 8 [(gogoproto.moretags) = "url:\"metadata\""];
+    int32 nginx_port = 9 [(gogoproto.moretags) = "url:\"nginx_port\""];
+    string auth_salt = 10 [(gogoproto.moretags) = "url:\"auth_salt\""];
     // FIXME: capabilities
   }
   message Output {
@@ -147,7 +171,7 @@ message AgentListInstances {
 
 message AgentUpdateState {
   message Input {
-    repeated pathwar.db.ChallengeInstance instances = 1 [(gogoproto.moretags) = "url:\"instances\""];;
+    repeated pathwar.db.ChallengeInstance instances = 1 [(gogoproto.moretags) = "url:\"instances\""];
     // FIXME: metrics
     // FIXME: global state
   }

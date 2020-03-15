@@ -30,6 +30,12 @@ func (c HTTPClient) AgentListInstances(input *AgentListInstances_Input) (AgentLi
 	return result, err
 }
 
+func (c HTTPClient) AgentRegister(input *AgentRegister_Input) (AgentRegister_Output, error) {
+	var result AgentRegister_Output
+	err := c.doPost("/agent/register", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) AgentUpdateState(input *AgentUpdateState_Input) (AgentUpdateState_Output, error) {
 	var result AgentUpdateState_Output
 	err := c.doPost("/agent/update-state", input, &result)
@@ -51,6 +57,18 @@ func (c HTTPClient) AdminPS(input *AdminPS_Input) (AdminPS_Output, error) {
 func (c HTTPClient) AdminAddChallenge(input *AdminChallengeAdd_Input) (AdminChallengeAdd_Output, error) {
 	var result AdminChallengeAdd_Output
 	err := c.doPost("/admin/challenge-add", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminAddChallengeFlavor(input *AdminChallengeFlavorAdd_Input) (AdminChallengeFlavorAdd_Output, error) {
+	var result AdminChallengeFlavorAdd_Output
+	err := c.doPost("/admin/challenge-flavor-add", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminAddChallengeInstance(input *AdminChallengeInstanceAdd_Input) (AdminChallengeInstanceAdd_Output, error) {
+	var result AdminChallengeInstanceAdd_Output
+	err := c.doPost("/admin/challenge-instance-add", input, &result)
 	return result, err
 }
 

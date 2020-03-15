@@ -5,7 +5,6 @@ import {
   GET_ALL_SEASONS_FAILED,
   GET_ALL_SEASON_TEAMS_SUCCESS,
   GET_ALL_SEASON_TEAMS_FAILED,
-  SET_DEFAULT_SEASON,
   SET_ACTIVE_SEASON,
   SET_ACTIVE_SEASON_FAILED,
   FETCH_PREFERENCES_SUCCESS,
@@ -22,7 +21,9 @@ import {
   VALIDATE_CHALLENGE_FAILED,
   CLOSE_CHALLENGE_SUCCESS,
   CLOSE_CHALLENGE_FAILED,
-  SET_ACTIVE_TEAM
+  SET_ACTIVE_TEAM,
+  CREATE_TEAM_SUCCESS,
+  CREATE_TEAM_FAILED
 } from "../constants/actionTypes"
 
 import {
@@ -34,11 +35,13 @@ import {
   getTeamDetails,
   postBuyChallenge,
   postValidateChallenge,
-  postCloseChallenge
+  postCloseChallenge,
+  postCreateTeam
 } from "../api/seasons"
 
 import { fetchUserSession as fetchUserSessionAction } from "./userSession";
 
+//Season main actions
 export const fetchPreferences = (seasonID) => async dispatch => {
   try {
     await postPreferences(seasonID)
@@ -71,13 +74,21 @@ export const setActiveSeason = (seasonData) => async dispatch => {
   }
 }
 
-export const setDefaultSeason = (seasonData) => async dispatch => {
-  dispatch({
-    type: SET_DEFAULT_SEASON,
-    payload: { defaultSeason: seasonData }
-  });
+export const fetchAllSeasons = () => async dispatch => {
+  try {
+    const response = await getAllSeasons();
+    const allSeasons = response.data.items;
+
+    dispatch({
+      type: GET_ALL_SEASONS_SUCCESS,
+      payload: { allSeasons: allSeasons }
+    })
+  } catch (error) {
+    dispatch({ type: GET_ALL_SEASONS_FAILED, payload: { error } });
+  }
 }
 
+//Team actions
 export const fetchAllSeasonTeams = (seasonID) => async dispatch => {
   try {
     const response = await getAllSeasonTeams(seasonID);
@@ -121,20 +132,31 @@ export const setActiveTeam = (teamData) => async dispatch => {
   })
 }
 
-export const fetchAllSeasons = () => async dispatch => {
+export const createTeam = (seasonID, name) => async dispatch => {
   try {
-    const response = await getAllSeasons();
-    const allSeasons = response.data.items;
+    const response = await postCreateTeam(seasonID, name);
 
     dispatch({
-      type: GET_ALL_SEASONS_SUCCESS,
-      payload: { allSeasons: allSeasons }
+      type: CREATE_TEAM_SUCCESS,
+      payload: {
+        team: response.data,
+      }
     })
+
+    toast.success(`Create team ${name} success!`)
+
   } catch (error) {
-    dispatch({ type: GET_ALL_SEASONS_FAILED, payload: { error } });
+    dispatch({
+      type: CREATE_TEAM_FAILED,
+      payload: { error }
+    })
+
+    toast.error(`Create team ERROR!`)
   }
 }
 
+
+//Challenge actions
 export const fetchChallengeDetail = (challengeID) => async dispatch => {
   try {
     const response = await getChallengeDetails(challengeID);

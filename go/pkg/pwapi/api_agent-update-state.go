@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/v2/go/pkg/pwdb"
 )
 
 func (svc *service) AgentUpdateState(ctx context.Context, in *AgentUpdateState_Input) (*AgentUpdateState_Output, error) {
@@ -15,11 +16,16 @@ func (svc *service) AgentUpdateState(ctx context.Context, in *AgentUpdateState_I
 	}
 
 	for _, challengeInstance := range in.Instances {
-		err := svc.db.Model(&challengeInstance).Update("Status", challengeInstance.Status).Error
+		err := svc.db.Model(&challengeInstance).
+			Update(pwdb.ChallengeInstance{
+				Status: challengeInstance.Status,
+			}).
+			Error
 		if err != nil {
 			return nil, errcode.ErrAgentUpdateState.Wrap(err)
 		}
 	}
 
-	return nil, errcode.ErrNotImplemented
+	ret := &AgentUpdateState_Output{}
+	return ret, nil
 }

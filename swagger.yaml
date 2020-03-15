@@ -43,6 +43,26 @@ definitions:
       challenge:
         $ref: '#/definitions/dbChallenge'
     type: object
+  apiAdminChallengeFlavorAddInput:
+    properties:
+      challengeFlavor:
+        $ref: '#/definitions/dbChallengeFlavor'
+    type: object
+  apiAdminChallengeFlavorAddOutput:
+    properties:
+      challengeFlavor:
+        $ref: '#/definitions/dbChallengeFlavor'
+    type: object
+  apiAdminChallengeInstanceAddInput:
+    properties:
+      challengeInstance:
+        $ref: '#/definitions/dbChallengeInstance'
+    type: object
+  apiAdminChallengeInstanceAddOutput:
+    properties:
+      challengeInstance:
+        $ref: '#/definitions/dbChallengeInstance'
+    type: object
   apiAdminPSOutput:
     properties:
       instances:
@@ -77,10 +97,19 @@ definitions:
     properties:
       arch:
         type: string
+      auth_salt:
+        type: string
+      domain_suffix:
+        type: string
       hostname:
+        type: string
+      metadata:
         type: string
       name:
         type: string
+      nginx_port:
+        format: int32
+        type: integer
       os:
         type: string
       tags:
@@ -368,12 +397,16 @@ definitions:
     properties:
       arch:
         type: string
+      auth_salt:
+        type: string
       challenge_instances:
         items:
           $ref: '#/definitions/dbChallengeInstance'
         type: array
       created_at:
         format: date-time
+        type: string
+      domain_suffix:
         type: string
       err_msg:
         type: string
@@ -388,14 +421,25 @@ definitions:
       last_seen_at:
         format: date-time
         type: string
+      metadata:
+        type: string
       name:
         type: string
+      nginx_port:
+        format: int32
+        type: integer
       os:
         type: string
       status:
         $ref: '#/definitions/dbAgentStatus'
       tags:
         type: string
+      times_registered:
+        format: int32
+        type: integer
+      times_seen:
+        format: int32
+        type: integer
       updated_at:
         format: date-time
         type: string
@@ -461,6 +505,10 @@ definitions:
       id:
         format: int64
         type: string
+      instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
       is_draft:
         format: boolean
         type: boolean
@@ -508,6 +556,8 @@ definitions:
         type: string
       last_stopped_at:
         format: date-time
+        type: string
+      nginx_url:
         type: string
       redump_count:
         format: int32
@@ -1369,6 +1419,64 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiAdminChallengeAddOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/challenge-flavor-add:
+    post:
+      operationId: AdminChallengeFlavorAdd
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminChallengeFlavorAddInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminChallengeFlavorAddOutput'
+        "403":
+          description: Returned when the user does not have permission to access the
+            resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/challenge-instance-add:
+    post:
+      operationId: AdminChallengeInstanceAdd
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminChallengeInstanceAddInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminChallengeInstanceAddOutput'
         "403":
           description: Returned when the user does not have permission to access the
             resource.

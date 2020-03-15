@@ -34,9 +34,16 @@ func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) 
 	agent.Arch = in.Arch
 	agent.Version = in.Version
 	agent.Tags = strings.Join(in.Tags, ", ")
+	agent.NginxPort = in.NginxPort
+	agent.Metadata = in.Metadata
+	agent.DomainSuffix = in.DomainSuffix
+	agent.AuthSalt = in.AuthSalt
+	agent.Status = pwdb.Agent_Active
 	now := time.Now()
 	agent.LastRegistrationAt = &now
 	agent.LastSeenAt = &now
+	agent.TimesSeen++
+	agent.TimesRegistered++
 
 	// save last object with updated last_seen etc
 	err = svc.db.Save(&agent).Error

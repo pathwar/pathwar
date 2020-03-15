@@ -139,6 +139,9 @@ enum ErrCode {
   ErrCouponExpired = 4062;
   ErrCouponNotFound = 4063;
   ErrUserDoesNotBelongToTeam = 4064;
+  ErrInactiveAgent = 4065;
+  ErrChallengeFlavorAdd = 4066;
+  ErrChallengeInstanceAdd = 4067;
 
   //// Pathwar Server (starting at 5001)
 
@@ -162,6 +165,7 @@ enum ErrCode {
   ErrConfigureDB = 6013;
   ErrInitSSOClient = 6014;
   ErrInitService = 6015;
+  ErrInitTracer = 6016;
 
   //// Pathwar Agent (starting at 7001)
 

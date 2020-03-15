@@ -112,19 +112,26 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 	//
 
 	localhost := &Agent{
-		Name:     "localhost",
-		Hostname: "localhost",
-		Status:   Agent_Active, // only useful during dev
+		Name:         "localhost",
+		Hostname:     "localhost",
+		Status:       Agent_Active, // only useful during dev
+		DomainSuffix: "local",
+		AuthSalt:     "bluh",
 	}
 	localhost2 := &Agent{
-		Name:     "localhost-2",
-		Hostname: "localhost",
-		Status:   Agent_Active,
+		Name:         "localhost-2",
+		Hostname:     "localhost",
+		Status:       Agent_Active,
+		DomainSuffix: "local",
+		NginxPort:    4242,
+		AuthSalt:     "blah",
 	}
 	localhost3 := &Agent{
-		Name:     "localhost-3",
-		Hostname: "localhost",
-		Status:   Agent_Inactive,
+		Name:         "localhost-3",
+		Hostname:     "localhost",
+		Status:       Agent_Inactive,
+		DomainSuffix: "local",
+		AuthSalt:     "blih",
 	}
 	for _, agent := range []*Agent{localhost, localhost2, localhost3} {
 		err = tx.Create(agent).Error

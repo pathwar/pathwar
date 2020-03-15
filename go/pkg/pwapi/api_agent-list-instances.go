@@ -17,16 +17,18 @@ func (svc *service) AgentListInstances(ctx context.Context, in *AgentListInstanc
 
 	var agent pwdb.Agent
 	err := svc.db.
-		Where(&pwdb.Agent{
-			Status: pwdb.Agent_Active,
-			Name:   in.AgentName,
-		}).
+		Where(&pwdb.Agent{Name: in.AgentName}).
 		First(&agent).
 		Error
 	if err != nil {
 		return nil, errcode.ErrGetAgent.Wrap(err)
 	}
-	// FIXME: update last seen
+
+	if agent.Status != pwdb.Agent_Active {
+		return nil, errcode.ErrInactiveAgent
+	}
+
+	// FIXME: update lastSeen and timesSeen
 
 	var instances []*pwdb.ChallengeInstance
 	err = svc.db.

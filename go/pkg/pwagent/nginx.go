@@ -9,18 +9,14 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
-	"strings"
 	"text/template"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
-	"github.com/martinlindhe/base36"
 	"github.com/moby/moby/pkg/stdcopy"
 	"go.uber.org/zap"
-	"golang.org/x/crypto/sha3"
-	"moul.io/godev"
 	"pathwar.land/v2/go/pkg/errcode"
 	"pathwar.land/v2/go/pkg/pwapi"
 	"pathwar.land/v2/go/pkg/pwcompose"
@@ -49,9 +45,9 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
-	if logger.Check(zap.DebugLevel, "") != nil {
+	/*if logger.Check(zap.DebugLevel, "") != nil {
 		fmt.Fprintln(os.Stderr, "config", godev.PrettyJSON(config))
-	}
+	}*/
 
 	// configure nginx binary
 	buf, err := buildNginxConfigTar(config, logger)
@@ -77,7 +73,7 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 	if err != nil {
 		return errcode.ErrNginxSendCommandReloadConfig.Wrap(err)
 	}
-	if logger.Check(zap.DebugLevel, "") != nil {
+	/*if logger.Check(zap.DebugLevel, "") != nil {
 		for _, upstream := range config.Upstreams {
 			fmt.Fprintf(os.Stderr, "- %s\n", upstream.Name)
 			for _, hash := range upstream.Hashes {
@@ -85,7 +81,7 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 			}
 
 		}
-	}
+	}*/
 
 	return nil
 }
@@ -212,7 +208,7 @@ func genNginxConfig(apiInstances *pwapi.AgentListInstances_Output, containersInf
 	for idx, upstream := range config.Upstreams {
 		upstream.Hashes = make([]string, len(upstream.AllowedUsers))
 		for j, userID := range upstream.AllowedUsers {
-			hash, err := generatePrefixHash(upstream.InstanceID, userID, opts.Salt)
+			hash, err := pwdb.ChallengeInstancePrefixHash(upstream.InstanceID, userID, opts.AuthSalt)
 			if err != nil {
 				return nil, errcode.ErrGeneratePrefixHash.Wrap(err)
 			}
@@ -236,9 +232,9 @@ func buildNginxConfigTar(config *nginxConfig, logger *zap.Logger) (*bytes.Buffer
 	}
 	configBytes := configBuf.Bytes()
 
-	if logger.Check(zap.DebugLevel, "") != nil {
+	/* if logger.Check(zap.DebugLevel, "") != nil {
 		fmt.Fprintln(os.Stderr, string(configBytes))
-	}
+	}*/
 
 	var buf bytes.Buffer
 	tw := tar.NewWriter(&buf)
@@ -363,9 +359,13 @@ func nginxSendCommand(ctx context.Context, cli *client.Client, nginxContainerID 
 	}
 
 	if len(stderr) > 0 {
-		logger.Debug("exec finished with stderr", zap.String("stderr", string(stderr)))
+		logger.Debug("exec finished with stderr",
+			zap.Strings("args", args),
+			zap.String("stderr", string(stderr)),
+		)
 	}
 	logger.Debug("exec finished",
+		zap.Strings("args", args),
 		zap.String("stdout", string(stdout)),
 		zap.Int("exit-code", inspect.ExitCode),
 		zap.Bool("running", inspect.Running),
@@ -376,22 +376,6 @@ func nginxSendCommand(ctx context.Context, cli *client.Client, nginxContainerID 
 	}
 
 	return nil
-}
-
-func generatePrefixHash(instanceID string, userID int64, salt string) (string, error) {
-	stringToHash := fmt.Sprintf("%s%d%s", instanceID, userID, salt)
-	hashBytes := make([]byte, 8)
-	hasher := sha3.NewShake256()
-	_, err := hasher.Write([]byte(stringToHash))
-	if err != nil {
-		return "", errcode.ErrWriteBytesToHashBuilder.Wrap(err)
-	}
-	_, err = hasher.Read(hashBytes)
-	if err != nil {
-		return "", errcode.ErrReadBytesFromHashBuilder.Wrap(err)
-	}
-	userHash := strings.ToLower(base36.EncodeBytes(hashBytes))[:8] // we voluntarily expect short hashes here
-	return userHash, nil
 }
 
 type nginxConfig struct {
