@@ -48,8 +48,6 @@ const ChallengeValidateStampCard = ({
   : hasSubscriptions ? "Validate with a passphrase"
   : "You need to purchase to validate";
 
-  console.log(challenge)
-
   return (
     <>
       <StampCard

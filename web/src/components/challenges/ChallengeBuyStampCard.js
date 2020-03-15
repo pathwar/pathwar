@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Link } from "gatsby"
-import { isEmpty } from "ramda"
-import { StampCard, Form, Button } from "tabler-react"
+import { StampCard } from "tabler-react"
 
 const ChallengeBuyStampCard = ({
   challenge,
@@ -24,8 +23,6 @@ const ChallengeBuyStampCard = ({
     )
 
   const cardFooterText = hasSubscriptions ? "You have this challenge" : "Buy challenge";
-
-  console.log(challenge)
 
   return (
       <StampCard
