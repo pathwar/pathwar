@@ -7,10 +7,10 @@ import {
 
 const initialState = {
   organizations: {
-      fetchingUserOrganizations: null,
-      userOrganizationsList: null,
-      activeOrganization: null,
-      allOrganizationsList: null
+      fetchingUserOrganizations: undefined,
+      userOrganizationsList: undefined,
+      activeOrganization: undefined,
+      allOrganizationsList: undefined
   }
 };
 

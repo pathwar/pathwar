@@ -10,14 +10,14 @@ import {
 
 const initialState = {
   seasons: {
-    error: null,
-    allSeasons: null,
-    activeSeason: null,
-    activeTeamInSeason: null,
-    activeTeam: null,
-    teamInDetail: null,
-    allTeamsOnSeason: null,
-    activeChallenges: null,
+    error: undefined,
+    allSeasons: undefined,
+    activeSeason: undefined,
+    activeTeamInSeason: undefined,
+    activeTeam: undefined,
+    teamInDetail: undefined,
+    allTeamsOnSeason: undefined,
+    activeChallenges: undefined,
     challengeInDetail: undefined,
   }
 };
