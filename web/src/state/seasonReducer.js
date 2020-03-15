@@ -50,9 +50,12 @@ export default function seasonReducer(state = initialState.seasons, action) {
       }
 
     case SET_CHALLENGES_LIST:
+      const { payload: { activeChallenges } } = action;
+      const { challengeInDetail } = state;
       return {
         ...state,
-        activeChallenges: action.payload.activeChallenges
+        activeChallenges: action.payload.activeChallenges,
+        challengeInDetail: activeChallenges && challengeInDetail && activeChallenges.find(item => item.id === challengeInDetail.id)
       };
 
     case GET_TEAM_DETAILS_SUCCESS:

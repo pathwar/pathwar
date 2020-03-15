@@ -2,8 +2,12 @@ import * as React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { fetchChallengeDetail as fetchChallengeDetailAction } from "../actions/seasons"
-import styles from "./styles/ChallengeDetailsPage.module.css"
+import {
+  fetchChallengeDetail as fetchChallengeDetailAction,
+  buyChallenge as buyChallengeAction
+} from "../actions/seasons";
+import ChallengeBuyStampCard from "../components/challenges/ChallengeBuyStampCard";
+import styles from "./styles/ChallengeDetailsPage.module.css";
 
 import {
   Page,
@@ -20,28 +24,38 @@ class ChallengeDetailsPage extends React.PureComponent {
     }
 
     render() {
-        const { challenge: { flavor: { challenge } } = { flavor: "no flavor" } } = this.props;
+        const {
+          challenge,
+          activeTeam: { id: teamID } = { id: "no id" },
+          buyChallengeAction,
+        } = this.props;
+
+        const { flavor: { challenge: flavorChallenge } = { challenge: "no challenge" } } = challenge || {};
 
         if(!challenge) {
           return <Dimmer active />
         }
 
         return (
-            <Page.Content title={challenge.name}>
+            <Page.Content title={flavorChallenge.name}>
                 <Grid.Row cards={true}>
-                  <Grid.Col xs={12} sm={12} lg={6}>
+                  <Grid.Col lg={6} md={6} sm={12} xs={12}>
                     <h4>Name</h4>
-                    <p className={styles.p}>{challenge.name}</p>
+                    <p className={styles.p}>{flavorChallenge.name}</p>
 
                     <h4>Author</h4>
-                    <p className={styles.p}>{challenge.author}</p>
+                    <p className={styles.p}>{flavorChallenge.author}</p>
 
                     <h4>Page</h4>
-                    <p className={styles.p}>{challenge.homepage}</p>
+                    <p className={styles.p}>{flavorChallenge.homepage}</p>
                   </Grid.Col>
-                  <Grid.Col xs={12} sm={12} lg={6}>
+                  <Grid.Col lg={6} md={6} sm={12} xs={12}>
                     <h3>Actions</h3>
-                    <p className={styles.p}>{challenge.name}</p>
+                    <ChallengeBuyStampCard
+                      challenge={challenge}
+                      buyChallenge={buyChallengeAction}
+                      teamID={teamID}
+                    />
                   </Grid.Col>
                 </Grid.Row>
               </Page.Content>
@@ -54,10 +68,12 @@ ChallengeDetailsPage.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  challenge: state.seasons.challengeInDetail
+  challenge: state.seasons.challengeInDetail,
+  activeTeam: state.seasons.activeTeam
 });
 
 const mapDispatchToProps = {
+  buyChallengeAction: (challengeID, teamID, seasonId) => buyChallengeAction(challengeID, teamID, seasonId),
   fetchChallengeDetailAction: (challengeID) => fetchChallengeDetailAction(challengeID)
 };
 

@@ -82,6 +82,7 @@ const ChallengeRow = ({
             value="Buy"
             size="sm"
             color="success"
+            disabled={hasSubscriptions}
             icon={hasSubscriptions ? "check" : "dollar-sign"}
           />
         </Table.Col>
