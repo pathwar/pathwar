@@ -18,7 +18,7 @@ const initialState = {
     teamInDetail: null,
     allTeamsOnSeason: null,
     activeChallenges: null,
-    challengeInDetail: null,
+    challengeInDetail: undefined,
   }
 };
 

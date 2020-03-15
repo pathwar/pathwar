@@ -20,7 +20,7 @@ class ChallengeDetailsPage extends React.PureComponent {
     }
 
     render() {
-        const { challenge } = this.props;
+        const { challenge: { flavor: { challenge } } = { flavor: "no flavor" } } = this.props;
 
         if(!challenge) {
           return <Dimmer active />
@@ -38,6 +38,10 @@ class ChallengeDetailsPage extends React.PureComponent {
 
                     <h4>Page</h4>
                     <p className={styles.p}>{challenge.homepage}</p>
+                  </Grid.Col>
+                  <Grid.Col xs={12} sm={12} lg={6}>
+                    <h3>Actions</h3>
+                    <p className={styles.p}>{challenge.name}</p>
                   </Grid.Col>
                 </Grid.Row>
               </Page.Content>
