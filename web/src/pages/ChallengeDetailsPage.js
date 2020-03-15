@@ -40,6 +40,7 @@ class ChallengeDetailsPage extends React.PureComponent {
             <Page.Content title={flavorChallenge.name}>
                 <Grid.Row cards={true}>
                   <Grid.Col lg={6} md={6} sm={12} xs={12}>
+                    <h3>Info</h3>
                     <h4>Name</h4>
                     <p className={styles.p}>{flavorChallenge.name}</p>
 
