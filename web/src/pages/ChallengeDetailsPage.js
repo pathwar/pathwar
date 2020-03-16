@@ -5,10 +5,12 @@ import PropTypes from "prop-types";
 import {
   fetchChallengeDetail as fetchChallengeDetailAction,
   buyChallenge as buyChallengeAction,
-  validateChallenge as validateChallengeAction
+  validateChallenge as validateChallengeAction,
+  closeChallenge as closeChallengeAction
 } from "../actions/seasons";
 import ChallengeBuyStampCard from "../components/challenges/ChallengeBuyStampCard";
 import ChallengeValidateStampCard from "../components/challenges/ChallengeValidateStampCard";
+import ChallengeCloseStampCard from "../components/challenges/ChallengeCloseStampCard";
 
 import styles from "./styles/ChallengeDetailsPage.module.css";
 
@@ -31,7 +33,8 @@ class ChallengeDetailsPage extends React.PureComponent {
           challenge,
           activeTeam: { id: teamID } = { id: "no id" },
           buyChallengeAction,
-          validateChallengeAction
+          validateChallengeAction,
+          closeChallengeAction
         } = this.props;
 
         const { flavor: { challenge: flavorChallenge } = { challenge: "no challenge" } } = challenge || {};
@@ -65,6 +68,10 @@ class ChallengeDetailsPage extends React.PureComponent {
                       challenge={challenge}
                       validateChallenge={validateChallengeAction}
                     />
+                    <ChallengeCloseStampCard
+                      challenge={challenge}
+                      closeChallenge={closeChallengeAction}
+                    />
                   </Grid.Col>
                 </Grid.Row>
               </Page.Content>
@@ -84,6 +91,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   buyChallengeAction: (challengeID, teamID, seasonId) => buyChallengeAction(challengeID, teamID, seasonId),
   validateChallengeAction: (validationData, seasonId) => validateChallengeAction(validationData, seasonId),
+  closeChallengeAction: subscriptionID => closeChallengeAction(subscriptionID),
   fetchChallengeDetailAction: (challengeID) => fetchChallengeDetailAction(challengeID)
 };
 

@@ -8,8 +8,7 @@ import styles from "../../styles/layout/loader.module.css"
 
 import {
   buyChallenge as buyChallengeAction,
-  validateChallenge as validateChallengeAction,
-  closeChallenge as closeChallengeAction,
+  validateChallenge as validateChallengeAction
 } from "../../actions/seasons"
 
 const ChallengeRow = ({
@@ -17,8 +16,7 @@ const ChallengeRow = ({
   teamId,
   seasonId,
   buyChallenge,
-  validateChallenge,
-  closeChallenge
+  validateChallenge
 }) => {
   const [isValidateOpen, setValidateOpen] = useState(false)
   const [formData, setFormData] = useState({ passphrase: "", comment: "" })
@@ -44,10 +42,6 @@ const ChallengeRow = ({
       ...formData,
       [event.target.name]: event.target.value,
     })
-  }
-
-  const closeChallengeHandle = () => {
-    closeChallenge(subscription.id);
   }
 
   return (
@@ -101,16 +95,6 @@ const ChallengeRow = ({
         <Table.Col className="w-1">
           <Button value="Github page" social="github" size="sm" />
         </Table.Col>
-        <Table.Col className="w-1">
-          <Button
-            onClick={closeChallengeHandle}
-            disabled={!hasSubscriptions || !subscriptionHasValidations}
-            value="Close"
-            size="sm"
-            color="danger"
-            icon="x-circle"
-          />
-        </Table.Col>
       </Table.Row>
       {isValidateOpen && (
         <Table.Row>
@@ -147,8 +131,7 @@ const ChallengeTable = ({
   teamId,
   seasonId,
   buyChallenge,
-  validateChallenge,
-  closeChallenge,
+  validateChallenge
 }) => {
   return (
     <Table
@@ -166,7 +149,6 @@ const ChallengeTable = ({
           <Table.ColHeader>Buy</Table.ColHeader>
           <Table.ColHeader />
           <Table.ColHeader>Page</Table.ColHeader>
-          <Table.ColHeader>Close</Table.ColHeader>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -177,7 +159,6 @@ const ChallengeTable = ({
               challenge={challenge}
               buyChallenge={buyChallenge}
               validateChallenge={validateChallenge}
-              closeChallenge={closeChallenge}
               teamId={teamId}
               seasonId={seasonId}
             />
@@ -193,8 +174,7 @@ const ChallengeCardPreview = props => {
     challenges,
     activeUserSession,
     buyChallengeAction,
-    validateChallengeAction,
-    closeChallengeAction,
+    validateChallengeAction
   } = props
   const { active_team_member, active_season_id } =
     (activeUserSession && activeUserSession.user) || {}
@@ -207,7 +187,6 @@ const ChallengeCardPreview = props => {
         challenges={challenges}
         buyChallenge={buyChallengeAction}
         validateChallenge={validateChallengeAction}
-        closeChallenge={closeChallengeAction}
         teamId={active_team_member.team_id}
         seasonId={active_season_id}
       />
@@ -230,8 +209,7 @@ const mapDispatchToProps = {
   buyChallengeAction: (challengeID, teamID, seasonId) =>
     buyChallengeAction(challengeID, teamID, seasonId),
   validateChallengeAction: (validationData, seasonId) =>
-    validateChallengeAction(validationData, seasonId),
-  closeChallengeAction: subscriptionID => closeChallengeAction(subscriptionID),
+    validateChallengeAction(validationData, seasonId)
 }
 
 export default connect(

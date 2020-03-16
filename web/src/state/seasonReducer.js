@@ -1,3 +1,5 @@
+import { clone, update, findIndex, propEq } from "ramda";
+
 import {
   GET_ALL_SEASONS_SUCCESS,
   SET_ACTIVE_SEASON,
@@ -5,7 +7,8 @@ import {
   SET_CHALLENGES_LIST,
   GET_CHALLENGE_DETAILS_SUCCESS,
   GET_TEAM_DETAILS_SUCCESS,
-  SET_ACTIVE_TEAM
+  SET_ACTIVE_TEAM,
+  CLOSE_CHALLENGE_SUCCESS
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -23,6 +26,7 @@ const initialState = {
 };
 
 export default function seasonReducer(state = initialState.seasons, action) {
+  const { challengeInDetail, allTeamsOnSeason } = state;
 
   switch (action.type) {
     case GET_ALL_SEASONS_SUCCESS:
@@ -51,7 +55,6 @@ export default function seasonReducer(state = initialState.seasons, action) {
 
     case SET_CHALLENGES_LIST:
       const { payload: { activeChallenges } } = action;
-      const { challengeInDetail } = state;
       return {
         ...state,
         activeChallenges: action.payload.activeChallenges,
@@ -66,12 +69,26 @@ export default function seasonReducer(state = initialState.seasons, action) {
 
     case SET_ACTIVE_TEAM:
       const { payload: { team } } = action;
-      const { allTeamsOnSeason } = state;
 
       return {
         ...state,
         activeTeam: team,
         activeTeamInSeason: allTeamsOnSeason && allTeamsOnSeason.some(item => item.id === team.id)
+      }
+
+    case CLOSE_CHALLENGE_SUCCESS:
+      const { payload: { subscription: { challenge_subscription } } } = action;
+
+      const challengeInDetailClone = clone(challengeInDetail);
+      const { subscriptions } = challengeInDetailClone;
+
+      const subscriptionIndex = findIndex(propEq("id", challenge_subscription.id))(subscriptions);
+      const updatedSubscriptions = update(subscriptionIndex, challenge_subscription, subscriptions);
+      challengeInDetailClone.subscriptions = updatedSubscriptions;
+
+      return {
+        ...state,
+        challengeInDetail: challengeInDetailClone
       }
 
     default:

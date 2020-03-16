@@ -227,7 +227,7 @@ export const closeChallenge = (subscriptionID) => async dispatch => {
     const response = await postCloseChallenge(subscriptionID);
     dispatch({
       type: CLOSE_CHALLENGE_SUCCESS,
-      payload: { data: response.data }
+      payload: { subscription: response.data }
     });
 
     toast.success(`Close challenge success!`)
