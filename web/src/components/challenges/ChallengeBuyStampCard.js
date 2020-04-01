@@ -11,7 +11,7 @@ const ChallengeBuyStampCard = ({
 
   const handleBuyChallenge = async event => {
     event.preventDefault();
-    await buyChallenge(challenge.id, teamID, challenge.season_id);
+    await buyChallenge(challenge.id, teamID);
   }
 
   const CardHeader = () => hasSubscriptions ? (

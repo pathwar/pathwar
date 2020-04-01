@@ -72,7 +72,7 @@ const ChallengeRow = ({
         </Table.Col>
         <Table.Col className="w-1">
           <Button
-            onClick={() => buyChallenge(challenge.id, teamId, seasonId)}
+            onClick={() => buyChallenge(challenge.id, teamId)}
             value="Buy"
             size="sm"
             color="success"
