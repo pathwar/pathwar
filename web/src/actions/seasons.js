@@ -193,9 +193,11 @@ export const buyChallenge = (challengeID, teamID, seasonId) => async dispatch =>
       payload: { challengeSubscription: subscription }
     });
 
-    dispatch(fetchChallenges(seasonId)).then(() =>{
-        toast.success(`Buy challenge ${challenge.name} success!`)
-    });
+    toast.success(`Buy challenge ${challenge.name} success!`)
+
+    // dispatch(fetchChallenges(seasonId)).then(() =>{
+    //     toast.success(`Buy challenge ${challenge.name} success!`)
+    // });
   } catch (error) {
     dispatch({ type: BUY_CHALLENGE_FAILED, payload: { error } });
     toast.error(`Buy challenge ERROR!`)

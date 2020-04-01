@@ -8,7 +8,8 @@ import {
   GET_CHALLENGE_DETAILS_SUCCESS,
   GET_TEAM_DETAILS_SUCCESS,
   SET_ACTIVE_TEAM,
-  CLOSE_CHALLENGE_SUCCESS
+  CLOSE_CHALLENGE_SUCCESS,
+  BUY_CHALLENGE_SUCCESS
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -26,7 +27,7 @@ const initialState = {
 };
 
 export default function seasonReducer(state = initialState.seasons, action) {
-  const { challengeInDetail, allTeamsOnSeason } = state;
+  const { challengeInDetail, allTeamsOnSeason, activeChallenges: activeChallengesInState } = state;
 
   switch (action.type) {
     case GET_ALL_SEASONS_SUCCESS:
@@ -74,6 +75,25 @@ export default function seasonReducer(state = initialState.seasons, action) {
         ...state,
         activeTeam: team,
         activeTeamInSeason: allTeamsOnSeason && allTeamsOnSeason.some(item => item.id === team.id)
+      }
+
+    case BUY_CHALLENGE_SUCCESS:
+      const { payload: { challengeSubscription } } = action;
+
+      const buyedChallenge = activeChallengesInState.find(item => item.id === challengeSubscription.season_challenge_id);
+
+      if (buyedChallenge.subscriptions) {
+        buyedChallenge.subscriptions = [...buyedChallenge.subscriptions, challengeSubscription];
+      } else {
+        buyedChallenge.subscriptions = [challengeSubscription];
+      }
+
+      const challengeIndex = findIndex(propEq("id", buyedChallenge.id))(activeChallengesInState);
+      const updatedChallenges = update(challengeIndex, buyedChallenge, activeChallengesInState);
+
+      return {
+        ...state,
+        activeChallenges: updatedChallenges
       }
 
     case CLOSE_CHALLENGE_SUCCESS:
