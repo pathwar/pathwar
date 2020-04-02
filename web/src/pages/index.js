@@ -36,7 +36,7 @@ export default ({ data }) => {
 
       <div className={styles.content}>
         <div><Img fixed={logo} alt="Pathwar Logo" /></div>
-        <p>{description}</p>
+        <p className="p">{description}</p>
         <h2>COMING SOON..</h2>
       </div>
     </div>

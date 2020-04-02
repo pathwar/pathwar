@@ -1,3 +1,5 @@
+import { clone, update, findIndex, propEq } from "ramda";
+
 import {
   GET_ALL_SEASONS_SUCCESS,
   SET_ACTIVE_SEASON,
@@ -5,24 +7,27 @@ import {
   SET_CHALLENGES_LIST,
   GET_CHALLENGE_DETAILS_SUCCESS,
   GET_TEAM_DETAILS_SUCCESS,
-  SET_ACTIVE_TEAM
+  SET_ACTIVE_TEAM,
+  CLOSE_CHALLENGE_SUCCESS,
+  BUY_CHALLENGE_SUCCESS
 } from '../constants/actionTypes';
 
 const initialState = {
   seasons: {
-    error: null,
-    allSeasons: null,
-    activeSeason: null,
-    activeTeamInSeason: null,
-    activeTeam: null,
-    teamInDetail: null,
-    allTeamsOnSeason: null,
-    activeChallenges: null,
-    challengeInDetail: null,
+    error: undefined,
+    allSeasons: undefined,
+    activeSeason: undefined,
+    activeTeamInSeason: undefined,
+    activeTeam: undefined,
+    teamInDetail: undefined,
+    allTeamsOnSeason: undefined,
+    activeChallenges: undefined,
+    challengeInDetail: undefined,
   }
 };
 
 export default function seasonReducer(state = initialState.seasons, action) {
+  const { challengeInDetail, allTeamsOnSeason, activeChallenges: activeChallengesInState } = state;
 
   switch (action.type) {
     case GET_ALL_SEASONS_SUCCESS:
@@ -50,9 +55,11 @@ export default function seasonReducer(state = initialState.seasons, action) {
       }
 
     case SET_CHALLENGES_LIST:
+      const { payload: { activeChallenges } } = action;
       return {
         ...state,
-        activeChallenges: action.payload.activeChallenges
+        activeChallenges: action.payload.activeChallenges,
+        challengeInDetail: activeChallenges && challengeInDetail && activeChallenges.find(item => item.id === challengeInDetail.id)
       };
 
     case GET_TEAM_DETAILS_SUCCESS:
@@ -63,12 +70,45 @@ export default function seasonReducer(state = initialState.seasons, action) {
 
     case SET_ACTIVE_TEAM:
       const { payload: { team } } = action;
-      const { allTeamsOnSeason } = state;
 
       return {
         ...state,
         activeTeam: team,
         activeTeamInSeason: allTeamsOnSeason && allTeamsOnSeason.some(item => item.id === team.id)
+      }
+
+    case BUY_CHALLENGE_SUCCESS:
+      const { payload: { challengeSubscription } } = action;
+
+      const buyedChallenge = activeChallengesInState.find(item => item.id === challengeSubscription.season_challenge_id);
+
+      if (buyedChallenge.subscriptions) {
+        buyedChallenge.subscriptions = [...buyedChallenge.subscriptions, challengeSubscription];
+      } else {
+        buyedChallenge.subscriptions = [challengeSubscription];
+      }
+
+      const challengeIndex = findIndex(propEq("id", buyedChallenge.id))(activeChallengesInState);
+      const updatedChallenges = update(challengeIndex, buyedChallenge, activeChallengesInState);
+
+      return {
+        ...state,
+        activeChallenges: updatedChallenges
+      }
+
+    case CLOSE_CHALLENGE_SUCCESS:
+      const { payload: { subscription: { challenge_subscription } } } = action;
+
+      const challengeInDetailClone = clone(challengeInDetail);
+      const { subscriptions } = challengeInDetailClone;
+
+      const subscriptionIndex = findIndex(propEq("id", challenge_subscription.id))(subscriptions);
+      const updatedSubscriptions = update(subscriptionIndex, challenge_subscription, subscriptions);
+      challengeInDetailClone.subscriptions = updatedSubscriptions;
+
+      return {
+        ...state,
+        challengeInDetail: challengeInDetailClone
       }
 
     default:
