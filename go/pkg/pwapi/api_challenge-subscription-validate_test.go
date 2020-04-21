@@ -24,7 +24,7 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 	activeTeam := session.User.ActiveTeamMember.Team
 
 	// fetch challenges
-	challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
+	challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{SeasonID: solo.ID})
 	require.NoError(t, err)
 
 	// buy a challenge
@@ -39,11 +39,14 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 		input                 *ChallengeSubscriptionValidate_Input
 		expectedErr           error
 		expectedPassphraseKey string
+		expectedValidations   int
 	}{
-		{"nil", nil, errcode.ErrMissingInput, ""},
-		{"empty", &ChallengeSubscriptionValidate_Input{}, errcode.ErrMissingInput, ""},
-		{"invalid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: 42, Passphrase: "secret", Comment: "explanation"}, errcode.ErrGetChallengeSubscription, ""},
-		{"valid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription.ChallengeSubscription.ID, Passphrase: "secret", Comment: "ultra cool explanation"}, nil, "test"},
+		{"nil", nil, errcode.ErrMissingInput, "", 0},
+		{"empty", &ChallengeSubscriptionValidate_Input{}, errcode.ErrMissingInput, "", 0},
+		{"invalid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: 42, Passphrase: "secret", Comment: "explanation"}, errcode.ErrGetChallengeSubscription, "", 0},
+		{"valid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription.ChallengeSubscription.ID, Passphrase: "secret", Comment: "ultra cool explanation"}, nil, "test", 1},
+		// FIXME: revalidate
+		// FIXME: new validation
 	}
 
 	for _, test := range tests {
@@ -61,5 +64,20 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 		assert.Equalf(t, test.expectedPassphraseKey, ret.ChallengeValidation.PassphraseKey, test.name)
 		assert.NotEmptyf(t, ret.ChallengeValidation.ChallengeSubscription.Validations, test.name)
 		// fmt.Println(godev.PrettyJSON(ret))
+
+		{
+			chal, err := svc.SeasonChallengeGet(ctx, &SeasonChallengeGet_Input{SeasonChallengeID: challenges.Items[0].ID})
+			require.NoErrorf(t, err, test.name)
+			assert.Lenf(t, chal.Item.Subscriptions[0].Validations, test.expectedValidations, test.name)
+			if len(chal.Item.Subscriptions[0].Validations) == 0 {
+				continue
+			}
+			latest := chal.Item.Subscriptions[0].Validations[len(chal.Item.Subscriptions[0].Validations)-1]
+			assert.Equalf(t, test.input.Comment, latest.AuthorComment, test.name)
+			assert.Equalf(t, session.User.ID, latest.AuthorID, test.name)
+			assert.Equalf(t, pwdb.ChallengeValidation_NeedReview, latest.Status, test.name)
+			// FIXME: hide previous passphrases
+			// fmt.Println(godev.PrettyJSON(chal))
+		}
 	}
 }

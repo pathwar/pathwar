@@ -7,11 +7,11 @@ import {
 
 const initialState = {
   session: {
-    error: null,
+    error: undefined,
     fetching: false,
     isAuthenticated: false,
-    activeUserSession: null,
-    activeKeycloakSession: null
+    activeUserSession: undefined,
+    activeKeycloakSession: undefined
   }
 };
 
@@ -23,7 +23,7 @@ export default function userSessionReducer(state = initialState.session, action)
       return {
         ...state,
         fetching: false,
-        activeKeycloakSession: null,
+        activeKeycloakSession: undefined,
         isAuthenticated: false,
         error: action.payload.error
     } ;
@@ -32,10 +32,10 @@ export default function userSessionReducer(state = initialState.session, action)
       return {
         ...state,
         fetching: false,
-        activeKeycloakSession: null,
-        activeUserSession: null,
+        activeKeycloakSession: undefined,
+        activeUserSession: undefined,
         isAuthenticated: false,
-        error: null
+        error: undefined
     } ;
 
     case SET_KEYCLOAK_SESSION:
