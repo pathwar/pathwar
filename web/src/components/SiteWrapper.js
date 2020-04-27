@@ -5,7 +5,7 @@ import { Site, Nav, Button } from "tabler-react"
 import { Link } from "@reach/router"
 import { navigate } from "gatsby"
 
-import logo from "../images/pathwar-logo.png"
+import logo from "../images/pathwar-favicon.png"
 
 const navBarItems = [
   // {
