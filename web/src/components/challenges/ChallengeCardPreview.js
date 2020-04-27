@@ -126,7 +126,6 @@ const ChallengeCardPreview = props => {
 }
 
 ChallengeCardPreview.propTypes = {
-  fetchChallengesAction: PropTypes.func,
   buyChallengeAction: PropTypes.func,
   activeTeamId: PropTypes.string
 }

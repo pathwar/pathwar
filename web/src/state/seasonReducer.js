@@ -9,7 +9,8 @@ import {
   GET_TEAM_DETAILS_SUCCESS,
   SET_ACTIVE_TEAM,
   CLOSE_CHALLENGE_SUCCESS,
-  BUY_CHALLENGE_SUCCESS
+  BUY_CHALLENGE_SUCCESS,
+  VALIDATE_CHALLENGE_SUCCESS
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -28,6 +29,7 @@ const initialState = {
 
 export default function seasonReducer(state = initialState.seasons, action) {
   const { challengeInDetail, allTeamsOnSeason, activeChallenges: activeChallengesInState } = state;
+  const { payload: { challengeSubscription }  = {}} = action;
 
   switch (action.type) {
     case GET_ALL_SEASONS_SUCCESS:
@@ -55,11 +57,9 @@ export default function seasonReducer(state = initialState.seasons, action) {
       }
 
     case SET_CHALLENGES_LIST:
-      const { payload: { activeChallenges } } = action;
       return {
         ...state,
-        activeChallenges: action.payload.activeChallenges,
-        challengeInDetail: activeChallenges && challengeInDetail && activeChallenges.find(item => item.id === challengeInDetail.id)
+        activeChallenges: action.payload.activeChallenges
       };
 
     case GET_TEAM_DETAILS_SUCCESS:
@@ -78,8 +78,6 @@ export default function seasonReducer(state = initialState.seasons, action) {
       }
 
     case BUY_CHALLENGE_SUCCESS:
-      const { payload: { challengeSubscription } } = action;
-
       const buyedChallenge = activeChallengesInState.find(item => item.id === challengeSubscription.season_challenge_id);
 
       if (buyedChallenge.subscriptions) {
@@ -96,19 +94,30 @@ export default function seasonReducer(state = initialState.seasons, action) {
         activeChallenges: updatedChallenges
       }
 
-    case CLOSE_CHALLENGE_SUCCESS:
-      const { payload: { subscription: { challenge_subscription } } } = action;
-
+    case VALIDATE_CHALLENGE_SUCCESS:
       const challengeInDetailClone = clone(challengeInDetail);
       const { subscriptions } = challengeInDetailClone;
 
-      const subscriptionIndex = findIndex(propEq("id", challenge_subscription.id))(subscriptions);
-      const updatedSubscriptions = update(subscriptionIndex, challenge_subscription, subscriptions);
+      const subscriptionIndex = findIndex(propEq("id", challengeSubscription.id))(subscriptions);
+      const updatedSubscriptions = update(subscriptionIndex, challengeSubscription, subscriptions);
       challengeInDetailClone.subscriptions = updatedSubscriptions;
 
       return {
         ...state,
         challengeInDetail: challengeInDetailClone
+      }
+
+    case CLOSE_CHALLENGE_SUCCESS:
+      const challengeInDetailCloneClose = clone(challengeInDetail);
+      const { subscriptionsClose } = challengeInDetailCloneClose;
+
+      const subscriptionIndexClose = findIndex(propEq("id", challengeSubscription.id))(subscriptionsClose);
+      const updatedSubscriptionsClose = update(subscriptionIndexClose, challengeSubscription, subscriptionsClose);
+      challengeInDetailCloneClose.subscriptions = updatedSubscriptionsClose;
+
+      return {
+        ...state,
+        challengeInDetail: challengeInDetailCloneClose
       }
 
     default:

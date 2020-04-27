@@ -7,6 +7,7 @@ const ChallengeValidateStampCard = ({
   validateChallenge
 }) => {
   const [isValidateOpen, setValidateOpen] = useState(false)
+  const [isFetching, setFetching] = useState(false)
   const [formData, setFormData] = useState({ passphrase: "", comment: "" })
   const hasSubscriptions = challenge.subscriptions
   const subscription =
@@ -22,7 +23,12 @@ const ChallengeValidateStampCard = ({
       ...formData,
       subscriptionID: subscription.id,
     }
-    validateChallenge(validateDataSet, challenge.season_id);
+
+    setFetching(true);
+    validateChallenge(validateDataSet, challenge.season_id).then(() => { 
+      setValidateOpen(false)
+      setFetching(false)
+    });
   }
 
   const handleChange = event => {
@@ -71,7 +77,7 @@ const ChallengeValidateStampCard = ({
               />
             </Form.Group>
             <Form.Group>
-              <Button type="submit" color="primary" className="ml-auto">
+              <Button type="submit" color="primary" className="ml-auto" disabled={isFetching}>
                 Send
               </Button>
             </Form.Group>
