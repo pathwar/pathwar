@@ -27,6 +27,12 @@ const navBarItems = [
     LinkComponent: Link,
   },
   {
+    value: "FAQ",
+    to: "/app/faq",
+    icon: "help-circle",
+    LinkComponent: Link,
+  },
+  {
     value: "Settings",
     to: "/app/settings",
     icon: "settings",
