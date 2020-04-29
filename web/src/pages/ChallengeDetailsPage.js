@@ -56,9 +56,17 @@ class ChallengeDetailsPage extends React.PureComponent {
           </Grid.Col>
           <Grid.Col lg={6} md={6} sm={6} xs={6}>
             <h4>Page</h4>
-            <p className={styles.p}>{flavorChallenge.homepage}</p>
+            <Button
+                href={flavorChallenge.homepage}
+                target="_blank"
+                RootComponent="a"
+                social="github"
+              >
+                Visit page
+              </Button>
           </Grid.Col>
         </Grid.Row>
+        <hr />
         <Grid.Row cards={true}>
           <Grid.Col lg={3} md={3} sm={12} xs={12}>
             <h3>Actions</h3>
