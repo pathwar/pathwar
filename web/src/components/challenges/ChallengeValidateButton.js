@@ -1,67 +1,50 @@
 import React, { useState } from "react"
-import { Link } from "gatsby"
-import { StampCard, Form, Button, Badge } from "tabler-react"
+import { Form, Button } from "tabler-react"
 
-const ChallengeValidateStampCard = ({
-  challenge,
-  validateChallenge
-}) => {
+const ChallengeValidateButton = ({ challenge, validateChallenge }) => {
   const [isValidateOpen, setValidateOpen] = useState(false)
   const [isFetching, setFetching] = useState(false)
   const [formData, setFormData] = useState({ passphrase: "", comment: "" })
   const hasSubscriptions = challenge.subscriptions
   const subscription =
     hasSubscriptions &&
-    challenge.subscriptions.find(item => item.status === "Active");
-
-  const subscriptionHasValidations = subscription && subscription.validations
-
+    challenge.subscriptions.find(item => item.status === "Active")
 
   const submitValidate = event => {
-    event.preventDefault();
+    event.preventDefault()
     const validateDataSet = {
       ...formData,
       subscriptionID: subscription.id,
     }
 
-    setFetching(true);
-    validateChallenge(validateDataSet, challenge.season_id).then(() => { 
+    setFetching(true)
+    validateChallenge(validateDataSet, challenge.season_id).then(() => {
       setValidateOpen(false)
       setFetching(false)
-    });
+    })
   }
 
   const handleChange = event => {
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
-    });
+    })
   }
 
   const handleFormOpen = event => {
-    event.preventDefault();
-    setValidateOpen(prev => !prev);
+    event.preventDefault()
+    setValidateOpen(prev => !prev)
   }
-
-  const CardHeader = () => hasSubscriptions ? (
-      <Link to="/" onClick={handleFormOpen}>
-        <small>Validate</small>
-      </Link>
-    ) : ( <small>Validate</small> )
-
-  const cardFooterText = hasSubscriptions && subscriptionHasValidations
-  ? <p>Validations: <Badge color="primary" className="mr-1">{subscription.validations.length}</Badge></p>
-  : hasSubscriptions ? "Validate with a passphrase"
-  : "You need to purchase to validate";
 
   return (
     <>
-      <StampCard
+      <Button
+        icon={"check-circle"}
         color="warning"
-        icon={hasSubscriptions ? "check-circle" : "circle"}
-        header={<CardHeader />}
-        footer={cardFooterText}
-      />
+        onClick={handleFormOpen}
+      >
+        Validate
+      </Button>
       {isValidateOpen && (
         <form onSubmit={submitValidate}>
           <Form.FieldSet>
@@ -77,7 +60,12 @@ const ChallengeValidateStampCard = ({
               />
             </Form.Group>
             <Form.Group>
-              <Button type="submit" color="primary" className="ml-auto" disabled={isFetching}>
+              <Button
+                type="submit"
+                color="primary"
+                className="ml-auto"
+                disabled={isFetching}
+              >
                 Send
               </Button>
             </Form.Group>
@@ -88,4 +76,4 @@ const ChallengeValidateStampCard = ({
   )
 }
 
-export default ChallengeValidateStampCard
+export default ChallengeValidateButton

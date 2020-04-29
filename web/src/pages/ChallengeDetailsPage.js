@@ -8,14 +8,14 @@ import {
   validateChallenge as validateChallengeAction,
   closeChallenge as closeChallengeAction,
 } from "../actions/seasons"
-import ChallengeBuyStampCard from "../components/challenges/ChallengeBuyStampCard"
-import ChallengeValidateStampCard from "../components/challenges/ChallengeValidateStampCard"
-import ChallengeCloseStampCard from "../components/challenges/ChallengeCloseStampCard"
+import ChallengeBuyButton from "../components/challenges/ChallengeBuyButton"
+import ChallengeValidateButton from "../components/challenges/ChallengeValidateButton"
+import ChallengeCloseButton from "../components/challenges/ChallengeCloseButton"
 import ValidationsList from "../components/challenges/ValidationsList"
 
 import styles from "./styles/ChallengeDetailsPage.module.css"
 
-import { Page, Grid, Dimmer } from "tabler-react"
+import { Page, Grid, Dimmer, Button } from "tabler-react"
 
 class ChallengeDetailsPage extends React.PureComponent {
   componentDidMount() {
@@ -35,11 +35,17 @@ class ChallengeDetailsPage extends React.PureComponent {
 
     const {
       flavor: { challenge: flavorChallenge } = { challenge: "no challenge" },
+      subscriptions,
     } = challenge || {}
 
     if (!challenge) {
       return <Dimmer active />
     }
+    const subscription =
+      subscriptions &&
+      challenge.subscriptions.find(item => item.status === "Active")
+
+    const validations = subscription && subscription.validations
 
     return (
       <Page.Content title={flavorChallenge.name}>
@@ -54,25 +60,29 @@ class ChallengeDetailsPage extends React.PureComponent {
           </Grid.Col>
         </Grid.Row>
         <Grid.Row cards={true}>
-          <Grid.Col lg={6} md={6} sm={12} xs={12}>
-            <h3>Actions</h3>
-            <ChallengeBuyStampCard
-              challenge={challenge}
-              buyChallenge={buyChallengeAction}
-              teamID={teamID}
-            />
-            <ChallengeValidateStampCard
-              challenge={challenge}
-              validateChallenge={validateChallengeAction}
-            />
-            <ChallengeCloseStampCard
-              challenge={challenge}
-              closeChallenge={closeChallengeAction}
-            />
-          </Grid.Col>
-          <Grid.Col lg={6} md={6} sm={12} xs={12}>
+          <Grid.Col lg={9} md={9} sm={12} xs={12}>
             <h3>Validations</h3>
-            <ValidationsList />
+            <Button.List>
+              <ChallengeValidateButton
+                challenge={challenge}
+                validateChallenge={validateChallengeAction}
+              />
+            </Button.List>
+            {validations && <ValidationsList validations={validations} />}
+          </Grid.Col>
+          <Grid.Col lg={3} md={3} sm={12} xs={12}>
+            <h3>Actions</h3>
+            <Button.List>
+              <ChallengeBuyButton
+                challenge={challenge}
+                buyChallenge={buyChallengeAction}
+                teamID={teamID}
+              />
+              <ChallengeCloseButton
+                challenge={challenge}
+                closeChallenge={closeChallengeAction}
+              />
+            </Button.List>
           </Grid.Col>
         </Grid.Row>
       </Page.Content>
