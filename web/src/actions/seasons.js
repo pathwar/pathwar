@@ -183,14 +183,14 @@ export const fetchChallenges = (seasonID) => async dispatch => {
   }
 };
 
-export const buyChallenge = (challengeID, teamID) => async dispatch => {
+export const buyChallenge = (challengeID, teamID, fromDetails = false) => async dispatch => {
   try {
     const response = await postBuyChallenge(challengeID, teamID);
     const subscription = response.data.challenge_subscription
     const { season_challenge: { flavor: { challenge } } } = subscription
     dispatch({
       type: BUY_CHALLENGE_SUCCESS,
-      payload: { challengeSubscription: subscription }
+      payload: { challengeSubscription: subscription, fromDetails: fromDetails }
     });
 
     toast.success(`Buy challenge ${challenge.name} success!`)

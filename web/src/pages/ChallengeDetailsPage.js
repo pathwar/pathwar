@@ -60,16 +60,6 @@ class ChallengeDetailsPage extends React.PureComponent {
           </Grid.Col>
         </Grid.Row>
         <Grid.Row cards={true}>
-          <Grid.Col lg={9} md={9} sm={12} xs={12}>
-            <h3>Validations</h3>
-            <Button.List>
-              <ChallengeValidateButton
-                challenge={challenge}
-                validateChallenge={validateChallengeAction}
-              />
-            </Button.List>
-            {validations && <ValidationsList validations={validations} />}
-          </Grid.Col>
           <Grid.Col lg={3} md={3} sm={12} xs={12}>
             <h3>Actions</h3>
             <Button.List>
@@ -84,6 +74,20 @@ class ChallengeDetailsPage extends React.PureComponent {
               />
             </Button.List>
           </Grid.Col>
+          {subscriptions && (
+            <Grid.Col lg={9} md={9} sm={12} xs={12}>
+              <div style={{ marginBottom: "1rem" }}>
+                <h3>Validations</h3>
+                <Button.List>
+                  <ChallengeValidateButton
+                    challenge={challenge}
+                    validateChallenge={validateChallengeAction}
+                  />
+                </Button.List>
+              </div>
+              {validations && <ValidationsList validations={validations} />}
+            </Grid.Col>
+          )}
         </Grid.Row>
       </Page.Content>
     )

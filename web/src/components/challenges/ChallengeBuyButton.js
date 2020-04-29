@@ -10,7 +10,7 @@ const ChallengeBuyButton = ({
 
   const handleBuyChallenge = async event => {
     event.preventDefault();
-    await buyChallenge(challenge.id, teamID);
+    await buyChallenge(challenge.id, teamID, true);
   }
 
   return (

@@ -1,30 +1,39 @@
 import React from "react"
 import { Card, Grid } from "tabler-react"
 
-const ValidationsList = () => {
+const ValidationsList = ({ validations }) => {
   return (
     <Grid.Row cards={true}>
-      <Grid.Col lg={4} md={4} sm={6} xs={6}>
-        <Card title="Validation" statusColor="orange" isCollapsible>
-          <Card.Body>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam
-            deleniti fugit incidunt, iste, itaque minima neque pariatur
-            perferendis sed suscipit velit vitae voluptatem. A consequuntur,
-            deserunt eaque error nulla temporibus!
-          </Card.Body>
-        </Card>
-      </Grid.Col>
-
-      <Grid.Col lg={4} md={4} sm={6} xs={6}>
-        <Card title="Validation" statusColor="orange" isCollapsible>
-          <Card.Body>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam
-            deleniti fugit incidunt, iste, itaque minima neque pariatur
-            perferendis sed suscipit velit vitae voluptatem. A consequuntur,
-            deserunt eaque error nulla temporibus!
-          </Card.Body>
-        </Card>
-      </Grid.Col>
+      {validations.map(validation => {
+        const status = validation.status
+        const statusColor =
+          status === "NeedReview"
+            ? "orange"
+            : status === "Rejected"
+            ? "red"
+            : "green"
+        return (
+          <Grid.Col lg={4} md={4} sm={6} xs={6}>
+            <Card
+              title={validation.passphrase}
+              statusColor={statusColor}
+              isCollapsible
+            >
+              <Card.Body>
+                <p>
+                  <strong>Status:</strong> {validation.status}
+                </p>
+                <p>
+                  <strong>Key:</strong> {validation.passphrase_key}
+                </p>
+                <p>
+                  <strong>Comment:</strong> {validation.author_comment}
+                </p>
+              </Card.Body>
+            </Card>
+          </Grid.Col>
+        )
+      })}
     </Grid.Row>
   )
 }
