@@ -6,16 +6,20 @@
   "scripts": {
     "test": "env-cmd --file ../.env.test jest",
     "docker-integration": "env-cmd --file ./.env.docker-integration jest",
-    "integration": "env-cmd --file ../.env.integration jest"
+    "integration": "env-cmd --file ../.env.integration jest",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "axios": "^0.19.0",
     "babel-preset-gatsby": "^0.2.22",
     "dotenv": "^8.2.0",
-    "env-cmd": "^10.0.1"
+    "env-cmd": "^10.0.1",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "babel-jest": "^24.9.0",
     "jest": "^24.9.0"
-  }
+  },
+  "snyk": true
 }
