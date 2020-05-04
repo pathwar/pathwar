@@ -50,25 +50,22 @@ class ChallengeDetailsPage extends React.PureComponent {
     return (
       <Page.Content title={flavorChallenge.name}>
         <Grid.Row>
-          <Grid.Col lg={3} md={3} sm={6} xs={6}>
+          <Grid.Col lg={4} md={4} sm={4} xs={4}>
             <h4>Author</h4>
             <p className={styles.p}>{flavorChallenge.author}</p>
           </Grid.Col>
-          <Grid.Col lg={6} md={6} sm={6} xs={6}>
+          <Grid.Col lg={4} md={4} sm={4} xs={4}>
             <h4>Page</h4>
             <Button
-                href={flavorChallenge.homepage}
-                target="_blank"
-                RootComponent="a"
-                social="github"
-              >
-                Visit page
-              </Button>
+              href={flavorChallenge.homepage}
+              target="_blank"
+              RootComponent="a"
+              social="github"
+            >
+              Visit page
+            </Button>
           </Grid.Col>
-        </Grid.Row>
-        <hr />
-        <Grid.Row cards={true}>
-          <Grid.Col lg={3} md={3} sm={12} xs={12}>
+          <Grid.Col lg={4} md={4} sm={4} xs={4}>
             <h3>Actions</h3>
             <Button.List>
               <ChallengeBuyButton
@@ -82,8 +79,11 @@ class ChallengeDetailsPage extends React.PureComponent {
               />
             </Button.List>
           </Grid.Col>
+        </Grid.Row>
+        <hr />
+        <Grid.Row cards={true}>
           {subscriptions && (
-            <Grid.Col lg={9} md={9} sm={12} xs={12}>
+            <Grid.Col lg={12} md={12} sm={12} xs={12}>
               <div style={{ marginBottom: "1rem" }}>
                 <h3>Validations</h3>
                 <Button.List>
