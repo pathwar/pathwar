@@ -66,7 +66,7 @@ class ChallengeDetailsPage extends React.PureComponent {
             </Button>
           </Grid.Col>
           <Grid.Col lg={4} md={4} sm={4} xs={4}>
-            <h3>Actions</h3>
+            <h4>Actions</h4>
             <Button.List>
               <ChallengeBuyButton
                 challenge={challenge}
