@@ -14,7 +14,7 @@ class ProtectedRoute extends React.PureComponent {
         const { setKeycloakSession } = this.props;
         const keycloak = await Keycloak("/keycloak.json");
 
-        keycloak.init({onLoad: 'login-required', checkLoginIframe: false}).success(authenticated => {
+        keycloak.init({onLoad: 'login-required', checkLoginIframe: false}).then(authenticated => {
           setKeycloakSession(keycloak, authenticated);
         })
 

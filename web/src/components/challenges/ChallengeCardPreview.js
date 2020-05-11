@@ -1,48 +1,22 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react"
+import React from "react"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
 import { Link } from "gatsby"
-import { Card, Button, Dimmer, Table, Progress, Form } from "tabler-react"
+import { Card, Button, Dimmer, Table, Progress } from "tabler-react"
 import styles from "../../styles/layout/loader.module.css"
 
 import {
-  buyChallenge as buyChallengeAction,
-  validateChallenge as validateChallengeAction
+  buyChallenge as buyChallengeAction
 } from "../../actions/seasons"
 
 const ChallengeRow = ({
   challenge,
   teamId,
-  seasonId,
-  buyChallenge,
-  validateChallenge
+  buyChallenge
 }) => {
-  const [isValidateOpen, setValidateOpen] = useState(false)
-  const [formData, setFormData] = useState({ passphrase: "", comment: "" })
   const { flavor } = challenge
   const hasSubscriptions = challenge.subscriptions
-  const subscription =
-    hasSubscriptions &&
-    challenge.subscriptions.find(item => item.status === "Active")
-
-  const subscriptionHasValidations = subscription && subscription.validations
-
-  const submitValidate = event => {
-    event.preventDefault()
-    const validateDataSet = {
-      ...formData,
-      subscriptionID: subscription.id,
-    }
-    validateChallenge(validateDataSet, seasonId)
-  }
-
-  const handleChange = event => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    })
-  }
 
   return (
     <>
@@ -81,47 +55,9 @@ const ChallengeRow = ({
           />
         </Table.Col>
         <Table.Col className="w-1">
-          <Button
-            value="Validate"
-            size="sm"
-            color="warning"
-            icon={subscriptionHasValidations ? "check-circle" : "circle"}
-            disabled={!hasSubscriptions || subscriptionHasValidations}
-            onClick={() => setValidateOpen(!isValidateOpen)}
-          >
-            {subscriptionHasValidations ? "Validated" : "Validate"}
-          </Button>
-        </Table.Col>
-        <Table.Col className="w-1">
           <Button value="Github page" social="github" size="sm" />
         </Table.Col>
       </Table.Row>
-      {isValidateOpen && (
-        <Table.Row>
-          <Table.Col colSpan="8">
-            <form onSubmit={submitValidate}>
-              <Form.FieldSet>
-                <Form.Group isRequired label="Passphrase">
-                  <Form.Input name="passphrase" onChange={handleChange} />
-                </Form.Group>
-                <Form.Group isRequired label="Comment">
-                  <Form.Textarea
-                    name="comment"
-                    onChange={handleChange}
-                    placeholder="Leave a comment..."
-                    rows={6}
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Button type="submit" color="primary" className="ml-auto">
-                    Send
-                  </Button>
-                </Form.Group>
-              </Form.FieldSet>
-            </form>
-          </Table.Col>
-        </Table.Row>
-      )}
     </>
   )
 }
@@ -130,8 +66,7 @@ const ChallengeTable = ({
   challenges,
   teamId,
   seasonId,
-  buyChallenge,
-  validateChallenge
+  buyChallenge
 }) => {
   return (
     <Table
@@ -147,7 +82,6 @@ const ChallengeTable = ({
           <Table.ColHeader>Progress</Table.ColHeader>
           <Table.ColHeader>View</Table.ColHeader>
           <Table.ColHeader>Buy</Table.ColHeader>
-          <Table.ColHeader />
           <Table.ColHeader>Page</Table.ColHeader>
         </Table.Row>
       </Table.Header>
@@ -158,7 +92,6 @@ const ChallengeTable = ({
               key={Math.random() + idx}
               challenge={challenge}
               buyChallenge={buyChallenge}
-              validateChallenge={validateChallenge}
               teamId={teamId}
               seasonId={seasonId}
             />
@@ -173,8 +106,7 @@ const ChallengeCardPreview = props => {
   const {
     challenges,
     activeUserSession,
-    buyChallengeAction,
-    validateChallengeAction
+    buyChallengeAction
   } = props
   const { active_team_member, active_season_id } =
     (activeUserSession && activeUserSession.user) || {}
@@ -186,7 +118,6 @@ const ChallengeCardPreview = props => {
       <ChallengeTable
         challenges={challenges}
         buyChallenge={buyChallengeAction}
-        validateChallenge={validateChallengeAction}
         teamId={active_team_member.team_id}
         seasonId={active_season_id}
       />
@@ -195,10 +126,8 @@ const ChallengeCardPreview = props => {
 }
 
 ChallengeCardPreview.propTypes = {
-  fetchChallengesAction: PropTypes.func,
   buyChallengeAction: PropTypes.func,
-  validateChallengeAction: PropTypes.func,
-  activeTeamId: PropTypes.string,
+  activeTeamId: PropTypes.string
 }
 
 const mapStateToProps = state => ({
@@ -207,9 +136,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   buyChallengeAction: (challengeID, teamID, seasonId) =>
-    buyChallengeAction(challengeID, teamID, seasonId),
-  validateChallengeAction: (validationData, seasonId) =>
-    validateChallengeAction(validationData, seasonId)
+    buyChallengeAction(challengeID, teamID, seasonId)
 }
 
 export default connect(
