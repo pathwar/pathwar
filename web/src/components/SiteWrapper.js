@@ -5,7 +5,7 @@ import { Site, Nav, Button } from "tabler-react"
 import { Link } from "@reach/router"
 import { navigate } from "gatsby"
 
-import logo from "../images/pathwar-logo.png"
+import logo from "../images/pathwar-favicon.png"
 
 const navBarItems = [
   // {
@@ -24,6 +24,12 @@ const navBarItems = [
     value: "Dashboard",
     to: "/app/dashboard",
     icon: "home",
+    LinkComponent: Link,
+  },
+  {
+    value: "FAQ",
+    to: "/app/faq",
+    icon: "help-circle",
     LinkComponent: Link,
   },
   {
