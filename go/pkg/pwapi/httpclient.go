@@ -72,6 +72,30 @@ func (c HTTPClient) AdminAddChallengeInstance(input *AdminChallengeInstanceAdd_I
 	return result, err
 }
 
+func (c HTTPClient) Raw(method string, path string, input []byte) ([]byte, error) {
+	url := c.baseAPI + path
+	b := bytes.NewBuffer(input)
+
+	req, err := http.NewRequest(method, url, b)
+	if err != nil {
+		return nil, errcode.TODO.Wrap(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, errcode.TODO.Wrap(err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return nil, errcode.TODO.Wrap(fmt.Errorf("invalid status code (%d): %q", resp.StatusCode, string(body)))
+	}
+
+	return ioutil.ReadAll(resp.Body)
+}
+
 func (c HTTPClient) doPost(path string, input, output proto.Message) error {
 	marshaler := jsonpb.Marshaler{}
 	inputString, err := marshaler.MarshalToString(input)
