@@ -125,6 +125,7 @@ func main() {
 	var (
 		globalFlags                    = flag.NewFlagSet("pathwar", flag.ExitOnError)
 		agentFlags                     = flag.NewFlagSet("agent", flag.ExitOnError)
+		clientFlags                    = flag.NewFlagSet("client", flag.ExitOnError)
 		apiFlags                       = flag.NewFlagSet("api", flag.ExitOnError)
 		composeDownFlags               = flag.NewFlagSet("compose down", flag.ExitOnError)
 		composeFlags                   = flag.NewFlagSet("compose", flag.ExitOnError)
@@ -191,6 +192,12 @@ func main() {
 	apiFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
 	apiFlags.StringVar(&ssoPubkey, "sso-pubkey", "", "SSO Public Key")
 	apiFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
+
+	clientFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
+	clientFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
+	clientFlags.StringVar(&ssoClientSecret, "sso-clientsecret", defaultSSOClientSecret, "SSO ClientSecret")
+	clientFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
+	clientFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultAgentTokenFile, "Token file")
 
 	composeDownFlags.BoolVar(&composeDownKeepVolumes, "keep-volumes", false, "keep volumes")
 	composeDownFlags.BoolVar(&composeDownRemoveImages, "rmi", false, "remove images as well")
@@ -736,6 +743,52 @@ func main() {
 		Exec:      func([]string) error { return flag.ErrHelp },
 	}
 
+	clientCmd := &ffcli.Command{
+		Name:      "client",
+		Usage:     "pathwar [global flags] client [client flags] <method> <path> [INPUT (json)]",
+		ShortHelp: "make API calls",
+		LongHelp: `EXAMPLES
+  pathwar client GET /user/session
+  season=$(pathwar client GET /user/session | jq -r '.seasons[0].season.id')
+  pathwar client GET "/season-challenges?season_id=$season"
+`,
+		FlagSet: clientFlags,
+		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
+		Exec: func(args []string) error {
+			if len(args) < 2 || len(args) > 3 {
+				return flag.ErrHelp
+			}
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			method := args[0]
+			path := args[1]
+			var input []byte
+			if len(args) > 2 {
+				input = []byte(args[2])
+			}
+			output, err := apiClient.Raw(method, path, input)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			var data interface{}
+			err = json.Unmarshal(output, &data)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			fmt.Println(godev.PrettyJSON(data))
+			return nil
+		},
+	}
+
 	agent := &ffcli.Command{
 		Name:      "agent",
 		Usage:     "pathwar [global flags] agent [agent flags] <subcommand> [flags] [args...]",
@@ -781,7 +834,7 @@ func main() {
 		Usage:       "pathwar [global flags] <subcommand> [flags] [args...]",
 		FlagSet:     globalFlags,
 		LongHelp:    "More info here: https://github.com/pathwar/pathwar/wiki/CLI",
-		Subcommands: []*ffcli.Command{api, compose, agent, sso, misc, version, admin},
+		Subcommands: []*ffcli.Command{clientCmd, api, compose, agent, sso, misc, version, admin},
 		Options:     []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec:        func([]string) error { return flag.ErrHelp },
 	}
