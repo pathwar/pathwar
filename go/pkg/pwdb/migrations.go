@@ -147,6 +147,24 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 networks: {}
 volumes: {}
 services:
+		gotty:
+				image: pathwar/challenge-debug@sha256:7cf308d3a5150d7ce462db7121cad43fcdfb010e69650f08e7ff2568367f61da
+				ports:
+					- "8080"
+				labels:
+						land.pathwar.compose.challenge-name: challenge-debug
+						land.pathwar.compose.challenge-version: 1.0.0
+						land.pathwar.compose.origin: was-built
+						land.pathwar.compose.service-name: gotty	
+`
+	challengeDebug := newOfficialChallengeWithFlavor("Debug", "https://github.com/pathwar/challenge-debug", bundle)
+	challengeDebug.addSeasonChallengeByID(solo.ID)
+	challengeDebug.addSeasonChallengeByID(testSeason.ID)
+
+	bundle = `version: "3.7"
+networks: {}
+volumes: {}
+services:
     front:
         image: pathwar/helloworld@sha256:00247fcdcad9336f9cbfcde74a56650b6ffd7c27037957a1e8048d02eb7bdbe3
         ports:
@@ -213,7 +231,7 @@ services:
 	imageboard.addSeasonChallengeByID(testSeason.ID)
 
 	for _, flavor := range []*ChallengeFlavor{
-		helloworld, trainingSQLI, trainingHTTP, trainingInclude, trainingBrute,
+		challengeDebug, helloworld, trainingSQLI, trainingHTTP, trainingInclude, trainingBrute,
 		captchaLuigi, captchaMario, uploadHi, imageboard,
 	} {
 		err := tx.
