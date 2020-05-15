@@ -102,7 +102,7 @@ const ChallengeTable = ({
   )
 }
 
-const ChallengeCardPreview = props => {
+const ChallengeList = props => {
   const {
     challenges,
     activeUserSession,
@@ -125,7 +125,7 @@ const ChallengeCardPreview = props => {
   )
 }
 
-ChallengeCardPreview.propTypes = {
+ChallengeList.propTypes = {
   buyChallengeAction: PropTypes.func,
   activeTeamId: PropTypes.string
 }
@@ -142,4 +142,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ChallengeCardPreview)
+)(ChallengeList)

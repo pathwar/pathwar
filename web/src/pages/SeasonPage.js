@@ -5,7 +5,7 @@ import { Page, Grid } from "tabler-react"
 import { isNil } from "ramda"
 
 import AllTeamsOnSeasonList from "../components/season/AllTeamsOnSeasonList"
-import ChallengesCardPreview from "../components/challenges/ChallengeCardPreview"
+import ChallengeList from "../components/challenges/ChallengeList"
 import ValidationCouponStampCard from "../components/coupon/ValidateCouponStampCard"
 import CreateTeamStampCard from "../components/team/CreateTeamStampCard"
 
@@ -67,7 +67,7 @@ class SeasonPage extends React.Component {
           </Grid.Col>
           <Grid.Col xs={12} sm={9} lg={9}>
             <h3>Challenges</h3>
-            <ChallengesCardPreview
+            <ChallengeList
               challenges={activeChallenges}
               buyChallenge={buyChallengeAction}
             />
