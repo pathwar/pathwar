@@ -310,6 +310,15 @@ func Up(ctx context.Context, preparedCompose string, instanceKey string, forceRe
 		return nil, errcode.ErrComposeUpdateTempFile.Wrap(err)
 	}
 
+	// if debug flag, display updated compose file
+	if logger.Check(zap.DebugLevel, "") != nil {
+		data, err := ioutil.ReadFile(tmpPreparedComposePath)
+		if err != nil {
+			return nil, errcode.TODO.Wrap(err)
+		}
+		fmt.Println(string(data))
+	}
+
 	// build definitive containers
 	args = append(composeCliCommonArgs(tmpPreparedComposePath), "up", "--no-start")
 	logger.Debug("docker-compose", zap.Strings("args", args))
