@@ -148,12 +148,23 @@ networks: {}
 volumes: {}
 services:
 		gotty:
+				container_name: challenge-debug.gotty.7cf308.default
 				image: pathwar/challenge-debug@sha256:7cf308d3a5150d7ce462db7121cad43fcdfb010e69650f08e7ff2568367f61da
 				ports:
 					- "8080"
+				command:
+					- /usr/local/bin/gotty
+					- --permit-write
+					- --reconnect
+					- /bin/bash
+				entrypoint:
+					- /bin/pwinit
+					- entrypoint
+				restart: unless-stopped
 				labels:
 						land.pathwar.compose.challenge-name: challenge-debug
 						land.pathwar.compose.challenge-version: 1.0.0
+						land.pathwar.compose.instance-key: default
 						land.pathwar.compose.origin: was-built
 						land.pathwar.compose.service-name: gotty	
 `
