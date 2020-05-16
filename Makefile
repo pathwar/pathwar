@@ -32,3 +32,7 @@ recursive_generate:
 .PHONY: integration
 integration:
 	cd tool/integration; make run-suite
+
+.PHONY: agent.docker.build
+agent.docker.build:
+	docker build -t pathwar/agent -f Dockerfile.agent .
