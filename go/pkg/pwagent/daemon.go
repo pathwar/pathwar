@@ -71,6 +71,7 @@ func Daemon(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClient
 
 func runOnce(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClient, opts Opts) error {
 	instances, err := apiClient.AgentListInstances(&pwapi.AgentListInstances_Input{AgentName: opts.Name})
+	opts.Logger.Debug("api response", zap.Any("instances", instances.GetInstances()))
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
