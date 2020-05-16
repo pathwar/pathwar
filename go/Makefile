@@ -117,5 +117,5 @@ clean:
 	rm -f gen.sum $(wildcard */*/*.pb.go */*/*.pb.gw.go) $(wildcard out/*) $(wildcard */*/packrd/*) $(wildcard */*/*-packr.go)
 
 .PHONY: packr
-packr:
+packr: ./out/pwinit-linux-amd64
 	cd pkg/pwinit && packr2

@@ -1,5 +1,5 @@
-1da371a47e1149b84deb469bac7d090adb33485d  Makefile
 1e2bdccf605bd562ddbcaaf638cbe695a22b014b  ../api/errcode.proto
+24793ee78e46b67894d3b09ed40270710a39ea34  Makefile
 4362a2715e8c2053c4bec93585b01ca252dae2e7  ../api/pwagent.proto
 523b8a43dc7688708f98ae0361ed458a8ac35d22  ../api/pwapi.proto
 70d67f1cebb3b7f9e86fd0197d43db4c1f795f65  ../api/pwinit.proto
