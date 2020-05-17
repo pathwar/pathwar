@@ -72,6 +72,18 @@ func (c HTTPClient) AdminAddChallengeInstance(input *AdminChallengeInstanceAdd_I
 	return result, err
 }
 
+func (c HTTPClient) GetStatus(input *GetStatus_Input) (GetStatus_Output, error) {
+	var result GetStatus_Output
+	err := c.doGet("/status", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) UserSetPreferences(input *UserSetPreferences_Input) (UserSetPreferences_Output, error) {
+	var result UserSetPreferences_Output
+	err := c.doPost("/user/preferences", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) Raw(method string, path string, input []byte) ([]byte, error) {
 	url := c.baseAPI + path
 	b := bytes.NewBuffer(input)
