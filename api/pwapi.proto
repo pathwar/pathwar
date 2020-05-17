@@ -340,11 +340,12 @@ message GetStatus {
 message GetInfo {
   message Input {}
   message Output {
-    string version = 1;  // git tag
-    int32 uptime = 2;    // seconds
-    string commit = 3;   // git sha
-    string built_at = 4; // date
-    string built_by = 5; // builder
+    string version = 1;     // git tag
+    int32 uptime = 2;       // seconds
+    string commit = 3;      // git sha
+    string built_at = 4;    // date
+    string built_by = 5;    // builder
+    bool within_docker = 6; // run inside docker
   }
 }
 
