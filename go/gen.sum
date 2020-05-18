@@ -6,3 +6,4 @@
 a45fa08c595709dd752f52ded4493ceb3a191de2  ../api/pwcompose.proto
 bad04556b7233d5c8ddbcc1a3b2bfd027b694bce  ../api/pwsso.proto
 fe111c6acc73fba5516e153c74a3edffd71b086d  ../api/pwdb.proto
+febc6301a0b1f48decfa36fb2438787a420113f1  Makefile

@@ -23,7 +23,7 @@ include ../rules.mk  # see https://github.com/moul/rules.mk
 .PHONY: ./out/pwinit-linux-amd64
 ./out/pwinit-linux-amd64:
 	mkdir -p out
-	GOOS=linux GOARCH=amd64 $(GO) build -mod=readonly -o $@ ./cmd/pwinit
+	GOOS=linux GOARCH=amd64 $(GO) build -ldflags "-linkmode external -extldflags -static" -mod=readonly -o $@ ./cmd/pwinit
 
 MYSQL_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
 
