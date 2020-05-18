@@ -1,23 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from "react"
-import { connect } from "react-redux"
-import PropTypes from "prop-types"
+import { useSelector } from "react-redux"
 import { Link } from "gatsby"
-import {
-  Button,
-  Dimmer,
-  ProgressCard,
-  Grid,
-} from "tabler-react"
+import { Button, Dimmer, ProgressCard, Grid } from "tabler-react"
 import styles from "../../styles/layout/loader.module.css"
 
-import { buyChallenge as buyChallengeAction } from "../../actions/seasons"
-
-const ChallengeCard = (challenge, buyChallenge) => {
-  const {
-    challenge: { flavor, subscriptions, id: challengeID },
-    teamId,
-  } = challenge
+const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
+  const { flavor, subscriptions, id: challengeID } = challenge
 
   return (
     <ProgressCard
@@ -35,7 +24,7 @@ const ChallengeCard = (challenge, buyChallenge) => {
             Open
           </Button>
           <Button
-            onClick={() => buyChallenge(challengeID, teamId)}
+            onClick={() => buyChallenge(challengeID, teamID, false)}
             size="sm"
             color="success"
             disabled={subscriptions}
@@ -52,7 +41,10 @@ const ChallengeCard = (challenge, buyChallenge) => {
 }
 
 const ChallengeList = props => {
-  const { challenges, activeUserSession, buyChallengeAction } = props
+  const activeUserSession = useSelector(state => state.userSession.activeUserSession)
+  const activeTeam = useSelector(state => state.seasons.activeTeam)
+
+  const { challenges, buyChallenge } = props
 
   return !challenges || !activeUserSession ? (
     <Dimmer className={styles.dimmer} active loader />
@@ -63,7 +55,8 @@ const ChallengeList = props => {
           <Grid.Col lg={4} sm={4} md={4} xs={4}>
             <ChallengeCard
               challenge={challenge}
-              buyChallenge={buyChallengeAction}
+              buyChallenge={buyChallenge}
+              teamID={activeTeam.id}
             />
           </Grid.Col>
         ))}
@@ -72,18 +65,4 @@ const ChallengeList = props => {
   )
 }
 
-ChallengeList.propTypes = {
-  buyChallengeAction: PropTypes.func,
-  activeTeamId: PropTypes.string,
-}
-
-const mapStateToProps = state => ({
-  activeUserSession: state.userSession.activeUserSession,
-})
-
-const mapDispatchToProps = {
-  buyChallengeAction: (challengeID, teamID, seasonId) =>
-    buyChallengeAction(challengeID, teamID, seasonId),
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChallengeList)
+export default ChallengeList;
