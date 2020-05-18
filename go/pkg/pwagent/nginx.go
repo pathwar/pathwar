@@ -451,6 +451,9 @@ http {
     error_log   /proc/self/fd/2;
     # FIXME: add auth
     location / {
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
       proxy_pass http://upstream_{{.Name}};
     }
   }
@@ -461,6 +464,9 @@ http {
     access_log  /proc/self/fd/1;
     error_log   /proc/self/fd/2;
     location / {
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
       proxy_pass http://upstream_{{.Name}};
     }
   }
