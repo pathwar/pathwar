@@ -33,6 +33,15 @@ recursive_generate:
 integration:
 	cd tool/integration; make run-suite
 
+
+##
+## docker.build
+##
+
+# rules.mk will already build the original Dockerfile
+docker.build: agent.docker.build
+
 .PHONY: agent.docker.build
 agent.docker.build:
-	docker build -t pathwar/agent -f Dockerfile.agent .
+	$(call docker_build,Dockerfile.agent,pathwar/agent)
+	#docker build -t pathwar/agent -f Dockerfile.agent .

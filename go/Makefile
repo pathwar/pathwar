@@ -3,7 +3,7 @@ GOPATH ?= $(HOME)/go
 GOMOD_DIR = ..
 GOPKG =	pathwar.land
 GOBINS = ./cmd/pathwar ./cmd/pwinit
-DOCKER_IMAGE =pathwar/pathwar
+DOCKER_IMAGE = pathwar/pathwar
 DOCKERFILE_PATH = ../Dockerfile
 
 GO_INSTALL_OPTS = -v -ldflags "-s -w -X pathwar.land/v2/go/pkg/pwversion.Version=`git describe --tags --abbrev` -X pathwar.land/go/pkg/pwversion.Commit=`git rev-parse HEAD` -X pathwar.land/go/pkg/pwversion.Date=`date +%s` -X pathwar.land/go/pkg/pwversion.BuiltBy=makefile"
