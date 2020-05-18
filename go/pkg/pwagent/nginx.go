@@ -452,6 +452,7 @@ http {
     # FIXME: add auth
     location / {
       proxy_pass http://upstream_{{.Name}};
+      proxy_pass ws://upstream_{{.Name}};
     }
   }
   {{- if not (eq (len .Hashes) 0) }}
@@ -462,6 +463,7 @@ http {
     error_log   /proc/self/fd/2;
     location / {
       proxy_pass http://upstream_{{.Name}};
+      proxy_pass ws://upstream_{{.Name}};
     }
   }
   {{end}}
