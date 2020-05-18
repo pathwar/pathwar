@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Form, Button } from "tabler-react"
-import styles from "./styles/button.module.css"
+import styles from "../../styles/layout/button.module.css"
 
 const ChallengeValidateButton = ({ challenge, validateChallenge }) => {
   const [isValidateOpen, setValidateOpen] = useState(false)
