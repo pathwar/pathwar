@@ -795,6 +795,20 @@ func main() {
 		ShortHelp: "manage an agent node (multiple challenges)",
 		FlagSet:   agentFlags,
 		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
+		Subcommands: []*ffcli.Command{
+			{
+				Name:      "pwinit.bin",
+				ShortHelp: "dump pwinit binary to stdout",
+				Exec: func(args []string) error {
+					b, err := pwinit.Binary()
+					if err != nil {
+						return err
+					}
+					_, err = os.Stdout.Write(b)
+					return err
+				},
+			},
+		},
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
