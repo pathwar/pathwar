@@ -156,7 +156,7 @@ export default function seasonReducer(state = initialState.seasons, action) {
 
     case CLOSE_CHALLENGE_SUCCESS:
       const challengeInDetailCloneClose = clone(challengeInDetail)
-      const { subscriptionsClose } = challengeInDetailCloneClose
+      const { subscriptions: subscriptionsClose } = challengeInDetailCloneClose
 
       const subscriptionIndexClose = findIndex(
         propEq("id", challengeSubscription.id)
