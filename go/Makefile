@@ -3,7 +3,7 @@ GOPATH ?= $(HOME)/go
 GOMOD_DIR = ..
 GOPKG =	pathwar.land
 GOBINS = ./cmd/pathwar ./cmd/pwinit
-DOCKER_IMAGE =pathwar/pathwar
+DOCKER_IMAGE = pathwar/pathwar
 DOCKERFILE_PATH = ../Dockerfile
 
 GO_INSTALL_OPTS = -v -ldflags "-s -w -X pathwar.land/v2/go/pkg/pwversion.Version=`git describe --tags --abbrev` -X pathwar.land/go/pkg/pwversion.Commit=`git rev-parse HEAD` -X pathwar.land/go/pkg/pwversion.Date=`date +%s` -X pathwar.land/go/pkg/pwversion.BuiltBy=makefile"
@@ -23,7 +23,7 @@ include ../rules.mk  # see https://github.com/moul/rules.mk
 .PHONY: ./out/pwinit-linux-amd64
 ./out/pwinit-linux-amd64:
 	mkdir -p out
-	GOOS=linux GOARCH=amd64 $(GO) build -mod=readonly -o $@ ./cmd/pwinit
+	GOOS=linux GOARCH=amd64 $(GO) build -ldflags "-linkmode external -extldflags -static" -mod=readonly -o $@ ./cmd/pwinit
 
 MYSQL_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
 
@@ -117,5 +117,5 @@ clean:
 	rm -f gen.sum $(wildcard */*/*.pb.go */*/*.pb.gw.go) $(wildcard out/*) $(wildcard */*/packrd/*) $(wildcard */*/*-packr.go)
 
 .PHONY: packr
-packr:
+packr: ./out/pwinit-linux-amd64
 	cd pkg/pwinit && packr2

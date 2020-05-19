@@ -13,6 +13,7 @@ func Example() {
 	// More info here: https://github.com/pathwar/pathwar/wiki/CLI
 	//
 	// SUBCOMMANDS
+	//   client   make API calls
 	//   api      manage the Pathwar API
 	//   compose  manage a challenge
 	//   agent    manage an agent node (multiple challenges)

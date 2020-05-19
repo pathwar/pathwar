@@ -72,33 +72,56 @@ func (c HTTPClient) AdminAddChallengeInstance(input *AdminChallengeInstanceAdd_I
 	return result, err
 }
 
+func (c HTTPClient) GetStatus(input *GetStatus_Input) (GetStatus_Output, error) {
+	var result GetStatus_Output
+	err := c.doGet("/status", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) UserSetPreferences(input *UserSetPreferences_Input) (UserSetPreferences_Output, error) {
+	var result UserSetPreferences_Output
+	err := c.doPost("/user/preferences", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) Raw(method string, path string, input []byte) ([]byte, error) {
+	url := c.baseAPI + path
+	b := bytes.NewBuffer(input)
+
+	req, err := http.NewRequest(method, url, b)
+	if err != nil {
+		return nil, errcode.TODO.Wrap(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, errcode.TODO.Wrap(err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return nil, errcode.TODO.Wrap(fmt.Errorf("invalid status code (%d): %q", resp.StatusCode, string(body)))
+	}
+
+	return ioutil.ReadAll(resp.Body)
+}
+
 func (c HTTPClient) doPost(path string, input, output proto.Message) error {
 	marshaler := jsonpb.Marshaler{}
 	inputString, err := marshaler.MarshalToString(input)
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
-	b := bytes.NewBuffer([]byte(inputString))
 
-	url := c.baseAPI + path
-	req, err := http.NewRequest("POST", url, b)
+	ret, err := c.Raw("POST", path, []byte(inputString))
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
-	req.Header.Set("Content-Type", "application/json")
 
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return errcode.TODO.Wrap(fmt.Errorf("invalid status code (%d): %q", resp.StatusCode, string(body)))
-	}
-
-	err = jsonpb.Unmarshal(resp.Body, output)
+	b := bytes.NewBuffer(ret)
+	err = jsonpb.Unmarshal(b, output)
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
@@ -111,25 +134,15 @@ func (c HTTPClient) doGet(path string, input, output proto.Message) error {
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
-	url := c.baseAPI + path + "?" + qs.Encode()
+	path = path + "?" + qs.Encode()
 
-	req, err := http.NewRequest("GET", url, nil)
+	ret, err := c.Raw("GET", path, nil)
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
 
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return errcode.TODO.Wrap(fmt.Errorf("invalid status code (%d): %q", resp.StatusCode, string(body)))
-	}
-
-	err = jsonpb.Unmarshal(resp.Body, output)
+	b := bytes.NewBuffer(ret)
+	err = jsonpb.Unmarshal(b, output)
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}

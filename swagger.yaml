@@ -190,6 +190,9 @@ definitions:
         type: integer
       version:
         type: string
+      within_docker:
+        format: boolean
+        type: boolean
     type: object
   apiGetStatusOutput:
     properties:

@@ -13,6 +13,7 @@ deployments/keycloak/themes/pathwar/*/*/lib/* liguist-vendored
 swagger.yaml linguist-generated
 go.sum linguist-generated
 gen.sum linguist-generated
+AUTHORS linguist-generated
 
 # Reduce conflicts on markdown files
 *.md merge=union

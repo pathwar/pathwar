@@ -16,10 +16,11 @@ func TestEngine_ToolInfo(t *testing.T) {
 	status, err := svc.ToolInfo(ctx, nil)
 	assert.NoError(t, err)
 	expected := &GetInfo_Output{
-		Version: "dev",
-		Commit:  "n/a",
-		BuiltAt: "n/a",
-		BuiltBy: "n/a",
+		Version:      "dev",
+		Commit:       "n/a",
+		BuiltAt:      "n/a",
+		BuiltBy:      "n/a",
+		WithinDocker: withinDocker(),
 	}
 	expected.Uptime = status.Uptime // may vary
 	assert.Equal(t, expected, status)

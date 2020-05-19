@@ -10,7 +10,7 @@ services:
       - "--"
     environment:
       # specific to prod
-      - VIRTUAL_HOST=api-dev.pathwar.land
+      - VIRTUAL_HOST=${API_DEV_VIRTUAL_HOST}
       - VIRTUAL_PORT=8000
       # loaded from .env
       - API_URN
@@ -40,7 +40,7 @@ services:
       - "--"
     environment:
       # specific to prod
-      - VIRTUAL_HOST=api-unsafe.pathwar.land
+      - VIRTUAL_HOST=${API_UNSAFE_VIRTUAL_HOST}
       - VIRTUAL_PORT=8000
       # loaded from .env
       - API_URN
@@ -89,9 +89,9 @@ services:
     image: pathwar/forestadmin:latest
     environment:
       # specific to prod
-      - VIRTUAL_HOST=admin-dev.pathwar.land
+      - VIRTUAL_HOST=${ADMIN_DEV_VIRTUAL_HOST}
       - VIRTUAL_PORT=3310
-      - APPLICATION_HOST=admin-dev.pathwar.land
+      - APPLICATION_HOST=${ADMIN_DEV_VIRTUAL_HOST}
       - APPLICATION_PORT=3310
       - DATABASE_URL=mysql://$MYSQL_USER:$MYSQL_PASSWORD@db:3306/pathwar
       - DATABASE_SSL=false

@@ -19,4 +19,8 @@ logs:
 
 .PHONY: flushdb
 flushdb: down
-	docker volume rm -f platform_db_data || true
+	docker volume rm -f platform_db_data platform-dev_db_data || true
+
+.PHONY: sqldb
+sqldb:
+	docker-compose exec db sh -c 'mysql -u$$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
