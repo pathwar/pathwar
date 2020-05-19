@@ -34,7 +34,7 @@ class ChallengeDetailsPage extends React.PureComponent {
     } = this.props
 
     const {
-      flavor: { challenge: flavorChallenge } = { challenge: "no challenge" },
+      flavor: { challenge: flavorChallenge, instances } = { challenge: "no challenge" },
       subscriptions,
     } = challenge || {}
 
@@ -73,6 +73,15 @@ class ChallengeDetailsPage extends React.PureComponent {
                 buyChallenge={buyChallengeAction}
                 teamID={teamID}
               />
+              <Button
+                RootComponent="a"
+                target="_blank"
+                href=""
+                color="gray-dark"
+                icon="terminal"
+              >
+                Solve
+              </Button>
               <ChallengeCloseButton
                 challenge={challenge}
                 closeChallenge={closeChallengeAction}
