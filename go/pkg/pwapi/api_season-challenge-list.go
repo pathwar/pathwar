@@ -50,7 +50,7 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 		for _, instance := range sc.Flavor.Instances {
 			// FIXME: hide instances without nginx-url?
 			if instance.Agent != nil {
-				hash, err := pwdb.ChallengeInstancePrefixHash(fmt.Sprintf("%d", instance.ID), userID, instance.Agent.AuthSalt)
+				hash, err := pwdb.ChallengeInstancePrefixHash(instance.ID, userID, instance.Agent.AuthSalt)
 				if err != nil {
 					return nil, errcode.ErrGeneratePrefixHash.Wrap(err)
 				}

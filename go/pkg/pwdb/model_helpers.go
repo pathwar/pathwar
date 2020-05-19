@@ -47,8 +47,8 @@ func (cf ChallengeFlavor) NameAndVersion() string {
 	return fmt.Sprintf("%s@%s", cf.Challenge.Name, cf.Version)
 }
 
-func ChallengeInstancePrefixHash(instanceID string, userID int64, salt string) (string, error) {
-	stringToHash := fmt.Sprintf("%s%d%s", instanceID, userID, salt)
+func ChallengeInstancePrefixHash(instanceID int64, userID int64, salt string) (string, error) {
+	stringToHash := fmt.Sprintf("%s%d%s", fmt.Sprintf("%d", instanceID), userID, salt)
 	hashBytes := make([]byte, 8)
 	hasher := sha3.NewShake256()
 	_, err := hasher.Write([]byte(stringToHash))

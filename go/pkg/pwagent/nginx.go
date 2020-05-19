@@ -208,7 +208,11 @@ func genNginxConfig(apiInstances *pwapi.AgentListInstances_Output, containersInf
 	for idx, upstream := range config.Upstreams {
 		upstream.Hashes = make([]string, len(upstream.AllowedUsers))
 		for j, userID := range upstream.AllowedUsers {
-			hash, err := pwdb.ChallengeInstancePrefixHash(upstream.InstanceID, userID, opts.AuthSalt)
+			instanceID, err := strconv.ParseInt(upstream.InstanceID, 10, 64)
+			if err != nil {
+				return nil, errcode.TODO.Wrap(err)
+			}
+			hash, err := pwdb.ChallengeInstancePrefixHash(instanceID, userID, opts.AuthSalt)
 			if err != nil {
 				return nil, errcode.ErrGeneratePrefixHash.Wrap(err)
 			}
