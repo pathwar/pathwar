@@ -148,9 +148,9 @@ networks: {}
 volumes: {}
 services:
   gotty:
-    image: pathwar/challenge-debug@sha256:7cf308d3a5150d7ce462db7121cad43fcdfb010e69650f08e7ff2568367f61da
+    image: pathwar/challenge-debug@sha256:a5f48f8c2eaf7f5cd106b2d115cfce351bb64653211f45cfe4829b668d3547f3
     ports:
-      - "8080" 
+      - "8080"
     labels:
       land.pathwar.compose.challenge-name: challenge-debug
       land.pathwar.compose.challenge-version: 1.0.0
