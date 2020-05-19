@@ -2,17 +2,26 @@
 import React from "react"
 import { useSelector } from "react-redux"
 import { Link } from "gatsby"
-import { Button, Dimmer, ProgressCard, Grid } from "tabler-react"
+import { Button, Dimmer, Card, Grid } from "tabler-react"
 import styles from "../../styles/layout/loader.module.css"
 
 const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
   const { flavor, subscriptions, id: challengeID } = challenge
 
   return (
-    <ProgressCard
-      header={flavor.challenge.name}
-      content={
-        <Button.List>
+    <Card
+      title={flavor.challenge.name}
+      body={
+        <Button.List align="center">
+          <Button
+            onClick={() => buyChallenge(challengeID, teamID, false)}
+            size="sm"
+            color="success"
+            disabled={subscriptions}
+            icon={subscriptions ? "check" : "dollar-sign"}
+          >
+            Buy
+          </Button>
           <Button
             RootComponent={Link}
             to={`/app/challenge/${challengeID}`}
@@ -23,25 +32,28 @@ const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
           >
             Open
           </Button>
-          <Button
-            onClick={() => buyChallenge(challengeID, teamID, false)}
-            size="sm"
-            color="success"
-            disabled={subscriptions}
-            icon={subscriptions ? "check" : "dollar-sign"}
-          >
-            Buy
-          </Button>
+          {subscriptions && flavor.instances && (
+            <Button
+              RootComponent="a"
+              target="_blank"
+              href={flavor.instances[0].nginx_url}
+              size="sm"
+              color="gray-dark"
+              icon="terminal"
+            >
+              Solve
+            </Button>
+          )}
         </Button.List>
       }
-      progressColor="green"
-      progressWidth={84}
     />
   )
 }
 
 const ChallengeList = props => {
-  const activeUserSession = useSelector(state => state.userSession.activeUserSession)
+  const activeUserSession = useSelector(
+    state => state.userSession.activeUserSession
+  )
   const activeTeam = useSelector(state => state.seasons.activeTeam)
 
   const { challenges, buyChallenge } = props
@@ -65,4 +77,4 @@ const ChallengeList = props => {
   )
 }
 
-export default ChallengeList;
+export default ChallengeList
