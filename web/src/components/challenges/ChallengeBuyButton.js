@@ -4,7 +4,9 @@ import { Button } from "tabler-react"
 const ChallengeBuyButton = ({
   challenge,
   teamID,
-  buyChallenge
+  buyChallenge,
+  isClosed,
+  ...rest
 }) => {
   const hasSubscriptions = challenge.subscriptions
 
@@ -14,7 +16,7 @@ const ChallengeBuyButton = ({
   }
 
   return (
-    <Button icon={hasSubscriptions ? "check" : "dollar-sign"} color="success" disabled={hasSubscriptions} onClick={handleBuyChallenge}>
+    <Button icon={hasSubscriptions ? "check" : "dollar-sign"} color="success" disabled={hasSubscriptions || isClosed} onClick={handleBuyChallenge} {...rest}>
       {hasSubscriptions ? "Purchased" : "Buy"}
     </Button>
   )

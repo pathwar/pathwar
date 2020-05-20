@@ -41,11 +41,9 @@ class ChallengeDetailsPage extends React.PureComponent {
     if (!challenge) {
       return <Dimmer active />
     }
-    const subscription =
-      subscriptions &&
-      challenge.subscriptions.find(item => item.status === "Active")
-
+    const subscription = challenge.subscriptions && challenge.subscriptions[0]
     const validations = subscription && subscription.validations
+    const isClosed = subscription.status === "Closed"
 
     return (
       <Page.Content title={flavorChallenge.name}>
@@ -53,9 +51,6 @@ class ChallengeDetailsPage extends React.PureComponent {
           <Grid.Col lg={4} md={4} sm={4} xs={4}>
             <h4>Author</h4>
             <p className={styles.p}>{flavorChallenge.author}</p>
-          </Grid.Col>
-          <Grid.Col lg={4} md={4} sm={4} xs={4}>
-            <h4>Page</h4>
             <Button
               href={flavorChallenge.homepage}
               target="_blank"
@@ -72,6 +67,7 @@ class ChallengeDetailsPage extends React.PureComponent {
                 challenge={challenge}
                 buyChallenge={buyChallengeAction}
                 teamID={teamID}
+                isClosed={isClosed}
               />
               <Button
                 RootComponent="a"
@@ -79,12 +75,14 @@ class ChallengeDetailsPage extends React.PureComponent {
                 href={instances[0].nginx_url}
                 color="gray-dark"
                 icon="terminal"
+                disabled={isClosed}
               >
                 Solve
               </Button>
               <ChallengeCloseButton
                 challenge={challenge}
                 closeChallenge={closeChallengeAction}
+                isClosed={isClosed}
               />
             </Button.List>
           </Grid.Col>
@@ -99,6 +97,7 @@ class ChallengeDetailsPage extends React.PureComponent {
                   <ChallengeValidateButton
                     challenge={challenge}
                     validateChallenge={validateChallengeAction}
+                    disabled={isClosed}
                   />
                 </Button.List>
               </div>

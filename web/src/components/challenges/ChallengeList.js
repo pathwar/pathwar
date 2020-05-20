@@ -7,6 +7,7 @@ import styles from "../../styles/layout/loader.module.css"
 
 const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
   const { flavor, subscriptions, id: challengeID } = challenge
+  const isClosed = subscriptions && subscriptions[0].status === "Closed"
 
   return (
     <Card
@@ -16,11 +17,11 @@ const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
           <Button
             onClick={() => buyChallenge(challengeID, teamID, false)}
             size="sm"
-            color="success"
-            disabled={subscriptions}
-            icon={subscriptions ? "check" : "dollar-sign"}
+            color={isClosed ? "red" : "success"}
+            disabled={subscriptions || isClosed}
+            icon={subscriptions ? isClosed ? "x-circle" : "check" : "dollar-sign"}
           >
-            Buy
+            {isClosed ? "Closed" : "Buy"}
           </Button>
           <Button
             RootComponent={Link}
@@ -40,6 +41,7 @@ const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
               size="sm"
               color="gray-dark"
               icon="terminal"
+              disabled={isClosed}
             >
               Solve
             </Button>
