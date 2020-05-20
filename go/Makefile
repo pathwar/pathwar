@@ -11,14 +11,49 @@ PRE_INSTALL_STEPS += generate
 PRE_UNITTEST_STEPS += generate
 PRE_TEST_STEPS += generate
 PRE_BUILD_STEPS += generate
-PRE_LINT_STEPS += generate
+PRE_LINT_STEPsS += generate
 PRE_TIDY_STEPS += generate
 PRE_BUMPDEPS_STEPS += generate
 PRE_INSTALL_STEPS += ./out/pwinit-linux-amd64
 
+DEV_BIND ?= :8001
+AGENT_NGINX_PORT ?= 8002
+COMMON_RUN_OPTS ?= --debug --zipkin-endpoint=http://localhost:9411/api/v2/spans
+API_DEV_OPTS ?=
+AGENT_DEV_OPTS ?=
+
 COMPOSE_OPTS = -f docker-compose.yml -f docker-compose.dev.yml
 include ../rules.mk  # see https://github.com/moul/rules.mk
 ##
+
+help::
+	@echo "Pathwar commands:"
+	@echo "  local-api     start an API"
+	@echo "  local-agent   start an agent connected to the local API"
+	@echo "  up            start everything in docker-compose"
+
+.PHONY: local-api
+local-api: install mysql.up zipkin.up
+	pathwar $(COMMON_RUN_OPTS) api --sso-unsafe server --with-pprof --bind=$(DEV_BIND) $(API_DEV_OPTS)
+
+.PHONY: api-down
+api-down: mysql.down zipkin.down
+
+.PHONY: local-agent
+local-agent: install
+	pathwar $(COMMON_RUN_OPTS) agent --http-api-addr=http://localhost:8001 --port=$(AGENT_NGINX_PORT) $(AGENT_DEV_OPTS)
+
+.PHONY: preprod-agent
+preprod-agent: install
+	pathwar $(COMMON_RUN_OPTS) agent --port=$(AGENT_NGINX_PORT) $(AGENT_DEV_OPTS)
+
+.PHONY: agent-down
+agent-down:
+	pathwar --debug compose down --with-nginx
+
+.PHONY: agent-nginx-config
+agent-nginx-config:
+	docker exec pathwar-agent-nginx cat /etc/nginx/nginx.conf
 
 .PHONY: ./out/pwinit-linux-amd64
 ./out/pwinit-linux-amd64:
@@ -30,10 +65,6 @@ MYSQL_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
 .PHONY: up
 up:
 	docker-compose $(COMPOSE_OPTS) up -d
-
-.PHONY: run
-run: install mysql.up
-	pathwar --debug api --sso-unsafe server --with-pprof
 
 .PHONY: mysql.up
 mysql.up:
