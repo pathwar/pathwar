@@ -76,7 +76,7 @@ class ChallengeDetailsPage extends React.PureComponent {
               <Button
                 RootComponent="a"
                 target="_blank"
-                href=""
+                href={instances[0].nginx_url}
                 color="gray-dark"
                 icon="terminal"
               >
