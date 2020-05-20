@@ -450,10 +450,20 @@ http {
     access_log  /proc/self/fd/1;
     error_log   /proc/self/fd/2;
     # FIXME: add auth
+    location = /robots.txt {
+       add_header Content-Type text/plain;
+       return 200 "User-agent: *\nDisallow: /\n";
+    }
     location / {
       proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection "upgrade";
+      proxy_set_header Host                $http_host;
+      proxy_set_header X-Real-IP           $remote_addr;
+      proxy_set_header X-Forwarded-For     $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto   $scheme;
+      proxy_set_header X-Frame-Options     SAMEORIGIN;
+      proxy_set_header X-Pathwar-Mode      "moderator";
+      proxy_set_header Upgrade             $http_upgrade;
+      proxy_set_header Connection          "upgrade";
       proxy_pass http://upstream_{{.Name}};
     }
   }
@@ -463,10 +473,20 @@ http {
     server_name{{range .Hashes}} {{.}}.{{$root.Opts.DomainSuffix}}{{end}};
     access_log  /proc/self/fd/1;
     error_log   /proc/self/fd/2;
+    location = /robots.txt {
+       add_header Content-Type text/plain;
+       return 200 "User-agent: *\nDisallow: /\n";
+    }
     location / {
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection "upgrade";
+      proxy_http_version  1.1;
+      proxy_set_header Host                $http_host;
+      proxy_set_header X-Real-IP           $remote_addr;
+      proxy_set_header X-Forwarded-For     $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto   $scheme;
+      proxy_set_header X-Frame-Options     SAMEORIGIN;
+      proxy_set_header X-Pathwar-Mode      "authenticated";
+      proxy_set_header Upgrade             $http_upgrade;
+      proxy_set_header Connection          "upgrade";
       proxy_pass http://upstream_{{.Name}};
     }
   }
