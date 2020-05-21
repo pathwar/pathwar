@@ -1,4 +1,5 @@
 ## moul/rules.mk
+DOCKER_IMAGE = pathwar/pathwar
 INSTALL_STEPS += recursive_install
 GENERATE_STEPS += recursive_generate
 TEST_STEPS += recursive_test
@@ -44,4 +45,3 @@ docker.build: agent.docker.build
 .PHONY: agent.docker.build
 agent.docker.build:
 	$(call docker_build,Dockerfile.agent,pathwar/agent)
-	#docker build -t pathwar/agent -f Dockerfile.agent .
