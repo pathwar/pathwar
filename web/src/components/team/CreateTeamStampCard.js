@@ -48,12 +48,6 @@ const CreateTeamStampCard = ({
       >
         {activeTeamInSeason ? "Team on season" : "Create team"}
       </Button>
-      {/* <StampCard
-        color="green"
-        icon={activeTeamInSeason ? "anchor" : "users"}
-        header={<CardHeader />}
-        footer={cardFooterText}
-      /> */}
       {isFormOpen && (
         <form onSubmit={submitTeamCreate}>
           <Form.FieldSet>
