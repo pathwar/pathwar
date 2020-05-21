@@ -174,7 +174,7 @@ func genNginxConfig(apiInstances *pwapi.AgentListInstances_Output, containersInf
 		for _, seasonChallenge := range apiInstance.GetFlavor().GetSeasonChallenges() {
 			for _, subscription := range seasonChallenge.GetActiveSubscriptions() {
 				for _, member := range subscription.GetTeam().GetMembers() {
-					uniqueUsers[member.ID] = true
+					uniqueUsers[member.UserID] = true
 				}
 			}
 		}
