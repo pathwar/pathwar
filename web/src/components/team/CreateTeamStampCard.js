@@ -5,7 +5,6 @@ import btnStyles from "../../styles/layout/button.module.css"
 
 const CreateTeamStampCard = ({
   activeSeason,
-  activeTeam,
   activeTeamInSeason,
   createTeam,
 }) => {
