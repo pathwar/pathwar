@@ -1,11 +1,14 @@
 import React from "react"
 import { Button } from "tabler-react"
 
-const ChallengeCloseButton = ({ challenge, closeChallenge }) => {
+const ChallengeCloseButton = ({
+  challenge,
+  closeChallenge,
+  isClosed,
+  ...rest
+}) => {
   const hasSubscriptions = challenge.subscriptions
-  const subscription =
-    hasSubscriptions &&
-    challenge.subscriptions.find(item => item.status === "Active")
+  const subscription = hasSubscriptions && challenge.subscriptions[0]
 
   const handleCloseChallenge = async event => {
     event.preventDefault()
@@ -13,8 +16,14 @@ const ChallengeCloseButton = ({ challenge, closeChallenge }) => {
   }
 
   return (
-    <Button icon={"x-circle"} color="danger" onClick={handleCloseChallenge}>
-      Close
+    <Button
+      icon={"x-circle"}
+      color="danger"
+      onClick={handleCloseChallenge}
+      disabled={isClosed}
+      {...rest}
+    >
+      {isClosed ? "Closed" : "Close"}
     </Button>
   )
 }

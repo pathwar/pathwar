@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Form, Button } from "tabler-react"
 import styles from "../../styles/layout/button.module.css"
 
-const ChallengeValidateButton = ({ challenge, validateChallenge }) => {
+const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
   const [isValidateOpen, setValidateOpen] = useState(false)
   const [isFetching, setFetching] = useState(false)
   const [formData, setFormData] = useState({ passphrase: "", comment: "" })
@@ -44,6 +44,7 @@ const ChallengeValidateButton = ({ challenge, validateChallenge }) => {
         color="warning"
         className={styles.btn}
         onClick={handleFormOpen}
+        {...rest}
       >
         Validate
       </Button>
