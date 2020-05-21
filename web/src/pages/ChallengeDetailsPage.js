@@ -56,6 +56,7 @@ class ChallengeDetailsPage extends React.PureComponent {
               target="_blank"
               RootComponent="a"
               social="github"
+              size="sm"
             >
               Visit page
             </Button>
@@ -88,18 +89,16 @@ class ChallengeDetailsPage extends React.PureComponent {
           </Grid.Col>
         </Grid.Row>
         <hr />
-        <Grid.Row cards={true}>
+        <Grid.Row>
           {subscriptions && (
             <Grid.Col lg={12} md={12} sm={12} xs={12}>
               <div style={{ marginBottom: "1rem" }}>
                 <h3>Validations</h3>
-                <Button.List>
                   <ChallengeValidateButton
                     challenge={challenge}
                     validateChallenge={validateChallengeAction}
                     disabled={isClosed}
                   />
-                </Button.List>
               </div>
               {validations && <ValidationsList validations={validations} />}
             </Grid.Col>

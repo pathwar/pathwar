@@ -7,7 +7,7 @@ import { isNil } from "ramda"
 import AllTeamsOnSeasonList from "../components/season/AllTeamsOnSeasonList"
 import ChallengeList from "../components/challenges/ChallengeList"
 import ValidateCouponButton from "../components/coupon/ValidateCouponButton"
-import CreateTeamStampCard from "../components/team/CreateTeamStampCard"
+import CreateTeamButton from "../components/team/CreateTeamButton"
 
 import {
   fetchChallenges as fetchChallengesAction,
@@ -59,7 +59,7 @@ class SeasonPage extends React.Component {
         <Grid.Row>
           <Grid.Col xs={12} sm={3} lg={3}>
             <h4>Teams</h4>
-            <CreateTeamStampCard
+            <CreateTeamButton
               activeSeason={activeSeason}
               createTeam={createTeamAction}
               activeTeamInSeason={activeTeamInSeason}

@@ -3,7 +3,7 @@ import { isEmpty } from "ramda"
 import { Form, Button } from "tabler-react"
 import btnStyles from "../../styles/layout/button.module.css"
 
-const CreateTeamStampCard = ({
+const CreateTeamButton = ({
   activeSeason,
   activeTeamInSeason,
   createTeam,
@@ -71,4 +71,4 @@ const CreateTeamStampCard = ({
   )
 }
 
-export default CreateTeamStampCard
+export default CreateTeamButton
