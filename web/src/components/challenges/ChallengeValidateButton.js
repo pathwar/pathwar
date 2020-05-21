@@ -52,7 +52,11 @@ const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
         <form onSubmit={submitValidate}>
           <Form.FieldSet>
             <Form.Group isRequired label="Passphrase">
-              <Form.Input name="passphrase" onChange={handleChange} />
+              <Form.Input
+                name="passphrase"
+                onChange={handleChange}
+                placeholder="Insert passphrase here"
+              />
             </Form.Group>
             <Form.Group isRequired label="Comment">
               <Form.Textarea
