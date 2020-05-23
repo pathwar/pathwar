@@ -1321,8 +1321,7 @@ definitions:
           used with implementation specific semantics.
         type: string
       value:
-        description: Must be a valid serialized protocol buffer of the above specified
-          type.
+        description: Must be a valid serialized protocol buffer of the above specified type.
         format: byte
         type: string
     type: object
@@ -1410,7 +1409,7 @@ info:
 paths:
   /admin/challenge-add:
     post:
-      operationId: AdminChallengeAdd
+      operationId: Service_AdminChallengeAdd
       parameters:
       - in: body
         name: body
@@ -1423,8 +1422,7 @@ paths:
           schema:
             $ref: '#/definitions/apiAdminChallengeAddOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1439,7 +1437,7 @@ paths:
       - Service
   /admin/challenge-flavor-add:
     post:
-      operationId: AdminChallengeFlavorAdd
+      operationId: Service_AdminChallengeFlavorAdd
       parameters:
       - in: body
         name: body
@@ -1452,8 +1450,7 @@ paths:
           schema:
             $ref: '#/definitions/apiAdminChallengeFlavorAddOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1468,7 +1465,7 @@ paths:
       - Service
   /admin/challenge-instance-add:
     post:
-      operationId: AdminChallengeInstanceAdd
+      operationId: Service_AdminChallengeInstanceAdd
       parameters:
       - in: body
         name: body
@@ -1481,8 +1478,7 @@ paths:
           schema:
             $ref: '#/definitions/apiAdminChallengeInstanceAddOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1497,15 +1493,14 @@ paths:
       - Service
   /admin/ps:
     get:
-      operationId: AdminPS
+      operationId: Service_AdminPS
       responses:
         "200":
           description: A successful response.
           schema:
             $ref: '#/definitions/apiAdminPSOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1520,7 +1515,7 @@ paths:
       - Service
   /admin/redump:
     post:
-      operationId: AdminRedump
+      operationId: Service_AdminRedump
       parameters:
       - in: body
         name: body
@@ -1533,8 +1528,7 @@ paths:
           schema:
             $ref: '#/definitions/apiAdminRedumpOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1549,7 +1543,7 @@ paths:
       - Service
   /agent/list-instances:
     get:
-      operationId: AgentListInstances
+      operationId: Service_AgentListInstances
       parameters:
       - in: query
         name: agent_name
@@ -1561,8 +1555,7 @@ paths:
           schema:
             $ref: '#/definitions/apiAgentListInstancesOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1577,7 +1570,7 @@ paths:
       - Service
   /agent/register:
     post:
-      operationId: AgentRegister
+      operationId: Service_AgentRegister
       parameters:
       - in: body
         name: body
@@ -1590,8 +1583,7 @@ paths:
           schema:
             $ref: '#/definitions/apiAgentRegisterOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1606,15 +1598,14 @@ paths:
       - Service
   /agent/update-state:
     post:
-      operationId: AgentUpdateState
+      operationId: Service_AgentUpdateState
       responses:
         "200":
           description: A successful response.
           schema:
             $ref: '#/definitions/apiAgentUpdateStateOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1629,7 +1620,7 @@ paths:
       - Service
   /challenge:
     get:
-      operationId: ChallengeGet
+      operationId: Service_ChallengeGet
       parameters:
       - format: int64
         in: query
@@ -1642,8 +1633,7 @@ paths:
           schema:
             $ref: '#/definitions/apiChallengeGetOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1658,7 +1648,7 @@ paths:
       - Service
   /challenge-subscription/close:
     post:
-      operationId: ChallengeSubscriptionClose
+      operationId: Service_ChallengeSubscriptionClose
       parameters:
       - in: body
         name: body
@@ -1671,8 +1661,7 @@ paths:
           schema:
             $ref: '#/definitions/apiChallengeSubscriptionCloseOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1687,7 +1676,7 @@ paths:
       - Service
   /challenge-subscription/validate:
     post:
-      operationId: ChallengeSubscriptionValidate
+      operationId: Service_ChallengeSubscriptionValidate
       parameters:
       - in: body
         name: body
@@ -1700,8 +1689,7 @@ paths:
           schema:
             $ref: '#/definitions/apiChallengeSubscriptionValidateOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1716,15 +1704,14 @@ paths:
       - Service
   /challenges:
     get:
-      operationId: ChallengeList
+      operationId: Service_ChallengeList
       responses:
         "200":
           description: A successful response.
           schema:
             $ref: '#/definitions/apiChallengeListOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1739,7 +1726,7 @@ paths:
       - Service
   /coupon-validation:
     post:
-      operationId: CouponValidate
+      operationId: Service_CouponValidate
       parameters:
       - in: body
         name: body
@@ -1752,8 +1739,7 @@ paths:
           schema:
             $ref: '#/definitions/apiCouponValidateOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1768,15 +1754,14 @@ paths:
       - Service
   /info:
     get:
-      operationId: ToolInfo
+      operationId: Service_ToolInfo
       responses:
         "200":
           description: A successful response.
           schema:
             $ref: '#/definitions/apiGetInfoOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1791,15 +1776,14 @@ paths:
       - Service
   /organizations:
     get:
-      operationId: OrganizationList
+      operationId: Service_OrganizationList
       responses:
         "200":
           description: A successful response.
           schema:
             $ref: '#/definitions/apiOrganizationListOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1814,15 +1798,14 @@ paths:
       - Service
   /ping:
     get:
-      operationId: ToolPing
+      operationId: Service_ToolPing
       responses:
         "200":
           description: A successful response.
           schema:
             $ref: '#/definitions/apiVoid'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1837,7 +1820,7 @@ paths:
       - Service
   /season-challenge:
     get:
-      operationId: SeasonChallengeGet
+      operationId: Service_SeasonChallengeGet
       parameters:
       - format: int64
         in: query
@@ -1850,8 +1833,7 @@ paths:
           schema:
             $ref: '#/definitions/apiSeasonChallengeGetOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1866,7 +1848,7 @@ paths:
       - Service
   /season-challenge/buy:
     post:
-      operationId: SeasonChallengeBuy
+      operationId: Service_SeasonChallengeBuy
       parameters:
       - in: body
         name: body
@@ -1879,8 +1861,7 @@ paths:
           schema:
             $ref: '#/definitions/apiSeasonChallengeBuyOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1895,7 +1876,7 @@ paths:
       - Service
   /season-challenges:
     get:
-      operationId: SeasonChallengeList
+      operationId: Service_SeasonChallengeList
       parameters:
       - format: int64
         in: query
@@ -1908,8 +1889,7 @@ paths:
           schema:
             $ref: '#/definitions/apiSeasonChallengeListOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1924,15 +1904,14 @@ paths:
       - Service
   /status:
     get:
-      operationId: ToolStatus
+      operationId: Service_ToolStatus
       responses:
         "200":
           description: A successful response.
           schema:
             $ref: '#/definitions/apiGetStatusOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1947,7 +1926,7 @@ paths:
       - Service
   /team:
     get:
-      operationId: TeamGet
+      operationId: Service_TeamGet
       parameters:
       - format: int64
         in: query
@@ -1960,8 +1939,7 @@ paths:
           schema:
             $ref: '#/definitions/apiTeamGetOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -1975,7 +1953,7 @@ paths:
       tags:
       - Service
     post:
-      operationId: TeamCreate
+      operationId: Service_TeamCreate
       parameters:
       - in: body
         name: body
@@ -1988,8 +1966,7 @@ paths:
           schema:
             $ref: '#/definitions/apiTeamCreateOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -2004,7 +1981,7 @@ paths:
       - Service
   /team/invite:
     post:
-      operationId: TeamSendInvite
+      operationId: Service_TeamSendInvite
       parameters:
       - in: body
         name: body
@@ -2017,8 +1994,7 @@ paths:
           schema:
             $ref: '#/definitions/apiTeamSendInviteOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -2033,7 +2009,7 @@ paths:
       - Service
   /team/invite/accept:
     post:
-      operationId: TeamAcceptInvite
+      operationId: Service_TeamAcceptInvite
       parameters:
       - in: body
         name: body
@@ -2046,8 +2022,7 @@ paths:
           schema:
             $ref: '#/definitions/apiTeamAcceptInviteOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -2062,7 +2037,7 @@ paths:
       - Service
   /teams:
     get:
-      operationId: TeamList
+      operationId: Service_TeamList
       parameters:
       - format: int64
         in: query
@@ -2075,8 +2050,7 @@ paths:
           schema:
             $ref: '#/definitions/apiTeamListOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -2091,7 +2065,7 @@ paths:
       - Service
   /tool/generate-fake-data:
     post:
-      operationId: ToolGenerateFakeData
+      operationId: Service_ToolGenerateFakeData
       parameters:
       - in: body
         name: body
@@ -2104,8 +2078,7 @@ paths:
           schema:
             $ref: '#/definitions/apiVoid'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -2120,15 +2093,14 @@ paths:
       - Service
   /tool/sql-dump:
     get:
-      operationId: ToolDBDump
+      operationId: Service_ToolDBDump
       responses:
         "200":
           description: A successful response.
           schema:
             $ref: '#/definitions/dbDump'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -2143,7 +2115,7 @@ paths:
       - Service
   /user/delete-account:
     post:
-      operationId: UserDeleteAccount
+      operationId: Service_UserDeleteAccount
       parameters:
       - in: body
         name: body
@@ -2156,8 +2128,7 @@ paths:
           schema:
             $ref: '#/definitions/apiUserDeleteAccountOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -2172,7 +2143,7 @@ paths:
       - Service
   /user/preferences:
     post:
-      operationId: UserSetPreferences
+      operationId: Service_UserSetPreferences
       parameters:
       - in: body
         name: body
@@ -2185,8 +2156,7 @@ paths:
           schema:
             $ref: '#/definitions/apiUserSetPreferencesOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.
@@ -2201,15 +2171,14 @@ paths:
       - Service
   /user/session:
     get:
-      operationId: UserGetSession
+      operationId: Service_UserGetSession
       responses:
         "200":
           description: A successful response.
           schema:
             $ref: '#/definitions/apiUserGetSessionOutput'
         "403":
-          description: Returned when the user does not have permission to access the
-            resource.
+          description: Returned when the user does not have permission to access the resource.
           schema: {}
         "404":
           description: Returned when the resource does not exist.

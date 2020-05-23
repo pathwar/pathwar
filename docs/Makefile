@@ -18,7 +18,7 @@ gen.sum: $(GEN_SRC)
 	    --workdir="/go/src/pathwar.land/docs" \
 	    --entrypoint="sh" \
 	    --rm \
-	    pathwar/protoc:5 \
+	    pathwar/protoc:6 \
 	    -xec 'make generate_local'; \
 	)
 
