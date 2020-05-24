@@ -99,6 +99,9 @@ definitions:
         type: string
       auth_salt:
         type: string
+      default_agent:
+        format: boolean
+        type: boolean
       domain_suffix:
         type: string
       hostname:
@@ -409,6 +412,9 @@ definitions:
       created_at:
         format: date-time
         type: string
+      default_agent:
+        format: boolean
+        type: boolean
       domain_suffix:
         type: string
       err_msg:

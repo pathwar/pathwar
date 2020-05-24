@@ -18,6 +18,7 @@ type Opts struct {
 	Cleanup           bool
 	RunOnce           bool
 	LoopDelay         time.Duration
+	DefaultAgent      bool
 	Name              string
 	NoRun             bool
 
