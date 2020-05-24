@@ -1,12 +1,12 @@
 package pwsso
 
 import (
-	"fmt"
 	"net/http"
 	"testing"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"go.uber.org/zap"
+	"moul.io/roundtripper"
 )
 
 const (
@@ -48,39 +48,9 @@ func TestingSSO(t *testing.T, logger *zap.Logger) Client {
 }
 
 func TestingTransport(t *testing.T) http.RoundTripper {
-	return &transport{
-		token: TestingToken(t),
+	return &roundtripper.Transport{
+		ExtraHeader: http.Header{
+			"Authorization": []string{"Bearer " + testingToken},
+		},
 	}
-}
-
-type transport struct {
-	token *jwt.Token
-}
-
-func (t *transport) RoundTrip(req *http.Request) (*http.Response, error) {
-	reqBodyClosed := false
-	if req.Body != nil {
-		defer func() {
-			if !reqBodyClosed {
-				req.Body.Close()
-			}
-		}()
-	}
-
-	req2 := cloneRequest(req) // per RoundTripper contract
-	req2.Header.Set("Authorization", fmt.Sprintf("Bearer %s", testingToken))
-
-	// req.Body is assumed to be closed by the base RoundTripper.
-	reqBodyClosed = true
-	return http.DefaultTransport.RoundTrip(req2)
-}
-
-func cloneRequest(r *http.Request) *http.Request {
-	r2 := new(http.Request)
-	*r2 = *r
-	r2.Header = make(http.Header, len(r.Header))
-	for k, s := range r.Header {
-		r2.Header[k] = append([]string(nil), s...)
-	}
-	return r2
 }
