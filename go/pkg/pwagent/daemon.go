@@ -122,6 +122,7 @@ func agentRegister(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) 
 		DomainSuffix: opts.DomainSuffix,
 		AuthSalt:     opts.AuthSalt,
 		Metadata:     string(metadataStr),
+		DefaultAgent: opts.DefaultAgent,
 	})
 	if err != nil {
 		return errcode.TODO.Wrap(err)

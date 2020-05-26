@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sed -i "s/__PASSPHRASE__/$(pwctl passphrase 0)" /var/www/html/admin.php
+sed -i "s/__PASSPHRASE__/$(pwinit passphrase 0)" /var/www/html/admin.php

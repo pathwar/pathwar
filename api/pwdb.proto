@@ -127,6 +127,7 @@ message Agent {
   google.protobuf.Timestamp last_registration_at = 113 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp last_seen_at = 114 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   string auth_salt = 115;
+  bool default_agent = 116;
   // FIXME: capabilities
   // FIXME: metrics -> cpu/memory/containers/etc
 
