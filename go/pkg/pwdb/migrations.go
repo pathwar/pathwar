@@ -111,7 +111,7 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 	// agents
 	//
 
-	localhost := &Agent{
+	/*localhost := &Agent{
 		Name:         "localhost",
 		Hostname:     "localhost",
 		Status:       Agent_Active, // only useful during dev
@@ -138,7 +138,7 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 		if err != nil {
 			return GormToErrcode(err)
 		}
-	}
+	}*/
 
 	//
 	// challenges
@@ -166,7 +166,7 @@ networks: {}
 volumes: {}
 services:
     front:
-        image: pathwar/helloworld@sha256:bf7a6384b4f19127ca1dd3c383d695030478e6d68ec27f24bb83edc42a5f3d26
+        image: pathwar/helloworld@sha256:4a9ec341e1fd8f6dc1b5a81ba1746a034bcdecc97f85a981be2d440bf5b6a248
         ports:
             - "80"
         labels:
@@ -225,7 +225,7 @@ services:
 	trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http", bundle)
 	trainingHTTP.addSeasonChallengeByID(solo.ID)
 
-	nopBundle := ``
+	/*nopBundle := ``
 
 	trainingInclude := newOfficialChallengeWithFlavor("Training Include", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-include", nopBundle)
 	trainingInclude.addSeasonChallengeByID(solo.ID)
@@ -243,11 +243,10 @@ services:
 	uploadHi.addSeasonChallengeByID(testSeason.ID)
 
 	imageboard := newOfficialChallengeWithFlavor("Image Board", "https://github.com/pathwar/pathwar/tree/master/challenges/web/imageboard", nopBundle)
-	imageboard.addSeasonChallengeByID(testSeason.ID)
+	imageboard.addSeasonChallengeByID(testSeason.ID)*/
 
 	for _, flavor := range []*ChallengeFlavor{
-		challengeDebug, helloworld, trainingSQLI, trainingHTTP, trainingInclude, trainingBrute,
-		captchaLuigi, captchaMario, uploadHi, imageboard,
+		challengeDebug, helloworld, trainingSQLI, trainingHTTP, /* trainingInclude, trainingBrute,	captchaLuigi, captchaMario, uploadHi, imageboard,*/
 	} {
 		err := tx.
 			Set("gorm:association_autoupdate", true).
@@ -271,7 +270,7 @@ services:
 	}
 
 	//// Challenge Instances
-	devConfig := []byte(`{"passphrases": ["a", "b", "c", "d"]}`)
+	/*devConfig := []byte(`{"passphrases": ["a", "b", "c", "d"]}`)
 	instances := []*ChallengeInstance{
 		{Status: ChallengeInstance_Available, AgentID: localhost.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
 		{Status: ChallengeInstance_Available, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
@@ -287,7 +286,7 @@ services:
 		if err != nil {
 			return GormToErrcode(err)
 		}
-	}
+	}*/
 
 	// challenge subscription
 	subscription := ChallengeSubscription{
