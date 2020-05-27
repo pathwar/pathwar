@@ -3,9 +3,8 @@ import { isEmpty } from "ramda"
 import { Form, Button } from "tabler-react"
 import btnStyles from "../../styles/layout/button.module.css"
 
-const CreateTeamStampCard = ({
+const CreateTeamButton = ({
   activeSeason,
-  activeTeam,
   activeTeamInSeason,
   createTeam,
 }) => {
@@ -48,12 +47,6 @@ const CreateTeamStampCard = ({
       >
         {activeTeamInSeason ? "Team on season" : "Create team"}
       </Button>
-      {/* <StampCard
-        color="green"
-        icon={activeTeamInSeason ? "anchor" : "users"}
-        header={<CardHeader />}
-        footer={cardFooterText}
-      /> */}
       {isFormOpen && (
         <form onSubmit={submitTeamCreate}>
           <Form.FieldSet>
@@ -78,4 +71,4 @@ const CreateTeamStampCard = ({
   )
 }
 
-export default CreateTeamStampCard
+export default CreateTeamButton

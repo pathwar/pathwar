@@ -39,7 +39,7 @@ jobs:
   go-generate:
     working_directory: /go/src/pathwar.land
     docker:
-      - image: pathwar/protoc:5
+      - image: pathwar/protoc:6
     steps:
       - checkout
       - run: find . -name gen.sum -delete

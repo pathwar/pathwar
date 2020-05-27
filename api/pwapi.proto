@@ -153,6 +153,7 @@ message AgentRegister {
     string metadata = 8 [(gogoproto.moretags) = "url:\"metadata\""];
     int32 nginx_port = 9 [(gogoproto.moretags) = "url:\"nginx_port\""];
     string auth_salt = 10 [(gogoproto.moretags) = "url:\"auth_salt\""];
+    bool default_agent = 11 [(gogoproto.moretags) = "url:\"default_agent\""];
     // FIXME: capabilities
   }
   message Output {

@@ -74,6 +74,7 @@ var (
 	addChallengeName                string
 	addChallengePreviewURL          string
 	agentClean                      bool
+	agentDefault                    bool
 	agentDomainSuffix               string
 	agentForceRecreate              bool
 	agentHostIP                     string
@@ -151,6 +152,7 @@ func main() {
 	agentFlags.BoolVar(&agentRunOnce, "once", false, "run once and don't start daemon loop")
 	agentFlags.BoolVar(&agentNoRun, "no-run", false, "stop after agent initialization (register and cleanup)")
 	agentFlags.DurationVar(&agentLoopDelay, "delay", 10*time.Second, "delay between each loop iteration")
+	agentFlags.BoolVar(&agentDefault, "default-agent", true, "agent creates an instance for each available flavor on registration, else will only create an instance of debug-challenge")
 	agentFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
 	agentFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
 	agentFlags.StringVar(&ssoClientSecret, "sso-clientsecret", defaultSSOClientSecret, "SSO ClientSecret")
@@ -836,6 +838,7 @@ func main() {
 				RunOnce:           agentRunOnce,
 				NoRun:             agentNoRun,
 				LoopDelay:         agentLoopDelay,
+				DefaultAgent:      agentDefault,
 				Name:              agentName,
 				Logger:            logger,
 			}

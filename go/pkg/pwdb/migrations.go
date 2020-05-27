@@ -166,7 +166,7 @@ networks: {}
 volumes: {}
 services:
     front:
-        image: pathwar/helloworld@sha256:00247fcdcad9336f9cbfcde74a56650b6ffd7c27037957a1e8048d02eb7bdbe3
+        image: pathwar/helloworld@sha256:bf7a6384b4f19127ca1dd3c383d695030478e6d68ec27f24bb83edc42a5f3d26
         ports:
             - "80"
         labels:
@@ -207,10 +207,25 @@ services:
 	trainingSQLI := newOfficialChallengeWithFlavor("Training SQLI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-sqli", bundle)
 	trainingSQLI.addSeasonChallengeByID(solo.ID)
 
-	nopBundle := ``
+	bundle = `version: "3.7"
+networks: {}
+volumes: {}
+services:
+    front:
+        image: pathwar/training-http@sha256:92c46270f8d7be9d927345353b7ea49b37dbf6c82ab6b2da3bc401f9fbacf5e5
+        ports:
+          - "80"
+        labels:
+            land.pathwar.compose.challenge-name: training-http
+            land.pathwar.compose.challenge-version: 1.0.0
+            land.pathwar.compose.origin: was-built
+            land.pathwar.compose.service-name: front
+`
 
-	trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http", nopBundle)
+	trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http", bundle)
 	trainingHTTP.addSeasonChallengeByID(solo.ID)
+
+	nopBundle := ``
 
 	trainingInclude := newOfficialChallengeWithFlavor("Training Include", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-include", nopBundle)
 	trainingInclude.addSeasonChallengeByID(solo.ID)

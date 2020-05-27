@@ -1,8 +1,8 @@
 IMAGE ?= 	pathwar/protoc
-VERSION ?= 	5
+VERSION ?= 	6
 
 build:
-	docker build -t $(IMAGE):$(VERSION) .
+	docker build --pull -t $(IMAGE):$(VERSION) .
 
 publish: build
 	docker tag $(IMAGE):$(VERSION) $(IMAGE):latest

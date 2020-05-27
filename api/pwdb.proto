@@ -2,10 +2,8 @@ syntax = "proto3";
 
 package pathwar.db;
 
-import "github.com/golang/protobuf/ptypes/timestamp/timestamp.proto";
-import "google/api/annotations.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
-import "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "pathwar.land/go/pkg/pwdb";
 option (gogoproto.sizer_all) = true;
@@ -129,6 +127,7 @@ message Agent {
   google.protobuf.Timestamp last_registration_at = 113 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp last_seen_at = 114 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   string auth_salt = 115;
+  bool default_agent = 116;
   // FIXME: capabilities
   // FIXME: metrics -> cpu/memory/containers/etc
 

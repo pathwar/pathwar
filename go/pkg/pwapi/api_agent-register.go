@@ -44,6 +44,7 @@ func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) 
 	agent.LastSeenAt = &now
 	agent.TimesSeen++
 	agent.TimesRegistered++
+	agent.DefaultAgent = in.DefaultAgent
 
 	// save last object with updated last_seen etc
 	err = svc.db.Save(&agent).Error
@@ -51,28 +52,42 @@ func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) 
 		return nil, errcode.ErrSaveAgent.Wrap(err)
 	}
 
-	// automatically start a challenge debug instance
-	var debugFlavor pwdb.ChallengeFlavor
-	err = svc.db.
-		Where(pwdb.ChallengeFlavor{SourceURL: "https://github.com/pathwar/challenge-debug"}).
-		First(&debugFlavor).
-		Error
-	if err != nil {
-		return nil, pwdb.GormToErrcode(err)
+	var challengeFlavorsToInstanciate []*pwdb.ChallengeFlavor
+	// if default flag, start an instance for each challenge flavor in database
+	if agent.DefaultAgent {
+		err = svc.db.
+			Find(&challengeFlavorsToInstanciate).
+			Error
+		if err != nil {
+			return nil, pwdb.GormToErrcode(err)
+		}
+	} else {
+		// else just automatically start a challenge debug instance
+		var debugFlavor pwdb.ChallengeFlavor
+		err = svc.db.
+			Where(pwdb.ChallengeFlavor{SourceURL: "https://github.com/pathwar/challenge-debug"}).
+			First(&debugFlavor).
+			Error
+		if err != nil {
+			return nil, pwdb.GormToErrcode(err)
+		}
+		challengeFlavorsToInstanciate = append(challengeFlavorsToInstanciate, &debugFlavor)
 	}
 
-	addInput := AdminChallengeInstanceAdd_Input{
-		&pwdb.ChallengeInstance{
-			Status:         pwdb.ChallengeInstance_Available,
-			AgentID:        agent.ID,
-			FlavorID:       debugFlavor.ID,
-			InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
-		},
-	}
+	for _, challengeFlavor := range challengeFlavorsToInstanciate {
+		addInput := AdminChallengeInstanceAdd_Input{
+			&pwdb.ChallengeInstance{
+				Status:         pwdb.ChallengeInstance_Available,
+				AgentID:        agent.ID,
+				FlavorID:       challengeFlavor.ID,
+				InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
+			},
+		}
 
-	_, err = svc.AdminChallengeInstanceAdd(ctx, &addInput)
-	if err != nil {
-		return nil, err
+		_, err = svc.AdminChallengeInstanceAdd(ctx, &addInput)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// return the object

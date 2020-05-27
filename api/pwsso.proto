@@ -3,7 +3,7 @@ syntax = "proto3";
 package pathwar.sso;
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
-import "github.com/golang/protobuf/ptypes/timestamp/timestamp.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "pathwar.land/go/pkg/pwsso";
 option (gogoproto.sizer_all) = true;
