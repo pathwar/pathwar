@@ -305,7 +305,7 @@ message ChallengeValidation {
   string author_comment = 101;
   string corrector_comment = 102;
   string passphrase_key = 103;
-  string passphrase = 104;
+  string passphrases = 104;
   // FIXME: attachment
 
   ChallengeSubscription challenge_subscription = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeSubscriptionID\""];

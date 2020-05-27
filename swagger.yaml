@@ -159,8 +159,10 @@ definitions:
         type: string
       comment:
         type: string
-      passphrase:
-        type: string
+      passphrases:
+        items:
+          type: string
+        type: array
     type: object
   apiChallengeSubscriptionValidateOutput:
     properties:
@@ -662,9 +664,9 @@ definitions:
       id:
         format: int64
         type: string
-      passphrase:
-        type: string
       passphrase_key:
+        type: string
+      passphrases:
         type: string
       status:
         $ref: '#/definitions/dbChallengeValidationStatus'
