@@ -1,11 +1,19 @@
 {
-  "parser": "babel-eslint",
-  "rules": {
-    "strict": 0
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "detect"
+    }
   },
+  "parser": "babel-eslint",
   "extends": [
     "eslint:recommended",
-    "plugin:prettier/recommended",
     "plugin:react/recommended",
-  ]
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["react", "prettier"],
+  "rules": {
+    "react/prop-types": 0,
+    "prettier/prettier": "error"
+  }
 }
