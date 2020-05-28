@@ -22,9 +22,9 @@ func TestService_AgentListInstances(t *testing.T) {
 		{"nil", nil, errcode.ErrMissingInput},
 		{"empty", &AgentListInstances_Input{}, errcode.ErrMissingInput},
 		{"invalid-agent", &AgentListInstances_Input{AgentName: "unknown"}, errcode.ErrGetAgent},
-		{"localhost", &AgentListInstances_Input{AgentName: "localhost"}, nil},
-		{"localhost-2", &AgentListInstances_Input{AgentName: "localhost-2"}, nil},
-		{"inactive-agent", &AgentListInstances_Input{AgentName: "localhost-3"}, errcode.ErrInactiveAgent},
+		{"localhost", &AgentListInstances_Input{AgentName: "dummy-agent-1"}, nil},
+		{"localhost-2", &AgentListInstances_Input{AgentName: "dummy-agent-2"}, nil},
+		{"inactive-agent", &AgentListInstances_Input{AgentName: "dummy-agent-3"}, errcode.ErrInactiveAgent},
 	}
 
 	for _, test := range tests {
