@@ -129,10 +129,11 @@ describe('API Calls', () => {
     expect(closeData).toBeDefined();
     expect(closeData.challenge_subscription).toBeDefined();
   })
-  it('should work POST team - /team?season_id=id&name=name', async() => {
-    const tmpTeamName = "integration-" + Math.random().toString(36).substring(2, 15);
-    const response = await unsafeApi.post(`/team`, {"season_id": test_season_id, "name": tmpTeamName});
-    expect(response.status).toEqual(200);
-    expect(response.data).toBeDefined();
-  })
+  // temporarily disabled
+  //it('should work POST team - /team?season_id=id&name=name', async() => {
+  //  const tmpTeamName = "integration-" + Math.random().toString(36).substring(2, 15);
+  //  const response = await unsafeApi.post(`/team`, {"season_id": test_season_id, "name": tmpTeamName});
+  //  expect(response.status).toEqual(200);
+  //  expect(response.data).toBeDefined();
+  //})
 })

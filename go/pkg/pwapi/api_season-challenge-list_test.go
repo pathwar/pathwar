@@ -32,7 +32,7 @@ func TestSvc_SeasonChallengeList(t *testing.T) {
 	}{
 		{"empty", &SeasonChallengeList_Input{}, errcode.ErrMissingInput, 0},
 		{"unknown-season-id", &SeasonChallengeList_Input{SeasonID: -42}, errcode.ErrInvalidSeasonID, 0},
-		{"solo-mode", &SeasonChallengeList_Input{SeasonID: seasons["Solo Mode"]}, nil, 12},
+		{"solo-mode", &SeasonChallengeList_Input{SeasonID: seasons["Solo Mode"]}, nil, 14},
 		{"test-season", &SeasonChallengeList_Input{SeasonID: seasons["Test Season"]}, errcode.ErrUserHasNoTeamForSeason, 0},
 	}
 
