@@ -8,7 +8,7 @@ const initialErrorObj = { withError: false, fieldsWithError: [] }
 const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
   const [isValidateOpen, setValidateOpen] = useState(false)
   const [isFetching, setFetching] = useState(false)
-  const [formData, setFormData] = useState({ passphrase: "", comment: "" })
+  const [formData, setFormData] = useState({ passphrases: "", comment: "" })
   const [error, setError] = useState(initialErrorObj)
 
   const hasSubscriptions = challenge.subscriptions
@@ -17,9 +17,6 @@ const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
     challenge.subscriptions.find(item => item.status === "Active")
 
   useEffect(() => {
-    console.log(error)
-    console.log(error.withError)
-    console.log(error.fieldsWithError.includes("passphrase"))
     if (!isEmpty(formData.passphrase) && !isEmpty(formData.comment)) {
       setError(initialErrorObj)
     }
@@ -28,10 +25,10 @@ const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
   const submitValidate = event => {
     event.preventDefault()
 
-    if (isEmpty(formData.passphrase) || isEmpty(formData.comment)) {
+    if (isEmpty(formData.passphrases) || isEmpty(formData.comment)) {
       let fields = []
 
-      isEmpty(formData.passphrase) && fields.push("passphrase")
+      isEmpty(formData.passphrases) && fields.push("passphrases")
       isEmpty(formData.comment) && fields.push("comment")
 
       setError({ withError: true, fieldsWithError: fields })
@@ -40,6 +37,7 @@ const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
     } else {
       const validateDataSet = {
         ...formData,
+        passphrases: formData.passphrases.split(/[, ]+/),
         subscriptionID: subscription.id,
       }
 
@@ -64,12 +62,12 @@ const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
   }
 
   const passphraseWithError =
-    error.withError && error.fieldsWithError.includes("passphrase")
+    error.withError && error.fieldsWithError.includes("passphrases")
 
   const commentWithError =
     error.withError && error.fieldsWithError.includes("comment")
 
-    return (
+  return (
     <>
       <Button
         icon={"check-circle"}
@@ -85,12 +83,12 @@ const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
           <Form.FieldSet>
             <Form.Group isRequired label="Passphrase">
               <Form.Input
-                name="passphrase"
+                name="passphrases"
                 onChange={handleChange}
-                placeholder="Insert passphrase here"
+                placeholder="Insert passphrases here separated by ','"
                 invalid={passphraseWithError}
                 cross={passphraseWithError}
-                feedback={passphraseWithError && "Please, insert a passphrase"}
+                feedback={passphraseWithError && "Please, insert a least one passphrase"}
               />
             </Form.Group>
             <Form.Group isRequired label="Comment">

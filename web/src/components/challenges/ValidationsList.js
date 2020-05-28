@@ -15,7 +15,7 @@ const ValidationsList = ({ validations }) => {
         return (
           <Grid.Col lg={4} md={4} sm={6} xs={6}>
             <Card
-              title={validation.passphrase}
+              title={validation.passphrases}
               statusColor={statusColor}
               isCollapsible
             >
