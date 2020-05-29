@@ -67,7 +67,7 @@ export const setActiveSeason = seasonData => async dispatch => {
     });
   } catch (error) {
     dispatch({ type: SET_ACTIVE_SEASON_FAILED, payload: { error } });
-    alert("Set season active failed, please try again!");
+    toast.error(`Set season active failed, please try again!`);
   }
 };
 
