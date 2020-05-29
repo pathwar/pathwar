@@ -3,17 +3,91 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import Img from "gatsby-image";
 import { graphql } from "gatsby";
+import { Global, css } from "@emotion/core";
 
-import styles from "./index.module.css";
+import islandLeadingBg from "../images/island-light-mode-illustration.svg";
+
+const leading = css`
+  background-color: #fff;
+  height: 813px;
+  background-image: url(${islandLeadingBg});
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  background-size: contain;
+`;
+
+const leadingContent = css`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 51%;
+  height: 640px;
+
+  .title-block,
+  .sub-block {
+    margin-bottom: 2.5rem;
+  }
+
+  .cta-block {
+    text-align: center;
+
+    button {
+      margin-bottom: 1rem;
+    }
+  }
+`;
 
 export default ({ data }) => {
   const title = data.site.siteMetadata.title;
   const description = data.site.siteMetadata.description;
-  const logo = data.file.childImageSharp.fixed;
+  const logo = data.headerLogo.childImageSharp.fixed;
   const featuredImage = `${data.site.siteMetadata.baseUrl}${logo.src}`;
 
   return (
-    <div className={styles.page}>
+    <>
+      <Global
+        styles={css`
+          body,
+          html {
+            background-color: #fff;
+            font-family: "Nunito", sans-serif;
+            font-size: 16px;
+            color: #00376c;
+          }
+
+          h1 {
+            color: #0071de;
+            font-size: 3.125rem;
+            font-family: "Bungee", cursive;
+            margin: 0;
+          }
+
+          h2 {
+            font-size: 1.25rem;
+            margin: 0;
+          }
+
+          button {
+            border: none;
+            background: #0081ff;
+            border-radius: 31px;
+            font-size: 1.25rem;
+            color: #ffffff;
+            text-align: center;
+            font-weight: bold;
+            padding: 1rem 3rem;
+          }
+
+          .siteContainer {
+            padding: 35px 50px;
+            display: flex;
+            flex-direction: column;
+          }
+        `}
+      />
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -39,16 +113,40 @@ export default ({ data }) => {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
         <meta property="twitter:image" content={featuredImage} />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap"
+          rel="stylesheet"
+        ></link>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Bungee&display=swap"
+          rel="stylesheet"
+        />
       </Helmet>
 
-      <div className={styles.content}>
-        <div>
+      <section css={leading}>
+        <div className="siteContainer">
           <Img fixed={logo} alt="Pathwar Logo" />
+
+          <div css={leadingContent}>
+            <div className="title-block">
+              <h1>Learn, hack, challenge & more!</h1>
+            </div>
+            <div className="sub-block">
+              <h2>
+                Pathwar is an educational platform with a focus on security and
+                cryptography.
+              </h2>
+            </div>
+            <div className="cta-block">
+              <button>Join the adventure !</button>
+              <p>
+                Already on board ? <a href="#">Login</a>
+              </p>
+            </div>
+          </div>
         </div>
-        <p className="p">{description}</p>
-        <h2>COMING SOON..</h2>
-      </div>
-    </div>
+      </section>
+    </>
   );
 };
 
@@ -61,9 +159,11 @@ export const query = graphql`
         baseUrl
       }
     }
-    file(relativePath: { eq: "images/new_pathwar-logo.png" }) {
+    headerLogo: file(
+      relativePath: { eq: "images/new-pathwar-logo-dark-blue.png" }
+    ) {
       childImageSharp {
-        fixed(width: 200, height: 200) {
+        fixed(width: 91, height: 94) {
           ...GatsbyImageSharpFixed
         }
       }
