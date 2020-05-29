@@ -42,7 +42,7 @@ func TestSvc_ChallengeSubscriptionClose(t *testing.T) {
 	// validate second challenge
 	_, err = svc.ChallengeSubscriptionValidate(ctx, &ChallengeSubscriptionValidate_Input{
 		ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID,
-		Passphrase:              "secret",
+		Passphrases:             []string{"secret"},
 	})
 	require.NoError(t, err)
 

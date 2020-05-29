@@ -43,8 +43,8 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 	}{
 		{"nil", nil, errcode.ErrMissingInput, "", 0},
 		{"empty", &ChallengeSubscriptionValidate_Input{}, errcode.ErrMissingInput, "", 0},
-		{"invalid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: 42, Passphrase: "secret", Comment: "explanation"}, errcode.ErrGetChallengeSubscription, "", 0},
-		{"valid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription.ChallengeSubscription.ID, Passphrase: "secret", Comment: "ultra cool explanation"}, nil, "test", 1},
+		{"invalid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: 42, Passphrases: []string{"secret"}, Comment: "explanation"}, errcode.ErrGetChallengeSubscription, "", 0},
+		{"valid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription.ChallengeSubscription.ID, Passphrases: []string{"secret"}, Comment: "ultra cool explanation"}, nil, "test", 1},
 		// FIXME: revalidate
 		// FIXME: new validation
 	}
@@ -60,7 +60,7 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 		assert.Equalf(t, session.User.ID, ret.ChallengeValidation.AuthorID, test.name)
 		assert.Equalf(t, pwdb.ChallengeValidation_NeedReview, ret.ChallengeValidation.Status, test.name)
 		assert.Equalf(t, test.input.Comment, ret.ChallengeValidation.AuthorComment, test.name)
-		assert.Equalf(t, test.input.Passphrase, ret.ChallengeValidation.Passphrase, test.name)
+		assert.Equalf(t, test.input.Passphrases, ret.ChallengeValidation.Passphrases, test.name)
 		assert.Equalf(t, test.expectedPassphraseKey, ret.ChallengeValidation.PassphraseKey, test.name)
 		assert.NotEmptyf(t, ret.ChallengeValidation.ChallengeSubscription.Validations, test.name)
 		// fmt.Println(godev.PrettyJSON(ret))

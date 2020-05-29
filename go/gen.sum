@@ -3,6 +3,6 @@
 70d67f1cebb3b7f9e86fd0197d43db4c1f795f65  ../api/pwinit.proto
 938d0b10041d408da360734ce20ba0d65eb20521  ../api/pwagent.proto
 9cdefe9b710603c37fad4fb6c3b3271394debff7  Makefile
-af5f986770bbc9984738aad01bc52eefa26f0836  ../api/errcode.proto
 cb8eafc931d3f9f9f6329dc627122b647279d7fc  ../api/pwapi.proto
 e003c9972b304f55e278696dfb44bad1b6849202  ../api/pwdb.proto
+e178f0469bc190130cdefb2a5aee576373e99391  ../api/errcode.proto

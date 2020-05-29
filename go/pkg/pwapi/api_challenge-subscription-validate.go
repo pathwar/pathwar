@@ -3,6 +3,7 @@ package pwapi
 import (
 	"context"
 	"encoding/json"
+	"errors"
 
 	"pathwar.land/v2/go/pkg/errcode"
 	"pathwar.land/v2/go/pkg/pwdb"
@@ -26,6 +27,8 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 	err = svc.db.
 		Preload("Team", "team.deletion_status = ?", pwdb.DeletionStatus_Active).
 		Preload("SeasonChallenge").
+		Preload("SeasonChallenge.Flavor").
+		Preload("SeasonChallenge.Flavor.Instances").
 		Joins("JOIN team ON team.id = challenge_subscription.team_id").
 		Joins("JOIN team_member ON team_member.team_id = team.id AND team_member.user_id = ?", userID).
 		First(&challengeSubscription, in.ChallengeSubscriptionID).
@@ -40,7 +43,7 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 	}
 
 	validPassphrases := map[int]bool{}
-	for _, instance := range challengeSubscription.SeasonChallenge.Instances {
+	for _, instance := range challengeSubscription.SeasonChallenge.Flavor.Instances {
 		var configData pwinit.InitConfig
 		err = json.Unmarshal(instance.GetInstanceConfig(), &configData)
 		if err != nil {
@@ -62,10 +65,15 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 	}
 	// FIXME: check if passphrase_key wasn't already validated for this team ? or let it
 
+	// if validpassphrase is still empty
+	if len(validPassphrases) == 0 {
+		return nil, errcode.ErrChallengeIncompleteValidation.Wrap(errors.New("valid passphrases array is empty"))
+	}
+
 	// if provided passphrase are not all valid
 	for _, valid := range validPassphrases {
 		if !valid {
-			return nil, errcode.ErrChallengeIncompleteValidation.Wrap(err)
+			return nil, errcode.ErrChallengeIncompleteValidation.Wrap(errors.New("invalid passphrase"))
 		}
 	}
 
