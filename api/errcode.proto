@@ -142,6 +142,9 @@ enum ErrCode {
   ErrInactiveAgent = 4065;
   ErrChallengeFlavorAdd = 4066;
   ErrChallengeInstanceAdd = 4067;
+  ErrChallengeInactiveValidation = 4068;
+  ErrChallengeIncompleteValidation = 4069;
+  ErrChallengeJSONMarshalPassphrases = 4070;
 
   //// Pathwar Server (starting at 5001)
 

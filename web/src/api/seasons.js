@@ -22,7 +22,7 @@ export function getAllSeasonTeams(seasonID) {
 }
 
 export function postCreateTeam(seasonID, name) {
-  return baseApi.post(`/team`, {"season_id": seasonID, "name": name})
+  return baseApi.post(`/team`, { "season_id": seasonID, "name": name })
 }
 
 
@@ -41,10 +41,10 @@ export function postBuyChallenge(challengeID, teamID) {
 }
 
 export function postValidateChallenge(validateData) {
-  const { subscriptionID, passphrase, comment } = validateData;
-  return baseApi.post(`/challenge-subscription/validate`, { "challenge_subscription_id": subscriptionID, "passphrase": passphrase, "comment": comment }  )
+  const { subscriptionID, passphrases, comment } = validateData;
+  return baseApi.post(`/challenge-subscription/validate`, { "challenge_subscription_id": subscriptionID, "passphrases": passphrases, "comment": comment })
 }
 
 export function postCloseChallenge(subscriptionID) {
-  return baseApi.post(`/challenge-subscription/close`, { "challenge_subscription_id": subscriptionID }  )
+  return baseApi.post(`/challenge-subscription/close`, { "challenge_subscription_id": subscriptionID })
 }

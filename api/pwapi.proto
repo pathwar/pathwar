@@ -228,7 +228,7 @@ message SeasonChallengeBuy {
 message ChallengeSubscriptionValidate {
   message Input {
     int64 challenge_subscription_id = 1 [(gogoproto.customname) = "ChallengeSubscriptionID"];
-    string passphrase = 2;
+    repeated string passphrases = 2;
     string comment = 3;
   }
   message Output {
