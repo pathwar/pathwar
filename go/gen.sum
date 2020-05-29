@@ -1,8 +1,8 @@
 04575c89be1815909d61a17a12ad23ae1cf8379d  ../api/pwcompose.proto
-1e2bdccf605bd562ddbcaaf638cbe695a22b014b  ../api/errcode.proto
 58202a11cc54640949aaacb09c0e0db6f26d57c2  ../api/pwsso.proto
 70d67f1cebb3b7f9e86fd0197d43db4c1f795f65  ../api/pwinit.proto
-8402bb9dba87ce2abfd54e75b7549c6f7cfdeec1  ../api/pwapi.proto
+7e73efe3d36d14921d82bd681a92464b54ca2373  ../api/pwdb.proto
 938d0b10041d408da360734ce20ba0d65eb20521  ../api/pwagent.proto
 9cdefe9b710603c37fad4fb6c3b3271394debff7  Makefile
-d519450deccfb73b95801fea8b938b845b354570  ../api/pwdb.proto
+cb8eafc931d3f9f9f6329dc627122b647279d7fc  ../api/pwapi.proto
+e178f0469bc190130cdefb2a5aee576373e99391  ../api/errcode.proto

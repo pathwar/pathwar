@@ -2,6 +2,7 @@ package pwapi
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,6 +10,7 @@ import (
 	"pathwar.land/v2/go/internal/testutil"
 	"pathwar.land/v2/go/pkg/errcode"
 	"pathwar.land/v2/go/pkg/pwdb"
+	"pathwar.land/v2/go/pkg/pwinit"
 )
 
 func TestSvc_ChallengeSubscriptionClose(t *testing.T) {
@@ -34,15 +36,30 @@ func TestSvc_ChallengeSubscriptionClose(t *testing.T) {
 	})
 	require.NoError(t, err)
 	subscription2, err := svc.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{
-		SeasonChallengeID: challenges.Items[1].ID,
+		SeasonChallengeID: challenges.Items[8].ID,
 		TeamID:            activeTeam.ID,
 	})
 	require.NoError(t, err)
 
+	// load instances
+	db := testingSvcDB(t, svc)
+	err = db.
+		Preload("SeasonChallenge").
+		Preload("SeasonChallenge.Flavor").
+		Preload("SeasonChallenge.Flavor.Instances").
+		First(&subscription2.ChallengeSubscription, subscription2.ChallengeSubscription.ID).
+		Error
+	require.NoError(t, err)
+
 	// validate second challenge
+	require.True(t, len(subscription2.ChallengeSubscription.SeasonChallenge.Flavor.Instances) > 0)
+	instance := subscription2.ChallengeSubscription.SeasonChallenge.Flavor.Instances[0]
+	var configData pwinit.InitConfig
+	err = json.Unmarshal(instance.GetInstanceConfig(), &configData)
+	require.NoError(t, err)
 	_, err = svc.ChallengeSubscriptionValidate(ctx, &ChallengeSubscriptionValidate_Input{
 		ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID,
-		Passphrase:              "secret",
+		Passphrases:             configData.Passphrases,
 	})
 	require.NoError(t, err)
 
