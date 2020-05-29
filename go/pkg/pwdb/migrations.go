@@ -28,7 +28,7 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 			}
 		}
 
-		err = createFirstEntities(tx, sfn, opts)
+		err = createFirstEntities(tx)
 		if err != nil {
 			return GormToErrcode(err)
 		}
@@ -52,43 +52,30 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 	return nil
 }
 
-func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node, opts Opts) error {
-	//
-	// seasons
-	//
+func createFirstEntities(tx *gorm.DB) error {
+	// FIXME: replace those direct DB inserts by API calls to admin endpoints
+	// default season
 	solo := &Season{
-		// ID:         "solo-season",
 		Name:       "Solo Mode",
 		Status:     Season_Started,
 		Visibility: Season_Public,
 		IsDefault:  true,
 	}
-	testSeason := &Season{
-		Name:       "Test Season",
-		Status:     Season_Started,
-		Visibility: Season_Public,
-	}
-	for _, season := range []*Season{solo, testSeason} {
-		if err := tx.Create(season).Error; err != nil {
-			return GormToErrcode(err)
-		}
+	err := tx.Create(solo).Error
+	if err != nil {
+		return GormToErrcode(err)
 	}
 
-	//
-	// staff team & org
-	//
-
+	// staff org, team and members
 	staffOrg := &Organization{
 		Name:           "Staff",
 		DeletionStatus: DeletionStatus_Active,
-		// GravatarURL: staff
 	}
 	staffTeam := &Team{
 		IsDefault:      true,
 		Season:         solo,
 		Organization:   staffOrg,
 		DeletionStatus: DeletionStatus_Active,
-		// GravatarURL: staff
 	}
 	hackSparrow := &User{
 		Username:                "Hack Sparrow",
@@ -96,53 +83,13 @@ func createFirstEntities(tx *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 		OrganizationMemberships: []*OrganizationMember{{Organization: staffOrg}},
 		TeamMemberships:         []*TeamMember{{Team: staffTeam}},
 		DeletionStatus:          DeletionStatus_Active,
-		// State: special
-		// GravatarURL: m1ch3l
 	}
-	err := tx.
-		Set("gorm:association_autoupdate", true).
-		Create(hackSparrow).
-		Error
+	err = tx.Set("gorm:association_autoupdate", true).Create(hackSparrow).Error
 	if err != nil {
 		return GormToErrcode(err)
 	}
 
-	//
-	// agents
-	//
-
-	localhost := &Agent{
-		Name:         "localhost",
-		Hostname:     "localhost",
-		Status:       Agent_Active, // only useful during dev
-		DomainSuffix: "local",
-		AuthSalt:     "bluh",
-	}
-	localhost2 := &Agent{
-		Name:         "localhost-2",
-		Hostname:     "localhost",
-		Status:       Agent_Active,
-		DomainSuffix: "local",
-		NginxPort:    4242,
-		AuthSalt:     "blah",
-	}
-	localhost3 := &Agent{
-		Name:         "localhost-3",
-		Hostname:     "localhost",
-		Status:       Agent_Inactive,
-		DomainSuffix: "local",
-		AuthSalt:     "blih",
-	}
-	for _, agent := range []*Agent{localhost, localhost2, localhost3} {
-		err = tx.Create(agent).Error
-		if err != nil {
-			return GormToErrcode(err)
-		}
-	}
-
-	//
 	// challenges
-	//
 	bundle := `version: "3.7"
 networks: {}
 volumes: {}
@@ -159,7 +106,6 @@ services:
 `
 	challengeDebug := newOfficialChallengeWithFlavor("Debug", "https://github.com/pathwar/challenge-debug", bundle)
 	challengeDebug.addSeasonChallengeByID(solo.ID)
-	challengeDebug.addSeasonChallengeByID(testSeason.ID)
 
 	bundle = `version: "3.7"
 networks: {}
@@ -177,7 +123,6 @@ services:
 `
 	helloworld := newOfficialChallengeWithFlavor("Hello World", "https://github.com/pathwar/pathwar/tree/master/challenges/web/helloworld", bundle)
 	helloworld.addSeasonChallengeByID(solo.ID)
-	helloworld.addSeasonChallengeByID(testSeason.ID)
 
 	bundle = `version: "3.7"
 networks: {}
@@ -225,34 +170,10 @@ services:
 	trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http", bundle)
 	trainingHTTP.addSeasonChallengeByID(solo.ID)
 
-	nopBundle := ``
-
-	trainingInclude := newOfficialChallengeWithFlavor("Training Include", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-include", nopBundle)
-	trainingInclude.addSeasonChallengeByID(solo.ID)
-
-	trainingBrute := newOfficialChallengeWithFlavor("Training Brute", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-brute", nopBundle)
-	trainingBrute.addSeasonChallengeByID(solo.ID)
-
-	captchaLuigi := newOfficialChallengeWithFlavor("Captcha Luigi", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-luigi", nopBundle)
-	captchaLuigi.addSeasonChallengeByID(testSeason.ID)
-
-	captchaMario := newOfficialChallengeWithFlavor("Captcha Mario", "https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-mario", nopBundle)
-	captchaMario.addSeasonChallengeByID(testSeason.ID)
-
-	uploadHi := newOfficialChallengeWithFlavor("Upload HI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/upload-hi", nopBundle)
-	uploadHi.addSeasonChallengeByID(testSeason.ID)
-
-	imageboard := newOfficialChallengeWithFlavor("Image Board", "https://github.com/pathwar/pathwar/tree/master/challenges/web/imageboard", nopBundle)
-	imageboard.addSeasonChallengeByID(testSeason.ID)
-
 	for _, flavor := range []*ChallengeFlavor{
-		challengeDebug, helloworld, trainingSQLI, trainingHTTP, trainingInclude, trainingBrute,
-		captchaLuigi, captchaMario, uploadHi, imageboard,
+		challengeDebug, helloworld, trainingSQLI, trainingHTTP,
 	} {
-		err := tx.
-			Set("gorm:association_autoupdate", true).
-			Create(flavor).
-			Error
+		err := tx.Set("gorm:association_autoupdate", true).Create(flavor).Error
 		if err != nil {
 			return GormToErrcode(err)
 		}
@@ -260,89 +181,10 @@ services:
 		// FIXME: should not be necessary, should be done automatically thanks to association_autoupdate
 		for _, seasonChallenge := range flavor.SeasonChallenges {
 			seasonChallenge.FlavorID = flavor.ID
-			err := tx.
-				Set("gorm:association_autoupdate", true).
-				Create(seasonChallenge).
-				Error
+			err := tx.Set("gorm:association_autoupdate", true).Create(seasonChallenge).Error
 			if err != nil {
 				return GormToErrcode(err)
 			}
-		}
-	}
-
-	//// Challenge Instances
-	devConfig := []byte(`{"passphrases": ["a", "b", "c", "d"]}`)
-	instances := []*ChallengeInstance{
-		{Status: ChallengeInstance_Available, AgentID: localhost.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
-		{Status: ChallengeInstance_Available, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
-		{Status: ChallengeInstance_Available, AgentID: localhost3.ID, FlavorID: helloworld.ID, InstanceConfig: devConfig},
-		{Status: ChallengeInstance_Disabled, AgentID: localhost.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
-		{Status: ChallengeInstance_Disabled, AgentID: localhost2.ID, FlavorID: trainingSQLI.ID, InstanceConfig: devConfig},
-		{Status: ChallengeInstance_Disabled, AgentID: localhost3.ID, FlavorID: helloworld.ID, InstanceConfig: devConfig},
-	}
-	for _, instance := range instances {
-		err := tx.Set("gorm:association_autoupdate", true).
-			Create(instance).
-			Error
-		if err != nil {
-			return GormToErrcode(err)
-		}
-	}
-
-	// challenge subscription
-	subscription := ChallengeSubscription{
-		SeasonChallengeID: trainingSQLI.SeasonChallenges[0].ID,
-		TeamID:            staffTeam.ID,
-		BuyerID:           hackSparrow.ID,
-		Status:            ChallengeSubscription_Active,
-	}
-	err = tx.Set("gorm:association_autoupdate", true).
-		Create(&subscription).
-		Error
-	if err != nil {
-		return GormToErrcode(err)
-	}
-
-	//
-	// Achievements
-	//
-
-	achievements := []*Achievement{
-		{
-			AuthorID: hackSparrow.ID,
-			TeamID:   staffTeam.ID,
-			IsGlobal: true,
-			Comment:  ":)",
-			Type:     Achievement_Staff,
-		}, {
-			AuthorID: hackSparrow.ID,
-			TeamID:   staffTeam.ID,
-			Type:     Achievement_Moderator,
-		},
-	}
-	for _, achievement := range achievements {
-		err = tx.Create(achievement).Error
-		if err != nil {
-			return GormToErrcode(err)
-		}
-	}
-
-	//
-	// coupons
-	//
-	coupons := []*Coupon{
-		{Hash: "test-coupon-1", Value: 42, MaxValidationCount: 1, SeasonID: solo.ID},
-		{Hash: "test-coupon-2", Value: 42, MaxValidationCount: 1, SeasonID: testSeason.ID},
-		{Hash: "test-coupon-3", Value: 42, MaxValidationCount: 0, SeasonID: solo.ID},
-		{Hash: "test-coupon-4", Value: 42, MaxValidationCount: 2, SeasonID: solo.ID},
-	}
-	for _, coupon := range coupons {
-		err := tx.
-			Set("gorm:association_autoupdate", true).
-			Create(coupon).
-			Error
-		if err != nil {
-			return err
 		}
 	}
 
