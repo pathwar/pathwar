@@ -664,8 +664,6 @@ definitions:
       id:
         format: int64
         type: string
-      passphrase_key:
-        type: string
       passphrases:
         type: string
       status:

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"pathwar.land/v2/go/pkg/errcode"
 	"pathwar.land/v2/go/pkg/pwdb"
@@ -39,53 +40,76 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 
 	// check if challenge subscription is still open
 	if challengeSubscription.Status != pwdb.ChallengeSubscription_Active {
-		return nil, errcode.ErrChallengeInactiveValidation.Wrap(err)
+		return nil, errcode.ErrChallengeInactiveValidation.Wrap(errors.New("challenge is disabled"))
 	}
 
-	validPassphrases := map[int]bool{}
-	for _, instance := range challengeSubscription.SeasonChallenge.Flavor.Instances {
+	instances := challengeSubscription.SeasonChallenge.Flavor.Instances
+	if len(instances) == 0 {
+		return nil, errcode.ErrChallengeInactiveValidation.Wrap(errors.New("challenge has no instances"))
+	}
+
+	// compare input and instances' passphrases
+	var configData pwinit.InitConfig
+	err = json.Unmarshal(instances[0].GetInstanceConfig(), &configData)
+	if err != nil {
+		return nil, errcode.ErrParseInitConfig.Wrap(err)
+	}
+	amountExpected := len(configData.Passphrases)
+	if amountExpected == 0 {
+		return nil, errcode.ErrChallengeInactiveValidation.Wrap(errors.New("challenge config is invalid"))
+	}
+	if amountExpected < len(in.Passphrases) {
+		return nil, errcode.ErrChallengeIncompleteValidation.Wrap(fmt.Errorf("too many passphrases"))
+	}
+
+	// FIXME: revalidation
+
+	validPassphrases := make([]bool, amountExpected)
+	usedInstances := make(map[int64]bool, len(instances))
+	for _, instance := range instances {
 		var configData pwinit.InitConfig
 		err = json.Unmarshal(instance.GetInstanceConfig(), &configData)
 		if err != nil {
 			return nil, errcode.ErrParseInitConfig.Wrap(err)
 		}
-		tempPassphrases := map[int]bool{}
-		for index, challengePassphrase := range configData.Passphrases {
-			found := false
+		for index, passphrase := range configData.Passphrases {
 			for _, userPassphrase := range in.Passphrases {
-				if userPassphrase == challengePassphrase {
-					found = true
+				if passphrase == userPassphrase {
+					validPassphrases[index] = true
+					usedInstances[instance.ID] = true
 				}
 			}
-			tempPassphrases[index] = found
-		}
-		if len(tempPassphrases) > len(validPassphrases) {
-			validPassphrases = tempPassphrases
 		}
 	}
-	// FIXME: check if passphrase_key wasn't already validated for this team ? or let it
-
-	// if validpassphrase is still empty
-	if len(validPassphrases) == 0 {
-		return nil, errcode.ErrChallengeIncompleteValidation.Wrap(errors.New("valid passphrases array is empty"))
-	}
-
-	// if provided passphrase are not all valid
+	amountValid := 0
 	for _, valid := range validPassphrases {
-		if !valid {
-			return nil, errcode.ErrChallengeIncompleteValidation.Wrap(errors.New("invalid passphrase"))
+		if valid {
+			amountValid++
 		}
+	}
+
+	if amountValid > 0 && amountValid < amountExpected {
+		return nil, errcode.ErrChallengeIncompleteValidation.Wrap(fmt.Errorf("%d/%d valid passphrases", amountValid, amountExpected))
+	}
+
+	if amountValid == 0 {
+		return nil, errcode.ErrChallengeIncompleteValidation.Wrap(errors.New("invalid passphrase(s)"))
 	}
 
 	// create validation
-	passphrases, err := json.Marshal(in.Passphrases)
+	validPassphraseIndices := []int{}
+	for index, valid := range validPassphrases {
+		if valid {
+			validPassphraseIndices = append(validPassphraseIndices, index)
+		}
+	}
+	passphrases, err := json.Marshal(validPassphraseIndices)
 	if err != nil {
 		return nil, errcode.ErrChallengeJSONMarshalPassphrases.Wrap(err)
 	}
 	validation := pwdb.ChallengeValidation{
 		ChallengeSubscriptionID: in.ChallengeSubscriptionID,
 		Passphrases:             string(passphrases),
-		PassphraseKey:           "test",
 		AuthorID:                userID,
 		AuthorComment:           in.Comment,
 		Status:                  pwdb.ChallengeValidation_NeedReview,
@@ -108,18 +132,24 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		return nil, errcode.ErrGetChallengeValidation.Wrap(err)
 	}
 
-	// FIXME: only redump the validated instance
-	for _, instance := range challengeSubscription.SeasonChallenge.Instances {
-		err = svc.db.Model(&instance).
-			Update(pwdb.ChallengeInstance{
-				Status: pwdb.ChallengeInstance_NeedRedump,
-			}).
-			Error
-		if err != nil {
-			return nil, errcode.ErrAgentUpdateState.Wrap(err)
-		}
+	// mark used instances as needing a redump
+	usedInstanceIDs := make([]int64, len(usedInstances))
+	i := 0
+	for id := range usedInstances {
+		usedInstanceIDs[i] = id
+		i++
+	}
+	err = svc.db.
+		Model(&instances[0]).
+		Where("id IN (?)", usedInstanceIDs).
+		Update(pwdb.ChallengeInstance{Status: pwdb.ChallengeInstance_NeedRedump}).
+		Error
+	if err != nil {
+		return nil, errcode.ErrAgentUpdateState.Wrap(err)
 	}
 
-	ret := ChallengeSubscriptionValidate_Output{ChallengeValidation: &validation}
+	ret := ChallengeSubscriptionValidate_Output{
+		ChallengeValidation: &validation,
+	}
 	return &ret, nil
 }

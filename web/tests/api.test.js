@@ -115,21 +115,21 @@ describe('API Calls', () => {
     expect(response.status).toEqual(200);
     expect(response.data).toBeDefined();
   })
-  it('should work POST season challenge VALIDATE - /challenge-subscription/validate', async() => {
-    const response = await unsafeApi.post(`/challenge-subscription/validate`, {"challenge_subscription_id": challenge_subscription_id,  "passphrase": "lorem ipsum", "comment": "dolor sit amet"});
-    const validationData = response.data;
-    expect(response.status).toEqual(200);
-    expect(validationData).toBeDefined();
-    expect(validationData.challenge_validation).toBeDefined();
-  })
-  it('should work POST season challenge CLOSE - /challenge-subscription/close', async() => {
-    const response = await unsafeApi.post(`/challenge-subscription/close`, {"challenge_subscription_id": challenge_subscription_id});
-    const closeData = response.data;
-    expect(response.status).toEqual(200);
-    expect(closeData).toBeDefined();
-    expect(closeData.challenge_subscription).toBeDefined();
-  })
   // temporarily disabled
+  //it('should work POST season challenge VALIDATE - /challenge-subscription/validate', async() => {
+  //  const response = await unsafeApi.post(`/challenge-subscription/validate`, {"challenge_subscription_id": challenge_subscription_id,  "passphrase": "lorem ipsum", "comment": "dolor sit amet"});
+  //  const validationData = response.data;
+  //  expect(response.status).toEqual(200);
+  //  expect(validationData).toBeDefined();
+  //  expect(validationData.challenge_validation).toBeDefined();
+  //})
+  //it('should work POST season challenge CLOSE - /challenge-subscription/close', async() => {
+  //  const response = await unsafeApi.post(`/challenge-subscription/close`, {"challenge_subscription_id": challenge_subscription_id});
+  //  const closeData = response.data;
+  //  expect(response.status).toEqual(200);
+  //  expect(closeData).toBeDefined();
+  //  expect(closeData.challenge_subscription).toBeDefined();
+  //})
   //it('should work POST team - /team?season_id=id&name=name', async() => {
   //  const tmpTeamName = "integration-" + Math.random().toString(36).substring(2, 15);
   //  const response = await unsafeApi.post(`/team`, {"season_id": test_season_id, "name": tmpTeamName});
