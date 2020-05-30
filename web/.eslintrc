@@ -26,6 +26,7 @@
         "semi": true,
         "singleQuote": false,
         "tabWidth": 2,
+        "arrowParens": "avoid",
         "trailingComma": "es5"
       }
     ]
