@@ -10,6 +10,7 @@
     "amd": true,
     "node": true
   },
+  "ignorePatterns": ["**/tests/*"],
   "parser": "babel-eslint",
   "extends": [
     "eslint:recommended",
