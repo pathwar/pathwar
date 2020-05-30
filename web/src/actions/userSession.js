@@ -8,7 +8,7 @@ import {
   SET_KEYCLOAK_SESSION,
   LOGOUT,
   DELETE_ACCOUNT_FAILED,
-  DELETE_ACCOUNT_SUCCESS
+  DELETE_ACCOUNT_SUCCESS,
 } from "../constants/actionTypes";
 import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
 import { getUserSession, deleteUserAccount } from "../api/userSession";
@@ -16,19 +16,19 @@ import { setActiveOrganization as setActiveOrganizationAction } from "./organiza
 import {
   setActiveSeason as setActiveSeasonAction,
   fetchPreferences as fetchPreferencesAction,
-  setActiveTeam as setActiveTeamAction
+  setActiveTeam as setActiveTeamAction,
 } from "./seasons";
 
 export const logoutUser = () => async dispatch => {
   dispatch({
-    type: LOGOUT
+    type: LOGOUT,
   });
 };
 
 export const setUserSession = activeUserSession => async dispatch => {
   dispatch({
     type: SET_USER_SESSION,
-    payload: { activeUserSession }
+    payload: { activeUserSession },
   });
 };
 
@@ -69,8 +69,8 @@ export const setKeycloakSession = (
       type: SET_KEYCLOAK_SESSION,
       payload: {
         keycloakInstance: keycloakInstance,
-        authenticated: authenticated
-      }
+        authenticated: authenticated,
+      },
     });
 
     Cookies.set(USER_SESSION_TOKEN_NAME, keycloakInstance.token);
@@ -85,7 +85,7 @@ export const deleteAccount = reason => async dispatch => {
     const response = await deleteUserAccount(reason);
     dispatch({
       type: DELETE_ACCOUNT_SUCCESS,
-      payload: { activeChallenges: response.data.items }
+      payload: { activeChallenges: response.data.items },
     });
     toast.success("Delete account SUCCESS!");
   } catch (error) {

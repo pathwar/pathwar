@@ -29,15 +29,15 @@ class TeamDetailsPage extends React.PureComponent {
 
 TeamDetailsPage.propTypes = {
   teamInDetail: PropTypes.object,
-  fetchTeamDetailsAction: PropTypes.func
+  fetchTeamDetailsAction: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
-  teamInDetail: state.seasons.teamInDetail
+  teamInDetail: state.seasons.teamInDetail,
 });
 
 const mapDispatchToProps = {
-  fetchTeamDetailsAction: teamID => fetchTeamDetailsAction(teamID)
+  fetchTeamDetailsAction: teamID => fetchTeamDetailsAction(teamID),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamDetailsPage);

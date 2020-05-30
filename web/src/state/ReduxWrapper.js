@@ -5,7 +5,7 @@ import thunk from "redux-thunk";
 import {
   createStore as reduxCreateStore,
   compose,
-  applyMiddleware
+  applyMiddleware,
 } from "redux";
 import rootReducer from ".";
 

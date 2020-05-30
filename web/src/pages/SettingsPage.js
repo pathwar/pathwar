@@ -8,7 +8,7 @@ import { deleteAccount as deleteAccountAction } from "../actions/userSession";
 
 class SettingsPage extends React.PureComponent {
   state = {
-    isFetching: false
+    isFetching: false,
   };
 
   deleteAccount = async reason => {
@@ -45,13 +45,13 @@ class SettingsPage extends React.PureComponent {
 }
 
 SettingsPage.propTypes = {
-  deleteAccountAction: PropTypes.func
+  deleteAccountAction: PropTypes.func,
 };
 
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
-  deleteAccountAction: reason => deleteAccountAction(reason)
+  deleteAccountAction: reason => deleteAccountAction(reason),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage);

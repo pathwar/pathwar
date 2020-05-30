@@ -2,7 +2,7 @@ import {
   LOGOUT,
   LOGIN_FAILED,
   SET_USER_SESSION,
-  SET_KEYCLOAK_SESSION
+  SET_KEYCLOAK_SESSION,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -11,8 +11,8 @@ const initialState = {
     fetching: false,
     isAuthenticated: false,
     activeUserSession: undefined,
-    activeKeycloakSession: undefined
-  }
+    activeKeycloakSession: undefined,
+  },
 };
 
 export default function userSessionReducer(
@@ -26,7 +26,7 @@ export default function userSessionReducer(
         fetching: false,
         activeKeycloakSession: undefined,
         isAuthenticated: false,
-        error: action.payload.error
+        error: action.payload.error,
       };
 
     case LOGOUT:
@@ -36,7 +36,7 @@ export default function userSessionReducer(
         activeKeycloakSession: undefined,
         activeUserSession: undefined,
         isAuthenticated: false,
-        error: undefined
+        error: undefined,
       };
 
     case SET_KEYCLOAK_SESSION:
@@ -44,14 +44,14 @@ export default function userSessionReducer(
         ...state,
         fetching: false,
         activeKeycloakSession: action.payload.keycloakInstance,
-        isAuthenticated: action.payload.authenticated
+        isAuthenticated: action.payload.authenticated,
       };
 
     case SET_USER_SESSION:
       return {
         ...state,
         fetching: false,
-        activeUserSession: action.payload.activeUserSession
+        activeUserSession: action.payload.activeUserSession,
       };
 
     default:

@@ -38,7 +38,7 @@ export function getChallengeDetails(challengeID) {
 export function postBuyChallenge(challengeID, teamID) {
   return baseApi.post(`/season-challenge/buy`, {
     season_challenge_id: challengeID,
-    team_id: teamID
+    team_id: teamID,
   });
 }
 
@@ -47,12 +47,12 @@ export function postValidateChallenge(validateData) {
   return baseApi.post(`/challenge-subscription/validate`, {
     challenge_subscription_id: subscriptionID,
     passphrases: passphrases,
-    comment: comment
+    comment: comment,
   });
 }
 
 export function postCloseChallenge(subscriptionID) {
   return baseApi.post(`/challenge-subscription/close`, {
-    challenge_subscription_id: subscriptionID
+    challenge_subscription_id: subscriptionID,
   });
 }

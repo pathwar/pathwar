@@ -18,26 +18,26 @@ const navBarItems = [
     value: "Season",
     to: "/app/season",
     icon: "flag",
-    LinkComponent: Link
+    LinkComponent: Link,
   },
   {
     value: "Dashboard",
     to: "/app/dashboard",
     icon: "home",
-    LinkComponent: Link
+    LinkComponent: Link,
   },
   {
     value: "FAQ",
     to: "/app/faq",
     icon: "help-circle",
-    LinkComponent: Link
+    LinkComponent: Link,
   },
   {
     value: "Settings",
     to: "/app/settings",
     icon: "settings",
-    LinkComponent: Link
-  }
+    LinkComponent: Link,
+  },
 ];
 
 const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
@@ -62,14 +62,14 @@ const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
     options.push({
       icon: "edit",
       value: "Edit account",
-      to: activeKeycloakSession.tokenParsed.iss + "/account"
+      to: activeKeycloakSession.tokenParsed.iss + "/account",
     });
   }
   return {
     avatarURL: avatar,
     name: `${username}`,
     description: description,
-    options: options
+    options: options,
   };
 };
 
@@ -91,7 +91,7 @@ class SiteWrapper extends React.Component {
                 </Button>
               )}
             </Nav.Item>
-          )
+          ),
         }}
         navProps={{ itemsObjects: navBarItems }}
       >
@@ -104,11 +104,11 @@ class SiteWrapper extends React.Component {
 SiteWrapper.propTypes = {
   children: PropTypes.node,
   userSession: PropTypes.object,
-  lastActiveTeam: PropTypes.object
+  lastActiveTeam: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
-  userSession: state.userSession
+  userSession: state.userSession,
 });
 
 const mapDispatchToProps = {};
