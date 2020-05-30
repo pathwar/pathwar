@@ -11,9 +11,8 @@
     "plugin:react/recommended",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["react", "prettier"],
+  "plugins": ["react"],
   "rules": {
-    "react/prop-types": 0,
-    "prettier/prettier": "warn"
+    "react/prop-types": 0
   }
 }
