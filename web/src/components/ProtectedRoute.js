@@ -44,16 +44,16 @@ class ProtectedRoute extends React.PureComponent {
 }
 
 ProtectedRoute.propTypes = {
-  component: PropTypes.any.isRequired,
+  component: PropTypes.any.isRequired
 };
 
 const mapStateToProps = state => ({
-  userSession: state.userSession,
+  userSession: state.userSession
 });
 
 const mapDispatchToProps = {
   setKeycloakSession: (keycloakInstance, authenticated) =>
-    setKeycloakSession(keycloakInstance, authenticated),
+    setKeycloakSession(keycloakInstance, authenticated)
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProtectedRoute);

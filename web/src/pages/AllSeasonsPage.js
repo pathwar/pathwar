@@ -15,7 +15,7 @@ class AllSeasonsPage extends React.PureComponent {
 
   render() {
     const {
-      seasons: { allSeasons },
+      seasons: { allSeasons }
     } = this.props;
     return (
       <Page.Content title="All Seasons">
@@ -32,15 +32,15 @@ class AllSeasonsPage extends React.PureComponent {
 
 AllSeasonsPage.propTypes = {
   seasons: PropTypes.object,
-  fetchAllSeasonsAction: PropTypes.func,
+  fetchAllSeasonsAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
-  seasons: state.seasons,
+  seasons: state.seasons
 });
 
 const mapDispatchToProps = {
-  fetchAllSeasonsAction: () => fetchAllSeasonsAction(),
+  fetchAllSeasonsAction: () => fetchAllSeasonsAction()
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllSeasonsPage);

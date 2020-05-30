@@ -13,7 +13,7 @@ import {
   fetchChallenges as fetchChallengesAction,
   fetchAllSeasonTeams as fetchAllSeasonTeamsAction,
   buyChallenge as buyChallengeAction,
-  createTeam as createTeamAction,
+  createTeam as createTeamAction
 } from "../actions/seasons";
 
 class SeasonPage extends React.Component {
@@ -21,10 +21,10 @@ class SeasonPage extends React.Component {
     const {
       fetchAllSeasonTeamsAction,
       fetchChallengesAction,
-      seasons: { activeSeason },
+      seasons: { activeSeason }
     } = this.props;
     const {
-      seasons: { activeSeason: prevActiveSeason },
+      seasons: { activeSeason: prevActiveSeason }
     } = prevProps;
 
     if (isNil(prevActiveSeason) && activeSeason) {
@@ -41,8 +41,8 @@ class SeasonPage extends React.Component {
         activeSeason,
         activeChallenges,
         allTeamsOnSeason,
-        activeTeamInSeason,
-      },
+        activeTeamInSeason
+      }
     } = this.props;
     const name = activeSeason ? activeSeason.name : undefined;
 
@@ -84,12 +84,12 @@ class SeasonPage extends React.Component {
 
 SeasonPage.propTypes = {
   seasons: PropTypes.object,
-  fetchChallengesAction: PropTypes.func,
+  fetchChallengesAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
   seasons: state.seasons,
-  activeOrganization: state.organizations.activeOrganization,
+  activeOrganization: state.organizations.activeOrganization
 });
 
 const mapDispatchToProps = {
@@ -97,7 +97,7 @@ const mapDispatchToProps = {
   fetchAllSeasonTeamsAction: seasonID => fetchAllSeasonTeamsAction(seasonID),
   buyChallengeAction: (seasonID, teamID) =>
     buyChallengeAction(seasonID, teamID),
-  createTeamAction: (seasonID, name) => createTeamAction(seasonID, name),
+  createTeamAction: (seasonID, name) => createTeamAction(seasonID, name)
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SeasonPage);

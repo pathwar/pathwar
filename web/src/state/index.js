@@ -6,7 +6,7 @@ import seasons from "./seasonReducer";
 const rootReducer = combineReducers({
   userSession,
   organizations,
-  seasons,
+  seasons
 });
 
 export default rootReducer;

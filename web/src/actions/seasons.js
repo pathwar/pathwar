@@ -23,7 +23,7 @@ import {
   CLOSE_CHALLENGE_FAILED,
   SET_ACTIVE_TEAM,
   CREATE_TEAM_SUCCESS,
-  CREATE_TEAM_FAILED,
+  CREATE_TEAM_FAILED
 } from "../constants/actionTypes";
 
 import {
@@ -36,7 +36,7 @@ import {
   postBuyChallenge,
   postValidateChallenge,
   postCloseChallenge,
-  postCreateTeam,
+  postCreateTeam
 } from "../api/seasons";
 
 import { fetchUserSession as fetchUserSessionAction } from "./userSession";
@@ -47,14 +47,14 @@ export const fetchPreferences = seasonID => async dispatch => {
     await postPreferences(seasonID);
 
     dispatch({
-      type: FETCH_PREFERENCES_SUCCESS,
+      type: FETCH_PREFERENCES_SUCCESS
     });
 
     dispatch(fetchUserSessionAction(false));
   } catch (error) {
     dispatch({
       type: FETCH_PREFERENCES_FAILED,
-      payload: { error },
+      payload: { error }
     });
   }
 };
@@ -63,7 +63,7 @@ export const setActiveSeason = seasonData => async dispatch => {
   try {
     dispatch({
       type: SET_ACTIVE_SEASON,
-      payload: { activeSeason: seasonData },
+      payload: { activeSeason: seasonData }
     });
   } catch (error) {
     dispatch({ type: SET_ACTIVE_SEASON_FAILED, payload: { error } });
@@ -78,7 +78,7 @@ export const fetchAllSeasons = () => async dispatch => {
 
     dispatch({
       type: GET_ALL_SEASONS_SUCCESS,
-      payload: { allSeasons: allSeasons },
+      payload: { allSeasons: allSeasons }
     });
   } catch (error) {
     dispatch({ type: GET_ALL_SEASONS_FAILED, payload: { error } });
@@ -93,7 +93,7 @@ export const fetchAllSeasonTeams = seasonID => async dispatch => {
 
     dispatch({
       type: GET_ALL_SEASON_TEAMS_SUCCESS,
-      payload: { allTeams: allTeams },
+      payload: { allTeams: allTeams }
     });
   } catch (error) {
     dispatch({ type: GET_ALL_SEASON_TEAMS_FAILED, payload: { error } });
@@ -108,13 +108,13 @@ export const fetchTeamDetails = teamID => async dispatch => {
     dispatch({
       type: GET_TEAM_DETAILS_SUCCESS,
       payload: {
-        team: detailsResponse,
-      },
+        team: detailsResponse
+      }
     });
   } catch (error) {
     dispatch({
       type: GET_TEAM_DETAILS_FAILED,
-      payload: { error },
+      payload: { error }
     });
   }
 };
@@ -123,8 +123,8 @@ export const setActiveTeam = teamData => async dispatch => {
   dispatch({
     type: SET_ACTIVE_TEAM,
     payload: {
-      team: teamData,
-    },
+      team: teamData
+    }
   });
 };
 
@@ -135,15 +135,15 @@ export const createTeam = (seasonID, name) => async dispatch => {
     dispatch({
       type: CREATE_TEAM_SUCCESS,
       payload: {
-        team: response.data,
-      },
+        team: response.data
+      }
     });
 
     toast.success(`Create team ${name} success!`);
   } catch (error) {
     dispatch({
       type: CREATE_TEAM_FAILED,
-      payload: { error },
+      payload: { error }
     });
 
     toast.error(`Create team ERROR!`);
@@ -157,7 +157,7 @@ export const fetchChallengeDetail = challengeID => async dispatch => {
 
     dispatch({
       type: GET_CHALLENGE_DETAILS_SUCCESS,
-      payload: { challenge: response.data.item },
+      payload: { challenge: response.data.item }
     });
   } catch (error) {
     dispatch({ type: GET_CHALLENGE_DETAILS_FAILED, payload: { error } });
@@ -169,7 +169,7 @@ export const fetchChallenges = seasonID => async dispatch => {
     const response = await getChallenges(seasonID);
     dispatch({
       type: SET_CHALLENGES_LIST,
-      payload: { activeChallenges: response.data.items },
+      payload: { activeChallenges: response.data.items }
     });
   } catch (error) {
     dispatch({ type: SET_CHALLENGES_LIST_FAILED, payload: { error } });
@@ -186,15 +186,15 @@ export const buyChallenge = (
     const subscription = response.data.challenge_subscription;
     const {
       season_challenge: {
-        flavor: { challenge },
-      },
+        flavor: { challenge }
+      }
     } = subscription;
     dispatch({
       type: BUY_CHALLENGE_SUCCESS,
       payload: {
         challengeSubscription: subscription,
-        fromDetails: fromDetails,
-      },
+        fromDetails: fromDetails
+      }
     });
 
     toast.success(`Buy challenge ${challenge.name} success!`);
@@ -212,7 +212,7 @@ export const validateChallenge = validateData => async dispatch => {
 
     dispatch({
       type: VALIDATE_CHALLENGE_SUCCESS,
-      payload: { challengeSubscription: challenge_subscription },
+      payload: { challengeSubscription: challenge_subscription }
     });
 
     toast.success(`Validate challenge success!`);
@@ -227,7 +227,7 @@ export const closeChallenge = subscriptionID => async dispatch => {
     const response = await postCloseChallenge(subscriptionID);
     dispatch({
       type: CLOSE_CHALLENGE_SUCCESS,
-      payload: { challengeSubscription: response.data.challenge_subscription },
+      payload: { challengeSubscription: response.data.challenge_subscription }
     });
 
     toast.success(`Close challenge success!`);

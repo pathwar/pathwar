@@ -6,7 +6,7 @@ import {
   fetchChallengeDetail as fetchChallengeDetailAction,
   buyChallenge as buyChallengeAction,
   validateChallenge as validateChallengeAction,
-  closeChallenge as closeChallengeAction,
+  closeChallenge as closeChallengeAction
 } from "../actions/seasons";
 import ChallengeBuyButton from "../components/challenges/ChallengeBuyButton";
 import ChallengeValidateButton from "../components/challenges/ChallengeValidateButton";
@@ -30,14 +30,14 @@ class ChallengeDetailsPage extends React.PureComponent {
       activeTeam: { id: teamID } = { id: "no id" },
       buyChallengeAction,
       validateChallengeAction,
-      closeChallengeAction,
+      closeChallengeAction
     } = this.props;
 
     const {
       flavor: { challenge: flavorChallenge, instances } = {
-        challenge: "no challenge",
+        challenge: "no challenge"
       },
-      subscriptions,
+      subscriptions
     } = challenge || {};
 
     if (!challenge) {
@@ -112,12 +112,12 @@ class ChallengeDetailsPage extends React.PureComponent {
 }
 
 ChallengeDetailsPage.propTypes = {
-  fetchChallengeDetailAction: PropTypes.func,
+  fetchChallengeDetailAction: PropTypes.func
 };
 
 const mapStateToProps = state => ({
   challenge: state.seasons.challengeInDetail,
-  activeTeam: state.seasons.activeTeam,
+  activeTeam: state.seasons.activeTeam
 });
 
 const mapDispatchToProps = {
@@ -127,7 +127,7 @@ const mapDispatchToProps = {
     validateChallengeAction(validationData, seasonId),
   closeChallengeAction: subscriptionID => closeChallengeAction(subscriptionID),
   fetchChallengeDetailAction: challengeID =>
-    fetchChallengeDetailAction(challengeID),
+    fetchChallengeDetailAction(challengeID)
 };
 
 export default connect(

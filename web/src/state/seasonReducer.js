@@ -11,7 +11,7 @@ import {
   SET_ACTIVE_TEAM,
   CLOSE_CHALLENGE_SUCCESS,
   BUY_CHALLENGE_SUCCESS,
-  VALIDATE_CHALLENGE_SUCCESS,
+  VALIDATE_CHALLENGE_SUCCESS
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -24,15 +24,15 @@ const initialState = {
     teamInDetail: undefined,
     allTeamsOnSeason: undefined,
     activeChallenges: undefined,
-    challengeInDetail: undefined,
-  },
+    challengeInDetail: undefined
+  }
 };
 
 export default function seasonReducer(state = initialState.seasons, action) {
   const {
     challengeInDetail,
     allTeamsOnSeason,
-    activeChallenges: activeChallengesInState,
+    activeChallenges: activeChallengesInState
   } = state;
   const { payload: { challengeSubscription } = {} } = action;
 
@@ -40,50 +40,49 @@ export default function seasonReducer(state = initialState.seasons, action) {
     case GET_ALL_SEASONS_SUCCESS:
       return {
         ...state,
-        allSeasons: action.payload.allSeasons,
+        allSeasons: action.payload.allSeasons
       };
 
     case GET_ALL_SEASON_TEAMS_SUCCESS:
       return {
         ...state,
-        allTeamsOnSeason: action.payload.allTeams,
+        allTeamsOnSeason: action.payload.allTeams
       };
 
     case SET_ACTIVE_SEASON:
       return {
         ...state,
-        activeSeason: action.payload.activeSeason,
+        activeSeason: action.payload.activeSeason
       };
 
     case GET_CHALLENGE_DETAILS_SUCCESS:
       return {
         ...state,
-        challengeInDetail: action.payload.challenge,
+        challengeInDetail: action.payload.challenge
       };
 
     case SET_CHALLENGES_LIST:
       return {
         ...state,
-        activeChallenges: action.payload.activeChallenges,
+        activeChallenges: action.payload.activeChallenges
       };
 
     case GET_TEAM_DETAILS_SUCCESS:
       return {
         ...state,
-        teamInDetail: action.payload.team,
+        teamInDetail: action.payload.team
       };
 
     case SET_ACTIVE_TEAM:
       const {
-        payload: { team },
+        payload: { team }
       } = action;
 
       return {
         ...state,
         activeTeam: team,
         activeTeamInSeason:
-          allTeamsOnSeason &&
-          allTeamsOnSeason.some(item => item.id === team.id),
+          allTeamsOnSeason && allTeamsOnSeason.some(item => item.id === team.id)
       };
 
     case BUY_CHALLENGE_SUCCESS:
@@ -96,7 +95,7 @@ export default function seasonReducer(state = initialState.seasons, action) {
         if (challengeInDetailClone.subscriptions) {
           challengeInDetailClone.subscriptions = [
             ...challengeInDetailClone.subscriptions,
-            challengeSubscription,
+            challengeSubscription
           ];
         } else {
           challengeInDetailClone.subscriptions = [challengeSubscription];
@@ -104,7 +103,7 @@ export default function seasonReducer(state = initialState.seasons, action) {
 
         return {
           ...state,
-          challengeInDetail: challengeInDetailClone,
+          challengeInDetail: challengeInDetailClone
         };
       } else {
         const buyedChallenge =
@@ -115,7 +114,7 @@ export default function seasonReducer(state = initialState.seasons, action) {
         if (buyedChallenge.subscriptions) {
           buyedChallenge.subscriptions = [
             ...buyedChallenge.subscriptions,
-            challengeSubscription,
+            challengeSubscription
           ];
         } else {
           buyedChallenge.subscriptions = [challengeSubscription];
@@ -133,7 +132,7 @@ export default function seasonReducer(state = initialState.seasons, action) {
 
       return {
         ...state,
-        activeChallenges: updatedChallenges,
+        activeChallenges: updatedChallenges
       };
 
     case VALIDATE_CHALLENGE_SUCCESS:
@@ -152,7 +151,7 @@ export default function seasonReducer(state = initialState.seasons, action) {
 
       return {
         ...state,
-        challengeInDetail: challengeInDetailClone,
+        challengeInDetail: challengeInDetailClone
       };
 
     case CLOSE_CHALLENGE_SUCCESS:
@@ -171,7 +170,7 @@ export default function seasonReducer(state = initialState.seasons, action) {
 
       return {
         ...state,
-        challengeInDetail: challengeInDetailCloneClose,
+        challengeInDetail: challengeInDetailCloneClose
       };
 
     default:
