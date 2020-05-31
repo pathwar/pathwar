@@ -23,7 +23,7 @@ const leadingContent = css`
   justify-content: center;
   margin-top: auto;
   margin-bottom: auto;
-  width: 51%;
+  width: 45%;
   height: 640px;
 
   .title-block,
@@ -32,11 +32,31 @@ const leadingContent = css`
   }
 
   .cta-block {
+    color: #7493b0;
     text-align: center;
+
+    a {
+      font-weight: bold;
+      color: #0081ff;
+    }
 
     button {
       margin-bottom: 1rem;
     }
+  }
+`;
+
+const cardsArea = css`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  .site-card {
+    background-color: #fff;
+    min-height: 389px;
+    padding: 40px 40px 30px;
+    box-shadow: 0 0 20px 0 rgba(56, 95, 200, 0.25);
+    border-radius: 6px;
   }
 `;
 
@@ -52,7 +72,7 @@ export default ({ data }) => {
         styles={css`
           body,
           html {
-            background-color: #fff;
+            background-color: #f3f9ff;
             font-family: "Nunito", sans-serif;
             font-size: 16px;
             color: #00376c;
@@ -85,6 +105,7 @@ export default ({ data }) => {
             padding: 35px 50px;
             display: flex;
             flex-direction: column;
+            width: 100%;
           }
         `}
       />
@@ -144,6 +165,14 @@ export default ({ data }) => {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section>
+        <div css={cardsArea} className="siteContainer">
+          <div className="site-card">Card 1</div>
+          <div className="site-card">Card 2</div>
+          <div className="site-card">Card 3</div>
         </div>
       </section>
     </>
