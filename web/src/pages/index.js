@@ -6,6 +6,9 @@ import { graphql } from "gatsby";
 import { Global, css } from "@emotion/core";
 
 import islandLeadingBg from "../images/island-light-mode-illustration.svg";
+import hookIcon from "../images/hook-l-icon.svg";
+import mapIcon from "../images/map-l-icon.svg";
+import shipIcon from "../images/ship-l-icon.svg";
 
 const leading = css`
   background-color: #fff;
@@ -50,13 +53,32 @@ const cardsArea = css`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+  position: relative;
+  top: -70px;
 
   .site-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     background-color: #fff;
+    max-width: 358px;
     min-height: 389px;
     padding: 40px 40px 30px;
     box-shadow: 0 0 20px 0 rgba(56, 95, 200, 0.25);
     border-radius: 6px;
+
+    img {
+      margin-bottom: 35px;
+    }
+
+    h3 {
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin-bottom: 25px;
+    }
   }
 `;
 
@@ -90,6 +112,12 @@ export default ({ data }) => {
             margin: 0;
           }
 
+          h3 {
+            font-size: 1.125rem;
+            font-weight: bold;
+            margin: 0;
+          }
+
           button {
             border: none;
             background: #0081ff;
@@ -99,6 +127,15 @@ export default ({ data }) => {
             text-align: center;
             font-weight: bold;
             padding: 1rem 3rem;
+
+            &.outline {
+              color: #0081ff;
+              background-color: transparent;
+              font-size: 1rem;
+              border: 2px solid #0081ff;
+              border-radius: 31px;
+              padding: 1rem 2rem;
+            }
           }
 
           .siteContainer {
@@ -170,9 +207,30 @@ export default ({ data }) => {
 
       <section>
         <div css={cardsArea} className="siteContainer">
-          <div className="site-card">Card 1</div>
-          <div className="site-card">Card 2</div>
-          <div className="site-card">Card 3</div>
+          <div className="site-card">
+            <img src={shipIcon} />
+            <h3>Put your skills to the test</h3>
+            <p>and improve them. Beat the challenges, learn new tricks.</p>
+          </div>
+          <div className="site-card">
+            <img src={mapIcon} />
+            <h3>Participate in tournaments</h3>
+            <p>
+              with your team and win prizes. Create or join a team and compete
+              with other players
+            </p>
+          </div>
+          <div className="site-card">
+            <img src={hookIcon} />
+            <h3>Hack everything</h3>
+            <p>
+              Levels? Other players’ profiles? The platform itself? Everything
+              is fair game here!
+            </p>
+            <button href="#" className="outline">
+              Read our Code of Conduct
+            </button>
+          </div>
         </div>
       </section>
     </>
