@@ -38,7 +38,7 @@ message ChallengeFlavor {
   bool is_draft = 102;
   bool is_latest = 103;
   string source_url = 104 [(gogoproto.customname) = "SourceURL"];
-  string compose_bundle = 105 [(gogoproto.moretags) = "gorm:\"size:50000\""];
+  string compose_bundle = 105 [(gogoproto.moretags) = "gorm:\"size:100000\""];
   Driver driver = 106;
 
   Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
