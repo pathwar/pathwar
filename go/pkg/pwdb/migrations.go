@@ -12,6 +12,7 @@ func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
 
 	// only called on fresh database
 	m.InitSchema(func(tx *gorm.DB) error {
+		tx.Set("gorm:table_options", "charset=utf8mb4")
 		err := tx.AutoMigrate(All()...).Error
 		if err != nil {
 			tx.Rollback()
