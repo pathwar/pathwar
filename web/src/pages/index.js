@@ -1,10 +1,11 @@
 /* eslint-disable react/display-name */
-import React from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import Img from "gatsby-image";
 import { graphql } from "gatsby";
-import { Global, css } from "@emotion/core";
-import { useTheme } from "emotion-theming";
+import { Global } from "@emotion/core";
+import { ThemeProvider, useTheme } from "emotion-theming";
+import { lightTheme, darkTheme } from "../styles/themes";
 import { globalStyle } from "../styles/globalStyle";
 import {
   leading,
@@ -22,7 +23,7 @@ import shipIconD from "../images/ship-d-icon.svg";
 import footerLogo from "../images/new-pathwar-logo-grey.svg";
 import footerLogoD from "../images/new-pathwar-logo-light-purple.svg";
 
-export default ({ data }) => {
+const IndexPage = ({ data, themeSwitch }) => {
   const currentTheme = useTheme();
   const isDark = currentTheme.type === "dark";
   const title = data.site.siteMetadata.title;
@@ -33,11 +34,7 @@ export default ({ data }) => {
 
   return (
     <>
-      <Global
-        styles={css`
-          ${globalStyle}
-        `}
-      />
+      <Global styles={globalStyle(currentTheme)} />
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -75,8 +72,9 @@ export default ({ data }) => {
 
       <section css={theme => leading(theme)}>
         <div className="siteContainer">
-          <Img fixed={isDark ? logoColors : logo} alt="Pathwar Logo" />
-
+          <a href="#" onClick={() => themeSwitch()}>
+            <Img fixed={isDark ? logoColors : logo} alt="Pathwar Logo" />
+          </a>
           <div css={theme => leadingContent(theme)}>
             <div className="title-block">
               <h1>Learn, hack, challenge & more!</h1>
@@ -181,6 +179,21 @@ export default ({ data }) => {
         </div>
       </footer>
     </>
+  );
+};
+
+export default ({ data }) => {
+  const [darkMode, setDarkMode] = useState(false);
+  const themeToUse = darkMode ? darkTheme : lightTheme;
+
+  const switchTheme = () => {
+    setDarkMode(mode => !mode);
+  };
+
+  return (
+    <ThemeProvider theme={themeToUse}>
+      <IndexPage data={data} themeSwitch={switchTheme} />
+    </ThemeProvider>
   );
 };
 

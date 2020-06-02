@@ -6,7 +6,7 @@ export const leading = ({ type, colors }) => {
   const isDark = type === "dark";
 
   return css`
-    background-color: ${isDark ? colors.primary : colors.body};
+    background-color: ${isDark ? colors.primary : colors.light};
     height: 813px;
     background-image: url(${isDark ? islandLeadingBgDark : islandLeadingBg});
     background-position: bottom right;

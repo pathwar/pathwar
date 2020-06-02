@@ -7,8 +7,6 @@ import {
   compose,
   applyMiddleware,
 } from "redux";
-import { ThemeProvider } from "emotion-theming";
-import { lightTheme, darkTheme } from "../styles/themes";
 import rootReducer from ".";
 
 const windowExist = typeof window === "object";
@@ -26,15 +24,7 @@ const createStore = () =>
     composeEnhancers(applyMiddleware(...middlewares))
   );
 
-if (!window.activeTheme) {
-  window.activeTheme = "light";
-}
-
-const themeToUse = window.activeTheme === "dark" ? darkTheme : lightTheme;
-
 // eslint-disable-next-line react/display-name
 export default ({ element }) => (
-  <ThemeProvider theme={themeToUse}>
-    <Provider store={createStore()}>{element}</Provider>
-  </ThemeProvider>
+  <Provider store={createStore()}>{element}</Provider>
 );
