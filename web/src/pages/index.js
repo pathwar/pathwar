@@ -9,6 +9,7 @@ import islandLeadingBg from "../images/island-light-mode-illustration.svg";
 import hookIcon from "../images/hook-l-icon.svg";
 import mapIcon from "../images/map-l-icon.svg";
 import shipIcon from "../images/ship-l-icon.svg";
+import footerLogo from "../images/new-pathwar-logo-grey.svg";
 
 const leading = css`
   background-color: #fff;
@@ -17,6 +18,7 @@ const leading = css`
   background-position: bottom right;
   background-repeat: no-repeat;
   background-size: contain;
+  padding-top: 35px;
 `;
 
 const leadingContent = css`
@@ -82,6 +84,27 @@ const cardsArea = css`
   }
 `;
 
+const footer = css`
+  display: flex;
+  align-items: self-end;
+  justify-content: space-around;
+  background-color: #fff;
+  color: #7493b0;
+  padding: 40px;
+
+  ul {
+    list-style: none;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .data-col {
+    max-width: 150px;
+  }
+`;
+
 export default ({ data }) => {
   const title = data.site.siteMetadata.title;
   const description = data.site.siteMetadata.description;
@@ -127,6 +150,7 @@ export default ({ data }) => {
             text-align: center;
             font-weight: bold;
             padding: 1rem 3rem;
+            cursor: pointer;
 
             &.outline {
               color: #0081ff;
@@ -136,10 +160,14 @@ export default ({ data }) => {
               border-radius: 31px;
               padding: 1rem 2rem;
             }
+
+            &:hover {
+              opacity: 0.7;
+            }
           }
 
           .siteContainer {
-            padding: 35px 50px;
+            padding: 0 50px;
             display: flex;
             flex-direction: column;
             width: 100%;
@@ -233,6 +261,61 @@ export default ({ data }) => {
           </div>
         </div>
       </section>
+      <footer css={footer}>
+        <img src={footerLogo} />
+        <div className="data-col">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eget
+            est molestie est tincidunt varius. Suspendisse quis elementum odio,
+            vitae euismod sem.
+          </p>
+        </div>
+        <div className="data-col">
+          <ul>
+            <li>
+              <a href="#">CGU</a>
+            </li>
+            <li>
+              <a href="#">42</a>
+            </li>
+            <li>
+              <a href="#">Lorem lien 01</a>
+            </li>
+            <li>
+              <a href="#">Lorem lien 02</a>
+            </li>
+          </ul>
+        </div>
+        <div className="data-col">
+          <ul>
+            <li>
+              <a href="#">Lorem lien 03</a>
+            </li>
+            <li>
+              <a href="#">Lorem lien 04</a>
+            </li>
+            <li>
+              <a href="#">Lorem lien 05</a>
+            </li>
+            <li>
+              <a href="#">Lorem lien 06</a>
+            </li>
+          </ul>
+        </div>
+        <div className="data-col">
+          <ul>
+            <li>
+              <a href="#">Lorem lien 07</a>
+            </li>
+            <li>
+              <a href="#">Lorem lien 08</a>
+            </li>
+          </ul>
+        </div>
+        <div className="data-col">
+          <p>Emplacement pour RS ou autre si besoin</p>
+        </div>
+      </footer>
     </>
   );
 };
