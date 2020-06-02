@@ -47,7 +47,7 @@ const (
 	defaultSSORealm        = "Pathwar-Dev"
 	defaultSSOClientID     = "platform-cli"
 	defaultSSOClientSecret = ""
-	defaultDBURN           = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8&parseTime=true"
+	defaultDBURN           = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8mb4&parseTime=true"
 	defaultDockerPrefix    = "pathwar/"
 	defaultAgentTokenFile  = "pathwar_agent_oauth_token.json"
 	defaultAdminTokenFile  = "pathwar_admin_oauth_token.json"
