@@ -4,174 +4,38 @@ import { Helmet } from "react-helmet";
 import Img from "gatsby-image";
 import { graphql } from "gatsby";
 import { Global, css } from "@emotion/core";
+import { useTheme } from "emotion-theming";
+import { globalStyle } from "../styles/globalStyle";
+import {
+  leading,
+  leadingContent,
+  cardsArea,
+  footer,
+} from "./styles/indexStyle";
 
-import islandLeadingBg from "../images/island-light-mode-illustration.svg";
 import hookIcon from "../images/hook-l-icon.svg";
 import mapIcon from "../images/map-l-icon.svg";
 import shipIcon from "../images/ship-l-icon.svg";
+import hookIconD from "../images/hook-d-icon.svg";
+import mapIconD from "../images/map-d-icon.svg";
+import shipIconD from "../images/ship-d-icon.svg";
 import footerLogo from "../images/new-pathwar-logo-grey.svg";
-
-const leading = css`
-  background-color: #fff;
-  height: 813px;
-  background-image: url(${islandLeadingBg});
-  background-position: bottom right;
-  background-repeat: no-repeat;
-  background-size: contain;
-  padding-top: 35px;
-`;
-
-const leadingContent = css`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  margin-top: auto;
-  margin-bottom: auto;
-  width: 45%;
-  height: 640px;
-
-  .title-block,
-  .sub-block {
-    margin-bottom: 2.5rem;
-  }
-
-  .cta-block {
-    color: #7493b0;
-    text-align: center;
-
-    a {
-      font-weight: bold;
-      color: #0081ff;
-    }
-
-    button {
-      margin-bottom: 1rem;
-    }
-  }
-`;
-
-const cardsArea = css`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  position: relative;
-  top: -70px;
-
-  .site-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    background-color: #fff;
-    max-width: 358px;
-    min-height: 389px;
-    padding: 40px 40px 30px;
-    box-shadow: 0 0 20px 0 rgba(56, 95, 200, 0.25);
-    border-radius: 6px;
-
-    img {
-      margin-bottom: 35px;
-    }
-
-    h3 {
-      margin-bottom: 20px;
-    }
-
-    p {
-      margin-bottom: 25px;
-    }
-  }
-`;
-
-const footer = css`
-  display: flex;
-  align-items: self-end;
-  justify-content: space-around;
-  background-color: #fff;
-  color: #7493b0;
-  padding: 40px;
-
-  ul {
-    list-style: none;
-  }
-
-  a {
-    color: inherit;
-  }
-
-  .data-col {
-    max-width: 150px;
-  }
-`;
+import footerLogoD from "../images/new-pathwar-logo-light-purple.svg";
 
 export default ({ data }) => {
+  const currentTheme = useTheme();
+  const isDark = currentTheme.type === "dark";
   const title = data.site.siteMetadata.title;
   const description = data.site.siteMetadata.description;
   const logo = data.headerLogo.childImageSharp.fixed;
+  const logoColors = data.headerLogoColors.childImageSharp.fixed;
   const featuredImage = `${data.site.siteMetadata.baseUrl}${logo.src}`;
 
   return (
     <>
       <Global
         styles={css`
-          body,
-          html {
-            background-color: #f3f9ff;
-            font-family: "Nunito", sans-serif;
-            font-size: 16px;
-            color: #00376c;
-          }
-
-          h1 {
-            color: #0071de;
-            font-size: 3.125rem;
-            font-family: "Bungee", cursive;
-            margin: 0;
-          }
-
-          h2 {
-            font-size: 1.25rem;
-            margin: 0;
-          }
-
-          h3 {
-            font-size: 1.125rem;
-            font-weight: bold;
-            margin: 0;
-          }
-
-          button {
-            border: none;
-            background: #0081ff;
-            border-radius: 31px;
-            font-size: 1.25rem;
-            color: #ffffff;
-            text-align: center;
-            font-weight: bold;
-            padding: 1rem 3rem;
-            cursor: pointer;
-
-            &.outline {
-              color: #0081ff;
-              background-color: transparent;
-              font-size: 1rem;
-              border: 2px solid #0081ff;
-              border-radius: 31px;
-              padding: 1rem 2rem;
-            }
-
-            &:hover {
-              opacity: 0.7;
-            }
-          }
-
-          .siteContainer {
-            padding: 0 50px;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-          }
+          ${globalStyle}
         `}
       />
       <Helmet>
@@ -209,11 +73,11 @@ export default ({ data }) => {
         />
       </Helmet>
 
-      <section css={leading}>
+      <section css={theme => leading(theme)}>
         <div className="siteContainer">
-          <Img fixed={logo} alt="Pathwar Logo" />
+          <Img fixed={isDark ? logoColors : logo} alt="Pathwar Logo" />
 
-          <div css={leadingContent}>
+          <div css={theme => leadingContent(theme)}>
             <div className="title-block">
               <h1>Learn, hack, challenge & more!</h1>
             </div>
@@ -234,14 +98,14 @@ export default ({ data }) => {
       </section>
 
       <section>
-        <div css={cardsArea} className="siteContainer">
+        <div css={theme => cardsArea(theme)} className="siteContainer">
           <div className="site-card">
-            <img src={shipIcon} />
+            <img src={isDark ? shipIconD : shipIcon} />
             <h3>Put your skills to the test</h3>
             <p>and improve them. Beat the challenges, learn new tricks.</p>
           </div>
           <div className="site-card">
-            <img src={mapIcon} />
+            <img src={isDark ? mapIconD : mapIcon} />
             <h3>Participate in tournaments</h3>
             <p>
               with your team and win prizes. Create or join a team and compete
@@ -249,7 +113,7 @@ export default ({ data }) => {
             </p>
           </div>
           <div className="site-card">
-            <img src={hookIcon} />
+            <img src={isDark ? hookIconD : hookIcon} />
             <h3>Hack everything</h3>
             <p>
               Levels? Other players’ profiles? The platform itself? Everything
@@ -261,8 +125,8 @@ export default ({ data }) => {
           </div>
         </div>
       </section>
-      <footer css={footer}>
-        <img src={footerLogo} />
+      <footer css={theme => footer(theme)}>
+        <img src={isDark ? footerLogoD : footerLogo} />
         <div className="data-col">
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eget
@@ -331,6 +195,15 @@ export const query = graphql`
     }
     headerLogo: file(
       relativePath: { eq: "images/new-pathwar-logo-dark-blue.png" }
+    ) {
+      childImageSharp {
+        fixed(width: 91, height: 94) {
+          ...GatsbyImageSharpFixed
+        }
+      }
+    }
+    headerLogoColors: file(
+      relativePath: { eq: "images/new_pathwar-logo.png" }
     ) {
       childImageSharp {
         fixed(width: 91, height: 94) {
