@@ -11,7 +11,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"os/signal"
+	"syscall"
 	"time"
 
 	bearer "github.com/Bearer/bearer-go"
@@ -267,6 +267,7 @@ func main() {
 					g      run.Group
 					server *pwapi.Server
 				)
+				g.Add(run.SignalHandler(ctx, syscall.SIGTERM, syscall.SIGINT, os.Interrupt, os.Kill))
 				{ // server
 					opts := pwapi.ServerOpts{
 						Logger:             logger.Named("server"),
@@ -286,20 +287,6 @@ func main() {
 						server.Run,
 						func(error) { server.Close() },
 					)
-				}
-				{ // signal handling and cancellation
-					ctx, cancel := context.WithCancel(ctx)
-					g.Add(func() error {
-						sigch := make(chan os.Signal, 1)
-						signal.Notify(sigch, os.Interrupt)
-						select {
-						case <-sigch:
-						case <-ctx.Done():
-						}
-						return nil
-					}, func(error) {
-						cancel()
-					})
 				}
 
 				logger.Info("server started",
