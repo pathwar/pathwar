@@ -987,6 +987,10 @@ definitions:
       id:
         format: int64
         type: string
+      instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
       season:
         $ref: '#/definitions/dbSeason'
       season_id:

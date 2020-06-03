@@ -84,9 +84,6 @@ services:
       - MYSQL_DATABASE=pathwar
     networks:
       - internal
-    command:
-      - mysqld
-      - --character-set-server=utf8mb4
 
   forestadmin:
     image: pathwar/forestadmin:latest

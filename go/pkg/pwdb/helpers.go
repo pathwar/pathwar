@@ -136,14 +136,14 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 				seasonChallenge := &SeasonChallenge{
 					SeasonID: seasons[rand.Int()%len(seasons)].ID,
 				}
-				flavor.SeasonChallenges = append(flavor.SeasonChallenges, seasonChallenge)
-			}
-			for j := 0; j < 2; j++ {
-				instance := &ChallengeInstance{
-					AgentID: agents[rand.Int()%len(agents)].ID,
-					Status:  ChallengeInstance_Available,
+				for k := 0; k < 2; k++ {
+					instance := &ChallengeInstance{
+						AgentID: agents[rand.Int()%len(agents)].ID,
+						Status:  ChallengeInstance_Available,
+					}
+					seasonChallenge.Instances = append(seasonChallenge.Instances, instance)
 				}
-				flavor.Instances = append(flavor.Instances, instance)
+				flavor.SeasonChallenges = append(flavor.SeasonChallenges, seasonChallenge)
 			}
 			challenge.Flavors = append(challenge.Flavors, flavor)
 		}
