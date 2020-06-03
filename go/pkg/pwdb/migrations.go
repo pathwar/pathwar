@@ -8,7 +8,9 @@ import (
 )
 
 func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
-	m := gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{})
+	migrateOpts := gormigrate.DefaultOptions
+	migrateOpts.UseTransaction = true
+	m := gormigrate.New(db, migrateOpts, []*gormigrate.Migration{})
 
 	// only called on fresh database
 	m.InitSchema(func(tx *gorm.DB) error {
