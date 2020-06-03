@@ -50,7 +50,12 @@ func NewServer(ctx context.Context, svc Service, opts ServerOpts) (*Server, erro
 	if opts.ShutdownTimeout == 0 {
 		opts.ShutdownTimeout = 6 * time.Second
 	}
-	s := Server{logger: opts.Logger}
+	ctx, cancel := context.WithCancel(ctx)
+	s := Server{
+		logger: opts.Logger,
+		ctx:    ctx,
+		cancel: cancel,
+	}
 
 	// listener
 	var err error
@@ -93,7 +98,6 @@ func NewServer(ctx context.Context, svc Service, opts ServerOpts) (*Server, erro
 		}
 		return nil
 	}, func(error) {
-
 		ctx, cancel := context.WithTimeout(ctx, opts.ShutdownTimeout)
 		if err := httpServer.Shutdown(ctx); err != nil {
 			opts.Logger.Warn("shutdown HTTP server", zap.Error(err))
@@ -119,6 +123,11 @@ func NewServer(ctx context.Context, svc Service, opts ServerOpts) (*Server, erro
 			fmt.Println(err)
 		},
 	)
+	// listen for canceled context
+	s.workers.Add(func() error {
+		<-s.ctx.Done()
+		return nil
+	}, func(error) {})
 	return &s, nil
 }
 
@@ -131,6 +140,8 @@ type Server struct {
 	cmux           cmux.CMux
 	logger         *zap.Logger
 	workers        run.Group
+	ctx            context.Context
+	cancel         func()
 }
 
 type ServerOpts struct {
@@ -151,7 +162,10 @@ func (s *Server) Close() {
 	//go s.grpcServer.GracefulStop()
 	//time.Sleep(time.Second)
 	//s.grpcServer.Stop()
-	s.masterListener.Close()
+	if s.masterListener != nil {
+		s.masterListener.Close()
+	}
+	s.cancel()
 }
 
 func (s *Server) ListenerAddr() string {

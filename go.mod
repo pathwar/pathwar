@@ -28,7 +28,7 @@ require (
 	github.com/martinlindhe/base36 v1.0.0
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/moby/moby v1.13.1
-	github.com/oklog/run v1.1.0
+	github.com/oklog/run v1.1.1-0.20200508094559-c7096881717e
 	github.com/olekukonko/tablewriter v0.0.4
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opentracing/opentracing-go v1.1.0
