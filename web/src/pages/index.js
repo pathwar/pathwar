@@ -8,6 +8,7 @@ import { ThemeProvider, useTheme } from "emotion-theming";
 import { lightTheme, darkTheme } from "../styles/themes";
 import { globalStyle } from "../styles/globalStyle";
 import {
+  logoLink,
   leading,
   leadingContent,
   cardsArea,
@@ -26,11 +27,22 @@ import footerLogoD from "../images/new-pathwar-logo-light-purple.svg";
 const IndexPage = ({ data, themeSwitch }) => {
   const currentTheme = useTheme();
   const isDark = currentTheme.type === "dark";
+  const currentScreenWidth = screen.availWidth;
+  const isMobile = currentScreenWidth <= 991;
   const title = data.site.siteMetadata.title;
   const description = data.site.siteMetadata.description;
   const logo = data.headerLogo.childImageSharp.fixed;
   const logoColors = data.headerLogoColors.childImageSharp.fixed;
+  const logoMobile = data.headerLogoMobile.childImageSharp.fixed;
+  const logoColorsMobile = data.headerLogoColorsMobile.childImageSharp.fixed;
   const featuredImage = `${data.site.siteMetadata.baseUrl}${logo.src}`;
+  let logoToShow;
+
+  if (isMobile) {
+    logoToShow = isDark ? logoColorsMobile : logoMobile;
+  } else {
+    logoToShow = isDark ? logoColors : logo;
+  }
 
   return (
     <>
@@ -72,8 +84,8 @@ const IndexPage = ({ data, themeSwitch }) => {
 
       <section css={theme => leading(theme)}>
         <div className="siteContainer">
-          <a href="#" onClick={() => themeSwitch()}>
-            <Img fixed={isDark ? logoColors : logo} alt="Pathwar Logo" />
+          <a href="#" css={logoLink} onClick={() => themeSwitch()}>
+            <Img fixed={logoToShow} alt="Pathwar Logo" />
           </a>
           <div css={theme => leadingContent(theme)}>
             <div className="title-block">
@@ -215,11 +227,29 @@ export const query = graphql`
         }
       }
     }
+    headerLogoMobile: file(
+      relativePath: { eq: "images/new-pathwar-logo-dark-blue.png" }
+    ) {
+      childImageSharp {
+        fixed(width: 51, height: 52) {
+          ...GatsbyImageSharpFixed
+        }
+      }
+    }
     headerLogoColors: file(
       relativePath: { eq: "images/new_pathwar-logo.png" }
     ) {
       childImageSharp {
         fixed(width: 91, height: 94) {
+          ...GatsbyImageSharpFixed
+        }
+      }
+    }
+    headerLogoColorsMobile: file(
+      relativePath: { eq: "images/new_pathwar-logo.png" }
+    ) {
+      childImageSharp {
+        fixed(width: 51, height: 52) {
           ...GatsbyImageSharpFixed
         }
       }

@@ -2,6 +2,12 @@ import { css } from "@emotion/core";
 import islandLeadingBg from "../../images/island-light-mode-illustration.svg";
 import islandLeadingBgDark from "../../images/landing-island-darkmode-illustration.svg";
 
+export const logoLink = () => css`
+  @media (max-width: 991px) {
+    text-align: center;
+  }
+`;
+
 export const leading = ({ type, colors }) => {
   const isDark = type === "dark";
 
@@ -13,6 +19,11 @@ export const leading = ({ type, colors }) => {
     background-repeat: no-repeat;
     background-size: contain;
     padding-top: 35px;
+
+    @media (max-width: 991px) {
+      height: 706px;
+      padding-top: 25px;
+    }
   `;
 };
 
@@ -42,6 +53,24 @@ export const leadingContent = ({ colors, type }) => css`
 
     button {
       margin-bottom: 1rem;
+    }
+  }
+
+  @media (max-width: 991px) {
+    height: auto;
+    width: 100%;
+
+    .title-block,
+    .sub-block {
+      margin-bottom: 1rem;
+    }
+
+    .title-block {
+      margin-top: 2.812rem;
+    }
+
+    .cta-block {
+      text-align: left;
     }
   }
 `;
@@ -78,6 +107,16 @@ export const cardsArea = ({ shadows, colors, type }) => css`
       margin-bottom: 25px;
     }
   }
+
+  @media (max-width: 991px) {
+    flex-direction: column;
+
+    .site-card {
+      max-width: 270px;
+      min-height: 264px;
+      margin-bottom: 1.875rem;
+    }
+  }
 `;
 
 export const footer = ({ colors, type }) => css`
@@ -90,6 +129,8 @@ export const footer = ({ colors, type }) => css`
 
   ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
   a {
@@ -98,5 +139,15 @@ export const footer = ({ colors, type }) => css`
 
   .data-col {
     max-width: 150px;
+  }
+
+  @media (max-width: 991px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .data-col {
+      margin-bottom: 1.8rem;
+    }
   }
 `;

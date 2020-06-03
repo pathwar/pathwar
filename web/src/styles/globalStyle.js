@@ -63,5 +63,29 @@ export const globalStyle = ({ colors, font, type }) => {
       flex-direction: column;
       width: 100%;
     }
+
+    @media (max-width: 991px) {
+      h1 {
+        font-size: 1.562rem;
+      }
+
+      h2 {
+        font-size: 1.125rem;
+        font-weight: normal;
+        margin: 0;
+      }
+
+      button {
+        font-size: 1.125rem;
+        padding: 0.4rem 1rem;
+      }
+
+      .siteContainer {
+        padding: 0 22px;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+    }
   `;
 };
