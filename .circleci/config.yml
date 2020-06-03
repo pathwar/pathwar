@@ -31,8 +31,6 @@ jobs:
       - run: cd go && make install
       - run: cd go && SKIP_SLOW_TESTS=1 make unittest GO_TEST_OPTS="-test.timeout=120s -count=10"
       - run: cd go && SKIP_SLOW_TESTS=0 make unittest GO_TEST_OPTS="-test.timeout=120s -count=2"
-      - moul/install_golangci-lint
-      - run: cd go && PATH=$PATH:$(pwd)/bin make lint
       - codecov/upload:
           file: go/coverage.txt
 
