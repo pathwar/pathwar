@@ -9,6 +9,13 @@ ps restart pull:
 up:
 	docker-compose up -d
 
+.PHONY: up-slow
+up-slow:
+	docker-compose up -d mailserver pathwar-dev
+	# wait for the migrations to finish
+	sleep 120
+	docker-compose up -d
+
 .PHONY: down
 down:
 	docker-compose down --remove-orphans
