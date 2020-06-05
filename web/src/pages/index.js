@@ -1,6 +1,7 @@
-import React from "react"
-import {Helmet} from "react-helmet"
-import Img from "gatsby-image"
+/* eslint-disable react/display-name */
+import React from "react";
+import { Helmet } from "react-helmet";
+import Img from "gatsby-image";
 import { graphql } from "gatsby";
 
 import styles from "./index.module.css";
@@ -17,8 +18,14 @@ export default ({ data }) => {
         <title>{title}</title>
         <meta name="description" content={description} />
 
-        <meta name="go-import" content="pathwar.land git https://github.com/pathwar/pathwar" />
-        <meta name="go-source" content="pathwar.land https://github.com/pathwar/pathwar https://github.com/pathwar/pathwar/tree/master{/dir} https://github.com/pathwar/pathwar/tree/master{/dir}/{file}#L{line}" />
+        <meta
+          name="go-import"
+          content="pathwar.land git https://github.com/pathwar/pathwar"
+        />
+        <meta
+          name="go-source"
+          content="pathwar.land https://github.com/pathwar/pathwar https://github.com/pathwar/pathwar/tree/master{/dir} https://github.com/pathwar/pathwar/tree/master{/dir}/{file}#L{line}"
+        />
 
         <meta property="og:description" content={description} />
         <meta property="og:url" content={description} />
@@ -35,13 +42,15 @@ export default ({ data }) => {
       </Helmet>
 
       <div className={styles.content}>
-        <div><Img fixed={logo} alt="Pathwar Logo" /></div>
+        <div>
+          <Img fixed={logo} alt="Pathwar Logo" />
+        </div>
         <p className="p">{description}</p>
         <h2>COMING SOON..</h2>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const query = graphql`
   query {
@@ -60,4 +69,4 @@ export const query = graphql`
       }
     }
   }
-`
+`;

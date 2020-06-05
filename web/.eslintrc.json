@@ -1,0 +1,35 @@
+{
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "detect"
+    }
+  },
+  "env": {
+    "browser": true,
+    "amd": true,
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "prettier/react"
+  ],
+  "plugins": ["react", "prettier"],
+  "ignorePatterns": ["**/tests/*"],
+  "rules": {
+    "react/prop-types": 0,
+    "prettier/prettier": [
+      "error",
+      {
+        "semi": true,
+        "singleQuote": false,
+        "tabWidth": 2,
+        "arrowParens": "avoid",
+        "trailingComma": "es5"
+      }
+    ]
+  }
+}

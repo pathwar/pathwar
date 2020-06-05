@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
-import React from "react"
-import { useSelector } from "react-redux"
-import { Link } from "gatsby"
-import { Button, Dimmer, Card, Grid } from "tabler-react"
-import styles from "../../styles/layout/loader.module.css"
+import React from "react";
+import { useSelector } from "react-redux";
+import { Link } from "gatsby";
+import { Button, Dimmer, Card, Grid } from "tabler-react";
+import styles from "../../styles/layout/loader.module.css";
 
 const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
-  const { flavor, subscriptions, id: challengeID } = challenge
-  const isClosed = subscriptions && subscriptions[0].status === "Closed"
+  const { flavor, subscriptions, id: challengeID } = challenge;
+  const isClosed = subscriptions && subscriptions[0].status === "Closed";
 
   return (
     <Card
@@ -19,7 +19,9 @@ const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
             size="sm"
             color={isClosed ? "red" : "success"}
             disabled={subscriptions || isClosed}
-            icon={subscriptions ? isClosed ? "x-circle" : "check" : "dollar-sign"}
+            icon={
+              subscriptions ? (isClosed ? "x-circle" : "check") : "dollar-sign"
+            }
           >
             {isClosed ? "Closed" : "Buy"}
           </Button>
@@ -49,16 +51,16 @@ const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
         </Button.List>
       }
     />
-  )
-}
+  );
+};
 
 const ChallengeList = props => {
   const activeUserSession = useSelector(
     state => state.userSession.activeUserSession
-  )
-  const activeTeam = useSelector(state => state.seasons.activeTeam)
+  );
+  const activeTeam = useSelector(state => state.seasons.activeTeam);
 
-  const { challenges, buyChallenge } = props
+  const { challenges, buyChallenge } = props;
 
   return !challenges || !activeUserSession ? (
     <Dimmer className={styles.dimmer} active loader />
@@ -66,7 +68,7 @@ const ChallengeList = props => {
     <>
       <Grid.Row>
         {challenges.map(challenge => (
-          <Grid.Col lg={4} sm={4} md={4} xs={4}>
+          <Grid.Col lg={4} sm={4} md={4} xs={4} key={challenge.id}>
             <ChallengeCard
               challenge={challenge}
               buyChallenge={buyChallenge}
@@ -76,7 +78,7 @@ const ChallengeList = props => {
         ))}
       </Grid.Row>
     </>
-  )
-}
+  );
+};
 
-export default ChallengeList
+export default ChallengeList;

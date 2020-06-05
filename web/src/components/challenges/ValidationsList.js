@@ -1,19 +1,19 @@
-import React from "react"
-import { Card, Grid } from "tabler-react"
+import React from "react";
+import { Card, Grid } from "tabler-react";
 
 const ValidationsList = ({ validations }) => {
   return (
     <Grid.Row cards={true}>
       {validations.map(validation => {
-        const status = validation.status
+        const status = validation.status;
         const statusColor =
           status === "NeedReview"
             ? "orange"
             : status === "Rejected"
             ? "red"
-            : "green"
+            : "green";
         return (
-          <Grid.Col lg={4} md={4} sm={6} xs={6}>
+          <Grid.Col lg={4} md={4} sm={6} xs={6} key={validation.id}>
             <Card
               title={validation.passphrases}
               statusColor={statusColor}
@@ -32,10 +32,10 @@ const ValidationsList = ({ validations }) => {
               </Card.Body>
             </Card>
           </Grid.Col>
-        )
+        );
       })}
     </Grid.Row>
-  )
-}
+  );
+};
 
-export default ValidationsList
+export default ValidationsList;
