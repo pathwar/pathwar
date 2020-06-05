@@ -36,6 +36,7 @@ const IndexPage = ({ data, themeSwitch }) => {
   const logoMobile = data.headerLogoMobile.childImageSharp.fixed;
   const logoColorsMobile = data.headerLogoColorsMobile.childImageSharp.fixed;
   const featuredImage = `${data.site.siteMetadata.baseUrl}${logo.src}`;
+  const comingsoon = process.env.COMINGSOON === "true";
   let logoToShow;
 
   if (isMobile) {
@@ -97,99 +98,107 @@ const IndexPage = ({ data, themeSwitch }) => {
                 cryptography.
               </h2>
             </div>
-            <div className="cta-block">
-              <button>Join the adventure !</button>
-              <p>
-                Already on board ? <a href="#">Login</a>
-              </p>
-            </div>
+            {comingsoon && <h3>Coming soon...</h3>}
+            {!comingsoon && (
+              <div className="cta-block">
+                <button>Join the adventure !</button>
+                <p>
+                  Already on board ? <a href="#">Login</a>
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      <section>
-        <div css={theme => cardsArea(theme)} className="siteContainer">
-          <div className="site-card">
-            <img src={isDark ? shipIconD : shipIcon} />
-            <h3>Put your skills to the test</h3>
-            <p>and improve them. Beat the challenges, learn new tricks.</p>
-          </div>
-          <div className="site-card">
-            <img src={isDark ? mapIconD : mapIcon} />
-            <h3>Participate in tournaments</h3>
-            <p>
-              with your team and win prizes. Create or join a team and compete
-              with other players
-            </p>
-          </div>
-          <div className="site-card">
-            <img src={isDark ? hookIconD : hookIcon} />
-            <h3>Hack everything</h3>
-            <p>
-              Levels? Other players’ profiles? The platform itself? Everything
-              is fair game here!
-            </p>
-            <button href="#" className="outline">
-              Read our Code of Conduct
-            </button>
-          </div>
-        </div>
-      </section>
-      <footer css={theme => footer(theme)}>
-        <img src={isDark ? footerLogoD : footerLogo} />
-        <div className="data-col">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eget
-            est molestie est tincidunt varius. Suspendisse quis elementum odio,
-            vitae euismod sem.
-          </p>
-        </div>
-        <div className="data-col">
-          <ul>
-            <li>
-              <a href="#">CGU</a>
-            </li>
-            <li>
-              <a href="#">42</a>
-            </li>
-            <li>
-              <a href="#">Lorem lien 01</a>
-            </li>
-            <li>
-              <a href="#">Lorem lien 02</a>
-            </li>
-          </ul>
-        </div>
-        <div className="data-col">
-          <ul>
-            <li>
-              <a href="#">Lorem lien 03</a>
-            </li>
-            <li>
-              <a href="#">Lorem lien 04</a>
-            </li>
-            <li>
-              <a href="#">Lorem lien 05</a>
-            </li>
-            <li>
-              <a href="#">Lorem lien 06</a>
-            </li>
-          </ul>
-        </div>
-        <div className="data-col">
-          <ul>
-            <li>
-              <a href="#">Lorem lien 07</a>
-            </li>
-            <li>
-              <a href="#">Lorem lien 08</a>
-            </li>
-          </ul>
-        </div>
-        <div className="data-col">
-          <p>Emplacement pour RS ou autre si besoin</p>
-        </div>
-      </footer>
+      {!comingsoon && (
+        <>
+          <section>
+            <div css={theme => cardsArea(theme)} className="siteContainer">
+              <div className="site-card">
+                <img src={isDark ? shipIconD : shipIcon} />
+                <h3>Put your skills to the test</h3>
+                <p>and improve them. Beat the challenges, learn new tricks.</p>
+              </div>
+              <div className="site-card">
+                <img src={isDark ? mapIconD : mapIcon} />
+                <h3>Participate in tournaments</h3>
+                <p>
+                  with your team and win prizes. Create or join a team and
+                  compete with other players
+                </p>
+              </div>
+              <div className="site-card">
+                <img src={isDark ? hookIconD : hookIcon} />
+                <h3>Hack everything</h3>
+                <p>
+                  Levels? Other players’ profiles? The platform itself?
+                  Everything is fair game here!
+                </p>
+                <button href="#" className="outline">
+                  Read our Code of Conduct
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <footer css={theme => footer(theme)}>
+            <img src={isDark ? footerLogoD : footerLogo} />
+            <div className="data-col">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
+                eget est molestie est tincidunt varius. Suspendisse quis
+                elementum odio, vitae euismod sem.
+              </p>
+            </div>
+            <div className="data-col">
+              <ul>
+                <li>
+                  <a href="#">CGU</a>
+                </li>
+                <li>
+                  <a href="#">42</a>
+                </li>
+                <li>
+                  <a href="#">Lorem lien 01</a>
+                </li>
+                <li>
+                  <a href="#">Lorem lien 02</a>
+                </li>
+              </ul>
+            </div>
+            <div className="data-col">
+              <ul>
+                <li>
+                  <a href="#">Lorem lien 03</a>
+                </li>
+                <li>
+                  <a href="#">Lorem lien 04</a>
+                </li>
+                <li>
+                  <a href="#">Lorem lien 05</a>
+                </li>
+                <li>
+                  <a href="#">Lorem lien 06</a>
+                </li>
+              </ul>
+            </div>
+            <div className="data-col">
+              <ul>
+                <li>
+                  <a href="#">Lorem lien 07</a>
+                </li>
+                <li>
+                  <a href="#">Lorem lien 08</a>
+                </li>
+              </ul>
+            </div>
+            <div className="data-col">
+              <p>Emplacement pour RS ou autre si besoin</p>
+            </div>
+          </footer>
+        </>
+      )}
     </>
   );
 };
