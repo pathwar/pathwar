@@ -1,7 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import Img from "gatsby-image";
 import { graphql } from "gatsby";
 import { Global, css } from "@emotion/core";
 import { ThemeProvider, useTheme } from "emotion-theming";
@@ -14,6 +13,8 @@ import shipIcon from "../images/ship-l-icon.svg";
 import hookIconD from "../images/hook-d-icon.svg";
 import mapIconD from "../images/map-d-icon.svg";
 import shipIconD from "../images/ship-d-icon.svg";
+import darkBlueLogo from "../images/new-pathwar-logo-dark-blue.svg";
+import colorsLogo from "../images/new_pathwar-logo.svg";
 import footerLogo from "../images/new-pathwar-logo-grey.svg";
 import footerLogoD from "../images/new-pathwar-logo-light-purple.svg";
 
@@ -23,8 +24,18 @@ import islandLeadingBgDark from "../images/landing-island-darkmode-illustration.
 const logoLink = () => `
   cursor: pointer;
 
+  img {
+    width: 91px;
+    height: 94px
+  }
+
   @media (max-width: 991px) {
     text-align: center;
+
+    img {
+      width: 51px;
+      height: 52px
+    }
   }
 `;
 
@@ -175,24 +186,12 @@ const footer = ({ colors, type }) => `
 const IndexPage = ({ data, themeSwitch }) => {
   const currentTheme = useTheme();
   const isDark = currentTheme.type === "dark";
-  const currentScreenWidth =
-    typeof window !== "undefined" && window && window.screen.availWidth;
-  const isMobile = currentScreenWidth <= 991;
   const title = data.site.siteMetadata.title;
   const description = data.site.siteMetadata.description;
-  const logo = data.headerLogo.childImageSharp.fixed;
-  const logoColors = data.headerLogoColors.childImageSharp.fixed;
-  const logoMobile = data.headerLogoMobile.childImageSharp.fixed;
-  const logoColorsMobile = data.headerLogoColorsMobile.childImageSharp.fixed;
+  const logo = data.logo.childImageSharp.fixed;
   const featuredImage = `${data.site.siteMetadata.baseUrl}${logo.src}`;
   const comingsoon = process.env.COMINGSOON === "true";
-  let logoToShow;
-
-  if (isMobile) {
-    logoToShow = isDark ? logoColorsMobile : logoMobile;
-  } else {
-    logoToShow = isDark ? logoColors : logo;
-  }
+  const headerLogo = isDark ? colorsLogo : darkBlueLogo;
 
   return (
     <>
@@ -247,7 +246,7 @@ const IndexPage = ({ data, themeSwitch }) => {
             `}
             onClick={() => themeSwitch()}
           >
-            <Img fixed={logoToShow} alt="Pathwar Logo" />
+            <img src={headerLogo} alt="Pathwar Logo" />
           </a>
           <div
             css={theme =>
@@ -407,38 +406,9 @@ export const query = graphql`
         baseUrl
       }
     }
-    headerLogo: file(
-      relativePath: { eq: "images/new-pathwar-logo-dark-blue.png" }
-    ) {
+    logo: file(relativePath: { eq: "images/new_pathwar-logo.png" }) {
       childImageSharp {
-        fixed(width: 91, height: 94) {
-          ...GatsbyImageSharpFixed
-        }
-      }
-    }
-    headerLogoMobile: file(
-      relativePath: { eq: "images/new-pathwar-logo-dark-blue.png" }
-    ) {
-      childImageSharp {
-        fixed(width: 51, height: 52) {
-          ...GatsbyImageSharpFixed
-        }
-      }
-    }
-    headerLogoColors: file(
-      relativePath: { eq: "images/new_pathwar-logo.png" }
-    ) {
-      childImageSharp {
-        fixed(width: 91, height: 94) {
-          ...GatsbyImageSharpFixed
-        }
-      }
-    }
-    headerLogoColorsMobile: file(
-      relativePath: { eq: "images/new_pathwar-logo.png" }
-    ) {
-      childImageSharp {
-        fixed(width: 51, height: 52) {
+        fixed(width: 200, height: 200) {
           ...GatsbyImageSharpFixed
         }
       }
