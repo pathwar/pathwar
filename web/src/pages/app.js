@@ -43,12 +43,6 @@ const App = () => (
           />
           <ProtectedRoute path="/app/settings" component={SettingsPage} />
           <LogoutPage path="/app/logout" component={LogoutPage} />
-          <ProtectedRoute
-            path="/app/"
-            redirect
-            to="/app/season"
-            component={SeasonPage}
-          />
         </Router>
       )}
     </Location>
