@@ -3,17 +3,10 @@ import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import Img from "gatsby-image";
 import { graphql } from "gatsby";
-import { Global } from "@emotion/core";
+import { Global, css } from "@emotion/core";
 import { ThemeProvider, useTheme } from "emotion-theming";
 import { lightTheme, darkTheme } from "../styles/themes";
 import { globalStyle } from "../styles/globalStyle";
-import {
-  logoLink,
-  leading,
-  leadingContent,
-  cardsArea,
-  footer,
-} from "./styles/indexStyle";
 
 import hookIcon from "../images/hook-l-icon.svg";
 import mapIcon from "../images/map-l-icon.svg";
@@ -24,10 +17,164 @@ import shipIconD from "../images/ship-d-icon.svg";
 import footerLogo from "../images/new-pathwar-logo-grey.svg";
 import footerLogoD from "../images/new-pathwar-logo-light-purple.svg";
 
+import islandLeadingBg from "../images/island-light-mode-illustration.svg";
+import islandLeadingBgDark from "../images/landing-island-darkmode-illustration.svg";
+
+const logoLink = () => `
+  @media (max-width: 991px) {
+    text-align: center;
+  }
+`;
+
+const leading = ({ type, colors }) => {
+  const isDark = type === "dark";
+
+  return `
+    background-color: ${isDark ? colors.primary : colors.light};
+    height: 813px;
+    background-image: url(${isDark ? islandLeadingBgDark : islandLeadingBg});
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding-top: 35px;
+
+    @media (max-width: 991px) {
+      height: 706px;
+      padding-top: 25px;
+    }
+  `;
+};
+
+const leadingContent = ({ colors, type }) => `
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 45%;
+  height: 640px;
+
+  .title-block,
+  .sub-block {
+    margin-bottom: 2.5rem;
+  }
+
+  .cta-block {
+    color: ${type === "dark" ? colors.secondary : colors.tertiary};
+    text-align: center;
+
+    a {
+      font-weight: bold;
+      color: ${type === "dark" ? colors.tertiary : colors.primary};
+    }
+
+    button {
+      margin-bottom: 1rem;
+    }
+  }
+
+  @media (max-width: 991px) {
+    height: auto;
+    width: 100%;
+
+    .title-block,
+    .sub-block {
+      margin-bottom: 1rem;
+    }
+
+    .title-block {
+      margin-top: 2.812rem;
+    }
+
+    .cta-block {
+      text-align: left;
+    }
+  }
+`;
+
+const cardsArea = ({ shadows, colors, type }) => `
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  top: -70px;
+
+  .site-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #fff;
+    max-width: 358px;
+    min-height: 389px;
+    padding: 40px 40px 30px;
+    box-shadow: ${shadows.card};
+    color: ${type === "dark" ? colors.primary : "inherit"};
+    border-radius: 6px;
+
+    img {
+      margin-bottom: 35px;
+    }
+
+    h3 {
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin-bottom: 25px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    flex-direction: column;
+
+    .site-card {
+      max-width: 270px;
+      min-height: 264px;
+      margin-bottom: 1.875rem;
+    }
+  }
+`;
+
+const footer = ({ colors, type }) => `
+  display: flex;
+  align-items: self-end;
+  justify-content: space-around;
+  background-color: ${type === "dark" ? colors.dark : colors.light};
+  color: ${type === "dark" ? colors.secondary : colors.tertiary};
+  padding: 40px;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .data-col {
+    max-width: 150px;
+  }
+
+  @media (max-width: 991px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .data-col {
+      margin-bottom: 1.8rem;
+    }
+  }
+`;
+
 const IndexPage = ({ data, themeSwitch }) => {
   const currentTheme = useTheme();
   const isDark = currentTheme.type === "dark";
-  const currentScreenWidth = screen.availWidth;
+  const currentScreenWidth =
+    typeof window !== "undefined" && window && window.screen.availWidth;
   const isMobile = currentScreenWidth <= 991;
   const title = data.site.siteMetadata.title;
   const description = data.site.siteMetadata.description;
@@ -83,12 +230,30 @@ const IndexPage = ({ data, themeSwitch }) => {
         />
       </Helmet>
 
-      <section css={theme => leading(theme)}>
+      <section
+        css={theme =>
+          css`
+            ${leading(theme)}
+          `
+        }
+      >
         <div className="siteContainer">
-          <a href="#" css={logoLink} onClick={() => themeSwitch()}>
+          <a
+            href="#"
+            css={css`
+              ${logoLink}
+            `}
+            onClick={() => themeSwitch()}
+          >
             <Img fixed={logoToShow} alt="Pathwar Logo" />
           </a>
-          <div css={theme => leadingContent(theme)}>
+          <div
+            css={theme =>
+              css`
+                ${leadingContent(theme)}
+              `
+            }
+          >
             <div className="title-block">
               <h1>Learn, hack, challenge & more!</h1>
             </div>
@@ -114,7 +279,14 @@ const IndexPage = ({ data, themeSwitch }) => {
       {!comingsoon && (
         <>
           <section>
-            <div css={theme => cardsArea(theme)} className="siteContainer">
+            <div
+              css={theme =>
+                css`
+                  ${cardsArea(theme)}
+                `
+              }
+              className="siteContainer"
+            >
               <div className="site-card">
                 <img src={isDark ? shipIconD : shipIcon} />
                 <h3>Put your skills to the test</h3>
@@ -142,7 +314,13 @@ const IndexPage = ({ data, themeSwitch }) => {
             </div>
           </section>
 
-          <footer css={theme => footer(theme)}>
+          <footer
+            css={theme =>
+              css`
+                ${footer(theme)}
+              `
+            }
+          >
             <img src={isDark ? footerLogoD : footerLogo} />
             <div className="data-col">
               <p>
