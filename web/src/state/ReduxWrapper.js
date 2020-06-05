@@ -24,6 +24,7 @@ const createStore = () =>
     composeEnhancers(applyMiddleware(...middlewares))
   );
 
+// eslint-disable-next-line react/display-name
 export default ({ element }) => (
   <Provider store={createStore()}>{element}</Provider>
 );

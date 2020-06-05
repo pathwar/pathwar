@@ -2,8 +2,7 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Site, Nav, Button } from "tabler-react";
-import { Link } from "@reach/router";
-import { navigate } from "gatsby";
+import { navigate, Link } from "gatsby";
 
 import logo from "../images/pathwar-favicon.png";
 
