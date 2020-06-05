@@ -21,6 +21,8 @@ import islandLeadingBg from "../images/island-light-mode-illustration.svg";
 import islandLeadingBgDark from "../images/landing-island-darkmode-illustration.svg";
 
 const logoLink = () => `
+  cursor: pointer;
+
   @media (max-width: 991px) {
     text-align: center;
   }
@@ -240,8 +242,8 @@ const IndexPage = ({ data, themeSwitch }) => {
         <div className="siteContainer">
           <a
             href="#"
-            css={css`
-              ${logoLink}
+            css={theme => css`
+              ${logoLink(theme)}
             `}
             onClick={() => themeSwitch()}
           >
