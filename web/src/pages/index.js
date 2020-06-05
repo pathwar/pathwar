@@ -269,7 +269,7 @@ const IndexPage = ({ data, themeSwitch }) => {
               <div className="cta-block">
                 <button>Join the adventure !</button>
                 <p>
-                  Already on board ? <a href="#">Login</a>
+                  Already on board ? <a href="/app/season">Login</a>
                 </p>
               </div>
             )}
