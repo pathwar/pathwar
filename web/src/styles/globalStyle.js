@@ -10,6 +10,8 @@ export const globalStyle = ({ colors, font, type }) => {
       font-family: ${font.family.body};
       font-size: ${font.size.base};
       color: ${colors.secondary};
+      margin: 0;
+      padding: 0;
     }
 
     h1 {

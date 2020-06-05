@@ -52,7 +52,7 @@ const leadingContent = ({ colors, type }) => `
   justify-content: center;
   margin-top: auto;
   margin-bottom: auto;
-  width: 45%;
+  width: 40%;
   height: 640px;
 
   .title-block,
