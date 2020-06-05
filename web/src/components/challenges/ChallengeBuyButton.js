@@ -1,5 +1,5 @@
-import React from "react"
-import { Button } from "tabler-react"
+import React from "react";
+import { Button } from "tabler-react";
 
 const ChallengeBuyButton = ({
   challenge,
@@ -8,18 +8,24 @@ const ChallengeBuyButton = ({
   isClosed,
   ...rest
 }) => {
-  const hasSubscriptions = challenge.subscriptions
+  const hasSubscriptions = challenge.subscriptions;
 
   const handleBuyChallenge = async event => {
     event.preventDefault();
     await buyChallenge(challenge.id, teamID, true);
-  }
+  };
 
   return (
-    <Button icon={hasSubscriptions ? "check" : "dollar-sign"} color="success" disabled={hasSubscriptions || isClosed} onClick={handleBuyChallenge} {...rest}>
+    <Button
+      icon={hasSubscriptions ? "check" : "dollar-sign"}
+      color="success"
+      disabled={hasSubscriptions || isClosed}
+      onClick={handleBuyChallenge}
+      {...rest}
+    >
       {hasSubscriptions ? "Purchased" : "Buy"}
     </Button>
-  )
-}
+  );
+};
 
-export default ChallengeBuyButton
+export default ChallengeBuyButton;

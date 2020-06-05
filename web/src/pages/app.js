@@ -1,21 +1,20 @@
-/* eslint-disable import/first */
-import React from "react"
-import { Router, Location } from "@reach/router"
-import { Helmet } from "react-helmet"
-import loadable from "@loadable/component"
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import DashboardPage from "./DashboardPage"
-import LogoutPage from "./LogoutPage"
-import SeasonPage from "./SeasonPage"
-import AllSeasonsPage from "./AllSeasonsPage"
-import ChallengeDetailsPage from "./ChallengeDetailsPage"
-import SiteWrapper from "../components/SiteWrapper"
-import TeamDetailsPage from "./TeamDetailsPage"
-import SettingsPage from "./SettingsPage"
-const ProtectedRoute = loadable(() => import("../components/ProtectedRoute"))
+import React from "react";
+import { Router, Location } from "@reach/router";
+import { Helmet } from "react-helmet";
+import loadable from "@loadable/component";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import DashboardPage from "./DashboardPage";
+import LogoutPage from "./LogoutPage";
+import SeasonPage from "./SeasonPage";
+import AllSeasonsPage from "./AllSeasonsPage";
+import ChallengeDetailsPage from "./ChallengeDetailsPage";
+import SiteWrapper from "../components/SiteWrapper";
+import TeamDetailsPage from "./TeamDetailsPage";
+import SettingsPage from "./SettingsPage";
+const ProtectedRoute = loadable(() => import("../components/ProtectedRoute"));
 
-import "tabler-react/dist/Tabler.css"
+import "tabler-react/dist/Tabler.css";
 
 toast.configure();
 
@@ -44,11 +43,16 @@ const App = () => (
           />
           <ProtectedRoute path="/app/settings" component={SettingsPage} />
           <LogoutPage path="/app/logout" component={LogoutPage} />
-          <ProtectedRoute path="/app/" redirect to="/app/season" component={SeasonPage} />
+          <ProtectedRoute
+            path="/app/"
+            redirect
+            to="/app/season"
+            component={SeasonPage}
+          />
         </Router>
       )}
     </Location>
   </div>
-)
+);
 
-export default App
+export default App;

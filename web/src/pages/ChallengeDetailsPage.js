@@ -1,27 +1,27 @@
-import * as React from "react"
-import { connect } from "react-redux"
-import PropTypes from "prop-types"
+import * as React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import {
   fetchChallengeDetail as fetchChallengeDetailAction,
   buyChallenge as buyChallengeAction,
   validateChallenge as validateChallengeAction,
   closeChallenge as closeChallengeAction,
-} from "../actions/seasons"
-import ChallengeBuyButton from "../components/challenges/ChallengeBuyButton"
-import ChallengeValidateButton from "../components/challenges/ChallengeValidateButton"
-import ChallengeCloseButton from "../components/challenges/ChallengeCloseButton"
-import ValidationsList from "../components/challenges/ValidationsList"
+} from "../actions/seasons";
+import ChallengeBuyButton from "../components/challenges/ChallengeBuyButton";
+import ChallengeValidateButton from "../components/challenges/ChallengeValidateButton";
+import ChallengeCloseButton from "../components/challenges/ChallengeCloseButton";
+import ValidationsList from "../components/challenges/ValidationsList";
 
-import styles from "./styles/ChallengeDetailsPage.module.css"
+import styles from "./styles/ChallengeDetailsPage.module.css";
 
-import { Page, Grid, Dimmer, Button } from "tabler-react"
+import { Page, Grid, Dimmer, Button } from "tabler-react";
 
 class ChallengeDetailsPage extends React.PureComponent {
   componentDidMount() {
-    const { fetchChallengeDetailAction, uri } = this.props
-    const challengeID = uri.split("/")[3]
-    fetchChallengeDetailAction(challengeID)
+    const { fetchChallengeDetailAction, uri } = this.props;
+    const challengeID = uri.split("/")[3];
+    fetchChallengeDetailAction(challengeID);
   }
 
   render() {
@@ -31,19 +31,21 @@ class ChallengeDetailsPage extends React.PureComponent {
       buyChallengeAction,
       validateChallengeAction,
       closeChallengeAction,
-    } = this.props
+    } = this.props;
 
     const {
-      flavor: { challenge: flavorChallenge, instances } = { challenge: "no challenge" },
+      flavor: { challenge: flavorChallenge, instances } = {
+        challenge: "no challenge",
+      },
       subscriptions,
-    } = challenge || {}
+    } = challenge || {};
 
     if (!challenge) {
-      return <Dimmer active />
+      return <Dimmer active />;
     }
-    const subscription = challenge.subscriptions && challenge.subscriptions[0]
-    const validations = subscription && subscription.validations
-    const isClosed = subscription.status === "Closed"
+    const subscription = challenge.subscriptions && challenge.subscriptions[0];
+    const validations = subscription && subscription.validations;
+    const isClosed = subscription.status === "Closed";
 
     return (
       <Page.Content title={flavorChallenge.name}>
@@ -94,29 +96,29 @@ class ChallengeDetailsPage extends React.PureComponent {
             <Grid.Col lg={12} md={12} sm={12} xs={12}>
               <div style={{ marginBottom: "1rem" }}>
                 <h3>Validations</h3>
-                  <ChallengeValidateButton
-                    challenge={challenge}
-                    validateChallenge={validateChallengeAction}
-                    disabled={isClosed}
-                  />
+                <ChallengeValidateButton
+                  challenge={challenge}
+                  validateChallenge={validateChallengeAction}
+                  disabled={isClosed}
+                />
               </div>
               {validations && <ValidationsList validations={validations} />}
             </Grid.Col>
           )}
         </Grid.Row>
       </Page.Content>
-    )
+    );
   }
 }
 
 ChallengeDetailsPage.propTypes = {
   fetchChallengeDetailAction: PropTypes.func,
-}
+};
 
 const mapStateToProps = state => ({
   challenge: state.seasons.challengeInDetail,
   activeTeam: state.seasons.activeTeam,
-})
+});
 
 const mapDispatchToProps = {
   buyChallengeAction: (challengeID, teamID, seasonId) =>
@@ -126,9 +128,9 @@ const mapDispatchToProps = {
   closeChallengeAction: subscriptionID => closeChallengeAction(subscriptionID),
   fetchChallengeDetailAction: challengeID =>
     fetchChallengeDetailAction(challengeID),
-}
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ChallengeDetailsPage)
+)(ChallengeDetailsPage);

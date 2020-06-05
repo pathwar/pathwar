@@ -1,39 +1,35 @@
-import React, { useState, useEffect } from "react"
-import { isEmpty } from "ramda"
-import { Form, Button } from "tabler-react"
-import btnStyles from "../../styles/layout/button.module.css"
+import React, { useState, useEffect } from "react";
+import { isEmpty } from "ramda";
+import { Form, Button } from "tabler-react";
+import btnStyles from "../../styles/layout/button.module.css";
 
-const CreateTeamButton = ({
-  activeSeason,
-  activeTeamInSeason,
-  createTeam,
-}) => {
-  const [isFormOpen, setFormOpen] = useState(false)
-  const [name, setName] = useState("")
-  const [error, setError] = useState(false)
+const CreateTeamButton = ({ activeSeason, activeTeamInSeason, createTeam }) => {
+  const [isFormOpen, setFormOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (!isEmpty(name)) {
-      setError(false)
+      setError(false);
     }
-  }, [name])
+  }, [name]);
 
-  const handleChange = event => setName(event.target.value)
+  const handleChange = event => setName(event.target.value);
   const handleFormOpen = event => {
-    event.preventDefault()
-    setFormOpen(!isFormOpen)
-  }
+    event.preventDefault();
+    setFormOpen(!isFormOpen);
+  };
 
   const submitTeamCreate = async event => {
-    event.preventDefault()
+    event.preventDefault();
     if (isEmpty(name)) {
-      setError(true)
-      return
+      setError(true);
+      return;
     } else {
-      await createTeam(activeSeason.id, name)
-      setFormOpen(false)
+      await createTeam(activeSeason.id, name);
+      setFormOpen(false);
     }
-  }
+  };
 
   return (
     <>
@@ -68,7 +64,7 @@ const CreateTeamButton = ({
         </form>
       )}
     </>
-  )
-}
+  );
+};
 
-export default CreateTeamButton
+export default CreateTeamButton;

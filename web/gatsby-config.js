@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: `☠️ Pathwar Land ☠️ `,
     description: `Pathwar is an educational platform with a focus on security/cryptography, where you can go through challenges (courses) to learn new things and hone your skills.`,
-    baseUrl: `https://www.pathwar.land`
+    baseUrl: `https://www.pathwar.land`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -19,14 +19,14 @@ module.exports = {
       options: {
         logo: `${__dirname}/src/images/pathwar-favicon.png`,
 
-        dir: 'auto',
-        lang: 'en-US',
-        background: '#fff',
-        theme_color: '#fff',
-        display: 'standalone',
-        orientation: 'any',
-        start_url: '/?homescreen=1',
-        version: '1.0',
+        dir: "auto",
+        lang: "en-US",
+        background: "#fff",
+        theme_color: "#fff",
+        display: "standalone",
+        orientation: "any",
+        start_url: "/?homescreen=1",
+        version: "1.0",
 
         icons: {
           android: true,
@@ -36,9 +36,9 @@ module.exports = {
           favicons: true,
           firefox: true,
           yandex: true,
-          windows: true
-        }
-      }
+          windows: true,
+        },
+      },
     },
     {
       resolve: `gatsby-plugin-google-analytics`,
@@ -47,4 +47,4 @@ module.exports = {
       },
     },
   ],
-}
+};

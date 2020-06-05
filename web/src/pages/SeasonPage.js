@@ -1,20 +1,20 @@
-import * as React from "react"
-import { connect } from "react-redux"
-import PropTypes from "prop-types"
-import { Page, Grid, Button } from "tabler-react"
-import { isNil } from "ramda"
+import * as React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { Page, Grid, Button } from "tabler-react";
+import { isNil } from "ramda";
 
-import AllTeamsOnSeasonList from "../components/season/AllTeamsOnSeasonList"
-import ChallengeList from "../components/challenges/ChallengeList"
-import ValidateCouponButton from "../components/coupon/ValidateCouponButton"
-import CreateTeamButton from "../components/team/CreateTeamButton"
+import AllTeamsOnSeasonList from "../components/season/AllTeamsOnSeasonList";
+import ChallengeList from "../components/challenges/ChallengeList";
+import ValidateCouponButton from "../components/coupon/ValidateCouponButton";
+import CreateTeamButton from "../components/team/CreateTeamButton";
 
 import {
   fetchChallenges as fetchChallengesAction,
   fetchAllSeasonTeams as fetchAllSeasonTeamsAction,
   buyChallenge as buyChallengeAction,
   createTeam as createTeamAction,
-} from "../actions/seasons"
+} from "../actions/seasons";
 
 class SeasonPage extends React.Component {
   componentDidUpdate(prevProps) {
@@ -22,14 +22,14 @@ class SeasonPage extends React.Component {
       fetchAllSeasonTeamsAction,
       fetchChallengesAction,
       seasons: { activeSeason },
-    } = this.props
+    } = this.props;
     const {
       seasons: { activeSeason: prevActiveSeason },
-    } = prevProps
+    } = prevProps;
 
     if (isNil(prevActiveSeason) && activeSeason) {
-      fetchAllSeasonTeamsAction(activeSeason.id)
-      fetchChallengesAction(activeSeason.id)
+      fetchAllSeasonTeamsAction(activeSeason.id);
+      fetchChallengesAction(activeSeason.id);
     }
   }
 
@@ -41,17 +41,17 @@ class SeasonPage extends React.Component {
         activeSeason,
         activeChallenges,
         allTeamsOnSeason,
-        activeTeamInSeason
+        activeTeamInSeason,
       },
-    } = this.props
-    const name = activeSeason ? activeSeason.name : undefined
+    } = this.props;
+    const name = activeSeason ? activeSeason.name : undefined;
 
     return (
       <Page.Content title="Season" subTitle={name}>
         <Grid.Row>
           <Grid.Col lg={4} md={4} sm={4} xs={4}>
             <Button.List>
-            <ValidateCouponButton />
+              <ValidateCouponButton />
             </Button.List>
           </Grid.Col>
         </Grid.Row>
@@ -78,19 +78,19 @@ class SeasonPage extends React.Component {
           </Grid.Col>
         </Grid.Row>
       </Page.Content>
-    )
+    );
   }
 }
 
 SeasonPage.propTypes = {
   seasons: PropTypes.object,
   fetchChallengesAction: PropTypes.func,
-}
+};
 
 const mapStateToProps = state => ({
   seasons: state.seasons,
   activeOrganization: state.organizations.activeOrganization,
-})
+});
 
 const mapDispatchToProps = {
   fetchChallengesAction: seasonID => fetchChallengesAction(seasonID),
@@ -98,6 +98,6 @@ const mapDispatchToProps = {
   buyChallengeAction: (seasonID, teamID) =>
     buyChallengeAction(seasonID, teamID),
   createTeamAction: (seasonID, name) => createTeamAction(seasonID, name),
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SeasonPage)
+export default connect(mapStateToProps, mapDispatchToProps)(SeasonPage);

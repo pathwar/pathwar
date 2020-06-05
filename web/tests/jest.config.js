@@ -12,5 +12,5 @@ module.exports = {
     __PATH_PREFIX__: ``,
   },
   testURL: `http://localhost`,
-  setupFiles: [`<rootDir>/config/jest/loadershim.js`]
-}
+  setupFiles: [`<rootDir>/config/jest/loadershim.js`],
+};
