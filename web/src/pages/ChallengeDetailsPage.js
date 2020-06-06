@@ -45,7 +45,7 @@ class ChallengeDetailsPage extends React.PureComponent {
     }
     const subscription = challenge.subscriptions && challenge.subscriptions[0];
     const validations = subscription && subscription.validations;
-    const isClosed = subscription.status === "Closed";
+    const isClosed = subscription && subscription.status === "Closed";
 
     return (
       <Page.Content title={flavorChallenge.name}>

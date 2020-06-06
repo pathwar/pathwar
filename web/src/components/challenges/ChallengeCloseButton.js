@@ -20,7 +20,7 @@ const ChallengeCloseButton = ({
       icon={"x-circle"}
       color="danger"
       onClick={handleCloseChallenge}
-      disabled={isClosed}
+      disabled={isClosed || !hasSubscriptions}
       {...rest}
     >
       {isClosed ? "Closed" : "Close"}
