@@ -78,7 +78,7 @@ class ChallengeDetailsPage extends React.PureComponent {
                 href={instances[0].nginx_url}
                 color="gray-dark"
                 icon="terminal"
-                disabled={isClosed}
+                disabled={isClosed || !subscription}
               >
                 Solve
               </Button>
