@@ -45,7 +45,7 @@ class ChallengeDetailsPage extends React.PureComponent {
     }
     const subscription = challenge.subscriptions && challenge.subscriptions[0];
     const validations = subscription && subscription.validations;
-    const isClosed = subscription.status === "Closed";
+    const isClosed = subscription && subscription.status === "Closed";
 
     return (
       <Page.Content title={flavorChallenge.name}>
@@ -78,7 +78,7 @@ class ChallengeDetailsPage extends React.PureComponent {
                 href={instances[0].nginx_url}
                 color="gray-dark"
                 icon="terminal"
-                disabled={isClosed}
+                disabled={isClosed || !subscription}
               >
                 Solve
               </Button>
