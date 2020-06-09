@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState } from "react";
+import React from "react";
 import { Helmet } from "react-helmet";
 import { graphql } from "gatsby";
 import { Global, css } from "@emotion/core";
@@ -21,8 +21,8 @@ import footerLogoD from "../images/new-pathwar-logo-light-purple.svg";
 import islandLeadingBg from "../images/island-light-mode-illustration.svg";
 import islandLeadingBgDark from "../images/landing-island-darkmode-illustration.svg";
 
-const logoLink = () => `
-  cursor: pointer;
+const logoWrapper = () => `
+  width: fit-content;
 
   img {
     width: 91px;
@@ -183,7 +183,7 @@ const footer = ({ colors, type }) => `
   }
 `;
 
-const IndexPage = ({ data, themeSwitch }) => {
+const IndexPage = ({ data }) => {
   const currentTheme = useTheme();
   const isDark = currentTheme.type === "dark";
   const title = data.site.siteMetadata.title;
@@ -239,15 +239,13 @@ const IndexPage = ({ data, themeSwitch }) => {
         }
       >
         <div className="siteContainer">
-          <a
-            href="#"
+          <span
             css={theme => css`
-              ${logoLink(theme)}
+              ${logoWrapper(theme)}
             `}
-            onClick={() => themeSwitch()}
           >
             <img src={headerLogo} alt="Pathwar Logo" />
-          </a>
+          </span>
           <div
             css={theme =>
               css`
@@ -308,9 +306,14 @@ const IndexPage = ({ data, themeSwitch }) => {
                   Levels? Other players’ profiles? The platform itself?
                   Everything is fair game here!
                 </p>
-                <button href="#" className="outline">
+                <a
+                  href="https://github.com/pathwar/pathwar/blob/master/CODE_OF_CONDUCT.md"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn outline"
+                >
                   Read our Code of Conduct
-                </button>
+                </a>
               </div>
             </div>
           </section>
@@ -383,16 +386,16 @@ const IndexPage = ({ data, themeSwitch }) => {
 };
 
 export default ({ data }) => {
-  const [darkMode, setDarkMode] = useState(false);
-  const themeToUse = darkMode ? darkTheme : lightTheme;
-
-  const switchTheme = () => {
-    setDarkMode(mode => !mode);
-  };
+  const browserInDarkMode =
+    typeof window !== "undefined" &&
+    window &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const themeToUse = browserInDarkMode ? darkTheme : lightTheme;
 
   return (
     <ThemeProvider theme={themeToUse}>
-      <IndexPage data={data} themeSwitch={switchTheme} />
+      <IndexPage data={data} />
     </ThemeProvider>
   );
 };

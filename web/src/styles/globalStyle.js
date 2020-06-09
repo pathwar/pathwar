@@ -37,7 +37,8 @@ export const globalStyle = ({ colors, font, type }) => {
       margin: 0;
     }
 
-    button {
+    button,
+    .btn {
       border: none;
       background: ${isDark ? colors.tertiary : colors.primary};
       border-radius: 31px;
