@@ -31,6 +31,7 @@ const logoWrapper = () => `
 
   @media (max-width: 991px) {
     text-align: center;
+    width: 100%;
 
     img {
       width: 51px;
