@@ -309,7 +309,7 @@ const IndexPage = ({ data }) => {
                 <a
                   href="https://github.com/pathwar/pathwar/blob/master/CODE_OF_CONDUCT.md"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noreferrer noopener"
                   className="btn outline"
                 >
                   Read our Code of Conduct
@@ -386,9 +386,9 @@ const IndexPage = ({ data }) => {
 };
 
 export default ({ data }) => {
+  const browser = typeof window !== "undefined" && window;
   const browserInDarkMode =
-    typeof window !== "undefined" &&
-    window &&
+    browser &&
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches;
   const themeToUse = browserInDarkMode ? darkTheme : lightTheme;

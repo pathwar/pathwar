@@ -82,9 +82,14 @@ export const globalStyle = ({ colors, font, type }) => {
         margin: 0;
       }
 
-      button {
+      button,
+      .btn {
         font-size: 1.125rem;
         padding: 0.4rem 1rem;
+
+        &.outline {
+          padding: 0.4rem 1rem;
+        }
       }
 
       .siteContainer {
