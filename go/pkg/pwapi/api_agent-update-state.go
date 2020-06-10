@@ -16,7 +16,8 @@ func (svc *service) AgentUpdateState(ctx context.Context, in *AgentUpdateState_I
 	}
 
 	for _, challengeInstance := range in.Instances {
-		err := svc.db.Model(&challengeInstance).
+		cpy := challengeInstance
+		err := svc.db.Model(&cpy).
 			Update(pwdb.ChallengeInstance{
 				Status: challengeInstance.Status,
 			}).

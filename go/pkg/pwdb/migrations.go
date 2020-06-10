@@ -1,13 +1,12 @@
 package pwdb
 
 import (
-	"github.com/bwmarrin/snowflake"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/gormigrate.v1"
 	"pathwar.land/v2/go/pkg/errcode"
 )
 
-func migrate(db *gorm.DB, sfn *snowflake.Node, opts Opts) error {
+func migrate(db *gorm.DB, opts Opts) error {
 	migrateOpts := gormigrate.DefaultOptions
 	migrateOpts.UseTransaction = true
 	m := gormigrate.New(db, migrateOpts, []*gormigrate.Migration{})

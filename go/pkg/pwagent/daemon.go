@@ -20,15 +20,10 @@ import (
 
 func Daemon(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClient, opts Opts) error {
 	started := time.Now()
-
-	err := opts.applyDefaults()
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
-
+	opts.applyDefaults()
 	logger := opts.Logger
 
-	err = agentRegister(ctx, apiClient, opts)
+	err := agentRegister(ctx, apiClient, opts)
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
@@ -70,7 +65,7 @@ func Daemon(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClient
 }
 
 func runOnce(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClient, opts Opts) error {
-	instances, err := apiClient.AgentListInstances(&pwapi.AgentListInstances_Input{AgentName: opts.Name})
+	instances, err := apiClient.AgentListInstances(ctx, &pwapi.AgentListInstances_Input{AgentName: opts.Name})
 	opts.Logger.Debug("api response", zap.Any("instances", instances.GetInstances()))
 	if err != nil {
 		return errcode.TODO.Wrap(err)
@@ -111,7 +106,7 @@ func agentRegister(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) 
 	}
 
 	nginxPort, _ := strconv.Atoi(opts.HostPort)
-	ret, err := apiClient.AgentRegister(&pwapi.AgentRegister_Input{
+	ret, err := apiClient.AgentRegister(ctx, &pwapi.AgentRegister_Input{
 		Name:         opts.Name,
 		Hostname:     hostname,
 		NginxPort:    int32(nginxPort),

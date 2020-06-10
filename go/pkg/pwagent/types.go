@@ -25,7 +25,7 @@ type Opts struct {
 	Logger *zap.Logger
 }
 
-func (opts *Opts) applyDefaults() error {
+func (opts *Opts) applyDefaults() {
 	if opts.Logger == nil {
 		opts.Logger = zap.NewNop()
 	}
@@ -37,5 +37,4 @@ func (opts *Opts) applyDefaults() error {
 		opts.ModeratorPassword = randstring.RandString(10)
 		opts.Logger.Warn("random moderator password generated", zap.String("password", opts.ModeratorPassword))
 	}
-	return nil
 }

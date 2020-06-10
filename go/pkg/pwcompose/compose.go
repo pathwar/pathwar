@@ -191,6 +191,8 @@ func Prepare(challengeDir string, prefix string, noPush bool, version string, lo
 	return string(finalData), nil
 }
 
+// Up starts a prepared challenge
+// nolint:gocyclo
 func Up(ctx context.Context, preparedCompose string, instanceKey string, forceRecreate bool, proxyNetworkID string, pwinitConfig *pwinit.InitConfig, cli *client.Client, logger *zap.Logger) (map[string]Service, error) {
 	logger.Debug("up", zap.String("compose", preparedCompose), zap.String("instance-key", instanceKey))
 
@@ -298,7 +300,9 @@ func Up(ctx context.Context, preparedCompose string, instanceKey string, forceRe
 					command = service.Command
 				}
 				service.Entrypoint = strslice.StrSlice{"/bin/pwinit", "entrypoint"}
-				service.Command = append(entrypoint, command...)
+				newCommand := entrypoint
+				newCommand = append(newCommand, command...)
+				service.Command = newCommand
 				preparedComposeStruct.Services[name] = service
 			}
 		}
@@ -369,7 +373,6 @@ func Up(ctx context.Context, preparedCompose string, instanceKey string, forceRe
 		if err != nil {
 			return nil, errcode.ErrCopyPWInitToContainer.Wrap(err)
 		}
-
 	}
 
 	// start containers
@@ -442,7 +445,6 @@ func Clean(ctx context.Context, containerIDs []string, removeImages bool, remove
 		for _, id := range containerIDs {
 			for _, flavor := range containersInfo.RunningFlavors {
 				if id == flavor.Name || id == flavor.ChallengeID() {
-
 					for _, container := range flavor.Containers {
 						toRemove[container.ID] = container
 					}
@@ -500,7 +502,6 @@ func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) 
 
 	for _, flavor := range containersInfo.RunningFlavors {
 		for uid, container := range flavor.Containers {
-
 			ports := []string{}
 			for _, port := range container.Ports {
 				if port.PublicPort != 0 {

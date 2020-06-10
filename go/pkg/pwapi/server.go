@@ -33,7 +33,7 @@ import (
 	"pathwar.land/v2/go/pkg/errcode"
 )
 
-func NewServer(ctx context.Context, svc Service, opts ServerOpts) (*Server, error) {
+func NewServer(ctx context.Context, svc ServiceServer, opts ServerOpts) (*Server, error) {
 	// assign default opts
 	if opts.Logger == nil {
 		opts.Logger = zap.NewNop()
@@ -70,10 +70,7 @@ func NewServer(ctx context.Context, svc Service, opts ServerOpts) (*Server, erro
 	// FIXME: websocket
 
 	// grpc server
-	s.grpcServer, err = grpcServer(svc, opts)
-	if err != nil {
-		return nil, errcode.TODO.Wrap(err)
-	}
+	s.grpcServer = grpcServer(svc, opts)
 	s.workers.Add(func() error {
 		err := s.grpcServer.Serve(s.grpcListener)
 		if err != cmux.ErrListenerClosed {
@@ -172,7 +169,7 @@ func (s *Server) ListenerAddr() string {
 	return s.masterListener.Addr().String()
 }
 
-func grpcServer(svc Service, opts ServerOpts) (*grpc.Server, error) {
+func grpcServer(svc ServiceServer, opts ServerOpts) *grpc.Server {
 	logger := opts.Logger.Named("grpc")
 	authFunc := func(context.Context) (context.Context, error) {
 		return nil, errcode.ErrNotImplemented
@@ -214,7 +211,7 @@ func grpcServer(svc Service, opts ServerOpts) (*grpc.Server, error) {
 	)
 	RegisterServiceServer(grpcServer, svc)
 
-	return grpcServer, nil
+	return grpcServer
 }
 
 func grpcServerStreamInterceptor() grpc.StreamServerInterceptor {

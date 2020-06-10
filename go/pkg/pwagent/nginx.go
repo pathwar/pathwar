@@ -232,6 +232,7 @@ func buildNginxConfigTar(config *nginxConfig, logger *zap.Logger) (*bytes.Buffer
 	}
 	configBytes := configBuf.Bytes()
 
+	logger.Debug("nginx-config", zap.Int("config-length", len(configBytes)))
 	/* if logger.Check(zap.DebugLevel, "") != nil {
 		fmt.Fprintln(os.Stderr, string(configBytes))
 	}*/

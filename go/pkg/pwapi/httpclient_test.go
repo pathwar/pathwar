@@ -28,12 +28,12 @@ func TestHTTPClient_GetStatus(t *testing.T) {
 	}
 	client := NewHTTPClient(hc, bind)
 
-	status, err := client.GetStatus(&GetStatus_Input{})
+	status, err := client.GetStatus(ctx, &GetStatus_Input{})
 	require.NoError(t, err)
 	expected := GetStatus_Output{EverythingIsOK: true}
 	assert.Equal(t, expected, status)
 
-	ret, err := client.UserSetPreferences(&UserSetPreferences_Input{})
+	ret, err := client.UserSetPreferences(ctx, &UserSetPreferences_Input{})
 	assert.Error(t, err)
 	assert.Equal(t, err.Error(), `TODO(#666): TODO(#666): invalid status code (500): "{\n  \"code\": 2,\n  \"message\": \"ErrUnauthenticated(#103)\"\n}"`)
 	assert.Equal(t, UserSetPreferences_Output{}, ret)

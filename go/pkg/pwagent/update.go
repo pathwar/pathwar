@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/docker/docker/client"
+	"go.uber.org/zap"
 	"pathwar.land/v2/go/pkg/errcode"
 	"pathwar.land/v2/go/pkg/pwapi"
 	"pathwar.land/v2/go/pkg/pwcompose"
@@ -44,7 +45,8 @@ func updateAPIState(ctx context.Context, apiInstances *pwapi.AgentListInstances_
 	//	fmt.Println(godev.PrettyJSONPB(&input))
 	//}
 
-	if _, err := apiClient.AgentUpdateState(&input); err != nil {
+	opts.Logger.Debug("updateAPIState", zap.Any("instances", apiInstances.Instances))
+	if _, err := apiClient.AgentUpdateState(ctx, &input); err != nil {
 		return errcode.TODO.Wrap(err)
 	}
 

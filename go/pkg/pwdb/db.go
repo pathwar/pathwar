@@ -25,7 +25,7 @@ func Configure(db *gorm.DB, sfn *snowflake.Node, opts Opts) (*gorm.DB, error) {
 	db.BlockGlobalUpdate(true)
 	db.SingularTable(true)
 	db.LogMode(true)
-	if err := migrate(db, sfn, opts); err != nil {
+	if err := migrate(db, opts); err != nil {
 		return nil, errcode.ErrDBRunMigrations.Wrap(err)
 	}
 	return db, nil

@@ -113,6 +113,7 @@ var (
 	zipkinEndpoint                  string
 )
 
+// nolint:gocyclo
 func main() {
 	log.SetFlags(0)
 
@@ -256,7 +257,7 @@ func main() {
 				}
 
 				// init svc
-				svc, _, _, closer, err := svcFromFlags()
+				svc, _, closer, err := svcFromFlags()
 				if err != nil {
 					return errcode.ErrStartService.Wrap(err)
 				}
@@ -307,7 +308,7 @@ func main() {
 				}
 
 				// init svc
-				_, db, _, closer, err := svcFromFlags()
+				_, db, closer, err := svcFromFlags()
 				if err != nil {
 					return errcode.ErrStartService.Wrap(err)
 				}
@@ -331,7 +332,7 @@ func main() {
 				}
 
 				// init svc
-				_, db, _, closer, err := svcFromFlags()
+				_, db, closer, err := svcFromFlags()
 				if err != nil {
 					return errcode.ErrStartService.Wrap(err)
 				}
@@ -590,7 +591,7 @@ func main() {
 					return errcode.TODO.Wrap(err)
 				}
 
-				ret, err := apiClient.AdminPS(&pwapi.AdminPS_Input{})
+				ret, err := apiClient.AdminPS(ctx, &pwapi.AdminPS_Input{})
 				if err != nil {
 					return errcode.TODO.Wrap(err)
 				}
@@ -617,7 +618,7 @@ func main() {
 					return errcode.TODO.Wrap(err)
 				}
 
-				_, err = apiClient.AdminRedump(&pwapi.AdminRedump_Input{
+				_, err = apiClient.AdminRedump(ctx, &pwapi.AdminRedump_Input{
 					Identifiers: args,
 				})
 				if err != nil {
@@ -644,7 +645,7 @@ func main() {
 					return errcode.TODO.Wrap(err)
 				}
 
-				_, err = apiClient.AdminAddChallenge(&pwapi.AdminChallengeAdd_Input{
+				_, err = apiClient.AdminAddChallenge(ctx, &pwapi.AdminChallengeAdd_Input{
 					Challenge: &pwdb.Challenge{
 						Name:        addChallengeName,
 						Description: addChallengeDescription,
@@ -687,7 +688,7 @@ func main() {
 					},
 				}
 
-				_, err = apiClient.AdminAddChallengeFlavor(input)
+				_, err = apiClient.AdminAddChallengeFlavor(ctx, input)
 				if err != nil {
 					return errcode.TODO.Wrap(err)
 				}
@@ -712,7 +713,7 @@ func main() {
 					return errcode.TODO.Wrap(err)
 				}
 
-				_, err = apiClient.AdminAddChallengeInstance(&pwapi.AdminChallengeInstanceAdd_Input{
+				_, err = apiClient.AdminAddChallengeInstance(ctx, &pwapi.AdminChallengeInstanceAdd_Input{
 					ChallengeInstance: &pwdb.ChallengeInstance{
 						AgentID:  addChallengeInstanceAgentID,
 						FlavorID: addChallengeInstanceFlavorID,
@@ -762,7 +763,7 @@ func main() {
 			if len(args) > 2 {
 				input = []byte(args[2])
 			}
-			output, err := apiClient.Raw(method, path, input)
+			output, err := apiClient.Raw(ctx, method, path, input)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
 			}
@@ -851,28 +852,28 @@ func main() {
 	}
 }
 
-func svcFromFlags() (pwapi.Service, *gorm.DB, pwsso.Client, func(), error) {
+func svcFromFlags() (pwapi.Service, *gorm.DB, func(), error) {
 	// init database
 	db, err := gorm.Open("mysql", apiDBURN)
 	if err != nil {
-		return nil, nil, nil, nil, errcode.ErrInitDB.Wrap(err)
+		return nil, nil, nil, errcode.ErrInitDB.Wrap(err)
 	}
 	sfn, err := snowflake.NewNode(1)
 	if err != nil {
-		return nil, nil, nil, nil, errcode.ErrInitSnowflake.Wrap(err)
+		return nil, nil, nil, errcode.ErrInitSnowflake.Wrap(err)
 	}
 	dbOpts := pwdb.Opts{
 		Logger: logger.Named("gorm"),
 	}
 	db, err = pwdb.Configure(db, sfn, dbOpts)
 	if err != nil {
-		return nil, nil, nil, nil, errcode.ErrConfigureDB.Wrap(err)
+		return nil, nil, nil, errcode.ErrConfigureDB.Wrap(err)
 	}
 
 	// init SSO
 	sso, err := ssoFromFlags()
 	if err != nil {
-		return nil, nil, nil, nil, errcode.ErrInitSSOClient.Wrap(err)
+		return nil, nil, nil, errcode.ErrInitSSOClient.Wrap(err)
 	}
 
 	// init svc
@@ -882,7 +883,7 @@ func svcFromFlags() (pwapi.Service, *gorm.DB, pwsso.Client, func(), error) {
 
 	svc, err := pwapi.NewService(db, sso, svcOpts)
 	if err != nil {
-		return nil, nil, nil, nil, errcode.ErrInitService.Wrap(err)
+		return nil, nil, nil, errcode.ErrInitService.Wrap(err)
 	}
 
 	closeFunc := func() {
@@ -895,7 +896,7 @@ func svcFromFlags() (pwapi.Service, *gorm.DB, pwsso.Client, func(), error) {
 	}
 
 	logger.Debug("svc initd", zap.Any("db", db), zap.Any("opts", svcOpts))
-	return svc, db, sso, closeFunc, nil
+	return svc, db, closeFunc, nil
 }
 
 func ssoFromFlags() (pwsso.Client, error) {
