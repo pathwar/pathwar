@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "glob": "^7.1.5",
-    "mime-types": "^2.1.24"
+    "mime-types": "^2.1.24",
+    "netlify-plugin-hugo-cache-resources": "^0.1.4",
+    "netlify-plugin-submit-sitemap": "^0.1.4"
   }
 }
