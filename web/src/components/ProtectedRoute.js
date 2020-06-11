@@ -9,11 +9,20 @@ import styles from "../styles/layout/loader.module.css";
 
 class ProtectedRoute extends React.PureComponent {
   componentDidMount() {
-    const { setKeycloakSession } = this.props;
+    const { setKeycloakSession, userSession } = this.props;
+    const { activeKeycloakSession } = userSession;
     const keycloak = new Keycloak("/keycloak.json");
+    const token = activeKeycloakSession && activeKeycloakSession.token;
+    const refreshToken =
+      activeKeycloakSession && activeKeycloakSession.refreshToken;
 
     keycloak
-      .init({ onLoad: "login-required", checkLoginIframe: false })
+      .init({
+        onLoad: "login-required",
+        checkLoginIframe: false,
+        token,
+        refreshToken,
+      })
       .then(authenticated => {
         setKeycloakSession(keycloak, authenticated);
       });
