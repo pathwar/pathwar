@@ -10,4 +10,8 @@ https://www.pathwar.net/* https://www.pathwar.land/:splat 301!
 https://www.pathwar.org/* https://www.pathwar.land/:splat 301!
 https://www.pathwar.pw/* https://www.pathwar.land/:splat 301!
 
+
+/pathwar/* go-get=1 /goget-pathwar-land-pathwar.html 200!
+/pathwar/ https://github.com/pathwar/pathwar
+/pathwar/* https://github.com/pathwar/pathwar
 /* go-get=1 /goget-pathwar-land.html 200!
