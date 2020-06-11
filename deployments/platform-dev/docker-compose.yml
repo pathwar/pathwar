@@ -14,9 +14,11 @@ services:
       - VIRTUAL_PORT=8000
       # loaded from .env
       - API_URN
+      - SENTRY_DSN
     command:
       - pathwar
       - --debug
+      - --sentry-dsn=$SENTRY_DSN
       - api
       - --urn=$API_URN
       - server
@@ -44,9 +46,11 @@ services:
       - VIRTUAL_PORT=8000
       # loaded from .env
       - API_URN
+      - SENTRY_DSN
     command:
       - pathwar
       - --debug
+      - --sentry-dsn=$SENTRY_DSN
       - api
       - --urn=$API_URN
       - --sso-unsafe

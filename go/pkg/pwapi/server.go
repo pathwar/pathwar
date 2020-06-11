@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	sentryhttp "github.com/getsentry/sentry-go/http"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/gogo/gateway"
@@ -251,6 +252,10 @@ func httpServer(ctx context.Context, serverListenerAddr string, opts ServerOpts)
 	r.Use(middleware.Timeout(opts.RequestTimeout))
 	r.Use(middleware.RealIP)
 	r.Use(middleware.RequestID)
+	sentryMiddleware := sentryhttp.New(sentryhttp.Options{
+		Repanic: true,
+	})
+	r.Use(sentryMiddleware.Handle)
 
 	runtimeMux := runtime.NewServeMux(
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, &gateway.JSONPb{

@@ -25,5 +25,6 @@ func Example() {
 	// FLAGS
 	//   -bearer-secretkey ...  bearer.sh secret key
 	//   -debug false           debug mode
+	//   -sentry-dsn ...        Sentry DSN
 	//   -zipkin-endpoint ...   optional opentracing server
 }
