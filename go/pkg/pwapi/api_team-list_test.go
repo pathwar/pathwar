@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"pathwar.land/v2/go/internal/testutil"
-	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/internal/testutil"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
 func TestSvc_TeamList(t *testing.T) {

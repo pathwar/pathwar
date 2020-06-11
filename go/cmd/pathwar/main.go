@@ -32,14 +32,14 @@ import (
 	"golang.org/x/oauth2"
 	"moul.io/godev"
 	"moul.io/srand"
-	"pathwar.land/v2/go/pkg/errcode"
-	"pathwar.land/v2/go/pkg/pwagent"
-	"pathwar.land/v2/go/pkg/pwapi"
-	"pathwar.land/v2/go/pkg/pwcompose"
-	"pathwar.land/v2/go/pkg/pwdb"
-	"pathwar.land/v2/go/pkg/pwinit"
-	"pathwar.land/v2/go/pkg/pwsso"
-	"pathwar.land/v2/go/pkg/pwversion"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/pwagent"
+	"pathwar.land/pathwar/v2/go/pkg/pwapi"
+	"pathwar.land/pathwar/v2/go/pkg/pwcompose"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
+	"pathwar.land/pathwar/v2/go/pkg/pwinit"
+	"pathwar.land/pathwar/v2/go/pkg/pwsso"
+	"pathwar.land/pathwar/v2/go/pkg/pwversion"
 )
 
 const (

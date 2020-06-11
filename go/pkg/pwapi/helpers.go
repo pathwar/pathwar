@@ -2,7 +2,7 @@ package pwapi
 
 import (
 	"github.com/jinzhu/gorm"
-	"pathwar.land/v2/go/pkg/pwdb"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
 func userTeamForSeason(db *gorm.DB, userID, seasonID int64) (*pwdb.Team, error) {

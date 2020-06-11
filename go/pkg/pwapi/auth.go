@@ -7,9 +7,9 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
 	"google.golang.org/grpc/metadata"
-	"pathwar.land/v2/go/pkg/errcode"
-	"pathwar.land/v2/go/pkg/pwdb"
-	"pathwar.land/v2/go/pkg/pwsso"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
+	"pathwar.land/pathwar/v2/go/pkg/pwsso"
 )
 
 type ctxKey string

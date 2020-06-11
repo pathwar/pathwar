@@ -1,4 +1,4 @@
-module pathwar.land/v2
+module pathwar.land/pathwar/v2
 
 require (
 	cloud.google.com/go v0.37.4 // indirect

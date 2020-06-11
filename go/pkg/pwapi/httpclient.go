@@ -10,7 +10,7 @@ import (
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
 	"github.com/google/go-querystring/query"
-	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
 func NewHTTPClient(httpClient *http.Client, baseAPI string) *HTTPClient {

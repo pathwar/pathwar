@@ -3,8 +3,8 @@ package pwapi
 import (
 	"context"
 
-	"pathwar.land/v2/go/pkg/errcode"
-	"pathwar.land/v2/go/pkg/pwdb"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
 func (svc *service) AdminChallengeAdd(ctx context.Context, in *AdminChallengeAdd_Input) (*AdminChallengeAdd_Output, error) {

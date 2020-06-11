@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"pathwar.land/v2/go/pkg/errcode"
-	"pathwar.land/v2/go/pkg/pwdb"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
 func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallengeList_Input) (*SeasonChallengeList_Output, error) {

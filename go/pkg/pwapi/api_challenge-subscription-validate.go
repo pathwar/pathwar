@@ -6,9 +6,9 @@ import (
 	"errors"
 	"fmt"
 
-	"pathwar.land/v2/go/pkg/errcode"
-	"pathwar.land/v2/go/pkg/pwdb"
-	"pathwar.land/v2/go/pkg/pwinit"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
+	"pathwar.land/pathwar/v2/go/pkg/pwinit"
 )
 
 func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *ChallengeSubscriptionValidate_Input) (*ChallengeSubscriptionValidate_Output, error) {

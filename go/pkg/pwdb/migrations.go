@@ -3,7 +3,7 @@ package pwdb
 import (
 	"github.com/jinzhu/gorm"
 	"gopkg.in/gormigrate.v1"
-	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
 func migrate(db *gorm.DB, opts Opts) error {

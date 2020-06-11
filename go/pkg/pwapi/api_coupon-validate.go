@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/jinzhu/gorm"
-	"pathwar.land/v2/go/pkg/errcode"
-	"pathwar.land/v2/go/pkg/pwdb"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
 func (svc *service) CouponValidate(ctx context.Context, in *CouponValidate_Input) (*CouponValidate_Output, error) {
