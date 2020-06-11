@@ -11,18 +11,20 @@ services:
       - PATHWAR_AGENT_NGINX_DOMAIN_SUFFIX
       - PATHWAR_AGENT_NAME
       - PATHWAR_AGENT_NGINX_PORT
+      - PATHWAR_SENTRY_DSN
     labels:
       com.centurylinklabs.watchtower.enable: "true"
     working_dir: /data/
     command:
       -   --debug
+      -   --sentry-dsn=$PATHWAR_SENTRY_DSN
       - agent
       -   --salt=uns3cur3
       -   --moderator-password=uns3cur3
       -   --nginx-domain-suffix=$PATHWAR_AGENT_NGINX_DOMAIN_SUFFIX
       -   --agent-name=$PATHWAR_AGENT_NAME
       -   --port=$PATHWAR_AGENT_NGINX_PORT
-      
+
       #   -agent-name localhost                                Agent Name
       #   -clean false                                         remove all pathwar instances before executing
       #   -delay 10s                                           delay between each loop iteration

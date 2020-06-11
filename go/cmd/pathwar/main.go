@@ -17,6 +17,7 @@ import (
 	bearer "github.com/Bearer/bearer-go"
 	"github.com/bwmarrin/snowflake"
 	"github.com/docker/docker/client"
+	sentry "github.com/getsentry/sentry-go"
 	_ "github.com/go-sql-driver/mysql" // required by gorm
 	"github.com/jinzhu/gorm"
 	"github.com/oklog/run"
@@ -98,6 +99,7 @@ var (
 	composeUpForceRecreate          bool
 	composeUpInstanceKey            string
 	globalDebug                     bool
+	globalSentryDSN                 string
 	httpAPIAddr                     string
 	serverBind                      string
 	serverCORSAllowedOrigins        string
@@ -148,6 +150,7 @@ func main() {
 	globalFlags.BoolVar(&globalDebug, "debug", false, "debug mode")
 	globalFlags.StringVar(&zipkinEndpoint, "zipkin-endpoint", "", "optional opentracing server")
 	globalFlags.StringVar(&bearerSecretKey, "bearer-secretkey", "", "bearer.sh secret key")
+	globalFlags.StringVar(&globalSentryDSN, "sentry-dsn", "", "Sentry DSN")
 
 	agentFlags.BoolVar(&agentClean, "clean", false, "remove all pathwar instances before executing")
 	agentFlags.BoolVar(&agentRunOnce, "once", false, "run once and don't start daemon loop")
@@ -252,9 +255,15 @@ func main() {
 			FlagSet:   serverFlags,
 			Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
 			Exec: func(args []string) error {
-				if err := globalPreRun(); err != nil {
+				err := globalPreRun()
+				if err != nil {
 					return err
 				}
+				cleanup, err := initSentryFromEnv("starting API")
+				if err != nil {
+					return err
+				}
+				defer cleanup()
 
 				// init svc
 				svc, _, closer, err := svcFromFlags()
@@ -303,7 +312,8 @@ func main() {
 			Name:  "sqlinfo",
 			Usage: "pathwar [global flags] api [api flags] sqlinfo",
 			Exec: func([]string) error {
-				if err := globalPreRun(); err != nil {
+				err := globalPreRun()
+				if err != nil {
 					return err
 				}
 
@@ -327,7 +337,8 @@ func main() {
 			Name:  "sqldump",
 			Usage: "pathwar [global flags] api [api flags] sqldump",
 			Exec: func([]string) error {
-				if err := globalPreRun(); err != nil {
+				err := globalPreRun()
+				if err != nil {
 					return err
 				}
 
@@ -408,9 +419,11 @@ func main() {
 				if len(args) < 1 {
 					return flag.ErrHelp
 				}
-				if err := globalPreRun(); err != nil {
+				err := globalPreRun()
+				if err != nil {
 					return err
 				}
+
 				sso, err := ssoFromFlags()
 				if err != nil {
 					return errcode.ErrGetSSOClientFromFlags.Wrap(err)
@@ -429,9 +442,11 @@ func main() {
 				if len(args) < 1 {
 					return flag.ErrHelp
 				}
-				if err := globalPreRun(); err != nil {
+				err := globalPreRun()
+				if err != nil {
 					return err
 				}
+
 				sso, err := ssoFromFlags()
 				if err != nil {
 					return errcode.ErrGetSSOClientFromFlags.Wrap(err)
@@ -462,9 +477,11 @@ func main() {
 			FlagSet: composeUpFlags,
 			Options: []ff.Option{ff.WithEnvVarNoPrefix()},
 			Exec: func(args []string) error {
-				if err := globalPreRun(); err != nil {
+				err := globalPreRun()
+				if err != nil {
 					return err
 				}
+
 				if len(args) < 1 {
 					return flag.ErrHelp
 				}
@@ -506,7 +523,8 @@ func main() {
 					return flag.ErrHelp
 				}
 				path := args[0]
-				if err := globalPreRun(); err != nil {
+				err := globalPreRun()
+				if err != nil {
 					return err
 				}
 
@@ -528,7 +546,8 @@ func main() {
 			FlagSet: composePSFlags,
 			Options: []ff.Option{ff.WithEnvVarNoPrefix()},
 			Exec: func(args []string) error {
-				if err := globalPreRun(); err != nil {
+				err := globalPreRun()
+				if err != nil {
 					return err
 				}
 
@@ -803,6 +822,12 @@ func main() {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
+			cleanup, err := initSentryFromEnv("starting agent")
+			if err != nil {
+				return err
+			}
+			defer cleanup()
+
 			ctx := context.Background()
 			dockerCli, err := client.NewEnvClient()
 			if err != nil {
@@ -1013,4 +1038,32 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 	}
 
 	return pwapi.NewHTTPClient(oauth2.NewClient(ctx, ts), httpAPIAddr), nil
+}
+
+func initSentryFromEnv(startMessage string) (func(), error) {
+	cleanup := func() {}
+	if globalSentryDSN != "" {
+		// doc here: https://docs.sentry.io/platforms/go/config/
+		err := sentry.Init(sentry.ClientOptions{
+			Dsn:              globalSentryDSN,
+			Release:          pwversion.Version,
+			AttachStacktrace: true,
+			Debug:            false,
+			// List of regexp strings that will be used to match against event's message
+			// and if applicable, caught errors type and value.
+			// If the match is found, then a whole event will be dropped.
+			// IgnoreErrors: []string{},
+		})
+		if err != nil {
+			return nil, err
+		}
+		cleanup = func() {
+			sentry.Flush(2 * time.Second)
+			sentry.Recover()
+		}
+		if startMessage != "" {
+			sentry.CaptureMessage(startMessage)
+		}
+	}
+	return cleanup, nil
 }
