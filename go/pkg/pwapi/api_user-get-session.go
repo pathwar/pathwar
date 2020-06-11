@@ -7,9 +7,9 @@ import (
 	"math/rand"
 
 	"go.uber.org/zap"
-	"pathwar.land/v2/go/pkg/errcode"
-	"pathwar.land/v2/go/pkg/pwdb"
-	"pathwar.land/v2/go/pkg/pwsso"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
+	"pathwar.land/pathwar/v2/go/pkg/pwsso"
 )
 
 func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input) (*UserGetSession_Output, error) {

@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"pathwar.land/v2/go/pkg/errcode"
-	"pathwar.land/v2/go/pkg/pwdb"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
 func (svc *service) ChallengeSubscriptionClose(ctx context.Context, in *ChallengeSubscriptionClose_Input) (*ChallengeSubscriptionClose_Output, error) {

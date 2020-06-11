@@ -6,7 +6,7 @@ import (
 
 	"github.com/martinlindhe/base36"
 	"golang.org/x/crypto/sha3"
-	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
 func newOfficialChallengeWithFlavor(name string, homepage string, composeBundle string) *ChallengeFlavor {

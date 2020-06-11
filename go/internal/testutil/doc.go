@@ -1,1 +1,1 @@
-package testutil // import "pathwar.land/v2/go/internal/testutil"
+package testutil // import "pathwar.land/pathwar/v2/go/internal/testutil"

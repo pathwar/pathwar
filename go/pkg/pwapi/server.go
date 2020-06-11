@@ -30,7 +30,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
 func NewServer(ctx context.Context, svc ServiceServer, opts ServerOpts) (*Server, error) {

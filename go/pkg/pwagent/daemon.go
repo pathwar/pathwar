@@ -12,10 +12,10 @@ import (
 	"github.com/docker/docker/client"
 	"go.uber.org/zap"
 	"moul.io/godev"
-	"pathwar.land/v2/go/pkg/errcode"
-	"pathwar.land/v2/go/pkg/pwapi"
-	"pathwar.land/v2/go/pkg/pwcompose"
-	"pathwar.land/v2/go/pkg/pwversion"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/pwapi"
+	"pathwar.land/pathwar/v2/go/pkg/pwcompose"
+	"pathwar.land/pathwar/v2/go/pkg/pwversion"
 )
 
 func Daemon(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClient, opts Opts) error {

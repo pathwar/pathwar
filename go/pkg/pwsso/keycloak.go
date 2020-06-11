@@ -6,7 +6,7 @@ import (
 
 	"github.com/keycloak/kcinit/rest"
 	"go.uber.org/zap"
-	"pathwar.land/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
 const KeycloakBaseURL = "https://id.pathwar.land"
