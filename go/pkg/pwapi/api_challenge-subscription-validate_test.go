@@ -37,6 +37,7 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 		SeasonChallengeID: challenges.Items[9].ID,
 		TeamID:            activeTeam.ID,
 	})
+	require.NoError(t, err)
 
 	var tests = []struct {
 		name                            string
@@ -72,6 +73,12 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 		assert.Equalf(t, test.input.Comment, ret.ChallengeValidation.AuthorComment, test.name)
 		assert.Equalf(t, test.expectedPassphraseIndices, ret.ChallengeValidation.Passphrases, test.name)
 		assert.NotEmptyf(t, ret.ChallengeValidation.ChallengeSubscription.Validations, test.name)
+		assert.NotNilf(t, ret.ChallengeSubscription.ClosedAt, test.name)
+		assert.Equalf(t, session.User.ID, ret.ChallengeSubscription.CloserID, test.name)
+		assert.Equalf(t, pwdb.ChallengeSubscription_Closed, ret.ChallengeSubscription.Status, test.name)
+		assert.Equalf(t, activeTeam.ID, ret.ChallengeSubscription.Team.ID, test.name)
+		assert.Equalf(t, test.input.ChallengeSubscriptionID, ret.ChallengeSubscription.ID, test.name)
+		assert.NotEmptyf(t, ret.ChallengeSubscription.Validations, test.name)
 
 		{
 			challenge, err := svc.SeasonChallengeGet(ctx, &SeasonChallengeGet_Input{SeasonChallengeID: ret.ChallengeValidation.ChallengeSubscription.SeasonChallenge.ID})

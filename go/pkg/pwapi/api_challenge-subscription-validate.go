@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"time"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -24,7 +25,7 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 
 	// check input challenge subscription
 	// FIXME: or is admin
-	var challengeSubscription pwdb.ChallengeSubscription
+	var subscription pwdb.ChallengeSubscription
 	err = svc.db.
 		Preload("Team", "team.deletion_status = ?", pwdb.DeletionStatus_Active).
 		Preload("SeasonChallenge").
@@ -32,18 +33,18 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		Preload("SeasonChallenge.Flavor.Instances").
 		Joins("JOIN team ON team.id = challenge_subscription.team_id").
 		Joins("JOIN team_member ON team_member.team_id = team.id AND team_member.user_id = ?", userID).
-		First(&challengeSubscription, in.ChallengeSubscriptionID).
+		First(&subscription, in.ChallengeSubscriptionID).
 		Error
 	if err != nil {
 		return nil, errcode.ErrGetChallengeSubscription.Wrap(err)
 	}
 
 	// check if challenge subscription is still open
-	if challengeSubscription.Status != pwdb.ChallengeSubscription_Active {
+	if subscription.Status != pwdb.ChallengeSubscription_Active {
 		return nil, errcode.ErrChallengeInactiveValidation.Wrap(errors.New("challenge is disabled"))
 	}
 
-	instances := challengeSubscription.SeasonChallenge.Flavor.Instances
+	instances := subscription.SeasonChallenge.Flavor.Instances
 	if len(instances) == 0 {
 		return nil, errcode.ErrChallengeInactiveValidation.Wrap(errors.New("challenge has no instances"))
 	}
@@ -119,7 +120,7 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		return nil, errcode.ErrCreateChallengeValidation.Wrap(err)
 	}
 
-	// load and return the freshly inserted entry
+	// load freshly inserted entry
 	err = svc.db.
 		Preload("Author").
 		Preload("ChallengeSubscription").
@@ -130,6 +131,29 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		Error
 	if err != nil {
 		return nil, errcode.ErrGetChallengeValidation.Wrap(err)
+	}
+
+	// update challenge subscription
+	now := time.Now()
+	err = svc.db.
+		Model(&subscription).
+		Updates(pwdb.ChallengeSubscription{
+			Status:   pwdb.ChallengeSubscription_Closed,
+			ClosedAt: &now,
+			CloserID: userID,
+		}).Error
+	if err != nil {
+		return nil, errcode.ErrUpdateChallengeSubscription.Wrap(err)
+	}
+
+	// load updated challenge subscription with validations
+	err = svc.db.
+		Preload("Validations").
+		Where(pwdb.ChallengeSubscription{ID: subscription.ID}).
+		First(&subscription).
+		Error
+	if err != nil {
+		return nil, pwdb.GormToErrcode(err)
 	}
 
 	// mark used instances as needing a redump
@@ -149,7 +173,8 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 	}
 
 	ret := ChallengeSubscriptionValidate_Output{
-		ChallengeValidation: &validation,
+		ChallengeValidation:   &validation,
+		ChallengeSubscription: &subscription,
 	}
 	return &ret, nil
 }

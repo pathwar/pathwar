@@ -34,7 +34,6 @@ service Service {
   rpc SeasonChallengeGet(SeasonChallengeGet.Input) returns (SeasonChallengeGet.Output) { option (google.api.http) = {get: "/season-challenge"}; };
   rpc SeasonChallengeBuy(SeasonChallengeBuy.Input) returns (SeasonChallengeBuy.Output) { option (google.api.http) = {post: "/season-challenge/buy"; body: "*"}; };
   rpc ChallengeSubscriptionValidate(ChallengeSubscriptionValidate.Input) returns (ChallengeSubscriptionValidate.Output) { option (google.api.http) = {post: "/challenge-subscription/validate"; body: "*"}; };
-  rpc ChallengeSubscriptionClose(ChallengeSubscriptionClose.Input) returns (ChallengeSubscriptionClose.Output) { option (google.api.http) = {post: "/challenge-subscription/close"; body: "*"}; };
 
   //
   // Organization
@@ -233,15 +232,7 @@ message ChallengeSubscriptionValidate {
   }
   message Output {
     pathwar.db.ChallengeValidation challenge_validation = 1;
-  }
-}
-
-message ChallengeSubscriptionClose {
-  message Input {
-    int64 challenge_subscription_id = 1 [(gogoproto.customname) = "ChallengeSubscriptionID"];
-  }
-  message Output {
-    pathwar.db.ChallengeSubscription challenge_subscription = 1;
+    pathwar.db.ChallengeSubscription challenge_subscription = 2;
   }
 }
 
