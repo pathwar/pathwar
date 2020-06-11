@@ -12,10 +12,12 @@ import ChallengeDetailsPage from "./ChallengeDetailsPage";
 import SiteWrapper from "../components/SiteWrapper";
 import TeamDetailsPage from "./TeamDetailsPage";
 import SettingsPage from "./SettingsPage";
+import * as Sentry from '@sentry/browser';
 const ProtectedRoute = loadable(() => import("../components/ProtectedRoute"));
 
 import "tabler-react/dist/Tabler.css";
 
+Sentry.init({dsn: "https://8605d8e8fa21419d9a0e3f36a54df5cb@o406102.ingest.sentry.io/5272916"});
 toast.configure();
 
 const App = () => (
