@@ -39,8 +39,6 @@ import {
   postCreateTeam,
 } from "../api/seasons";
 
-import { fetchUserSession as fetchUserSessionAction } from "./userSession";
-
 //Season main actions
 export const fetchPreferences = seasonID => async dispatch => {
   try {
@@ -49,8 +47,6 @@ export const fetchPreferences = seasonID => async dispatch => {
     dispatch({
       type: FETCH_PREFERENCES_SUCCESS,
     });
-
-    dispatch(fetchUserSessionAction(false));
   } catch (error) {
     dispatch({
       type: FETCH_PREFERENCES_FAILED,
