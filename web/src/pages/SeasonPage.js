@@ -21,15 +21,24 @@ class SeasonPage extends React.Component {
     const {
       fetchAllSeasonTeamsAction,
       fetchChallengesAction,
-      seasons: { activeSeason },
+      activeSeason,
+      allTeamsOnSeason,
+      activeChallenges,
     } = this.props;
-    const {
-      seasons: { activeSeason: prevActiveSeason },
-    } = prevProps;
 
-    if (isNil(prevActiveSeason) && activeSeason) {
-      fetchAllSeasonTeamsAction(activeSeason.id);
-      fetchChallengesAction(activeSeason.id);
+    const { activeSeason: prevActiveSeason } = prevProps;
+
+    if (
+      (isNil(prevActiveSeason) && activeSeason) ||
+      prevActiveSeason.id === activeSeason.id
+    ) {
+      if (isNil(allTeamsOnSeason)) {
+        fetchAllSeasonTeamsAction(activeSeason.id);
+      }
+
+      if (isNil(activeChallenges)) {
+        fetchChallengesAction(activeSeason.id);
+      }
     }
   }
 
@@ -37,12 +46,10 @@ class SeasonPage extends React.Component {
     const {
       buyChallengeAction,
       createTeamAction,
-      seasons: {
-        activeSeason,
-        activeChallenges,
-        allTeamsOnSeason,
-        activeTeamInSeason,
-      },
+      activeSeason,
+      activeChallenges,
+      allTeamsOnSeason,
+      activeTeamInSeason,
     } = this.props;
     const name = activeSeason ? activeSeason.name : undefined;
 
@@ -88,8 +95,10 @@ SeasonPage.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  seasons: state.seasons,
-  activeOrganization: state.organizations.activeOrganization,
+  activeSeason: state.seasons.activeSeason,
+  activeChallenges: state.seasons.activeChallenges,
+  allTeamsOnSeason: state.seasons.allTeamsOnSeason,
+  activeTeamInSeason: state.seasons.activeTeamInSeason,
 });
 
 const mapDispatchToProps = {
