@@ -1,5 +1,5 @@
 04575c89be1815909d61a17a12ad23ae1cf8379d  ../api/pwcompose.proto
-10626518dacbf742f32a4b9e20b4c291d9716161  Makefile
+32f5c7efb692ff50bcce8f228122d635a4028ed8  Makefile
 3d6e3f3a9de082ec701d494920ab61f5013e4408  ../api/pwdb.proto
 49e64b5c53106ad4a3bb082ac22bf8ba6835599c  ../api/pwapi.proto
 58202a11cc54640949aaacb09c0e0db6f26d57c2  ../api/pwsso.proto
