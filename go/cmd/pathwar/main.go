@@ -87,7 +87,8 @@ var (
 	agentNoRun                      bool
 	agentRunOnce                    bool
 	agentSalt                       string
-	apiDBURN                        string
+	DBURN                           string
+	DBMaxOpenTries                  int
 	bearerSecretKey                 string
 	composeDownKeepVolumes          bool
 	composeDownRemoveImages         bool
@@ -194,7 +195,8 @@ func main() {
 	adminChallengeInstanceAddFlags.Int64Var(&addChallengeInstanceFlavorID, "flavor-id", 0, "Challenge flavor id")
 
 	apiFlags.BoolVar(&ssoAllowUnsafe, "sso-unsafe", false, "Allow unsafe SSO")
-	apiFlags.StringVar(&apiDBURN, "urn", defaultDBURN, "MySQL URN")
+	apiFlags.StringVar(&DBURN, "urn", defaultDBURN, "MySQL URN")
+	apiFlags.IntVar(&DBMaxOpenTries, "db-max-open-tries", 0, "max DB open tries, unlimited if 0")
 	apiFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
 	apiFlags.StringVar(&ssoPubkey, "sso-pubkey", "", "SSO Public Key")
 	apiFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
@@ -266,7 +268,7 @@ func main() {
 				defer cleanup()
 
 				// init svc
-				svc, _, closer, err := svcFromFlags()
+				svc, _, closer, err := svcFromFlags(logger)
 				if err != nil {
 					return errcode.ErrStartService.Wrap(err)
 				}
@@ -318,7 +320,7 @@ func main() {
 				}
 
 				// init svc
-				_, db, closer, err := svcFromFlags()
+				_, db, closer, err := svcFromFlags(logger)
 				if err != nil {
 					return errcode.ErrStartService.Wrap(err)
 				}
@@ -343,7 +345,7 @@ func main() {
 				}
 
 				// init svc
-				_, db, closer, err := svcFromFlags()
+				_, db, closer, err := svcFromFlags(logger)
 				if err != nil {
 					return errcode.ErrStartService.Wrap(err)
 				}
@@ -877,10 +879,19 @@ func main() {
 	}
 }
 
-func svcFromFlags() (pwapi.Service, *gorm.DB, func(), error) {
+func svcFromFlags(logger *zap.Logger) (pwapi.Service, *gorm.DB, func(), error) {
 	// init database
-	db, err := gorm.Open("mysql", apiDBURN)
+	dbConnectTries := 0
+dbConnectLoop:
+	db, err := gorm.Open("mysql", DBURN)
 	if err != nil {
+		dbConnectTries++
+		fmt.Println(DBMaxOpenTries, dbConnectTries)
+		if DBMaxOpenTries == 0 || dbConnectTries < DBMaxOpenTries {
+			logger.Warn("db open", zap.Int("tries", dbConnectTries), zap.Error(err))
+			time.Sleep(5 * time.Second)
+			goto dbConnectLoop
+		}
 		return nil, nil, nil, errcode.ErrInitDB.Wrap(err)
 	}
 	sfn, err := snowflake.NewNode(1)

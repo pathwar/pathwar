@@ -33,7 +33,8 @@ help::
 	@echo "  up            start everything in docker-compose"
 
 .PHONY: local-api
-local-api: install mysql.up zipkin.up
+local-api: mysql.up zipkin.up
+	$(GO) install $(GO_INSTALL_OPTS) ./cmd/pathwar
 	pathwar $(COMMON_RUN_OPTS) api --sso-unsafe server --with-pprof --bind=$(DEV_BIND) $(API_DEV_OPTS)
 
 .PHONY: api-down
@@ -60,8 +61,6 @@ agent-nginx-config:
 	mkdir -p out
 	GOOS=linux GOARCH=amd64 $(GO) build -ldflags "-linkmode external -extldflags -static" -mod=readonly -o $@ ./cmd/pwinit
 
-MYSQL_CONFIG ?=	-h127.0.0.1 -P3306 -uroot -puns3cur3
-
 .PHONY: up
 up:
 	docker-compose $(COMPOSE_OPTS) up -d
@@ -69,9 +68,6 @@ up:
 .PHONY: mysql.up
 mysql.up:
 	docker-compose $(COMPOSE_OPTS) up -d mysql
-	@echo "Waiting for mysql to be ready..."
-	@while ! mysqladmin ping $(MYSQL_CONFIG) --silent; do sleep 1; done
-	@echo "Done."
 
 .PHONY: mysql.flush
 mysql.flush: mysql.down
