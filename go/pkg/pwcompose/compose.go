@@ -497,7 +497,19 @@ func PS(ctx context.Context, depth int, cli *client.Client, logger *zap.Logger) 
 	if err != nil {
 		return errcode.ErrComposeGetContainersInfo.Wrap(err)
 	}
+
 	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"NGINX ID", "STATUS", "CREATED"})
+	if containersInfo.NginxContainer.ID != "" {
+		table.Append([]string{
+			containersInfo.NginxContainer.ID[:7],
+			strings.Replace(containersInfo.NginxContainer.Status, "Up ", "", 1),
+			strings.Replace(humanize.Time(time.Unix(containersInfo.NginxContainer.Created, 0)), " ago", "", 1),
+		})
+	}
+	table.Render()
+
+	table = tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"ID", "CHALLENGE", "SVC", "PORTS", "STATUS", "CREATED"})
 
 	for _, flavor := range containersInfo.RunningFlavors {
