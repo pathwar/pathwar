@@ -4,7 +4,7 @@
 # Collapse generated files on GitHub
 vendor/* linguist-vendored
 */vendor/* linguist-vendored
-deployments/keycloak/themes/pathwar/*/*/lib/* liguist-vendored
+deployments/keycloak/themes/pathwar/**/lib/** linguist-vendored
 *.gen.go linguist-generated
 *.gen.yml linguist-generated
 *.gen.graphql linguist-generated
