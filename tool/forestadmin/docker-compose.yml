@@ -1,15 +1,17 @@
 version: '3'
 services:
-  app:
+  forestadmin:
     build:
       context: .
       dockerfile: Dockerfile
+    env_file:
+      - .env
     environment:
       - APPLICATION_PORT=3310
       - DATABASE_URL=mysql://root:uns3cur3@localhost:3306/pathwar
       - DATABASE_SSL=false
-      - FOREST_AUTH_SECRET=
-      - FOREST_ENV_SECRET=
+      - FOREST_AUTH_SECRET
+      - FOREST_ENV_SECRET
     ports:
       - "3310:3310"
     volumes:

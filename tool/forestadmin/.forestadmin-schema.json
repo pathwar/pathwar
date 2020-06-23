@@ -179,6 +179,20 @@
       "inverseOf": null,
       "validations": []
     }, {
+      "field": "authSalt",
+      "type": "String",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": true,
+      "isReadOnly": false,
+      "isRequired": false,
+      "isSortable": true,
+      "isVirtual": false,
+      "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
       "field": "challengeInstances",
       "type": ["Number"],
       "defaultValue": null,
@@ -189,13 +203,41 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "challenge_instance.agentIdKey",
+      "reference": "challengeInstance.agentIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
     }, {
       "field": "createdAt",
       "type": "Date",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": true,
+      "isReadOnly": false,
+      "isRequired": false,
+      "isSortable": true,
+      "isVirtual": false,
+      "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
+      "field": "defaultAgent",
+      "type": "Number",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": true,
+      "isReadOnly": false,
+      "isRequired": false,
+      "isSortable": true,
+      "isVirtual": false,
+      "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
+      "field": "domainSuffix",
+      "type": "String",
       "defaultValue": null,
       "enums": null,
       "integration": null,
@@ -278,8 +320,36 @@
       "inverseOf": null,
       "validations": []
     }, {
+      "field": "metadata",
+      "type": "String",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": true,
+      "isReadOnly": false,
+      "isRequired": false,
+      "isSortable": true,
+      "isVirtual": false,
+      "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
       "field": "name",
       "type": "String",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": true,
+      "isReadOnly": false,
+      "isRequired": false,
+      "isSortable": true,
+      "isVirtual": false,
+      "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
+      "field": "nginxPort",
+      "type": "Number",
       "defaultValue": null,
       "enums": null,
       "integration": null,
@@ -322,6 +392,34 @@
     }, {
       "field": "tags",
       "type": "String",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": true,
+      "isReadOnly": false,
+      "isRequired": false,
+      "isSortable": true,
+      "isVirtual": false,
+      "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
+      "field": "timesRegistered",
+      "type": "Number",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": true,
+      "isReadOnly": false,
+      "isRequired": false,
+      "isSortable": true,
+      "isVirtual": false,
+      "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
+      "field": "timesSeen",
+      "type": "Number",
       "defaultValue": null,
       "enums": null,
       "integration": null,
@@ -399,7 +497,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "challenge_flavor.challengeIdKey",
+      "reference": "challengeFlavor.challengeIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -533,8 +631,8 @@
     "segments": [],
     "actions": []
   }, {
-    "name": "challenge_flavor",
-    "nameOld": "challenge_flavor",
+    "name": "challengeFlavor",
+    "nameOld": "challengeFlavor",
     "icon": null,
     "integration": null,
     "isReadOnly": false,
@@ -624,7 +722,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "challenge_instance.flavorIdKey",
+      "reference": "challengeInstance.flavorIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -731,8 +829,8 @@
     "segments": [],
     "actions": []
   }, {
-    "name": "challenge_instance",
-    "nameOld": "challenge_instance",
+    "name": "challengeInstance",
+    "nameOld": "challengeInstance",
     "icon": null,
     "integration": null,
     "isReadOnly": false,
@@ -780,7 +878,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "challenge_flavor.flavorIdKey",
+      "reference": "challengeFlavor.flavorIdKey",
       "inverseOf": null,
       "relationship": "BelongsTo",
       "validations": []
@@ -914,8 +1012,8 @@
     "segments": [],
     "actions": []
   }, {
-    "name": "challenge_subscription",
-    "nameOld": "challenge_subscription",
+    "name": "challengeSubscription",
+    "nameOld": "challengeSubscription",
     "icon": null,
     "integration": null,
     "isReadOnly": false,
@@ -949,7 +1047,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "challenge_validation.challengeSubscriptionIdKey",
+      "reference": "challengeValidation.challengeSubscriptionIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -1020,7 +1118,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "season_challenge.seasonChallengeIdKey",
+      "reference": "seasonChallenge.seasonChallengeIdKey",
       "inverseOf": null,
       "relationship": "BelongsTo",
       "validations": []
@@ -1071,8 +1169,8 @@
     "segments": [],
     "actions": []
   }, {
-    "name": "challenge_validation",
-    "nameOld": "challenge_validation",
+    "name": "challengeValidation",
+    "nameOld": "challengeValidation",
     "icon": null,
     "integration": null,
     "isReadOnly": false,
@@ -1120,7 +1218,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "challenge_subscription.challengeSubscriptionIdKey",
+      "reference": "challengeSubscription.challengeSubscriptionIdKey",
       "inverseOf": null,
       "relationship": "BelongsTo",
       "validations": []
@@ -1167,21 +1265,7 @@
       "inverseOf": null,
       "validations": []
     }, {
-      "field": "passphrase",
-      "type": "String",
-      "defaultValue": null,
-      "enums": null,
-      "integration": null,
-      "isFilterable": true,
-      "isReadOnly": false,
-      "isRequired": false,
-      "isSortable": true,
-      "isVirtual": false,
-      "reference": null,
-      "inverseOf": null,
-      "validations": []
-    }, {
-      "field": "passphraseKey",
+      "field": "passphrases",
       "type": "String",
       "defaultValue": null,
       "enums": null,
@@ -1260,7 +1344,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "coupon_validation.couponIdKey",
+      "reference": "couponValidation.couponIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -1367,8 +1451,8 @@
     "segments": [],
     "actions": []
   }, {
-    "name": "coupon_validation",
-    "nameOld": "coupon_validation",
+    "name": "couponValidation",
+    "nameOld": "couponValidation",
     "icon": null,
     "integration": null,
     "isReadOnly": false,
@@ -1481,8 +1565,8 @@
     "segments": [],
     "actions": []
   }, {
-    "name": "inventory_item",
-    "nameOld": "inventory_item",
+    "name": "inventoryItem",
+    "nameOld": "inventoryItem",
     "icon": null,
     "integration": null,
     "isReadOnly": false,
@@ -1543,7 +1627,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "team_member.ownerIdKey",
+      "reference": "teamMember.ownerIdKey",
       "inverseOf": null,
       "relationship": "BelongsTo",
       "validations": []
@@ -1836,7 +1920,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "organization_member.organizationIdKey",
+      "reference": "organizationMember.organizationIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -1887,8 +1971,8 @@
     "segments": [],
     "actions": []
   }, {
-    "name": "organization_member",
-    "nameOld": "organization_member",
+    "name": "organizationMember",
+    "nameOld": "organizationMember",
     "icon": null,
     "integration": null,
     "isReadOnly": false,
@@ -1996,7 +2080,7 @@
     "onlyForRelationships": false,
     "paginationType": "page",
     "fields": [{
-      "field": "challenge_flavors",
+      "field": "challengeFlavors",
       "type": ["Number"],
       "defaultValue": null,
       "enums": null,
@@ -2006,7 +2090,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "challenge_flavor.season_id",
+      "reference": "challengeFlavor.season_id",
       "inverseOf": null,
       "relationship": "BelongsToMany",
       "validations": []
@@ -2166,6 +2250,75 @@
       "inverseOf": null,
       "validations": []
     }, {
+      "field": "flavor_id",
+      "type": "Number",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": true,
+      "isReadOnly": false,
+      "isRequired": false,
+      "isSortable": true,
+      "isVirtual": false,
+      "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
+      "field": "season_id",
+      "type": "Number",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": true,
+      "isReadOnly": false,
+      "isRequired": false,
+      "isSortable": true,
+      "isVirtual": false,
+      "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
+      "field": "updatedAt",
+      "type": "Date",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": true,
+      "isReadOnly": false,
+      "isRequired": false,
+      "isSortable": true,
+      "isVirtual": false,
+      "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }],
+    "segments": [],
+    "actions": []
+  }, {
+    "name": "seasonChallenge",
+    "nameOld": "seasonChallenge",
+    "icon": null,
+    "integration": null,
+    "isReadOnly": false,
+    "isSearchable": true,
+    "isVirtual": false,
+    "onlyForRelationships": false,
+    "paginationType": "page",
+    "fields": [{
+      "field": "createdAt",
+      "type": "Date",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": true,
+      "isReadOnly": false,
+      "isRequired": false,
+      "isSortable": true,
+      "isVirtual": false,
+      "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
       "field": "flavor",
       "type": "Number",
       "defaultValue": null,
@@ -2176,12 +2329,12 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "challenge_flavor.flavorIdKey",
+      "reference": "challengeFlavor.flavorIdKey",
       "inverseOf": null,
       "relationship": "BelongsTo",
       "validations": []
     }, {
-      "field": "flavor_id",
+      "field": "id",
       "type": "Number",
       "defaultValue": null,
       "enums": null,
@@ -2220,23 +2373,9 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "challenge_subscription.seasonChallengeIdKey",
+      "reference": "challengeSubscription.seasonChallengeIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
-      "validations": []
-    }, {
-      "field": "season_id",
-      "type": "Number",
-      "defaultValue": null,
-      "enums": null,
-      "integration": null,
-      "isFilterable": true,
-      "isReadOnly": false,
-      "isRequired": false,
-      "isSortable": true,
-      "isVirtual": false,
-      "reference": null,
-      "inverseOf": null,
       "validations": []
     }, {
       "field": "updatedAt",
@@ -2291,7 +2430,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "whoswho_attempt.authorTeamIdKey",
+      "reference": "whoswhoAttempt.authorTeamIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -2334,7 +2473,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "challenge_subscription.teamIdKey",
+      "reference": "challengeSubscription.teamIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -2349,7 +2488,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "coupon_validation.teamIdKey",
+      "reference": "couponValidation.teamIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -2520,7 +2659,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "whoswho_attempt.targetTeamIdKey",
+      "reference": "whoswhoAttempt.targetTeamIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -2535,7 +2674,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "team_member.teamIdKey",
+      "reference": "teamMember.teamIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -2557,8 +2696,8 @@
     "segments": [],
     "actions": []
   }, {
-    "name": "team_member",
-    "nameOld": "team_member",
+    "name": "teamMember",
+    "nameOld": "teamMember",
     "icon": null,
     "integration": null,
     "isReadOnly": false,
@@ -2605,7 +2744,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "inventory_item.ownerIdKey",
+      "reference": "inventoryItem.ownerIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -2734,7 +2873,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "challenge_validation.authorIdKey",
+      "reference": "challengeValidation.authorIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -2749,7 +2888,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "coupon_validation.authorIdKey",
+      "reference": "couponValidation.authorIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -2764,7 +2903,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "whoswho_attempt.authorIdKey",
+      "reference": "whoswhoAttempt.authorIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -2779,7 +2918,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "challenge_subscription.buyerIdKey",
+      "reference": "challengeSubscription.buyerIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -2935,7 +3074,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "organization_member.userIdKey",
+      "reference": "organizationMember.userIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -2950,7 +3089,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "whoswho_attempt.targetUserIdKey",
+      "reference": "whoswhoAttempt.targetUserIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -2965,7 +3104,7 @@
       "isRequired": false,
       "isSortable": true,
       "isVirtual": false,
-      "reference": "team_member.userIdKey",
+      "reference": "teamMember.userIdKey",
       "inverseOf": null,
       "relationship": "HasMany",
       "validations": []
@@ -3015,8 +3154,8 @@
     "segments": [],
     "actions": []
   }, {
-    "name": "whoswho_attempt",
-    "nameOld": "whoswho_attempt",
+    "name": "whoswhoAttempt",
+    "nameOld": "whoswhoAttempt",
     "icon": null,
     "integration": null,
     "isReadOnly": false,
@@ -3147,7 +3286,7 @@
   "meta": {
     "database_type": "mysql",
     "liana": "forest-express-sequelize",
-    "liana_version": "5.7.0",
+    "liana_version": "6.2.0",
     "engine": "nodejs",
     "engine_version": "10.19.0",
     "framework": "express",

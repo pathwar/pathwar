@@ -3,8 +3,8 @@ const path = require('path');
 const Liana = require('forest-express-sequelize');
 const { sequelize } = require('../models');
 
-module.exports = function (app) {
-  app.use(Liana.init({
+module.exports = async function (app) {
+  app.use(await Liana.init({
     modelsDir: path.join(__dirname, '../models'),
     configDir: path.join(__dirname, '../forest'),
     envSecret: process.env.FOREST_ENV_SECRET,
