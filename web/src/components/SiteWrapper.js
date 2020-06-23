@@ -7,35 +7,33 @@ import { navigate, Link } from "gatsby";
 import logo from "../images/pathwar-favicon.png";
 
 const navBarItems = [
-  // {
-  //   value: "Solo",
-  //   to: "/app/solo",
-  //   icon: "user",
-  //   LinkComponent: Link
-  // },
   {
     value: "Season",
     to: "/app/season",
     icon: "flag",
     LinkComponent: Link,
+    useExact: "false",
   },
   {
     value: "Dashboard",
     to: "/app/dashboard",
     icon: "home",
     LinkComponent: Link,
+    useExact: "false",
   },
   {
     value: "FAQ",
     to: "/app/faq",
     icon: "help-circle",
     LinkComponent: Link,
+    useExact: "false",
   },
   {
     value: "Settings",
     to: "/app/settings",
     icon: "settings",
     LinkComponent: Link,
+    useExact: "false",
   },
 ];
 
