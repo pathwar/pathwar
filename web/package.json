@@ -12,7 +12,8 @@
     "test": "env-cmd --file ./.env.test jest -c ./tests/jest.config.js",
     "test:watch": "env-cmd --file ./.env.test jest -c ./tests/jest.config.js --watch",
     "docker-integration": "env-cmd --file ./.env.docker-integration jest",
-    "integration": "env-cmd --file ./.env.integration jest"
+    "integration": "env-cmd --file ./.env.integration jest",
+    "start:local-api": "env-cmd --file ./.env.integration npm run develop"
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",
