@@ -21,20 +21,6 @@ const navBarItems = [
     LinkComponent: Link,
     useExact: "false",
   },
-  {
-    value: "FAQ",
-    to: "/app/faq",
-    icon: "help-circle",
-    LinkComponent: Link,
-    useExact: "false",
-  },
-  {
-    value: "Settings",
-    to: "/app/settings",
-    icon: "settings",
-    LinkComponent: Link,
-    useExact: "false",
-  },
 ];
 
 const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
@@ -45,23 +31,33 @@ const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
   const avatar = user && user.gravatar_url ? user.gravatar_url : logo;
   const description = claims && claims.email ? claims.email : "Log in?";
   const options = [];
-  if (activeUserSession) {
-    options.push("profile");
-  }
-  if (activeUserSession) {
-    options.push("divider");
-  }
-  options.push("help");
+
   if (!activeUserSession && !activeKeycloakSession) {
     options.push({ icon: "log-in", value: "Log in", to: "/app/login" });
   }
+
   if (activeUserSession && activeKeycloakSession) {
+    options.push("profile");
     options.push({
       icon: "edit",
       value: "Edit account",
       to: activeKeycloakSession.tokenParsed.iss + "/account",
     });
+    options.push("divider");
+    options.push({
+      value: "App settings",
+      to: "/app/settings",
+      icon: "settings",
+    });
   }
+
+  options.push({
+    icon: "help-circle",
+    value: "FAQ",
+    to: "https://github.com/pathwar/pathwar/wiki/FAQ",
+    target: "_blank",
+  });
+
   return {
     avatarURL: avatar,
     name: `${username}`,
