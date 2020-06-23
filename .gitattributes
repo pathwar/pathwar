@@ -14,6 +14,8 @@ swagger.yaml linguist-generated
 go.sum linguist-generated
 gen.sum linguist-generated
 AUTHORS linguist-generated
+tool/forestadmin/**/*.js linguist-generated
+tool/forestadmin/**/*.json linguist-generated
 
 # Reduce conflicts on markdown files
 *.md merge=union
