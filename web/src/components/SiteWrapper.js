@@ -23,13 +23,16 @@ const navBarItems = [
   },
 ];
 
-const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
+const accountDropdownProps = (
+  { activeUserSession, activeKeycloakSession },
+  activeSeason
+) => {
   const { user, claims } = activeUserSession || {};
 
   const username =
     claims && claims.preferred_username ? claims.preferred_username : "Account";
   const avatar = user && user.gravatar_url ? user.gravatar_url : logo;
-  const description = claims && claims.email ? claims.email : "Log in?";
+  const description = activeSeason && activeSeason.name;
   const options = [];
 
   if (!activeUserSession && !activeKeycloakSession) {
@@ -68,14 +71,14 @@ const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
 
 class SiteWrapper extends React.Component {
   render() {
-    const { userSession } = this.props;
+    const { userSession, activeSeason } = this.props;
     return (
       <Site.Wrapper
         headerProps={{
           href: "/",
           alt: "Pathwar Project",
           imageURL: logo,
-          accountDropdown: accountDropdownProps(userSession),
+          accountDropdown: accountDropdownProps(userSession, activeSeason),
           navItems: (
             <Nav.Item type="div" className="d-none d-md-flex">
               {userSession.activeKeycloakSession && (
@@ -102,6 +105,7 @@ SiteWrapper.propTypes = {
 
 const mapStateToProps = state => ({
   userSession: state.userSession,
+  activeSeason: state.seasons.activeSeason,
 });
 
 const mapDispatchToProps = {};
