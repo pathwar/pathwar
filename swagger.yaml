@@ -953,12 +953,12 @@ definitions:
         type: boolean
       name:
         type: string
-      organizations:
+      status:
+        $ref: '#/definitions/dbSeasonStatus'
+      teams:
         items:
           $ref: '#/definitions/dbTeam'
         type: array
-      status:
-        $ref: '#/definitions/dbSeasonStatus'
       updated_at:
         format: date-time
         type: string

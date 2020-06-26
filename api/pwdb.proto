@@ -238,7 +238,7 @@ message Season {
   Visibility visibility = 102;
   bool is_default = 103;
 
-  repeated Team organizations = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated Team teams = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated Coupon coupons = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 
   enum Status {
