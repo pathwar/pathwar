@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math/rand"
 
+	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -158,7 +159,7 @@ func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) 
 		Organization: &organization,
 		Role:         pwdb.OrganizationMember_Owner,
 	}
-	seasonOrganization := pwdb.Team{
+	team := pwdb.Team{
 		Season:         &season,
 		IsDefault:      true,
 		Organization:   &organization,
@@ -166,31 +167,45 @@ func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) 
 	}
 	seasonMember := pwdb.TeamMember{
 		User: &user,
-		Team: &seasonOrganization,
+		Team: &team,
 		Role: pwdb.TeamMember_Owner,
 	}
 	user.OrganizationMemberships = []*pwdb.OrganizationMember{&organizationMember}
 
-	tx := svc.db.Begin()
-	tx.Create(&user)
-	tx.Create(&seasonMember)
+	err := svc.db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&user).Error; err != nil {
+			return err
+		}
+		if err := tx.Create(&seasonMember).Error; err != nil {
+			return err
+		}
+		activity := pwdb.Activity{
+			Kind:           pwdb.Activity_UserRegister,
+			AuthorID:       user.ID, // FIXME: author should be based on ctx
+			UserID:         user.ID,
+			TeamID:         team.ID,
+			OrganizationID: organization.ID,
+			TeamMemberID:   seasonMember.ID,
+			SeasonID:       season.ID,
+		}
+		if err := tx.Create(&activity).Error; err != nil {
+			return err
+		}
 
-	// FIXME: create a "welcome" notification
-
-	if err := tx.Commit().Error; err != nil {
-		return nil, errcode.ErrCommitUserTransaction.Wrap(err)
-	}
-
-	// set active season
-	err := svc.db.
-		Model(&user).
-		Updates(pwdb.User{
+		// set active season
+		err := tx.Model(&user).Updates(pwdb.User{
 			ActiveTeamMemberID: seasonMember.ID,
 			ActiveSeasonID:     season.ID,
 		}).
-		Error
+			Error
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
 	if err != nil {
-		return nil, errcode.ErrUpdateActiveSeason.Wrap(err)
+		return nil, errcode.ErrCommitUserTransaction.Wrap(err)
 	}
 
 	return &user, nil

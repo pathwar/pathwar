@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"moul.io/godev"
 	"pathwar.land/pathwar/v2/go/internal/testutil"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 	"pathwar.land/pathwar/v2/go/pkg/pwsso"
 )
 
@@ -19,25 +19,18 @@ func TestSvc_UserGetSession(t *testing.T) {
 	session, err := svc.UserGetSession(ctx, nil)
 	require.NoError(t, err)
 
-	//fmt.Println(godev.PrettyJSON(session))
-	var tests = []struct {
-		name     string
-		actual   interface{}
-		expected string
-	}{
-		{".User.Username", session.User.Username, `"moul"`},
-		{"len(.Season)", len(session.Seasons), "2"},
-		{".Claims", session.Claims, godev.JSON(pwsso.TestingClaims(t))},
-		{".IsNewUser", session.IsNewUser, `true`},
-		{".User.ActiveTeamMember.Team.Season.Name", session.User.ActiveTeamMember.Team.Season.Name, `"Solo Mode"`},
-		{".User.ActiveTeamMember.Team.Organization.Name", session.User.ActiveTeamMember.Team.Organization.Name, `"moul"`},
-		{".User.ActiveTeamMember.Team.Organization.SoloSeason", session.User.ActiveTeamMember.Team.Organization.SoloSeason, `true`},
-	}
-
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			actual := godev.JSON(test.actual)
-			assert.Equal(t, test.expected, actual)
-		})
+	// fmt.Println(godev.PrettyJSON(session))
+	assert.Equal(t, session.User.Username, "moul")
+	assert.Len(t, session.Seasons, 2)
+	assert.Equal(t, session.Claims, pwsso.TestingClaims(t))
+	assert.True(t, session.IsNewUser)
+	assert.Equal(t, session.User.ActiveTeamMember.Team.Season.Name, "Solo Mode")
+	assert.Equal(t, session.User.ActiveTeamMember.Team.Organization.Name, "moul")
+	assert.True(t, session.User.ActiveTeamMember.Team.Organization.SoloSeason)
+	assert.Equal(t, session.User.ActiveTeamMember.Role, pwdb.TeamMember_Owner)
+	for _, season := range session.Seasons {
+		if season.Season.Name == "Solo Mode" {
+			assert.Equal(t, season.Team.Organization.Name, "moul")
+		}
 	}
 }
