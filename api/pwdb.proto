@@ -464,6 +464,49 @@ message Achievement {
   }
 }
 
+message Activity {
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+
+  Kind kind = 100;
+
+  User author = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:AuthorID\""];
+  int64 author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+
+  Team team_subject = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamSubjectID\""];
+  int64 team_subject_id = 203 [(gogoproto.customname) = "TeamSubjectID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  User user_subject = 204 [(gogoproto.moretags) = "gorm:\"foreignkey:UserSubjectID\""];
+  int64 user_subject_id = 205 [(gogoproto.customname) = "UserSubjectID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Organization organization_subject = 206 [(gogoproto.moretags) = "gorm:\"foreignkey:OrganizationSubjectID\""];
+  int64 organization_subject_id = 207 [(gogoproto.customname) = "OrganizationSubjectID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Season season_subject = 208 [(gogoproto.moretags) = "gorm:\"foreignkey:SeasonSubjectID\""];
+  int64 season_subject_id = 209 [(gogoproto.customname) = "SeasonSubjectID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Team challenge_subject = 210 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeSubjectID\""];
+  int64 challenge_subject_id = 211 [(gogoproto.customname) = "ChallengeSubjectID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Team challenge_flavor_subject = 212 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeFlavorSubjectID\""];
+  int64 challenge_flavor_subject_id = 213 [(gogoproto.customname) = "ChallengeFlavorSubjectID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Team coupon_subject = 214 [(gogoproto.moretags) = "gorm:\"foreignkey:CouponSubjectID\""];
+  int64 coupon_subject_id = 215 [(gogoproto.customname) = "CouponSubjectID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Season season_challenge_subject = 216 [(gogoproto.moretags) = "gorm:\"foreignkey:SeasonChallengeSubjectID\""];
+  int64 season_challenge_subject_id = 217 [(gogoproto.customname) = "SeasonChallengeSubjectID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Team team_member_subject = 218 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamMemberSubjectID\""];
+  int64 team_member_subject_id = 219 [(gogoproto.customname) = "TeamMemberSubjectID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  // agent
+  // inventoryitem
+  // couponvalidation
+  // challengeinstance
+  // challengesubscription
+  // challengevalidation
+  // organizationmember
+
+  enum Kind {
+    Unknown = 0;
+    Register = 1;
+    Login = 2;
+  }
+}
+
 message Dump {
   repeated Achievement achievements = 1;
   repeated Challenge challenges = 2;
