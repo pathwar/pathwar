@@ -52,6 +52,17 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 		return nil, errcode.ErrLoadUserSeasons.Wrap(err)
 	}
 
+	if !output.IsNewUser {
+		activity := pwdb.Activity{
+			Kind:     pwdb.Activity_UserLogin,
+			AuthorID: output.User.ID,
+			UserID:   output.User.ID,
+		}
+		if err := svc.db.Create(&activity).Error; err != nil {
+			return nil, pwdb.GormToErrcode(err)
+		}
+	}
+
 	return output, nil
 }
 

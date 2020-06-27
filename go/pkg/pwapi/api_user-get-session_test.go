@@ -16,21 +16,47 @@ func TestSvc_UserGetSession(t *testing.T) {
 	defer cleanup()
 	ctx := testingSetContextToken(context.Background(), t)
 
-	session, err := svc.UserGetSession(ctx, nil)
-	require.NoError(t, err)
+	// register
+	var session *UserGetSession_Output
+	{
+		var err error
+		session, err = svc.UserGetSession(ctx, nil)
+		require.NoError(t, err)
 
-	// fmt.Println(godev.PrettyJSON(session))
-	assert.Equal(t, session.User.Username, "moul")
-	assert.Len(t, session.Seasons, 2)
-	assert.Equal(t, session.Claims, pwsso.TestingClaims(t))
-	assert.True(t, session.IsNewUser)
-	assert.Equal(t, session.User.ActiveTeamMember.Team.Season.Name, "Solo Mode")
-	assert.Equal(t, session.User.ActiveTeamMember.Team.Organization.Name, "moul")
-	assert.True(t, session.User.ActiveTeamMember.Team.Organization.SoloSeason)
-	assert.Equal(t, session.User.ActiveTeamMember.Role, pwdb.TeamMember_Owner)
-	for _, season := range session.Seasons {
-		if season.Season.Name == "Solo Mode" {
-			assert.Equal(t, season.Team.Organization.Name, "moul")
+		// fmt.Println(godev.PrettyJSON(session))
+		assert.Equal(t, session.User.Username, "moul")
+		assert.Len(t, session.Seasons, 2)
+		assert.Equal(t, session.Claims, pwsso.TestingClaims(t))
+		assert.True(t, session.IsNewUser)
+		assert.Equal(t, session.User.ActiveTeamMember.Team.Season.Name, "Solo Mode")
+		assert.Equal(t, session.User.ActiveTeamMember.Team.Organization.Name, "moul")
+		assert.True(t, session.User.ActiveTeamMember.Team.Organization.SoloSeason)
+		assert.Equal(t, session.User.ActiveTeamMember.Role, pwdb.TeamMember_Owner)
+		for _, season := range session.Seasons {
+			if season.Season.Name == "Solo Mode" {
+				assert.Equal(t, season.Team.Organization.Name, "moul")
+			}
 		}
+	}
+
+	// login
+	{
+		session2, err := svc.UserGetSession(ctx, nil)
+		require.NoError(t, err)
+
+		// fmt.Println(godev.PrettyJSON(session2))
+		assert.Equal(t, session2.User.Username, "moul")
+		assert.Len(t, session2.Seasons, 2)
+		assert.Equal(t, session2.Claims, pwsso.TestingClaims(t))
+		assert.False(t, session2.IsNewUser)
+		assert.Equal(t, session2.User.ActiveTeamMember.Team.Season.Name, "Solo Mode")
+		assert.Equal(t, session2.User.ActiveTeamMember.Team.Organization.Name, "moul")
+		assert.True(t, session2.User.ActiveTeamMember.Team.Organization.SoloSeason)
+		assert.Equal(t, session2.User.ActiveTeamMember.Role, pwdb.TeamMember_Owner)
+
+		// standardize dynamic fields before comparison
+		session.Notifications = session2.Notifications
+		session.IsNewUser = false
+		assert.Equal(t, session, session2)
 	}
 }

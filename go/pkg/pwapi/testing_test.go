@@ -58,6 +58,16 @@ func testingSoloSeason(t *testing.T, svc Service) *pwdb.Season {
 	return nil
 }
 
+func testingActivities(t *testing.T, svc Service) *pwdb.ActivityList {
+	t.Helper()
+
+	db := testingSvcDB(t, svc)
+	var list pwdb.ActivityList
+	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
+	assert.NoError(t, err, "list activities")
+	return &list
+}
+
 func testingTeams(t *testing.T, svc Service) *pwdb.TeamList {
 	t.Helper()
 

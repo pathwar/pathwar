@@ -484,15 +484,15 @@ message Activity {
   int64 organization_id = 207 [(gogoproto.customname) = "OrganizationID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   Season season = 208 [(gogoproto.moretags) = "gorm:\"foreignkey:SeasonID\""];
   int64 season_id = 209 [(gogoproto.customname) = "SeasonID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
-  Team challenge = 210 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
+  Challenge challenge = 210 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
   int64 challenge_id = 211 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
-  Team challenge_flavor = 212 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeFlavorID\""];
+  ChallengeFlavor challenge_flavor = 212 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeFlavorID\""];
   int64 challenge_flavor_id = 213 [(gogoproto.customname) = "ChallengeFlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
-  Team coupon = 214 [(gogoproto.moretags) = "gorm:\"foreignkey:CouponID\""];
+  Coupon coupon = 214 [(gogoproto.moretags) = "gorm:\"foreignkey:CouponID\""];
   int64 coupon_id = 215 [(gogoproto.customname) = "CouponID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
-  Season season_challenge = 216 [(gogoproto.moretags) = "gorm:\"foreignkey:SeasonChallengeID\""];
+  SeasonChallenge season_challenge = 216 [(gogoproto.moretags) = "gorm:\"foreignkey:SeasonChallengeID\""];
   int64 season_challenge_id = 217 [(gogoproto.customname) = "SeasonChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
-  Team team_member = 218 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamMemberID\""];
+  TeamMember team_member = 218 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamMemberID\""];
   int64 team_member_id = 219 [(gogoproto.customname) = "TeamMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   // agent
   // inventoryitem
@@ -549,3 +549,4 @@ message UserList { repeated User items = 1; }
 message OrganizationList { repeated Organization items = 1; }
 message SeasonList { repeated Season items = 1; }
 message TeamList { repeated Team items = 1; }
+message ActivityList { repeated Activity items = 1; }

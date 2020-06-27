@@ -407,9 +407,9 @@ definitions:
         format: int64
         type: string
       challenge:
-        $ref: '#/definitions/dbTeam'
+        $ref: '#/definitions/dbChallenge'
       challenge_flavor:
-        $ref: '#/definitions/dbTeam'
+        $ref: '#/definitions/dbChallengeFlavor'
       challenge_flavor_id:
         format: int64
         type: string
@@ -417,7 +417,7 @@ definitions:
         format: int64
         type: string
       coupon:
-        $ref: '#/definitions/dbTeam'
+        $ref: '#/definitions/dbCoupon'
       coupon_id:
         format: int64
         type: string
@@ -437,7 +437,7 @@ definitions:
       season:
         $ref: '#/definitions/dbSeason'
       season_challenge:
-        $ref: '#/definitions/dbSeason'
+        $ref: '#/definitions/dbSeasonChallenge'
       season_challenge_id:
         format: int64
         type: string
@@ -450,7 +450,7 @@ definitions:
         format: int64
         type: string
       team_member:
-        $ref: '#/definitions/dbTeam'
+        $ref: '#/definitions/dbTeamMember'
       team_member_id:
         format: int64
         type: string
