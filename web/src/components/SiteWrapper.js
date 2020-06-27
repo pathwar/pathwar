@@ -1,8 +1,17 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Site, Nav, Button } from "tabler-react";
-import { navigate, Link } from "gatsby";
+import {
+  Site,
+  Nav,
+  Dropdown,
+  Card,
+  Grid,
+  Avatar,
+  Text,
+  Tag,
+} from "tabler-react";
+import { Link } from "gatsby";
 
 import logo from "../images/pathwar-favicon.png";
 
@@ -61,12 +70,70 @@ const accountDropdownProps = (
     target: "_blank",
   });
 
+  if (activeUserSession && activeKeycloakSession) {
+    options.push({
+      icon: "log-out",
+      value: "Log out",
+      to: "/app/logout",
+    });
+  }
+
   return {
     avatarURL: avatar,
     name: `${username}`,
     description: description,
     options: options,
+    optionsRootComponent: Link,
   };
+};
+
+const navItemsProps = ({ activeUserSession }, activeSeason) => {
+  const clicked = e => {
+    e.preventDefault();
+    alert(activeSeason.name);
+  };
+
+  const items =
+    activeUserSession &&
+    activeUserSession.seasons.map(dataSet => {
+      const { season } = dataSet;
+      const isActive = activeSeason && season.id === activeSeason.id;
+
+      return (
+        <Dropdown.Item
+          className={isActive && "active bold"}
+          key={season.id}
+          to="#"
+          onClick={e => clicked(e)}
+        >
+          <div style={{ fontWeight: isActive ? "bold" : "initial" }}>
+            {season.name}
+          </div>
+          <div>
+            <Tag.List>
+              <Tag addOn={season.status} addOnColor="indigo">
+                Status
+              </Tag>
+              <Tag addOn={season.visibility} addOnColor="indigo">
+                Visibility
+              </Tag>
+            </Tag.List>
+          </div>
+        </Dropdown.Item>
+      );
+    });
+
+  return (
+    <Nav.Item type="div" className="d-none d-md-flex">
+      <Dropdown
+        triggerContent={activeSeason && activeSeason.name}
+        type="button"
+        color="primary"
+        icon="flag"
+        items={items}
+      />
+    </Nav.Item>
+  );
 };
 
 class SiteWrapper extends React.Component {
@@ -79,15 +146,7 @@ class SiteWrapper extends React.Component {
           alt: "Pathwar Project",
           imageURL: logo,
           accountDropdown: accountDropdownProps(userSession, activeSeason),
-          navItems: (
-            <Nav.Item type="div" className="d-none d-md-flex">
-              {userSession.activeKeycloakSession && (
-                <Button link onClick={() => navigate("/app/logout")}>
-                  Log out
-                </Button>
-              )}
-            </Nav.Item>
-          ),
+          navItems: navItemsProps(userSession, activeSeason),
         }}
         navProps={{ itemsObjects: navBarItems }}
       >
