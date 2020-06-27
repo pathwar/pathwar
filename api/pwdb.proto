@@ -506,6 +506,7 @@ message Activity {
     Unknown = 0;
     UserRegister = 1;
     UserLogin = 2;
+    UserSetPreferences = 3;
   }
 }
 

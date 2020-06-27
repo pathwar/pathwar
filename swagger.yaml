@@ -9,6 +9,7 @@ definitions:
     - Unknown
     - UserRegister
     - UserLogin
+    - UserSetPreferences
     type: string
   ChallengeFlavorDriver:
     default: Unknown

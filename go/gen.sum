@@ -4,5 +4,5 @@
 58202a11cc54640949aaacb09c0e0db6f26d57c2  ../api/pwsso.proto
 70d67f1cebb3b7f9e86fd0197d43db4c1f795f65  ../api/pwinit.proto
 938d0b10041d408da360734ce20ba0d65eb20521  ../api/pwagent.proto
-bdbb36b860c285cf1d7376cc643f114379789a27  ../api/pwdb.proto
+a96856d275a504196e8934e7d45f29cf733f6cad  ../api/pwdb.proto
 e178f0469bc190130cdefb2a5aee576373e99391  ../api/errcode.proto
