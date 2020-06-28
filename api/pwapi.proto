@@ -232,7 +232,6 @@ message ChallengeSubscriptionValidate {
   }
   message Output {
     pathwar.db.ChallengeValidation challenge_validation = 1;
-    pathwar.db.ChallengeSubscription challenge_subscription = 2;
   }
 }
 

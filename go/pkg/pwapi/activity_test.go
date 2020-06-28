@@ -42,11 +42,11 @@ func TestActivity(t *testing.T) {
 
 	// get session again
 	{
-		_, err := svc.UserGetSession(ctx, nil)
+		sess, err := svc.UserGetSession(ctx, nil)
 		require.NoError(t, err)
-
 		activities = testingActivities(t, svc)
 		require.Len(t, activities.Items, 1)
+		assert.Equal(t, sess.User.ActiveTeamMember.Team.Cash, int64(0))
 	}
 
 	// FIXME: make a new login
@@ -84,6 +84,13 @@ func TestActivity(t *testing.T) {
 		assert.Equal(t, activity.SeasonChallengeID, subscription.ChallengeSubscription.SeasonChallenge.ID)
 	}
 
+	// get session again
+	{
+		sess, err := svc.UserGetSession(ctx, nil)
+		require.NoError(t, err)
+		assert.Equal(t, sess.User.ActiveTeamMember.Team.Cash, int64(0))
+	}
+
 	// validate challenge
 	{
 		var configData pwinit.InitConfig
@@ -109,6 +116,13 @@ func TestActivity(t *testing.T) {
 		//fmt.Println(godev.PrettyJSON(activity))
 	}
 
+	// get session again
+	{
+		sess, err := svc.UserGetSession(ctx, nil)
+		require.NoError(t, err)
+		assert.Equal(t, sess.User.ActiveTeamMember.Team.Cash, int64(10))
+	}
+
 	// validate coupon
 	{
 		input := CouponValidate_Input{
@@ -128,6 +142,13 @@ func TestActivity(t *testing.T) {
 		assert.Equal(t, activity.TeamID, session.User.ActiveTeamMember.Team.ID)
 		assert.Equal(t, activity.Season.Name, "Solo Mode")
 		assert.Equal(t, activity.CouponID, ret.CouponValidation.CouponID)
+	}
+
+	// get session again
+	{
+		sess, err := svc.UserGetSession(ctx, nil)
+		require.NoError(t, err)
+		assert.Equal(t, sess.User.ActiveTeamMember.Team.Cash, int64(52))
 	}
 
 	// delete account

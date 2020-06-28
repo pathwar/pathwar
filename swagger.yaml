@@ -155,8 +155,6 @@ definitions:
     type: object
   apiChallengeSubscriptionValidateOutput:
     properties:
-      challenge_subscription:
-        $ref: '#/definitions/dbChallengeSubscription'
       challenge_validation:
         $ref: '#/definitions/dbChallengeValidation'
     type: object
