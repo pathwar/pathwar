@@ -81,13 +81,27 @@ func (svc *service) CouponValidate(ctx context.Context, in *CouponValidate_Input
 		TeamID:   team.ID,
 		CouponID: coupon.ID,
 	}
-	err = svc.db.Create(&validation).Error
-	if err != nil {
-		return nil, pwdb.GormToErrcode(err)
-	}
+	err = svc.db.Transaction(func(tx *gorm.DB) error {
+		err := tx.Create(&validation).Error
+		if err != nil {
+			return err
+		}
 
-	// update team cash
-	err = svc.db.Model(&team).UpdateColumn("cash", gorm.Expr("cash + ?", coupon.Value)).Error
+		// update team cash
+		err = tx.Model(&team).UpdateColumn("cash", gorm.Expr("cash + ?", coupon.Value)).Error
+		if err != nil {
+			return err
+		}
+
+		activity := pwdb.Activity{
+			Kind:     pwdb.Activity_CouponValidate,
+			AuthorID: userID,
+			TeamID:   team.ID,
+			CouponID: coupon.ID,
+			SeasonID: team.SeasonID,
+		}
+		return tx.Create(&activity).Error
+	})
 	if err != nil {
 		return nil, pwdb.GormToErrcode(err)
 	}

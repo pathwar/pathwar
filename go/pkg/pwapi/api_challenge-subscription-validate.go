@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/jinzhu/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 	"pathwar.land/pathwar/v2/go/pkg/pwinit"
@@ -115,11 +116,67 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		AuthorComment:           in.Comment,
 		Status:                  pwdb.ChallengeValidation_NeedReview,
 	}
-	err = svc.db.Create(&validation).Error
+
+	// update DB
+	err = svc.db.Transaction(func(tx *gorm.DB) error {
+		err = tx.Create(&validation).Error
+		if err != nil {
+			return errcode.ErrCreateChallengeValidation.Wrap(err)
+		}
+
+		// update challenge subscription
+		now := time.Now()
+		err = tx.
+			Model(&subscription).
+			Updates(pwdb.ChallengeSubscription{
+				Status:   pwdb.ChallengeSubscription_Closed,
+				ClosedAt: &now,
+				CloserID: userID,
+			}).Error
+		if err != nil {
+			return errcode.ErrUpdateChallengeSubscription.Wrap(err)
+		}
+
+		// mark used instances as needing a redump
+		usedInstanceIDs := make([]int64, len(usedInstances))
+		i := 0
+		for id := range usedInstances {
+			usedInstanceIDs[i] = id
+			i++
+		}
+		err = tx.
+			Model(&instances[0]).
+			Where("id IN (?)", usedInstanceIDs).
+			Update(pwdb.ChallengeInstance{Status: pwdb.ChallengeInstance_NeedRedump}).
+			Error
+		if err != nil {
+			return errcode.ErrAgentUpdateState.Wrap(err)
+		}
+
+		activity := pwdb.Activity{
+			Kind:                    pwdb.Activity_ChallengeSubscriptionValidate,
+			AuthorID:                userID,
+			ChallengeSubscriptionID: subscription.ID,
+			TeamID:                  subscription.TeamID,
+			SeasonChallengeID:       subscription.SeasonChallengeID,
+			ChallengeFlavorID:       subscription.SeasonChallenge.FlavorID,
+			SeasonID:                subscription.SeasonChallenge.SeasonID,
+		}
+		return tx.Create(&activity).Error
+	})
 	if err != nil {
-		return nil, errcode.ErrCreateChallengeValidation.Wrap(err)
+		return nil, err
 	}
 
+	// load updated challenge subscription with validations
+	err = svc.db.
+		Preload("Validations").
+		Where(pwdb.ChallengeSubscription{ID: subscription.ID}).
+		First(&subscription).
+		Error
+	if err != nil {
+		return nil, pwdb.GormToErrcode(err)
+	}
 	// load freshly inserted entry
 	err = svc.db.
 		Preload("Author").
@@ -132,46 +189,6 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 	if err != nil {
 		return nil, errcode.ErrGetChallengeValidation.Wrap(err)
 	}
-
-	// update challenge subscription
-	now := time.Now()
-	err = svc.db.
-		Model(&subscription).
-		Updates(pwdb.ChallengeSubscription{
-			Status:   pwdb.ChallengeSubscription_Closed,
-			ClosedAt: &now,
-			CloserID: userID,
-		}).Error
-	if err != nil {
-		return nil, errcode.ErrUpdateChallengeSubscription.Wrap(err)
-	}
-
-	// load updated challenge subscription with validations
-	err = svc.db.
-		Preload("Validations").
-		Where(pwdb.ChallengeSubscription{ID: subscription.ID}).
-		First(&subscription).
-		Error
-	if err != nil {
-		return nil, pwdb.GormToErrcode(err)
-	}
-
-	// mark used instances as needing a redump
-	usedInstanceIDs := make([]int64, len(usedInstances))
-	i := 0
-	for id := range usedInstances {
-		usedInstanceIDs[i] = id
-		i++
-	}
-	err = svc.db.
-		Model(&instances[0]).
-		Where("id IN (?)", usedInstanceIDs).
-		Update(pwdb.ChallengeInstance{Status: pwdb.ChallengeInstance_NeedRedump}).
-		Error
-	if err != nil {
-		return nil, errcode.ErrAgentUpdateState.Wrap(err)
-	}
-
 	ret := ChallengeSubscriptionValidate_Output{
 		ChallengeValidation:   &validation,
 		ChallengeSubscription: &subscription,

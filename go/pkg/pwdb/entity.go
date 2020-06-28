@@ -25,6 +25,7 @@ func AllMap() map[string]interface{} {
 		"TeamMember":            TeamMember{},
 		"User":                  User{},
 		"WhoswhoAttempt":        WhoswhoAttempt{},
+		"Activity":              Activity{},
 	}
 }
 

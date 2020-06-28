@@ -3,6 +3,7 @@ package pwapi
 import (
 	"context"
 
+	"github.com/jinzhu/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -67,7 +68,20 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 		BuyerID:           userID,
 		Status:            pwdb.ChallengeSubscription_Active,
 	}
-	err = svc.db.Create(&subscription).Error
+	err = svc.db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&subscription).Error; err != nil {
+			return err
+		}
+		activity := pwdb.Activity{
+			Kind:                    pwdb.Activity_SeasonChallengeBuy,
+			AuthorID:                userID,
+			TeamID:                  in.TeamID,
+			SeasonChallengeID:       in.SeasonChallengeID,
+			ChallengeSubscriptionID: subscription.ID,
+			SeasonID:                seasonChallenge.SeasonID,
+		}
+		return tx.Create(&activity).Error
+	})
 	if err != nil {
 		return nil, errcode.ErrCreateChallengeSubscription.Wrap(err)
 	}
