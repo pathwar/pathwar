@@ -508,6 +508,7 @@ message Activity {
     UserSetPreferences = 3;
     UserDeleteAccount = 4;
     SeasonChallengeBuy = 5;
+    ChallengeSubscriptionValidate = 6;
   }
 }
 
