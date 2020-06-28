@@ -43,7 +43,6 @@ func (svc *service) TeamList(ctx context.Context, in *TeamList_Input) (*TeamList
 		team.SilverMedals = int64(rand.Intn(3))
 		team.BronzeMedals = int64(rand.Intn(4))
 		team.Score = int64(rand.Intn(100))
-		team.Cash = int64(rand.Intn(100))
 		team.NbAchievements = int64(rand.Intn(10))
 	}
 

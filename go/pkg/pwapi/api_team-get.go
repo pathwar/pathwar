@@ -38,7 +38,6 @@ func (svc *service) TeamGet(ctx context.Context, in *TeamGet_Input) (*TeamGet_Ou
 	item.SilverMedals = int64(rand.Intn(3))
 	item.BronzeMedals = int64(rand.Intn(4))
 	item.Score = int64(rand.Intn(100))
-	item.Cash = int64(rand.Intn(100))
 	item.NbAchievements = int64(rand.Intn(10))
 
 	return &ret, nil

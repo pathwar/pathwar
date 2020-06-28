@@ -40,6 +40,8 @@ message ChallengeFlavor {
   string source_url = 104 [(gogoproto.customname) = "SourceURL"];
   string compose_bundle = 105 [(gogoproto.moretags) = "gorm:\"size:100000\""];
   Driver driver = 106;
+  int64 purchase_price = 107;
+  int64 validation_reward = 108;
 
   Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
   int64 challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];

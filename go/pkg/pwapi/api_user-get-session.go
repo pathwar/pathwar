@@ -52,6 +52,7 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 		return nil, errcode.ErrLoadUserSeasons.Wrap(err)
 	}
 
+	/* FIXME: having a login activity would be nice, but we need to find a solution to detect a login vs a simple user get session refresh
 	if !output.IsNewUser {
 		activity := pwdb.Activity{
 			Kind:     pwdb.Activity_UserLogin,
@@ -62,6 +63,7 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 			return nil, pwdb.GormToErrcode(err)
 		}
 	}
+	*/
 
 	return output, nil
 }

@@ -107,6 +107,7 @@ services:
       land.pathwar.compose.service-name: gotty
 `
 	challengeDebug := newOfficialChallengeWithFlavor("Debug", "https://github.com/pathwar/challenge-debug", bundle)
+	challengeDebug.PurchasePrice = 0
 	challengeDebug.addSeasonChallengeByID(solo.ID)
 
 	bundle = `version: "3.7"
@@ -124,6 +125,7 @@ services:
             land.pathwar.compose.service-name: front
 `
 	helloworld := newOfficialChallengeWithFlavor("Hello World", "https://github.com/pathwar/pathwar/tree/master/challenges/web/helloworld", bundle)
+	helloworld.PurchasePrice = 0
 	helloworld.addSeasonChallengeByID(solo.ID)
 
 	bundle = `version: "3.7"

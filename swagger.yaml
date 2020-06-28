@@ -155,8 +155,6 @@ definitions:
     type: object
   apiChallengeSubscriptionValidateOutput:
     properties:
-      challenge_subscription:
-        $ref: '#/definitions/dbChallengeSubscription'
       challenge_validation:
         $ref: '#/definitions/dbChallengeValidation'
     type: object
@@ -517,6 +515,9 @@ definitions:
       is_latest:
         format: boolean
         type: boolean
+      purchase_price:
+        format: int64
+        type: string
       season_challenges:
         items:
           $ref: '#/definitions/dbSeasonChallenge'
@@ -525,6 +526,9 @@ definitions:
         type: string
       updated_at:
         format: date-time
+        type: string
+      validation_reward:
+        format: int64
         type: string
       version:
         type: string

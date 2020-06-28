@@ -17,13 +17,15 @@ func newOfficialChallengeWithFlavor(name string, homepage string, composeBundle 
 			Homepage: homepage,
 			IsDraft:  false,
 		},
-		SourceURL:     homepage,
-		IsLatest:      true,
-		IsDraft:       false,
-		Changelog:     "Initial Version",
-		Version:       "v1",
-		ComposeBundle: composeBundle,
-		Driver:        ChallengeFlavor_DockerCompose,
+		SourceURL:        homepage,
+		IsLatest:         true,
+		IsDraft:          false,
+		Changelog:        "Initial Version",
+		Version:          "v1",
+		ComposeBundle:    composeBundle,
+		PurchasePrice:    5,
+		ValidationReward: 10,
+		Driver:           ChallengeFlavor_DockerCompose,
 	}
 }
 
