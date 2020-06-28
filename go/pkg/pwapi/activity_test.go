@@ -18,17 +18,17 @@ func TestActivity(t *testing.T) {
 	ctx := testingSetContextToken(context.Background(), t)
 
 	activities := testingActivities(t, svc)
-	assert.Len(t, activities.Items, 0)
+	require.Len(t, activities.Items, 0)
 
 	// register
 	var session *UserGetSession_Output
 	{
 		var err error
 		session, err = svc.UserGetSession(ctx, nil)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		activities = testingActivities(t, svc)
-		assert.Len(t, activities.Items, 1)
+		require.Len(t, activities.Items, 1)
 		activity := activities.Items[0]
 		//fmt.Println(godev.PrettyJSON(activity))
 		assert.Equal(t, activity.Kind, pwdb.Activity_UserRegister)
@@ -40,19 +40,16 @@ func TestActivity(t *testing.T) {
 		assert.Equal(t, activity.TeamMember.ID, session.User.ActiveTeamMember.ID)
 	}
 
-	// login
+	// get session again
 	{
-		session2, err := svc.UserGetSession(ctx, nil)
-		assert.NoError(t, err)
+		_, err := svc.UserGetSession(ctx, nil)
+		require.NoError(t, err)
 
 		activities = testingActivities(t, svc)
-		assert.Len(t, activities.Items, 2)
-		activity := activities.Items[1]
-		//fmt.Println(godev.PrettyJSON(activity))
-		assert.Equal(t, activity.Kind, pwdb.Activity_UserLogin)
-		assert.Equal(t, activity.Author.ID, session2.User.ID)
-		assert.Equal(t, activity.User.ID, session2.User.ID)
+		require.Len(t, activities.Items, 1)
 	}
+
+	// FIXME: make a new login
 
 	// FIXME: call UserSetPreferences
 
@@ -76,8 +73,8 @@ func TestActivity(t *testing.T) {
 		require.NoError(t, err)
 
 		activities = testingActivities(t, svc)
-		assert.Len(t, activities.Items, 3)
-		activity := activities.Items[2]
+		require.Len(t, activities.Items, 2)
+		activity := activities.Items[1]
 		//fmt.Println(godev.PrettyJSON(activity))
 		assert.Equal(t, activity.Kind, pwdb.Activity_SeasonChallengeBuy)
 		assert.Equal(t, activity.AuthorID, session.User.ID)
@@ -100,8 +97,8 @@ func TestActivity(t *testing.T) {
 		require.NoError(t, err)
 
 		activities = testingActivities(t, svc)
-		assert.Len(t, activities.Items, 4)
-		activity := activities.Items[3]
+		require.Len(t, activities.Items, 3)
+		activity := activities.Items[2]
 		assert.Equal(t, activity.Kind, pwdb.Activity_ChallengeSubscriptionValidate)
 		assert.Equal(t, activity.AuthorID, session.User.ID)
 		assert.Equal(t, activity.ChallengeSubscriptionID, subscription.ChallengeSubscription.ID)
@@ -123,8 +120,8 @@ func TestActivity(t *testing.T) {
 		//fmt.Println(godev.PrettyJSON(ret))
 
 		activities = testingActivities(t, svc)
-		assert.Len(t, activities.Items, 5)
-		activity := activities.Items[4]
+		require.Len(t, activities.Items, 4)
+		activity := activities.Items[3]
 		//fmt.Println(godev.PrettyJSON(activity))
 		assert.Equal(t, activity.Kind, pwdb.Activity_CouponValidate)
 		assert.Equal(t, activity.AuthorID, session.User.ID)
@@ -136,11 +133,11 @@ func TestActivity(t *testing.T) {
 	// delete account
 	{
 		_, err := svc.UserDeleteAccount(ctx, &UserDeleteAccount_Input{Reason: "testing activities"})
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		activities = testingActivities(t, svc)
-		assert.Len(t, activities.Items, 6)
-		activity := activities.Items[5]
+		require.Len(t, activities.Items, 5)
+		activity := activities.Items[4]
 		//fmt.Println(godev.PrettyJSON(activity))
 		assert.Equal(t, activity.Kind, pwdb.Activity_UserDeleteAccount)
 		assert.Equal(t, activity.AuthorID, session.User.ID)
