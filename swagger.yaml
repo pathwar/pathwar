@@ -3,15 +3,6 @@ basePath: /
 consumes:
 - application/json
 definitions:
-  ActivityKind:
-    default: Unknown
-    enum:
-    - Unknown
-    - UserRegister
-    - UserLogin
-    - UserSetPreferences
-    - UserDeleteAccount
-    type: string
   ChallengeFlavorDriver:
     default: Unknown
     enum:
@@ -401,70 +392,6 @@ definitions:
     - Moderator
     - HackThePlatform
     type: string
-  dbActivity:
-    properties:
-      author:
-        $ref: '#/definitions/dbUser'
-      author_id:
-        format: int64
-        type: string
-      challenge:
-        $ref: '#/definitions/dbChallenge'
-      challenge_flavor:
-        $ref: '#/definitions/dbChallengeFlavor'
-      challenge_flavor_id:
-        format: int64
-        type: string
-      challenge_id:
-        format: int64
-        type: string
-      coupon:
-        $ref: '#/definitions/dbCoupon'
-      coupon_id:
-        format: int64
-        type: string
-      created_at:
-        format: date-time
-        type: string
-      id:
-        format: int64
-        type: string
-      kind:
-        $ref: '#/definitions/ActivityKind'
-      organization:
-        $ref: '#/definitions/dbOrganization'
-      organization_id:
-        format: int64
-        type: string
-      season:
-        $ref: '#/definitions/dbSeason'
-      season_challenge:
-        $ref: '#/definitions/dbSeasonChallenge'
-      season_challenge_id:
-        format: int64
-        type: string
-      season_id:
-        format: int64
-        type: string
-      team:
-        $ref: '#/definitions/dbTeam'
-      team_id:
-        format: int64
-        type: string
-      team_member:
-        $ref: '#/definitions/dbTeamMember'
-      team_member_id:
-        format: int64
-        type: string
-      updated_at:
-        format: date-time
-        type: string
-      user:
-        $ref: '#/definitions/dbUser'
-      user_id:
-        format: int64
-        type: string
-    type: object
   dbAgent:
     properties:
       arch:
@@ -916,11 +843,6 @@ definitions:
     type: object
   dbNotification:
     properties:
-      activity:
-        $ref: '#/definitions/dbActivity'
-      activity_id:
-        format: int64
-        type: string
       args:
         type: string
       click_url:

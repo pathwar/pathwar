@@ -376,8 +376,6 @@ message Notification {
 
   User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
   int64 user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
-  Activity activity = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:ActivityID\""];
-  int64 activity_id = 203 [(gogoproto.customname) = "ActivityID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
 }
 
 message Coupon {
@@ -494,11 +492,12 @@ message Activity {
   int64 season_challenge_id = 217 [(gogoproto.customname) = "SeasonChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   TeamMember team_member = 218 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamMemberID\""];
   int64 team_member_id = 219 [(gogoproto.customname) = "TeamMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  ChallengeSubscription challenge_subscription = 220 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeSubscriptionID\""];
+  int64 challenge_subscription_id = 221 [(gogoproto.customname) = "ChallengeSubscriptionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   // agent
   // inventoryitem
   // couponvalidation
   // challengeinstance
-  // challengesubscription
   // challengevalidation
   // organizationmember
 
@@ -508,6 +507,7 @@ message Activity {
     UserLogin = 2;
     UserSetPreferences = 3;
     UserDeleteAccount = 4;
+    SeasonChallengeBuy = 5;
   }
 }
 
