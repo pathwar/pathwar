@@ -18,8 +18,10 @@ func TestActivity(t *testing.T) {
 	assert.Len(t, activities.Items, 0)
 
 	// register
+	var session *UserGetSession_Output
 	{
-		session, err := svc.UserGetSession(ctx, nil)
+		var err error
+		session, err = svc.UserGetSession(ctx, nil)
 		assert.NoError(t, err)
 
 		activities = testingActivities(t, svc)
@@ -37,7 +39,7 @@ func TestActivity(t *testing.T) {
 
 	// login
 	{
-		session, err := svc.UserGetSession(ctx, nil)
+		session2, err := svc.UserGetSession(ctx, nil)
 		assert.NoError(t, err)
 
 		activities = testingActivities(t, svc)
@@ -45,7 +47,21 @@ func TestActivity(t *testing.T) {
 		activity := activities.Items[1]
 		//fmt.Println(godev.PrettyJSON(activity))
 		assert.Equal(t, activity.Kind, pwdb.Activity_UserLogin)
-		assert.Equal(t, activity.Author.ID, session.User.ID)
-		assert.Equal(t, activity.User.ID, session.User.ID)
+		assert.Equal(t, activity.Author.ID, session2.User.ID)
+		assert.Equal(t, activity.User.ID, session2.User.ID)
+	}
+
+	// delete account
+	{
+		_, err := svc.UserDeleteAccount(ctx, &UserDeleteAccount_Input{Reason: "testing activities"})
+		assert.NoError(t, err)
+
+		activities = testingActivities(t, svc)
+		assert.Len(t, activities.Items, 3)
+		activity := activities.Items[2]
+		//fmt.Println(godev.PrettyJSON(activity))
+		assert.Equal(t, activity.Kind, pwdb.Activity_UserDeleteAccount)
+		assert.Equal(t, activity.AuthorID, session.User.ID)
+		assert.Equal(t, activity.UserID, session.User.ID)
 	}
 }

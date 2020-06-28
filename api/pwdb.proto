@@ -507,6 +507,7 @@ message Activity {
     UserRegister = 1;
     UserLogin = 2;
     UserSetPreferences = 3;
+    UserDeleteAccount = 4;
   }
 }
 
