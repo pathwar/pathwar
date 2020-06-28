@@ -105,6 +105,7 @@ func TestingCreateEntities(t *testing.T, db *gorm.DB) {
 		}
 
 		dummyChallenge1 := newOfficialChallengeWithFlavor("dummy challenge 1", "https://...", "")
+		dummyChallenge1.PurchasePrice = 0
 		dummyChallenge1.addSeasonChallengeByID(soloSeason.ID)
 		dummyChallenge1.addSeasonChallengeByID(testSeason.ID)
 		dummyChallenge2 := newOfficialChallengeWithFlavor("dummy challenge 1", "https://...", "")

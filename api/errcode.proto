@@ -145,6 +145,7 @@ enum ErrCode {
   ErrChallengeInactiveValidation = 4068;
   ErrChallengeIncompleteValidation = 4069;
   ErrChallengeJSONMarshalPassphrases = 4070;
+  ErrNotEnoughCash = 4071;
 
   //// Pathwar Server (starting at 5001)
 

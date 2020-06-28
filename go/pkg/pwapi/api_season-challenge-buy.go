@@ -32,7 +32,10 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 
 	// check if season is valid
 	var seasonChallenge pwdb.SeasonChallenge
-	err = svc.db.First(&seasonChallenge, in.SeasonChallengeID).Error
+	err = svc.db.
+		Preload("Flavor").
+		First(&seasonChallenge, in.SeasonChallengeID).
+		Error
 	if err != nil {
 		return nil, errcode.ErrInvalidSeason.Wrap(err)
 	}
@@ -40,6 +43,10 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 	// check if challenge and team belongs to the same season
 	if seasonChallenge.SeasonID != team.SeasonID {
 		return nil, errcode.ErrTeamNotInSeason
+	}
+
+	if seasonChallenge.Flavor.PurchasePrice > team.Cash {
+		return nil, errcode.ErrNotEnoughCash
 	}
 
 	// check for duplicate
@@ -72,6 +79,18 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 		if err := tx.Create(&subscription).Error; err != nil {
 			return err
 		}
+
+		// update team cash
+		if cash := seasonChallenge.Flavor.PurchasePrice; cash != 0 {
+			err = tx.Model(&pwdb.Team{}).
+				Where("id = ?", in.TeamID).
+				UpdateColumn("cash", gorm.Expr("cash - ?", cash)).
+				Error
+			if err != nil {
+				return err
+			}
+		}
+
 		activity := pwdb.Activity{
 			Kind:                    pwdb.Activity_SeasonChallengeBuy,
 			AuthorID:                userID,

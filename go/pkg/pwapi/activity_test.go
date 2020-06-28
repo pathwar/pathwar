@@ -53,8 +53,8 @@ func TestActivity(t *testing.T) {
 
 	// FIXME: call UserSetPreferences
 
-	// buy challenge
-	var theChallenge *pwdb.SeasonChallenge
+	// buy free challenge
+	var freeChallenge, expensiveChallenge *pwdb.SeasonChallenge
 	var subscription *SeasonChallengeBuy_Output
 	{
 		solo := testingSoloSeason(t, svc)
@@ -63,13 +63,16 @@ func TestActivity(t *testing.T) {
 		require.NoError(t, err)
 
 		for _, challenge := range challenges.Items {
-			if len(challenge.Flavor.Instances) > 0 {
-				theChallenge = challenge
-				break
+			if challenge.Flavor.PurchasePrice == 0 && len(challenge.Flavor.Instances) > 0 {
+				freeChallenge = challenge
+			}
+			if challenge.Flavor.PurchasePrice != 0 && len(challenge.Flavor.Instances) > 0 {
+				expensiveChallenge = challenge
 			}
 		}
-		require.NotNil(t, theChallenge)
-		subscription, err = svc.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{SeasonChallengeID: theChallenge.ID, TeamID: activeTeam.ID})
+		require.NotNil(t, freeChallenge)
+		require.NotNil(t, expensiveChallenge)
+		subscription, err = svc.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{SeasonChallengeID: freeChallenge.ID, TeamID: activeTeam.ID})
 		require.NoError(t, err)
 
 		activities = testingActivities(t, svc)
@@ -94,7 +97,7 @@ func TestActivity(t *testing.T) {
 	// validate challenge
 	{
 		var configData pwinit.InitConfig
-		err := json.Unmarshal(theChallenge.Flavor.Instances[0].GetInstanceConfig(), &configData)
+		err := json.Unmarshal(freeChallenge.Flavor.Instances[0].GetInstanceConfig(), &configData)
 		require.NoError(t, err)
 		input := ChallengeSubscriptionValidate_Input{
 			ChallengeSubscriptionID: subscription.ChallengeSubscription.ID,
@@ -151,17 +154,51 @@ func TestActivity(t *testing.T) {
 		assert.Equal(t, sess.User.ActiveTeamMember.Team.Cash, int64(52))
 	}
 
-	// delete account
+	// buy free challenge
 	{
-		_, err := svc.UserDeleteAccount(ctx, &UserDeleteAccount_Input{Reason: "testing activities"})
+		activeTeam := session.User.ActiveTeamMember.Team
+
+		subscription, err := svc.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{SeasonChallengeID: expensiveChallenge.ID, TeamID: activeTeam.ID})
 		require.NoError(t, err)
 
 		activities = testingActivities(t, svc)
 		require.Len(t, activities.Items, 5)
 		activity := activities.Items[4]
 		//fmt.Println(godev.PrettyJSON(activity))
+		assert.Equal(t, activity.Kind, pwdb.Activity_SeasonChallengeBuy)
+		assert.Equal(t, activity.AuthorID, session.User.ID)
+		assert.Equal(t, activity.TeamID, session.User.ActiveTeamMember.Team.ID)
+		assert.Equal(t, activity.Season.Name, "Solo Mode")
+		assert.Equal(t, activity.ChallengeSubscriptionID, subscription.ChallengeSubscription.ID)
+		assert.Equal(t, activity.SeasonChallengeID, subscription.ChallengeSubscription.SeasonChallenge.ID)
+	}
+
+	// get session again
+	{
+		sess, err := svc.UserGetSession(ctx, nil)
+		require.NoError(t, err)
+		assert.Equal(t, sess.User.ActiveTeamMember.Team.Cash, int64(47))
+	}
+
+	// delete account
+	{
+		_, err := svc.UserDeleteAccount(ctx, &UserDeleteAccount_Input{Reason: "testing activities"})
+		require.NoError(t, err)
+
+		activities = testingActivities(t, svc)
+		require.Len(t, activities.Items, 6)
+		activity := activities.Items[5]
+		//fmt.Println(godev.PrettyJSON(activity))
 		assert.Equal(t, activity.Kind, pwdb.Activity_UserDeleteAccount)
 		assert.Equal(t, activity.AuthorID, session.User.ID)
 		assert.Equal(t, activity.UserID, session.User.ID)
 	}
+
+	// get session again (re register)
+	{
+		sess, err := svc.UserGetSession(ctx, nil)
+		require.NoError(t, err)
+		assert.Equal(t, sess.User.ActiveTeamMember.Team.Cash, int64(0))
+	}
+
 }

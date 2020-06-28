@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"pathwar.land/pathwar/v2/go/internal/testutil"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
 func TestSvc_ChallengeBuy(t *testing.T) {
@@ -26,6 +27,15 @@ func TestSvc_ChallengeBuy(t *testing.T) {
 	challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
 	require.NoError(t, err)
 
+	var expensiveChallenge, freeChallenge *pwdb.SeasonChallenge
+	for _, challenge := range challenges.Items {
+		if challenge.Flavor.PurchasePrice == 0 {
+			freeChallenge = challenge
+		} else {
+			expensiveChallenge = challenge
+		}
+	}
+
 	var tests = []struct {
 		name        string
 		input       *SeasonChallengeBuy_Input
@@ -34,9 +44,10 @@ func TestSvc_ChallengeBuy(t *testing.T) {
 		{"nil", nil, errcode.ErrMissingInput},
 		{"empty", &SeasonChallengeBuy_Input{}, errcode.ErrMissingInput},
 		{"invalid season challenge ID", &SeasonChallengeBuy_Input{SeasonChallengeID: 42, TeamID: activeTeam.ID}, errcode.ErrInvalidSeason},
-		{"invalid team ID", &SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: 42}, errcode.ErrInvalidTeam},
-		{"valid 1", &SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID}, nil},
-		{"valid 2 (duplicate)", &SeasonChallengeBuy_Input{SeasonChallengeID: challenges.Items[0].ID, TeamID: activeTeam.ID}, errcode.ErrChallengeAlreadySubscribed},
+		{"invalid team ID", &SeasonChallengeBuy_Input{SeasonChallengeID: freeChallenge.ID, TeamID: 42}, errcode.ErrInvalidTeam},
+		{"not enough cash", &SeasonChallengeBuy_Input{SeasonChallengeID: expensiveChallenge.ID, TeamID: activeTeam.ID}, errcode.ErrNotEnoughCash},
+		{"valid 1", &SeasonChallengeBuy_Input{SeasonChallengeID: freeChallenge.ID, TeamID: activeTeam.ID}, nil},
+		{"valid 2 (duplicate)", &SeasonChallengeBuy_Input{SeasonChallengeID: freeChallenge.ID, TeamID: activeTeam.ID}, errcode.ErrChallengeAlreadySubscribed},
 		// FIXME: check for a team and a challenge in different seasons
 		// FIXME: check for a team from another user
 		// FIXME: check for a challenge in draft mode
