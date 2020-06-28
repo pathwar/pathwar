@@ -112,14 +112,35 @@ func TestActivity(t *testing.T) {
 		//fmt.Println(godev.PrettyJSON(activity))
 	}
 
+	// validate coupon
+	{
+		input := CouponValidate_Input{
+			Hash:   "test-coupon-1",
+			TeamID: session.User.ActiveTeamMember.Team.ID,
+		}
+		ret, err := svc.CouponValidate(ctx, &input)
+		require.NoError(t, err)
+		//fmt.Println(godev.PrettyJSON(ret))
+
+		activities = testingActivities(t, svc)
+		assert.Len(t, activities.Items, 5)
+		activity := activities.Items[4]
+		//fmt.Println(godev.PrettyJSON(activity))
+		assert.Equal(t, activity.Kind, pwdb.Activity_CouponValidate)
+		assert.Equal(t, activity.AuthorID, session.User.ID)
+		assert.Equal(t, activity.TeamID, session.User.ActiveTeamMember.Team.ID)
+		assert.Equal(t, activity.Season.Name, "Solo Mode")
+		assert.Equal(t, activity.CouponID, ret.CouponValidation.CouponID)
+	}
+
 	// delete account
 	{
 		_, err := svc.UserDeleteAccount(ctx, &UserDeleteAccount_Input{Reason: "testing activities"})
 		assert.NoError(t, err)
 
 		activities = testingActivities(t, svc)
-		assert.Len(t, activities.Items, 5)
-		activity := activities.Items[4]
+		assert.Len(t, activities.Items, 6)
+		activity := activities.Items[5]
 		//fmt.Println(godev.PrettyJSON(activity))
 		assert.Equal(t, activity.Kind, pwdb.Activity_UserDeleteAccount)
 		assert.Equal(t, activity.AuthorID, session.User.ID)

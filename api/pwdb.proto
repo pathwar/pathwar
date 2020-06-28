@@ -509,6 +509,7 @@ message Activity {
     UserDeleteAccount = 4;
     SeasonChallengeBuy = 5;
     ChallengeSubscriptionValidate = 6;
+    CouponValidate = 7;
   }
 }
 

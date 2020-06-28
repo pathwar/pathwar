@@ -2,7 +2,7 @@
 32f5c7efb692ff50bcce8f228122d635a4028ed8  Makefile
 49e64b5c53106ad4a3bb082ac22bf8ba6835599c  ../api/pwapi.proto
 58202a11cc54640949aaacb09c0e0db6f26d57c2  ../api/pwsso.proto
+60df9802eae6d33e0621b55ce0b222ce53eab109  ../api/pwdb.proto
 70d67f1cebb3b7f9e86fd0197d43db4c1f795f65  ../api/pwinit.proto
 938d0b10041d408da360734ce20ba0d65eb20521  ../api/pwagent.proto
-98af4156560358229b83ced3cd8bc8601cb786fd  ../api/pwdb.proto
 e178f0469bc190130cdefb2a5aee576373e99391  ../api/errcode.proto
