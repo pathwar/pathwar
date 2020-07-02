@@ -1,16 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-  Site,
-  Nav,
-  Dropdown,
-  Card,
-  Grid,
-  Avatar,
-  Text,
-  Tag,
-} from "tabler-react";
+import { Site, Nav, Dropdown, Tag } from "tabler-react";
 import { Link } from "gatsby";
 
 import logo from "../images/pathwar-favicon.png";
@@ -32,10 +23,7 @@ const navBarItems = [
   },
 ];
 
-const accountDropdownProps = (
-  { activeUserSession, activeKeycloakSession },
-  activeSeason
-) => {
+const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
   const { user, claims } = activeUserSession || {};
 
   const username =
@@ -144,7 +132,7 @@ class SiteWrapper extends React.Component {
           href: "/",
           alt: "Pathwar Project",
           imageURL: logo,
-          accountDropdown: accountDropdownProps(userSession, activeSeason),
+          accountDropdown: accountDropdownProps(userSession),
           navItems: navItemsProps(userSession, activeSeason),
         }}
         navProps={{ itemsObjects: navBarItems }}
