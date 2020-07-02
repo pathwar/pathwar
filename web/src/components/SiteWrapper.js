@@ -41,7 +41,6 @@ const accountDropdownProps = (
   const username =
     claims && claims.preferred_username ? claims.preferred_username : "Account";
   const avatar = user && user.gravatar_url ? user.gravatar_url : logo;
-  const description = activeSeason && activeSeason.name;
   const options = [];
 
   if (!activeUserSession && !activeKeycloakSession) {
@@ -81,7 +80,7 @@ const accountDropdownProps = (
   return {
     avatarURL: avatar,
     name: `${username}`,
-    description: description,
+    description: undefined,
     options: options,
     optionsRootComponent: Link,
   };
