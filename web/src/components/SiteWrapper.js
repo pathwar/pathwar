@@ -8,30 +8,23 @@ import logo from "../images/pathwar-favicon.png";
 
 const navBarItems = [
   {
-    value: "Season",
-    to: "/app/season",
-    icon: "flag",
-    LinkComponent: Link,
-    useExact: "false",
-  },
-  {
-    value: "Dashboard",
-    to: "/app/dashboard",
+    value: "Home",
+    to: "/app/home",
     icon: "home",
     LinkComponent: Link,
     useExact: "false",
   },
   {
-    value: "FAQ",
-    to: "/app/faq",
-    icon: "help-circle",
+    value: "Challenges",
+    to: "/app/challenges",
+    icon: "anchor",
     LinkComponent: Link,
     useExact: "false",
   },
   {
-    value: "Settings",
-    to: "/app/settings",
-    icon: "settings",
+    value: "Statistics",
+    to: "/app/statistics",
+    icon: "activity",
     LinkComponent: Link,
     useExact: "false",
   },

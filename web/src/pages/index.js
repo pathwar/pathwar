@@ -268,7 +268,7 @@ const IndexPage = ({ data }) => {
               <div className="cta-block">
                 <button>Join the adventure !</button>
                 <p>
-                  Already on board ? <a href="/app/season">Login</a>
+                  Already on board ? <a href="/app/challenges">Login</a>
                 </p>
               </div>
             )}
