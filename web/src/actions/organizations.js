@@ -9,7 +9,6 @@ import {
 } from "../constants/actionTypes";
 import {
   getAllOrganizations,
-  getUserOrganizations,
   joinOrganization as joinOrganizationCall,
 } from "../api/organizations";
 
@@ -18,25 +17,6 @@ export const setActiveOrganization = teamObjData => async dispatch => {
     type: SET_ACTIVE_ORGANIZATION,
     payload: { team: teamObjData },
   });
-};
-
-export const fetchUserOrganizations = userID => async dispatch => {
-  try {
-    const response = await getUserOrganizations(userID);
-    const teams = response.data.items;
-
-    dispatch({
-      type: GET_USER_ORGANIZATIONS_SUCCESS,
-      payload: {
-        userOrganizationsList: teams,
-      },
-    });
-  } catch (error) {
-    dispatch({
-      type: GET_USER_ORGANIZATIONS_FAILED,
-      payload: { error },
-    });
-  }
 };
 
 export const fetchOrganizationsList = () => async dispatch => {
