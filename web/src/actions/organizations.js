@@ -1,7 +1,5 @@
 import {
   SET_ACTIVE_ORGANIZATION,
-  GET_USER_ORGANIZATIONS_SUCCESS,
-  GET_USER_ORGANIZATIONS_FAILED,
   SET_ORGANIZATIONS_LIST,
   SET_ORGANIZATIONS_LIST_FAILED,
   JOIN_ORGANIZATION_SUCCESS,
@@ -40,7 +38,6 @@ export const joinOrganization = (userID, teamID) => async dispatch => {
     });
 
     dispatch(fetchOrganizationsList());
-    dispatch(fetchUserOrganizations(userID));
   } catch (error) {
     dispatch({ type: JOIN_ORGANIZATION_FAILED, payload: { error } });
     alert("Join team failed, please try again!");
