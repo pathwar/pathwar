@@ -13,10 +13,21 @@ const TeamsRows = ({ teams }) => {
         <Table.Col colSpan={2}>
           <Link to={`/app/team/${item.id}`}>{item.organization.name}</Link>
         </Table.Col>
-        <Table.Col colSpan={1}>{item.score}</Table.Col>
-        <Table.Col colSpan={1}>{item.gold_medals || 0}</Table.Col>
-        <Table.Col colSpan={1}>{item.silver_medals || 0}</Table.Col>
-        <Table.Col colSpan={1}>{item.bronze_medals || 0}</Table.Col>
+        <Table.Col colSpan={1} alignContent="center">
+          {item.score}
+        </Table.Col>
+        <Table.Col colSpan={1} alignContent="center">
+          {item.gold_medals || 0}
+        </Table.Col>
+        <Table.Col colSpan={1} alignContent="center">
+          {item.silver_medals || 0}
+        </Table.Col>
+        <Table.Col colSpan={1} alignContent="center">
+          {item.bronze_medals || 0}
+        </Table.Col>
+        <Table.Col colSpan={1} alignContent="center">
+          {item.nb_achievements || 0}
+        </Table.Col>
       </Table.Row>
     );
   });
@@ -28,23 +39,28 @@ const AllTeamsOnSeasonList = ({ activeSeason, allTeamsOnSeason }) => {
   ) : (
     <Card>
       <Table
-        cards={true}
         striped={true}
         responsive={true}
-        className="table-vcenter"
+        verticalAlign="center"
+        className="mb-0"
       >
         <Table.Header>
           <Table.Row>
-            <Table.ColHeader colSpan={2}>Name</Table.ColHeader>
-            <Table.ColHeader colSpan={1}>Score</Table.ColHeader>
+            <Table.ColHeader colSpan={2}>Team</Table.ColHeader>
+            <Table.ColHeader colSpan={1} alignContent="center">
+              Score
+            </Table.ColHeader>
             <Table.ColHeader colSpan={1}>
               <Icon name="award" className={styles.goldMedal} />
             </Table.ColHeader>
-            <Table.ColHeader colSpan={1}>
+            <Table.ColHeader colSpan={1} alignContent="center">
               <Icon name="award" className={styles.sivlerMedal} />
             </Table.ColHeader>
-            <Table.ColHeader colSpan={1}>
+            <Table.ColHeader colSpan={1} alignContent="center">
               <Icon name="award" className={styles.bronzeMedal} />
+            </Table.ColHeader>
+            <Table.ColHeader colSpan={1} alignContent="center">
+              Achievements
             </Table.ColHeader>
           </Table.Row>
         </Table.Header>
