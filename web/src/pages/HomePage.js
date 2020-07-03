@@ -6,7 +6,7 @@ import AllOrganizationsList from "../components/organizations/AllOrganizationsLi
 // import UserTeamsCard from "../components/teams/UserTeamsList";
 import TeamStatsStampCard from "../components/organizations/OrganizationStatsStampCard";
 
-const Dashboard = () => {
+const HomePage = () => {
   return (
     <Page.Content title="Dashboard">
       <Grid.Row cards={true}>
@@ -23,4 +23,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default HomePage;
