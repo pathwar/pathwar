@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import HomePage from "./HomePage";
 import LogoutPage from "./LogoutPage";
 import ChallengesPage from "./ChallengesPage";
-import AllSeasonsPage from "./AllSeasonsPage";
 import ChallengeDetailsPage from "./ChallengeDetailsPage";
 import StatisticsPage from "./StatisticsPage";
 import SiteWrapper from "../components/SiteWrapper";
@@ -39,7 +38,6 @@ const App = () => (
           <ProtectedRoute path="/app/home" component={HomePage} />
           <ProtectedRoute path="/app/challenges" component={ChallengesPage} />
           <ProtectedRoute path="/app/statistics" component={StatisticsPage} />
-          <ProtectedRoute path="/app/all-seasons" component={AllSeasonsPage} />
           <ProtectedRoute
             path="/app/team/:teamId"
             component={TeamDetailsPage}
