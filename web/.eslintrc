@@ -15,6 +15,7 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended",
     "prettier/react"
   ],
   "plugins": ["react", "prettier"],

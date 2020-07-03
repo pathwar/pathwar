@@ -10,11 +10,15 @@ const StatisticsPage = () => {
   const activeSeason = useSelector(state => state.seasons.activeSeason);
   const allTeamsOnSeason = useSelector(state => state.seasons.allTeamsOnSeason);
 
-  useEffect(() => {
-    if (!allTeamsOnSeason && activeSeason) {
-      dispatch(fetchAllSeasonTeamsAction(activeSeason.id));
-    }
-  }, [activeSeason]);
+  useEffect(
+    state => {
+      console.log(state);
+      if (!allTeamsOnSeason && activeSeason) {
+        dispatch(fetchAllSeasonTeamsAction(activeSeason.id));
+      }
+    },
+    [activeSeason, allTeamsOnSeason]
+  );
 
   return (
     <Page.Content title={`Statistics`}>
