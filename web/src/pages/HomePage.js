@@ -6,7 +6,7 @@ import AllOrganizationsList from "../components/organizations/AllOrganizationsLi
 
 const HomePage = () => {
   return (
-    <Page.Content title="Dashboard">
+    <Page.Content title="Home">
       <Grid.Row cards={true}>
         <Grid.Col xs={12} sm={12} lg={6}>
           <AllOrganizationsList />
