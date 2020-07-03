@@ -1,12 +1,20 @@
 /* eslint-disable react/prop-types */
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Grid, Page } from "tabler-react";
 import AllTeamsOnSeasonList from "../components/season/AllTeamsOnSeasonList";
+import { fetchAllSeasonTeams as fetchAllSeasonTeamsAction } from "../actions/seasons";
 
-const StatisticsPage = props => {
+const StatisticsPage = () => {
+  const dispatch = useDispatch();
   const activeSeason = useSelector(state => state.seasons.activeSeason);
   const allTeamsOnSeason = useSelector(state => state.seasons.allTeamsOnSeason);
+
+  useEffect(() => {
+    if (!allTeamsOnSeason && activeSeason) {
+      dispatch(fetchAllSeasonTeamsAction(activeSeason.id));
+    }
+  }, [activeSeason]);
 
   return (
     <Page.Content title={`Statistics`}>
