@@ -3,7 +3,6 @@ import * as React from "react";
 import { Page, Grid } from "tabler-react";
 
 import AllOrganizationsList from "../components/organizations/AllOrganizationsList";
-// import UserTeamsCard from "../components/teams/UserTeamsList";
 
 const HomePage = () => {
   return (
