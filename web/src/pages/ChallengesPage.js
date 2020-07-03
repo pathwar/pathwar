@@ -44,7 +44,7 @@ class SeasonPage extends React.Component {
     const name = activeSeason ? activeSeason.name : undefined;
 
     return (
-      <Page.Content title="Season" subTitle={name}>
+      <Page.Content title="Challenges" subTitle={name}>
         <Grid.Row>
           <Grid.Col lg={4} md={4} sm={4} xs={4}>
             <Button.List>
@@ -55,7 +55,6 @@ class SeasonPage extends React.Component {
         <hr />
         <Grid.Row>
           <Grid.Col xs={12} sm={12} lg={12}>
-            <h4>Challenges</h4>
             <ChallengeList
               challenges={activeChallenges}
               buyChallenge={buyChallengeAction}
