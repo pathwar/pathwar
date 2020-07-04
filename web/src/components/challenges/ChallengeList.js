@@ -28,6 +28,8 @@ const ChallengeCard = ({ challenge }) => {
   return (
     <Card
       title={flavor.challenge.name}
+      statusColor="green"
+      statusSide
       body={
         <>
           <Grid.Row>
