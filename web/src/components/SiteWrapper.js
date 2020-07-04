@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Site, Nav, Button } from "tabler-react";
 import { navigate, Link } from "gatsby";
 
-import logo from "../images/pathwar-favicon.png";
+import logo from "../images/new-pathwar-logo-dark-blue.png";
 
 const navBarItems = [
   {
