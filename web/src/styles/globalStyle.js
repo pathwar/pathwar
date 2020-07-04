@@ -68,7 +68,7 @@ export const globalStyle = ({ colors, font, type }) => {
       padding: 0 50px;
       display: flex;
       flex-direction: column;
-      width: 100%;
+      width: auto;
     }
 
     @media (max-width: 991px) {
