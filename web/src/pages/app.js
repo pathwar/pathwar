@@ -19,7 +19,9 @@ import SettingsPage from "./SettingsPage";
 import * as Sentry from "@sentry/browser";
 const ProtectedRoute = loadable(() => import("../components/ProtectedRoute"));
 
+//Third part libs global styles
 import "tabler-react/dist/Tabler.css";
+import "react-responsive-modal/styles.css";
 
 Sentry.init({
   dsn:
