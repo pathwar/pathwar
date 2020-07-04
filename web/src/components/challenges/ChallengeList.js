@@ -13,42 +13,62 @@ const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
     <Card
       title={flavor.challenge.name}
       body={
-        <Button.List align="center">
-          <Button
-            onClick={() => buyChallenge(challengeID, teamID, false)}
-            size="sm"
-            color={isClosed ? "red" : "success"}
-            disabled={subscriptions || isClosed}
-            icon={
-              subscriptions ? (isClosed ? "x-circle" : "check") : "dollar-sign"
-            }
-          >
-            {isClosed ? "Closed" : "Buy"}
-          </Button>
-          <Button
-            RootComponent={Link}
-            to={`/app/challenge/${challengeID}`}
-            target="_blank"
-            color="info"
-            size="sm"
-            icon="eye"
-          >
-            Open
-          </Button>
-          {subscriptions && flavor.instances && (
-            <Button
-              RootComponent="a"
-              target="_blank"
-              href={flavor.instances[0].nginx_url}
-              size="sm"
-              color="gray-dark"
-              icon="terminal"
-              disabled={isClosed}
-            >
-              Solve
-            </Button>
-          )}
-        </Button.List>
+        <>
+          <Grid.Row>
+            <Grid.Col auto>
+              <p>Author: {flavor.challenge.author}</p>
+            </Grid.Col>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Col auto>
+              <p>Version: {flavor.version}</p>
+            </Grid.Col>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Col auto>
+              <Button.List align="center">
+                {/* <Button
+                onClick={() => buyChallenge(challengeID, teamID, false)}
+                size="sm"
+                color={isClosed ? "red" : "success"}
+                disabled={subscriptions || isClosed}
+                icon={
+                  subscriptions
+                    ? isClosed
+                      ? "x-circle"
+                      : "check"
+                    : "dollar-sign"
+                }
+              >
+                {isClosed ? "Closed" : "Buy"}
+              </Button> */}
+                <Button
+                  RootComponent={Link}
+                  to={`/app/challenge/${challengeID}`}
+                  target="_blank"
+                  color="info"
+                  size="sm"
+                  icon="eye"
+                >
+                  View
+                </Button>
+                {/* {subscriptions && flavor.instances && (
+                <Button
+                  RootComponent="a"
+                  target="_blank"
+                  href={flavor.instances[0].nginx_url}
+                  size="sm"
+                  color="gray-dark"
+                  icon="terminal"
+                  disabled={isClosed}
+                >
+                  Solve
+                </Button> */}
+                )}
+              </Button.List>
+            </Grid.Col>
+          </Grid.Row>
+        </>
       }
     />
   );
