@@ -45,14 +45,14 @@ class SeasonPage extends React.Component {
 
     return (
       <Page.Content title="Challenges" subTitle={name}>
-        <Grid.Row>
+        {/* <Grid.Row>
           <Grid.Col lg={4} md={4} sm={4} xs={4}>
             <Button.List>
               <ValidateCouponButton />
             </Button.List>
           </Grid.Col>
         </Grid.Row>
-        <hr />
+        <hr /> */}
         <Grid.Row>
           <Grid.Col xs={12} sm={12} lg={12}>
             <ChallengeList
