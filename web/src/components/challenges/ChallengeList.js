@@ -1,14 +1,15 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "gatsby";
+import { Link, navigate } from "gatsby";
 import { Button, Dimmer, Card, Grid } from "tabler-react";
 import { Modal } from "react-responsive-modal";
 import styles from "../../styles/layout/loader.module.css";
+import { func } from "prop-types";
 
-const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
+const ChallengeCard = ({ challenge }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { flavor, subscriptions, id: challengeID } = challenge;
+  const { flavor, id: challengeID } = challenge;
   // const isClosed = subscriptions && subscriptions[0].status === "Closed";
 
   const onCloseModal = function() {
@@ -17,6 +18,11 @@ const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
 
   const openModal = function() {
     setModalOpen(true);
+  };
+
+  const openChallengePage = function() {
+    setModalOpen(false);
+    navigate(`/app/challenge/${challengeID}`);
   };
 
   return (
@@ -37,7 +43,12 @@ const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
           <Grid.Row>
             <Grid.Col auto>
               <Button.List align="center">
-                <Button color="info" size="sm" icon="eye" onClick={openModal}>
+                <Button
+                  color="indigo"
+                  size="sm"
+                  icon="compass"
+                  onClick={openModal}
+                >
                   View
                 </Button>
                 {/* <Button
@@ -55,16 +66,6 @@ const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
               >
                 {isClosed ? "Closed" : "Buy"}
               </Button> */}
-                {/* <Button
-                  RootComponent={Link}
-                  to={`/app/challenge/${challengeID}`}
-                  target="_blank"
-                  color="info"
-                  size="sm"
-                  icon="eye"
-                >
-                  View
-                </Button> */}
                 {/* {subscriptions && flavor.instances && (
                 <Button
                   RootComponent="a"
@@ -82,12 +83,15 @@ const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
             </Grid.Col>
           </Grid.Row>
           <Modal open={modalOpen} onClose={onCloseModal}>
-            <h2>Simple centered modal</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-              pulvinar risus non risus hendrerit venenatis. Pellentesque sit
-              amet hendrerit risus, sed porttitor quam.
-            </p>
+            <h2>Modal</h2>
+            <Button
+              color="info"
+              size="sm"
+              icon="eye"
+              onClick={openChallengePage}
+            >
+              Challenge page
+            </Button>
           </Modal>
         </>
       }
