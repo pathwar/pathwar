@@ -266,7 +266,7 @@ const IndexPage = ({ data }) => {
             {comingsoon && <h3>Coming soon...</h3>}
             {!comingsoon && (
               <div className="cta-block">
-                <button>Join the adventure !</button>
+                <button className="custom-button">Join the adventure !</button>
                 <p>
                   Already on board ? <a href="/app/challenges">Login</a>
                 </p>
@@ -311,7 +311,7 @@ const IndexPage = ({ data }) => {
                   href="https://github.com/pathwar/pathwar/blob/master/CODE_OF_CONDUCT.md"
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="btn outline"
+                  className="custom-button outline"
                 >
                   Read our Code of Conduct
                 </a>

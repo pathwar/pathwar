@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Site, Nav, Dropdown, Tag } from "tabler-react";
+import { Site, Nav, Dropdown, Tag, Dimmer } from "tabler-react";
 import { Link } from "gatsby";
 
 import logo from "../images/new-pathwar-logo-dark-blue.png";
@@ -120,7 +120,7 @@ const navItemsProps = ({ activeUserSession }, activeSeason) => {
   return (
     <Nav.Item type="div" className="d-none d-md-flex">
       <Dropdown
-        triggerContent={activeSeason && activeSeason.name}
+        triggerContent={(activeSeason && activeSeason.name) || "Loading.."}
         type="button"
         color="primary"
         icon="flag"
