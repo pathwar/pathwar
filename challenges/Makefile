@@ -1,6 +1,4 @@
-.PHONY: build
-build:
-	@for dir in `find . -type f -name docker-compose.yml | sed 's@/[^/]*$$@@' | sort | uniq`; do (set -xe; \
-	  cd $$dir; \
-	  docker-compose build --pull; \
-	); done
+docker.build pathwar.prepare pathwar.push:
+	for dir in $(dir $(wildcard ./*/*/docker-compose.yml)); do set -e && cd $$dir && make $@ && cd -; done
+
+_ci: docker.build
