@@ -1,5 +1,10 @@
 version: '3.7'
 
+x-pathwar:
+  challenge:
+    version: 1.0.0
+    name: "Captcha Luigi"
+
 services:
   front:
     build: front

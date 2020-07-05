@@ -56,7 +56,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: apk add --no-cache make
-      - run: cd challenges && make build
+      - run: cd challenges && make _ci
 
   docker-integration:
     docker:

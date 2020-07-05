@@ -1,5 +1,10 @@
 version: '3.7'
 
+x-pathwar:
+  challenge:
+    version: 1.0.0
+    name: "Upload Hi"
+
 services:
   front:
     build: front
