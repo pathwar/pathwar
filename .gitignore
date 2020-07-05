@@ -25,3 +25,4 @@ tool/screenshoter/screenshoter
 *_oauth_token.json
 packrd/
 *-packr.go
+pathwar-compose.yml
