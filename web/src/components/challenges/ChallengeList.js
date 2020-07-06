@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, navigate } from "gatsby";
+import { navigate } from "gatsby";
 import { Button, Dimmer, Card, Grid } from "tabler-react";
 import { Modal } from "react-responsive-modal";
 import styles from "../../styles/layout/loader.module.css";
-import { func } from "prop-types";
 
 const ChallengeCard = ({ challenge }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -22,7 +21,7 @@ const ChallengeCard = ({ challenge }) => {
 
   const openChallengePage = function() {
     setModalOpen(false);
-    navigate(`/app/challenge/${challengeID}`);
+    setTimeout(() => navigate(`/app/challenge/${challengeID}`), 800);
   };
 
   return (
