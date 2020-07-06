@@ -27,7 +27,7 @@ const ValidateCouponForm = () => {
     >
       {!formOpen && (
         <Button color="yellow" icon="award" size="sm" onClick={handleFormOpen}>
-          Validate coupon
+          Coupon
         </Button>
       )}
 
