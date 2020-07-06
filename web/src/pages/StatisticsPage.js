@@ -38,7 +38,7 @@ const StatisticsPage = () => {
             activeTeamInSeason={activeTeamInSeason}
           />
         </Grid.Col>
-        <Grid.Col xs={12} sm={12} lg={6}>
+        <Grid.Col xs={12} sm={12} lg={9}>
           <AllTeamsOnSeasonList
             activeSeason={activeSeason}
             allTeamsOnSeason={allTeamsOnSeason}
