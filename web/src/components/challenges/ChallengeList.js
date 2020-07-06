@@ -43,7 +43,13 @@ const ChallengeCard = ({ challenge }) => {
             </Grid.Col>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Col>
+            <Grid.Col auto>
+              <h3>changelog:</h3>
+              <p>{flavor.changelog}</p>
+            </Grid.Col>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Col auto>
               <Tag.List>
                 <Tag color="dark" addOn={flavor.version} addOnColor="warning">
                   version
