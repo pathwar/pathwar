@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { navigate } from "gatsby";
-import { Button, Dimmer, Card, Grid } from "tabler-react";
+import { Button, Dimmer, Card, Grid, Tag } from "tabler-react";
 import { Modal } from "react-responsive-modal";
 import styles from "../../styles/layout/loader.module.css";
 
@@ -25,11 +25,17 @@ const ChallengeCard = ({ challenge }) => {
   };
 
   return (
-    <Card
-      title={flavor.challenge.name}
-      statusColor="green"
-      statusSide
-      body={
+    <Card>
+      <Card.Status color="green" side />
+      <Card.Header>
+        <Card.Title>{flavor.challenge.name}</Card.Title>
+        <Card.Options>
+          <Button color="indigo" size="sm" icon="compass" onClick={openModal}>
+            View
+          </Button>
+        </Card.Options>
+      </Card.Header>
+      <Card.Body>
         <>
           <Grid.Row>
             <Grid.Col auto>
@@ -37,52 +43,51 @@ const ChallengeCard = ({ challenge }) => {
             </Grid.Col>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Col auto>
-              <p>Version: {flavor.version}</p>
+            <Grid.Col>
+              <Tag.List>
+                <Tag color="dark" addOn={flavor.version} addOnColor="warning">
+                  version
+                </Tag>
+                <Tag addOn={flavor.is_latest.toString()} addOnColor="success">
+                  is_latest
+                </Tag>
+              </Tag.List>
             </Grid.Col>
           </Grid.Row>
-          <Grid.Row>
-            <Grid.Col auto>
+          {/* <Grid.Row>
+            <Grid.Col>
               <Button.List align="center">
                 <Button
-                  color="indigo"
+                  onClick={() => buyChallenge(challengeID, teamID, false)}
                   size="sm"
-                  icon="compass"
-                  onClick={openModal}
+                  color={isClosed ? "red" : "success"}
+                  disabled={subscriptions || isClosed}
+                  icon={
+                    subscriptions
+                      ? isClosed
+                        ? "x-circle"
+                        : "check"
+                      : "dollar-sign"
+                  }
                 >
-                  View
+                  {isClosed ? "Closed" : "Buy"}
                 </Button>
-                {/* <Button
-                onClick={() => buyChallenge(challengeID, teamID, false)}
-                size="sm"
-                color={isClosed ? "red" : "success"}
-                disabled={subscriptions || isClosed}
-                icon={
-                  subscriptions
-                    ? isClosed
-                      ? "x-circle"
-                      : "check"
-                    : "dollar-sign"
-                }
-              >
-                {isClosed ? "Closed" : "Buy"}
-              </Button> */}
-                {/* {subscriptions && flavor.instances && (
-                <Button
-                  RootComponent="a"
-                  target="_blank"
-                  href={flavor.instances[0].nginx_url}
-                  size="sm"
-                  color="gray-dark"
-                  icon="terminal"
-                  disabled={isClosed}
-                >
-                  Solve
-                </Button>
-                )}*/}
+                {subscriptions && flavor.instances && (
+                  <Button
+                    RootComponent="a"
+                    target="_blank"
+                    href={flavor.instances[0].nginx_url}
+                    size="sm"
+                    color="gray-dark"
+                    icon="terminal"
+                    disabled={isClosed}
+                  >
+                    Solve
+                  </Button>
+                )}
               </Button.List>
             </Grid.Col>
-          </Grid.Row>
+          </Grid.Row> */}
           <Modal open={modalOpen} onClose={onCloseModal}>
             <h2>Modal</h2>
             <Button
@@ -95,8 +100,8 @@ const ChallengeCard = ({ challenge }) => {
             </Button>
           </Modal>
         </>
-      }
-    />
+      </Card.Body>
+    </Card>
   );
 };
 
