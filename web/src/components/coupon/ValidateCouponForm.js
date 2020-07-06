@@ -40,7 +40,7 @@ const ValidateCouponForm = () => {
               </Button>
             }
           >
-            <Form.Input placeholder="Coupon code" />
+            <Form.Input placeholder="Coupon code" autoFocus={true} />
           </Form.InputGroup>
         </Form>
       )}
