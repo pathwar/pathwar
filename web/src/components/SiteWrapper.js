@@ -1,8 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Site, Nav, Dropdown, Tag, Dimmer } from "tabler-react";
+import { Site, Nav, Dropdown, Tag } from "tabler-react";
 import { Link } from "gatsby";
+import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
 
 import logo from "../images/new-pathwar-logo-dark-blue.png";
 
@@ -133,6 +134,7 @@ const navItemsProps = ({ activeUserSession }, activeSeason) => {
 class SiteWrapper extends React.Component {
   render() {
     const { userSession, activeSeason } = this.props;
+
     return (
       <Site.Wrapper
         headerProps={{
@@ -142,7 +144,10 @@ class SiteWrapper extends React.Component {
           accountDropdown: accountDropdownProps(userSession),
           navItems: navItemsProps(userSession, activeSeason),
         }}
-        navProps={{ itemsObjects: navBarItems }}
+        navProps={{
+          itemsObjects: navBarItems,
+          rightColumnComponent: <ValidateCouponForm />,
+        }}
       >
         {this.props.children}
       </Site.Wrapper>
