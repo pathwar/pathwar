@@ -2,13 +2,8 @@ import {
   SET_ACTIVE_ORGANIZATION,
   SET_ORGANIZATIONS_LIST,
   SET_ORGANIZATIONS_LIST_FAILED,
-  JOIN_ORGANIZATION_SUCCESS,
-  JOIN_ORGANIZATION_FAILED,
 } from "../constants/actionTypes";
-import {
-  getAllOrganizations,
-  joinOrganization as joinOrganizationCall,
-} from "../api/organizations";
+import { getAllOrganizations } from "../api/organizations";
 
 export const setActiveOrganization = teamObjData => async dispatch => {
   dispatch({
@@ -26,20 +21,5 @@ export const fetchOrganizationsList = () => async dispatch => {
     });
   } catch (error) {
     dispatch({ type: SET_ORGANIZATIONS_LIST_FAILED, payload: { error } });
-  }
-};
-
-export const joinOrganization = (userID, teamID) => async dispatch => {
-  try {
-    const response = await joinOrganizationCall(userID, teamID);
-    dispatch({
-      type: JOIN_ORGANIZATION_SUCCESS,
-      payload: response.data,
-    });
-
-    dispatch(fetchOrganizationsList());
-  } catch (error) {
-    dispatch({ type: JOIN_ORGANIZATION_FAILED, payload: { error } });
-    alert("Join team failed, please try again!");
   }
 };
