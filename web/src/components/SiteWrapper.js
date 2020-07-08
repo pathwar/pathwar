@@ -3,21 +3,29 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Site, Nav, Dropdown, Tag } from "tabler-react";
 import { Link } from "gatsby";
+import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
 
-import logo from "../images/pathwar-favicon.png";
+import logo from "../images/new-pathwar-logo-dark-blue.png";
 
 const navBarItems = [
   {
-    value: "Season",
-    to: "/app/season",
-    icon: "flag",
+    value: "Home",
+    to: "/app/home",
+    icon: "home",
     LinkComponent: Link,
     useExact: "false",
   },
   {
-    value: "Dashboard",
-    to: "/app/dashboard",
-    icon: "home",
+    value: "Challenges",
+    to: "/app/challenges",
+    icon: "anchor",
+    LinkComponent: Link,
+    useExact: "false",
+  },
+  {
+    value: "Statistics",
+    to: "/app/statistics",
+    icon: "activity",
     LinkComponent: Link,
     useExact: "false",
   },
@@ -113,7 +121,7 @@ const navItemsProps = ({ activeUserSession }, activeSeason) => {
   return (
     <Nav.Item type="div" className="d-none d-md-flex">
       <Dropdown
-        triggerContent={activeSeason && activeSeason.name}
+        triggerContent={(activeSeason && activeSeason.name) || "Loading.."}
         type="button"
         color="primary"
         icon="flag"
@@ -126,6 +134,7 @@ const navItemsProps = ({ activeUserSession }, activeSeason) => {
 class SiteWrapper extends React.Component {
   render() {
     const { userSession, activeSeason } = this.props;
+
     return (
       <Site.Wrapper
         headerProps={{
@@ -135,7 +144,10 @@ class SiteWrapper extends React.Component {
           accountDropdown: accountDropdownProps(userSession),
           navItems: navItemsProps(userSession, activeSeason),
         }}
-        navProps={{ itemsObjects: navBarItems }}
+        navProps={{
+          itemsObjects: navBarItems,
+          rightColumnComponent: <ValidateCouponForm />,
+        }}
       >
         {this.props.children}
       </Site.Wrapper>

@@ -1,56 +1,113 @@
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "gatsby";
-import { Button, Dimmer, Card, Grid } from "tabler-react";
+import { navigate } from "gatsby";
+import { Button, Dimmer, Card, Grid, Tag } from "tabler-react";
+import { Modal } from "react-responsive-modal";
 import styles from "../../styles/layout/loader.module.css";
 
-const ChallengeCard = ({ challenge, buyChallenge, teamID }) => {
-  const { flavor, subscriptions, id: challengeID } = challenge;
-  const isClosed = subscriptions && subscriptions[0].status === "Closed";
+const ChallengeCard = ({ challenge }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const { flavor, id: challengeID } = challenge;
+  // const isClosed = subscriptions && subscriptions[0].status === "Closed";
+
+  const onCloseModal = function() {
+    setModalOpen(false);
+  };
+
+  const openModal = function() {
+    setModalOpen(true);
+  };
+
+  const openChallengePage = function() {
+    setModalOpen(false);
+    setTimeout(() => navigate(`/app/challenge/${challengeID}`), 800);
+  };
 
   return (
-    <Card
-      title={flavor.challenge.name}
-      body={
-        <Button.List align="center">
-          <Button
-            onClick={() => buyChallenge(challengeID, teamID, false)}
-            size="sm"
-            color={isClosed ? "red" : "success"}
-            disabled={subscriptions || isClosed}
-            icon={
-              subscriptions ? (isClosed ? "x-circle" : "check") : "dollar-sign"
-            }
-          >
-            {isClosed ? "Closed" : "Buy"}
+    <Card>
+      <Card.Status color="green" side />
+      <Card.Header>
+        <Card.Title>{flavor.challenge.name}</Card.Title>
+        <Card.Options>
+          <Button color="indigo" size="sm" icon="compass" onClick={openModal}>
+            View
           </Button>
-          <Button
-            RootComponent={Link}
-            to={`/app/challenge/${challengeID}`}
-            target="_blank"
-            color="info"
-            size="sm"
-            icon="eye"
-          >
-            Open
-          </Button>
-          {subscriptions && flavor.instances && (
+        </Card.Options>
+      </Card.Header>
+      <Card.Body>
+        <>
+          <Grid.Row>
+            <Grid.Col auto>
+              <p>Author: {flavor.challenge.author}</p>
+            </Grid.Col>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Col auto>
+              <h3>changelog:</h3>
+              <p>{flavor.changelog}</p>
+            </Grid.Col>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Col auto>
+              <Tag.List>
+                <Tag color="dark" addOn={flavor.version} addOnColor="warning">
+                  version
+                </Tag>
+                <Tag addOn={flavor.is_latest.toString()} addOnColor="success">
+                  is_latest
+                </Tag>
+              </Tag.List>
+            </Grid.Col>
+          </Grid.Row>
+          {/* <Grid.Row>
+            <Grid.Col>
+              <Button.List align="center">
+                <Button
+                  onClick={() => buyChallenge(challengeID, teamID, false)}
+                  size="sm"
+                  color={isClosed ? "red" : "success"}
+                  disabled={subscriptions || isClosed}
+                  icon={
+                    subscriptions
+                      ? isClosed
+                        ? "x-circle"
+                        : "check"
+                      : "dollar-sign"
+                  }
+                >
+                  {isClosed ? "Closed" : "Buy"}
+                </Button>
+                {subscriptions && flavor.instances && (
+                  <Button
+                    RootComponent="a"
+                    target="_blank"
+                    href={flavor.instances[0].nginx_url}
+                    size="sm"
+                    color="gray-dark"
+                    icon="terminal"
+                    disabled={isClosed}
+                  >
+                    Solve
+                  </Button>
+                )}
+              </Button.List>
+            </Grid.Col>
+          </Grid.Row> */}
+          <Modal open={modalOpen} onClose={onCloseModal}>
+            <h2>Modal</h2>
             <Button
-              RootComponent="a"
-              target="_blank"
-              href={flavor.instances[0].nginx_url}
+              color="info"
               size="sm"
-              color="gray-dark"
-              icon="terminal"
-              disabled={isClosed}
+              icon="eye"
+              onClick={openChallengePage}
             >
-              Solve
+              Challenge page
             </Button>
-          )}
-        </Button.List>
-      }
-    />
+          </Modal>
+        </>
+      </Card.Body>
+    </Card>
   );
 };
 
@@ -81,4 +138,4 @@ const ChallengeList = props => {
   );
 };
 
-export default ChallengeList;
+export default React.memo(ChallengeList);
