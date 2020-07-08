@@ -138,4 +138,4 @@ const ChallengeList = props => {
   );
 };
 
-export default ChallengeList;
+export default React.memo(ChallengeList);
