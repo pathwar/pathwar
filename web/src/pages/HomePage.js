@@ -9,18 +9,19 @@ const HomePage = () => {
   );
   const {
     user: { active_team_member: activeTeam },
-  } = activeUserSession;
+  } = activeUserSession || { user: {} };
 
-  console.log(activeTeam);
+  const createDate = activeTeam && activeTeam.created_at;
+  const role = activeTeam && activeTeam.role;
 
   return (
     <Page.Content title="Home">
       <Grid.Row>
         <Grid.Col xs={12} sm={12} lg={6}>
           <h3>created at:</h3>
-          <p>{moment(activeTeam.created_at).format("ll")}</p>
+          <p>{moment(createDate).format("ll")}</p>
           <h3>role:</h3>
-          <p>{activeTeam.role}</p>
+          <p>{role}</p>
         </Grid.Col>
       </Grid.Row>
     </Page.Content>
