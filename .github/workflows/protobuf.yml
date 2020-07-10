@@ -1,0 +1,112 @@
+name: Protobuf
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      - master
+    paths:
+      - 'api/**'
+      - 'Makefile'
+      - 'js/Makefile'
+      - 'go/Makefile'
+      - 'docs/Makefile'
+      - '.github/workflows/protobuf.yml'
+      - '**/gen.sum'
+      - '**.pb.go'
+      - '**.gen.go'
+      - '**.gen.graphql'
+      - '**.gen.js'
+      - '**.gen.ts'
+      - '**.gen.tsx'
+      - '**.gen.yml'
+      - '**.pb.d.ts'
+      - '**.pb.go'
+      - '**.pb.js'
+      - '**/pb_test.go'
+      - '**/docs/*/api.md'
+      - '**/gen.sum'
+      - '**/go.mod'
+      - '**/go.sum'
+      - '**/yarn.lock'
+      - '**/package.json'
+      - '**/Podfile.lock'
+      - 'js/packages/store/protocol/grpc-web-gen/**'
+  pull_request:
+    paths:
+      - 'api/**'
+      - 'Makefile'
+      - 'js/Makefile'
+      - 'go/Makefile'
+      - 'docs/Makefile'
+      - '.github/workflows/protobuf.yml'
+      - '**/gen.sum'
+      - '**.pb.go'
+      - '**.gen.go'
+      - '**.gen.graphql'
+      - '**.gen.js'
+      - '**.gen.ts'
+      - '**.gen.tsx'
+      - '**.gen.yml'
+      - '**.pb.d.ts'
+      - '**.pb.go'
+      - '**.pb.js'
+      - '**/pb_test.go'
+      - '**/docs/*/api.md'
+      - '**/gen.sum'
+      - '**/go.mod'
+      - '**/go.sum'
+      - '**/yarn.lock'
+      - '**/package.json'
+      - '**/Podfile.lock'
+      - 'js/packages/store/protocol/grpc-web-gen/**'
+jobs:
+  gen-go-and-docs:
+    runs-on: ubuntu-latest
+    container: pathwar/protoc:6
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name:  unshallow
+        run: git fetch --prune --unshallow
+      - name: remove lock files
+        run: find . -name gen.sum -delete
+      - name: preload common deps
+        run: go mod vendor
+      - name: generating docs/
+        run: |
+          cd docs
+          make generate_local
+      - name: generating go/
+        run: |
+          cd go
+          make generate_local
+      - name: check diff
+        run: |
+          git checkout go.mod go.sum
+          git status | cat
+          git diff -w | cat
+          git diff-index -w --quiet HEAD --
+      #- name: install jq
+      #  run: |
+      #    wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -O /usr/local/bin/jq
+      #    chmod +x /usr/local/bin/jq
+      #- name: prepare openapi documentation
+      #  run: cd docs && make openapi.prepare
+      #- name: install apiary
+      #  run: apk --no-cache add ruby-dev g++ && gem install apiaryio
+      #- name: upload API docs to apiary.io
+      #  env:
+      #    APIARY_API_KEY: "${{ secrets.APIARY_API_KEY }}"
+      #  if: ${{ env.APIARY_API_KEY != 0 }}
+      #  run: |
+      #    apiary publish --api-name=pathwar  --path="docs/.tmp/openapi/pathwar.swagger.json"
+      #- name: deploy API documentation on bump.sh
+      #  uses: bump-sh/github-action@0.1
+      #  env:
+      #    BUMP_TOKEN: "${{ secrets.BUMP_TOKEN }}"
+      #  if: ${{ env.BUMP_TOKEN != 0 }}
+      #  with:
+      #    id: 6eb1bb1e-c65d-4b73-a8c4-0e545742f6db
+      #    token: ${{ secrets.BUMP_TOKEN }}
+      #    file: docs/.tmp/openapi/pathwar.swagger.json

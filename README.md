@@ -10,7 +10,9 @@
 <h3 align="center">🤝 Pathwar is an educational platform with a focus on security/cryptography, where you can go through challenges (courses) to learn new things and hone your skills.</h3>
 
 <p align="center">
-  <a href="https://circleci.com/gh/pathwar/pathwar"><img src="https://circleci.com/gh/pathwar/pathwar.svg?style=shield" alt="Build Status"></a>
+  <a href="https://github.com/pathwar/pathwar/actions?query=workflow%3AGo"><img src="https://github.com/pathwar/pathwar/workflows/Go/badge.svg" /></a>
+  <a href="https://github.com/pathwar/pathwar/actions?query=workflow%3AProtobuf"><img src="https://github.com/pathwar/pathwar/workflows/Protobuf/badge.svg" /></a>
+  <a href="https://github.com/pathwar/pathwar/actions?query=workflow%3ARelease"><img src="https://github.com/pathwar/pathwar/workflows/Release/badge.svg" /></a>
   <a href="https://www.codefactor.io/repository/github/pathwar/pathwar"><img src="https://www.codefactor.io/repository/github/pathwar/pathwar/badge" alt="Code Factor"></a>
   <a href="https://goreportcard.com/report/pathwar/pathwar"><img src="https://goreportcard.com/badge/pathwar/pathwar" alt="Go Report Card"></a>
   <a href="https://github.com/pathwar/pathwar/releases"><img src="https://badge.fury.io/gh/pathwar%2Fpathwar.svg" alt="GitHub version"></a>

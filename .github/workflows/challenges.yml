@@ -1,0 +1,25 @@
+name: Challenges
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      - master
+    paths:
+      - 'challenges/**'
+      - '.github/workflows/challenges.yml'
+  pull_request:
+    paths:
+      - 'challenges/**'
+      - '.github/workflows/challenges.yml'
+jobs:
+  build-challenges:
+    runs-on: ubuntu-latest
+    container: docker/compose:1.24.1
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: install deps
+        run: apk add --no-cache make git
+      - name: build challenges
+        run: cd challenges && make _ci
