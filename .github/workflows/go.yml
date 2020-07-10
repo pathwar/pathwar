@@ -1,21 +1,32 @@
-name: CI
+name: Go
 on:
   push:
     tags:
       - v*
     branches:
       - master
+    paths:
+      - '**.go'
+      - ".goreleaser.yml"
+      - ".golangci.yml"
+      - ".dockerignore"
+      - "Makefile"
+      - "rules.mk"
+      - "go.*"
+      - ".github/workflows/go.yml"
   pull_request:
+    paths:
+      - '**.go'
+      - ".goreleaser.yml"
+      - ".golangci.yml"
+      - ".dockerignore"
+      - "Makefile"
+      - "rules.mk"
+      - "go.*"
+      - ".github/workflows/go.yml"
 
 jobs:
-  docker-build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile
   golangci-lint:
-    name: golangci-lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,8 +34,10 @@ jobs:
         uses: golangci/golangci-lint-action@v1
         with:
           version: v1.27
-          working-directory: go
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           args: --timeout=2m
+          only-new-issues: false
+          working-directory: go
   tests-on-windows:
     needs: golangci-lint # run after golangci-lint action to not produce duplicated errors
     runs-on: windows-latest
@@ -49,6 +62,9 @@ jobs:
       matrix:
         golang:
           - 1.14
+    env:
+      OS: macos-latest
+      GOLANG: ${{ matrix.golang }}
     steps:
       - uses: actions/checkout@v2
       - name: Install Go
@@ -61,16 +77,37 @@ jobs:
           key: ${{ runner.os }}-go-${{ matrix.golang }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.golang }}-
+      #- name: Compile the project
+      #  run: cd go && make install
       - name: Run tests on Unix-like operating systems
-        run: make unittest
+        run: cd go && make unittest
+      - name: Check go.mod and go.sum
+        run: |
+          go mod tidy -v
+          git --no-pager diff go.mod go.sum
+          git --no-pager diff --quiet go.mod go.sum
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          #token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.txt
+          flags: unittests
+          env_vars: OS,GOLANG
+          name: codecov-umbrella
+          fail_ci_if_error: false
   tests-on-linux:
     needs: golangci-lint # run after golangci-lint action to not produce duplicated errors
     runs-on: ubuntu-latest
     strategy:
       matrix:
         golang:
+          #- 1.11
+          #- 1.12
           - 1.13
           - 1.14
+    env:
+      OS: ubuntu-latest
+      GOLANG: ${{ matrix.golang }}
     steps:
       - uses: actions/checkout@v2
       - name: Install Go
@@ -83,5 +120,21 @@ jobs:
           key: ${{ runner.os }}-go-${{ matrix.golang }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.golang }}-
+      - name: Compile the project
+        run: cd go && make install
+      - name: Check go.mod and go.sum
+        run: |
+          go mod tidy -v
+          git --no-pager diff go.mod go.sum
+          git --no-pager diff --quiet go.mod go.sum
       - name: Run tests on Unix-like operating systems
-        run: make unittest
+        run: cd go && make unittest
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          #token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.txt
+          flags: unittests
+          env_vars: OS,GOLANG
+          name: codecov-umbrella
+          fail_ci_if_error: false

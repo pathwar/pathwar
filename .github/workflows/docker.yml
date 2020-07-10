@@ -1,0 +1,38 @@
+name: Docker
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile
+  integration:
+    runs-on: ubuntu-latest
+    container: docker/compose:1.24.1
+    steps:
+      - uses: actions/checkout@v2
+      - name: install deps
+        run: apk add --no-cache make git curl openssl bash
+      - name: pull docker images
+        run: cd tool/integration && make pull
+      - name: build server
+        run: cd tool/integration && make build-server
+      - name: build web
+        run: cd tool/integration && make build-web
+      - name: build the rest
+        run: cd tool/integration && make build
+      - name: run
+        run: cd tool/integration && make run
+      - name: run again :)
+        run: cd tool/integration && make run
+      - name: get logs
+        if: always()
+        run: cd tool/integration && make logs-once

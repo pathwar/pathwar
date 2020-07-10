@@ -1,0 +1,22 @@
+name: Web
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      - master
+    paths:
+      - 'web/**'
+      - '.github/workflows/web.yml'
+  pull_request:
+    paths:
+      - 'web/**'
+      - '.github/workflows/web.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: cd web && docker build . --file Dockerfile
