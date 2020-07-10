@@ -22,27 +22,38 @@ COMMON_RUN_OPTS ?= --debug --zipkin-endpoint=http://localhost:9411/api/v2/spans
 API_DEV_OPTS ?=
 AGENT_DEV_OPTS ?=
 
+COMPILEDAEMON_OPTIONS ?= -exclude-dir=.git -color=true -build=go\ install -build-dir=./cmd/pathwar
+
 COMPOSE_OPTS = -f docker-compose.yml -f docker-compose.dev.yml
 include ../rules.mk  # see https://github.com/moul/rules.mk
 ##
 
 help::
+	@echo ""
 	@echo "Pathwar commands:"
-	@echo "  local-api     start an API"
-	@echo "  local-agent   start an agent connected to the local API"
-	@echo "  up            start everything in docker-compose"
+	@echo "  local-api          start an API (in auto-reload mode)"
+	@echo "  local-agent        start an agent connected to the local API (in auto-reload mode)"
+	@echo "  local-agent.auth   should be done once before local-agent"
+	@echo "  up                 start everything in docker-compose"
+	@echo ""
 
 .PHONY: local-api
-local-api: mysql.up zipkin.up
+local-api: mysql.up zipkin.up generate
+	$(GO) install github.com/githubnemo/CompileDaemon
 	$(GO) install $(GO_INSTALL_OPTS) ./cmd/pathwar
-	pathwar $(COMMON_RUN_OPTS) api --sso-unsafe server --with-pprof --bind=$(DEV_BIND) $(API_DEV_OPTS)
+	CompileDaemon $(COMPILEDAEMON_OPTIONS) -command="pathwar $(COMMON_RUN_OPTS) api --sso-unsafe server --with-pprof --bind=$(DEV_BIND) $(API_DEV_OPTS)"
 
 .PHONY: api-down
 api-down: mysql.down zipkin.down
 
 .PHONY: local-agent
 local-agent: install
-	pathwar $(COMMON_RUN_OPTS) agent --http-api-addr=http://localhost:8001 --port=$(AGENT_NGINX_PORT) $(AGENT_DEV_OPTS)
+	$(GO) install github.com/githubnemo/CompileDaemon
+	CompileDaemon $(COMPILEDAEMON_OPTIONS) -command="pathwar $(COMMON_RUN_OPTS) agent --http-api-addr=http://localhost:8001 --port=$(AGENT_NGINX_PORT) $(AGENT_DEV_OPTS)"
+
+.PHONY: local-agent.auth
+local-agent.auth: install
+	pathwar --debug agent --no-run
 
 .PHONY: preprod-agent
 preprod-agent: install
