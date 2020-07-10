@@ -12,7 +12,9 @@ require (
 	github.com/docker/go-connections v0.4.0
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/dustin/go-humanize v1.0.0
+	github.com/fatih/color v1.9.0 // indirect
 	github.com/getsentry/sentry-go v0.6.1
+	github.com/githubnemo/CompileDaemon v1.2.1
 	github.com/go-chi/chi v4.1.1+incompatible
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/gobuffalo/packr/v2 v2.8.0
