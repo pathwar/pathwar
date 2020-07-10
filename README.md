@@ -21,7 +21,7 @@
   <a href="https://github.com/pathwar/pathwar/actions?query=workflow%3AProtobuf"><img src="https://github.com/pathwar/pathwar/workflows/Protobuf/badge.svg" /></a>
   <a href="https://github.com/pathwar/pathwar/actions?query=workflow%3AWeb"><img src="https://github.com/pathwar/pathwar/workflows/Web/badge.svg" /></a>
   <a href="https://github.com/pathwar/pathwar/actions?query=workflow%3ADocker"><img src="https://github.com/pathwar/pathwar/workflows/Docker/badge.svg" /></a>
-  <a href="https://github.com/pathwar/pathwar/actions?query=workflow%3AChallenges"><img src="https://github.com/pathwar/pathwar/workflows/Release/badge.svg" /></a>
+  <a href="https://github.com/pathwar/pathwar/actions?query=workflow%3AChallenges"><img src="https://github.com/pathwar/pathwar/workflows/Challenges/badge.svg" /></a>
   <a href="https://github.com/pathwar/pathwar/actions?query=workflow%3ARelease"><img src="https://github.com/pathwar/pathwar/workflows/Release/badge.svg" /></a>
 </p>
 <p align="center"><b>
