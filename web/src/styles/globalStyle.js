@@ -72,6 +72,9 @@ export const globalStyle = ({ colors, font, type }) => {
 
     .dimmer {
       margin-top: 100px;
+      .loader {
+        position: relative;
+      }
     }
 
     .dimmerSmall {

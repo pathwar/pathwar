@@ -53,7 +53,12 @@ const ChallengeCard = ({ challenge }) => {
               </Tag.List>
             </Grid.Col>
           </Grid.Row>
-          <Modal open={modalOpen} onClose={onCloseModal}>
+          <Modal
+            open={modalOpen}
+            onClose={onCloseModal}
+            center={true}
+            animationDuration={300}
+          >
             <ChallengeDetailsPage challengeID={challengeID} />
           </Modal>
         </>
