@@ -3,7 +3,6 @@ import { Link } from "@reach/router";
 import { Card, Table, Dimmer, Icon } from "tabler-react";
 import PropTypes from "prop-types";
 
-import loaderStyles from "../../styles/layout/loader.module.css";
 import styles from "./style.module.css";
 
 const TeamsRows = ({ teams }) => {
@@ -35,7 +34,7 @@ const TeamsRows = ({ teams }) => {
 
 const AllTeamsOnSeasonList = ({ activeSeason, allTeamsOnSeason }) => {
   return !activeSeason || !allTeamsOnSeason ? (
-    <Dimmer className={loaderStyles.dimmer} active loader />
+    <Dimmer active loader />
   ) : (
     <Card>
       <Table

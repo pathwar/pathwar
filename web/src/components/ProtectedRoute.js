@@ -5,8 +5,6 @@ import Keycloak from "keycloak-js";
 import { Dimmer } from "tabler-react";
 import { setKeycloakSession } from "../actions/userSession";
 
-import styles from "../styles/layout/loader.module.css";
-
 class ProtectedRoute extends React.PureComponent {
   componentDidMount() {
     const { setKeycloakSession, userSession } = this.props;
@@ -37,7 +35,7 @@ class ProtectedRoute extends React.PureComponent {
       } else return <h3>Auth error, please try again!</h3>;
     }
 
-    return <Dimmer className={styles.dimmer} active loader />;
+    return <Dimmer active loader />;
   }
 }
 

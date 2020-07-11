@@ -3,7 +3,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Dimmer, Grid } from "tabler-react";
 import ChallengeCard from "./ChallengeCard";
-import styles from "../../styles/layout/loader.module.css";
 
 const ChallengeList = props => {
   const activeUserSession = useSelector(
@@ -14,7 +13,7 @@ const ChallengeList = props => {
   const { challenges, buyChallenge } = props;
 
   return !challenges || !activeUserSession ? (
-    <Dimmer className={styles.dimmer} active loader />
+    <Dimmer active loader />
   ) : (
     <>
       <Grid.Row>
