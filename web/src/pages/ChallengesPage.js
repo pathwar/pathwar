@@ -1,9 +1,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { Helmet } from "react-helmet";
 import PropTypes from "prop-types";
 import { Page, Grid } from "tabler-react";
 import { isNil } from "ramda";
-
+import siteMetaData from "../constants/metadata";
 import ChallengeList from "../components/challenges/ChallengeList";
 
 import {
@@ -41,18 +42,25 @@ class SeasonPage extends React.Component {
   render() {
     const { buyChallengeAction, activeSeason, activeChallenges } = this.props;
     const name = activeSeason ? activeSeason.name : undefined;
+    const { title, description } = siteMetaData;
 
     return (
-      <Page.Content title="Challenges" subTitle={name}>
-        <Grid.Row>
-          <Grid.Col xs={12} sm={12} lg={12}>
-            <ChallengeList
-              challenges={activeChallenges}
-              buyChallenge={buyChallengeAction}
-            />
-          </Grid.Col>
-        </Grid.Row>
-      </Page.Content>
+      <>
+        <Helmet>
+          <title>{title} - Challenges</title>
+          <meta name="description" content={description} />
+        </Helmet>
+        <Page.Content title="Challenges" subTitle={name}>
+          <Grid.Row>
+            <Grid.Col xs={12} sm={12} lg={12}>
+              <ChallengeList
+                challenges={activeChallenges}
+                buyChallenge={buyChallengeAction}
+              />
+            </Grid.Col>
+          </Grid.Row>
+        </Page.Content>
+      </>
     );
   }
 }

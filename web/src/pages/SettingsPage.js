@@ -1,9 +1,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { Helmet } from "react-helmet";
 import PropTypes from "prop-types";
 
 import { Page, Grid, Button } from "tabler-react";
 
+import siteMetaData from "../constants/metadata";
 import { deleteAccount as deleteAccountAction } from "../actions/userSession";
 
 class SettingsPage extends React.PureComponent {
@@ -23,23 +25,30 @@ class SettingsPage extends React.PureComponent {
 
   render() {
     const { isFetching } = this.state;
+    const { title, description } = siteMetaData;
 
     return (
-      <Page.Content title={`Settings`}>
-        <Grid.Row cards={true}>
-          <Grid.Col xs={12} sm={12} lg={6}>
-            <Button.List>
-              <Button
-                onClick={() => this.deleteAccount("integration test")}
-                loading={isFetching}
-                color="primary"
-              >
-                Delete Account
-              </Button>
-            </Button.List>
-          </Grid.Col>
-        </Grid.Row>
-      </Page.Content>
+      <>
+        <Helmet>
+          <title>{title} - Settings</title>
+          <meta name="description" content={description} />
+        </Helmet>
+        <Page.Content title={`Settings`}>
+          <Grid.Row cards={true}>
+            <Grid.Col xs={12} sm={12} lg={6}>
+              <Button.List>
+                <Button
+                  onClick={() => this.deleteAccount("integration test")}
+                  loading={isFetching}
+                  color="primary"
+                >
+                  Delete Account
+                </Button>
+              </Button.List>
+            </Grid.Col>
+          </Grid.Row>
+        </Page.Content>
+      </>
     );
   }
 }
