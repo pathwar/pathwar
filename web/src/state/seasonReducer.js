@@ -7,6 +7,7 @@ import {
   GET_ALL_SEASON_TEAMS_SUCCESS,
   SET_CHALLENGES_LIST,
   GET_CHALLENGE_DETAILS_SUCCESS,
+  CLEAN_CHALLENGE_DETAIL,
   GET_TEAM_DETAILS_SUCCESS,
   SET_ACTIVE_TEAM,
   CLOSE_CHALLENGE_SUCCESS,
@@ -63,6 +64,12 @@ export default function seasonReducer(state = initialState.seasons, action) {
       return {
         ...state,
         challengeInDetail: action.payload.challenge,
+      };
+
+    case CLEAN_CHALLENGE_DETAIL:
+      return {
+        ...state,
+        challengeInDetail: undefined,
       };
 
     case SET_CHALLENGES_LIST:

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-
+import { Page, Grid, Dimmer, Button } from "tabler-react";
 import {
   fetchChallengeDetail as fetchChallengeDetailAction,
   buyChallenge as buyChallengeAction,
@@ -12,10 +12,9 @@ import ChallengeBuyButton from "../components/challenges/ChallengeBuyButton";
 import ChallengeValidateButton from "../components/challenges/ChallengeValidateButton";
 import ChallengeCloseButton from "../components/challenges/ChallengeCloseButton";
 import ValidationsList from "../components/challenges/ValidationsList";
+import { CLEAN_CHALLENGE_DETAIL } from "../constants/actionTypes";
 
 import styles from "./styles/ChallengeDetailsPage.module.css";
-
-import { Page, Grid, Dimmer, Button } from "tabler-react";
 
 const ChallengeDetailsPage = props => {
   const dispatch = useDispatch();
@@ -32,14 +31,18 @@ const ChallengeDetailsPage = props => {
     dispatch(fetchChallengeDetailAction(challengeID));
 
   useEffect(() => {
-    const { uri } = props;
-    const challengeID = uri.split("/")[3];
-    fetchChallengeDetail(challengeID);
+    const { uri, challengeID: challengeIDFromProps } = props;
+    const challengeIDFromURI = uri && uri.split("/")[3];
+    const challhengeID = challengeIDFromURI || challengeIDFromProps;
+
+    fetchChallengeDetail(challhengeID);
+
+    return () => dispatch({ type: CLEAN_CHALLENGE_DETAIL });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!challenge) {
-    return <Dimmer active />;
+    return <Dimmer active loader />;
   }
 
   const {

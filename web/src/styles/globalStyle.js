@@ -70,6 +70,14 @@ export const globalStyle = ({ colors, font, type }) => {
       width: auto;
     }
 
+    .dimmer {
+      margin-top: 100px;
+    }
+
+    .dimmerSmall {
+      width: 20px;
+    }
+
     @media (max-width: 991px) {
       h1 {
         font-size: 1.562rem;
