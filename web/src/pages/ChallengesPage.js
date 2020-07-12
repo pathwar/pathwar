@@ -50,7 +50,7 @@ class SeasonPage extends React.Component {
           <title>{title} - Challenges</title>
           <meta name="description" content={description} />
         </Helmet>
-        <Page.Content title="Challenges" subTitle={name}>
+        <Page.Content title="Challenges">
           <Grid.Row>
             <Grid.Col xs={12} sm={12} lg={12}>
               <ChallengeList
