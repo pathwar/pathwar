@@ -9,17 +9,14 @@ import ChallengeList from "../components/challenges/ChallengeList";
 
 import {
   fetchChallenges as fetchChallengesAction,
-  fetchAllSeasonTeams as fetchAllSeasonTeamsAction,
   buyChallenge as buyChallengeAction,
 } from "../actions/seasons";
 
 class SeasonPage extends React.Component {
   componentDidUpdate(prevProps) {
     const {
-      fetchAllSeasonTeamsAction,
       fetchChallengesAction,
       activeSeason,
-      allTeamsOnSeason,
       activeChallenges,
     } = this.props;
 
@@ -29,10 +26,6 @@ class SeasonPage extends React.Component {
       (isNil(prevActiveSeason) && activeSeason) ||
       prevActiveSeason.id === activeSeason.id
     ) {
-      if (isNil(allTeamsOnSeason)) {
-        fetchAllSeasonTeamsAction(activeSeason.id);
-      }
-
       if (isNil(activeChallenges)) {
         fetchChallengesAction(activeSeason.id);
       }
@@ -40,8 +33,7 @@ class SeasonPage extends React.Component {
   }
 
   render() {
-    const { buyChallengeAction, activeSeason, activeChallenges } = this.props;
-    const name = activeSeason ? activeSeason.name : undefined;
+    const { buyChallengeAction, activeChallenges } = this.props;
     const { title, description } = siteMetaData;
 
     return (
@@ -77,7 +69,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchChallengesAction: seasonID => fetchChallengesAction(seasonID),
-  fetchAllSeasonTeamsAction: seasonID => fetchAllSeasonTeamsAction(seasonID),
   buyChallengeAction: (seasonID, teamID) =>
     buyChallengeAction(seasonID, teamID),
 };
