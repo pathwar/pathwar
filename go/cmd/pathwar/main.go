@@ -52,6 +52,7 @@ const (
 	defaultSSOClientSecret = ""
 	defaultDBURN           = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8mb4&parseTime=true"
 	defaultDockerPrefix    = "pathwar/"
+	defaultUserTokenFile   = "pathwar_oauth_token.json"
 	defaultAgentTokenFile  = "pathwar_agent_oauth_token.json"
 	defaultAdminTokenFile  = "pathwar_admin_oauth_token.json"
 	defaultHTTPApiAddr     = "https://api-dev.pathwar.land"
@@ -207,7 +208,7 @@ func main() {
 	clientFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
 	clientFlags.StringVar(&ssoClientSecret, "sso-clientsecret", defaultSSOClientSecret, "SSO ClientSecret")
 	clientFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
-	clientFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultAgentTokenFile, "Token file")
+	clientFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultUserTokenFile, "Token file")
 
 	composeDownFlags.BoolVar(&composeDownKeepVolumes, "keep-volumes", false, "keep volumes")
 	composeDownFlags.BoolVar(&composeDownRemoveImages, "rmi", false, "remove images as well")
@@ -766,8 +767,7 @@ func main() {
 		LongHelp: `EXAMPLES
   pathwar client GET /user/session
   season=$(pathwar client GET /user/session | jq -r '.seasons[0].season.id')
-  pathwar client GET "/season-challenges?season_id=$season"
-`,
+  pathwar client GET "/season-challenges?season_id=$season"`,
 		FlagSet: clientFlags,
 		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec: func(args []string) error {
