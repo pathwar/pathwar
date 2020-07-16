@@ -14,7 +14,32 @@ type Opts struct {
 	AllowUnsafe bool
 	Logger      *zap.Logger
 	ClientID    string
-	// ClientSecret string
+
+	// following fields are not (yet) used by this package but are used to configure other SSO related stuff
+
+	ClientSecret string
+	Realm        string
+	TokenFile    string
+	Pubkey       string
+}
+
+// NewOpts returns sane default values for development
+func NewOpts() Opts {
+	return Opts{
+		Pubkey:       "",
+		Realm:        testingRealm,
+		ClientID:     testingClientID,
+		ClientSecret: "",
+		TokenFile:    "pathwar_oauth_token.json",
+		AllowUnsafe:  false,
+		Logger:       zap.NewNop(),
+	}
+}
+
+func (opts *Opts) ApplyDefaults() {
+	if opts.Pubkey == "" {
+		opts.Pubkey = testingPubKey
+	}
 }
 
 type Client interface {

@@ -46,15 +46,8 @@ import (
 )
 
 const (
-	defaultSSOPubKey       = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlEFxLlywsbI5BQ7DVkA66fICWGIYPpD+aZNYRR7SIc0zdtJR4xMOt5CjM0vbYT4z2a1U2yl0ewunyxFm8niS8w6mKYFnOS4nnSchQyIAmJkpLC4eAjijCdEHdr8mSqamThSrVRGSYEEsa+adidC13kRDy7NDKhvZb8F0YqnktNk6WHSlb8r2QRLPJ1DX534jjXPY6l/eoHuLJAOZxBlfwV5Dg37TVmf2xAH812E7ZigycLAvhsMvr5x2jLavAEEnZZmlQf4cyQ4tlMzKS1Zp0NcdOGS/i6lrndc5pNtZQuGr8IGBrEbTRFUiavn/HDnyalYZy8T5LakXRdVaKdshAQIDAQAB"
-	defaultSSORealm        = "Pathwar-Dev"
-	defaultSSOClientID     = "platform-cli"
-	defaultSSOClientSecret = ""
-	defaultDBURN           = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8mb4&parseTime=true"
-	defaultDockerPrefix    = "pathwar/"
-	defaultAgentTokenFile  = "pathwar_agent_oauth_token.json"
-	defaultAdminTokenFile  = "pathwar_admin_oauth_token.json"
-	defaultHTTPApiAddr     = "https://api-dev.pathwar.land"
+	defaultDBURN       = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8mb4&parseTime=true"
+	defaultHTTPApiAddr = "https://api-dev.pathwar.land"
 )
 
 var (
@@ -64,58 +57,24 @@ var (
 	flagOutput = os.Stderr
 
 	// flag vars
-	addChallengeAuthor              string
-	addChallengeDescription         string
-	addChallengeFlavorChallengeID   int64
-	addChallengeFlavorComposeBundle string
-	addChallengeFlavorVersion       string
-	addChallengeHomepage            string
-	addChallengeInstanceAgentID     int64
-	addChallengeInstanceFlavorID    int64
-	addChallengeIsDraft             bool
-	addChallengeLocale              string
-	addChallengeName                string
-	addChallengePreviewURL          string
-	agentClean                      bool
-	agentDefault                    bool
-	agentDomainSuffix               string
-	agentForceRecreate              bool
-	agentHostIP                     string
-	agentHostPort                   string
-	agentLoopDelay                  time.Duration
-	agentModeratorPassword          string
-	agentName                       string
-	agentNginxDockerImage           string
-	agentNoRun                      bool
-	agentRunOnce                    bool
-	agentSalt                       string
-	DBURN                           string
-	DBMaxOpenTries                  int
-	bearerSecretKey                 string
-	composeDownKeepVolumes          bool
-	composeDownRemoveImages         bool
-	composeDownWithNginx            bool
-	composePSDepth                  int
-	composePrepareNoPush            bool
-	composePreparePrefix            string
-	composePrepareVersion           string
-	composeUpForceRecreate          bool
-	composeUpInstanceKey            string
-	globalDebug                     bool
-	globalSentryDSN                 string
-	httpAPIAddr                     string
-	serverBind                      string
-	serverCORSAllowedOrigins        string
-	serverRequestTimeout            time.Duration
-	serverShutdownTimeout           time.Duration
-	serverWithPprof                 bool
-	ssoAllowUnsafe                  bool
-	ssoClientID                     string
-	ssoClientSecret                 string
-	ssoPubkey                       string
-	ssoRealm                        string
-	ssoTokenFile                    string
-	zipkinEndpoint                  string
+	adminChallengeAddInput         = pwapi.AdminChallengeAdd_Input{Challenge: &pwdb.Challenge{}}
+	adminChallengeFlavorAddInput   = pwapi.AdminChallengeFlavorAdd_Input{ChallengeFlavor: &pwdb.ChallengeFlavor{}}
+	adminChallengeInstanceAddInput = pwapi.AdminChallengeInstanceAdd_Input{ChallengeInstance: &pwdb.ChallengeInstance{}}
+	agentOpts                      = pwagent.NewOpts()
+	serverOpts                     = pwapi.NewServerOpts()
+	ssoOpts                        = pwsso.NewOpts()
+	composeCleanOpts               = pwcompose.NewCleanOpts()
+	composePrepareOpts             = pwcompose.NewPrepareOpts()
+	composeUpOpts                  = pwcompose.NewUpOpts()
+
+	DBURN           string
+	DBMaxOpenTries  int
+	bearerSecretKey string
+	composePSDepth  int
+	globalDebug     bool
+	globalSentryDSN string
+	httpAPIAddr     string
+	zipkinEndpoint  string
 )
 
 // nolint:gocyclo
@@ -155,83 +114,79 @@ func main() {
 	globalFlags.StringVar(&bearerSecretKey, "bearer-secretkey", "", "bearer.sh secret key")
 	globalFlags.StringVar(&globalSentryDSN, "sentry-dsn", "", "Sentry DSN")
 
-	agentFlags.BoolVar(&agentClean, "clean", false, "remove all pathwar instances before executing")
-	agentFlags.BoolVar(&agentRunOnce, "once", false, "run once and don't start daemon loop")
-	agentFlags.BoolVar(&agentNoRun, "no-run", false, "stop after agent initialization (register and cleanup)")
-	agentFlags.DurationVar(&agentLoopDelay, "delay", 10*time.Second, "delay between each loop iteration")
-	agentFlags.BoolVar(&agentDefault, "default-agent", true, "agent creates an instance for each available flavor on registration, else will only create an instance of debug-challenge")
 	agentFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
-	agentFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
-	agentFlags.StringVar(&ssoClientSecret, "sso-clientsecret", defaultSSOClientSecret, "SSO ClientSecret")
-	agentFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
-	agentFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultAgentTokenFile, "Token file")
-	hostname, _ := os.Hostname()
-	if hostname == "" {
-		hostname = "dev"
-	}
-	agentFlags.StringVar(&agentName, "agent-name", hostname, "Agent Name")
-	agentFlags.StringVar(&agentDomainSuffix, "nginx-domain-suffix", "local", "Domain suffix to append")
-	agentFlags.StringVar(&agentNginxDockerImage, "docker-image", "docker.io/library/nginx:stable-alpine", "docker image used to generate nginx proxy container")
-	agentFlags.StringVar(&agentDomainSuffix, "domain-suffix", "local", "Domain suffix to append")
-	agentFlags.StringVar(&agentHostIP, "host", "0.0.0.0", "Nginx HTTP listening addr")
-	agentFlags.StringVar(&agentHostPort, "port", "8001", "Nginx HTTP listening port")
-	agentFlags.StringVar(&agentModeratorPassword, "moderator-password", "", "Challenge moderator password")
-	agentFlags.StringVar(&agentSalt, "salt", "", "salt used to generate secure hashes (random if empty)")
+	agentFlags.StringVar(&ssoOpts.ClientID, "sso-clientid", ssoOpts.ClientID, "SSO ClientID")
+	agentFlags.StringVar(&ssoOpts.ClientSecret, "sso-clientsecret", ssoOpts.ClientSecret, "SSO ClientSecret")
+	agentFlags.StringVar(&ssoOpts.Realm, "sso-realm", ssoOpts.Realm, "SSO Realm")
+	agentFlags.StringVar(&ssoOpts.TokenFile, "sso-token-file", ssoOpts.TokenFile, "Token file")
+
+	agentFlags.BoolVar(&agentOpts.Cleanup, "clean", agentOpts.Cleanup, "remove all pathwar instances before executing")
+	agentFlags.BoolVar(&agentOpts.RunOnce, "once", agentOpts.RunOnce, "run once and don't start daemon loop")
+	agentFlags.BoolVar(&agentOpts.NoRun, "no-run", agentOpts.NoRun, "stop after agent initialization (register and cleanup)")
+	agentFlags.DurationVar(&agentOpts.LoopDelay, "delay", agentOpts.LoopDelay, "delay between each loop iteration")
+	agentFlags.BoolVar(&agentOpts.DefaultAgent, "default-agent", agentOpts.DefaultAgent, "agent creates an instance for each available flavor on registration, else will only create an instance of debug-challenge")
+	agentFlags.StringVar(&agentOpts.Name, "agent-name", agentOpts.Name, "Agent Name")
+	agentFlags.StringVar(&agentOpts.DomainSuffix, "domain-suffix", agentOpts.DomainSuffix, "Domain suffix to append")
+	agentFlags.StringVar(&agentOpts.NginxDockerImage, "docker-image", agentOpts.NginxDockerImage, "docker image used to generate nginx proxy container")
+	agentFlags.StringVar(&agentOpts.HostIP, "host", agentOpts.HostIP, "Nginx HTTP listening addr")
+	agentFlags.StringVar(&agentOpts.HostPort, "port", agentOpts.HostPort, "Nginx HTTP listening port")
+	agentFlags.StringVar(&agentOpts.ModeratorPassword, "moderator-password", agentOpts.ModeratorPassword, "Challenge moderator password")
+	agentFlags.StringVar(&agentOpts.AuthSalt, "salt", agentOpts.AuthSalt, "salt used to generate secure hashes (random if empty)")
 
 	adminFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
-	adminFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultAdminTokenFile, "Token file")
+	adminFlags.StringVar(&ssoOpts.TokenFile, "sso-token-file", ssoOpts.TokenFile, "Token file")
 
-	adminChallengeAddFlags.StringVar(&addChallengeName, "name", "name", "Challenge name")
-	adminChallengeAddFlags.StringVar(&addChallengeDescription, "description", "description", "Challenge description")
-	adminChallengeAddFlags.StringVar(&addChallengeAuthor, "author", "author", "Challenge author")
-	adminChallengeAddFlags.StringVar(&addChallengeLocale, "locale", "locale", "Challenge Locale")
-	adminChallengeAddFlags.BoolVar(&addChallengeIsDraft, "is-draft", true, "Is challenge production ready ?")
-	adminChallengeAddFlags.StringVar(&addChallengePreviewURL, "preview-url", "", "Challenge preview URL")
-	adminChallengeAddFlags.StringVar(&addChallengeHomepage, "homepage", "", "Challenge homepage URL")
+	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Name, "name", "", "Challenge name")
+	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Description, "description", "", "Challenge description")
+	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Author, "author", "", "Challenge author")
+	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Locale, "locale", "", "Challenge Locale")
+	adminChallengeAddFlags.BoolVar(&adminChallengeAddInput.Challenge.IsDraft, "is-draft", true, "Is challenge production ready ?")
+	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.PreviewUrl, "preview-url", "", "Challenge preview URL")
+	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Homepage, "homepage", "", "Challenge homepage URL")
 
-	adminChallengeFlavorAddFlags.StringVar(&addChallengeFlavorVersion, "version", "1.0.0", "Challenge flavor version")
-	adminChallengeFlavorAddFlags.StringVar(&addChallengeFlavorComposeBundle, "compose-bundle", "", "Challenge flavor compose bundle")
-	adminChallengeFlavorAddFlags.Int64Var(&addChallengeFlavorChallengeID, "challenge-id", 0, "Challenge id")
+	adminChallengeFlavorAddFlags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.Version, "version", "1.0.0", "Challenge flavor version")
+	adminChallengeFlavorAddFlags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.ComposeBundle, "compose-bundle", "", "Challenge flavor compose bundle")
+	adminChallengeFlavorAddFlags.Int64Var(&adminChallengeFlavorAddInput.ChallengeFlavor.ChallengeID, "challenge-id", 0, "Challenge id")
 
-	adminChallengeInstanceAddFlags.Int64Var(&addChallengeInstanceAgentID, "agent-id", 0, "Id of the agent that will host the instance")
-	adminChallengeInstanceAddFlags.Int64Var(&addChallengeInstanceFlavorID, "flavor-id", 0, "Challenge flavor id")
+	adminChallengeInstanceAddFlags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.AgentID, "agent-id", 0, "Id of the agent that will host the instance")
+	adminChallengeInstanceAddFlags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.FlavorID, "flavor-id", 0, "Challenge flavor id")
 
-	apiFlags.BoolVar(&ssoAllowUnsafe, "sso-unsafe", false, "Allow unsafe SSO")
+	apiFlags.BoolVar(&ssoOpts.AllowUnsafe, "sso-unsafe", ssoOpts.AllowUnsafe, "Allow unsafe SSO")
 	apiFlags.StringVar(&DBURN, "urn", defaultDBURN, "MySQL URN")
 	apiFlags.IntVar(&DBMaxOpenTries, "db-max-open-tries", 0, "max DB open tries, unlimited if 0")
-	apiFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
-	apiFlags.StringVar(&ssoPubkey, "sso-pubkey", "", "SSO Public Key")
-	apiFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
+	apiFlags.StringVar(&ssoOpts.ClientID, "sso-clientid", ssoOpts.ClientID, "SSO ClientID")
+	apiFlags.StringVar(&ssoOpts.Pubkey, "sso-pubkey", ssoOpts.Pubkey, "SSO Public Key")
+	apiFlags.StringVar(&ssoOpts.Realm, "sso-realm", ssoOpts.Realm, "SSO Realm")
 
 	clientFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
-	clientFlags.StringVar(&ssoClientID, "sso-clientid", defaultSSOClientID, "SSO ClientID")
-	clientFlags.StringVar(&ssoClientSecret, "sso-clientsecret", defaultSSOClientSecret, "SSO ClientSecret")
-	clientFlags.StringVar(&ssoRealm, "sso-realm", defaultSSORealm, "SSO Realm")
-	clientFlags.StringVar(&ssoTokenFile, "sso-token-file", defaultAgentTokenFile, "Token file")
+	clientFlags.StringVar(&ssoOpts.ClientID, "sso-clientid", ssoOpts.ClientID, "SSO ClientID")
+	clientFlags.StringVar(&ssoOpts.ClientSecret, "sso-clientsecret", ssoOpts.ClientSecret, "SSO ClientSecret")
+	clientFlags.StringVar(&ssoOpts.Realm, "sso-realm", ssoOpts.Realm, "SSO Realm")
+	clientFlags.StringVar(&ssoOpts.TokenFile, "sso-token-file", ssoOpts.TokenFile, "Token file")
 
-	composeDownFlags.BoolVar(&composeDownKeepVolumes, "keep-volumes", false, "keep volumes")
-	composeDownFlags.BoolVar(&composeDownRemoveImages, "rmi", false, "remove images as well")
-	composeDownFlags.BoolVar(&composeDownWithNginx, "with-nginx", false, "down nginx container and proxy network as well")
+	composeDownFlags.BoolVar(&composeCleanOpts.RemoveVolumes, "rm-volumes", composeCleanOpts.RemoveVolumes, "keep volumes")
+	composeDownFlags.BoolVar(&composeCleanOpts.RemoveImages, "rm-images", composeCleanOpts.RemoveImages, "remove images as well")
+	composeDownFlags.BoolVar(&composeCleanOpts.RemoveNginx, "rm-nginx", composeCleanOpts.RemoveNginx, "down nginx container and proxy network as well")
 
 	composePSFlags.IntVar(&composePSDepth, "depth", 0, "depth to display")
 
-	composePrepareFlags.BoolVar(&composePrepareNoPush, "no-push", false, "don't push images")
-	composePrepareFlags.StringVar(&composePreparePrefix, "prefix", defaultDockerPrefix, "docker image prefix")
-	composePrepareFlags.StringVar(&composePrepareVersion, "version", "1.0.0", "challenge version")
+	composePrepareFlags.BoolVar(&composePrepareOpts.NoPush, "no-push", composePrepareOpts.NoPush, "don't push images")
+	composePrepareFlags.StringVar(&composePrepareOpts.Prefix, "prefix", composePrepareOpts.Prefix, "docker image prefix")
+	composePrepareFlags.StringVar(&composePrepareOpts.Version, "version", composePrepareOpts.Version, "challenge version")
 
-	composeUpFlags.StringVar(&composeUpInstanceKey, "instance-key", "default", "instance key used to generate instance ID")
-	composeUpFlags.BoolVar(&composeUpForceRecreate, "force-recreate", false, "down previously created instances of challenge")
+	composeUpFlags.StringVar(&composeUpOpts.InstanceKey, "instance-key", composeUpOpts.InstanceKey, "instance key used to generate instance ID")
+	composeUpFlags.BoolVar(&composeUpOpts.ForceRecreate, "force-recreate", composeUpOpts.ForceRecreate, "down previously created instances of challenge")
 
-	serverFlags.BoolVar(&serverWithPprof, "with-pprof", false, "enable pprof endpoints")
-	serverFlags.DurationVar(&serverRequestTimeout, "request-timeout", 5*time.Second, "request timeout")
-	serverFlags.DurationVar(&serverShutdownTimeout, "shutdown-timeout", 6*time.Second, "shutdown timeout")
-	serverFlags.StringVar(&serverCORSAllowedOrigins, "cors-allowed-origins", "*", "allowed CORS origins")
-	serverFlags.StringVar(&serverBind, "bind", ":8000", "server address")
+	serverFlags.BoolVar(&serverOpts.WithPprof, "with-pprof", serverOpts.WithPprof, "enable pprof endpoints")
+	serverFlags.DurationVar(&serverOpts.RequestTimeout, "request-timeout", serverOpts.RequestTimeout, "request timeout")
+	serverFlags.DurationVar(&serverOpts.ShutdownTimeout, "shutdown-timeout", serverOpts.ShutdownTimeout, "shutdown timeout")
+	serverFlags.StringVar(&serverOpts.CORSAllowedOrigins, "cors-allowed-origins", serverOpts.CORSAllowedOrigins, "allowed CORS origins")
+	serverFlags.StringVar(&serverOpts.Bind, "bind", serverOpts.Bind, "server address")
 
-	ssoFlags.BoolVar(&ssoAllowUnsafe, "unsafe", false, "Allow unsafe SSO")
-	ssoFlags.StringVar(&ssoClientID, "clientid", defaultSSOClientID, "SSO ClientID")
-	ssoFlags.StringVar(&ssoPubkey, "pubkey", "", "SSO Public Key")
-	ssoFlags.StringVar(&ssoRealm, "realm", defaultSSORealm, "SSO Realm")
+	ssoFlags.BoolVar(&ssoOpts.AllowUnsafe, "unsafe", ssoOpts.AllowUnsafe, "Allow unsafe SSO")
+	ssoFlags.StringVar(&ssoOpts.ClientID, "clientid", ssoOpts.ClientID, "SSO ClientID")
+	ssoFlags.StringVar(&ssoOpts.Pubkey, "pubkey", ssoOpts.Pubkey, "SSO Public Key")
+	ssoFlags.StringVar(&ssoOpts.Realm, "realm", ssoOpts.Realm, "SSO Realm")
 
 	version := &ffcli.Command{
 		Name:      "version",
@@ -286,17 +241,10 @@ func main() {
 				)
 				g.Add(run.SignalHandler(ctx, syscall.SIGTERM, syscall.SIGINT, os.Interrupt, os.Kill))
 				{ // server
-					opts := pwapi.ServerOpts{
-						Logger:             logger.Named("server"),
-						Bind:               serverBind,
-						CORSAllowedOrigins: serverCORSAllowedOrigins,
-						RequestTimeout:     serverRequestTimeout,
-						ShutdownTimeout:    serverShutdownTimeout,
-						WithPprof:          serverWithPprof,
-						Tracer:             tracer,
-					}
+					serverOpts.Tracer = tracer
+					serverOpts.Logger = logger.Named("server")
 					var err error
-					server, err = pwapi.NewServer(ctx, svc, opts)
+					server, err = pwapi.NewServer(ctx, svc, serverOpts)
 					if err != nil {
 						return errcode.ErrInitServer.Wrap(err)
 					}
@@ -509,7 +457,9 @@ func main() {
 					return errcode.ErrInitDockerClient.Wrap(err)
 				}
 
-				services, err := pwcompose.Up(ctx, string(preparedCompose), composeUpInstanceKey, composeUpForceRecreate, "", nil, cli, logger)
+				composeUpOpts.Logger = logger
+				composeUpOpts.PreparedCompose = string(preparedCompose)
+				services, err := pwcompose.Up(ctx, cli, composeUpOpts)
 				if err != nil {
 					return err
 				}
@@ -535,16 +485,10 @@ func main() {
 					return err
 				}
 
-				preparedComposeData, err := pwcompose.Prepare(
-					path,
-					composePreparePrefix,
-					composePrepareNoPush,
-					composePrepareVersion,
-					logger,
-				)
-
+				composePrepareOpts.ChallengeDir = path
+				composePrepareOpts.Logger = logger
+				preparedComposeData, err := pwcompose.Prepare(composePrepareOpts)
 				fmt.Println(preparedComposeData)
-
 				return err
 			},
 		}, {
@@ -582,15 +526,9 @@ func main() {
 					return errcode.ErrInitDockerClient.Wrap(err)
 				}
 
-				return pwcompose.Clean(
-					ctx,
-					args,
-					composeDownRemoveImages,
-					!composeDownKeepVolumes,
-					composeDownWithNginx,
-					cli,
-					logger,
-				)
+				composeCleanOpts.Logger = logger
+				composeCleanOpts.ContainerIDs = args
+				return pwcompose.Clean(ctx, cli, composeCleanOpts)
 			},
 		}},
 		ShortHelp: "manage a challenge",
@@ -671,23 +609,14 @@ func main() {
 					return errcode.TODO.Wrap(err)
 				}
 
-				_, err = apiClient.AdminAddChallenge(ctx, &pwapi.AdminChallengeAdd_Input{
-					Challenge: &pwdb.Challenge{
-						Name:        addChallengeName,
-						Description: addChallengeDescription,
-						Author:      addChallengeAuthor,
-						Locale:      addChallengeLocale,
-						IsDraft:     addChallengeIsDraft,
-						PreviewUrl:  addChallengePreviewURL,
-						Homepage:    addChallengeHomepage,
-					},
-				})
+				ret, err := apiClient.AdminAddChallenge(ctx, &adminChallengeAddInput)
 				if err != nil {
 					return errcode.TODO.Wrap(err)
 				}
-
-				fmt.Println("OK")
-
+				if globalDebug {
+					fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
+				}
+				fmt.Println(ret.Challenge.ID)
 				return nil
 			},
 		}, {
@@ -706,21 +635,14 @@ func main() {
 					return errcode.TODO.Wrap(err)
 				}
 
-				input := &pwapi.AdminChallengeFlavorAdd_Input{
-					ChallengeFlavor: &pwdb.ChallengeFlavor{
-						Version:       addChallengeFlavorVersion,
-						ComposeBundle: addChallengeFlavorComposeBundle,
-						ChallengeID:   addChallengeFlavorChallengeID,
-					},
-				}
-
-				_, err = apiClient.AdminAddChallengeFlavor(ctx, input)
+				ret, err := apiClient.AdminAddChallengeFlavor(ctx, &adminChallengeFlavorAddInput)
 				if err != nil {
 					return errcode.TODO.Wrap(err)
 				}
-
-				fmt.Println("OK")
-
+				if globalDebug {
+					fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
+				}
+				fmt.Println(ret.ChallengeFlavor.ID)
 				return nil
 			},
 		}, {
@@ -739,23 +661,20 @@ func main() {
 					return errcode.TODO.Wrap(err)
 				}
 
-				_, err = apiClient.AdminAddChallengeInstance(ctx, &pwapi.AdminChallengeInstanceAdd_Input{
-					ChallengeInstance: &pwdb.ChallengeInstance{
-						AgentID:  addChallengeInstanceAgentID,
-						FlavorID: addChallengeInstanceFlavorID,
-					},
-				})
+				ret, err := apiClient.AdminAddChallengeInstance(ctx, &adminChallengeInstanceAddInput)
 				if err != nil {
 					return errcode.TODO.Wrap(err)
 				}
-
-				fmt.Println("OK")
-
+				if globalDebug {
+					fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
+				}
+				fmt.Println(ret.ChallengeInstance.ID)
 				return nil
 			},
 		}},
 		ShortHelp: "admin commands",
 		FlagSet:   adminFlags,
+		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec:      func([]string) error { return flag.ErrHelp },
 	}
 
@@ -766,8 +685,7 @@ func main() {
 		LongHelp: `EXAMPLES
   pathwar client GET /user/session
   season=$(pathwar client GET /user/session | jq -r '.seasons[0].season.id')
-  pathwar client GET "/season-challenges?season_id=$season"
-`,
+  pathwar client GET "/season-challenges?season_id=$season"`,
 		FlagSet: clientFlags,
 		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec: func(args []string) error {
@@ -850,24 +768,8 @@ func main() {
 				return errcode.TODO.Wrap(err)
 			}
 
-			opts := pwagent.Opts{
-				HostIP:            agentHostIP,
-				HostPort:          agentHostPort,
-				DomainSuffix:      agentDomainSuffix,
-				ModeratorPassword: agentModeratorPassword,
-				AuthSalt:          agentSalt,
-				ForceRecreate:     agentForceRecreate,
-				NginxDockerImage:  agentNginxDockerImage,
-				Cleanup:           agentClean,
-				RunOnce:           agentRunOnce,
-				NoRun:             agentNoRun,
-				LoopDelay:         agentLoopDelay,
-				DefaultAgent:      agentDefault,
-				Name:              agentName,
-				Logger:            logger,
-			}
-
-			return pwagent.Daemon(ctx, dockerCli, apiClient, opts)
+			agentOpts.Logger = logger
+			return pwagent.Daemon(ctx, dockerCli, apiClient, agentOpts)
 		},
 	}
 
@@ -945,15 +847,9 @@ dbConnectLoop:
 }
 
 func ssoFromFlags() (pwsso.Client, error) {
-	ssoOpts := pwsso.Opts{
-		AllowUnsafe: ssoAllowUnsafe,
-		Logger:      logger.Named("sso"),
-		ClientID:    ssoClientID,
-	}
-	if ssoPubkey == "" {
-		ssoPubkey = defaultSSOPubKey
-	}
-	sso, err := pwsso.New(ssoPubkey, ssoRealm, ssoOpts)
+	ssoOpts.Logger = logger.Named("sso")
+	ssoOpts.ApplyDefaults()
+	sso, err := pwsso.New(ssoOpts.Pubkey, ssoOpts.Realm, ssoOpts)
 	if err != nil {
 		return nil, errcode.ErrInitSSOClient.Wrap(err)
 	}
@@ -1011,16 +907,16 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 	ctx = context.WithValue(ctx, oauth2.HTTPClient, &http.Client{Timeout: 5 * time.Second})
 
 	conf := &oauth2.Config{
-		ClientID:     ssoClientID,
-		ClientSecret: ssoClientSecret,
+		ClientID:     ssoOpts.ClientID,
+		ClientSecret: ssoOpts.ClientSecret,
 		Scopes:       []string{"email", "offline_access", "profile", "roles"},
 		Endpoint: oauth2.Endpoint{
-			AuthURL:  pwsso.KeycloakBaseURL + "/auth/realms/" + ssoRealm + "/protocol/openid-connect/auth",
-			TokenURL: pwsso.KeycloakBaseURL + "/auth/realms/" + ssoRealm + "/protocol/openid-connect/token",
+			AuthURL:  pwsso.KeycloakBaseURL + "/auth/realms/" + ssoOpts.Realm + "/protocol/openid-connect/auth",
+			TokenURL: pwsso.KeycloakBaseURL + "/auth/realms/" + ssoOpts.Realm + "/protocol/openid-connect/token",
 		},
 	}
 
-	if _, err := os.Stat(ssoTokenFile); err != nil {
+	if _, err := os.Stat(ssoOpts.TokenFile); err != nil {
 		url := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
 		fmt.Printf("Visit the URL for the auth dialog: %v\n\nthen, write the code in the terminal.\n\n", url)
 		var code string
@@ -1038,12 +934,12 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 			return nil, err
 		}
 
-		if err := ioutil.WriteFile(ssoTokenFile, jsonText, 0777); err != nil {
+		if err := ioutil.WriteFile(ssoOpts.TokenFile, jsonText, 0777); err != nil {
 			return nil, err
 		}
 	}
 
-	byt, err := ioutil.ReadFile(ssoTokenFile)
+	byt, err := ioutil.ReadFile(ssoOpts.TokenFile)
 	if err != nil {
 		return nil, err
 	}

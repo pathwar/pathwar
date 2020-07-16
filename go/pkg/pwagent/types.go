@@ -1,6 +1,7 @@
 package pwagent
 
 import (
+	"os"
 	"time"
 
 	"go.uber.org/zap"
@@ -25,6 +26,23 @@ type Opts struct {
 	Logger *zap.Logger
 }
 
+func NewOpts() Opts {
+	return Opts{
+		Cleanup:           false,
+		RunOnce:           false,
+		NoRun:             false,
+		LoopDelay:         10 * time.Second,
+		DefaultAgent:      true,
+		Name:              getHostname(),
+		DomainSuffix:      "local",
+		NginxDockerImage:  "docker.io/library/nginx:stable-alpine",
+		HostIP:            "0.0.0.0",
+		HostPort:          "8001",
+		ModeratorPassword: "",
+		AuthSalt:          "",
+	}
+}
+
 func (opts *Opts) applyDefaults() {
 	if opts.Logger == nil {
 		opts.Logger = zap.NewNop()
@@ -37,4 +55,12 @@ func (opts *Opts) applyDefaults() {
 		opts.ModeratorPassword = randstring.RandString(10)
 		opts.Logger.Warn("random moderator password generated", zap.String("password", opts.ModeratorPassword))
 	}
+}
+
+func getHostname() string {
+	hostname, _ := os.Hostname()
+	if hostname == "" {
+		return "dev"
+	}
+	return hostname
 }

@@ -89,7 +89,15 @@ func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstanc
 		bundle := instance.GetFlavor().GetComposeBundle()
 		before := time.Now()
 		started++
-		containers, err := pwcompose.Up(ctx, bundle, instanceID, true, proxyNetworkID, &configData, dockerClient, logger)
+
+		upOpts := pwcompose.UpOpts{
+			PreparedCompose: bundle,
+			InstanceKey:     instanceID, // WARN -> normal?
+			ForceRecreate:   true,
+			ProxyNetworkID:  proxyNetworkID,
+			PwinitConfig:    &configData,
+		}
+		containers, err := pwcompose.Up(ctx, dockerClient, upOpts)
 		if err != nil {
 			return errcode.ErrUpPathwarInstance.Wrap(err)
 		}
