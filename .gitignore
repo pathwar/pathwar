@@ -26,3 +26,4 @@ tool/screenshoter/screenshoter
 packrd/
 *-packr.go
 pathwar-compose.yml
+docker-compose.tmp.yml

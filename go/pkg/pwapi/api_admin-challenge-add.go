@@ -12,7 +12,7 @@ func (svc *service) AdminChallengeAdd(ctx context.Context, in *AdminChallengeAdd
 		return nil, errcode.ErrRestrictedArea
 	}
 
-	if in == nil {
+	if in == nil || in.Challenge.Name == "" {
 		return nil, errcode.ErrMissingInput
 	}
 

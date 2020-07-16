@@ -35,22 +35,7 @@ import (
 )
 
 func NewServer(ctx context.Context, svc ServiceServer, opts ServerOpts) (*Server, error) {
-	// assign default opts
-	if opts.Logger == nil {
-		opts.Logger = zap.NewNop()
-	}
-	if opts.CORSAllowedOrigins == "" {
-		opts.CORSAllowedOrigins = "*"
-	}
-	if opts.Bind == "" {
-		opts.Bind = ":0"
-	}
-	if opts.RequestTimeout == 0 {
-		opts.RequestTimeout = 5 * time.Second
-	}
-	if opts.ShutdownTimeout == 0 {
-		opts.ShutdownTimeout = 6 * time.Second
-	}
+	opts.applyDefaults()
 	ctx, cancel := context.WithCancel(ctx)
 	s := Server{
 		logger: opts.Logger,
@@ -142,6 +127,12 @@ type Server struct {
 	cancel         func()
 }
 
+func NewServerOpts() ServerOpts {
+	opts := ServerOpts{}
+	opts.applyDefaults()
+	return opts
+}
+
 type ServerOpts struct {
 	Logger             *zap.Logger
 	Bind               string
@@ -150,6 +141,24 @@ type ServerOpts struct {
 	ShutdownTimeout    time.Duration
 	WithPprof          bool
 	Tracer             opentracing.Tracer
+}
+
+func (opts *ServerOpts) applyDefaults() {
+	if opts.Logger == nil {
+		opts.Logger = zap.NewNop()
+	}
+	if opts.CORSAllowedOrigins == "" {
+		opts.CORSAllowedOrigins = "*"
+	}
+	if opts.Bind == "" {
+		opts.Bind = ":0"
+	}
+	if opts.RequestTimeout == 0 {
+		opts.RequestTimeout = 5 * time.Second
+	}
+	if opts.ShutdownTimeout == 0 {
+		opts.ShutdownTimeout = 6 * time.Second
+	}
 }
 
 func (s *Server) Run() error {
