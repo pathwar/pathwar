@@ -769,7 +769,7 @@ func main() {
 			}
 
 			agentOpts.Logger = logger
-			return pwagent.Daemon(ctx, dockerCli, apiClient, agentOpts)
+			return pwagent.Run(ctx, dockerCli, apiClient, agentOpts)
 		},
 	}
 

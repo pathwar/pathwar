@@ -2,23 +2,36 @@ package pwagent
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 	"os"
-	"runtime"
-	"strconv"
 	"time"
 
 	"github.com/docker/docker/client"
 	"go.uber.org/zap"
-	"moul.io/godev"
+	"pathwar.land/pathwar/v2/go/internal/randstring"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwcompose"
-	"pathwar.land/pathwar/v2/go/pkg/pwversion"
 )
 
-func Daemon(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClient, opts Opts) error {
+type Opts struct {
+	DomainSuffix      string
+	HostIP            string
+	HostPort          string
+	ModeratorPassword string
+	AuthSalt          string
+	ForceRecreate     bool
+	NginxDockerImage  string
+	Cleanup           bool
+	RunOnce           bool
+	LoopDelay         time.Duration
+	DefaultAgent      bool
+	Name              string
+	NoRun             bool
+
+	Logger *zap.Logger
+}
+
+func Run(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClient, opts Opts) error {
 	started := time.Now()
 	opts.applyDefaults()
 	logger := opts.Logger
@@ -86,44 +99,41 @@ func runOnce(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClien
 	return nil
 }
 
-func agentRegister(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error {
-	metadata := map[string]interface{}{
-		"delay":      opts.LoopDelay,
-		"once":       opts.RunOnce,
-		"num_cpus":   runtime.NumCPU(),
-		"go_version": runtime.Version(),
-		"uid":        os.Getuid(),
-		"pid":        os.Getpid(),
+func NewOpts() Opts {
+	return Opts{
+		Cleanup:           false,
+		RunOnce:           false,
+		NoRun:             false,
+		LoopDelay:         10 * time.Second,
+		DefaultAgent:      true,
+		Name:              getHostname(),
+		DomainSuffix:      "local",
+		NginxDockerImage:  "docker.io/library/nginx:stable-alpine",
+		HostIP:            "0.0.0.0",
+		HostPort:          "8001",
+		ModeratorPassword: "",
+		AuthSalt:          "",
 	}
-	metadataStr, err := json.Marshal(metadata)
-	if err != nil {
-		return errcode.TODO.Wrap(err)
-	}
+}
 
-	hostname, err := os.Hostname()
-	if err != nil {
-		hostname = "unknown"
+func (opts *Opts) applyDefaults() {
+	if opts.Logger == nil {
+		opts.Logger = zap.NewNop()
 	}
+	if opts.AuthSalt == "" {
+		opts.AuthSalt = randstring.RandString(10)
+		opts.Logger.Warn("random salt generated", zap.String("salt", opts.AuthSalt))
+	}
+	if opts.ModeratorPassword == "" {
+		opts.ModeratorPassword = randstring.RandString(10)
+		opts.Logger.Warn("random moderator password generated", zap.String("password", opts.ModeratorPassword))
+	}
+}
 
-	nginxPort, _ := strconv.Atoi(opts.HostPort)
-	ret, err := apiClient.AgentRegister(ctx, &pwapi.AgentRegister_Input{
-		Name:         opts.Name,
-		Hostname:     hostname,
-		NginxPort:    int32(nginxPort),
-		OS:           runtime.GOOS,
-		Arch:         runtime.GOARCH,
-		Version:      pwversion.Version,
-		Tags:         []string{},
-		DomainSuffix: opts.DomainSuffix,
-		AuthSalt:     opts.AuthSalt,
-		Metadata:     string(metadataStr),
-		DefaultAgent: opts.DefaultAgent,
-	})
-	if err != nil {
-		return errcode.TODO.Wrap(err)
+func getHostname() string {
+	hostname, _ := os.Hostname()
+	if hostname == "" {
+		return "dev"
 	}
-	if opts.Logger.Check(zap.DebugLevel, "") != nil {
-		fmt.Fprintln(os.Stderr, godev.PrettyJSON(ret))
-	}
-	return nil
+	return hostname
 }
