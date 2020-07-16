@@ -13,6 +13,7 @@ import (
 	"syscall"
 
 	"github.com/peterbourgon/ff/ffcli"
+	"moul.io/banner"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwinit"
 )
@@ -25,6 +26,12 @@ func main() {
 		Usage: "pwinit entrypoint [args...]",
 		Exec: func(args []string) error {
 			// FIXME: lock to block other commands
+
+			if len(args) < 1 {
+				return flag.ErrHelp
+			}
+
+			fmt.Println(banner.Inline("pwinit"))
 
 			_, err := os.Stat("/pwinit/config.json")
 			if err != nil {
@@ -117,11 +124,14 @@ func main() {
 		Usage:       "pwinit <subcommand> [flags] [args...]",
 		LongHelp:    "More info here: https://github.com/pathwar/pathwar/wiki/CLI#pwinit",
 		Subcommands: []*ffcli.Command{entrypoint, env, config, passphrase},
-		Exec:        func([]string) error { return flag.ErrHelp },
+		Exec: func([]string) error {
+			fmt.Println(banner.Inline("pwinit"))
+			return flag.ErrHelp
+		},
 	}
 
 	args := os.Args[1:]
-	if args[0] == "entrypoint" && len(args) > 1 && args[1] != "--" {
+	if len(args) > 0 && args[0] == "entrypoint" && len(args) > 1 && args[1] != "--" {
 		args = append([]string{"entrypoint", "--"}, args[1:]...)
 	}
 	if err := root.Run(args); err != nil {

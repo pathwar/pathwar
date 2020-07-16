@@ -585,8 +585,12 @@ honnef.co/go/tools v0.0.1-2019.2.3 h1:3JgtbtFHMiCmsznwGVTUWbgGov+pVqnlf1dEJTNAXe
 honnef.co/go/tools v0.0.1-2019.2.3/go.mod h1:a3bituU0lyd329TUQxRnasdCoJDkEUEAqEt0JzvZhAg=
 honnef.co/go/tools v0.0.1-2020.1.4 h1:UoveltGrhghAA7ePc+e+QYDHXrBps2PqFZiHkGR/xK8=
 honnef.co/go/tools v0.0.1-2020.1.4/go.mod h1:X/FiERA/W4tHapMX5mGpAtMSVEeEUOyHaw9vFzvIQ3k=
+moul.io/banner v1.0.1 h1:+WsemGLhj2pOajw2eR5VYjLhOIqs0XhIRYchzTyMLk0=
+moul.io/banner v1.0.1/go.mod h1:XwvIGKkhKRKyN1vIdmR5oaKQLIkMhkMqrsHpS94QzAU=
 moul.io/godev v1.6.0 h1:ms1aI6o9k+PhmMdTR7Aw5iDHPu56xtnmrUgdfLKPspc=
 moul.io/godev v1.6.0/go.mod h1:5lgSpI1oH7xWpLl2Ew/Nsgk8DiNM6FzN9WV9+lgW8RQ=
+moul.io/motd v1.0.0 h1:Trk4fPibDfPJf2iCBSQC8ws7Q02sMwivQdVEFAjCPto=
+moul.io/motd v1.0.0/go.mod h1:39rvZ0lC2oRhHDY2VoPyZ8r70VKqeJye3QAxjeLDJso=
 moul.io/roundtripper v1.0.0 h1:hk0Bha+axt6W+5PKp2KD91Zv0XyEfZBl466SWYPLlEc=
 moul.io/roundtripper v1.0.0/go.mod h1:Hsr+Pp8/EKmOV2ybKGJ8Kkp5OOwS+vax/3aMneWVsTg=
 moul.io/srand v1.4.0 h1:r5ZMiWDN0ni0lTV7KzJR/jx0K7GivJYW5WaXmufgeik=

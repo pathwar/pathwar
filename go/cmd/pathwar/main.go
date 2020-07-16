@@ -31,7 +31,9 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"golang.org/x/oauth2"
+	"moul.io/banner"
 	"moul.io/godev"
+	"moul.io/motd"
 	"moul.io/srand"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwagent"
@@ -257,6 +259,9 @@ func main() {
 			FlagSet:   serverFlags,
 			Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
 			Exec: func(args []string) error {
+				fmt.Println(motd.Default())
+				fmt.Println(banner.Inline("api server"))
+
 				err := globalPreRun()
 				if err != nil {
 					return err
@@ -824,6 +829,10 @@ func main() {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
+
+			fmt.Println(motd.Default())
+			fmt.Println(banner.Inline("agent"))
+
 			cleanup, err := initSentryFromEnv("starting agent")
 			if err != nil {
 				return err
