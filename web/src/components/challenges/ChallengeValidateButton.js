@@ -71,7 +71,7 @@ const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
     <>
       <Button
         icon={"check-circle"}
-        color="warning"
+        color="indigo"
         className={styles.btn}
         onClick={handleFormOpen}
         {...rest}

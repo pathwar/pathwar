@@ -4,6 +4,7 @@ import { Modal } from "react-responsive-modal";
 import ChallengeDetailsPage from "../../pages/ChallengeDetailsPage";
 
 const ChallengeModal = ({ open, onClose, challengeID }, ...rest) => {
+  console.log(`/app/challenges/${challengeID}`);
   return (
     <Modal
       open={open}
