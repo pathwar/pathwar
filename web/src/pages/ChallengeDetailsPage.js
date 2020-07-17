@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
 import { css } from "@emotion/core";
-import siteMetaData from "../constants/metadata";
 import PropTypes from "prop-types";
-import { Page, Grid, Dimmer, Button } from "tabler-react";
+import { Page, Grid, Dimmer, Button, Icon } from "tabler-react";
+import { Terminal } from "react-window-ui";
+import siteMetaData from "../constants/metadata";
 import {
   fetchChallengeDetail as fetchChallengeDetailAction,
   buyChallenge as buyChallengeAction,
@@ -22,8 +23,36 @@ const paragraph = css`
 `;
 
 const ChallengeSolveInstances = ({ instances }) => {
+  const terminal = css`
+    margin-bottom: 1rem;
+
+    a {
+      color: #fff;
+      margin-right: 1.5rem;
+    }
+
+    span {
+      color: #16b279;
+    }
+  `;
+
   return instances.map(item => {
-    return <p key={item.id}>{item.nginx_url}</p>;
+    return (
+      <Terminal
+        key={item.id}
+        minHeight="2rem"
+        boxShadow="0px 2px 15px -8px rgba(0,0,0,0.41)"
+        css={terminal}
+      >
+        <a href={item.nginx_url} target="_blank" rel="noreferrer">
+          {item.nginx_url}
+        </a>
+        <span>
+          <Icon name="check-circle" />
+          {item.status}
+        </span>
+      </Terminal>
+    );
   });
 };
 
@@ -131,11 +160,12 @@ const ChallengeDetailsPage = props => {
         </Grid.Row>
         {/* <hr /> */}
         <Grid.Row>
-          <Grid.Col sm={8}>
+          <Grid.Col width={12} sm={12} md={8}>
+            <h3>Solve challenge</h3>
             <ChallengeSolveInstances instances={instances} />
           </Grid.Col>
           {subscriptions && (
-            <Grid.Col sm={4}>
+            <Grid.Col width={12} sm={12} md={4}>
               <Button.List className="text-right">
                 <ChallengeValidateButton
                   challenge={challenge}
