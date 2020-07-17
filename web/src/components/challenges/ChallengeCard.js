@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
-import React, { useState, lazy, Suspense } from "react";
-import { Button, Card, Grid, Tag, Dimmer } from "tabler-react";
-
-const ChallengeModal = lazy(() => import("./ChallengeModal"));
+import React, { useState } from "react";
+import { Button, Card, Grid, Tag } from "tabler-react";
+import ChallengeModal from "./ChallengeModal";
 
 const ChallengeCard = ({ challenge }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -53,13 +52,11 @@ const ChallengeCard = ({ challenge }) => {
               </Tag.List>
             </Grid.Col>
           </Grid.Row>
-          <Suspense fallback={<Dimmer active loader />}>
-            <ChallengeModal
-              open={modalOpen}
-              onClose={onCloseModal}
-              challengeID={challengeID}
-            />
-          </Suspense>
+          <ChallengeModal
+            open={modalOpen}
+            onClose={onCloseModal}
+            challengeID={challengeID}
+          />
         </>
       </Card.Body>
     </Card>
