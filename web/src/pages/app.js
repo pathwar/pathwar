@@ -88,7 +88,7 @@ const App = () => {
               component={TeamDetailsPage}
             />
             <ProtectedRoute
-              path="/app/challenge/:challengeId"
+              path="/app/challenges/:challengeId"
               component={ChallengeDetailsPage}
             />
             <ProtectedRoute path="/app/settings" component={SettingsPage} />
