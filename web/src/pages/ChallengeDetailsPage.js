@@ -36,24 +36,25 @@ const ChallengeSolveInstances = ({ instances }) => {
     }
   `;
 
-  return instances.map(item => {
-    return (
-      <Terminal
-        key={item.id}
-        minHeight="2rem"
-        boxShadow="0px 2px 15px -8px rgba(0,0,0,0.41)"
-        css={terminal}
-      >
-        <a href={item.nginx_url} target="_blank" rel="noreferrer">
-          {item.nginx_url}
-        </a>
-        <span>
-          <Icon name="check-circle" />
-          {item.status}
-        </span>
-      </Terminal>
-    );
-  });
+  return (
+    <Terminal
+      minHeight="2rem"
+      boxShadow="0px 2px 15px -8px rgba(0,0,0,0.41)"
+      css={terminal}
+    >
+      {instances.map(item => (
+        <div key={item.id}>
+          <a href={item.nginx_url} target="_blank" rel="noreferrer">
+            {item.nginx_url}
+          </a>
+          <span>
+            <Icon name="check-circle" />
+            {item.status}
+          </span>
+        </div>
+      ))}
+    </Terminal>
+  );
 };
 
 const ChallengeDetailsPage = props => {
