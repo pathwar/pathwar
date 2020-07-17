@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Helmet } from "react-helmet";
 import { Grid, Page } from "tabler-react";
 import siteMetaData from "../constants/metadata";
 import AllTeamsOnSeasonList from "../components/season/AllTeamsOnSeasonList";
