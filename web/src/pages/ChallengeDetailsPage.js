@@ -21,6 +21,12 @@ const paragraph = css`
   margin-top: 0.5rem;
 `;
 
+const ChallengeSolveInstances = ({ instances }) => {
+  return instances.map(item => {
+    return <p key={item.id}>{item.nginx_url}</p>;
+  });
+};
+
 const ChallengeDetailsPage = props => {
   const dispatch = useDispatch();
   const challenge = useSelector(state => state.seasons.challengeInDetail);
@@ -74,7 +80,7 @@ const ChallengeDetailsPage = props => {
         title={flavorChallenge.name}
         subTitle={`Author: ${flavorChallenge.author}`}
       >
-        <Grid.Row>
+        <Grid.Row className="mb-6">
           <Grid.Col width={12} sm={12} md={8}>
             <p css={paragraph}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sem
@@ -125,7 +131,9 @@ const ChallengeDetailsPage = props => {
         </Grid.Row>
         {/* <hr /> */}
         <Grid.Row>
-          <Grid.Col sm={8}></Grid.Col>
+          <Grid.Col sm={8}>
+            <ChallengeSolveInstances instances={instances} />
+          </Grid.Col>
           {subscriptions && (
             <Grid.Col sm={4}>
               <Button.List className="text-right">
