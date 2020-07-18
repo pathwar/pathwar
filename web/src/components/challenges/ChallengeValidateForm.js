@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button } from "tabler-react";
+import { css } from "@emotion/core";
 import { isEmpty } from "ramda";
 
 const initialErrorObj = { withError: false, fieldsWithError: [] };
+
+const formStyle = css`
+  margin-top: 1rem;
+  text-align: left;
+`;
 
 const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
   const [isValidateOpen, setValidateOpen] = useState(false);
@@ -72,7 +78,7 @@ const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
         Validate
       </Button>
       {isValidateOpen && (
-        <form onSubmit={submitValidate} {...rest}>
+        <form onSubmit={submitValidate} css={formStyle} {...rest}>
           <Form.FieldSet>
             <Form.Group isRequired label="Passphrase">
               <Form.Input
@@ -84,6 +90,7 @@ const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
                 feedback={
                   passphraseWithError && "Please, insert a least one passphrase"
                 }
+                autoFocus={true}
               />
             </Form.Group>
             <Form.Group isRequired label="Comment">
