@@ -128,17 +128,18 @@ const ChallengeDetailsPage = props => {
         <Grid.Row>
           <Grid.Col width={12} sm={12} md={8}>
             <h3>Solve challenge</h3>
-            <ChallengeSolveInstances instances={instances} />
+            <ChallengeSolveInstances
+              instances={instances}
+              purchased={subscriptions}
+            />
           </Grid.Col>
           {subscriptions && (
-            <Grid.Col width={12} sm={12} md={4}>
-              <Button.List className="text-right">
-                <ChallengeValidateButton
-                  challenge={challenge}
-                  validateChallenge={validateChallenge}
-                  disabled={isClosed}
-                />
-              </Button.List>
+            <Grid.Col width={12} sm={12} md={4} className="text-right">
+              <ChallengeValidateButton
+                challenge={challenge}
+                validateChallenge={validateChallenge}
+                disabled={isClosed}
+              />
               {validations && <ValidationsList validations={validations} />}
             </Grid.Col>
           )}
