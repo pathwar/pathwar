@@ -1,9 +1,22 @@
 import React from "react";
 import { Card, Grid } from "tabler-react";
+import { css } from "@emotion/core";
+
+const validationCard = css`
+  text-align: left;
+  margin-top: 0.5rem;
+`;
+
+const title = css`
+  margin-top: 1rem;
+`;
 
 const ValidationsList = ({ validations }) => {
   return (
     <Grid.Row cards={true}>
+      <Grid.Col width={12}>
+        <h3 css={title}>Validations list:</h3>
+      </Grid.Col>
       {validations.map(validation => {
         const status = validation.status;
         const statusColor =
@@ -13,8 +26,9 @@ const ValidationsList = ({ validations }) => {
             ? "red"
             : "green";
         return (
-          <Grid.Col lg={4} md={4} sm={6} xs={6} key={validation.id}>
+          <Grid.Col width={12} key={validation.id}>
             <Card
+              css={validationCard}
               title={validation.passphrases}
               statusColor={statusColor}
               isCollapsible
