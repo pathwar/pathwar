@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button } from "tabler-react";
 import { isEmpty } from "ramda";
-import styles from "../../styles/layout/button.module.css";
 
 const initialErrorObj = { withError: false, fieldsWithError: [] };
 
-const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
+const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
   const [isValidateOpen, setValidateOpen] = useState(false);
   const [isFetching, setFetching] = useState(false);
   const [formData, setFormData] = useState({ passphrases: "", comment: "" });
@@ -69,17 +68,11 @@ const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
 
   return (
     <>
-      <Button
-        icon={"check-circle"}
-        color="indigo"
-        className={styles.btn}
-        onClick={handleFormOpen}
-        {...rest}
-      >
+      <Button icon={"check-circle"} color="indigo" onClick={handleFormOpen}>
         Validate
       </Button>
       {isValidateOpen && (
-        <form onSubmit={submitValidate}>
+        <form onSubmit={submitValidate} {...rest}>
           <Form.FieldSet>
             <Form.Group isRequired label="Passphrase">
               <Form.Input
@@ -121,4 +114,4 @@ const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
   );
 };
 
-export default ChallengeValidateButton;
+export default ChallengeValidateForm;

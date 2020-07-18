@@ -12,8 +12,8 @@ import {
   closeChallenge as closeChallengeAction,
 } from "../actions/seasons";
 import ChallengeBuyButton from "../components/challenges/ChallengeBuyButton";
-import ChallengeValidateButton from "../components/challenges/ChallengeValidateButton";
 import ChallengeCloseButton from "../components/challenges/ChallengeCloseButton";
+import ChallengeValidateForm from "../components/challenges/ChallengeValidateForm";
 import ValidationsList from "../components/challenges/ValidationsList";
 import ChallengeSolveInstances from "../components/challenges/ChallengeSolveInstances";
 import { CLEAN_CHALLENGE_DETAIL } from "../constants/actionTypes";
@@ -135,7 +135,7 @@ const ChallengeDetailsPage = props => {
           </Grid.Col>
           {subscriptions && (
             <Grid.Col width={12} sm={12} md={4} className="text-right">
-              <ChallengeValidateButton
+              <ChallengeValidateForm
                 challenge={challenge}
                 validateChallenge={validateChallenge}
                 disabled={isClosed}
