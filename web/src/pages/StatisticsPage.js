@@ -20,15 +20,11 @@ const StatisticsPage = () => {
   const allTeamsOnSeason = useSelector(state => state.seasons.allTeamsOnSeason);
   const dispatchCreateTeamAction = dispatch(createTeamAction);
 
-  useEffect(
-    state => {
-      console.log(state);
-      if (!allTeamsOnSeason && activeSeason) {
-        dispatch(fetchAllSeasonTeamsAction(activeSeason.id));
-      }
-    },
-    [activeSeason, allTeamsOnSeason]
-  );
+  useEffect(() => {
+    if (!allTeamsOnSeason && activeSeason) {
+      dispatch(fetchAllSeasonTeamsAction(activeSeason.id));
+    }
+  }, [activeSeason, allTeamsOnSeason]);
 
   const { title, description } = siteMetaData;
 
