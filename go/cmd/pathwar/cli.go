@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/dustin/go-humanize"
 	"github.com/olekukonko/tablewriter"
@@ -43,45 +44,45 @@ func cliCommand() *ffcli.Command {
 					if err != nil {
 						return err
 					}
-					var ret pwapi.UserGetSession_Output
-					if err := client.RawProto(ctx, "GET", "/user/session", nil, &ret); err != nil {
+
+					var session pwapi.UserGetSession_Output
+					if err := client.RawProto(ctx, "GET", "/user/session", nil, &session); err != nil {
 						return err
 					}
-
-					logger.Debug("GET /user/session", zap.Any("ret", ret))
+					logger.Debug("GET /user/session", zap.Any("ret", session))
 
 					// DB User
 					{
-						// fmt.Println(godev.PrettyJSON(ret.User))
-						fmt.Printf("Welcome %s! 👋\n", ret.User.Username)
-						createdAgo := humanize.Time(*ret.User.CreatedAt)
-						updatedAgo := humanize.Time(*ret.User.UpdatedAt)
+						// fmt.Println(godev.PrettyJSON(session.User))
+						fmt.Printf("Welcome %s! 👋\n", session.User.Username)
+						createdAgo := humanize.Time(*session.User.CreatedAt)
+						updatedAgo := humanize.Time(*session.User.UpdatedAt)
 						fmt.Printf("Your account was created %s and updated %s.\n\n", createdAgo, updatedAgo)
 					}
 
 					// JWT Token
 					{
-						//fmt.Println(godev.PrettyJSON(ret.Claims))
-						tokenAgo := humanize.Time(*ret.Claims.ActionToken.AuthTime)
-						issuedAgo := humanize.Time(*ret.Claims.ActionToken.Iat)
-						expireIn := humanize.Time(*ret.Claims.ActionToken.Exp)
+						//fmt.Println(godev.PrettyJSON(session.Claims))
+						tokenAgo := humanize.Time(*session.Claims.ActionToken.AuthTime)
+						issuedAgo := humanize.Time(*session.Claims.ActionToken.Iat)
+						expireIn := humanize.Time(*session.Claims.ActionToken.Exp)
 						fmt.Printf("Your OAuth token was created %s, (re)issued %s and will expire in %s.\n\n", tokenAgo, issuedAgo, expireIn)
 					}
 
 					// Notifications
 					{
 						// FIXME: Todo
-						// fmt.Println(godev.PrettyJSON(ret.Notifications))
+						// fmt.Println(godev.PrettyJSON(session.Notifications))
 					}
 
 					// sessions
 					{
-						//fmt.Println(godev.PrettyJSON(ret.Seasons))
+						//fmt.Println(godev.PrettyJSON(session.Seasons))
 						table := tablewriter.NewWriter(os.Stdout)
 						table.SetHeader([]string{"SEASON", "STATUS", "TEAM"})
 						table.SetAlignment(tablewriter.ALIGN_CENTER)
 						table.SetBorder(false)
-						for _, entry := range ret.Seasons {
+						for _, entry := range session.Seasons {
 							name := entry.Season.Name
 							// FIXME: use slug
 							if entry.Season.IsDefault {
@@ -106,6 +107,59 @@ func cliCommand() *ffcli.Command {
 								team = entry.Team.Organization.Name
 							}
 							table.Append([]string{name, status, team})
+						}
+						table.Render()
+					}
+					return nil
+				},
+			}, {
+				Name:      "teams",
+				ShortHelp: "List teams, scores, etc",
+				Exec: func(args []string) error {
+					if err := globalPreRun(); err != nil {
+						return err
+					}
+					ctx := context.Background()
+					client, err := httpClientFromEnv(ctx)
+					if err != nil {
+						return err
+					}
+					var session pwapi.UserGetSession_Output
+					if err := client.RawProto(ctx, "GET", "/user/session", nil, &session); err != nil {
+						return err
+					}
+					logger.Debug("GET /user/session", zap.Any("ret", session))
+
+					for _, seasonEntry := range session.Seasons {
+						fmt.Printf("Season: %s\n", seasonEntry.Season.Name)
+						table := tablewriter.NewWriter(os.Stdout)
+						table.SetHeader([]string{"TEAM", "SCORE", "MEDALS", "ACHIEVEMENTS"})
+						table.SetAlignment(tablewriter.ALIGN_CENTER)
+						table.SetBorder(false)
+
+						url := fmt.Sprintf("/teams?season_id=%d", seasonEntry.Season.ID)
+						var ret pwapi.TeamList_Output
+						if err := client.RawProto(ctx, "GET", url, nil, &ret); err != nil {
+							return err
+						}
+						logger.Debug("GET "+url, zap.Any("ret", ret))
+
+						for _, teamEntry := range ret.Items {
+							name := teamEntry.Organization.Name
+							score := fmt.Sprintf("%d", teamEntry.Score)
+							achievements := fmt.Sprintf("%d", teamEntry.NbAchievements)
+							medalParts := []string{}
+							if nb := teamEntry.GoldMedals; nb > 0 {
+								medalParts = append(medalParts, fmt.Sprintf("%d🥇", nb))
+							}
+							if nb := teamEntry.SilverMedals; nb > 0 {
+								medalParts = append(medalParts, fmt.Sprintf("%d🥈", nb))
+							}
+							if nb := teamEntry.BronzeMedals; nb > 0 {
+								medalParts = append(medalParts, fmt.Sprintf("%d🥉", nb))
+							}
+							medals := strings.Join(medalParts, " ")
+							table.Append([]string{name, score, medals, achievements})
 						}
 						table.Render()
 					}
