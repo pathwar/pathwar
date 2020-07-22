@@ -26,7 +26,7 @@ const ValidationsList = ({ validations }) => {
             ? "red"
             : "green";
         return (
-          <Grid.Col width={12} key={validation.id}>
+          <Grid.Col width={12} sm={6} md={4} key={validation.id}>
             <Card
               css={validationCard}
               title={validation.passphrases}

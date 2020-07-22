@@ -84,7 +84,7 @@ const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
               <Form.Input
                 name="passphrases"
                 onChange={handleChange}
-                placeholder="Insert passphrases here separated by ','"
+                placeholder="Passphrases separated by ','"
                 invalid={passphraseWithError}
                 cross={passphraseWithError}
                 feedback={
