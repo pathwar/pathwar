@@ -12,6 +12,7 @@ import (
 	"github.com/peterbourgon/ff"
 	"github.com/peterbourgon/ff/ffcli"
 	"go.uber.org/zap"
+	"moul.io/godev"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -160,6 +161,57 @@ func cliCommand() *ffcli.Command {
 							}
 							medals := strings.Join(medalParts, " ")
 							table.Append([]string{name, score, medals, achievements})
+						}
+						table.Render()
+					}
+					return nil
+				},
+			}, {
+				Name:      "challenges",
+				ShortHelp: "List challenges",
+				Exec: func(args []string) error {
+					if err := globalPreRun(); err != nil {
+						return err
+					}
+					ctx := context.Background()
+					client, err := httpClientFromEnv(ctx)
+					if err != nil {
+						return err
+					}
+					var session pwapi.UserGetSession_Output
+					if err := client.RawProto(ctx, "GET", "/user/session", nil, &session); err != nil {
+						return err
+					}
+					logger.Debug("GET /user/session", zap.Any("ret", session))
+
+					for _, seasonEntry := range session.Seasons {
+						fmt.Printf("Season: %s\n", seasonEntry.Season.Name)
+						table := tablewriter.NewWriter(os.Stdout)
+						table.SetHeader([]string{"CHALLENGE", "FLAVOR", "INSTANCE", "STATUS"})
+						table.SetAlignment(tablewriter.ALIGN_CENTER)
+						table.SetBorder(false)
+
+						url := fmt.Sprintf("/season-challenges?season_id=%d", seasonEntry.Season.ID)
+						var ret pwapi.SeasonChallengeList_Output
+						if err := client.RawProto(ctx, "GET", url, nil, &ret); err != nil {
+							return err
+						}
+						logger.Debug("GET "+url, zap.Any("ret", ret))
+
+						for _, challengeEntry := range ret.Items {
+							fmt.Println(godev.PrettyJSON(challengeEntry))
+							name := challengeEntry.Flavor.Challenge.Name
+							flavor := challengeEntry.Flavor.Version
+							if challengeEntry.Flavor.IsLatest {
+								flavor += " (latest)"
+							}
+							for _, instanceEntry := range challengeEntry.Flavor.Instances {
+								instance := instanceEntry.NginxURL
+								status := instanceEntry.Status.String()
+								table.Append([]string{name, flavor, instance, status})
+								name = ""
+								flavor = ""
+							}
 						}
 						table.Render()
 					}
