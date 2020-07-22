@@ -9,6 +9,8 @@ const ChallengeModal = (
   { open, onClose: onCloseProps, challengeID },
   ...rest
 ) => {
+
+  //FIXME TODO: Refact to use "use-query-params" lib
   if (open) {
     browser && window.history.pushState(null, null, `?modal=${challengeID}`);
   }
