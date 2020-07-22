@@ -1,19 +1,24 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { Button, Card, Grid, Tag } from "tabler-react";
+import { useQueryParam, StringParam } from "use-query-params";
 import ChallengeModal from "./ChallengeModal";
 
 const ChallengeCard = ({ challenge }) => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalQueryId, setModalQueryId] = useQueryParam("modal", StringParam);
+  const [modalOpen, setModalOpen] = useState(modalQueryId === challenge.id);
+
   const { flavor, id: challengeID } = challenge;
   // const isClosed = subscriptions && subscriptions[0].status === "Closed";
 
   const onCloseModal = function() {
     setModalOpen(false);
+    setModalQueryId(undefined);
   };
 
   const openModal = function() {
     setModalOpen(true);
+    setModalQueryId(challengeID);
   };
 
   return (
