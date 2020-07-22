@@ -3,7 +3,6 @@ package pwapi
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -97,12 +96,17 @@ func (c HTTPClient) UserSetPreferences(ctx context.Context, input *UserSetPrefer
 }
 
 func (c HTTPClient) RawProto(ctx context.Context, method string, path string, input, output proto.Message) error {
-	inputBytes, err := json.Marshal(input)
-	if err != nil {
-		return err
+	inputString := ""
+	if input != nil {
+		marshaler := jsonpb.Marshaler{}
+		var err error
+		inputString, err = marshaler.MarshalToString(input)
+		if err != nil {
+			return errcode.TODO.Wrap(err)
+		}
 	}
 
-	ret, err := c.Raw(ctx, method, path, inputBytes)
+	ret, err := c.Raw(ctx, method, path, []byte(inputString))
 	if err != nil {
 		return err
 	}
