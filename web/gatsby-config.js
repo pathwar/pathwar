@@ -9,7 +9,7 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-emotion`,
-    `gatsby-plugin-sass`,
+    `gatsby-plugin-use-query-params`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
