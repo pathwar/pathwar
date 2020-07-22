@@ -212,8 +212,7 @@ func cliCommand() *ffcli.Command {
 							for _, instanceEntry := range challengeEntry.Flavor.Instances {
 								instance := instanceEntry.NginxURL
 								status := instanceEntry.Status.String()
-								switch instanceEntry.Status {
-								case pwdb.ChallengeInstance_Available:
+								if instanceEntry.Status == pwdb.ChallengeInstance_Available {
 									status += " 👍"
 								}
 								table.Append([]string{id, name, flavor, instance, status, subscription})
@@ -269,6 +268,49 @@ func cliCommand() *ffcli.Command {
 							fmt.Printf("%d: successfully bought\n", id)
 						case strings.Contains(err.Error(), "ErrChallengeAlreadySubscribed(#4011)"):
 							fmt.Printf("%d: already bought\n", id)
+						default:
+							return err
+						}
+					}
+					return nil
+				},
+			}, {
+				Name:      "coupon-validate",
+				Usage:     "pathwar [global flags] cli [cli flags] coupon-validate COUPON...",
+				ShortHelp: "Validate a coupon",
+				Exec: func(args []string) error {
+					if len(args) < 1 {
+						return flag.ErrHelp
+					}
+
+					if err := globalPreRun(); err != nil {
+						return err
+					}
+					ctx := context.Background()
+					client, err := httpClientFromEnv(ctx)
+					if err != nil {
+						return err
+					}
+
+					var session pwapi.UserGetSession_Output
+					if err := client.RawProto(ctx, "GET", "/user/session", nil, &session); err != nil {
+						return err
+					}
+					logger.Debug("GET /user/session", zap.Any("ret", session))
+
+					for _, arg := range args {
+						input := pwapi.CouponValidate_Input{
+							Hash:   arg,
+							TeamID: session.User.ActiveTeamMember.TeamID, // FIXME: dynamic
+						}
+						var ret pwapi.CouponValidate_Output
+						err = client.RawProto(ctx, "POST", "/coupon-validation", &input, &ret)
+						logger.Debug("POST /coupon-validation", zap.Any("input", input), zap.Any("ret", ret), zap.Error(err))
+						switch {
+						case err == nil:
+							fmt.Printf("coupon %q validated\n", arg)
+						case strings.Contains(err.Error(), "ErrCouponNotFound(#4063)"):
+							fmt.Printf("coupon %q does not exist\n", arg)
 						default:
 							return err
 						}
