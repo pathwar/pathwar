@@ -22,19 +22,16 @@ export const globalStyle = ({ colors, font, type }) => {
       color: ${isDark ? colors.light : colors.primary};
       font-size: 3.125rem;
       font-family: ${font.family.h1};
-      margin: 0;
     }
 
     h2 {
       font-size: 1.25rem;
       font-weight: normal;
-      margin: 0;
     }
 
     h3 {
       font-size: 1.125rem;
       font-weight: bold;
-      margin: 0;
     }
 
     .custom-button {
@@ -68,6 +65,17 @@ export const globalStyle = ({ colors, font, type }) => {
       display: flex;
       flex-direction: column;
       width: auto;
+    }
+
+    .dimmer {
+      margin-top: 100px;
+      .loader {
+        position: relative;
+      }
+    }
+
+    .dimmerSmall {
+      width: 20px;
     }
 
     @media (max-width: 991px) {

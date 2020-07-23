@@ -1,7 +1,10 @@
-import * as React from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Helmet } from "react-helmet";
+import { css } from "@emotion/core";
 import PropTypes from "prop-types";
-
+import { Page, Grid, Dimmer, Button } from "tabler-react";
+import siteMetaData from "../constants/metadata";
 import {
   fetchChallengeDetail as fetchChallengeDetailAction,
   buyChallenge as buyChallengeAction,
@@ -9,70 +12,99 @@ import {
   closeChallenge as closeChallengeAction,
 } from "../actions/seasons";
 import ChallengeBuyButton from "../components/challenges/ChallengeBuyButton";
-import ChallengeValidateButton from "../components/challenges/ChallengeValidateButton";
 import ChallengeCloseButton from "../components/challenges/ChallengeCloseButton";
+import ChallengeValidateForm from "../components/challenges/ChallengeValidateForm";
 import ValidationsList from "../components/challenges/ValidationsList";
+import ChallengeSolveInstances from "../components/challenges/ChallengeSolveInstances";
+import { CLEAN_CHALLENGE_DETAIL } from "../constants/actionTypes";
 
-import styles from "./styles/ChallengeDetailsPage.module.css";
+const paragraph = css`
+  margin-top: 0.5rem;
+`;
 
-import { Page, Grid, Dimmer, Button } from "tabler-react";
+const ChallengeDetailsPage = props => {
+  const dispatch = useDispatch();
+  const challenge = useSelector(state => state.seasons.challengeInDetail);
+  const activeTeam = useSelector(state => state.seasons.activeTeam);
 
-class ChallengeDetailsPage extends React.PureComponent {
-  componentDidMount() {
-    const { fetchChallengeDetailAction, uri } = this.props;
-    const challengeID = uri.split("/")[3];
-    fetchChallengeDetailAction(challengeID);
+  const buyChallenge = (challengeID, teamID, seasonId) =>
+    dispatch(buyChallengeAction(challengeID, teamID, seasonId));
+  const validateChallenge = (validationData, seasonId) =>
+    dispatch(validateChallengeAction(validationData, seasonId));
+  const closeChallenge = subscriptionID =>
+    dispatch(closeChallengeAction(subscriptionID));
+  const fetchChallengeDetail = challengeID =>
+    dispatch(fetchChallengeDetailAction(challengeID));
+
+  useEffect(() => {
+    const { uri, challengeID: challengeIDFromProps } = props;
+    const challengeIDFromURI = uri && uri.split("/")[3];
+    const challhengeID = challengeIDFromURI || challengeIDFromProps;
+
+    fetchChallengeDetail(challhengeID);
+
+    return () => dispatch({ type: CLEAN_CHALLENGE_DETAIL });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!challenge) {
+    return <Dimmer active loader />;
   }
 
-  render() {
-    const {
-      challenge,
-      activeTeam: { id: teamID } = { id: "no id" },
-      buyChallengeAction,
-      validateChallengeAction,
-      closeChallengeAction,
-    } = this.props;
+  const {
+    flavor: { challenge: flavorChallenge, instances } = {
+      challenge: "no challenge",
+    },
+    subscriptions,
+  } = challenge || {};
 
-    const {
-      flavor: { challenge: flavorChallenge, instances } = {
-        challenge: "no challenge",
-      },
-      subscriptions,
-    } = challenge || {};
+  const teamID = activeTeam && activeTeam.id;
 
-    if (!challenge) {
-      return <Dimmer active />;
-    }
-    const subscription = challenge.subscriptions && challenge.subscriptions[0];
-    const validations = subscription && subscription.validations;
-    const isClosed = subscription && subscription.status === "Closed";
+  const subscription = challenge.subscriptions && challenge.subscriptions[0];
+  const validations = subscription && subscription.validations;
+  const isClosed = subscription && subscription.status === "Closed";
+  const { title, description } = siteMetaData;
 
-    return (
-      <Page.Content title={flavorChallenge.name}>
-        <Grid.Row>
-          <Grid.Col lg={4} md={4} sm={4} xs={4}>
-            <h4>Author</h4>
-            <p className={styles.p}>{flavorChallenge.author}</p>
-            <Button
-              href={flavorChallenge.homepage}
-              target="_blank"
-              RootComponent="a"
-              social="github"
-              size="sm"
-            >
-              Visit page
-            </Button>
+  return (
+    <>
+      <Helmet>
+        <title>{`${title} - ${flavorChallenge.name} Challenge`}</title>
+        <meta name="description" content={description} />
+      </Helmet>
+      <Page.Content
+        title={flavorChallenge.name}
+        subTitle={`Author: ${flavorChallenge.author}`}
+      >
+        <Grid.Row className="mb-6">
+          <Grid.Col width={12} sm={12} md={8}>
+            <p css={paragraph}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sem
+              arcu, tristique id elementum quis, pulvinar ac lorem. Integer id
+              sem condimentum, aliquam erat in, lobortis nisi. Aliquam pretium
+              mi purus. Donec sit amet neque nulla. Pellentesque mollis egestas
+              nisl a placerat.
+            </p>
+            <Button.List>
+              <Button
+                href={flavorChallenge.homepage}
+                target="_blank"
+                RootComponent="a"
+                social="github"
+                size="sm"
+              >
+                Visit page
+              </Button>
+            </Button.List>
           </Grid.Col>
-          <Grid.Col lg={4} md={4} sm={4} xs={4}>
-            <h4>Actions</h4>
+          <Grid.Col md={4} sm={12} width={12} className="text-right">
             <Button.List>
               <ChallengeBuyButton
                 challenge={challenge}
-                buyChallenge={buyChallengeAction}
+                buyChallenge={buyChallenge}
                 teamID={teamID}
                 isClosed={isClosed}
               />
-              <Button
+              {/* <Button
                 RootComponent="a"
                 target="_blank"
                 href={instances[0].nginx_url}
@@ -81,56 +113,44 @@ class ChallengeDetailsPage extends React.PureComponent {
                 disabled={isClosed || !subscription}
               >
                 Solve
-              </Button>
-              <ChallengeCloseButton
-                challenge={challenge}
-                closeChallenge={closeChallengeAction}
-                isClosed={isClosed}
-              />
+              </Button> */}
+              {subscriptions && (
+                <ChallengeCloseButton
+                  challenge={challenge}
+                  closeChallenge={closeChallenge}
+                  isClosed={isClosed}
+                />
+              )}
             </Button.List>
           </Grid.Col>
         </Grid.Row>
-        <hr />
+        {/* <hr /> */}
         <Grid.Row>
+          <Grid.Col width={12} sm={12} md={12}>
+            <h3>Solve challenge</h3>
+            <ChallengeSolveInstances
+              instances={instances}
+              purchased={subscriptions}
+            />
+          </Grid.Col>
           {subscriptions && (
-            <Grid.Col lg={12} md={12} sm={12} xs={12}>
-              <div style={{ marginBottom: "1rem" }}>
-                <h3>Validations</h3>
-                <ChallengeValidateButton
-                  challenge={challenge}
-                  validateChallenge={validateChallengeAction}
-                  disabled={isClosed}
-                />
-              </div>
+            <Grid.Col width={12} sm={12} md={12} className="text-right">
+              <ChallengeValidateForm
+                challenge={challenge}
+                validateChallenge={validateChallenge}
+                disabled={isClosed}
+              />
               {validations && <ValidationsList validations={validations} />}
             </Grid.Col>
           )}
         </Grid.Row>
       </Page.Content>
-    );
-  }
-}
+    </>
+  );
+};
 
 ChallengeDetailsPage.propTypes = {
   fetchChallengeDetailAction: PropTypes.func,
 };
 
-const mapStateToProps = state => ({
-  challenge: state.seasons.challengeInDetail,
-  activeTeam: state.seasons.activeTeam,
-});
-
-const mapDispatchToProps = {
-  buyChallengeAction: (challengeID, teamID, seasonId) =>
-    buyChallengeAction(challengeID, teamID, seasonId),
-  validateChallengeAction: (validationData, seasonId) =>
-    validateChallengeAction(validationData, seasonId),
-  closeChallengeAction: subscriptionID => closeChallengeAction(subscriptionID),
-  fetchChallengeDetailAction: challengeID =>
-    fetchChallengeDetailAction(challengeID),
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ChallengeDetailsPage);
+export default React.memo(ChallengeDetailsPage);

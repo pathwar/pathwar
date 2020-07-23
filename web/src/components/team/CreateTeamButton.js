@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { isEmpty } from "ramda";
 import { Form, Button } from "tabler-react";
-import btnStyles from "../../styles/layout/button.module.css";
 
 const CreateTeamButton = ({ activeSeason, activeTeamInSeason, createTeam }) => {
   const [isFormOpen, setFormOpen] = useState(false);
@@ -39,7 +38,6 @@ const CreateTeamButton = ({ activeSeason, activeTeamInSeason, createTeam }) => {
         icon={activeTeamInSeason ? "anchor" : "users"}
         disabled={activeTeamInSeason}
         size="sm"
-        className={btnStyles.btn}
       >
         {activeTeamInSeason ? "Team on season" : "Create team"}
       </Button>

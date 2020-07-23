@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button } from "tabler-react";
+import { css } from "@emotion/core";
 import { isEmpty } from "ramda";
-import styles from "../../styles/layout/button.module.css";
 
 const initialErrorObj = { withError: false, fieldsWithError: [] };
 
-const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
+const formStyle = css`
+  margin-top: 1rem;
+  text-align: left;
+`;
+
+const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
   const [isValidateOpen, setValidateOpen] = useState(false);
   const [isFetching, setFetching] = useState(false);
   const [formData, setFormData] = useState({ passphrases: "", comment: "" });
@@ -69,28 +74,23 @@ const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
 
   return (
     <>
-      <Button
-        icon={"check-circle"}
-        color="warning"
-        className={styles.btn}
-        onClick={handleFormOpen}
-        {...rest}
-      >
+      <Button icon={"check-circle"} color="indigo" onClick={handleFormOpen}>
         Validate
       </Button>
       {isValidateOpen && (
-        <form onSubmit={submitValidate}>
+        <form onSubmit={submitValidate} css={formStyle} {...rest}>
           <Form.FieldSet>
             <Form.Group isRequired label="Passphrase">
               <Form.Input
                 name="passphrases"
                 onChange={handleChange}
-                placeholder="Insert passphrases here separated by ','"
+                placeholder="Passphrases separated by ','"
                 invalid={passphraseWithError}
                 cross={passphraseWithError}
                 feedback={
                   passphraseWithError && "Please, insert a least one passphrase"
                 }
+                autoFocus={true}
               />
             </Form.Group>
             <Form.Group isRequired label="Comment">
@@ -121,4 +121,4 @@ const ChallengeValidateButton = ({ challenge, validateChallenge, ...rest }) => {
   );
 };
 
-export default ChallengeValidateButton;
+export default ChallengeValidateForm;

@@ -18,7 +18,7 @@ const ChallengeBuyButton = ({
   return (
     <Button
       icon={hasSubscriptions ? "check" : "dollar-sign"}
-      color="success"
+      color="indigo"
       disabled={hasSubscriptions || isClosed}
       onClick={handleBuyChallenge}
       {...rest}
