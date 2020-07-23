@@ -95,6 +95,25 @@ func (c HTTPClient) UserSetPreferences(ctx context.Context, input *UserSetPrefer
 	return result, err
 }
 
+func (c HTTPClient) RawProto(ctx context.Context, method string, path string, input, output proto.Message) error {
+	inputString := ""
+	if input != nil {
+		marshaler := jsonpb.Marshaler{}
+		var err error
+		inputString, err = marshaler.MarshalToString(input)
+		if err != nil {
+			return errcode.TODO.Wrap(err)
+		}
+	}
+
+	ret, err := c.Raw(ctx, method, path, []byte(inputString))
+	if err != nil {
+		return err
+	}
+
+	return jsonpb.UnmarshalString(string(ret), output)
+}
+
 func (c HTTPClient) Raw(ctx context.Context, method string, path string, input []byte) ([]byte, error) {
 	url := c.baseAPI + path
 	b := bytes.NewBuffer(input)
