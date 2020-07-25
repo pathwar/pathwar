@@ -104,16 +104,6 @@ const ChallengeDetailsPage = props => {
                 teamID={teamID}
                 isClosed={isClosed}
               />
-              {/* <Button
-                RootComponent="a"
-                target="_blank"
-                href={instances[0].nginx_url}
-                color="gray-dark"
-                icon="terminal"
-                disabled={isClosed || !subscription}
-              >
-                Solve
-              </Button> */}
               {subscriptions && (
                 <ChallengeCloseButton
                   challenge={challenge}
@@ -124,7 +114,6 @@ const ChallengeDetailsPage = props => {
             </Button.List>
           </Grid.Col>
         </Grid.Row>
-        {/* <hr /> */}
         <Grid.Row>
           <Grid.Col width={12} sm={12} md={12}>
             <h3>Solve challenge</h3>
