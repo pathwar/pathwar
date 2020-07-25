@@ -171,7 +171,10 @@ export const fetchChallenges = seasonID => async dispatch => {
       payload: { activeChallenges: response.data.items },
     });
   } catch (error) {
-    dispatch({ type: SET_CHALLENGES_LIST_FAILED, payload: { error } });
+    dispatch({
+      type: SET_CHALLENGES_LIST_FAILED,
+      payload: { error: error.response },
+    });
   }
 };
 

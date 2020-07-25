@@ -14,6 +14,7 @@ import {
   BUY_CHALLENGE_SUCCESS,
   VALIDATE_CHALLENGE_SUCCESS,
   GET_CHALLENGE_DETAILS_FAILED,
+  SET_CHALLENGES_LIST_FAILED,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -26,6 +27,7 @@ const initialState = {
     teamInDetail: undefined,
     allTeamsOnSeason: undefined,
     activeChallenges: undefined,
+    challengesListError: undefined,
     challengeInDetail: undefined,
     detailError: undefined,
   },
@@ -85,6 +87,12 @@ export default function seasonReducer(state = initialState.seasons, action) {
       return {
         ...state,
         activeChallenges: action.payload.activeChallenges,
+      };
+
+    case SET_CHALLENGES_LIST_FAILED:
+      return {
+        ...state,
+        challengesListError: action.payload.error,
       };
 
     case GET_TEAM_DETAILS_SUCCESS:

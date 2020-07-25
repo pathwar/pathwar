@@ -33,7 +33,11 @@ class SeasonPage extends React.Component {
   }
 
   render() {
-    const { buyChallengeAction, activeChallenges } = this.props;
+    const {
+      buyChallengeAction,
+      activeChallenges,
+      challengeListError,
+    } = this.props;
     const { title, description } = siteMetaData;
 
     return (
@@ -45,10 +49,15 @@ class SeasonPage extends React.Component {
         <Page.Content title="Challenges">
           <Grid.Row>
             <Grid.Col xs={12} sm={12} lg={12}>
-              <ChallengeList
-                challenges={activeChallenges}
-                buyChallenge={buyChallengeAction}
-              />
+              {challengeListError && (
+                <h3>Get challenges list error, please try again.</h3>
+              )}
+              {!challengeListError && (
+                <ChallengeList
+                  challenges={activeChallenges}
+                  buyChallenge={buyChallengeAction}
+                />
+              )}
             </Grid.Col>
           </Grid.Row>
         </Page.Content>
@@ -65,6 +74,7 @@ SeasonPage.propTypes = {
 const mapStateToProps = state => ({
   activeSeason: state.seasons.activeSeason,
   activeChallenges: state.seasons.activeChallenges,
+  challengeListError: state.seasons.challengesListError,
 });
 
 const mapDispatchToProps = {
