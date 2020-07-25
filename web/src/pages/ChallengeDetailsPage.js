@@ -25,6 +25,7 @@ const paragraph = css`
 const ChallengeDetailsPage = props => {
   const dispatch = useDispatch();
   const challenge = useSelector(state => state.seasons.challengeInDetail);
+  const error = useSelector(state => state.seasons.detailError);
   const activeTeam = useSelector(state => state.seasons.activeTeam);
 
   const buyChallenge = (challengeID, teamID, seasonId) =>
@@ -46,6 +47,18 @@ const ChallengeDetailsPage = props => {
     return () => dispatch({ type: CLEAN_CHALLENGE_DETAIL });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!challenge && error) {
+    return (
+      <h3
+        css={css`
+          margin-top: 2.5rem;
+        `}
+      >
+        Get details error, please try again.
+      </h3>
+    );
+  }
 
   if (!challenge) {
     return <Dimmer active loader />;

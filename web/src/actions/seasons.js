@@ -156,7 +156,10 @@ export const fetchChallengeDetail = challengeID => async dispatch => {
       payload: { challenge: response.data.item },
     });
   } catch (error) {
-    dispatch({ type: GET_CHALLENGE_DETAILS_FAILED, payload: { error } });
+    dispatch({
+      type: GET_CHALLENGE_DETAILS_FAILED,
+      payload: { error: error.response },
+    });
   }
 };
 
