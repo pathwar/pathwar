@@ -43,7 +43,6 @@ func adminCommand() *ffcli.Command {
 			adminRedumpCommand(),
 			adminChallengeAddCommand(),
 			adminChallengeFlavorAddCommand(),
-			adminChallengeInstanceAddCommand(),
 		},
 		ShortHelp: "admin commands",
 		FlagSet:   adminFlags,
@@ -792,45 +791,6 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 			}
 
 			fmt.Println(ret.ChallengeFlavor.ID)
-			return nil
-		},
-	}
-}
-func adminChallengeInstanceAddCommand() *ffcli.Command {
-	input := pwapi.AdminChallengeInstanceAdd_Input{ChallengeInstance: &pwdb.ChallengeInstance{}}
-	flags := flag.NewFlagSet("admin challenge instance add", flag.ExitOnError)
-	flags.Int64Var(&input.ChallengeInstance.AgentID, "agent-id", 0, "Id of the agent that will host the instance")
-	flags.Int64Var(&input.ChallengeInstance.FlavorID, "flavor-id", 0, "Challenge flavor id")
-	return &ffcli.Command{
-		Name:      "challenge-instance-add",
-		Usage:     "pathwar [global flags] admin [admin flags] challenge-instance-add [flags] [args...]",
-		ShortHelp: "add a challenge instance",
-		FlagSet:   flags,
-		Exec: func(args []string) error {
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-
-			ctx := context.Background()
-			apiClient, err := httpClientFromEnv(ctx)
-			if err != nil {
-				return errcode.TODO.Wrap(err)
-			}
-
-			ret, err := apiClient.AdminAddChallengeInstance(ctx, &input)
-			if err != nil {
-				return errcode.TODO.Wrap(err)
-			}
-			if globalDebug {
-				fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
-			}
-
-			if adminJSONFormat {
-				fmt.Println(godev.PrettyJSONPB(&ret))
-				return nil
-			}
-
-			fmt.Println(ret.ChallengeInstance.ID)
 			return nil
 		},
 	}

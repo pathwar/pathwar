@@ -85,16 +85,6 @@ definitions:
       challengeFlavor:
         $ref: '#/definitions/dbChallengeFlavor'
     type: object
-  apiAdminChallengeInstanceAddInput:
-    properties:
-      challengeInstance:
-        $ref: '#/definitions/dbChallengeInstance'
-    type: object
-  apiAdminChallengeInstanceAddOutput:
-    properties:
-      challengeInstance:
-        $ref: '#/definitions/dbChallengeInstance'
-    type: object
   apiAdminListActivitiesOutput:
     properties:
       activities:
@@ -1660,34 +1650,6 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiAdminChallengeFlavorAddOutput'
-        "403":
-          description: Returned when the user does not have permission to access the resource.
-          schema: {}
-        "404":
-          description: Returned when the resource does not exist.
-          schema:
-            format: string
-            type: string
-        default:
-          description: An unexpected error response
-          schema:
-            $ref: '#/definitions/runtimeError'
-      tags:
-      - Service
-  /admin/challenge-instance-add:
-    post:
-      operationId: Service_AdminChallengeInstanceAdd
-      parameters:
-      - in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/apiAdminChallengeInstanceAddInput'
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/apiAdminChallengeInstanceAddOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}

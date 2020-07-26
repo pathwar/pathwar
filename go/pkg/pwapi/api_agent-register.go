@@ -78,18 +78,15 @@ func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) 
 	}
 
 	for _, challengeFlavor := range challengeFlavorsToInstanciate {
-		addInput := AdminChallengeInstanceAdd_Input{
-			&pwdb.ChallengeInstance{
-				Status:         pwdb.ChallengeInstance_IsNew,
-				AgentID:        agent.ID,
-				FlavorID:       challengeFlavor.ID,
-				InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
-			},
+		instance := pwdb.ChallengeInstance{
+			Status:         pwdb.ChallengeInstance_IsNew,
+			AgentID:        agent.ID,
+			FlavorID:       challengeFlavor.ID,
+			InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
 		}
-
-		_, err = svc.AdminChallengeInstanceAdd(ctx, &addInput)
+		err = svc.db.Create(&instance).Error
 		if err != nil {
-			return nil, err
+			return nil, pwdb.GormToErrcode(err)
 		}
 	}
 
