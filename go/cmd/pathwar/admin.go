@@ -23,6 +23,7 @@ func adminCommand() *ffcli.Command {
 		adminChallengesFlags           = flag.NewFlagSet("admin challenges", flag.ExitOnError)
 		adminUsersFlags                = flag.NewFlagSet("admin users", flag.ExitOnError)
 		adminAgentsFlags               = flag.NewFlagSet("admin agents", flag.ExitOnError)
+		adminTeamsFlags                = flag.NewFlagSet("admin teams", flag.ExitOnError)
 		adminOrganizationsFlags        = flag.NewFlagSet("admin organizations", flag.ExitOnError)
 		adminActivitiesFlags           = flag.NewFlagSet("admin activities", flag.ExitOnError)
 		adminRedumpFlags               = flag.NewFlagSet("admin redump", flag.ExitOnError)
@@ -396,6 +397,63 @@ func adminCommand() *ffcli.Command {
 				return nil
 			},
 		}, {
+			Name:    "teams",
+			Usage:   "pathwar [global flags] admin [admin flags] teams [flags]",
+			FlagSet: adminTeamsFlags,
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				ctx := context.Background()
+				apiClient, err := httpClientFromEnv(ctx)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				ret, err := apiClient.AdminListTeams(ctx, &pwapi.AdminListTeams_Input{})
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				if jsonFormat {
+					fmt.Println(godev.PrettyJSONPB(&ret))
+					return nil
+				}
+
+				// teams table
+				{
+					fmt.Println("TEAMS")
+					table := tablewriter.NewWriter(os.Stdout)
+					table.SetHeader([]string{"SLUG", "CREATED", "UPDATED", "SEASON", "MEMBERS", "ORGANIZATION", "CHALLENGES", "ACHIEVEMENTS", "STATUS", "ID"})
+					table.SetAlignment(tablewriter.ALIGN_CENTER)
+					table.SetBorder(false)
+
+					for _, team := range ret.Teams {
+						//fmt.Println(godev.PrettyJSONPB(team))
+						id := fmt.Sprintf("%d", team.ID)
+						createdAgo := humanize.Time(*team.CreatedAt)
+						updatedAgo := humanize.Time(*team.UpdatedAt)
+						season := team.Season.ASCIIID()
+						memberParts := []string{}
+						for _, member := range team.Members {
+							memberParts = append(memberParts, member.User.ASCIIID())
+						}
+						members := strings.Join(memberParts, ",")
+						organization := team.Organization.ASCIIID()
+						status := asciiStatus(team.DeletionStatus.String())
+						challenges := asciiSubscriptionsStats(team.ChallengeSubscriptions)
+						achievements := fmt.Sprintf("%d", len(team.Achievements))
+						slug := team.Slug
+						table.Append([]string{slug, createdAgo, updatedAgo, season, members, organization, challenges, achievements, status, id})
+					}
+					table.Render()
+					fmt.Println("")
+				}
+
+				return nil
+			},
+		}, {
 			Name:    "redump",
 			Usage:   "pathwar [global flags] admin [admin flags] redump [flags] ID...",
 			FlagSet: adminRedumpFlags,
@@ -556,6 +614,31 @@ func asciiInstancesStats(instances []*pwdb.ChallengeInstance) string {
 		instanceParts = append(instanceParts, fmt.Sprintf("%dx🔴", instanceRed))
 	}
 	stats := strings.Join(instanceParts, " + ")
+	return stats
+}
+
+func asciiSubscriptionsStats(subscriptions []*pwdb.ChallengeSubscription) string {
+	if len(subscriptions) == 0 {
+		return "🚫"
+	}
+
+	subscriptionGreen := 0
+	subscriptionRed := 0
+	for _, subscription := range subscriptions {
+		if subscription.Status == pwdb.ChallengeSubscription_Active {
+			subscriptionGreen++
+		} else {
+			subscriptionRed++
+		}
+	}
+	subscriptionParts := []string{}
+	if subscriptionGreen > 0 {
+		subscriptionParts = append(subscriptionParts, fmt.Sprintf("%dx🟢", subscriptionGreen))
+	}
+	if subscriptionRed > 0 {
+		subscriptionParts = append(subscriptionParts, fmt.Sprintf("%dx🔴", subscriptionRed))
+	}
+	stats := strings.Join(subscriptionParts, " + ")
 	return stats
 }
 

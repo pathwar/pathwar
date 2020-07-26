@@ -17,7 +17,15 @@ func (svc *service) AdminListTeams(ctx context.Context, in *AdminListTeams_Input
 
 	var teams []*pwdb.Team
 	err := svc.db.
-		// Preload("").
+		Preload("Season").
+		Preload("Organization").
+		Preload("Achievements").
+		Preload("ChallengeSubscriptions").
+		Preload("ChallengeSubscriptions.SeasonChallenge").
+		Preload("ChallengeSubscriptions.SeasonChallenge.Flavor").
+		Preload("ChallengeSubscriptions.SeasonChallenge.Flavor.Challenge").
+		Preload("Members").
+		Preload("Members.User").
 		Find(&teams).Error
 	if err != nil {
 		return nil, errcode.ErrListTeams.Wrap(err)
