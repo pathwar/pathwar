@@ -49,12 +49,16 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 		//fmt.Println(sc.ID, godev.PrettyJSON(sc.Flavor.Instances))
 		for _, instance := range sc.Flavor.Instances {
 			// FIXME: hide instances without nginx-url?
+			instance.InstanceConfig = nil
 			if instance.Agent != nil {
-				hash, err := pwdb.ChallengeInstancePrefixHash(fmt.Sprintf("%d", instance.ID), userID, instance.Agent.AuthSalt)
-				if err != nil {
-					return nil, errcode.ErrGeneratePrefixHash.Wrap(err)
+				if len(sc.Subscriptions) > 0 {
+					hash, err := pwdb.ChallengeInstancePrefixHash(fmt.Sprintf("%d", instance.ID), userID, instance.Agent.AuthSalt)
+					if err != nil {
+						return nil, errcode.ErrGeneratePrefixHash.Wrap(err)
+					}
+					instance.NginxURL = fmt.Sprintf("http://%s.%s", hash, instance.Agent.DomainSuffix)
 				}
-				instance.NginxURL = fmt.Sprintf("http://%s.%s", hash, instance.Agent.DomainSuffix)
+				instance.AgentID = 0
 				instance.Agent = nil
 			}
 		}

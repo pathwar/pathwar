@@ -94,6 +94,10 @@ func TestActivity(t *testing.T) {
 
 	// validate challenge
 	{
+		db := testingSvcDB(t, svc)
+		// fetch full instance objects (base object is cleaned)
+		err := db.First(&freeChallenge.Flavor.Instances[0], "ID = ?", freeChallenge.Flavor.Instances[0].ID).Error
+		require.NoError(t, err)
 		configData, err := freeChallenge.Flavor.Instances[0].ParseInstanceConfig()
 		require.NoError(t, err)
 		input := ChallengeSubscriptionValidate_Input{
