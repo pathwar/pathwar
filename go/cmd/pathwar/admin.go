@@ -22,6 +22,7 @@ func adminCommand() *ffcli.Command {
 		adminFlags                     = flag.NewFlagSet("admin", flag.ExitOnError)
 		adminChallengesFlags           = flag.NewFlagSet("admin challenges", flag.ExitOnError)
 		adminUsersFlags                = flag.NewFlagSet("admin users", flag.ExitOnError)
+		adminAgentsFlags               = flag.NewFlagSet("admin agents", flag.ExitOnError)
 		adminRedumpFlags               = flag.NewFlagSet("admin redump", flag.ExitOnError)
 		adminChallengeAddFlags         = flag.NewFlagSet("admin challenge add", flag.ExitOnError)
 		adminChallengeFlavorAddFlags   = flag.NewFlagSet("admin challenge flavor add", flag.ExitOnError)
@@ -123,26 +124,7 @@ func adminCommand() *ffcli.Command {
 							challengeSlug := challenge.Slug
 							createdAgo := humanize.Time(*flavor.CreatedAt)
 							updatedAgo := humanize.Time(*flavor.UpdatedAt)
-							instanceGreen := 0
-							instanceRed := 0
-							for _, instance := range flavor.Instances {
-								if instance.Status == pwdb.ChallengeInstance_Available {
-									instanceGreen++
-								} else {
-									instanceRed++
-								}
-							}
-							instanceParts := []string{}
-							if instanceGreen > 0 {
-								instanceParts = append(instanceParts, fmt.Sprintf("%dx🟢", instanceGreen))
-							}
-							if instanceRed > 0 {
-								instanceParts = append(instanceParts, fmt.Sprintf("%dx🔴", instanceRed))
-							}
-							instances := strings.Join(instanceParts, " + ")
-							if len(flavor.Instances) == 0 {
-								instances = "🚫"
-							}
+							instances := asciiInstancesStats(flavor.Instances)
 							seasonChallengeParts := []string{}
 							for _, seasonChallenge := range flavor.SeasonChallenges {
 								seasonChallengeParts = append(seasonChallengeParts, seasonChallenge.Season.Slug)
@@ -169,13 +151,7 @@ func adminCommand() *ffcli.Command {
 							for _, instance := range flavor.Instances {
 								//fmt.Println(godev.PrettyJSONPB(instance))
 								id := fmt.Sprintf("%d", instance.ID)
-								status := instance.Status.String()
-								switch status {
-								case "Available":
-									status += " 🟢"
-								default:
-									status += " 🔴"
-								}
+								status := asciiStatus(instance.Status.String())
 								flavorSlug := fmt.Sprintf("%s@%s", challenge.Slug, flavor.Slug)
 								createdAgo := humanize.Time(*instance.CreatedAt)
 								updatedAgo := humanize.Time(*instance.UpdatedAt)
@@ -234,19 +210,67 @@ func adminCommand() *ffcli.Command {
 						slug := user.Slug
 						email := user.Email
 						username := user.Username
-						status := user.DeletionStatus.String()
-						switch status {
-						case "Active":
-							status += " 🟢"
-						default:
-							status += " 🔴"
-						}
+						status := asciiStatus(user.DeletionStatus.String())
 						createdAgo := humanize.Time(*user.CreatedAt)
 						updatedAgo := humanize.Time(*user.UpdatedAt)
 						teams := fmt.Sprintf("%d", len(user.TeamMemberships))
 						orgs := fmt.Sprintf("%d", len(user.OrganizationMemberships))
 						id := fmt.Sprintf("%d", user.ID)
 						table.Append([]string{slug, status, username, email, createdAgo, updatedAgo, teams, orgs, id})
+					}
+					table.Render()
+					fmt.Println("")
+				}
+
+				return nil
+			},
+		}, {
+			Name:    "agents",
+			Usage:   "pathwar [global flags] admin [admin flags] agents [flags]",
+			FlagSet: adminAgentsFlags,
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				ctx := context.Background()
+				apiClient, err := httpClientFromEnv(ctx)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				ret, err := apiClient.AdminListAgents(ctx, &pwapi.AdminListAgents_Input{})
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				if jsonFormat {
+					fmt.Println(godev.PrettyJSONPB(&ret))
+					return nil
+				}
+
+				// agents table
+				{
+					fmt.Println("AGENTS")
+					table := tablewriter.NewWriter(os.Stdout)
+					table.SetHeader([]string{"AGENT", "HOSTNAME", "SUFFIX", "STATUS", "CREATED", "UPDATED", "SEEN", "STATS", "INSTANCES", "DEFAULT", "ID"})
+					table.SetAlignment(tablewriter.ALIGN_CENTER)
+					table.SetBorder(false)
+
+					for _, agent := range ret.Agents {
+						//fmt.Println(godev.PrettyJSONPB(agent))
+						slug := agent.Slug
+						createdAgo := humanize.Time(*agent.CreatedAt)
+						updatedAgo := humanize.Time(*agent.UpdatedAt)
+						seenAgo := humanize.Time(*agent.LastSeenAt)
+						id := fmt.Sprintf("%d", agent.ID)
+						instances := asciiInstancesStats(agent.ChallengeInstances)
+						stats := fmt.Sprintf("%d seen / %d reg.", agent.TimesSeen, agent.TimesRegistered)
+						status := asciiStatus(agent.Status.String())
+						isDefault := asciiBool(agent.DefaultAgent)
+						suffix := agent.DomainSuffix
+						hostname := agent.Hostname
+						table.Append([]string{slug, hostname, suffix, status, createdAgo, updatedAgo, seenAgo, stats, instances, isDefault, id})
 					}
 					table.Render()
 					fmt.Println("")
@@ -391,4 +415,46 @@ func adminCommand() *ffcli.Command {
 		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec:      func([]string) error { return flag.ErrHelp },
 	}
+}
+
+func asciiInstancesStats(instances []*pwdb.ChallengeInstance) string {
+	if len(instances) == 0 {
+		return "🚫"
+	}
+
+	instanceGreen := 0
+	instanceRed := 0
+	for _, instance := range instances {
+		if instance.Status == pwdb.ChallengeInstance_Available {
+			instanceGreen++
+		} else {
+			instanceRed++
+		}
+	}
+	instanceParts := []string{}
+	if instanceGreen > 0 {
+		instanceParts = append(instanceParts, fmt.Sprintf("%dx🟢", instanceGreen))
+	}
+	if instanceRed > 0 {
+		instanceParts = append(instanceParts, fmt.Sprintf("%dx🔴", instanceRed))
+	}
+	stats := strings.Join(instanceParts, " + ")
+	return stats
+}
+
+func asciiBool(input bool) string {
+	if !input {
+		return "❌"
+	}
+	return "✅"
+}
+
+func asciiStatus(status string) string {
+	switch status {
+	case "Active":
+		status += " 🟢"
+	default:
+		status += " 🔴"
+	}
+	return status
 }

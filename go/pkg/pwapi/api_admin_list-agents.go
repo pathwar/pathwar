@@ -17,7 +17,7 @@ func (svc *service) AdminListAgents(ctx context.Context, in *AdminListAgents_Inp
 
 	var agents []*pwdb.Agent
 	err := svc.db.
-		// Preload("").
+		Preload("ChallengeInstances").
 		Find(&agents).Error
 	if err != nil {
 		return nil, errcode.ErrListAgents.Wrap(err)
