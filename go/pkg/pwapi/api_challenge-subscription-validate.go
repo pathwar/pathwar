@@ -10,7 +10,6 @@ import (
 	"github.com/jinzhu/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
-	"pathwar.land/pathwar/v2/go/pkg/pwinit"
 )
 
 func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *ChallengeSubscriptionValidate_Input) (*ChallengeSubscriptionValidate_Output, error) {
@@ -51,17 +50,19 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 	}
 
 	// compare input and instances' passphrases
-	var configData pwinit.InitConfig
-	err = json.Unmarshal(instances[0].GetInstanceConfig(), &configData)
-	if err != nil {
-		return nil, errcode.ErrParseInitConfig.Wrap(err)
-	}
-	amountExpected := len(configData.Passphrases)
-	if amountExpected == 0 {
-		return nil, errcode.ErrChallengeInactiveValidation.Wrap(errors.New("challenge config is invalid"))
-	}
-	if amountExpected < len(in.Passphrases) {
-		return nil, errcode.ErrChallengeIncompleteValidation.Wrap(fmt.Errorf("too many passphrases"))
+	var amountExpected int
+	{
+		configData, err := instances[0].ParseInstanceConfig()
+		if err != nil {
+			return nil, err
+		}
+		amountExpected = len(configData.Passphrases)
+		if amountExpected == 0 {
+			return nil, errcode.ErrChallengeInactiveValidation.Wrap(errors.New("challenge config is invalid"))
+		}
+		if amountExpected < len(in.Passphrases) {
+			return nil, errcode.ErrChallengeIncompleteValidation.Wrap(fmt.Errorf("too many passphrases"))
+		}
 	}
 
 	// FIXME: revalidation
@@ -69,10 +70,9 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 	validPassphrases := make([]bool, amountExpected)
 	usedInstances := make(map[int64]bool, len(instances))
 	for _, instance := range instances {
-		var configData pwinit.InitConfig
-		err = json.Unmarshal(instance.GetInstanceConfig(), &configData)
+		configData, err := instance.ParseInstanceConfig()
 		if err != nil {
-			return nil, errcode.ErrParseInitConfig.Wrap(err)
+			return nil, err
 		}
 		for index, passphrase := range configData.Passphrases {
 			for _, userPassphrase := range in.Passphrases {
