@@ -36,6 +36,8 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 		Preload("Flavor.Instances").
 		Preload("Flavor.Instances.Agent"). // FIXME: where status==active
 		Preload("Subscriptions", "team_id = ?", team.ID).
+		Preload("Subscriptions.Team").
+		Preload("Subscriptions.Team.Season").
 		Where(pwdb.SeasonChallenge{SeasonID: in.SeasonID}).
 		Find(&seasonChallenges).
 		Error

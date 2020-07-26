@@ -70,7 +70,11 @@ func TestActivity(t *testing.T) {
 		}
 		require.NotNil(t, freeChallenge)
 		require.NotNil(t, expensiveChallenge)
-		subscription, err = svc.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{SeasonChallengeID: freeChallenge.ID, TeamID: activeTeam.ID})
+		input := SeasonChallengeBuy_Input{
+			FlavorID: freeChallenge.Flavor.Slug,
+			SeasonID: activeTeam.Season.Slug,
+		}
+		subscription, err = svc.SeasonChallengeBuy(ctx, &input)
 		require.NoError(t, err)
 
 		activities = testingActivities(t, svc)
@@ -159,7 +163,10 @@ func TestActivity(t *testing.T) {
 	{
 		activeTeam := session.User.ActiveTeamMember.Team
 
-		subscription, err := svc.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{SeasonChallengeID: expensiveChallenge.ID, TeamID: activeTeam.ID})
+		subscription, err := svc.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{
+			FlavorID: expensiveChallenge.Flavor.Slug,
+			SeasonID: activeTeam.Season.Slug,
+		})
 		require.NoError(t, err)
 
 		activities = testingActivities(t, svc)

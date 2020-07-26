@@ -288,8 +288,8 @@ message ChallengeGet {
 
 message SeasonChallengeBuy {
   message Input {
-    int64 season_challenge_id = 1 [(gogoproto.customname) = "SeasonChallengeID"];
-    int64 team_id = 2 [(gogoproto.customname) = "TeamID"];
+    string flavor_id = 1 [(gogoproto.customname) = "FlavorID"];
+    string season_id = 2 [(gogoproto.customname) = "SeasonID"];
   }
   message Output {
     pathwar.db.ChallengeSubscription challenge_subscription = 1;

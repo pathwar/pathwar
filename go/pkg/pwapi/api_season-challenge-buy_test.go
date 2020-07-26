@@ -43,11 +43,11 @@ func TestSvc_ChallengeBuy(t *testing.T) {
 	}{
 		{"nil", nil, errcode.ErrMissingInput},
 		{"empty", &SeasonChallengeBuy_Input{}, errcode.ErrMissingInput},
-		{"invalid season challenge ID", &SeasonChallengeBuy_Input{SeasonChallengeID: 42, TeamID: activeTeam.ID}, errcode.ErrInvalidSeason},
-		{"invalid team ID", &SeasonChallengeBuy_Input{SeasonChallengeID: freeChallenge.ID, TeamID: 42}, errcode.ErrInvalidTeam},
-		{"not enough cash", &SeasonChallengeBuy_Input{SeasonChallengeID: expensiveChallenge.ID, TeamID: activeTeam.ID}, errcode.ErrNotEnoughCash},
-		{"valid 1", &SeasonChallengeBuy_Input{SeasonChallengeID: freeChallenge.ID, TeamID: activeTeam.ID}, nil},
-		{"valid 2 (duplicate)", &SeasonChallengeBuy_Input{SeasonChallengeID: freeChallenge.ID, TeamID: activeTeam.ID}, errcode.ErrChallengeAlreadySubscribed},
+		{"invalid flavor ID", &SeasonChallengeBuy_Input{FlavorID: "42", SeasonID: activeTeam.Season.Slug}, errcode.ErrInvalidFlavor},
+		{"invalid season ID", &SeasonChallengeBuy_Input{FlavorID: freeChallenge.Flavor.Slug, SeasonID: "42"}, errcode.ErrInvalidSeason},
+		{"not enough cash", &SeasonChallengeBuy_Input{FlavorID: expensiveChallenge.Flavor.Slug, SeasonID: activeTeam.Season.Slug}, errcode.ErrNotEnoughCash},
+		{"valid 1", &SeasonChallengeBuy_Input{FlavorID: freeChallenge.Flavor.Slug, SeasonID: activeTeam.Season.Slug}, nil},
+		{"valid 2 (duplicate)", &SeasonChallengeBuy_Input{FlavorID: freeChallenge.Flavor.Slug, SeasonID: activeTeam.Season.Slug}, errcode.ErrChallengeAlreadySubscribed},
 		// FIXME: check for a team and a challenge in different seasons
 		// FIXME: check for a team from another user
 		// FIXME: check for a challenge in draft mode
@@ -60,8 +60,8 @@ func TestSvc_ChallengeBuy(t *testing.T) {
 			continue
 		}
 
-		assert.Equalf(t, test.input.TeamID, subscription.ChallengeSubscription.TeamID, test.name)
-		assert.Equalf(t, test.input.SeasonChallengeID, subscription.ChallengeSubscription.SeasonChallengeID, test.name)
+		assert.Equalf(t, test.input.SeasonID, subscription.ChallengeSubscription.Team.Season.Slug, test.name)
+		assert.Equalf(t, test.input.FlavorID, subscription.ChallengeSubscription.SeasonChallenge.Flavor.Slug, test.name)
 		assert.Equalf(t, session.User.ID, subscription.ChallengeSubscription.BuyerID, test.name)
 
 		// check if challenge subscription is now visible in season challenge list
@@ -75,7 +75,7 @@ func TestSvc_ChallengeBuy(t *testing.T) {
 						continue
 					}
 					assert.Equalf(t, subscription.ChallengeSubscription.ID, challenge.Subscriptions[0].ID, test.name)
-					assert.Equalf(t, test.input.TeamID, challenge.Subscriptions[0].TeamID, test.name)
+					assert.Equalf(t, test.input.SeasonID, challenge.Subscriptions[0].Team.Season.Slug, test.name)
 				}
 			}
 			assert.Equalf(t, 1, found, test.name)

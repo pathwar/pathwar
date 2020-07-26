@@ -1,6 +1,9 @@
 package pwdb
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func (entity *Team) ASCIIID() string {
 	if entity == nil {
@@ -70,4 +73,11 @@ func (entity *ChallengeSubscription) ASCIIID() string {
 		return "-"
 	}
 	return entity.Slug
+}
+
+func (entity *ChallengeFlavor) ASCIIID() string {
+	if entity == nil {
+		return "-"
+	}
+	return strings.TrimSuffix(entity.Slug, "@default")
 }
