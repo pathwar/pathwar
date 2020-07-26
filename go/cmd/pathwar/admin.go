@@ -23,6 +23,7 @@ func adminCommand() *ffcli.Command {
 		adminChallengesFlags           = flag.NewFlagSet("admin challenges", flag.ExitOnError)
 		adminUsersFlags                = flag.NewFlagSet("admin users", flag.ExitOnError)
 		adminAgentsFlags               = flag.NewFlagSet("admin agents", flag.ExitOnError)
+		adminActivitiesFlags           = flag.NewFlagSet("admin activities", flag.ExitOnError)
 		adminRedumpFlags               = flag.NewFlagSet("admin redump", flag.ExitOnError)
 		adminChallengeAddFlags         = flag.NewFlagSet("admin challenge add", flag.ExitOnError)
 		adminChallengeFlavorAddFlags   = flag.NewFlagSet("admin challenge flavor add", flag.ExitOnError)
@@ -271,6 +272,62 @@ func adminCommand() *ffcli.Command {
 						suffix := agent.DomainSuffix
 						hostname := agent.Hostname
 						table.Append([]string{slug, hostname, suffix, status, createdAgo, updatedAgo, seenAgo, stats, instances, isDefault, id})
+					}
+					table.Render()
+					fmt.Println("")
+				}
+
+				return nil
+			},
+		}, {
+			Name:    "activities",
+			Usage:   "pathwar [global flags] admin [admin flags] activities [flags]",
+			FlagSet: adminActivitiesFlags,
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				ctx := context.Background()
+				apiClient, err := httpClientFromEnv(ctx)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				ret, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{})
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				if jsonFormat {
+					fmt.Println(godev.PrettyJSONPB(&ret))
+					return nil
+				}
+
+				// activities table
+				{
+					fmt.Println("ACTIVITIES")
+					table := tablewriter.NewWriter(os.Stdout)
+					table.SetHeader([]string{"ID", "KIND", "HAPPENED", "AUTHOR", "TEAM", "USER", "ORG", "SEASON", "CHALLENGE", "COUPON", "SEASON CHAL.", "TEAM MEMBER", "CHALLENGE SUBS"})
+					table.SetAlignment(tablewriter.ALIGN_CENTER)
+					table.SetBorder(false)
+
+					for _, activity := range ret.Activities {
+						//fmt.Println(godev.PrettyJSONPB(activity))
+						author := activity.Author.Slug
+						id := fmt.Sprintf("%d", activity.ID)
+						kind := activity.Kind.String()
+						createdAgo := humanize.Time(*activity.CreatedAt)
+						team := activity.Team.ASCIIID()
+						user := activity.User.ASCIIID()
+						organization := activity.Organization.ASCIIID()
+						season := activity.Season.ASCIIID()
+						challenge := activity.Challenge.ASCIIID()
+						coupon := activity.Coupon.ASCIIID()
+						seasonChallenge := activity.SeasonChallenge.ASCIIID()
+						teamMember := activity.TeamMember.ASCIIID()
+						challengeSubscription := activity.ChallengeSubscription.ASCIIID()
+						table.Append([]string{id, kind, createdAgo, author, team, user, organization, season, challenge, coupon, seasonChallenge, teamMember, challengeSubscription})
 					}
 					table.Render()
 					fmt.Println("")

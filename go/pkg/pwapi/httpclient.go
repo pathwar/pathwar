@@ -88,6 +88,13 @@ func (c HTTPClient) AdminListAgents(ctx context.Context, input *AdminListAgents_
 	return result, err
 }
 
+func (c HTTPClient) AdminListActivities(ctx context.Context, input *AdminListActivities_Input) (AdminListActivities_Output, error) {
+	var _ *AdminListActivities_Input = input
+	var result AdminListActivities_Output
+	err := c.doGet(ctx, "/admin/list-activities", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) AdminAddChallenge(ctx context.Context, input *AdminChallengeAdd_Input) (AdminChallengeAdd_Output, error) {
 	var _ *AdminChallengeAdd_Input = input
 	var result AdminChallengeAdd_Output
