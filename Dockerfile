@@ -8,7 +8,7 @@ WORKDIR         /go/src/pathwar.land
 RUN             go mod download
 COPY            . .
 WORKDIR         /go/src/pathwar.land/go
-RUN             make packr
+RUN             make _docker
 RUN             make install
 
 # runtime

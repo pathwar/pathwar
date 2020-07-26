@@ -14,32 +14,14 @@ services:
       - /bin/pathwar
       - --debug
       - api
-      - --urn=pathwar:uns3cur3@tcp(mysql:3306)/pathwar?charset=utf8&parseTime=true
       - --sso-unsafe
       - server
       - --bind=0.0.0.0:8000
     links:
-      - mysql
       - mailserver
     ports:
       - 8000
       - 9111
-
-  mysql:
-    image: mariadb:10
-    restart: unless-stopped
-    volumes:
-      - mysql_data:/var/lib/mysql
-    ports:
-      - 3306
-    environment:
-      MYSQL_ROOT_PASSWORD: uns3cur3
-      MYSQL_DATABASE: pathwar
-      MYSQL_USER: pathwar
-      MYSQL_PASSWORD: uns3cur3
-    command:
-      - mysqld
-      - --character-set-server=utf8mb4
 
   zipkin:
     image: openzipkin/zipkin-slim:latest
@@ -52,7 +34,3 @@ services:
     ports:
       - 1025
       - 8025
-
-volumes:
-  mysql_data:
-    driver: local
