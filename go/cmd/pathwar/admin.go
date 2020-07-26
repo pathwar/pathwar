@@ -36,7 +36,7 @@ func adminCommand() *ffcli.Command {
 			adminOrganizationsCommand(),
 			adminTeamsCommand(),
 			adminCouponsCommand(),
-			// adminChallengeSubscriptionsCommand(),
+			adminChallengeSubscriptionsCommand(),
 
 			// actions
 			adminAddCouponCommand(),
@@ -543,6 +543,64 @@ func adminCouponsCommand() *ffcli.Command {
 					}
 					validations := fmt.Sprintf("%d / %d %s", validated, coupon.MaxValidationCount, validationStatus)
 					table.Append([]string{hash, value, season, createdAgo, updatedAgo, validations, id})
+				}
+				table.Render()
+				fmt.Println("")
+			}
+
+			return nil
+		},
+	}
+}
+
+func adminChallengeSubscriptionsCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin challengeSubscriptions", flag.ExitOnError)
+	return &ffcli.Command{
+		Name:    "subscriptions",
+		Usage:   "pathwar [global flags] admin [admin flags] subscriptions [flags]",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminListChallengeSubscriptions(ctx, &pwapi.AdminListChallengeSubscriptions_Input{})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			// challengeSubscriptions table
+			{
+				fmt.Println("CHALLENGE SUBSCRIPTIONS")
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"CHALLENGE", "TEAM", "SEASON", "STATUS", "CREATED", "UPDATED", "BUYER", "CLOSER", "VALIDATIONS", "ID"})
+				table.SetAlignment(tablewriter.ALIGN_CENTER)
+				table.SetBorder(false)
+
+				for _, subscription := range ret.Subscriptions {
+					//fmt.Println(godev.PrettyJSONPB(subscription))
+					id := fmt.Sprintf("%d", subscription.ID)
+					createdAgo := humanize.Time(*subscription.CreatedAt)
+					updatedAgo := humanize.Time(*subscription.UpdatedAt)
+					team := subscription.Team.Organization.ASCIIID()
+					buyer := subscription.Buyer.ASCIIID()
+					season := subscription.SeasonChallenge.Season.ASCIIID()
+					challenge := subscription.SeasonChallenge.Flavor.Challenge.ASCIIID()
+					status := asciiStatus(subscription.Status.String())
+					closer := subscription.Closer.ASCIIID()
+					validations := fmt.Sprintf("%d", len(subscription.Validations))
+					table.Append([]string{challenge, team, season, status, createdAgo, updatedAgo, buyer, closer, validations, id})
 				}
 				table.Render()
 				fmt.Println("")

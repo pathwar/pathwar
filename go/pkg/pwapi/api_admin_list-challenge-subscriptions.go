@@ -17,7 +17,15 @@ func (svc *service) AdminListChallengeSubscriptions(ctx context.Context, in *Adm
 
 	var challengeSubscriptions []*pwdb.ChallengeSubscription
 	err := svc.db.
-		// Preload("").
+		Preload("Team").
+		Preload("Team.Organization").
+		Preload("Closer").
+		Preload("Validations").
+		Preload("SeasonChallenge").
+		Preload("SeasonChallenge.Season").
+		Preload("SeasonChallenge.Flavor").
+		Preload("SeasonChallenge.Flavor.Challenge").
+		Preload("Buyer").
 		Find(&challengeSubscriptions).Error
 	if err != nil {
 		return nil, errcode.ErrListChallengeSubscriptions.Wrap(err)
