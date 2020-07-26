@@ -1,12 +1,14 @@
 package pwdb
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 
 	"github.com/martinlindhe/base36"
 	"golang.org/x/crypto/sha3"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/pwinit"
 )
 
 func newOfficialChallengeWithFlavor(name string, homepage string, composeBundle string) *ChallengeFlavor {
@@ -47,6 +49,15 @@ func (a *Agent) TagSlice() []string {
 
 func (cf ChallengeFlavor) NameAndVersion() string {
 	return fmt.Sprintf("%s@%s", cf.Challenge.Name, cf.Version)
+}
+
+func (instance *ChallengeInstance) ParseInstanceConfig() (*pwinit.InitConfig, error) {
+	var configData pwinit.InitConfig
+	err := json.Unmarshal(instance.GetInstanceConfig(), &configData)
+	if err != nil {
+		return nil, errcode.ErrParseInitConfig.Wrap(err)
+	}
+	return &configData, nil
 }
 
 func ChallengeInstancePrefixHash(instanceID string, userID int64, salt string) (string, error) {

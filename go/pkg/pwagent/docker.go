@@ -2,7 +2,6 @@ package pwagent
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -13,7 +12,6 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwcompose"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
-	"pathwar.land/pathwar/v2/go/pkg/pwinit"
 )
 
 func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, dockerClient *client.Client, opts Opts) error {
@@ -80,10 +78,9 @@ func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstanc
 		}
 
 		// parse pwinit config
-		var configData pwinit.InitConfig
-		err = json.Unmarshal(instance.GetInstanceConfig(), &configData)
+		configData, err := instance.ParseInstanceConfig()
 		if err != nil {
-			return errcode.ErrParseInitConfig.Wrap(err)
+			return err
 		}
 
 		bundle := instance.GetFlavor().GetComposeBundle()
@@ -95,7 +92,7 @@ func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstanc
 			InstanceKey:     instanceID, // WARN -> normal?
 			ForceRecreate:   true,
 			ProxyNetworkID:  proxyNetworkID,
-			PwinitConfig:    &configData,
+			PwinitConfig:    configData,
 		}
 		containers, err := pwcompose.Up(ctx, dockerClient, upOpts)
 		if err != nil {

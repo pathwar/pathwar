@@ -2,14 +2,12 @@ package pwapi
 
 import (
 	"context"
-	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"pathwar.land/pathwar/v2/go/internal/testutil"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
-	"pathwar.land/pathwar/v2/go/pkg/pwinit"
 )
 
 func TestActivity(t *testing.T) {
@@ -96,8 +94,7 @@ func TestActivity(t *testing.T) {
 
 	// validate challenge
 	{
-		var configData pwinit.InitConfig
-		err := json.Unmarshal(freeChallenge.Flavor.Instances[0].GetInstanceConfig(), &configData)
+		configData, err := freeChallenge.Flavor.Instances[0].ParseInstanceConfig()
 		require.NoError(t, err)
 		input := ChallengeSubscriptionValidate_Input{
 			ChallengeSubscriptionID: subscription.ChallengeSubscription.ID,
