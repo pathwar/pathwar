@@ -12,17 +12,19 @@ func (svc *service) AdminChallengeAdd(ctx context.Context, in *AdminChallengeAdd
 		return nil, errcode.ErrRestrictedArea
 	}
 
+	in.ApplyDefaults()
 	if in == nil || in.Challenge.Name == "" {
 		return nil, errcode.ErrMissingInput
 	}
 
 	challenge := pwdb.Challenge{
+		Slug:        in.Challenge.Slug,
 		Name:        in.Challenge.Name,
 		Description: in.Challenge.Description,
 		Author:      in.Challenge.Author,
 		Locale:      in.Challenge.Locale,
 		IsDraft:     in.Challenge.IsDraft,
-		PreviewUrl:  in.Challenge.PreviewUrl,
+		PreviewURL:  in.Challenge.PreviewURL,
 		Homepage:    in.Challenge.Homepage,
 	}
 
@@ -35,4 +37,16 @@ func (svc *service) AdminChallengeAdd(ctx context.Context, in *AdminChallengeAdd
 		Challenge: &challenge,
 	}
 	return &out, nil
+}
+
+func (in *AdminChallengeAdd_Input) ApplyDefaults() {
+	if in.Challenge.Locale == "" {
+		in.Challenge.Locale = "en_US"
+	}
+	if in.Challenge.Author == "" {
+		in.Challenge.Author = "Pathwar Staff"
+	}
+	if in.Challenge.Slug != "" && in.Challenge.Name == "" {
+		in.Challenge.Name = in.Challenge.Slug
+	}
 }

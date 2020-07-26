@@ -20,9 +20,9 @@ message Challenge {
   string author = 102;
   string locale = 103;
   bool is_draft = 104;
-  string preview_url = 105;
+  string preview_url = 105 [(gogoproto.customname) = "PreviewURL"];
   string homepage = 106;
-  string slug = 107;
+  string slug = 107 [(gogoproto.moretags) = "gorm:\"unique_index\""];
   // AuthorProfile
   // repeated string tags = ;
 
@@ -390,7 +390,7 @@ message Notification {
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 
   google.protobuf.Timestamp read_at = 100 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  string click_url = 101;
+  string click_url = 101 [(gogoproto.customname) = "ClickURL"];
   string msg = 102;
   string args = 103; // marshaled args
   // FIXME: get inspiration from push notifications

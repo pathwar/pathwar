@@ -691,14 +691,17 @@ func adminRedumpCommand() *ffcli.Command {
 }
 
 func adminChallengeAddCommand() *ffcli.Command {
+	input := pwapi.AdminChallengeAdd_Input{Challenge: &pwdb.Challenge{}}
+	input.ApplyDefaults()
 	flags := flag.NewFlagSet("admin challenge add", flag.ExitOnError)
-	flags.StringVar(&adminChallengeAddInput.Challenge.Name, "name", "", "Challenge name")
-	flags.StringVar(&adminChallengeAddInput.Challenge.Description, "description", "", "Challenge description")
-	flags.StringVar(&adminChallengeAddInput.Challenge.Author, "author", "", "Challenge author")
-	flags.StringVar(&adminChallengeAddInput.Challenge.Locale, "locale", "", "Challenge Locale")
-	flags.BoolVar(&adminChallengeAddInput.Challenge.IsDraft, "is-draft", true, "Is challenge production ready ?")
-	flags.StringVar(&adminChallengeAddInput.Challenge.PreviewUrl, "preview-url", "", "Challenge preview URL")
-	flags.StringVar(&adminChallengeAddInput.Challenge.Homepage, "homepage", "", "Challenge homepage URL")
+	flags.StringVar(&input.Challenge.Slug, "slug", input.Challenge.Slug, "Unique slug")
+	flags.StringVar(&input.Challenge.Name, "name", input.Challenge.Name, "Challenge name")
+	flags.StringVar(&input.Challenge.Description, "description", input.Challenge.Description, "Challenge description")
+	flags.StringVar(&input.Challenge.Author, "author", input.Challenge.Author, "Challenge author")
+	flags.StringVar(&input.Challenge.Locale, "locale", input.Challenge.Locale, "Challenge Locale")
+	flags.BoolVar(&input.Challenge.IsDraft, "is-draft", input.Challenge.IsDraft, "Is challenge production ready ?")
+	flags.StringVar(&input.Challenge.PreviewURL, "preview-url", input.Challenge.PreviewURL, "Challenge preview URL")
+	flags.StringVar(&input.Challenge.Homepage, "homepage", input.Challenge.Homepage, "Challenge homepage URL")
 
 	return &ffcli.Command{
 		Name:      "challenge-add",
@@ -706,6 +709,10 @@ func adminChallengeAddCommand() *ffcli.Command {
 		ShortHelp: "add a challenge",
 		FlagSet:   flags,
 		Exec: func(args []string) error {
+			if input.Challenge.Name == "" {
+				return flag.ErrHelp
+			}
+
 			if err := globalPreRun(); err != nil {
 				return err
 			}
@@ -716,7 +723,7 @@ func adminChallengeAddCommand() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
-			ret, err := apiClient.AdminAddChallenge(ctx, &adminChallengeAddInput)
+			ret, err := apiClient.AdminAddChallenge(ctx, &input)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
 			}
@@ -736,10 +743,11 @@ func adminChallengeAddCommand() *ffcli.Command {
 }
 
 func adminChallengeFlavorAddCommand() *ffcli.Command {
+	input := pwapi.AdminChallengeFlavorAdd_Input{ChallengeFlavor: &pwdb.ChallengeFlavor{}}
 	flags := flag.NewFlagSet("admin challenge flavor add", flag.ExitOnError)
-	flags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.Version, "version", "1.0.0", "Challenge flavor version")
-	flags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.ComposeBundle, "compose-bundle", "", "Challenge flavor compose bundle")
-	flags.Int64Var(&adminChallengeFlavorAddInput.ChallengeFlavor.ChallengeID, "challenge-id", 0, "Challenge id")
+	flags.StringVar(&input.ChallengeFlavor.Version, "version", "1.0.0", "Challenge flavor version")
+	flags.StringVar(&input.ChallengeFlavor.ComposeBundle, "compose-bundle", "", "Challenge flavor compose bundle")
+	flags.Int64Var(&input.ChallengeFlavor.ChallengeID, "challenge-id", 0, "Challenge id")
 	return &ffcli.Command{
 		Name:      "challenge-flavor-add",
 		Usage:     "pathwar [global flags] admin [admin flags] challenge-flavor-add [flags] [args...]",
@@ -756,7 +764,7 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
-			ret, err := apiClient.AdminAddChallengeFlavor(ctx, &adminChallengeFlavorAddInput)
+			ret, err := apiClient.AdminAddChallengeFlavor(ctx, &input)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
 			}
@@ -775,9 +783,10 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 	}
 }
 func adminChallengeInstanceAddCommand() *ffcli.Command {
+	input := pwapi.AdminChallengeInstanceAdd_Input{ChallengeInstance: &pwdb.ChallengeInstance{}}
 	flags := flag.NewFlagSet("admin challenge instance add", flag.ExitOnError)
-	flags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.AgentID, "agent-id", 0, "Id of the agent that will host the instance")
-	flags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.FlavorID, "flavor-id", 0, "Challenge flavor id")
+	flags.Int64Var(&input.ChallengeInstance.AgentID, "agent-id", 0, "Id of the agent that will host the instance")
+	flags.Int64Var(&input.ChallengeInstance.FlavorID, "flavor-id", 0, "Challenge flavor id")
 	return &ffcli.Command{
 		Name:      "challenge-instance-add",
 		Usage:     "pathwar [global flags] admin [admin flags] challenge-instance-add [flags] [args...]",
@@ -794,7 +803,7 @@ func adminChallengeInstanceAddCommand() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
-			ret, err := apiClient.AdminAddChallengeInstance(ctx, &adminChallengeInstanceAddInput)
+			ret, err := apiClient.AdminAddChallengeInstance(ctx, &input)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
 			}
@@ -872,7 +881,7 @@ func asciiBool(input bool) string {
 
 func asciiStatus(status string) string {
 	switch status {
-	case "Active":
+	case "Active", "Available":
 		status += " 🟢"
 	default:
 		status += " 🔴"

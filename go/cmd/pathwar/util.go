@@ -26,7 +26,6 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/pwagent"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwcompose"
-	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 	"pathwar.land/pathwar/v2/go/pkg/pwsso"
 	"pathwar.land/pathwar/v2/go/pkg/pwversion"
 )
@@ -43,15 +42,12 @@ var (
 	flagOutput = os.Stderr
 
 	// flag vars
-	adminChallengeAddInput         = pwapi.AdminChallengeAdd_Input{Challenge: &pwdb.Challenge{}}
-	adminChallengeFlavorAddInput   = pwapi.AdminChallengeFlavorAdd_Input{ChallengeFlavor: &pwdb.ChallengeFlavor{}}
-	adminChallengeInstanceAddInput = pwapi.AdminChallengeInstanceAdd_Input{ChallengeInstance: &pwdb.ChallengeInstance{}}
-	agentOpts                      = pwagent.NewOpts()
-	serverOpts                     = pwapi.NewServerOpts()
-	ssoOpts                        = pwsso.NewOpts()
-	composeCleanOpts               = pwcompose.NewCleanOpts()
-	composePrepareOpts             = pwcompose.NewPrepareOpts()
-	composeUpOpts                  = pwcompose.NewUpOpts()
+	agentOpts          = pwagent.NewOpts()
+	serverOpts         = pwapi.NewServerOpts()
+	ssoOpts            = pwsso.NewOpts()
+	composeCleanOpts   = pwcompose.NewCleanOpts()
+	composePrepareOpts = pwcompose.NewPrepareOpts()
+	composeUpOpts      = pwcompose.NewUpOpts()
 
 	DBURN           string
 	DBMaxOpenTries  int
