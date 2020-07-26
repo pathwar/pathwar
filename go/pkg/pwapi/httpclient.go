@@ -53,13 +53,6 @@ func (c HTTPClient) AdminRedump(ctx context.Context, input *AdminRedump_Input) (
 	return result, err
 }
 
-func (c HTTPClient) AdminPS(ctx context.Context, input *AdminPS_Input) (AdminPS_Output, error) {
-	var _ *AdminPS_Input = input
-	var result AdminPS_Output
-	err := c.doGet(ctx, "/admin/ps", input, &result)
-	return result, err
-}
-
 func (c HTTPClient) AdminListChallenges(ctx context.Context, input *AdminListChallenges_Input) (AdminListChallenges_Output, error) {
 	var _ *AdminListChallenges_Input = input
 	var result AdminListChallenges_Output

@@ -81,8 +81,14 @@ service Service {
   // Admin
   //
 
-  rpc AdminPS(AdminPS.Input) returns (AdminPS.Output) { option (google.api.http) = {get: "/admin/ps"}; }; // admin only
   rpc AdminListChallenges(AdminListChallenges.Input) returns (AdminListChallenges.Output) { option (google.api.http) = {get: "/admin/list-challenges"}; }; // admin only
+  rpc AdminListAgents(AdminListAgents.Input) returns (AdminListAgents.Output) { option (google.api.http) = {get: "/admin/list-agents"}; }; // admin only
+  rpc AdminListCoupons(AdminListCoupons.Input) returns (AdminListCoupons.Output) { option (google.api.http) = {get: "/admin/list-coupons"}; }; // admin only
+  rpc AdminListOrganizations(AdminListOrganizations.Input) returns (AdminListOrganizations.Output) { option (google.api.http) = {get: "/admin/list-organizations"}; }; // admin only
+  rpc AdminListTeams(AdminListTeams.Input) returns (AdminListTeams.Output) { option (google.api.http) = {get: "/admin/list-teams"}; }; // admin only
+  rpc AdminListUsers(AdminListUsers.Input) returns (AdminListUsers.Output) { option (google.api.http) = {get: "/admin/list-users"}; }; // admin only
+  rpc AdminListActivities(AdminListActivities.Input) returns (AdminListActivities.Output) { option (google.api.http) = {get: "/admin/list-activities"}; }; // admin only
+  rpc AdminListChallengeSubscriptions(AdminListChallengeSubscriptions.Input) returns (AdminListChallengeSubscriptions.Output) { option (google.api.http) = {get: "/admin/list-challenge-subscriptions"}; }; // admin only
   rpc AdminRedump(AdminRedump.Input) returns (AdminRedump.Output) { option (google.api.http) = {post: "/admin/redump"; body: "*"}; }; // admin only
   rpc AdminChallengeAdd(AdminChallengeAdd.Input) returns (AdminChallengeAdd.Output) { option (google.api.http) = {post: "/admin/challenge-add"; body: "*"}; }; // admin only
   rpc AdminChallengeFlavorAdd(AdminChallengeFlavorAdd.Input) returns (AdminChallengeFlavorAdd.Output) { option (google.api.http) = {post: "/admin/challenge-flavor-add"; body: "*"}; }; // admin only
@@ -100,17 +106,59 @@ message AdminRedump {
   message Output {}
 }
 
-message AdminPS {
-  message Input {}
-  message Output {
-    repeated pathwar.db.ChallengeInstance instances = 1;
-  }
-}
-
 message AdminListChallenges {
   message Input {}
   message Output {
     repeated pathwar.db.Challenge challenges = 1;
+  }
+}
+
+message AdminListAgents {
+  message Input {}
+  message Output {
+    repeated pathwar.db.Agent agents = 1;
+  }
+}
+
+message AdminListCoupons {
+  message Input {}
+  message Output {
+    repeated pathwar.db.Coupon coupons = 1;
+  }
+}
+
+message AdminListOrganizations {
+  message Input {}
+  message Output {
+    repeated pathwar.db.Organization organizations = 1;
+  }
+}
+
+message AdminListUsers {
+  message Input {}
+  message Output {
+    repeated pathwar.db.User users = 1;
+  }
+}
+
+message AdminListChallengeSubscriptions {
+  message Input {}
+  message Output {
+    repeated pathwar.db.ChallengeSubscription subscriptions = 1;
+  }
+}
+
+message AdminListTeams {
+  message Input {}
+  message Output {
+    repeated pathwar.db.Team teams = 1;
+  }
+}
+
+message AdminListActivities {
+  message Input {}
+  message Output {
+    repeated pathwar.db.Activity activities = 1;
   }
 }
 

@@ -20,7 +20,6 @@ import (
 func adminCommand() *ffcli.Command {
 	var (
 		adminFlags                     = flag.NewFlagSet("admin", flag.ExitOnError)
-		adminPSFlags                   = flag.NewFlagSet("admin ps", flag.ExitOnError)
 		adminChallengesFlags           = flag.NewFlagSet("admin challenges", flag.ExitOnError)
 		adminRedumpFlags               = flag.NewFlagSet("admin redump", flag.ExitOnError)
 		adminChallengeAddFlags         = flag.NewFlagSet("admin challenge add", flag.ExitOnError)
@@ -48,65 +47,6 @@ func adminCommand() *ffcli.Command {
 		Name:  "admin",
 		Usage: "pathwar [global flags] admin [admin flags] <subcommand> [flags] [args...]",
 		Subcommands: []*ffcli.Command{{
-			Name:    "ps",
-			Usage:   "pathwar [global flags] admin [admin flags] ps [flags]",
-			FlagSet: adminPSFlags,
-			Exec: func(args []string) error {
-				if err := globalPreRun(); err != nil {
-					return err
-				}
-
-				ctx := context.Background()
-				apiClient, err := httpClientFromEnv(ctx)
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-
-				ret, err := apiClient.AdminPS(ctx, &pwapi.AdminPS_Input{})
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-
-				if jsonFormat {
-					fmt.Println(godev.PrettyJSONPB(&ret))
-					return nil
-				}
-
-				// table
-				{
-					table := tablewriter.NewWriter(os.Stdout)
-					table.SetHeader([]string{"ID", "STATUS", "FLAVOR", "CREATED", "UPDATED", "CONFIG", "SEASON CHALLENGES", "PRICE/REWARD"})
-					table.SetAlignment(tablewriter.ALIGN_CENTER)
-					table.SetBorder(false)
-
-					for _, instance := range ret.Instances {
-						//fmt.Println(godev.PrettyJSONPB(instance))
-						id := fmt.Sprintf("%d", instance.ID)
-						status := instance.Status.String()
-						switch status {
-						case "Available":
-							status += " 🟢"
-						default:
-							status += " 🔴"
-						}
-						flavor := fmt.Sprintf("%s@%s", instance.Flavor.Challenge.Slug, instance.Flavor.Slug)
-						createdAgo := humanize.Time(*instance.CreatedAt)
-						updatedAgo := humanize.Time(*instance.UpdatedAt)
-						configStruct, _ := instance.ParseInstanceConfig()
-						config := godev.JSONPB(configStruct)
-						seasonChallenges := fmt.Sprintf("%d", len(instance.Flavor.SeasonChallenges))
-						price := "free"
-						if instance.Flavor.PurchasePrice > 0 {
-							price = fmt.Sprintf("$%d", instance.Flavor.PurchasePrice)
-						}
-						priceReward := fmt.Sprintf("%s / $%d", price, instance.Flavor.ValidationReward)
-						table.Append([]string{id, status, flavor, createdAgo, updatedAgo, config, seasonChallenges, priceReward})
-					}
-					table.Render()
-				}
-				return nil
-			},
-		}, {
 			Name:    "challenges",
 			Usage:   "pathwar [global flags] admin [admin flags] challenges [flags]",
 			FlagSet: adminChallengesFlags,
@@ -129,6 +69,21 @@ func adminCommand() *ffcli.Command {
 				if jsonFormat {
 					fmt.Println(godev.PrettyJSONPB(&ret))
 					return nil
+				}
+
+				// tree
+				{
+					fmt.Println("TREE")
+					for _, challenge := range ret.Challenges {
+						fmt.Printf("- %s (%d)\n", challenge.Slug, challenge.ID)
+						for _, flavor := range challenge.Flavors {
+							fmt.Printf("  - %s (%d)\n", flavor.Slug, flavor.ID)
+							for _, instance := range flavor.Instances {
+								fmt.Printf("    - %d\n", instance.ID)
+							}
+						}
+					}
+					fmt.Println("")
 				}
 
 				// challenges table
@@ -194,6 +149,45 @@ func adminCommand() *ffcli.Command {
 							seasonChallenges := strings.Join(seasonChallengeParts, ", ")
 							id := fmt.Sprintf("%d", flavor.ID)
 							table.Append([]string{slug, challengeSlug, createdAgo, updatedAgo, instances, seasonChallenges, id})
+						}
+					}
+					table.Render()
+					fmt.Println("")
+				}
+
+				// instances
+				{
+					fmt.Println("INSTANCES")
+					table := tablewriter.NewWriter(os.Stdout)
+					table.SetHeader([]string{"INSTANCE", "FLAVOR", "STATUS", "CREATED", "UPDATED", "CONFIG", "SEASON CHALLENGES", "PRICE/REWARD"})
+					table.SetAlignment(tablewriter.ALIGN_CENTER)
+					table.SetBorder(false)
+
+					for _, challenge := range ret.Challenges {
+						for _, flavor := range challenge.Flavors {
+							for _, instance := range flavor.Instances {
+								//fmt.Println(godev.PrettyJSONPB(instance))
+								id := fmt.Sprintf("%d", instance.ID)
+								status := instance.Status.String()
+								switch status {
+								case "Available":
+									status += " 🟢"
+								default:
+									status += " 🔴"
+								}
+								flavorSlug := fmt.Sprintf("%s@%s", challenge.Slug, flavor.Slug)
+								createdAgo := humanize.Time(*instance.CreatedAt)
+								updatedAgo := humanize.Time(*instance.UpdatedAt)
+								configStruct, _ := instance.ParseInstanceConfig()
+								config := godev.JSONPB(configStruct)
+								seasonChallenges := fmt.Sprintf("%d", len(flavor.SeasonChallenges))
+								price := "free"
+								if flavor.PurchasePrice > 0 {
+									price = fmt.Sprintf("$%d", flavor.PurchasePrice)
+								}
+								priceReward := fmt.Sprintf("%s / $%d", price, flavor.ValidationReward)
+								table.Append([]string{id, flavorSlug, status, createdAgo, updatedAgo, config, seasonChallenges, priceReward})
+							}
 						}
 					}
 					table.Render()
