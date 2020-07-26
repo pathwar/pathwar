@@ -21,9 +21,11 @@ func adminCommand() *ffcli.Command {
 		adminChallengeAddFlags         = flag.NewFlagSet("admin challenge add", flag.ExitOnError)
 		adminChallengeFlavorAddFlags   = flag.NewFlagSet("admin challenge flavor add", flag.ExitOnError)
 		adminChallengeInstanceAddFlags = flag.NewFlagSet("admin challenge instance add", flag.ExitOnError)
+		jsonFormat                     bool
 	)
 	adminFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
 	adminFlags.StringVar(&ssoOpts.TokenFile, "sso-token-file", ssoOpts.TokenFile, "Token file")
+	adminFlags.BoolVar(&jsonFormat, "json", false, "Print JSON and exit")
 	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Name, "name", "", "Challenge name")
 	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Description, "description", "", "Challenge description")
 	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Author, "author", "", "Challenge author")
@@ -60,7 +62,11 @@ func adminCommand() *ffcli.Command {
 					return errcode.TODO.Wrap(err)
 				}
 
-				fmt.Println(godev.PrettyJSONPB(&ret))
+				if jsonFormat {
+					fmt.Println(godev.PrettyJSONPB(&ret))
+					return nil
+				}
+
 				return nil
 			},
 		}, {

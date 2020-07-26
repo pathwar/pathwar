@@ -13,12 +13,15 @@ import (
 	"github.com/peterbourgon/ff"
 	"github.com/peterbourgon/ff/ffcli"
 	"go.uber.org/zap"
+	"moul.io/godev"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
 func cliCommand() *ffcli.Command {
+	var jsonFormat bool
 	cliFlags := flag.NewFlagSet("cli", flag.ExitOnError)
+	cliFlags.BoolVar(&jsonFormat, "json", false, "Print JSON output")
 	cliFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
 	cliFlags.StringVar(&ssoOpts.ClientID, "sso-client-id", ssoOpts.ClientID, "SSO ClientID")
 	cliFlags.StringVar(&ssoOpts.ClientSecret, "sso-client-secret", ssoOpts.ClientSecret, "SSO ClientSecret")
@@ -52,6 +55,11 @@ func cliCommand() *ffcli.Command {
 					}
 					logger.Debug("GET /user/session", zap.Any("ret", session))
 
+					if jsonFormat {
+						fmt.Println(godev.PrettyJSONPB(&session))
+						return nil
+					}
+
 					// DB User
 					{
 						// fmt.Println(godev.PrettyJSON(session.User))
@@ -67,7 +75,7 @@ func cliCommand() *ffcli.Command {
 						tokenAgo := humanize.Time(*session.Claims.ActionToken.AuthTime)
 						issuedAgo := humanize.Time(*session.Claims.ActionToken.Iat)
 						expireIn := humanize.Time(*session.Claims.ActionToken.Exp)
-						fmt.Printf("Your OAuth token was created %s, (re)issued %s and will expire in %s.\n\n", tokenAgo, issuedAgo, expireIn)
+						fmt.Printf("Your OAuth token was created %s, (re)issued %s and will expire in %s.\n", tokenAgo, issuedAgo, expireIn)
 					}
 
 					// Notifications
@@ -75,8 +83,33 @@ func cliCommand() *ffcli.Command {
 						// FIXME: Todo
 						// fmt.Println(godev.PrettyJSON(session.Notifications))
 					}
+					return nil
+				},
+			}, {
+				Name:      "seasons",
+				ShortHelp: "List available seasons",
+				Exec: func(args []string) error {
+					if err := globalPreRun(); err != nil {
+						return err
+					}
+					ctx := context.Background()
+					client, err := httpClientFromEnv(ctx)
+					if err != nil {
+						return err
+					}
 
-					// sessions
+					var session pwapi.UserGetSession_Output
+					if err := client.RawProto(ctx, "GET", "/user/session", nil, &session); err != nil {
+						return err
+					}
+					logger.Debug("GET /user/session", zap.Any("ret", session))
+
+					if jsonFormat {
+						fmt.Println(godev.PrettyJSON(session.Seasons))
+						return nil
+					}
+
+					// seasons
 					{
 						//fmt.Println(godev.PrettyJSON(session.Seasons))
 						table := tablewriter.NewWriter(os.Stdout)
@@ -132,7 +165,9 @@ func cliCommand() *ffcli.Command {
 					logger.Debug("GET /user/session", zap.Any("ret", session))
 
 					for _, seasonEntry := range session.Seasons {
-						fmt.Printf("Season: %s\n", seasonEntry.Season.Name)
+						if !jsonFormat {
+							fmt.Printf("Season: %s\n", seasonEntry.Season.Name)
+						}
 						table := tablewriter.NewWriter(os.Stdout)
 						table.SetHeader([]string{"TEAM", "SCORE", "MEDALS", "ACHIEVEMENTS"})
 						table.SetAlignment(tablewriter.ALIGN_CENTER)
@@ -143,6 +178,12 @@ func cliCommand() *ffcli.Command {
 						if err := client.RawProto(ctx, "GET", url, nil, &ret); err != nil {
 							return err
 						}
+
+						if jsonFormat {
+							fmt.Println(godev.PrettyJSONPB(&ret))
+							continue
+						}
+
 						logger.Debug("GET "+url, zap.Any("ret", ret))
 
 						for _, teamEntry := range ret.Items {
@@ -185,7 +226,9 @@ func cliCommand() *ffcli.Command {
 					logger.Debug("GET /user/session", zap.Any("ret", session))
 
 					for _, seasonEntry := range session.Seasons {
-						fmt.Printf("Season: %s\n", seasonEntry.Season.Name)
+						if !jsonFormat {
+							fmt.Printf("Season: %s\n", seasonEntry.Season.Name)
+						}
 						table := tablewriter.NewWriter(os.Stdout)
 						table.SetHeader([]string{"ID", "CHALLENGE", "FLAVOR", "URL", "STATUS", "SUBSCRIPTION"})
 						table.SetAlignment(tablewriter.ALIGN_CENTER)
@@ -196,6 +239,12 @@ func cliCommand() *ffcli.Command {
 						if err := client.RawProto(ctx, "GET", url, nil, &ret); err != nil {
 							return err
 						}
+
+						if jsonFormat {
+							fmt.Println(godev.PrettyJSONPB(&ret))
+							continue
+						}
+
 						logger.Debug("GET "+url, zap.Any("ret", ret))
 
 						for _, challengeEntry := range ret.Items {
@@ -262,6 +311,12 @@ func cliCommand() *ffcli.Command {
 						}
 						var ret pwapi.SeasonChallengeBuy_Output
 						err = client.RawProto(ctx, "POST", "/season-challenge/buy", &input, &ret)
+
+						if jsonFormat {
+							fmt.Println(godev.PrettyJSONPB(&ret))
+							continue
+						}
+
 						logger.Debug("POST /season-challenge/buy", zap.Any("input", input), zap.Any("ret", ret), zap.Error(err))
 						switch {
 						case err == nil:
@@ -305,6 +360,12 @@ func cliCommand() *ffcli.Command {
 						}
 						var ret pwapi.CouponValidate_Output
 						err = client.RawProto(ctx, "POST", "/coupon-validation", &input, &ret)
+
+						if jsonFormat {
+							fmt.Println(godev.PrettyJSONPB(&ret))
+							continue
+						}
+
 						logger.Debug("POST /coupon-validation", zap.Any("input", input), zap.Any("ret", ret), zap.Error(err))
 						switch {
 						case err == nil:
