@@ -17,325 +17,865 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
+var adminJSONFormat bool
+
 func adminCommand() *ffcli.Command {
-	var (
-		adminFlags                     = flag.NewFlagSet("admin", flag.ExitOnError)
-		adminPSFlags                   = flag.NewFlagSet("admin ps", flag.ExitOnError)
-		adminChallengesFlags           = flag.NewFlagSet("admin challenges", flag.ExitOnError)
-		adminRedumpFlags               = flag.NewFlagSet("admin redump", flag.ExitOnError)
-		adminChallengeAddFlags         = flag.NewFlagSet("admin challenge add", flag.ExitOnError)
-		adminChallengeFlavorAddFlags   = flag.NewFlagSet("admin challenge flavor add", flag.ExitOnError)
-		adminChallengeInstanceAddFlags = flag.NewFlagSet("admin challenge instance add", flag.ExitOnError)
-		jsonFormat                     bool
-	)
+	adminFlags := flag.NewFlagSet("admin", flag.ExitOnError)
 	adminFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
 	adminFlags.StringVar(&ssoOpts.TokenFile, "sso-token-file", ssoOpts.TokenFile, "Token file")
-	adminFlags.BoolVar(&jsonFormat, "json", false, "Print JSON and exit")
-	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Name, "name", "", "Challenge name")
-	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Description, "description", "", "Challenge description")
-	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Author, "author", "", "Challenge author")
-	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Locale, "locale", "", "Challenge Locale")
-	adminChallengeAddFlags.BoolVar(&adminChallengeAddInput.Challenge.IsDraft, "is-draft", true, "Is challenge production ready ?")
-	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.PreviewUrl, "preview-url", "", "Challenge preview URL")
-	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Homepage, "homepage", "", "Challenge homepage URL")
-	adminChallengeFlavorAddFlags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.Version, "version", "1.0.0", "Challenge flavor version")
-	adminChallengeFlavorAddFlags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.ComposeBundle, "compose-bundle", "", "Challenge flavor compose bundle")
-	adminChallengeFlavorAddFlags.Int64Var(&adminChallengeFlavorAddInput.ChallengeFlavor.ChallengeID, "challenge-id", 0, "Challenge id")
-	adminChallengeInstanceAddFlags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.AgentID, "agent-id", 0, "Id of the agent that will host the instance")
-	adminChallengeInstanceAddFlags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.FlavorID, "flavor-id", 0, "Challenge flavor id")
-
+	adminFlags.BoolVar(&adminJSONFormat, "json", false, "Print JSON and exit")
 	return &ffcli.Command{
 		Name:  "admin",
 		Usage: "pathwar [global flags] admin [admin flags] <subcommand> [flags] [args...]",
-		Subcommands: []*ffcli.Command{{
-			Name:    "ps",
-			Usage:   "pathwar [global flags] admin [admin flags] ps [flags]",
-			FlagSet: adminPSFlags,
-			Exec: func(args []string) error {
-				if err := globalPreRun(); err != nil {
-					return err
-				}
+		Subcommands: []*ffcli.Command{
+			// read-only
+			adminChallengeCommand(),
+			adminUsersCommand(),
+			adminAgentsCommand(),
+			adminActivitiesCommand(),
+			adminOrganizationsCommand(),
+			adminTeamsCommand(),
+			adminCouponsCommand(),
+			adminChallengeSubscriptionsCommand(),
 
-				ctx := context.Background()
-				apiClient, err := httpClientFromEnv(ctx)
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-
-				ret, err := apiClient.AdminPS(ctx, &pwapi.AdminPS_Input{})
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-
-				if jsonFormat {
-					fmt.Println(godev.PrettyJSONPB(&ret))
-					return nil
-				}
-
-				// table
-				{
-					table := tablewriter.NewWriter(os.Stdout)
-					table.SetHeader([]string{"ID", "STATUS", "FLAVOR", "CREATED", "UPDATED", "CONFIG", "SEASON CHALLENGES", "PRICE/REWARD"})
-					table.SetAlignment(tablewriter.ALIGN_CENTER)
-					table.SetBorder(false)
-
-					for _, instance := range ret.Instances {
-						//fmt.Println(godev.PrettyJSONPB(instance))
-						id := fmt.Sprintf("%d", instance.ID)
-						status := instance.Status.String()
-						switch status {
-						case "Available":
-							status += " 🟢"
-						default:
-							status += " 🔴"
-						}
-						flavor := fmt.Sprintf("%s@%s", instance.Flavor.Challenge.Slug, instance.Flavor.Slug)
-						createdAgo := humanize.Time(*instance.CreatedAt)
-						updatedAgo := humanize.Time(*instance.UpdatedAt)
-						configStruct, _ := instance.ParseInstanceConfig()
-						config := godev.JSONPB(configStruct)
-						seasonChallenges := fmt.Sprintf("%d", len(instance.Flavor.SeasonChallenges))
-						price := "free"
-						if instance.Flavor.PurchasePrice > 0 {
-							price = fmt.Sprintf("$%d", instance.Flavor.PurchasePrice)
-						}
-						priceReward := fmt.Sprintf("%s / $%d", price, instance.Flavor.ValidationReward)
-						table.Append([]string{id, status, flavor, createdAgo, updatedAgo, config, seasonChallenges, priceReward})
-					}
-					table.Render()
-				}
-				return nil
-			},
-		}, {
-			Name:    "challenges",
-			Usage:   "pathwar [global flags] admin [admin flags] challenges [flags]",
-			FlagSet: adminChallengesFlags,
-			Exec: func(args []string) error {
-				if err := globalPreRun(); err != nil {
-					return err
-				}
-
-				ctx := context.Background()
-				apiClient, err := httpClientFromEnv(ctx)
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-
-				ret, err := apiClient.AdminListChallenges(ctx, &pwapi.AdminListChallenges_Input{})
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-
-				if jsonFormat {
-					fmt.Println(godev.PrettyJSONPB(&ret))
-					return nil
-				}
-
-				// challenges table
-				{
-					fmt.Println("CHALLENGES")
-					table := tablewriter.NewWriter(os.Stdout)
-					table.SetHeader([]string{"CHALLENGE", "NAME", "AUTHOR", "CREATED", "UPDATED", "FLAVORS", "ID"})
-					table.SetAlignment(tablewriter.ALIGN_CENTER)
-					table.SetBorder(false)
-
-					for _, challenge := range ret.Challenges {
-						slug := challenge.Slug
-						name := challenge.Name
-						author := challenge.Author
-						createdAgo := humanize.Time(*challenge.CreatedAt)
-						updatedAgo := humanize.Time(*challenge.UpdatedAt)
-						flavors := fmt.Sprintf("%d", len(challenge.Flavors))
-						id := fmt.Sprintf("%d", challenge.ID)
-						table.Append([]string{slug, name, author, createdAgo, updatedAgo, flavors, id})
-					}
-					table.Render()
-					fmt.Println("")
-				}
-
-				// flavors table
-				{
-					fmt.Println("FLAVORS")
-					table := tablewriter.NewWriter(os.Stdout)
-					table.SetHeader([]string{"FLAVOR", "CHALLENGE", "CREATED", "UPDATED", "INSTANCES", "SEASON CHALLENGES", "ID"})
-					table.SetAlignment(tablewriter.ALIGN_CENTER)
-					table.SetBorder(false)
-
-					for _, challenge := range ret.Challenges {
-						for _, flavor := range challenge.Flavors {
-							slug := flavor.Slug
-							challengeSlug := challenge.Slug
-							createdAgo := humanize.Time(*flavor.CreatedAt)
-							updatedAgo := humanize.Time(*flavor.UpdatedAt)
-							instanceGreen := 0
-							instanceRed := 0
-							for _, instance := range flavor.Instances {
-								if instance.Status == pwdb.ChallengeInstance_Available {
-									instanceGreen++
-								} else {
-									instanceRed++
-								}
-							}
-							instanceParts := []string{}
-							if instanceGreen > 0 {
-								instanceParts = append(instanceParts, fmt.Sprintf("%dx🟢", instanceGreen))
-							}
-							if instanceRed > 0 {
-								instanceParts = append(instanceParts, fmt.Sprintf("%dx🔴", instanceRed))
-							}
-							instances := strings.Join(instanceParts, " + ")
-							if len(flavor.Instances) == 0 {
-								instances = "🚫"
-							}
-							seasonChallengeParts := []string{}
-							for _, seasonChallenge := range flavor.SeasonChallenges {
-								seasonChallengeParts = append(seasonChallengeParts, seasonChallenge.Season.Slug)
-							}
-							seasonChallenges := strings.Join(seasonChallengeParts, ", ")
-							id := fmt.Sprintf("%d", flavor.ID)
-							table.Append([]string{slug, challengeSlug, createdAgo, updatedAgo, instances, seasonChallenges, id})
-						}
-					}
-					table.Render()
-				}
-
-				return nil
-			},
-		}, {
-			Name:    "redump",
-			Usage:   "pathwar [global flags] admin [admin flags] redump [flags] ID...",
-			FlagSet: adminRedumpFlags,
-			Exec: func(args []string) error {
-				if len(args) < 1 {
-					return flag.ErrHelp
-				}
-
-				if err := globalPreRun(); err != nil {
-					return err
-				}
-
-				ctx := context.Background()
-				apiClient, err := httpClientFromEnv(ctx)
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-
-				ret, err := apiClient.AdminRedump(ctx, &pwapi.AdminRedump_Input{
-					Identifiers: args,
-				})
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-
-				if jsonFormat {
-					fmt.Println(godev.PrettyJSONPB(&ret))
-					return nil
-				}
-
-				fmt.Println("OK")
-
-				return nil
-			},
-		}, {
-			Name:      "challenge-add",
-			Usage:     "pathwar [global flags] admin [admin flags] challenge-add [flags] [args...]",
-			ShortHelp: "add a challenge",
-			FlagSet:   adminChallengeAddFlags,
-			Exec: func(args []string) error {
-				if err := globalPreRun(); err != nil {
-					return err
-				}
-
-				ctx := context.Background()
-				apiClient, err := httpClientFromEnv(ctx)
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-
-				ret, err := apiClient.AdminAddChallenge(ctx, &adminChallengeAddInput)
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-				if globalDebug {
-					fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
-				}
-
-				if jsonFormat {
-					fmt.Println(godev.PrettyJSONPB(&ret))
-					return nil
-				}
-
-				fmt.Println(ret.Challenge.ID)
-				return nil
-			},
-		}, {
-			Name:      "challenge-flavor-add",
-			Usage:     "pathwar [global flags] admin [admin flags] challenge-flavor-add [flags] [args...]",
-			ShortHelp: "add a challenge flavor",
-			FlagSet:   adminChallengeFlavorAddFlags,
-			Exec: func(args []string) error {
-				if err := globalPreRun(); err != nil {
-					return err
-				}
-
-				ctx := context.Background()
-				apiClient, err := httpClientFromEnv(ctx)
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-
-				ret, err := apiClient.AdminAddChallengeFlavor(ctx, &adminChallengeFlavorAddInput)
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-				if globalDebug {
-					fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
-				}
-
-				if jsonFormat {
-					fmt.Println(godev.PrettyJSONPB(&ret))
-					return nil
-				}
-
-				fmt.Println(ret.ChallengeFlavor.ID)
-				return nil
-			},
-		}, {
-			Name:      "challenge-instance-add",
-			Usage:     "pathwar [global flags] admin [admin flags] challenge-instance-add [flags] [args...]",
-			ShortHelp: "add a challenge instance",
-			FlagSet:   adminChallengeInstanceAddFlags,
-			Exec: func(args []string) error {
-				if err := globalPreRun(); err != nil {
-					return err
-				}
-
-				ctx := context.Background()
-				apiClient, err := httpClientFromEnv(ctx)
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-
-				ret, err := apiClient.AdminAddChallengeInstance(ctx, &adminChallengeInstanceAddInput)
-				if err != nil {
-					return errcode.TODO.Wrap(err)
-				}
-				if globalDebug {
-					fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
-				}
-
-				if jsonFormat {
-					fmt.Println(godev.PrettyJSONPB(&ret))
-					return nil
-				}
-
-				fmt.Println(ret.ChallengeInstance.ID)
-				return nil
-			},
-		}},
+			// actions
+			adminAddCouponCommand(),
+			adminRedumpCommand(),
+			adminChallengeAddCommand(),
+			adminChallengeFlavorAddCommand(),
+			adminChallengeInstanceAddCommand(),
+		},
 		ShortHelp: "admin commands",
 		FlagSet:   adminFlags,
 		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec:      func([]string) error { return flag.ErrHelp },
 	}
+}
+
+func adminChallengeCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin challenges", flag.ExitOnError)
+	return &ffcli.Command{
+		Name:    "challenges",
+		Usage:   "pathwar [global flags] admin [admin flags] challenges [flags]",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminListChallenges(ctx, &pwapi.AdminListChallenges_Input{})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			// tree
+			{
+				fmt.Println("TREE")
+				for _, challenge := range ret.Challenges {
+					fmt.Printf("- %s (%d)\n", challenge.Slug, challenge.ID)
+					for _, flavor := range challenge.Flavors {
+						fmt.Printf("  - %s (%d)\n", flavor.Slug, flavor.ID)
+						for _, instance := range flavor.Instances {
+							fmt.Printf("    - %d\n", instance.ID)
+						}
+					}
+				}
+				fmt.Println("")
+			}
+
+			// challenges table
+			{
+				fmt.Println("CHALLENGES")
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"CHALLENGE", "NAME", "AUTHOR", "CREATED", "UPDATED", "FLAVORS", "ID"})
+				table.SetAlignment(tablewriter.ALIGN_CENTER)
+				table.SetBorder(false)
+
+				for _, challenge := range ret.Challenges {
+					slug := challenge.Slug
+					name := challenge.Name
+					author := challenge.Author
+					createdAgo := humanize.Time(*challenge.CreatedAt)
+					updatedAgo := humanize.Time(*challenge.UpdatedAt)
+					flavors := fmt.Sprintf("%d", len(challenge.Flavors))
+					id := fmt.Sprintf("%d", challenge.ID)
+					table.Append([]string{slug, name, author, createdAgo, updatedAgo, flavors, id})
+				}
+				table.Render()
+				fmt.Println("")
+			}
+
+			// flavors table
+			{
+				fmt.Println("FLAVORS")
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"FLAVOR", "CHALLENGE", "CREATED", "UPDATED", "INSTANCES", "SEASON CHALLENGES", "ID"})
+				table.SetAlignment(tablewriter.ALIGN_CENTER)
+				table.SetBorder(false)
+
+				for _, challenge := range ret.Challenges {
+					for _, flavor := range challenge.Flavors {
+						slug := flavor.Slug
+						challengeSlug := challenge.Slug
+						createdAgo := humanize.Time(*flavor.CreatedAt)
+						updatedAgo := humanize.Time(*flavor.UpdatedAt)
+						instances := asciiInstancesStats(flavor.Instances)
+						seasonChallengeParts := []string{}
+						for _, seasonChallenge := range flavor.SeasonChallenges {
+							seasonChallengeParts = append(seasonChallengeParts, seasonChallenge.Season.Slug)
+						}
+						seasonChallenges := strings.Join(seasonChallengeParts, ", ")
+						id := fmt.Sprintf("%d", flavor.ID)
+						table.Append([]string{slug, challengeSlug, createdAgo, updatedAgo, instances, seasonChallenges, id})
+					}
+				}
+				table.Render()
+				fmt.Println("")
+			}
+
+			// instances
+			{
+				fmt.Println("INSTANCES")
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"INSTANCE", "FLAVOR", "STATUS", "CREATED", "UPDATED", "CONFIG", "SEASON CHALLENGES", "PRICE/REWARD"})
+				table.SetAlignment(tablewriter.ALIGN_CENTER)
+				table.SetBorder(false)
+
+				for _, challenge := range ret.Challenges {
+					for _, flavor := range challenge.Flavors {
+						for _, instance := range flavor.Instances {
+							//fmt.Println(godev.PrettyJSONPB(instance))
+							id := fmt.Sprintf("%d", instance.ID)
+							status := asciiStatus(instance.Status.String())
+							flavorSlug := fmt.Sprintf("%s@%s", challenge.Slug, flavor.Slug)
+							createdAgo := humanize.Time(*instance.CreatedAt)
+							updatedAgo := humanize.Time(*instance.UpdatedAt)
+							configStruct, _ := instance.ParseInstanceConfig()
+							config := godev.JSONPB(configStruct)
+							seasonChallenges := fmt.Sprintf("%d", len(flavor.SeasonChallenges))
+							price := "free"
+							if flavor.PurchasePrice > 0 {
+								price = fmt.Sprintf("$%d", flavor.PurchasePrice)
+							}
+							priceReward := fmt.Sprintf("%s / $%d", price, flavor.ValidationReward)
+							table.Append([]string{id, flavorSlug, status, createdAgo, updatedAgo, config, seasonChallenges, priceReward})
+						}
+					}
+				}
+				table.Render()
+			}
+
+			return nil
+		},
+	}
+}
+
+func adminUsersCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin users", flag.ExitOnError)
+	return &ffcli.Command{
+		Name:    "users",
+		Usage:   "pathwar [global flags] admin [admin flags] users [flags]",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminListUsers(ctx, &pwapi.AdminListUsers_Input{})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			// users table
+			{
+				fmt.Println("USERS")
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"USER", "STATUS", "USERNAME", "EMAIL", "CREATED", "UPDATED", "TEAMS", "ORGS", "ID"})
+				table.SetAlignment(tablewriter.ALIGN_CENTER)
+				table.SetBorder(false)
+
+				for _, user := range ret.Users {
+					//fmt.Println(godev.PrettyJSONPB(user))
+					slug := user.Slug
+					email := user.Email
+					username := user.Username
+					status := asciiStatus(user.DeletionStatus.String())
+					createdAgo := humanize.Time(*user.CreatedAt)
+					updatedAgo := humanize.Time(*user.UpdatedAt)
+					teams := fmt.Sprintf("%d", len(user.TeamMemberships))
+					orgs := fmt.Sprintf("%d", len(user.OrganizationMemberships))
+					id := fmt.Sprintf("%d", user.ID)
+					table.Append([]string{slug, status, username, email, createdAgo, updatedAgo, teams, orgs, id})
+				}
+				table.Render()
+				fmt.Println("")
+			}
+
+			return nil
+		},
+	}
+}
+
+func adminAgentsCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin agents", flag.ExitOnError)
+	return &ffcli.Command{
+		Name:    "agents",
+		Usage:   "pathwar [global flags] admin [admin flags] agents [flags]",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminListAgents(ctx, &pwapi.AdminListAgents_Input{})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			// agents table
+			{
+				fmt.Println("AGENTS")
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"AGENT", "HOSTNAME", "SUFFIX", "STATUS", "CREATED", "UPDATED", "SEEN", "STATS", "INSTANCES", "DEFAULT", "ID"})
+				table.SetAlignment(tablewriter.ALIGN_CENTER)
+				table.SetBorder(false)
+
+				for _, agent := range ret.Agents {
+					//fmt.Println(godev.PrettyJSONPB(agent))
+					slug := agent.Slug
+					createdAgo := humanize.Time(*agent.CreatedAt)
+					updatedAgo := humanize.Time(*agent.UpdatedAt)
+					seenAgo := humanize.Time(*agent.LastSeenAt)
+					id := fmt.Sprintf("%d", agent.ID)
+					instances := asciiInstancesStats(agent.ChallengeInstances)
+					stats := fmt.Sprintf("%d seen / %d reg.", agent.TimesSeen, agent.TimesRegistered)
+					status := asciiStatus(agent.Status.String())
+					isDefault := asciiBool(agent.DefaultAgent)
+					suffix := agent.DomainSuffix
+					hostname := agent.Hostname
+					table.Append([]string{slug, hostname, suffix, status, createdAgo, updatedAgo, seenAgo, stats, instances, isDefault, id})
+				}
+				table.Render()
+				fmt.Println("")
+			}
+
+			return nil
+		},
+	}
+}
+
+func adminActivitiesCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin activities", flag.ExitOnError)
+	return &ffcli.Command{
+		Name:    "activities",
+		Usage:   "pathwar [global flags] admin [admin flags] activities [flags]",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			// activities table
+			{
+				fmt.Println("ACTIVITIES")
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"ID", "KIND", "HAPPENED", "AUTHOR", "TEAM", "USER", "ORG", "SEASON", "CHALLENGE", "COUPON", "SEASON CHAL.", "TEAM MEMBER", "CHALLENGE SUBS"})
+				table.SetAlignment(tablewriter.ALIGN_CENTER)
+				table.SetBorder(false)
+
+				for _, activity := range ret.Activities {
+					//fmt.Println(godev.PrettyJSONPB(activity))
+					author := activity.Author.Slug
+					id := fmt.Sprintf("%d", activity.ID)
+					kind := activity.Kind.String()
+					createdAgo := humanize.Time(*activity.CreatedAt)
+					team := activity.Team.ASCIIID()
+					user := activity.User.ASCIIID()
+					organization := activity.Organization.ASCIIID()
+					season := activity.Season.ASCIIID()
+					challenge := activity.Challenge.ASCIIID()
+					coupon := activity.Coupon.ASCIIID()
+					seasonChallenge := activity.SeasonChallenge.ASCIIID()
+					teamMember := activity.TeamMember.ASCIIID()
+					challengeSubscription := activity.ChallengeSubscription.ASCIIID()
+					table.Append([]string{id, kind, createdAgo, author, team, user, organization, season, challenge, coupon, seasonChallenge, teamMember, challengeSubscription})
+				}
+				table.Render()
+				fmt.Println("")
+			}
+
+			return nil
+		},
+	}
+}
+
+func adminOrganizationsCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin organizations", flag.ExitOnError)
+	return &ffcli.Command{
+		Name:    "organizations",
+		Usage:   "pathwar [global flags] admin [admin flags] organizations [flags]",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminListOrganizations(ctx, &pwapi.AdminListOrganizations_Input{})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			// organizations table
+			{
+				fmt.Println("ORGANIZATIONS")
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"SLUG", "NAME", "STATUS", "CREATED", "UPDATED", "TEAMS", "MEMBERS", "ID"})
+				table.SetAlignment(tablewriter.ALIGN_CENTER)
+				table.SetBorder(false)
+
+				for _, organization := range ret.Organizations {
+					//fmt.Println(godev.PrettyJSONPB(organization))
+					id := fmt.Sprintf("%d", organization.ID)
+					createdAgo := humanize.Time(*organization.CreatedAt)
+					updatedAgo := humanize.Time(*organization.UpdatedAt)
+					slug := organization.Slug
+					name := organization.Name
+					status := asciiStatus(organization.DeletionStatus.String())
+					teamParts := []string{}
+					for _, team := range organization.Teams {
+						teamParts = append(teamParts, team.Season.ASCIIID())
+					}
+					teams := strings.Join(teamParts, ",")
+					memberParts := []string{}
+					for _, member := range organization.Members {
+						memberParts = append(memberParts, member.User.ASCIIID())
+					}
+					members := strings.Join(memberParts, ",")
+					table.Append([]string{slug, name, status, createdAgo, updatedAgo, teams, members, id})
+				}
+				table.Render()
+				fmt.Println("")
+			}
+
+			return nil
+		},
+	}
+}
+
+func adminTeamsCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin teams", flag.ExitOnError)
+	return &ffcli.Command{
+		Name:    "teams",
+		Usage:   "pathwar [global flags] admin [admin flags] teams [flags]",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminListTeams(ctx, &pwapi.AdminListTeams_Input{})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			// teams table
+			{
+				fmt.Println("TEAMS")
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"SLUG", "CREATED", "UPDATED", "SEASON", "CASH", "MEMBERS", "ORGANIZATION", "CHALLENGES", "ACHIEVEMENTS", "STATUS", "ID"})
+				table.SetAlignment(tablewriter.ALIGN_CENTER)
+				table.SetBorder(false)
+
+				for _, team := range ret.Teams {
+					//fmt.Println(godev.PrettyJSONPB(team))
+					id := fmt.Sprintf("%d", team.ID)
+					createdAgo := humanize.Time(*team.CreatedAt)
+					updatedAgo := humanize.Time(*team.UpdatedAt)
+					season := team.Season.ASCIIID()
+					memberParts := []string{}
+					for _, member := range team.Members {
+						memberParts = append(memberParts, member.User.ASCIIID())
+					}
+					members := strings.Join(memberParts, ",")
+					organization := team.Organization.ASCIIID()
+					status := asciiStatus(team.DeletionStatus.String())
+					challenges := asciiSubscriptionsStats(team.ChallengeSubscriptions)
+					achievements := fmt.Sprintf("%d", len(team.Achievements))
+					slug := team.Slug
+					cash := fmt.Sprintf("$%d", team.Cash)
+					if team.Cash == 0 {
+						cash = "🚫"
+					}
+					table.Append([]string{slug, createdAgo, updatedAgo, season, cash, members, organization, challenges, achievements, status, id})
+				}
+				table.Render()
+				fmt.Println("")
+			}
+
+			return nil
+		},
+	}
+}
+
+func adminCouponsCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin coupons", flag.ExitOnError)
+	return &ffcli.Command{
+		Name:    "coupons",
+		Usage:   "pathwar [global flags] admin [admin flags] coupons [flags]",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminListCoupons(ctx, &pwapi.AdminListCoupons_Input{})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			// coupons table
+			{
+				fmt.Println("COUPONS")
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"HASH", "VALUE", "SEASON", "CREATED", "UPDATED", "VALIDATIONS", "ID"})
+				table.SetAlignment(tablewriter.ALIGN_CENTER)
+				table.SetBorder(false)
+
+				for _, coupon := range ret.Coupons {
+					//fmt.Println(godev.PrettyJSONPB(coupon))
+					hash := coupon.Hash
+					id := fmt.Sprintf("%d", coupon.ID)
+					value := fmt.Sprintf("%d", coupon.Value)
+					createdAgo := humanize.Time(*coupon.CreatedAt)
+					updatedAgo := humanize.Time(*coupon.UpdatedAt)
+					season := coupon.Season.ASCIIID()
+					validated := int64(len(coupon.Validations))
+					validationStatus := "🟢"
+					switch {
+					case validated > 0 && validated < coupon.MaxValidationCount:
+						validationStatus = "🔶"
+					case validated == coupon.MaxValidationCount:
+						validationStatus = "🔴"
+					case validated > coupon.MaxValidationCount:
+						validationStatus = "🙀"
+					}
+					validations := fmt.Sprintf("%d / %d %s", validated, coupon.MaxValidationCount, validationStatus)
+					table.Append([]string{hash, value, season, createdAgo, updatedAgo, validations, id})
+				}
+				table.Render()
+				fmt.Println("")
+			}
+
+			return nil
+		},
+	}
+}
+
+func adminChallengeSubscriptionsCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin challengeSubscriptions", flag.ExitOnError)
+	return &ffcli.Command{
+		Name:    "subscriptions",
+		Usage:   "pathwar [global flags] admin [admin flags] subscriptions [flags]",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminListChallengeSubscriptions(ctx, &pwapi.AdminListChallengeSubscriptions_Input{})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			// challengeSubscriptions table
+			{
+				fmt.Println("CHALLENGE SUBSCRIPTIONS")
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"CHALLENGE", "TEAM", "SEASON", "STATUS", "CREATED", "UPDATED", "BUYER", "CLOSER", "VALIDATIONS", "ID"})
+				table.SetAlignment(tablewriter.ALIGN_CENTER)
+				table.SetBorder(false)
+
+				for _, subscription := range ret.Subscriptions {
+					//fmt.Println(godev.PrettyJSONPB(subscription))
+					id := fmt.Sprintf("%d", subscription.ID)
+					createdAgo := humanize.Time(*subscription.CreatedAt)
+					updatedAgo := humanize.Time(*subscription.UpdatedAt)
+					team := subscription.Team.Organization.ASCIIID()
+					buyer := subscription.Buyer.ASCIIID()
+					season := subscription.SeasonChallenge.Season.ASCIIID()
+					challenge := subscription.SeasonChallenge.Flavor.Challenge.ASCIIID()
+					status := asciiStatus(subscription.Status.String())
+					closer := subscription.Closer.ASCIIID()
+					validations := fmt.Sprintf("%d", len(subscription.Validations))
+					table.Append([]string{challenge, team, season, status, createdAgo, updatedAgo, buyer, closer, validations, id})
+				}
+				table.Render()
+				fmt.Println("")
+			}
+
+			return nil
+		},
+	}
+}
+
+func adminAddCouponCommand() *ffcli.Command {
+	input := pwapi.AdminAddCoupon_Input{}
+	input.ApplyDefaults()
+
+	flags := flag.NewFlagSet("admin add-coupon", flag.ExitOnError)
+	flags.StringVar(&input.Hash, "hash", input.Hash, "Hash to guess (must be unique, if 'RANDOM', will be randomized)")
+	flags.Int64Var(&input.Value, "value", input.Value, "Coupon value")
+	flags.Int64Var(&input.MaxValidationCount, "max-validations", input.MaxValidationCount, "Maximum times a coupon can be validated")
+	flags.StringVar(&input.SeasonID, "season", input.SeasonID, "Season ID or Slug to associate the coupon with")
+	return &ffcli.Command{
+		Name:    "add-coupon",
+		Usage:   "pathwar admin add-coupon",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminAddCoupon(ctx, &input)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+			} else {
+				fmt.Println(ret.Coupon.Hash)
+			}
+			return nil
+		},
+	}
+}
+
+func adminRedumpCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin redump", flag.ExitOnError)
+	return &ffcli.Command{
+		Name:    "redump",
+		Usage:   "pathwar [global flags] admin [admin flags] redump [flags] ID...",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if len(args) < 1 {
+				return flag.ErrHelp
+			}
+
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminRedump(ctx, &pwapi.AdminRedump_Input{
+				Identifiers: args,
+			})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			fmt.Println("OK")
+
+			return nil
+		},
+	}
+}
+
+func adminChallengeAddCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin challenge add", flag.ExitOnError)
+	flags.StringVar(&adminChallengeAddInput.Challenge.Name, "name", "", "Challenge name")
+	flags.StringVar(&adminChallengeAddInput.Challenge.Description, "description", "", "Challenge description")
+	flags.StringVar(&adminChallengeAddInput.Challenge.Author, "author", "", "Challenge author")
+	flags.StringVar(&adminChallengeAddInput.Challenge.Locale, "locale", "", "Challenge Locale")
+	flags.BoolVar(&adminChallengeAddInput.Challenge.IsDraft, "is-draft", true, "Is challenge production ready ?")
+	flags.StringVar(&adminChallengeAddInput.Challenge.PreviewUrl, "preview-url", "", "Challenge preview URL")
+	flags.StringVar(&adminChallengeAddInput.Challenge.Homepage, "homepage", "", "Challenge homepage URL")
+
+	return &ffcli.Command{
+		Name:      "challenge-add",
+		Usage:     "pathwar [global flags] admin [admin flags] challenge-add [flags] [args...]",
+		ShortHelp: "add a challenge",
+		FlagSet:   flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminAddChallenge(ctx, &adminChallengeAddInput)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+			if globalDebug {
+				fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			fmt.Println(ret.Challenge.ID)
+			return nil
+		},
+	}
+}
+
+func adminChallengeFlavorAddCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin challenge flavor add", flag.ExitOnError)
+	flags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.Version, "version", "1.0.0", "Challenge flavor version")
+	flags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.ComposeBundle, "compose-bundle", "", "Challenge flavor compose bundle")
+	flags.Int64Var(&adminChallengeFlavorAddInput.ChallengeFlavor.ChallengeID, "challenge-id", 0, "Challenge id")
+	return &ffcli.Command{
+		Name:      "challenge-flavor-add",
+		Usage:     "pathwar [global flags] admin [admin flags] challenge-flavor-add [flags] [args...]",
+		ShortHelp: "add a challenge flavor",
+		FlagSet:   flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminAddChallengeFlavor(ctx, &adminChallengeFlavorAddInput)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+			if globalDebug {
+				fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			fmt.Println(ret.ChallengeFlavor.ID)
+			return nil
+		},
+	}
+}
+func adminChallengeInstanceAddCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin challenge instance add", flag.ExitOnError)
+	flags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.AgentID, "agent-id", 0, "Id of the agent that will host the instance")
+	flags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.FlavorID, "flavor-id", 0, "Challenge flavor id")
+	return &ffcli.Command{
+		Name:      "challenge-instance-add",
+		Usage:     "pathwar [global flags] admin [admin flags] challenge-instance-add [flags] [args...]",
+		ShortHelp: "add a challenge instance",
+		FlagSet:   flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminAddChallengeInstance(ctx, &adminChallengeInstanceAddInput)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+			if globalDebug {
+				fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			fmt.Println(ret.ChallengeInstance.ID)
+			return nil
+		},
+	}
+}
+
+func asciiInstancesStats(instances []*pwdb.ChallengeInstance) string {
+	if len(instances) == 0 {
+		return "🚫"
+	}
+
+	instanceGreen := 0
+	instanceRed := 0
+	for _, instance := range instances {
+		if instance.Status == pwdb.ChallengeInstance_Available {
+			instanceGreen++
+		} else {
+			instanceRed++
+		}
+	}
+	instanceParts := []string{}
+	if instanceGreen > 0 {
+		instanceParts = append(instanceParts, fmt.Sprintf("%dx🟢", instanceGreen))
+	}
+	if instanceRed > 0 {
+		instanceParts = append(instanceParts, fmt.Sprintf("%dx🔴", instanceRed))
+	}
+	stats := strings.Join(instanceParts, " + ")
+	return stats
+}
+
+func asciiSubscriptionsStats(subscriptions []*pwdb.ChallengeSubscription) string {
+	if len(subscriptions) == 0 {
+		return "🚫"
+	}
+
+	subscriptionGreen := 0
+	subscriptionRed := 0
+	for _, subscription := range subscriptions {
+		if subscription.Status == pwdb.ChallengeSubscription_Active {
+			subscriptionGreen++
+		} else {
+			subscriptionRed++
+		}
+	}
+	subscriptionParts := []string{}
+	if subscriptionGreen > 0 {
+		subscriptionParts = append(subscriptionParts, fmt.Sprintf("%dx🟢", subscriptionGreen))
+	}
+	if subscriptionRed > 0 {
+		subscriptionParts = append(subscriptionParts, fmt.Sprintf("%dx🔴", subscriptionRed))
+	}
+	stats := strings.Join(subscriptionParts, " + ")
+	return stats
+}
+
+func asciiBool(input bool) string {
+	if !input {
+		return "❌"
+	}
+	return "✅"
+}
+
+func asciiStatus(status string) string {
+	switch status {
+	case "Active":
+		status += " 🟢"
+	default:
+		status += " 🔴"
+	}
+	return status
 }

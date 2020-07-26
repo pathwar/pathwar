@@ -3,6 +3,18 @@ basePath: /
 consumes:
 - application/json
 definitions:
+  ActivityKind:
+    default: Unknown
+    enum:
+    - Unknown
+    - UserRegister
+    - UserLogin
+    - UserSetPreferences
+    - UserDeleteAccount
+    - SeasonChallengeBuy
+    - ChallengeSubscriptionValidate
+    - CouponValidate
+    type: string
   ChallengeFlavorDriver:
     default: Unknown
     enum:
@@ -33,6 +45,24 @@ definitions:
     - Unlisted
     - Public
     type: string
+  apiAdminAddCouponInput:
+    properties:
+      hash:
+        type: string
+      max_validation_count:
+        format: int64
+        type: string
+      season_id:
+        type: string
+      value:
+        format: int64
+        type: string
+    type: object
+  apiAdminAddCouponOutput:
+    properties:
+      coupon:
+        $ref: '#/definitions/dbCoupon'
+    type: object
   apiAdminChallengeAddInput:
     properties:
       challenge:
@@ -63,6 +93,27 @@ definitions:
       challengeInstance:
         $ref: '#/definitions/dbChallengeInstance'
     type: object
+  apiAdminListActivitiesOutput:
+    properties:
+      activities:
+        items:
+          $ref: '#/definitions/dbActivity'
+        type: array
+    type: object
+  apiAdminListAgentsOutput:
+    properties:
+      agents:
+        items:
+          $ref: '#/definitions/dbAgent'
+        type: array
+    type: object
+  apiAdminListChallengeSubscriptionsOutput:
+    properties:
+      subscriptions:
+        items:
+          $ref: '#/definitions/dbChallengeSubscription'
+        type: array
+    type: object
   apiAdminListChallengesOutput:
     properties:
       challenges:
@@ -70,11 +121,32 @@ definitions:
           $ref: '#/definitions/dbChallenge'
         type: array
     type: object
-  apiAdminPSOutput:
+  apiAdminListCouponsOutput:
     properties:
-      instances:
+      coupons:
         items:
-          $ref: '#/definitions/dbChallengeInstance'
+          $ref: '#/definitions/dbCoupon'
+        type: array
+    type: object
+  apiAdminListOrganizationsOutput:
+    properties:
+      organizations:
+        items:
+          $ref: '#/definitions/dbOrganization'
+        type: array
+    type: object
+  apiAdminListTeamsOutput:
+    properties:
+      teams:
+        items:
+          $ref: '#/definitions/dbTeam'
+        type: array
+    type: object
+  apiAdminListUsersOutput:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/dbUser'
         type: array
     type: object
   apiAdminRedumpInput:
@@ -399,6 +471,75 @@ definitions:
     - Moderator
     - HackThePlatform
     type: string
+  dbActivity:
+    properties:
+      author:
+        $ref: '#/definitions/dbUser'
+      author_id:
+        format: int64
+        type: string
+      challenge:
+        $ref: '#/definitions/dbChallenge'
+      challenge_flavor:
+        $ref: '#/definitions/dbChallengeFlavor'
+      challenge_flavor_id:
+        format: int64
+        type: string
+      challenge_id:
+        format: int64
+        type: string
+      challenge_subscription:
+        $ref: '#/definitions/dbChallengeSubscription'
+      challenge_subscription_id:
+        format: int64
+        type: string
+      coupon:
+        $ref: '#/definitions/dbCoupon'
+      coupon_id:
+        format: int64
+        type: string
+      created_at:
+        format: date-time
+        type: string
+      id:
+        format: int64
+        type: string
+      kind:
+        $ref: '#/definitions/ActivityKind'
+      organization:
+        $ref: '#/definitions/dbOrganization'
+      organization_id:
+        format: int64
+        type: string
+      season:
+        $ref: '#/definitions/dbSeason'
+      season_challenge:
+        $ref: '#/definitions/dbSeasonChallenge'
+      season_challenge_id:
+        format: int64
+        type: string
+      season_id:
+        format: int64
+        type: string
+      team:
+        $ref: '#/definitions/dbTeam'
+      team_id:
+        format: int64
+        type: string
+      team_member:
+        $ref: '#/definitions/dbTeamMember'
+      team_member_id:
+        format: int64
+        type: string
+      updated_at:
+        format: date-time
+        type: string
+      user:
+        $ref: '#/definitions/dbUser'
+      user_id:
+        format: int64
+        type: string
+    type: object
   dbAgent:
     properties:
       arch:
@@ -435,8 +576,8 @@ definitions:
       name:
         type: string
       nginx_port:
-        format: int32
-        type: integer
+        format: int64
+        type: string
       os:
         type: string
       slug:
@@ -446,11 +587,11 @@ definitions:
       tags:
         type: string
       times_registered:
-        format: int32
-        type: integer
+        format: int64
+        type: string
       times_seen:
-        format: int32
-        type: integer
+        format: int64
+        type: string
       updated_at:
         format: date-time
         type: string
@@ -581,8 +722,8 @@ definitions:
       nginx_url:
         type: string
       redump_count:
-        format: int32
-        type: integer
+        format: int64
+        type: string
       slug:
         title: |-
           usage metrics to be updated by the agent (unique users, requests, etc)
@@ -597,8 +738,8 @@ definitions:
         format: date-time
         type: string
       validation_count:
-        format: int32
-        type: integer
+        format: int64
+        type: string
     type: object
   dbChallengeInstanceStatus:
     default: Unknown
@@ -717,8 +858,8 @@ definitions:
         format: int64
         type: string
       max_validation_count:
-        format: int32
-        type: integer
+        format: int64
+        type: string
       season:
         $ref: '#/definitions/dbSeason'
       season_id:
@@ -732,8 +873,8 @@ definitions:
           $ref: '#/definitions/dbCouponValidation'
         type: array
       value:
-        format: int32
-        type: integer
+        format: int64
+        type: string
     type: object
   dbCouponValidation:
     properties:
@@ -1447,6 +1588,34 @@ info:
   title: Pathwar API
   version: "1.0"
 paths:
+  /admin/add-coupon:
+    post:
+      operationId: Service_AdminAddCoupon
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminAddCouponInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminAddCouponOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
   /admin/challenge-add:
     post:
       operationId: Service_AdminChallengeAdd
@@ -1531,6 +1700,72 @@ paths:
             $ref: '#/definitions/runtimeError'
       tags:
       - Service
+  /admin/list-activities:
+    get:
+      operationId: Service_AdminListActivities
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminListActivitiesOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/list-agents:
+    get:
+      operationId: Service_AdminListAgents
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminListAgentsOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/list-challenge-subscriptions:
+    get:
+      operationId: Service_AdminListChallengeSubscriptions
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminListChallengeSubscriptionsOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
   /admin/list-challenges:
     get:
       operationId: Service_AdminListChallenges
@@ -1553,14 +1788,80 @@ paths:
             $ref: '#/definitions/runtimeError'
       tags:
       - Service
-  /admin/ps:
+  /admin/list-coupons:
     get:
-      operationId: Service_AdminPS
+      operationId: Service_AdminListCoupons
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/apiAdminPSOutput'
+            $ref: '#/definitions/apiAdminListCouponsOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/list-organizations:
+    get:
+      operationId: Service_AdminListOrganizations
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminListOrganizationsOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/list-teams:
+    get:
+      operationId: Service_AdminListTeams
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminListTeamsOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/list-users:
+    get:
+      operationId: Service_AdminListUsers
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminListUsersOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}

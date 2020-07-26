@@ -53,17 +53,66 @@ func (c HTTPClient) AdminRedump(ctx context.Context, input *AdminRedump_Input) (
 	return result, err
 }
 
-func (c HTTPClient) AdminPS(ctx context.Context, input *AdminPS_Input) (AdminPS_Output, error) {
-	var _ *AdminPS_Input = input
-	var result AdminPS_Output
-	err := c.doGet(ctx, "/admin/ps", input, &result)
-	return result, err
-}
-
 func (c HTTPClient) AdminListChallenges(ctx context.Context, input *AdminListChallenges_Input) (AdminListChallenges_Output, error) {
 	var _ *AdminListChallenges_Input = input
 	var result AdminListChallenges_Output
 	err := c.doGet(ctx, "/admin/list-challenges", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminListUsers(ctx context.Context, input *AdminListUsers_Input) (AdminListUsers_Output, error) {
+	var _ *AdminListUsers_Input = input
+	var result AdminListUsers_Output
+	err := c.doGet(ctx, "/admin/list-users", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminListOrganizations(ctx context.Context, input *AdminListOrganizations_Input) (AdminListOrganizations_Output, error) {
+	var _ *AdminListOrganizations_Input = input
+	var result AdminListOrganizations_Output
+	err := c.doGet(ctx, "/admin/list-organizations", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminListTeams(ctx context.Context, input *AdminListTeams_Input) (AdminListTeams_Output, error) {
+	var _ *AdminListTeams_Input = input
+	var result AdminListTeams_Output
+	err := c.doGet(ctx, "/admin/list-teams", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminListAgents(ctx context.Context, input *AdminListAgents_Input) (AdminListAgents_Output, error) {
+	var _ *AdminListAgents_Input = input
+	var result AdminListAgents_Output
+	err := c.doGet(ctx, "/admin/list-agents", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminListCoupons(ctx context.Context, input *AdminListCoupons_Input) (AdminListCoupons_Output, error) {
+	var _ *AdminListCoupons_Input = input
+	var result AdminListCoupons_Output
+	err := c.doGet(ctx, "/admin/list-coupons", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminListChallengeSubscriptions(ctx context.Context, input *AdminListChallengeSubscriptions_Input) (AdminListChallengeSubscriptions_Output, error) {
+	var _ *AdminListChallengeSubscriptions_Input = input
+	var result AdminListChallengeSubscriptions_Output
+	err := c.doGet(ctx, "/admin/list-challenge-subscriptions", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminListActivities(ctx context.Context, input *AdminListActivities_Input) (AdminListActivities_Output, error) {
+	var _ *AdminListActivities_Input = input
+	var result AdminListActivities_Output
+	err := c.doGet(ctx, "/admin/list-activities", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminAddCoupon(ctx context.Context, input *AdminAddCoupon_Input) (AdminAddCoupon_Output, error) {
+	var _ *AdminAddCoupon_Input = input
+	var result AdminAddCoupon_Output
+	err := c.doPost(ctx, "/admin/add-coupon", input, &result)
 	return result, err
 }
 
