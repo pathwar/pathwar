@@ -89,6 +89,13 @@ definitions:
           $ref: '#/definitions/dbAgent'
         type: array
     type: object
+  apiAdminListChallengeSubscriptionsOutput:
+    properties:
+      subscriptions:
+        items:
+          $ref: '#/definitions/dbChallengeSubscription'
+        type: array
+    type: object
   apiAdminListChallengesOutput:
     properties:
       challenges:
@@ -108,13 +115,6 @@ definitions:
       organizations:
         items:
           $ref: '#/definitions/dbOrganization'
-        type: array
-    type: object
-  apiAdminListSubscriptionsOutput:
-    properties:
-      subscriptions:
-        items:
-          $ref: '#/definitions/dbChallengeSubscription'
         type: array
     type: object
   apiAdminListTeamsOutput:
@@ -1698,6 +1698,28 @@ paths:
             $ref: '#/definitions/runtimeError'
       tags:
       - Service
+  /admin/list-challenge-subscriptions:
+    get:
+      operationId: Service_AdminListChallengeSubscriptions
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminListChallengeSubscriptionsOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
   /admin/list-challenges:
     get:
       operationId: Service_AdminListChallenges
@@ -1750,28 +1772,6 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiAdminListOrganizationsOutput'
-        "403":
-          description: Returned when the user does not have permission to access the resource.
-          schema: {}
-        "404":
-          description: Returned when the resource does not exist.
-          schema:
-            format: string
-            type: string
-        default:
-          description: An unexpected error response
-          schema:
-            $ref: '#/definitions/runtimeError'
-      tags:
-      - Service
-  /admin/list-subscriptions:
-    get:
-      operationId: Service_AdminListSubscriptions
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/apiAdminListSubscriptionsOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}

@@ -34,8 +34,26 @@ func (entity *Organization) BeforeSave(db *gorm.DB) error {
 }
 
 func (entity *ChallengeFlavor) BeforeSave(db *gorm.DB) error {
+	// FIXME: make a mix of challenge and flavor
 	if entity.Slug == "" {
 		entity.Slug = entity.Version
 	}
 	return nil
 }
+
+func (entity *User) BeforeSave(db *gorm.DB) error {
+	if entity.Slug == "" {
+		entity.Slug = slug.Make(entity.Username)
+	}
+	return nil
+}
+
+/*
+func (entity *Team) BeforeSave(db *gorm.DB) error {
+        // FIXME: make a join of orga and season
+	if entity.Slug == "" {
+		entity.Slug = slug.Make(entity.Username)
+	}
+	return nil
+}
+*/

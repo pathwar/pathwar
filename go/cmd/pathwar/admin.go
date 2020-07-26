@@ -21,6 +21,7 @@ func adminCommand() *ffcli.Command {
 	var (
 		adminFlags                     = flag.NewFlagSet("admin", flag.ExitOnError)
 		adminChallengesFlags           = flag.NewFlagSet("admin challenges", flag.ExitOnError)
+		adminUsersFlags                = flag.NewFlagSet("admin users", flag.ExitOnError)
 		adminRedumpFlags               = flag.NewFlagSet("admin redump", flag.ExitOnError)
 		adminChallengeAddFlags         = flag.NewFlagSet("admin challenge add", flag.ExitOnError)
 		adminChallengeFlavorAddFlags   = flag.NewFlagSet("admin challenge flavor add", flag.ExitOnError)
@@ -191,6 +192,64 @@ func adminCommand() *ffcli.Command {
 						}
 					}
 					table.Render()
+				}
+
+				return nil
+			},
+		}, {
+			Name:    "users",
+			Usage:   "pathwar [global flags] admin [admin flags] users [flags]",
+			FlagSet: adminUsersFlags,
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				ctx := context.Background()
+				apiClient, err := httpClientFromEnv(ctx)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				ret, err := apiClient.AdminListUsers(ctx, &pwapi.AdminListUsers_Input{})
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				if jsonFormat {
+					fmt.Println(godev.PrettyJSONPB(&ret))
+					return nil
+				}
+
+				// users table
+				{
+					fmt.Println("USERS")
+					table := tablewriter.NewWriter(os.Stdout)
+					table.SetHeader([]string{"USER", "STATUS", "USERNAME", "EMAIL", "CREATED", "UPDATED", "TEAMS", "ORGS", "ID"})
+					table.SetAlignment(tablewriter.ALIGN_CENTER)
+					table.SetBorder(false)
+
+					for _, user := range ret.Users {
+						//fmt.Println(godev.PrettyJSONPB(user))
+						slug := user.Slug
+						email := user.Email
+						username := user.Username
+						status := user.DeletionStatus.String()
+						switch status {
+						case "Active":
+							status += " 🟢"
+						default:
+							status += " 🔴"
+						}
+						createdAgo := humanize.Time(*user.CreatedAt)
+						updatedAgo := humanize.Time(*user.UpdatedAt)
+						teams := fmt.Sprintf("%d", len(user.TeamMemberships))
+						orgs := fmt.Sprintf("%d", len(user.OrganizationMemberships))
+						id := fmt.Sprintf("%d", user.ID)
+						table.Append([]string{slug, status, username, email, createdAgo, updatedAgo, teams, orgs, id})
+					}
+					table.Render()
+					fmt.Println("")
 				}
 
 				return nil

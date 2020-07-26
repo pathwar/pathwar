@@ -60,6 +60,34 @@ func (c HTTPClient) AdminListChallenges(ctx context.Context, input *AdminListCha
 	return result, err
 }
 
+func (c HTTPClient) AdminListUsers(ctx context.Context, input *AdminListUsers_Input) (AdminListUsers_Output, error) {
+	var _ *AdminListUsers_Input = input
+	var result AdminListUsers_Output
+	err := c.doGet(ctx, "/admin/list-users", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminListOrganizations(ctx context.Context, input *AdminListOrganizations_Input) (AdminListOrganizations_Output, error) {
+	var _ *AdminListOrganizations_Input = input
+	var result AdminListOrganizations_Output
+	err := c.doGet(ctx, "/admin/list-organizations", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminListTeams(ctx context.Context, input *AdminListTeams_Input) (AdminListTeams_Output, error) {
+	var _ *AdminListTeams_Input = input
+	var result AdminListTeams_Output
+	err := c.doGet(ctx, "/admin/list-teams", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminListAgents(ctx context.Context, input *AdminListAgents_Input) (AdminListAgents_Output, error) {
+	var _ *AdminListAgents_Input = input
+	var result AdminListAgents_Output
+	err := c.doGet(ctx, "/admin/list-agents", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) AdminAddChallenge(ctx context.Context, input *AdminChallengeAdd_Input) (AdminChallengeAdd_Output, error) {
 	var _ *AdminChallengeAdd_Input = input
 	var result AdminChallengeAdd_Output

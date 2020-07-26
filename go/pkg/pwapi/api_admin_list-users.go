@@ -17,7 +17,10 @@ func (svc *service) AdminListUsers(ctx context.Context, in *AdminListUsers_Input
 
 	var users []*pwdb.User
 	err := svc.db.
-		// Preload("").
+		Preload("TeamMemberships").
+		Preload("TeamMemberships.Team").
+		Preload("OrganizationMemberships").
+		Preload("OrganizationMemberships.Organization").
 		Find(&users).Error
 	if err != nil {
 		return nil, errcode.ErrListUsers.Wrap(err)
