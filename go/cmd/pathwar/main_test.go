@@ -13,14 +13,14 @@ func Example() {
 	// More info here: https://github.com/pathwar/pathwar/wiki/CLI
 	//
 	// SUBCOMMANDS
-	//   client   make API calls
-	//   api      manage the Pathwar API
-	//   compose  manage a challenge
-	//   agent    manage an agent node (multiple challenges)
-	//   sso      manage SSO tokens
-	//   misc     misc contains advanced commands
-	//   version  show version
-	//   admin    admin commands
+	//   rawclient  make API calls
+	//   cli        CLI replacement for the web portal
+	//   api        manage the Pathwar API
+	//   compose    manage a challenge
+	//   agent      manage an agent node (multiple challenges)
+	//   misc       misc contains advanced commands
+	//   admin      admin commands
+	//   version    show version
 	//
 	// FLAGS
 	//   -bearer-secretkey ...  bearer.sh secret key

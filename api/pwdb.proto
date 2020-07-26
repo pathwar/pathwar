@@ -22,6 +22,7 @@ message Challenge {
   bool is_draft = 104;
   string preview_url = 105;
   string homepage = 106;
+  string slug = 107;
   // AuthorProfile
   // repeated string tags = ;
 
@@ -42,6 +43,7 @@ message ChallengeFlavor {
   Driver driver = 106;
   int64 purchase_price = 107;
   int64 validation_reward = 108;
+  string slug = 109;
 
   Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
   int64 challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
@@ -62,6 +64,8 @@ message SeasonChallenge {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+
+  string slug = 100;
 
   ChallengeFlavor flavor = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:FlavorID\""];
   int64 flavor_id = 201 [(gogoproto.customname) = "FlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
@@ -86,6 +90,7 @@ message ChallengeInstance {
   // usage metrics to be updated by the agent (unique users, requests, etc)
   // timestamp last_marked_as_tainted
   // driver (docker)
+  string slug = 108;
 
   Agent agent = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:AgentID\""];
   int64 agent_id = 201 [(gogoproto.customname) = "AgentID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
@@ -129,8 +134,10 @@ message Agent {
   google.protobuf.Timestamp last_seen_at = 114 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   string auth_salt = 115;
   bool default_agent = 116;
+  string slug = 117;
   // FIXME: capabilities
   // FIXME: metrics -> cpu/memory/containers/etc
+
 
   repeated ChallengeInstance challenge_instances = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 
@@ -149,6 +156,7 @@ message OrganizationMember {
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 
   Role role = 100;
+  string slug = 101;
 
   User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
   int64 user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
@@ -168,6 +176,7 @@ message TeamMember {
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 
   Role role = 100;
+  string slug = 102;
 
   User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
   int64 user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
@@ -203,6 +212,7 @@ message User {
   string oauth_subject = 105 [(gogoproto.customname) = "OAuthSubject", (gogoproto.moretags) = "gorm:\"unique_index\""];
   string deletion_reason = 106;
   DeletionStatus deletion_status = 107;
+  string slug = 108;
 
   repeated TeamMember team_memberships = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated Notification notifications = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
@@ -224,6 +234,7 @@ message Organization {
   string locale = 102;
   DeletionStatus deletion_status = 103;
   bool solo_season = 104;
+  string slug = 105;
 
   repeated Team teams = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated WhoswhoAttempt received_whoswho_attempts = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
@@ -239,6 +250,7 @@ message Season {
   Status status = 101;
   Visibility visibility = 102;
   bool is_default = 103;
+  string slug = 104;
 
   repeated Team teams = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated Coupon coupons = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
@@ -270,6 +282,7 @@ message Team {
   int64 silver_medals = 105;
   int64 bronze_medals = 106;
   int64 nb_achievements = 107;
+  string slug = 108;
 
   Season season = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:SeasonID\""];
   int64 season_id = 201 [(gogoproto.customname) = "SeasonID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index;unique_index:idx_team_season_organization\""];
@@ -286,6 +299,8 @@ message WhoswhoAttempt {
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 
   bool success = 100;
+  string slug = 101;
+
 
   User author = 200 [(gogoproto.moretags) = "sql:\"not null\" gorm:\"foreignkey:AuthorID\""];
   int64 author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
@@ -306,6 +321,7 @@ message ChallengeValidation {
   string author_comment = 101;
   string corrector_comment = 102;
   string passphrases = 105;
+  string slug = 106;
   // FIXME: attachment
 
   ChallengeSubscription challenge_subscription = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeSubscriptionID\""];
@@ -331,6 +347,8 @@ message ChallengeSubscription {
 
   Status status = 100;
   google.protobuf.Timestamp closed_at = 101 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  string slug = 102;
+
 
   Team team = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamID\""];
   int64 team_id = 201 [(gogoproto.customname) = "TeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"unique_index:idx_team_season_challenge\""];
@@ -355,6 +373,7 @@ message InventoryItem {
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 
   Item item = 100;
+  string slug = 101;
 
   TeamMember owner = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:OwnerID\""];
   int64 owner_id = 201 [(gogoproto.customname) = "OwnerID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
@@ -418,6 +437,7 @@ message Achievement {
   bool is_global = 101;
   string comment = 102;
   string argument = 103;
+  string slug = 104;
 
   User author = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:AuthorID\""];
   int64 author_id = 201 [(gogoproto.customname) = "AuthorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];

@@ -294,7 +294,7 @@ func httpServer(ctx context.Context, serverListenerAddr string, opts ServerOpts)
 					r = r.WithContext(opentracing.ContextWithSpan(r.Context(), serverSpan))
 					defer serverSpan.Finish()
 				}
-				fmt.Println(r.Context())
+				//fmt.Println(r.Context())
 				h.ServeHTTP(w, r)
 			})
 		}
