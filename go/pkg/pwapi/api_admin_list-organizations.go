@@ -17,7 +17,11 @@ func (svc *service) AdminListOrganizations(ctx context.Context, in *AdminListOrg
 
 	var organizations []*pwdb.Organization
 	err := svc.db.
-		// Preload("").
+		Preload("Teams").
+		Preload("Teams.Season").
+		Preload("Members").
+		Preload("Members.User").
+		//Preload("ReceivedWhoswhoAttempts").
 		Find(&organizations).Error
 	if err != nil {
 		return nil, errcode.ErrListOrganizations.Wrap(err)

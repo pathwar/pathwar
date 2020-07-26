@@ -23,6 +23,7 @@ func adminCommand() *ffcli.Command {
 		adminChallengesFlags           = flag.NewFlagSet("admin challenges", flag.ExitOnError)
 		adminUsersFlags                = flag.NewFlagSet("admin users", flag.ExitOnError)
 		adminAgentsFlags               = flag.NewFlagSet("admin agents", flag.ExitOnError)
+		adminOrganizationsFlags        = flag.NewFlagSet("admin organizations", flag.ExitOnError)
 		adminActivitiesFlags           = flag.NewFlagSet("admin activities", flag.ExitOnError)
 		adminRedumpFlags               = flag.NewFlagSet("admin redump", flag.ExitOnError)
 		adminChallengeAddFlags         = flag.NewFlagSet("admin challenge add", flag.ExitOnError)
@@ -328,6 +329,65 @@ func adminCommand() *ffcli.Command {
 						teamMember := activity.TeamMember.ASCIIID()
 						challengeSubscription := activity.ChallengeSubscription.ASCIIID()
 						table.Append([]string{id, kind, createdAgo, author, team, user, organization, season, challenge, coupon, seasonChallenge, teamMember, challengeSubscription})
+					}
+					table.Render()
+					fmt.Println("")
+				}
+
+				return nil
+			},
+		}, {
+			Name:    "organizations",
+			Usage:   "pathwar [global flags] admin [admin flags] organizations [flags]",
+			FlagSet: adminOrganizationsFlags,
+			Exec: func(args []string) error {
+				if err := globalPreRun(); err != nil {
+					return err
+				}
+
+				ctx := context.Background()
+				apiClient, err := httpClientFromEnv(ctx)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				ret, err := apiClient.AdminListOrganizations(ctx, &pwapi.AdminListOrganizations_Input{})
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+
+				if jsonFormat {
+					fmt.Println(godev.PrettyJSONPB(&ret))
+					return nil
+				}
+
+				// organizations table
+				{
+					fmt.Println("ORGANIZATIONS")
+					table := tablewriter.NewWriter(os.Stdout)
+					table.SetHeader([]string{"SLUG", "NAME", "STATUS", "CREATED", "UPDATED", "TEAMS", "MEMBERS", "ID"})
+					table.SetAlignment(tablewriter.ALIGN_CENTER)
+					table.SetBorder(false)
+
+					for _, organization := range ret.Organizations {
+						//fmt.Println(godev.PrettyJSONPB(organization))
+						id := fmt.Sprintf("%d", organization.ID)
+						createdAgo := humanize.Time(*organization.CreatedAt)
+						updatedAgo := humanize.Time(*organization.UpdatedAt)
+						slug := organization.Slug
+						name := organization.Name
+						status := asciiStatus(organization.DeletionStatus.String())
+						teamParts := []string{}
+						for _, team := range organization.Teams {
+							teamParts = append(teamParts, team.Season.ASCIIID())
+						}
+						teams := strings.Join(teamParts, ",")
+						memberParts := []string{}
+						for _, member := range organization.Members {
+							memberParts = append(memberParts, member.User.ASCIIID())
+						}
+						members := strings.Join(memberParts, ",")
+						table.Append([]string{slug, name, status, createdAgo, updatedAgo, teams, members, id})
 					}
 					table.Render()
 					fmt.Println("")
