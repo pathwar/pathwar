@@ -45,6 +45,24 @@ definitions:
     - Unlisted
     - Public
     type: string
+  apiAdminAddCouponInput:
+    properties:
+      hash:
+        type: string
+      max_validation_count:
+        format: int64
+        type: string
+      season_id:
+        type: string
+      value:
+        format: int64
+        type: string
+    type: object
+  apiAdminAddCouponOutput:
+    properties:
+      coupon:
+        $ref: '#/definitions/dbCoupon'
+    type: object
   apiAdminChallengeAddInput:
     properties:
       challenge:
@@ -558,8 +576,8 @@ definitions:
       name:
         type: string
       nginx_port:
-        format: int32
-        type: integer
+        format: int64
+        type: string
       os:
         type: string
       slug:
@@ -569,11 +587,11 @@ definitions:
       tags:
         type: string
       times_registered:
-        format: int32
-        type: integer
+        format: int64
+        type: string
       times_seen:
-        format: int32
-        type: integer
+        format: int64
+        type: string
       updated_at:
         format: date-time
         type: string
@@ -704,8 +722,8 @@ definitions:
       nginx_url:
         type: string
       redump_count:
-        format: int32
-        type: integer
+        format: int64
+        type: string
       slug:
         title: |-
           usage metrics to be updated by the agent (unique users, requests, etc)
@@ -720,8 +738,8 @@ definitions:
         format: date-time
         type: string
       validation_count:
-        format: int32
-        type: integer
+        format: int64
+        type: string
     type: object
   dbChallengeInstanceStatus:
     default: Unknown
@@ -840,8 +858,8 @@ definitions:
         format: int64
         type: string
       max_validation_count:
-        format: int32
-        type: integer
+        format: int64
+        type: string
       season:
         $ref: '#/definitions/dbSeason'
       season_id:
@@ -855,8 +873,8 @@ definitions:
           $ref: '#/definitions/dbCouponValidation'
         type: array
       value:
-        format: int32
-        type: integer
+        format: int64
+        type: string
     type: object
   dbCouponValidation:
     properties:
@@ -1570,6 +1588,34 @@ info:
   title: Pathwar API
   version: "1.0"
 paths:
+  /admin/add-coupon:
+    post:
+      operationId: Service_AdminAddCoupon
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminAddCouponInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminAddCouponOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
   /admin/challenge-add:
     post:
       operationId: Service_AdminChallengeAdd

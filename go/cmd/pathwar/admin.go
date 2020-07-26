@@ -28,12 +28,18 @@ func adminCommand() *ffcli.Command {
 		Name:  "admin",
 		Usage: "pathwar [global flags] admin [admin flags] <subcommand> [flags] [args...]",
 		Subcommands: []*ffcli.Command{
+			// read-only
 			adminChallengeCommand(),
 			adminUsersCommand(),
 			adminAgentsCommand(),
 			adminActivitiesCommand(),
 			adminOrganizationsCommand(),
 			adminTeamsCommand(),
+			adminCouponsCommand(),
+			// adminChallengeSubscriptionsCommand(),
+
+			// actions
+			adminAddCouponCommand(),
 			adminRedumpCommand(),
 			adminChallengeAddCommand(),
 			adminChallengeFlavorAddCommand(),
@@ -47,11 +53,11 @@ func adminCommand() *ffcli.Command {
 }
 
 func adminChallengeCommand() *ffcli.Command {
-	adminChallengesFlags := flag.NewFlagSet("admin challenges", flag.ExitOnError)
+	flags := flag.NewFlagSet("admin challenges", flag.ExitOnError)
 	return &ffcli.Command{
 		Name:    "challenges",
 		Usage:   "pathwar [global flags] admin [admin flags] challenges [flags]",
-		FlagSet: adminChallengesFlags,
+		FlagSet: flags,
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -176,11 +182,11 @@ func adminChallengeCommand() *ffcli.Command {
 }
 
 func adminUsersCommand() *ffcli.Command {
-	adminUsersFlags := flag.NewFlagSet("admin users", flag.ExitOnError)
+	flags := flag.NewFlagSet("admin users", flag.ExitOnError)
 	return &ffcli.Command{
 		Name:    "users",
 		Usage:   "pathwar [global flags] admin [admin flags] users [flags]",
-		FlagSet: adminUsersFlags,
+		FlagSet: flags,
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -233,11 +239,11 @@ func adminUsersCommand() *ffcli.Command {
 }
 
 func adminAgentsCommand() *ffcli.Command {
-	adminAgentsFlags := flag.NewFlagSet("admin agents", flag.ExitOnError)
+	flags := flag.NewFlagSet("admin agents", flag.ExitOnError)
 	return &ffcli.Command{
 		Name:    "agents",
 		Usage:   "pathwar [global flags] admin [admin flags] agents [flags]",
-		FlagSet: adminAgentsFlags,
+		FlagSet: flags,
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -292,11 +298,11 @@ func adminAgentsCommand() *ffcli.Command {
 }
 
 func adminActivitiesCommand() *ffcli.Command {
-	adminActivitiesFlags := flag.NewFlagSet("admin activities", flag.ExitOnError)
+	flags := flag.NewFlagSet("admin activities", flag.ExitOnError)
 	return &ffcli.Command{
 		Name:    "activities",
 		Usage:   "pathwar [global flags] admin [admin flags] activities [flags]",
-		FlagSet: adminActivitiesFlags,
+		FlagSet: flags,
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -353,11 +359,11 @@ func adminActivitiesCommand() *ffcli.Command {
 }
 
 func adminOrganizationsCommand() *ffcli.Command {
-	adminOrganizationsFlags := flag.NewFlagSet("admin organizations", flag.ExitOnError)
+	flags := flag.NewFlagSet("admin organizations", flag.ExitOnError)
 	return &ffcli.Command{
 		Name:    "organizations",
 		Usage:   "pathwar [global flags] admin [admin flags] organizations [flags]",
-		FlagSet: adminOrganizationsFlags,
+		FlagSet: flags,
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -417,11 +423,11 @@ func adminOrganizationsCommand() *ffcli.Command {
 }
 
 func adminTeamsCommand() *ffcli.Command {
-	adminTeamsFlags := flag.NewFlagSet("admin teams", flag.ExitOnError)
+	flags := flag.NewFlagSet("admin teams", flag.ExitOnError)
 	return &ffcli.Command{
 		Name:    "teams",
 		Usage:   "pathwar [global flags] admin [admin flags] teams [flags]",
-		FlagSet: adminTeamsFlags,
+		FlagSet: flags,
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -447,7 +453,7 @@ func adminTeamsCommand() *ffcli.Command {
 			{
 				fmt.Println("TEAMS")
 				table := tablewriter.NewWriter(os.Stdout)
-				table.SetHeader([]string{"SLUG", "CREATED", "UPDATED", "SEASON", "MEMBERS", "ORGANIZATION", "CHALLENGES", "ACHIEVEMENTS", "STATUS", "ID"})
+				table.SetHeader([]string{"SLUG", "CREATED", "UPDATED", "SEASON", "CASH", "MEMBERS", "ORGANIZATION", "CHALLENGES", "ACHIEVEMENTS", "STATUS", "ID"})
 				table.SetAlignment(tablewriter.ALIGN_CENTER)
 				table.SetBorder(false)
 
@@ -467,7 +473,11 @@ func adminTeamsCommand() *ffcli.Command {
 					challenges := asciiSubscriptionsStats(team.ChallengeSubscriptions)
 					achievements := fmt.Sprintf("%d", len(team.Achievements))
 					slug := team.Slug
-					table.Append([]string{slug, createdAgo, updatedAgo, season, members, organization, challenges, achievements, status, id})
+					cash := fmt.Sprintf("$%d", team.Cash)
+					if team.Cash == 0 {
+						cash = "🚫"
+					}
+					table.Append([]string{slug, createdAgo, updatedAgo, season, cash, members, organization, challenges, achievements, status, id})
 				}
 				table.Render()
 				fmt.Println("")
@@ -478,12 +488,116 @@ func adminTeamsCommand() *ffcli.Command {
 	}
 }
 
+func adminCouponsCommand() *ffcli.Command {
+	flags := flag.NewFlagSet("admin coupons", flag.ExitOnError)
+	return &ffcli.Command{
+		Name:    "coupons",
+		Usage:   "pathwar [global flags] admin [admin flags] coupons [flags]",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminListCoupons(ctx, &pwapi.AdminListCoupons_Input{})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			// coupons table
+			{
+				fmt.Println("COUPONS")
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"HASH", "VALUE", "SEASON", "CREATED", "UPDATED", "VALIDATIONS", "ID"})
+				table.SetAlignment(tablewriter.ALIGN_CENTER)
+				table.SetBorder(false)
+
+				for _, coupon := range ret.Coupons {
+					//fmt.Println(godev.PrettyJSONPB(coupon))
+					hash := coupon.Hash
+					id := fmt.Sprintf("%d", coupon.ID)
+					value := fmt.Sprintf("%d", coupon.Value)
+					createdAgo := humanize.Time(*coupon.CreatedAt)
+					updatedAgo := humanize.Time(*coupon.UpdatedAt)
+					season := coupon.Season.ASCIIID()
+					validated := int64(len(coupon.Validations))
+					validationStatus := "🟢"
+					switch {
+					case validated > 0 && validated < coupon.MaxValidationCount:
+						validationStatus = "🔶"
+					case validated == coupon.MaxValidationCount:
+						validationStatus = "🔴"
+					case validated > coupon.MaxValidationCount:
+						validationStatus = "🙀"
+					}
+					validations := fmt.Sprintf("%d / %d %s", validated, coupon.MaxValidationCount, validationStatus)
+					table.Append([]string{hash, value, season, createdAgo, updatedAgo, validations, id})
+				}
+				table.Render()
+				fmt.Println("")
+			}
+
+			return nil
+		},
+	}
+}
+
+func adminAddCouponCommand() *ffcli.Command {
+	input := pwapi.AdminAddCoupon_Input{}
+	input.ApplyDefaults()
+
+	flags := flag.NewFlagSet("admin add-coupon", flag.ExitOnError)
+	flags.StringVar(&input.Hash, "hash", input.Hash, "Hash to guess (must be unique, if 'RANDOM', will be randomized)")
+	flags.Int64Var(&input.Value, "value", input.Value, "Coupon value")
+	flags.Int64Var(&input.MaxValidationCount, "max-validations", input.MaxValidationCount, "Maximum times a coupon can be validated")
+	flags.StringVar(&input.SeasonID, "season", input.SeasonID, "Season ID or Slug to associate the coupon with")
+	return &ffcli.Command{
+		Name:    "add-coupon",
+		Usage:   "pathwar admin add-coupon",
+		FlagSet: flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminAddCoupon(ctx, &input)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+			} else {
+				fmt.Println(ret.Coupon.Hash)
+			}
+			return nil
+		},
+	}
+}
+
 func adminRedumpCommand() *ffcli.Command {
-	adminRedumpFlags := flag.NewFlagSet("admin redump", flag.ExitOnError)
+	flags := flag.NewFlagSet("admin redump", flag.ExitOnError)
 	return &ffcli.Command{
 		Name:    "redump",
 		Usage:   "pathwar [global flags] admin [admin flags] redump [flags] ID...",
-		FlagSet: adminRedumpFlags,
+		FlagSet: flags,
 		Exec: func(args []string) error {
 			if len(args) < 1 {
 				return flag.ErrHelp
@@ -519,20 +633,20 @@ func adminRedumpCommand() *ffcli.Command {
 }
 
 func adminChallengeAddCommand() *ffcli.Command {
-	adminChallengeAddFlags := flag.NewFlagSet("admin challenge add", flag.ExitOnError)
-	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Name, "name", "", "Challenge name")
-	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Description, "description", "", "Challenge description")
-	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Author, "author", "", "Challenge author")
-	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Locale, "locale", "", "Challenge Locale")
-	adminChallengeAddFlags.BoolVar(&adminChallengeAddInput.Challenge.IsDraft, "is-draft", true, "Is challenge production ready ?")
-	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.PreviewUrl, "preview-url", "", "Challenge preview URL")
-	adminChallengeAddFlags.StringVar(&adminChallengeAddInput.Challenge.Homepage, "homepage", "", "Challenge homepage URL")
+	flags := flag.NewFlagSet("admin challenge add", flag.ExitOnError)
+	flags.StringVar(&adminChallengeAddInput.Challenge.Name, "name", "", "Challenge name")
+	flags.StringVar(&adminChallengeAddInput.Challenge.Description, "description", "", "Challenge description")
+	flags.StringVar(&adminChallengeAddInput.Challenge.Author, "author", "", "Challenge author")
+	flags.StringVar(&adminChallengeAddInput.Challenge.Locale, "locale", "", "Challenge Locale")
+	flags.BoolVar(&adminChallengeAddInput.Challenge.IsDraft, "is-draft", true, "Is challenge production ready ?")
+	flags.StringVar(&adminChallengeAddInput.Challenge.PreviewUrl, "preview-url", "", "Challenge preview URL")
+	flags.StringVar(&adminChallengeAddInput.Challenge.Homepage, "homepage", "", "Challenge homepage URL")
 
 	return &ffcli.Command{
 		Name:      "challenge-add",
 		Usage:     "pathwar [global flags] admin [admin flags] challenge-add [flags] [args...]",
 		ShortHelp: "add a challenge",
-		FlagSet:   adminChallengeAddFlags,
+		FlagSet:   flags,
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -564,15 +678,15 @@ func adminChallengeAddCommand() *ffcli.Command {
 }
 
 func adminChallengeFlavorAddCommand() *ffcli.Command {
-	adminChallengeFlavorAddFlags := flag.NewFlagSet("admin challenge flavor add", flag.ExitOnError)
-	adminChallengeFlavorAddFlags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.Version, "version", "1.0.0", "Challenge flavor version")
-	adminChallengeFlavorAddFlags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.ComposeBundle, "compose-bundle", "", "Challenge flavor compose bundle")
-	adminChallengeFlavorAddFlags.Int64Var(&adminChallengeFlavorAddInput.ChallengeFlavor.ChallengeID, "challenge-id", 0, "Challenge id")
+	flags := flag.NewFlagSet("admin challenge flavor add", flag.ExitOnError)
+	flags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.Version, "version", "1.0.0", "Challenge flavor version")
+	flags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.ComposeBundle, "compose-bundle", "", "Challenge flavor compose bundle")
+	flags.Int64Var(&adminChallengeFlavorAddInput.ChallengeFlavor.ChallengeID, "challenge-id", 0, "Challenge id")
 	return &ffcli.Command{
 		Name:      "challenge-flavor-add",
 		Usage:     "pathwar [global flags] admin [admin flags] challenge-flavor-add [flags] [args...]",
 		ShortHelp: "add a challenge flavor",
-		FlagSet:   adminChallengeFlavorAddFlags,
+		FlagSet:   flags,
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
@@ -603,14 +717,14 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 	}
 }
 func adminChallengeInstanceAddCommand() *ffcli.Command {
-	adminChallengeInstanceAddFlags := flag.NewFlagSet("admin challenge instance add", flag.ExitOnError)
-	adminChallengeInstanceAddFlags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.AgentID, "agent-id", 0, "Id of the agent that will host the instance")
-	adminChallengeInstanceAddFlags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.FlavorID, "flavor-id", 0, "Challenge flavor id")
+	flags := flag.NewFlagSet("admin challenge instance add", flag.ExitOnError)
+	flags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.AgentID, "agent-id", 0, "Id of the agent that will host the instance")
+	flags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.FlavorID, "flavor-id", 0, "Challenge flavor id")
 	return &ffcli.Command{
 		Name:      "challenge-instance-add",
 		Usage:     "pathwar [global flags] admin [admin flags] challenge-instance-add [flags] [args...]",
 		ShortHelp: "add a challenge instance",
-		FlagSet:   adminChallengeInstanceAddFlags,
+		FlagSet:   flags,
 		Exec: func(args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err

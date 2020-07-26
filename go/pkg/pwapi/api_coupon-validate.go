@@ -45,7 +45,7 @@ func (svc *service) CouponValidate(ctx context.Context, in *CouponValidate_Input
 	}
 
 	// is already validated by same team
-	var validations int32
+	var validations int64
 	err = svc.db.
 		Model(&pwdb.CouponValidation{}).
 		Where(&pwdb.CouponValidation{CouponID: coupon.ID, TeamID: team.ID}).

@@ -154,6 +154,10 @@ enum ErrCode {
   ErrListChallengeSubscriptions = 4077;
   ErrListCoupons = 4078;
   ErrListAgents = 4079;
+  ErrAddCoupon = 4080;
+  ErrUnknownDBKind = 4081;
+  ErrNoSuchSlug = 4082;
+  ErrAmbiguousSlug = 4083;
 
   //// Pathwar Server (starting at 5001)
 

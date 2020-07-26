@@ -84,8 +84,8 @@ message ChallengeInstance {
   google.protobuf.Timestamp last_stopped_at = 102 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp last_redump_requested_at = 103 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   string startup_error = 104;
-  int32 redump_count = 105;
-  int32 validation_count = 106;
+  int64 redump_count = 105;
+  int64 validation_count = 106;
   bytes instance_config = 107; // marshalled configuration containing the passphrases, etc
   // usage metrics to be updated by the agent (unique users, requests, etc)
   // timestamp last_marked_as_tainted
@@ -126,10 +126,10 @@ message Agent {
   string version = 106;
   string tags = 107;
   string domain_suffix = 108;
-  int32 nginx_port = 109;
+  int64 nginx_port = 109;
   string metadata = 110;
-  int32 times_seen = 111;
-  int32 times_registered = 112;
+  int64 times_seen = 111;
+  int64 times_registered = 112;
   google.protobuf.Timestamp last_registration_at = 113 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp last_seen_at = 114 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   string auth_salt = 115;
@@ -405,8 +405,8 @@ message Coupon {
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 
   string hash = 100 [(gogoproto.moretags) = "gorm:\"unique_index\""];
-  int32 value = 101;
-  int32 max_validation_count = 102;
+  int64 value = 101;
+  int64 max_validation_count = 102;
 
   Season season = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:SeasonID\""];
   int64 season_id = 201 [(gogoproto.customname) = "SeasonID", (gogoproto.moretags) = "gorm:\"index\""];

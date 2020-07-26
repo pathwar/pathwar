@@ -17,7 +17,11 @@ func (svc *service) AdminListCoupons(ctx context.Context, in *AdminListCoupons_I
 
 	var coupons []*pwdb.Coupon
 	err := svc.db.
-		// Preload("").
+		Preload("Season").
+		Preload("Validations").
+		Preload("Validations.Author").
+		Preload("Validations.Team").
+		Preload("Validations.Team.Organization").
 		Find(&coupons).Error
 	if err != nil {
 		return nil, errcode.ErrListCoupons.Wrap(err)

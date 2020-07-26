@@ -89,6 +89,7 @@ service Service {
   rpc AdminListUsers(AdminListUsers.Input) returns (AdminListUsers.Output) { option (google.api.http) = {get: "/admin/list-users"}; }; // admin only
   rpc AdminListActivities(AdminListActivities.Input) returns (AdminListActivities.Output) { option (google.api.http) = {get: "/admin/list-activities"}; }; // admin only
   rpc AdminListChallengeSubscriptions(AdminListChallengeSubscriptions.Input) returns (AdminListChallengeSubscriptions.Output) { option (google.api.http) = {get: "/admin/list-challenge-subscriptions"}; }; // admin only
+  rpc AdminAddCoupon(AdminAddCoupon.Input) returns (AdminAddCoupon.Output) { option (google.api.http) = {post: "/admin/add-coupon"; body: "*"}; }; // admin only
   rpc AdminRedump(AdminRedump.Input) returns (AdminRedump.Output) { option (google.api.http) = {post: "/admin/redump"; body: "*"}; }; // admin only
   rpc AdminChallengeAdd(AdminChallengeAdd.Input) returns (AdminChallengeAdd.Output) { option (google.api.http) = {post: "/admin/challenge-add"; body: "*"}; }; // admin only
   rpc AdminChallengeFlavorAdd(AdminChallengeFlavorAdd.Input) returns (AdminChallengeFlavorAdd.Output) { option (google.api.http) = {post: "/admin/challenge-flavor-add"; body: "*"}; }; // admin only
@@ -104,6 +105,18 @@ message AdminRedump {
     repeated string identifiers = 1 [(gogoproto.customname) = "Identifiers", (gogoproto.moretags) = "url:\"identifiers\""];
   }
   message Output {}
+}
+
+message AdminAddCoupon {
+  message Input {
+    string hash = 1;
+    int64 value = 2;
+    int64 max_validation_count = 3;
+    string season_id = 4 [(gogoproto.customname) = "SeasonID"];
+  }
+  message Output {
+    pathwar.db.Coupon coupon = 1;
+  }
 }
 
 message AdminListChallenges {

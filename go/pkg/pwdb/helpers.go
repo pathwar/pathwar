@@ -8,6 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
 	"pathwar.land/pathwar/v2/go/internal/randstring"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
 func GetInfo(db *gorm.DB, logger *zap.Logger) (*Info, error) {
@@ -209,8 +210,8 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 	for i := 0; i < 3; i++ {
 		coupon := &Coupon{
 			Hash:               gofakeit.UUID(),
-			MaxValidationCount: int32(rand.Int() % 5),
-			Value:              int32(rand.Int() % 10),
+			MaxValidationCount: int64(rand.Int() % 5),
+			Value:              int64(rand.Int() % 10),
 			SeasonID:           seasons[rand.Int()%len(seasons)].ID,
 		}
 		coupons = append(coupons, coupon)
@@ -251,14 +252,29 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 	return nil
 }
 
-func (m *SeasonChallenge) GetActiveSubscriptions() []*ChallengeSubscription {
-	cs := make([]*ChallengeSubscription, 0)
-
-	for _, subscription := range m.GetSubscriptions() {
-		if subscription.GetStatus() == ChallengeSubscription_Active {
-			cs = append(cs, subscription)
-		}
+func GetIDBySlugAndKind(db *gorm.DB, slug string, kind string) (int64, error) {
+	var (
+		ids []int64
+		err error
+	)
+	switch kind {
+	case "season":
+		err = db.
+			Model(Season{}).
+			Where("id = ? OR slug = ?", slug, slug).
+			Pluck("id", &ids).Error
+	default:
+		return 0, errcode.ErrUnknownDBKind
 	}
 
-	return cs
+	if err != nil {
+		return 0, GormToErrcode(err)
+	}
+	if len(ids) == 0 {
+		return 0, errcode.ErrNoSuchSlug
+	}
+	if len(ids) > 1 {
+		return 0, errcode.ErrAmbiguousSlug
+	}
+	return ids[0], nil
 }

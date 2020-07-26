@@ -75,3 +75,15 @@ func ChallengeInstancePrefixHash(instanceID string, userID int64, salt string) (
 	userHash := strings.ToLower(base36.EncodeBytes(hashBytes))[:8] // we voluntarily expect short hashes here
 	return userHash, nil
 }
+
+func (m *SeasonChallenge) GetActiveSubscriptions() []*ChallengeSubscription {
+	cs := make([]*ChallengeSubscription, 0)
+
+	for _, subscription := range m.GetSubscriptions() {
+		if subscription.GetStatus() == ChallengeSubscription_Active {
+			cs = append(cs, subscription)
+		}
+	}
+
+	return cs
+}

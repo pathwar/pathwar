@@ -88,10 +88,24 @@ func (c HTTPClient) AdminListAgents(ctx context.Context, input *AdminListAgents_
 	return result, err
 }
 
+func (c HTTPClient) AdminListCoupons(ctx context.Context, input *AdminListCoupons_Input) (AdminListCoupons_Output, error) {
+	var _ *AdminListCoupons_Input = input
+	var result AdminListCoupons_Output
+	err := c.doGet(ctx, "/admin/list-coupons", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) AdminListActivities(ctx context.Context, input *AdminListActivities_Input) (AdminListActivities_Output, error) {
 	var _ *AdminListActivities_Input = input
 	var result AdminListActivities_Output
 	err := c.doGet(ctx, "/admin/list-activities", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) AdminAddCoupon(ctx context.Context, input *AdminAddCoupon_Input) (AdminAddCoupon_Output, error) {
+	var _ *AdminAddCoupon_Input = input
+	var result AdminAddCoupon_Output
+	err := c.doPost(ctx, "/admin/add-coupon", input, &result)
 	return result, err
 }
 
