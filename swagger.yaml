@@ -75,14 +75,14 @@ definitions:
     type: object
   apiAdminChallengeFlavorAddInput:
     properties:
+      challenge_flavor:
+        $ref: '#/definitions/dbChallengeFlavor'
       challenge_id:
         type: string
-      challengeFlavor:
-        $ref: '#/definitions/dbChallengeFlavor'
     type: object
   apiAdminChallengeFlavorAddOutput:
     properties:
-      challengeFlavor:
+      challenge_flavor:
         $ref: '#/definitions/dbChallengeFlavor'
     type: object
   apiAdminListActivitiesOutput:
@@ -149,6 +149,20 @@ definitions:
         type: array
     type: object
   apiAdminRedumpOutput:
+    type: object
+  apiAdminSeasonChallengeAddInput:
+    properties:
+      flavor_id:
+        type: string
+      season_challenge:
+        $ref: '#/definitions/dbSeasonChallenge'
+      season_id:
+        type: string
+    type: object
+  apiAdminSeasonChallengeAddOutput:
+    properties:
+      season_challenge:
+        $ref: '#/definitions/dbSeasonChallenge'
     type: object
   apiAgentListInstancesOutput:
     properties:
@@ -1854,6 +1868,34 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiAdminRedumpOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/season-challenge-add:
+    post:
+      operationId: Service_AdminSeasonChallengeAdd
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminSeasonChallengeAddInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminSeasonChallengeAddOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}

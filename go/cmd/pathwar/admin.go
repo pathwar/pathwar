@@ -43,6 +43,7 @@ func adminCommand() *ffcli.Command {
 			adminRedumpCommand(),
 			adminChallengeAddCommand(),
 			adminChallengeFlavorAddCommand(),
+			adminSeasonChallengeAddCommand(),
 		},
 		ShortHelp: "admin commands",
 		FlagSet:   adminFlags,
@@ -82,9 +83,9 @@ func adminChallengeCommand() *ffcli.Command {
 			{
 				fmt.Println("TREE")
 				for _, challenge := range ret.Challenges {
-					fmt.Printf("- %s (%d)\n", challenge.Slug, challenge.ID)
+					fmt.Printf("- %s\n", challenge.Slug)
 					for _, flavor := range challenge.Flavors {
-						fmt.Printf("  - %s (%d)\n", flavor.Slug, flavor.ID)
+						fmt.Printf("  - %s\n", flavor.Slug)
 						for _, instance := range flavor.Instances {
 							fmt.Printf("    - %d\n", instance.ID)
 						}
@@ -119,14 +120,13 @@ func adminChallengeCommand() *ffcli.Command {
 			{
 				fmt.Println("FLAVORS")
 				table := tablewriter.NewWriter(os.Stdout)
-				table.SetHeader([]string{"FLAVOR", "CHALLENGE", "CREATED", "UPDATED", "INSTANCES", "SEASON CHALLENGES", "ID"})
+				table.SetHeader([]string{"FLAVOR", "CREATED", "UPDATED", "INSTANCES", "SEASON CHALLENGES", "PRICE/REWARD", "ID"})
 				table.SetAlignment(tablewriter.ALIGN_CENTER)
 				table.SetBorder(false)
 
 				for _, challenge := range ret.Challenges {
 					for _, flavor := range challenge.Flavors {
 						slug := flavor.Slug
-						challengeSlug := challenge.Slug
 						createdAgo := humanize.Time(*flavor.CreatedAt)
 						updatedAgo := humanize.Time(*flavor.UpdatedAt)
 						instances := asciiInstancesStats(flavor.Instances)
@@ -136,7 +136,12 @@ func adminChallengeCommand() *ffcli.Command {
 						}
 						seasonChallenges := strings.Join(seasonChallengeParts, ", ")
 						id := fmt.Sprintf("%d", flavor.ID)
-						table.Append([]string{slug, challengeSlug, createdAgo, updatedAgo, instances, seasonChallenges, id})
+						price := "free"
+						if flavor.PurchasePrice > 0 {
+							price = fmt.Sprintf("$%d", flavor.PurchasePrice)
+						}
+						priceReward := fmt.Sprintf("%s / $%d", price, flavor.ValidationReward)
+						table.Append([]string{slug, createdAgo, updatedAgo, instances, seasonChallenges, priceReward, id})
 					}
 				}
 				table.Render()
@@ -147,7 +152,7 @@ func adminChallengeCommand() *ffcli.Command {
 			{
 				fmt.Println("INSTANCES")
 				table := tablewriter.NewWriter(os.Stdout)
-				table.SetHeader([]string{"INSTANCE", "FLAVOR", "STATUS", "CREATED", "UPDATED", "CONFIG", "SEASON CHALLENGES", "PRICE/REWARD"})
+				table.SetHeader([]string{"INSTANCE", "FLAVOR", "STATUS", "CREATED", "UPDATED", "CONFIG", "SEASON CHALLENGES"})
 				table.SetAlignment(tablewriter.ALIGN_CENTER)
 				table.SetBorder(false)
 
@@ -163,12 +168,7 @@ func adminChallengeCommand() *ffcli.Command {
 							configStruct, _ := instance.ParseInstanceConfig()
 							config := godev.JSONPB(configStruct)
 							seasonChallenges := fmt.Sprintf("%d", len(flavor.SeasonChallenges))
-							price := "free"
-							if flavor.PurchasePrice > 0 {
-								price = fmt.Sprintf("$%d", flavor.PurchasePrice)
-							}
-							priceReward := fmt.Sprintf("%s / $%d", price, flavor.ValidationReward)
-							table.Append([]string{id, flavorSlug, status, createdAgo, updatedAgo, config, seasonChallenges, priceReward})
+							table.Append([]string{id, flavorSlug, status, createdAgo, updatedAgo, config, seasonChallenges})
 						}
 					}
 				}
@@ -791,6 +791,54 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 			}
 
 			fmt.Println(ret.ChallengeFlavor.ID)
+			return nil
+		},
+	}
+}
+
+func adminSeasonChallengeAddCommand() *ffcli.Command {
+	input := pwapi.AdminSeasonChallengeAdd_Input{}
+	input.ApplyDefaults()
+	flags := flag.NewFlagSet("admin season challenge add", flag.ExitOnError)
+	flags.StringVar(&input.FlavorID, "flavor", input.FlavorID, "Flavor ID or Slug")
+	flags.StringVar(&input.SeasonID, "season", input.SeasonID, "Season ID or Slug")
+	flags.StringVar(&input.SeasonChallenge.Slug, "slug", input.SeasonChallenge.Slug, "Slug")
+
+	return &ffcli.Command{
+		Name:      "season-challenge-add",
+		Usage:     "pathwar [global flags] admin [admin flags] season-challenge-add [flags] [args...]",
+		ShortHelp: "add a SeasonChallenge",
+		FlagSet:   flags,
+		Exec: func(args []string) error {
+			input.ApplyDefaults()
+			if input.FlavorID == "" || input.SeasonID == "" {
+				return flag.ErrHelp
+			}
+
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminAddSeasonChallenge(ctx, &input)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+			if globalDebug {
+				fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			fmt.Println(ret.SeasonChallenge.ID)
 			return nil
 		},
 	}

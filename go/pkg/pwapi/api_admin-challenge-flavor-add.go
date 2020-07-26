@@ -3,6 +3,7 @@ package pwapi
 import (
 	"context"
 
+	"github.com/jinzhu/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -25,9 +26,33 @@ func (svc *service) AdminChallengeFlavorAdd(ctx context.Context, in *AdminChalle
 		}
 	}
 
-	err := svc.db.Create(in.ChallengeFlavor).Error
+	err := svc.db.Transaction(func(tx *gorm.DB) error {
+		err := tx.Create(in.ChallengeFlavor).Error
+		if err != nil {
+			return errcode.ErrChallengeFlavorAdd.Wrap(err)
+		}
+
+		var agentsToInstanciate []*pwdb.Agent
+		if err = tx.Where(pwdb.Agent{DefaultAgent: true}).Find(&agentsToInstanciate).Error; err != nil {
+			return err
+		}
+
+		for _, agent := range agentsToInstanciate {
+			instance := pwdb.ChallengeInstance{
+				Status:         pwdb.ChallengeInstance_IsNew,
+				AgentID:        agent.ID,
+				FlavorID:       in.ChallengeFlavor.ID,
+				InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
+			}
+			err = tx.Create(&instance).Error
+			if err != nil {
+				return pwdb.GormToErrcode(err)
+			}
+		}
+		return nil
+	})
 	if err != nil {
-		return nil, errcode.ErrChallengeFlavorAdd.Wrap(err)
+		return nil, err
 	}
 
 	out := AdminChallengeFlavorAdd_Output{

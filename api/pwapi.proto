@@ -93,6 +93,7 @@ service Service {
   rpc AdminRedump(AdminRedump.Input) returns (AdminRedump.Output) { option (google.api.http) = {post: "/admin/redump"; body: "*"}; }; // admin only
   rpc AdminChallengeAdd(AdminChallengeAdd.Input) returns (AdminChallengeAdd.Output) { option (google.api.http) = {post: "/admin/challenge-add"; body: "*"}; }; // admin only
   rpc AdminChallengeFlavorAdd(AdminChallengeFlavorAdd.Input) returns (AdminChallengeFlavorAdd.Output) { option (google.api.http) = {post: "/admin/challenge-flavor-add"; body: "*"}; }; // admin only
+  rpc AdminSeasonChallengeAdd(AdminSeasonChallengeAdd.Input) returns (AdminSeasonChallengeAdd.Output) { option (google.api.http) = {post: "/admin/season-challenge-add"; body: "*"}; }; // admin only
 }
 
 //
@@ -185,11 +186,22 @@ message AdminChallengeAdd {
 
 message AdminChallengeFlavorAdd {
   message Input {
-    pathwar.db.ChallengeFlavor challengeFlavor = 1;
-    string challenge_id = 4 [(gogoproto.customname) = "ChallengeID"];
+    pathwar.db.ChallengeFlavor challenge_flavor = 1;
+    string challenge_id = 2 [(gogoproto.customname) = "ChallengeID"];
   }
   message Output {
-    pathwar.db.ChallengeFlavor challengeFlavor = 1;
+    pathwar.db.ChallengeFlavor challenge_flavor = 1;
+  }
+}
+
+message AdminSeasonChallengeAdd {
+  message Input {
+    pathwar.db.SeasonChallenge season_challenge = 1;
+    string flavor_id = 2 [(gogoproto.customname) = "FlavorID"];
+    string season_id = 3 [(gogoproto.customname) = "SeasonID"];
+  }
+  message Output {
+    pathwar.db.SeasonChallenge season_challenge = 1;
   }
 }
 

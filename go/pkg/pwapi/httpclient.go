@@ -130,6 +130,13 @@ func (c HTTPClient) AdminAddChallengeFlavor(ctx context.Context, input *AdminCha
 	return result, err
 }
 
+func (c HTTPClient) AdminAddSeasonChallenge(ctx context.Context, input *AdminSeasonChallengeAdd_Input) (AdminSeasonChallengeAdd_Output, error) {
+	var _ *AdminSeasonChallengeAdd_Input = input
+	var result AdminSeasonChallengeAdd_Output
+	err := c.doPost(ctx, "/admin/season-challenge-add", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) GetStatus(ctx context.Context, input *GetStatus_Input) (GetStatus_Output, error) {
 	var _ *GetStatus_Input = input
 	var result GetStatus_Output
