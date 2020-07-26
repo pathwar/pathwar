@@ -617,9 +617,9 @@ func adminAddCouponCommand() *ffcli.Command {
 
 	flags := flag.NewFlagSet("admin add-coupon", flag.ExitOnError)
 	flags.StringVar(&input.Hash, "hash", input.Hash, "Hash to guess (must be unique, if 'RANDOM', will be randomized)")
+	flags.StringVar(&input.SeasonID, "season", input.SeasonID, "Season ID or Slug to associate the coupon with")
 	flags.Int64Var(&input.Value, "value", input.Value, "Coupon value")
 	flags.Int64Var(&input.MaxValidationCount, "max-validations", input.MaxValidationCount, "Maximum times a coupon can be validated")
-	flags.StringVar(&input.SeasonID, "season", input.SeasonID, "Season ID or Slug to associate the coupon with")
 	return &ffcli.Command{
 		Name:    "add-coupon",
 		Usage:   "pathwar admin add-coupon",
@@ -743,17 +743,31 @@ func adminChallengeAddCommand() *ffcli.Command {
 }
 
 func adminChallengeFlavorAddCommand() *ffcli.Command {
-	input := pwapi.AdminChallengeFlavorAdd_Input{ChallengeFlavor: &pwdb.ChallengeFlavor{}}
+	input := pwapi.AdminChallengeFlavorAdd_Input{}
+	input.ApplyDefaults()
 	flags := flag.NewFlagSet("admin challenge flavor add", flag.ExitOnError)
-	flags.StringVar(&input.ChallengeFlavor.Version, "version", "1.0.0", "Challenge flavor version")
-	flags.StringVar(&input.ChallengeFlavor.ComposeBundle, "compose-bundle", "", "Challenge flavor compose bundle")
-	flags.Int64Var(&input.ChallengeFlavor.ChallengeID, "challenge-id", 0, "Challenge id")
+	flags.StringVar(&input.ChallengeID, "challenge", input.ChallengeID, "Challenge ID or slug")
+	flags.StringVar(&input.ChallengeFlavor.Slug, "slug", input.ChallengeFlavor.Slug, "Slug")
+	flags.StringVar(&input.ChallengeFlavor.Version, "version", input.ChallengeFlavor.Version, "Challenge flavor version")
+	flags.StringVar(&input.ChallengeFlavor.ComposeBundle, "compose-bundle", input.ChallengeFlavor.ComposeBundle, "Challenge flavor compose bundle")
+	flags.StringVar(&input.ChallengeFlavor.Changelog, "changelog", input.ChallengeFlavor.Changelog, "Changelog")
+	flags.StringVar(&input.ChallengeFlavor.SourceURL, "source-url", input.ChallengeFlavor.SourceURL, "Source URL")
+	flags.BoolVar(&input.ChallengeFlavor.IsDraft, "draft", input.ChallengeFlavor.IsDraft, "Is Draft")
+	flags.BoolVar(&input.ChallengeFlavor.IsLatest, "latest", input.ChallengeFlavor.IsLatest, "Is Latest")
+	flags.Int64Var(&input.ChallengeFlavor.PurchasePrice, "purchase-price", input.ChallengeFlavor.PurchasePrice, "Purchase Price")
+	flags.Int64Var(&input.ChallengeFlavor.ValidationReward, "validation-reward", input.ChallengeFlavor.ValidationReward, "Validation reward")
+
 	return &ffcli.Command{
 		Name:      "challenge-flavor-add",
 		Usage:     "pathwar [global flags] admin [admin flags] challenge-flavor-add [flags] [args...]",
 		ShortHelp: "add a challenge flavor",
 		FlagSet:   flags,
 		Exec: func(args []string) error {
+			input.ApplyDefaults()
+			if input.ChallengeID == "" {
+				return flag.ErrHelp
+			}
+
 			if err := globalPreRun(); err != nil {
 				return err
 			}

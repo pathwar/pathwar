@@ -12,28 +12,38 @@ func (svc *service) AdminChallengeFlavorAdd(ctx context.Context, in *AdminChalle
 		return nil, errcode.ErrRestrictedArea
 	}
 
-	if in == nil || in.ChallengeFlavor == nil || in.ChallengeFlavor.ChallengeID == 0 {
+	in.ApplyDefaults()
+	if in == nil || (in.ChallengeID == "" && in.ChallengeFlavor.ChallengeID == 0) {
 		return nil, errcode.ErrMissingInput
 	}
 
-	var challenge pwdb.Challenge
-	err := svc.db.
-		Where(pwdb.Challenge{ID: in.ChallengeFlavor.ChallengeID}).
-		First(&challenge).
-		Error
-	if err != nil {
-		return nil, errcode.ErrChallengeFlavorAdd.Wrap(err)
+	if in.ChallengeID != "" && in.ChallengeFlavor.ChallengeID == 0 {
+		var err error
+		in.ChallengeFlavor.ChallengeID, err = pwdb.GetIDBySlugAndKind(svc.db, in.ChallengeID, "challenge")
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	challengeFlavor := in.ChallengeFlavor
-
-	err = svc.db.Create(challengeFlavor).Error
+	err := svc.db.Create(in.ChallengeFlavor).Error
 	if err != nil {
 		return nil, errcode.ErrChallengeFlavorAdd.Wrap(err)
 	}
 
 	out := AdminChallengeFlavorAdd_Output{
-		ChallengeFlavor: challengeFlavor,
+		ChallengeFlavor: in.ChallengeFlavor,
 	}
 	return &out, nil
+}
+
+func (in *AdminChallengeFlavorAdd_Input) ApplyDefaults() {
+	if in == nil {
+		return
+	}
+	if in.ChallengeFlavor == nil {
+		in.ChallengeFlavor = &pwdb.ChallengeFlavor{}
+	}
+	if in.ChallengeFlavor.Version == "" {
+		in.ChallengeFlavor.Version = "v1.0.0"
+	}
 }

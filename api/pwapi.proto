@@ -187,6 +187,7 @@ message AdminChallengeAdd {
 message AdminChallengeFlavorAdd {
   message Input {
     pathwar.db.ChallengeFlavor challengeFlavor = 1;
+    string challenge_id = 4 [(gogoproto.customname) = "ChallengeID"];
   }
   message Output {
     pathwar.db.ChallengeFlavor challengeFlavor = 1;

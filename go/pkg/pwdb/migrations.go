@@ -177,7 +177,13 @@ services:
 	for _, flavor := range []*ChallengeFlavor{
 		challengeDebug, helloworld, trainingSQLI, trainingHTTP,
 	} {
-		err := tx.Set("gorm:association_autoupdate", true).Create(flavor).Error
+		err := tx.Create(flavor.Challenge).Error
+		if err != nil {
+			return GormToErrcode(err)
+		}
+		flavor.ChallengeID = flavor.Challenge.ID
+
+		err = tx.Set("gorm:association_autoupdate", true).Create(flavor).Error
 		if err != nil {
 			return GormToErrcode(err)
 		}

@@ -75,6 +75,8 @@ definitions:
     type: object
   apiAdminChallengeFlavorAddInput:
     properties:
+      challenge_id:
+        type: string
       challengeFlavor:
         $ref: '#/definitions/dbChallengeFlavor'
     type: object

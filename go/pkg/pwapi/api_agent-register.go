@@ -80,7 +80,7 @@ func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) 
 	for _, challengeFlavor := range challengeFlavorsToInstanciate {
 		addInput := AdminChallengeInstanceAdd_Input{
 			&pwdb.ChallengeInstance{
-				Status:         pwdb.ChallengeInstance_Available,
+				Status:         pwdb.ChallengeInstance_IsNew,
 				AgentID:        agent.ID,
 				FlavorID:       challengeFlavor.ID,
 				InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
