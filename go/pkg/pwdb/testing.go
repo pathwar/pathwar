@@ -123,18 +123,9 @@ func TestingCreateEntities(t *testing.T, db *gorm.DB) {
 				return GormToErrcode(err)
 			}
 			flavor.ChallengeID = flavor.Challenge.ID
-			err = tx.Set("gorm:association_autoupdate", true).Create(flavor).Error
+			err = tx.Create(flavor).Error
 			if err != nil {
 				return GormToErrcode(err)
-			}
-
-			// FIXME: should not be necessary, should be done automatically thanks to association_autoupdate
-			for _, seasonChallenge := range flavor.SeasonChallenges {
-				seasonChallenge.FlavorID = flavor.ID
-				err := tx.Set("gorm:association_autoupdate", true).Create(seasonChallenge).Error
-				if err != nil {
-					return GormToErrcode(err)
-				}
 			}
 		}
 

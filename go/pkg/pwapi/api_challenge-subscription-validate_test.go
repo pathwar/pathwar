@@ -34,7 +34,7 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 	})
 	require.NoError(t, err)
 	subscription2, err := svc.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{
-		SeasonChallengeID: challenges.Items[9].ID,
+		SeasonChallengeID: challenges.Items[4].ID,
 		TeamID:            activeTeam.ID,
 	})
 	require.NoError(t, err)

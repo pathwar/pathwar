@@ -69,6 +69,6 @@ func (in *AdminChallengeFlavorAdd_Input) ApplyDefaults() {
 		in.ChallengeFlavor = &pwdb.ChallengeFlavor{}
 	}
 	if in.ChallengeFlavor.Version == "" {
-		in.ChallengeFlavor.Version = "v1.0.0"
+		in.ChallengeFlavor.Version = "default"
 	}
 }

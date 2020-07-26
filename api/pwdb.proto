@@ -68,9 +68,9 @@ message SeasonChallenge {
   string slug = 100;
 
   ChallengeFlavor flavor = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:FlavorID\""];
-  int64 flavor_id = 201 [(gogoproto.customname) = "FlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 flavor_id = 201 [(gogoproto.customname) = "FlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index;unique_index:idx_seasonchallenge_flavor_season\""];
   Season season = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:SeasonID\""];
-  int64 season_id = 203 [(gogoproto.customname) = "SeasonID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 season_id = 203 [(gogoproto.customname) = "SeasonID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index;unique_index:idx_seasonchallenge_flavor_season\""];
   repeated ChallengeSubscription subscriptions = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 

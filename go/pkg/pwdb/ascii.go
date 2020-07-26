@@ -44,6 +44,13 @@ func (entity *Coupon) ASCIIID() string {
 	return fmt.Sprintf("%d", entity.ID)
 }
 
+func (entity *Agent) ASCIIID() string {
+	if entity == nil {
+		return "-"
+	}
+	return entity.Slug
+}
+
 func (entity *SeasonChallenge) ASCIIID() string {
 	if entity == nil {
 		return "-"

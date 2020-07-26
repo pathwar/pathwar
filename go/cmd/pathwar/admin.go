@@ -152,7 +152,7 @@ func adminChallengeCommand() *ffcli.Command {
 			{
 				fmt.Println("INSTANCES")
 				table := tablewriter.NewWriter(os.Stdout)
-				table.SetHeader([]string{"INSTANCE", "FLAVOR", "STATUS", "CREATED", "UPDATED", "CONFIG", "SEASON CHALLENGES"})
+				table.SetHeader([]string{"INSTANCE", "FLAVOR", "AGENT", "STATUS", "CREATED", "UPDATED", "CONFIG", "SEASON CHALLENGES"})
 				table.SetAlignment(tablewriter.ALIGN_CENTER)
 				table.SetBorder(false)
 
@@ -162,13 +162,14 @@ func adminChallengeCommand() *ffcli.Command {
 							//fmt.Println(godev.PrettyJSONPB(instance))
 							id := fmt.Sprintf("%d", instance.ID)
 							status := asciiStatus(instance.Status.String())
+							agentSlug := instance.Agent.ASCIIID()
 							flavorSlug := fmt.Sprintf("%s@%s", challenge.Slug, flavor.Slug)
 							createdAgo := humanize.Time(*instance.CreatedAt)
 							updatedAgo := humanize.Time(*instance.UpdatedAt)
 							configStruct, _ := instance.ParseInstanceConfig()
 							config := godev.JSONPB(configStruct)
 							seasonChallenges := fmt.Sprintf("%d", len(flavor.SeasonChallenges))
-							table.Append([]string{id, flavorSlug, status, createdAgo, updatedAgo, config, seasonChallenges})
+							table.Append([]string{id, flavorSlug, agentSlug, status, createdAgo, updatedAgo, config, seasonChallenges})
 						}
 					}
 				}
