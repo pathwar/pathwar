@@ -130,10 +130,10 @@ func (c HTTPClient) AdminAddChallengeFlavor(ctx context.Context, input *AdminCha
 	return result, err
 }
 
-func (c HTTPClient) AdminAddChallengeInstance(ctx context.Context, input *AdminChallengeInstanceAdd_Input) (AdminChallengeInstanceAdd_Output, error) {
-	var _ *AdminChallengeInstanceAdd_Input = input
-	var result AdminChallengeInstanceAdd_Output
-	err := c.doPost(ctx, "/admin/challenge-instance-add", input, &result)
+func (c HTTPClient) AdminAddSeasonChallenge(ctx context.Context, input *AdminSeasonChallengeAdd_Input) (AdminSeasonChallengeAdd_Output, error) {
+	var _ *AdminSeasonChallengeAdd_Input = input
+	var result AdminSeasonChallengeAdd_Output
+	err := c.doPost(ctx, "/admin/season-challenge-add", input, &result)
 	return result, err
 }
 

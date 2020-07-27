@@ -20,9 +20,9 @@ message Challenge {
   string author = 102;
   string locale = 103;
   bool is_draft = 104;
-  string preview_url = 105;
+  string preview_url = 105 [(gogoproto.customname) = "PreviewURL"];
   string homepage = 106;
-  string slug = 107;
+  string slug = 107 [(gogoproto.moretags) = "gorm:\"unique_index\""];
   // AuthorProfile
   // repeated string tags = ;
 
@@ -43,7 +43,7 @@ message ChallengeFlavor {
   Driver driver = 106;
   int64 purchase_price = 107;
   int64 validation_reward = 108;
-  string slug = 109;
+  string slug = 109 [(gogoproto.moretags) = "gorm:\"unique_index\""];
 
   Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
   int64 challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
@@ -68,9 +68,9 @@ message SeasonChallenge {
   string slug = 100;
 
   ChallengeFlavor flavor = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:FlavorID\""];
-  int64 flavor_id = 201 [(gogoproto.customname) = "FlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 flavor_id = 201 [(gogoproto.customname) = "FlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index;unique_index:idx_seasonchallenge_flavor_season\""];
   Season season = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:SeasonID\""];
-  int64 season_id = 203 [(gogoproto.customname) = "SeasonID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  int64 season_id = 203 [(gogoproto.customname) = "SeasonID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index;unique_index:idx_seasonchallenge_flavor_season\""];
   repeated ChallengeSubscription subscriptions = 204 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
@@ -105,7 +105,7 @@ message ChallengeInstance {
     Unknown = 0;
     IsNew = 1;           // instance freshly created and never started before
     AcceptedByAgent = 2; // an agent accepted the job
-    Available = 3;         // agent set the status at started
+    Available = 3;       // agent set the status at started
     NeedRedump = 4;      // instance needs to be restarted (broken)
     Disabled = 5;        // instance is disabled
     // Booting
@@ -390,7 +390,7 @@ message Notification {
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 
   google.protobuf.Timestamp read_at = 100 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  string click_url = 101;
+  string click_url = 101 [(gogoproto.customname) = "ClickURL"];
   string msg = 102;
   string args = 103; // marshaled args
   // FIXME: get inspiration from push notifications

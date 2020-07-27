@@ -163,7 +163,6 @@ dbConnectLoop:
 	db, err := gorm.Open("mysql", DBURN)
 	if err != nil {
 		dbConnectTries++
-		fmt.Println(DBMaxOpenTries, dbConnectTries)
 		if DBMaxOpenTries == 0 || dbConnectTries < DBMaxOpenTries {
 			logger.Warn("db open", zap.Int("tries", dbConnectTries), zap.Error(err))
 			time.Sleep(5 * time.Second)

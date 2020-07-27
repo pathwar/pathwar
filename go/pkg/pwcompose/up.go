@@ -96,7 +96,7 @@ func Up(ctx context.Context, cli *client.Client, opts UpOpts) (map[string]Servic
 
 	// down containers if force recreate
 	if opts.ForceRecreate {
-		err = Clean(ctx, cli, CleanOpts{Logger: opts.Logger})
+		err = Clean(ctx, cli, CleanOpts{Logger: opts.Logger, ContainerIDs: []string{challengeID}})
 		if err != nil {
 			return nil, errcode.ErrComposeForceRecreateDown.Wrap(err)
 		}

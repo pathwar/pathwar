@@ -7,6 +7,7 @@ import (
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
+	"go.uber.org/multierr"
 	"go.uber.org/zap"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
@@ -58,20 +59,22 @@ func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstanc
 		}
 	}
 
+	var errs error
 	for _, instance := range apiInstances.GetInstances() {
 		instanceID := fmt.Sprintf("%d", instance.ID)
 		l := logger.With(
 			zap.String("id", instanceID),
 			zap.String("flavor", instance.GetFlavor().NameAndVersion()),
 		)
+		isRunning := runningDockerInstances[instanceID]
+
 		if instance.Status == pwdb.ChallengeInstance_Disabled {
 			l.Debug("instance disabled")
 			ignored++
 			continue
 		}
 
-		isRunning := runningDockerInstances[instanceID]
-		if isRunning && instance.Status != pwdb.ChallengeInstance_NeedRedump {
+		if isRunning && instance.Status == pwdb.ChallengeInstance_Available {
 			l.Debug("instance running")
 			ignored++
 			continue
@@ -80,7 +83,8 @@ func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstanc
 		// parse pwinit config
 		configData, err := instance.ParseInstanceConfig()
 		if err != nil {
-			return err
+			errs = multierr.Append(errs, err)
+			continue
 		}
 
 		bundle := instance.GetFlavor().GetComposeBundle()
@@ -93,10 +97,12 @@ func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstanc
 			ForceRecreate:   true,
 			ProxyNetworkID:  proxyNetworkID,
 			PwinitConfig:    configData,
+			Logger:          opts.Logger,
 		}
 		containers, err := pwcompose.Up(ctx, dockerClient, upOpts)
 		if err != nil {
-			return errcode.ErrUpPathwarInstance.Wrap(err)
+			errs = multierr.Append(errs, errcode.ErrUpPathwarInstance.Wrap(err))
+			continue
 		}
 
 		l.Info(
@@ -106,7 +112,7 @@ func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstanc
 		)
 	}
 
-	logger.Debug("docker stats", zap.Int("started", started), zap.Int("ignored", ignored))
+	logger.Debug("docker stats", zap.Int("started", started), zap.Int("ignored", ignored), zap.Error(errs))
 
-	return nil
+	return errs
 }

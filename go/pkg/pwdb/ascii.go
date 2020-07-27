@@ -1,6 +1,9 @@
 package pwdb
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func (entity *Team) ASCIIID() string {
 	if entity == nil {
@@ -44,6 +47,13 @@ func (entity *Coupon) ASCIIID() string {
 	return fmt.Sprintf("%d", entity.ID)
 }
 
+func (entity *Agent) ASCIIID() string {
+	if entity == nil {
+		return "-"
+	}
+	return entity.Slug
+}
+
 func (entity *SeasonChallenge) ASCIIID() string {
 	if entity == nil {
 		return "-"
@@ -63,4 +73,11 @@ func (entity *ChallengeSubscription) ASCIIID() string {
 		return "-"
 	}
 	return entity.Slug
+}
+
+func (entity *ChallengeFlavor) ASCIIID() string {
+	if entity == nil {
+		return "-"
+	}
+	return strings.TrimSuffix(entity.Slug, "@default")
 }

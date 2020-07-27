@@ -127,9 +127,11 @@ func (e wrappedError) Code() int32 {
 func (e wrappedError) Format(f fmt.State, c rune) {
 	xerrors.FormatError(e, f, c)
 	if f.Flag('+') {
-		_, _ = io.WriteString(f, "\n\n")
-		sub := genericCause(e)
-		if sub != nil {
+		_, _ = io.WriteString(f, "\n")
+		if sub := genericCause(e); sub != nil {
+			if typed, ok := sub.(wrappedError); ok {
+				sub = lightWrappedError{wrappedError: typed}
+			}
 			formatter, ok := sub.(fmt.Formatter)
 			if ok {
 				formatter.Format(f, c)
@@ -154,4 +156,37 @@ func (e wrappedError) Cause() error {
 // Unwrap returns the inner error (go1.13)
 func (e wrappedError) Unwrap() error {
 	return e.inner
+}
+
+/// light wrapped errors
+
+type lightWrappedError struct {
+	wrappedError
+	deepness int
+}
+
+func (e lightWrappedError) Error() string {
+	return ""
+}
+
+func (e lightWrappedError) Format(f fmt.State, c rune) {
+	xerrors.FormatError(e, f, c)
+	if f.Flag('+') {
+		_, _ = io.WriteString(f, "\n")
+		if sub := genericCause(e); sub != nil {
+			if typed, ok := sub.(wrappedError); ok {
+				sub = lightWrappedError{wrappedError: typed, deepness: e.deepness + 1}
+			}
+			formatter, ok := sub.(fmt.Formatter)
+			if ok {
+				formatter.Format(f, c)
+			}
+		}
+	}
+}
+
+func (e lightWrappedError) FormatError(p xerrors.Printer) error {
+	p.Printf("#%d", e.deepness+1)
+	e.frame.Format(p)
+	return nil
 }

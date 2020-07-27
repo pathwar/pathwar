@@ -263,6 +263,16 @@ func GetIDBySlugAndKind(db *gorm.DB, slug string, kind string) (int64, error) {
 			Model(Season{}).
 			Where("id = ? OR slug = ?", slug, slug).
 			Pluck("id", &ids).Error
+	case "challenge":
+		err = db.
+			Model(Challenge{}).
+			Where("id = ? OR slug = ?", slug, slug).
+			Pluck("id", &ids).Error
+	case "challenge-flavor":
+		err = db.
+			Model(ChallengeFlavor{}).
+			Where("id = ? OR slug = ? OR slug = ?", slug, slug, slug+"@default").
+			Pluck("id", &ids).Error
 	default:
 		return 0, errcode.ErrUnknownDBKind
 	}

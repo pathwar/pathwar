@@ -73,9 +73,7 @@ service Service {
 
   rpc AgentRegister(AgentRegister.Input) returns (AgentRegister.Output) { option (google.api.http) = {post: "/agent/register"; body: "*"}; }; // agent only
   rpc AgentListInstances(AgentListInstances.Input) returns (AgentListInstances.Output) { option (google.api.http) = {get: "/agent/list-instances"}; }; // agent only
-  rpc AgentUpdateState(AgentUpdateState.Input) returns (AgentUpdateState.Output) { option (google.api.http) = {post: "/agent/update-state"}; }; // agent only
-  rpc AgentList(AgentList.Input) returns (AgentList.Output); // admin only
-  // rpc AgentEventSubscribe(AgentEventSubscribe.Input) returns (stream AgentEventSubscribe.Output);
+  rpc AgentUpdateState(AgentUpdateState.Input) returns (AgentUpdateState.Output) { option (google.api.http) = {post: "/agent/update-state"; body: "*"}; }; // agent only
 
   //
   // Admin
@@ -93,7 +91,7 @@ service Service {
   rpc AdminRedump(AdminRedump.Input) returns (AdminRedump.Output) { option (google.api.http) = {post: "/admin/redump"; body: "*"}; }; // admin only
   rpc AdminChallengeAdd(AdminChallengeAdd.Input) returns (AdminChallengeAdd.Output) { option (google.api.http) = {post: "/admin/challenge-add"; body: "*"}; }; // admin only
   rpc AdminChallengeFlavorAdd(AdminChallengeFlavorAdd.Input) returns (AdminChallengeFlavorAdd.Output) { option (google.api.http) = {post: "/admin/challenge-flavor-add"; body: "*"}; }; // admin only
-  rpc AdminChallengeInstanceAdd(AdminChallengeInstanceAdd.Input) returns (AdminChallengeInstanceAdd.Output) { option (google.api.http) = {post: "/admin/challenge-instance-add"; body: "*"}; }; // admin only
+  rpc AdminSeasonChallengeAdd(AdminSeasonChallengeAdd.Input) returns (AdminSeasonChallengeAdd.Output) { option (google.api.http) = {post: "/admin/season-challenge-add"; body: "*"}; }; // admin only
 }
 
 //
@@ -186,19 +184,22 @@ message AdminChallengeAdd {
 
 message AdminChallengeFlavorAdd {
   message Input {
-    pathwar.db.ChallengeFlavor challengeFlavor = 1;
+    pathwar.db.ChallengeFlavor challenge_flavor = 1;
+    string challenge_id = 2 [(gogoproto.customname) = "ChallengeID"];
   }
   message Output {
-    pathwar.db.ChallengeFlavor challengeFlavor = 1;
+    pathwar.db.ChallengeFlavor challenge_flavor = 1;
   }
 }
 
-message AdminChallengeInstanceAdd {
+message AdminSeasonChallengeAdd {
   message Input {
-    pathwar.db.ChallengeInstance challengeInstance = 1;
+    pathwar.db.SeasonChallenge season_challenge = 1;
+    string flavor_id = 2 [(gogoproto.customname) = "FlavorID"];
+    string season_id = 3 [(gogoproto.customname) = "SeasonID"];
   }
   message Output {
-    pathwar.db.ChallengeInstance challengeInstance = 1;
+    pathwar.db.SeasonChallenge season_challenge = 1;
   }
 }
 
@@ -240,7 +241,7 @@ message AgentListInstances {
 
 message AgentUpdateState {
   message Input {
-    repeated pathwar.db.ChallengeInstance instances = 1 [(gogoproto.moretags) = "url:\"instances\""];
+    repeated pathwar.db.ChallengeInstance instances = 1;
     // FIXME: metrics
     // FIXME: global state
   }
@@ -285,8 +286,8 @@ message ChallengeGet {
 
 message SeasonChallengeBuy {
   message Input {
-    int64 season_challenge_id = 1 [(gogoproto.customname) = "SeasonChallengeID"];
-    int64 team_id = 2 [(gogoproto.customname) = "TeamID"];
+    string flavor_id = 1 [(gogoproto.customname) = "FlavorID"];
+    string season_id = 2 [(gogoproto.customname) = "SeasonID"];
   }
   message Output {
     pathwar.db.ChallengeSubscription challenge_subscription = 1;

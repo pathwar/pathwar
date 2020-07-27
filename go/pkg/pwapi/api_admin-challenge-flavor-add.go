@@ -3,6 +3,7 @@ package pwapi
 import (
 	"context"
 
+	"github.com/jinzhu/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -12,28 +13,62 @@ func (svc *service) AdminChallengeFlavorAdd(ctx context.Context, in *AdminChalle
 		return nil, errcode.ErrRestrictedArea
 	}
 
-	if in == nil || in.ChallengeFlavor == nil || in.ChallengeFlavor.ChallengeID == 0 {
+	in.ApplyDefaults()
+	if in == nil || (in.ChallengeID == "" && in.ChallengeFlavor.ChallengeID == 0) {
 		return nil, errcode.ErrMissingInput
 	}
 
-	var challenge pwdb.Challenge
-	err := svc.db.
-		Where(pwdb.Challenge{ID: in.ChallengeFlavor.ChallengeID}).
-		First(&challenge).
-		Error
-	if err != nil {
-		return nil, errcode.ErrChallengeFlavorAdd.Wrap(err)
+	if in.ChallengeID != "" && in.ChallengeFlavor.ChallengeID == 0 {
+		var err error
+		in.ChallengeFlavor.ChallengeID, err = pwdb.GetIDBySlugAndKind(svc.db, in.ChallengeID, "challenge")
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	challengeFlavor := in.ChallengeFlavor
+	err := svc.db.Transaction(func(tx *gorm.DB) error {
+		err := tx.Create(in.ChallengeFlavor).Error
+		if err != nil {
+			return errcode.ErrChallengeFlavorAdd.Wrap(err)
+		}
 
-	err = svc.db.Create(challengeFlavor).Error
+		var agentsToInstanciate []*pwdb.Agent
+		if err = tx.Where(pwdb.Agent{DefaultAgent: true}).Find(&agentsToInstanciate).Error; err != nil {
+			return err
+		}
+
+		for _, agent := range agentsToInstanciate {
+			instance := pwdb.ChallengeInstance{
+				Status:         pwdb.ChallengeInstance_IsNew,
+				AgentID:        agent.ID,
+				FlavorID:       in.ChallengeFlavor.ID,
+				InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
+			}
+			err = tx.Create(&instance).Error
+			if err != nil {
+				return pwdb.GormToErrcode(err)
+			}
+		}
+		return nil
+	})
 	if err != nil {
-		return nil, errcode.ErrChallengeFlavorAdd.Wrap(err)
+		return nil, err
 	}
 
 	out := AdminChallengeFlavorAdd_Output{
-		ChallengeFlavor: challengeFlavor,
+		ChallengeFlavor: in.ChallengeFlavor,
 	}
 	return &out, nil
+}
+
+func (in *AdminChallengeFlavorAdd_Input) ApplyDefaults() {
+	if in == nil {
+		return
+	}
+	if in.ChallengeFlavor == nil {
+		in.ChallengeFlavor = &pwdb.ChallengeFlavor{}
+	}
+	if in.ChallengeFlavor.Version == "" {
+		in.ChallengeFlavor.Version = "default"
+	}
 }

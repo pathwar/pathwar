@@ -119,17 +119,17 @@ describe("API Calls", () => {
     expect(response.status).toEqual(200);
     expect(response.data).toBeDefined();
   });
-  it("should work POST season challenge BUY - /season-challenge/buy", async () => {
-    const response = await unsafeApi.post(`/season-challenge/buy`, {
-      season_challenge_id: season_challenge_id,
-      team_id: active_team_id,
-    });
-    const { challenge_subscription } = response.data;
-    challenge_subscription_id = challenge_subscription.id;
-    expect(response.status).toEqual(200);
-    expect(response.data).toBeDefined();
-  });
   // temporarily disabled
+  //it("should work POST season challenge BUY - /season-challenge/buy", async () => {
+  //  const response = await unsafeApi.post(`/season-challenge/buy`, {
+  //    season_challenge_id: season_challenge_id,
+  //    team_id: active_team_id,
+  //  });
+  //  const { challenge_subscription } = response.data;
+  //  challenge_subscription_id = challenge_subscription.id;
+  //  expect(response.status).toEqual(200);
+  //  expect(response.data).toBeDefined();
+  //});
   //it('should work POST season challenge VALIDATE - /challenge-subscription/validate', async() => {
   //  const response = await unsafeApi.post(`/challenge-subscription/validate`, {"challenge_subscription_id": challenge_subscription_id,  "passphrase": "lorem ipsum", "comment": "dolor sit amet"});
   //  const validationData = response.data;

@@ -9,7 +9,8 @@ import (
 )
 
 func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeBuy_Input) (*SeasonChallengeBuy_Output, error) {
-	if in == nil || in.SeasonChallengeID == 0 || in.TeamID == 0 {
+	in.ApplyDefaults()
+	if in == nil || in.FlavorID == "" || in.SeasonID == "" {
 		return nil, errcode.ErrMissingInput
 	}
 
@@ -18,26 +19,40 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 		return nil, errcode.ErrUnauthenticated.Wrap(err)
 	}
 
-	// check if user belongs to team
-	// FIXME: or is admin
-	var team pwdb.Team
-	err = svc.db.
-		Joins("JOIN team_member ON team_member.team_id = team.id AND team_member.user_id = ?", userID).
-		Preload("Members").
-		First(&team, in.TeamID).
-		Error
+	flavorID, err := pwdb.GetIDBySlugAndKind(svc.db, in.FlavorID, "challenge-flavor")
 	if err != nil {
-		return nil, errcode.ErrInvalidTeam.Wrap(err)
+		return nil, errcode.ErrInvalidFlavor.Wrap(err)
+	}
+	seasonID, err := pwdb.GetIDBySlugAndKind(svc.db, in.SeasonID, "season")
+	if err != nil {
+		return nil, errcode.ErrInvalidSeason.Wrap(err)
+	}
+
+	// fetch team for this season
+	var team pwdb.Team
+	{
+		err = svc.db.
+			Joins("JOIN team_member ON team_member.team_id = team.id AND team_member.user_id = ?", userID).
+			Preload("Members").
+			Where(pwdb.Team{SeasonID: seasonID}).
+			First(&team).
+			Error
+		if err != nil {
+			return nil, errcode.ErrInvalidTeam.Wrap(err)
+		}
 	}
 
 	// check if season is valid
 	var seasonChallenge pwdb.SeasonChallenge
-	err = svc.db.
-		Preload("Flavor").
-		First(&seasonChallenge, in.SeasonChallengeID).
-		Error
-	if err != nil {
-		return nil, errcode.ErrInvalidSeason.Wrap(err)
+	{
+		err = svc.db.
+			Preload("Flavor").
+			Where(pwdb.SeasonChallenge{FlavorID: flavorID, SeasonID: seasonID}).
+			First(&seasonChallenge).
+			Error
+		if err != nil {
+			return nil, errcode.ErrInvalidSeason.Wrap(err)
+		}
 	}
 
 	// check if challenge and team belongs to the same season
@@ -54,8 +69,8 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 	err = svc.db.
 		Model(pwdb.ChallengeSubscription{}).
 		Where(pwdb.ChallengeSubscription{
-			SeasonChallengeID: in.SeasonChallengeID,
-			TeamID:            in.TeamID,
+			SeasonChallengeID: seasonChallenge.ID,
+			TeamID:            team.ID,
 		}).
 		Count(&c).
 		Error
@@ -70,8 +85,8 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 
 	// create subscription
 	subscription := pwdb.ChallengeSubscription{
-		SeasonChallengeID: in.SeasonChallengeID,
-		TeamID:            in.TeamID,
+		SeasonChallengeID: seasonChallenge.ID,
+		TeamID:            team.ID,
 		BuyerID:           userID,
 		Status:            pwdb.ChallengeSubscription_Active,
 	}
@@ -83,7 +98,7 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 		// update team cash
 		if cash := seasonChallenge.Flavor.PurchasePrice; cash != 0 {
 			err = tx.Model(&pwdb.Team{}).
-				Where("id = ?", in.TeamID).
+				Where("id = ?", team.ID).
 				UpdateColumn("cash", gorm.Expr("cash - ?", cash)).
 				Error
 			if err != nil {
@@ -94,8 +109,8 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 		activity := pwdb.Activity{
 			Kind:                    pwdb.Activity_SeasonChallengeBuy,
 			AuthorID:                userID,
-			TeamID:                  in.TeamID,
-			SeasonChallengeID:       in.SeasonChallengeID,
+			TeamID:                  team.ID,
+			SeasonChallengeID:       seasonChallenge.ID,
 			ChallengeSubscriptionID: subscription.ID,
 			SeasonID:                seasonChallenge.SeasonID,
 		}
@@ -121,4 +136,13 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 
 	ret := SeasonChallengeBuy_Output{ChallengeSubscription: &subscription}
 	return &ret, nil
+}
+
+func (in *SeasonChallengeBuy_Input) ApplyDefaults() {
+	if in == nil {
+		return
+	}
+	if in.SeasonID == "" {
+		in.SeasonID = "solo-mode"
+	}
 }

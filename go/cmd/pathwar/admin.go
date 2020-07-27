@@ -29,7 +29,7 @@ func adminCommand() *ffcli.Command {
 		Usage: "pathwar [global flags] admin [admin flags] <subcommand> [flags] [args...]",
 		Subcommands: []*ffcli.Command{
 			// read-only
-			adminChallengeCommand(),
+			adminChallengesCommand(),
 			adminUsersCommand(),
 			adminAgentsCommand(),
 			adminActivitiesCommand(),
@@ -43,7 +43,7 @@ func adminCommand() *ffcli.Command {
 			adminRedumpCommand(),
 			adminChallengeAddCommand(),
 			adminChallengeFlavorAddCommand(),
-			adminChallengeInstanceAddCommand(),
+			adminSeasonChallengeAddCommand(),
 		},
 		ShortHelp: "admin commands",
 		FlagSet:   adminFlags,
@@ -52,7 +52,7 @@ func adminCommand() *ffcli.Command {
 	}
 }
 
-func adminChallengeCommand() *ffcli.Command {
+func adminChallengesCommand() *ffcli.Command {
 	flags := flag.NewFlagSet("admin challenges", flag.ExitOnError)
 	return &ffcli.Command{
 		Name:    "challenges",
@@ -83,9 +83,9 @@ func adminChallengeCommand() *ffcli.Command {
 			{
 				fmt.Println("TREE")
 				for _, challenge := range ret.Challenges {
-					fmt.Printf("- %s (%d)\n", challenge.Slug, challenge.ID)
+					fmt.Printf("- %s\n", challenge.Slug)
 					for _, flavor := range challenge.Flavors {
-						fmt.Printf("  - %s (%d)\n", flavor.Slug, flavor.ID)
+						fmt.Printf("  - %s\n", flavor.Slug)
 						for _, instance := range flavor.Instances {
 							fmt.Printf("    - %d\n", instance.ID)
 						}
@@ -120,14 +120,13 @@ func adminChallengeCommand() *ffcli.Command {
 			{
 				fmt.Println("FLAVORS")
 				table := tablewriter.NewWriter(os.Stdout)
-				table.SetHeader([]string{"FLAVOR", "CHALLENGE", "CREATED", "UPDATED", "INSTANCES", "SEASON CHALLENGES", "ID"})
+				table.SetHeader([]string{"FLAVOR", "CREATED", "UPDATED", "INSTANCES", "SEASON CHALLENGES", "PRICE/REWARD", "ID"})
 				table.SetAlignment(tablewriter.ALIGN_CENTER)
 				table.SetBorder(false)
 
 				for _, challenge := range ret.Challenges {
 					for _, flavor := range challenge.Flavors {
 						slug := flavor.Slug
-						challengeSlug := challenge.Slug
 						createdAgo := humanize.Time(*flavor.CreatedAt)
 						updatedAgo := humanize.Time(*flavor.UpdatedAt)
 						instances := asciiInstancesStats(flavor.Instances)
@@ -137,7 +136,12 @@ func adminChallengeCommand() *ffcli.Command {
 						}
 						seasonChallenges := strings.Join(seasonChallengeParts, ", ")
 						id := fmt.Sprintf("%d", flavor.ID)
-						table.Append([]string{slug, challengeSlug, createdAgo, updatedAgo, instances, seasonChallenges, id})
+						price := "free"
+						if flavor.PurchasePrice > 0 {
+							price = fmt.Sprintf("$%d", flavor.PurchasePrice)
+						}
+						priceReward := fmt.Sprintf("%s / $%d", price, flavor.ValidationReward)
+						table.Append([]string{slug, createdAgo, updatedAgo, instances, seasonChallenges, priceReward, id})
 					}
 				}
 				table.Render()
@@ -148,7 +152,7 @@ func adminChallengeCommand() *ffcli.Command {
 			{
 				fmt.Println("INSTANCES")
 				table := tablewriter.NewWriter(os.Stdout)
-				table.SetHeader([]string{"INSTANCE", "FLAVOR", "STATUS", "CREATED", "UPDATED", "CONFIG", "SEASON CHALLENGES", "PRICE/REWARD"})
+				table.SetHeader([]string{"INSTANCE", "FLAVOR", "AGENT", "STATUS", "CREATED", "UPDATED", "CONFIG", "SEASON CHALLENGES"})
 				table.SetAlignment(tablewriter.ALIGN_CENTER)
 				table.SetBorder(false)
 
@@ -158,18 +162,14 @@ func adminChallengeCommand() *ffcli.Command {
 							//fmt.Println(godev.PrettyJSONPB(instance))
 							id := fmt.Sprintf("%d", instance.ID)
 							status := asciiStatus(instance.Status.String())
-							flavorSlug := fmt.Sprintf("%s@%s", challenge.Slug, flavor.Slug)
+							agentSlug := instance.Agent.ASCIIID()
+							flavorSlug := flavor.Slug
 							createdAgo := humanize.Time(*instance.CreatedAt)
 							updatedAgo := humanize.Time(*instance.UpdatedAt)
 							configStruct, _ := instance.ParseInstanceConfig()
 							config := godev.JSONPB(configStruct)
 							seasonChallenges := fmt.Sprintf("%d", len(flavor.SeasonChallenges))
-							price := "free"
-							if flavor.PurchasePrice > 0 {
-								price = fmt.Sprintf("$%d", flavor.PurchasePrice)
-							}
-							priceReward := fmt.Sprintf("%s / $%d", price, flavor.ValidationReward)
-							table.Append([]string{id, flavorSlug, status, createdAgo, updatedAgo, config, seasonChallenges, priceReward})
+							table.Append([]string{id, flavorSlug, agentSlug, status, createdAgo, updatedAgo, config, seasonChallenges})
 						}
 					}
 				}
@@ -617,9 +617,9 @@ func adminAddCouponCommand() *ffcli.Command {
 
 	flags := flag.NewFlagSet("admin add-coupon", flag.ExitOnError)
 	flags.StringVar(&input.Hash, "hash", input.Hash, "Hash to guess (must be unique, if 'RANDOM', will be randomized)")
+	flags.StringVar(&input.SeasonID, "season", input.SeasonID, "Season ID or Slug to associate the coupon with")
 	flags.Int64Var(&input.Value, "value", input.Value, "Coupon value")
 	flags.Int64Var(&input.MaxValidationCount, "max-validations", input.MaxValidationCount, "Maximum times a coupon can be validated")
-	flags.StringVar(&input.SeasonID, "season", input.SeasonID, "Season ID or Slug to associate the coupon with")
 	return &ffcli.Command{
 		Name:    "add-coupon",
 		Usage:   "pathwar admin add-coupon",
@@ -691,14 +691,17 @@ func adminRedumpCommand() *ffcli.Command {
 }
 
 func adminChallengeAddCommand() *ffcli.Command {
+	input := pwapi.AdminChallengeAdd_Input{Challenge: &pwdb.Challenge{}}
+	input.ApplyDefaults()
 	flags := flag.NewFlagSet("admin challenge add", flag.ExitOnError)
-	flags.StringVar(&adminChallengeAddInput.Challenge.Name, "name", "", "Challenge name")
-	flags.StringVar(&adminChallengeAddInput.Challenge.Description, "description", "", "Challenge description")
-	flags.StringVar(&adminChallengeAddInput.Challenge.Author, "author", "", "Challenge author")
-	flags.StringVar(&adminChallengeAddInput.Challenge.Locale, "locale", "", "Challenge Locale")
-	flags.BoolVar(&adminChallengeAddInput.Challenge.IsDraft, "is-draft", true, "Is challenge production ready ?")
-	flags.StringVar(&adminChallengeAddInput.Challenge.PreviewUrl, "preview-url", "", "Challenge preview URL")
-	flags.StringVar(&adminChallengeAddInput.Challenge.Homepage, "homepage", "", "Challenge homepage URL")
+	flags.StringVar(&input.Challenge.Slug, "slug", input.Challenge.Slug, "Unique slug")
+	flags.StringVar(&input.Challenge.Name, "name", input.Challenge.Name, "Challenge name")
+	flags.StringVar(&input.Challenge.Description, "description", input.Challenge.Description, "Challenge description")
+	flags.StringVar(&input.Challenge.Author, "author", input.Challenge.Author, "Challenge author")
+	flags.StringVar(&input.Challenge.Locale, "locale", input.Challenge.Locale, "Challenge Locale")
+	flags.BoolVar(&input.Challenge.IsDraft, "is-draft", input.Challenge.IsDraft, "Is challenge production ready ?")
+	flags.StringVar(&input.Challenge.PreviewURL, "preview-url", input.Challenge.PreviewURL, "Challenge preview URL")
+	flags.StringVar(&input.Challenge.Homepage, "homepage", input.Challenge.Homepage, "Challenge homepage URL")
 
 	return &ffcli.Command{
 		Name:      "challenge-add",
@@ -706,6 +709,10 @@ func adminChallengeAddCommand() *ffcli.Command {
 		ShortHelp: "add a challenge",
 		FlagSet:   flags,
 		Exec: func(args []string) error {
+			if input.Challenge.Name == "" {
+				return flag.ErrHelp
+			}
+
 			if err := globalPreRun(); err != nil {
 				return err
 			}
@@ -716,7 +723,7 @@ func adminChallengeAddCommand() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
-			ret, err := apiClient.AdminAddChallenge(ctx, &adminChallengeAddInput)
+			ret, err := apiClient.AdminAddChallenge(ctx, &input)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
 			}
@@ -736,16 +743,31 @@ func adminChallengeAddCommand() *ffcli.Command {
 }
 
 func adminChallengeFlavorAddCommand() *ffcli.Command {
+	input := pwapi.AdminChallengeFlavorAdd_Input{}
+	input.ApplyDefaults()
 	flags := flag.NewFlagSet("admin challenge flavor add", flag.ExitOnError)
-	flags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.Version, "version", "1.0.0", "Challenge flavor version")
-	flags.StringVar(&adminChallengeFlavorAddInput.ChallengeFlavor.ComposeBundle, "compose-bundle", "", "Challenge flavor compose bundle")
-	flags.Int64Var(&adminChallengeFlavorAddInput.ChallengeFlavor.ChallengeID, "challenge-id", 0, "Challenge id")
+	flags.StringVar(&input.ChallengeID, "challenge", input.ChallengeID, "Challenge ID or slug")
+	flags.StringVar(&input.ChallengeFlavor.Slug, "slug", input.ChallengeFlavor.Slug, "Slug")
+	flags.StringVar(&input.ChallengeFlavor.Version, "version", input.ChallengeFlavor.Version, "Challenge flavor version")
+	flags.StringVar(&input.ChallengeFlavor.ComposeBundle, "compose-bundle", input.ChallengeFlavor.ComposeBundle, "Challenge flavor compose bundle")
+	flags.StringVar(&input.ChallengeFlavor.Changelog, "changelog", input.ChallengeFlavor.Changelog, "Changelog")
+	flags.StringVar(&input.ChallengeFlavor.SourceURL, "source-url", input.ChallengeFlavor.SourceURL, "Source URL")
+	flags.BoolVar(&input.ChallengeFlavor.IsDraft, "draft", input.ChallengeFlavor.IsDraft, "Is Draft")
+	flags.BoolVar(&input.ChallengeFlavor.IsLatest, "latest", input.ChallengeFlavor.IsLatest, "Is Latest")
+	flags.Int64Var(&input.ChallengeFlavor.PurchasePrice, "purchase-price", input.ChallengeFlavor.PurchasePrice, "Purchase Price")
+	flags.Int64Var(&input.ChallengeFlavor.ValidationReward, "validation-reward", input.ChallengeFlavor.ValidationReward, "Validation reward")
+
 	return &ffcli.Command{
 		Name:      "challenge-flavor-add",
 		Usage:     "pathwar [global flags] admin [admin flags] challenge-flavor-add [flags] [args...]",
 		ShortHelp: "add a challenge flavor",
 		FlagSet:   flags,
 		Exec: func(args []string) error {
+			input.ApplyDefaults()
+			if input.ChallengeID == "" {
+				return flag.ErrHelp
+			}
+
 			if err := globalPreRun(); err != nil {
 				return err
 			}
@@ -756,7 +778,7 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
-			ret, err := apiClient.AdminAddChallengeFlavor(ctx, &adminChallengeFlavorAddInput)
+			ret, err := apiClient.AdminAddChallengeFlavor(ctx, &input)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
 			}
@@ -774,16 +796,26 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 		},
 	}
 }
-func adminChallengeInstanceAddCommand() *ffcli.Command {
-	flags := flag.NewFlagSet("admin challenge instance add", flag.ExitOnError)
-	flags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.AgentID, "agent-id", 0, "Id of the agent that will host the instance")
-	flags.Int64Var(&adminChallengeInstanceAddInput.ChallengeInstance.FlavorID, "flavor-id", 0, "Challenge flavor id")
+
+func adminSeasonChallengeAddCommand() *ffcli.Command {
+	input := pwapi.AdminSeasonChallengeAdd_Input{}
+	input.ApplyDefaults()
+	flags := flag.NewFlagSet("admin season challenge add", flag.ExitOnError)
+	flags.StringVar(&input.FlavorID, "flavor", input.FlavorID, "Flavor ID or Slug")
+	flags.StringVar(&input.SeasonID, "season", input.SeasonID, "Season ID or Slug")
+	flags.StringVar(&input.SeasonChallenge.Slug, "slug", input.SeasonChallenge.Slug, "Slug")
+
 	return &ffcli.Command{
-		Name:      "challenge-instance-add",
-		Usage:     "pathwar [global flags] admin [admin flags] challenge-instance-add [flags] [args...]",
-		ShortHelp: "add a challenge instance",
+		Name:      "season-challenge-add",
+		Usage:     "pathwar [global flags] admin [admin flags] season-challenge-add [flags] [args...]",
+		ShortHelp: "add a SeasonChallenge",
 		FlagSet:   flags,
 		Exec: func(args []string) error {
+			input.ApplyDefaults()
+			if input.FlavorID == "" || input.SeasonID == "" {
+				return flag.ErrHelp
+			}
+
 			if err := globalPreRun(); err != nil {
 				return err
 			}
@@ -794,7 +826,7 @@ func adminChallengeInstanceAddCommand() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
-			ret, err := apiClient.AdminAddChallengeInstance(ctx, &adminChallengeInstanceAddInput)
+			ret, err := apiClient.AdminAddSeasonChallenge(ctx, &input)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
 			}
@@ -807,7 +839,7 @@ func adminChallengeInstanceAddCommand() *ffcli.Command {
 				return nil
 			}
 
-			fmt.Println(ret.ChallengeInstance.ID)
+			fmt.Println(ret.SeasonChallenge.ID)
 			return nil
 		},
 	}
@@ -872,7 +904,7 @@ func asciiBool(input bool) string {
 
 func asciiStatus(status string) string {
 	switch status {
-	case "Active":
+	case "Active", "Available":
 		status += " 🟢"
 	default:
 		status += " 🔴"

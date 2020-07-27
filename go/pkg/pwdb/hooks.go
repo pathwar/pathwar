@@ -1,6 +1,8 @@
 package pwdb
 
 import (
+	"fmt"
+
 	"github.com/gosimple/slug"
 	"github.com/jinzhu/gorm"
 )
@@ -34,9 +36,13 @@ func (entity *Organization) BeforeSave(db *gorm.DB) error {
 }
 
 func (entity *ChallengeFlavor) BeforeSave(db *gorm.DB) error {
-	// FIXME: make a mix of challenge and flavor
 	if entity.Slug == "" {
-		entity.Slug = entity.Version
+		var challenge Challenge
+		err := db.First(&challenge, "id = ?", entity.ChallengeID).Error
+		if err != nil {
+			return GormToErrcode(err)
+		}
+		entity.Slug = fmt.Sprintf("%s@%s", challenge.Slug, entity.Version)
 	}
 	return nil
 }

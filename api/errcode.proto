@@ -158,6 +158,8 @@ enum ErrCode {
   ErrUnknownDBKind = 4081;
   ErrNoSuchSlug = 4082;
   ErrAmbiguousSlug = 4083;
+  ErrSeasonChallengeAdd = 4084;
+  ErrInvalidFlavor = 4085;
 
   //// Pathwar Server (starting at 5001)
 

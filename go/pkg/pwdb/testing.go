@@ -108,28 +108,24 @@ func TestingCreateEntities(t *testing.T, db *gorm.DB) {
 		dummyChallenge1.PurchasePrice = 0
 		dummyChallenge1.addSeasonChallengeByID(soloSeason.ID)
 		dummyChallenge1.addSeasonChallengeByID(testSeason.ID)
-		dummyChallenge2 := newOfficialChallengeWithFlavor("dummy challenge 1", "https://...", "")
+		dummyChallenge2 := newOfficialChallengeWithFlavor("dummy challenge 2", "https://...", "")
 		dummyChallenge2.addSeasonChallengeByID(soloSeason.ID)
 		dummyChallenge2.addSeasonChallengeByID(testSeason.ID)
-		dummyChallenge3 := newOfficialChallengeWithFlavor("dummy challenge 1", "https://...", "")
+		dummyChallenge3 := newOfficialChallengeWithFlavor("dummy challenge 3", "https://...", "")
 		dummyChallenge3.addSeasonChallengeByID(soloSeason.ID)
 		dummyChallenge3.addSeasonChallengeByID(testSeason.ID)
 
 		for _, flavor := range []*ChallengeFlavor{
 			dummyChallenge1, dummyChallenge2, dummyChallenge3,
 		} {
-			err := tx.Set("gorm:association_autoupdate", true).Create(flavor).Error
+			err := tx.Create(flavor.Challenge).Error
 			if err != nil {
 				return GormToErrcode(err)
 			}
-
-			// FIXME: should not be necessary, should be done automatically thanks to association_autoupdate
-			for _, seasonChallenge := range flavor.SeasonChallenges {
-				seasonChallenge.FlavorID = flavor.ID
-				err := tx.Set("gorm:association_autoupdate", true).Create(seasonChallenge).Error
-				if err != nil {
-					return GormToErrcode(err)
-				}
+			flavor.ChallengeID = flavor.Challenge.ID
+			err = tx.Create(flavor).Error
+			if err != nil {
+				return GormToErrcode(err)
 			}
 		}
 

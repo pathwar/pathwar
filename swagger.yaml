@@ -75,23 +75,15 @@ definitions:
     type: object
   apiAdminChallengeFlavorAddInput:
     properties:
-      challengeFlavor:
+      challenge_flavor:
         $ref: '#/definitions/dbChallengeFlavor'
+      challenge_id:
+        type: string
     type: object
   apiAdminChallengeFlavorAddOutput:
     properties:
-      challengeFlavor:
+      challenge_flavor:
         $ref: '#/definitions/dbChallengeFlavor'
-    type: object
-  apiAdminChallengeInstanceAddInput:
-    properties:
-      challengeInstance:
-        $ref: '#/definitions/dbChallengeInstance'
-    type: object
-  apiAdminChallengeInstanceAddOutput:
-    properties:
-      challengeInstance:
-        $ref: '#/definitions/dbChallengeInstance'
     type: object
   apiAdminListActivitiesOutput:
     properties:
@@ -158,18 +150,25 @@ definitions:
     type: object
   apiAdminRedumpOutput:
     type: object
+  apiAdminSeasonChallengeAddInput:
+    properties:
+      flavor_id:
+        type: string
+      season_challenge:
+        $ref: '#/definitions/dbSeasonChallenge'
+      season_id:
+        type: string
+    type: object
+  apiAdminSeasonChallengeAddOutput:
+    properties:
+      season_challenge:
+        $ref: '#/definitions/dbSeasonChallenge'
+    type: object
   apiAgentListInstancesOutput:
     properties:
       instances:
         items:
           $ref: '#/definitions/dbChallengeInstance'
-        type: array
-    type: object
-  apiAgentListOutput:
-    properties:
-      agents:
-        items:
-          $ref: '#/definitions/dbAgent'
         type: array
     type: object
   apiAgentRegisterInput:
@@ -205,6 +204,13 @@ definitions:
     properties:
       agent:
         $ref: '#/definitions/dbAgent'
+    type: object
+  apiAgentUpdateStateInput:
+    properties:
+      instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
     type: object
   apiAgentUpdateStateOutput:
     type: object
@@ -282,11 +288,9 @@ definitions:
     type: object
   apiSeasonChallengeBuyInput:
     properties:
-      season_challenge_id:
-        format: int64
+      flavor_id:
         type: string
-      team_id:
-        format: int64
+      season_id:
         type: string
     type: object
   apiSeasonChallengeBuyOutput:
@@ -1672,34 +1676,6 @@ paths:
             $ref: '#/definitions/runtimeError'
       tags:
       - Service
-  /admin/challenge-instance-add:
-    post:
-      operationId: Service_AdminChallengeInstanceAdd
-      parameters:
-      - in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/apiAdminChallengeInstanceAddInput'
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/apiAdminChallengeInstanceAddOutput'
-        "403":
-          description: Returned when the user does not have permission to access the resource.
-          schema: {}
-        "404":
-          description: Returned when the resource does not exist.
-          schema:
-            format: string
-            type: string
-        default:
-          description: An unexpected error response
-          schema:
-            $ref: '#/definitions/runtimeError'
-      tags:
-      - Service
   /admin/list-activities:
     get:
       operationId: Service_AdminListActivities
@@ -1904,6 +1880,34 @@ paths:
             $ref: '#/definitions/runtimeError'
       tags:
       - Service
+  /admin/season-challenge-add:
+    post:
+      operationId: Service_AdminSeasonChallengeAdd
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminSeasonChallengeAddInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminSeasonChallengeAddOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
   /agent/list-instances:
     get:
       operationId: Service_AgentListInstances
@@ -1962,6 +1966,12 @@ paths:
   /agent/update-state:
     post:
       operationId: Service_AgentUpdateState
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAgentUpdateStateInput'
       responses:
         "200":
           description: A successful response.

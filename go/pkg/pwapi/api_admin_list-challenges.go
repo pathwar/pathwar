@@ -19,6 +19,7 @@ func (svc *service) AdminListChallenges(ctx context.Context, in *AdminListChalle
 	err := svc.db.
 		Preload("Flavors").
 		Preload("Flavors.Instances").
+		Preload("Flavors.Instances.Agent").
 		Preload("Flavors.SeasonChallenges").
 		Preload("Flavors.SeasonChallenges.Season").
 		Find(&challenges).Error
