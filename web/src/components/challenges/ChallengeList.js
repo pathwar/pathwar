@@ -10,7 +10,7 @@ const ChallengeList = props => {
   );
   const activeTeam = useSelector(state => state.seasons.activeTeam);
 
-  const { challenges, buyChallenge } = props;
+  const { challenges } = props;
 
   return !challenges || !activeUserSession ? (
     <Dimmer active loader />
@@ -19,11 +19,7 @@ const ChallengeList = props => {
       <Grid.Row>
         {challenges.map(challenge => (
           <Grid.Col lg={4} sm={4} md={4} xs={4} key={challenge.id}>
-            <ChallengeCard
-              challenge={challenge}
-              buyChallenge={buyChallenge}
-              teamID={activeTeam.id}
-            />
+            <ChallengeCard challenge={challenge} teamID={activeTeam.id} />
           </Grid.Col>
         ))}
       </Grid.Row>
