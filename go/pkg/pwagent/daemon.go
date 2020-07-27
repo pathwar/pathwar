@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/docker/docker/client"
+	"go.uber.org/multierr"
 	"go.uber.org/zap"
 	"pathwar.land/pathwar/v2/go/internal/randstring"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
@@ -84,8 +85,10 @@ func runOnce(ctx context.Context, cli *client.Client, apiClient *pwapi.HTTPClien
 		return errcode.TODO.Wrap(err)
 	}
 
-	if err := applyDockerConfig(ctx, &instances, cli, opts); err != nil {
-		return errcode.TODO.Wrap(err)
+	if errs := applyDockerConfig(ctx, &instances, cli, opts); err != nil {
+		for _, err := range multierr.Errors(errs) {
+			opts.Logger.Error("apply docker config", zap.Error(err))
+		}
 	}
 
 	if err := applyNginxConfig(ctx, &instances, cli, opts); err != nil {

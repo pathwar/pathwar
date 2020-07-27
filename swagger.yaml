@@ -171,13 +171,6 @@ definitions:
           $ref: '#/definitions/dbChallengeInstance'
         type: array
     type: object
-  apiAgentListOutput:
-    properties:
-      agents:
-        items:
-          $ref: '#/definitions/dbAgent'
-        type: array
-    type: object
   apiAgentRegisterInput:
     properties:
       arch:
@@ -211,6 +204,13 @@ definitions:
     properties:
       agent:
         $ref: '#/definitions/dbAgent'
+    type: object
+  apiAgentUpdateStateInput:
+    properties:
+      instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
     type: object
   apiAgentUpdateStateOutput:
     type: object
@@ -1966,6 +1966,12 @@ paths:
   /agent/update-state:
     post:
       operationId: Service_AgentUpdateState
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAgentUpdateStateInput'
       responses:
         "200":
           description: A successful response.

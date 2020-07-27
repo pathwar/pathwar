@@ -29,7 +29,7 @@ func adminCommand() *ffcli.Command {
 		Usage: "pathwar [global flags] admin [admin flags] <subcommand> [flags] [args...]",
 		Subcommands: []*ffcli.Command{
 			// read-only
-			adminChallengeCommand(),
+			adminChallengesCommand(),
 			adminUsersCommand(),
 			adminAgentsCommand(),
 			adminActivitiesCommand(),
@@ -52,7 +52,7 @@ func adminCommand() *ffcli.Command {
 	}
 }
 
-func adminChallengeCommand() *ffcli.Command {
+func adminChallengesCommand() *ffcli.Command {
 	flags := flag.NewFlagSet("admin challenges", flag.ExitOnError)
 	return &ffcli.Command{
 		Name:    "challenges",
@@ -163,7 +163,7 @@ func adminChallengeCommand() *ffcli.Command {
 							id := fmt.Sprintf("%d", instance.ID)
 							status := asciiStatus(instance.Status.String())
 							agentSlug := instance.Agent.ASCIIID()
-							flavorSlug := fmt.Sprintf("%s@%s", challenge.Slug, flavor.Slug)
+							flavorSlug := flavor.Slug
 							createdAgo := humanize.Time(*instance.CreatedAt)
 							updatedAgo := humanize.Time(*instance.UpdatedAt)
 							configStruct, _ := instance.ParseInstanceConfig()
