@@ -7,10 +7,7 @@ import { isNil } from "ramda";
 import siteMetaData from "../constants/metadata";
 import ChallengeList from "../components/challenges/ChallengeList";
 
-import {
-  fetchChallenges as fetchChallengesAction,
-  buyChallenge as buyChallengeAction,
-} from "../actions/seasons";
+import { fetchChallenges as fetchChallengesAction } from "../actions/seasons";
 
 class SeasonPage extends React.Component {
   componentDidUpdate(prevProps) {
@@ -33,7 +30,7 @@ class SeasonPage extends React.Component {
   }
 
   render() {
-    const { buyChallengeAction, activeChallenges } = this.props;
+    const { activeChallenges } = this.props;
     const { title, description } = siteMetaData;
 
     return (
@@ -45,10 +42,7 @@ class SeasonPage extends React.Component {
         <Page.Content title="Challenges">
           <Grid.Row>
             <Grid.Col xs={12} sm={12} lg={12}>
-              <ChallengeList
-                challenges={activeChallenges}
-                buyChallenge={buyChallengeAction}
-              />
+              <ChallengeList challenges={activeChallenges} />
             </Grid.Col>
           </Grid.Row>
         </Page.Content>
@@ -69,8 +63,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchChallengesAction: seasonID => fetchChallengesAction(seasonID),
-  buyChallengeAction: (seasonID, teamID) =>
-    buyChallengeAction(seasonID, teamID),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SeasonPage);

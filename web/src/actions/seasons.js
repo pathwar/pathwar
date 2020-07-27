@@ -172,13 +172,9 @@ export const fetchChallenges = seasonID => async dispatch => {
   }
 };
 
-export const buyChallenge = (
-  challengeID,
-  teamID,
-  fromDetails = false
-) => async dispatch => {
+export const buyChallenge = (flavorChallengeID, seasonID) => async dispatch => {
   try {
-    const response = await postBuyChallenge(challengeID, teamID);
+    const response = await postBuyChallenge(flavorChallengeID, seasonID);
     const subscription = response.data.challenge_subscription;
     const {
       season_challenge: {
@@ -189,7 +185,6 @@ export const buyChallenge = (
       type: BUY_CHALLENGE_SUCCESS,
       payload: {
         challengeSubscription: subscription,
-        fromDetails: fromDetails,
       },
     });
 

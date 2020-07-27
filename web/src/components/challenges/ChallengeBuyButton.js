@@ -1,18 +1,12 @@
 import React from "react";
 import { Button } from "tabler-react";
 
-const ChallengeBuyButton = ({
-  challenge,
-  teamID,
-  buyChallenge,
-  isClosed,
-  ...rest
-}) => {
+const ChallengeBuyButton = ({ challenge, buyChallenge, isClosed, ...rest }) => {
   const hasSubscriptions = challenge.subscriptions;
 
   const handleBuyChallenge = async event => {
     event.preventDefault();
-    await buyChallenge(challenge.id, teamID, true);
+    await buyChallenge(challenge.flavor_id, challenge.season_id);
   };
 
   return (

@@ -25,10 +25,9 @@ const paragraph = css`
 const ChallengeDetailsPage = props => {
   const dispatch = useDispatch();
   const challenge = useSelector(state => state.seasons.challengeInDetail);
-  const activeTeam = useSelector(state => state.seasons.activeTeam);
 
-  const buyChallenge = (challengeID, teamID, seasonId) =>
-    dispatch(buyChallengeAction(challengeID, teamID, seasonId));
+  const buyChallenge = (flavorChallengeID, seasonID) =>
+    dispatch(buyChallengeAction(flavorChallengeID, seasonID));
   const validateChallenge = (validationData, seasonId) =>
     dispatch(validateChallengeAction(validationData, seasonId));
   const closeChallenge = subscriptionID =>
@@ -57,8 +56,6 @@ const ChallengeDetailsPage = props => {
     },
     subscriptions,
   } = challenge || {};
-
-  const teamID = activeTeam && activeTeam.id;
 
   const subscription = challenge.subscriptions && challenge.subscriptions[0];
   const validations = subscription && subscription.validations;
@@ -101,7 +98,6 @@ const ChallengeDetailsPage = props => {
               <ChallengeBuyButton
                 challenge={challenge}
                 buyChallenge={buyChallenge}
-                teamID={teamID}
                 isClosed={isClosed}
               />
               {/* <Button

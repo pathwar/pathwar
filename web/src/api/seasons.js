@@ -35,10 +35,10 @@ export function getChallengeDetails(challengeID) {
   return baseApi.get(`/season-challenge?season_challenge_id=${urlIdParam}`);
 }
 
-export function postBuyChallenge(challengeID, teamID) {
+export function postBuyChallenge(flavorChallengeID, seasonID) {
   return baseApi.post(`/season-challenge/buy`, {
-    season_challenge_id: challengeID,
-    team_id: teamID,
+    flavor_id: flavorChallengeID,
+    season_id: seasonID,
   });
 }
 
