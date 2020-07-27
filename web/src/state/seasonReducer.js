@@ -115,8 +115,8 @@ export default function seasonReducer(state = initialState.seasons, action) {
       };
 
     case VALIDATE_CHALLENGE_SUCCESS:
-      const challengeInDetailClone = clone(challengeInDetail);
-      const { subscriptions } = challengeInDetailClone;
+      const challengeInDetailCloneValidate = clone(challengeInDetail);
+      const { subscriptions } = challengeInDetailCloneValidate;
 
       const subscriptionIndex = findIndex(
         propEq("id", challengeSubscription.id)
@@ -126,11 +126,11 @@ export default function seasonReducer(state = initialState.seasons, action) {
         challengeSubscription,
         subscriptions
       );
-      challengeInDetailClone.subscriptions = updatedSubscriptions;
+      challengeInDetailCloneValidate.subscriptions = updatedSubscriptions;
 
       return {
         ...state,
-        challengeInDetail: challengeInDetailClone,
+        challengeInDetail: challengeInDetailCloneValidate,
       };
 
     case CLOSE_CHALLENGE_SUCCESS:
