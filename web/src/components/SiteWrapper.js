@@ -150,7 +150,7 @@ const NavBar = ({ userSession }) => {
         <ValidateCouponForm />
         <Tag
           color="lime"
-          addOn={(team && team.cash) || "$0"}
+          addOn={(team && `$${team.cash}`) || "$0"}
           addOnColor="green"
         >
           Cash
