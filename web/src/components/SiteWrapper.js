@@ -8,13 +8,13 @@ import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
 import logo from "../images/new-pathwar-logo-dark-blue.png";
 
 const navBarItems = [
-  {
-    value: "Home",
-    to: "/app/home",
-    icon: "home",
-    LinkComponent: Link,
-    useExact: "false",
-  },
+  // {
+  //   value: "Home",
+  //   to: "/app/home",
+  //   icon: "home",
+  //   LinkComponent: Link,
+  //   useExact: "false",
+  // },
   {
     value: "Challenges",
     to: "/app/challenges",

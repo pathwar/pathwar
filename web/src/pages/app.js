@@ -80,7 +80,7 @@ const App = () => {
       <Location>
         {({ location }) => (
           <Router location={location}>
-            <ProtectedRoute path="/app/home" component={HomePage} />
+            {/* <ProtectedRoute path="/app/home" component={HomePage} /> */}
             <ProtectedRoute path="/app/challenges" component={ChallengesPage} />
             <ProtectedRoute path="/app/statistics" component={StatisticsPage} />
             <ProtectedRoute
