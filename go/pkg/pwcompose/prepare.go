@@ -17,6 +17,7 @@ type PrepareOpts struct {
 	ChallengeDir string
 	Prefix       string
 	NoPush       bool
+	JSON         bool
 	Version      string
 	Logger       *zap.Logger
 }
@@ -179,6 +180,14 @@ func Prepare(opts PrepareOpts) (string, error) {
 			service.Build = "" // ensure service only has an `image:` without a `build:`
 			composeStruct.Services[name] = service
 		}
+	}
+
+	if opts.JSON {
+		out, err := json.MarshalIndent(&composeStruct, "", "  ")
+		if err != nil {
+			return "", errcode.ErrComposeMarshalConfig.Wrap(err)
+		}
+		return string(out), nil
 	}
 
 	// print yaml

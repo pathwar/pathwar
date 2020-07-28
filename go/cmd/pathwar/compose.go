@@ -21,6 +21,10 @@ func composeCommand() *ffcli.Command {
 		composePSFlags      = flag.NewFlagSet("compose ps", flag.ExitOnError)
 		composePrepareFlags = flag.NewFlagSet("compose prepare", flag.ExitOnError)
 		composeUpFlags      = flag.NewFlagSet("compose up", flag.ExitOnError)
+
+		composeCleanOpts   = pwcompose.NewCleanOpts()
+		composePrepareOpts = pwcompose.NewPrepareOpts()
+		composeUpOpts      = pwcompose.NewUpOpts()
 	)
 	composeDownFlags.BoolVar(&composeCleanOpts.RemoveVolumes, "rm-volumes", composeCleanOpts.RemoveVolumes, "keep volumes")
 	composeDownFlags.BoolVar(&composeCleanOpts.RemoveImages, "rm-images", composeCleanOpts.RemoveImages, "remove images as well")
@@ -29,6 +33,7 @@ func composeCommand() *ffcli.Command {
 	composePrepareFlags.BoolVar(&composePrepareOpts.NoPush, "no-push", composePrepareOpts.NoPush, "don't push images")
 	composePrepareFlags.StringVar(&composePrepareOpts.Prefix, "prefix", composePrepareOpts.Prefix, "docker image prefix")
 	composePrepareFlags.StringVar(&composePrepareOpts.Version, "version", composePrepareOpts.Version, "challenge version")
+	composePrepareFlags.BoolVar(&composePrepareOpts.JSON, "json", composePrepareOpts.JSON, "JSON format")
 	composeUpFlags.StringVar(&composeUpOpts.InstanceKey, "instance-key", composeUpOpts.InstanceKey, "instance key used to generate instance ID")
 	composeUpFlags.BoolVar(&composeUpOpts.ForceRecreate, "force-recreate", composeUpOpts.ForceRecreate, "down previously created instances of challenge")
 

@@ -25,7 +25,6 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwagent"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
-	"pathwar.land/pathwar/v2/go/pkg/pwcompose"
 	"pathwar.land/pathwar/v2/go/pkg/pwsso"
 	"pathwar.land/pathwar/v2/go/pkg/pwversion"
 )
@@ -42,12 +41,9 @@ var (
 	flagOutput = os.Stderr
 
 	// flag vars
-	agentOpts          = pwagent.NewOpts()
-	serverOpts         = pwapi.NewServerOpts()
-	ssoOpts            = pwsso.NewOpts()
-	composeCleanOpts   = pwcompose.NewCleanOpts()
-	composePrepareOpts = pwcompose.NewPrepareOpts()
-	composeUpOpts      = pwcompose.NewUpOpts()
+	agentOpts  = pwagent.NewOpts()
+	serverOpts = pwapi.NewServerOpts()
+	ssoOpts    = pwsso.NewOpts()
 
 	DBURN           string
 	DBMaxOpenTries  int
