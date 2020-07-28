@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link } from "@reach/router";
 import { Card, Table, Dimmer, Icon } from "tabler-react";
 import PropTypes from "prop-types";
+import moment from "moment";
 
 import styles from "./style.module.css";
 
@@ -13,7 +14,9 @@ const TeamsRows = ({ teams }) => {
         <Table.Col alignContent="center">
           {(item.cash && `$${item.cash}`) || "$0"}
         </Table.Col>
-        <Table.Col alignContent="center">{item.created_at}</Table.Col>
+        <Table.Col alignContent="center">
+          {moment(item.created_at).calendar()}
+        </Table.Col>
         {/* <Table.Col colSpan={1} alignContent="center">
           {item.score}
         </Table.Col>
@@ -49,7 +52,7 @@ const AllTeamsOnSeasonList = ({ activeSeason, allTeamsOnSeason }) => {
           <Table.Row>
             <Table.ColHeader>Team</Table.ColHeader>
             <Table.ColHeader alignContent="center">Cash</Table.ColHeader>
-            <Table.ColHeader alignContent="center">Joined at</Table.ColHeader>
+            <Table.ColHeader alignContent="center">Joined</Table.ColHeader>
             {/* <Table.ColHeader colSpan={1} alignContent="center">
               Score
             </Table.ColHeader>
