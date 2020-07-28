@@ -135,8 +135,8 @@ func cliSeasonsCommand() *ffcli.Command {
 					slug := entry.Season.Slug
 					name := entry.Season.Name
 					// FIXME: use slug
-					if entry.Season.IsDefault {
-						name += " (default)"
+					if entry.Season.IsGlobal {
+						name += " 🌍"
 					}
 					status := ""
 					switch entry.Season.Status {

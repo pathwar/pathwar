@@ -144,7 +144,7 @@ func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) 
 	gravatarURL := fmt.Sprintf("https://www.gravatar.com/avatar/%x", md5.Sum([]byte(claims.Email)))
 
 	var season pwdb.Season
-	if err := svc.db.Where(pwdb.Season{IsDefault: true}).First(&season).Error; err != nil {
+	if err := svc.db.Where(pwdb.Season{IsGlobal: true}).First(&season).Error; err != nil {
 		return nil, errcode.ErrGetDefaultSeason.Wrap(err)
 	}
 
@@ -174,7 +174,7 @@ func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) 
 	}
 	team := pwdb.Team{
 		Season:         &season,
-		IsDefault:      true,
+		IsGlobal:       true,
 		Organization:   &organization,
 		DeletionStatus: pwdb.DeletionStatus_Active,
 	}

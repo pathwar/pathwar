@@ -42,7 +42,7 @@ func TestingCreateEntities(t *testing.T, db *gorm.DB) {
 	t.Helper()
 	if err := db.Transaction(func(tx *gorm.DB) error {
 		// load base objects
-		globalSeason := Season{IsDefault: true}
+		globalSeason := Season{IsGlobal: true}
 		err := tx.Where(&globalSeason).First(&globalSeason).Error
 		if err != nil {
 			return GormToErrcode(err)

@@ -61,7 +61,7 @@ func createFirstEntities(tx *gorm.DB) error {
 		Name:       "Global",
 		Status:     Season_Started,
 		Visibility: Season_Public,
-		IsDefault:  true,
+		IsGlobal:   true,
 	}
 	err := tx.Create(globalSeason).Error
 	if err != nil {
@@ -71,7 +71,7 @@ func createFirstEntities(tx *gorm.DB) error {
 		Name:       "Testing",
 		Status:     Season_Started,
 		Visibility: Season_Private,
-		IsDefault:  false,
+		IsTesting:  true,
 	}
 	err = tx.Create(testingSeason).Error
 	if err != nil {
@@ -84,13 +84,12 @@ func createFirstEntities(tx *gorm.DB) error {
 		DeletionStatus: DeletionStatus_Active,
 	}
 	staffTeamGlobal := &Team{
-		IsDefault:      true,
+		IsGlobal:       true,
 		Season:         globalSeason,
 		Organization:   staffOrg,
 		DeletionStatus: DeletionStatus_Active,
 	}
 	staffTeamTesting := &Team{
-		IsDefault:      true,
 		Season:         testingSeason,
 		Organization:   staffOrg,
 		DeletionStatus: DeletionStatus_Active,

@@ -249,8 +249,9 @@ message Season {
   string name = 100;
   Status status = 101;
   Visibility visibility = 102;
-  bool is_default = 103;
+  bool is_global = 103;
   string slug = 104;
+  bool is_testing = 105;
 
   repeated Team teams = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated Coupon coupons = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
@@ -274,7 +275,7 @@ message Team {
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 
-  bool is_default = 100;
+  bool is_global = 100;
   DeletionStatus deletion_status = 101;
   int64 cash = 102;
   int64 score = 103;

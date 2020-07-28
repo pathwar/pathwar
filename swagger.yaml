@@ -1128,7 +1128,10 @@ definitions:
       id:
         format: int64
         type: string
-      is_default:
+      is_global:
+        format: boolean
+        type: boolean
+      is_testing:
         format: boolean
         type: boolean
       name:
@@ -1212,7 +1215,7 @@ definitions:
       id:
         format: int64
         type: string
-      is_default:
+      is_global:
         format: boolean
         type: boolean
       members:
