@@ -159,10 +159,12 @@ class SiteWrapper extends React.Component {
           imageURL: logo,
           accountDropdown: accountDropdownProps(userSession),
           navItems: (
-            <SeasonDropdownSelector
-              userSession={userSession}
-              activeSeason={activeSeason}
-            />
+            <Nav.Item type="div" className="d-none d-md-flex">
+              <SeasonDropdownSelector
+                userSession={userSession}
+                activeSeason={activeSeason}
+              />
+            </Nav.Item>
           ),
         }}
         navProps={{
