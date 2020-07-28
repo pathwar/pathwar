@@ -22,20 +22,18 @@ const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
     challenge.subscriptions.find(item => item.status === "Active");
 
   useEffect(() => {
-    if (!isEmpty(formData.passphrase) && !isEmpty(formData.comment)) {
+    if (!isEmpty(formData.passphrase)) {
       setError(initialErrorObj);
     }
-  }, [formData, error]);
+  }, [formData]);
 
   const submitValidate = event => {
     event.preventDefault();
 
-    if (isEmpty(formData.passphrases) || isEmpty(formData.comment)) {
+    if (isEmpty(formData.passphrases)) {
       let fields = [];
 
       isEmpty(formData.passphrases) && fields.push("passphrases");
-      isEmpty(formData.comment) && fields.push("comment");
-
       setError({ withError: true, fieldsWithError: fields });
 
       return;
@@ -69,9 +67,6 @@ const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
   const passphraseWithError =
     error.withError && error.fieldsWithError.includes("passphrases");
 
-  const commentWithError =
-    error.withError && error.fieldsWithError.includes("comment");
-
   return (
     <>
       <Button icon={"check-circle"} color="indigo" onClick={handleFormOpen}>
@@ -93,15 +88,12 @@ const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
                 autoFocus={true}
               />
             </Form.Group>
-            <Form.Group isRequired label="Comment">
+            <Form.Group label="Comment">
               <Form.Textarea
                 name="comment"
                 onChange={handleChange}
                 placeholder="Leave a comment..."
                 rows={3}
-                invalid={commentWithError}
-                cross={commentWithError}
-                feedback={commentWithError && "Please, insert a comment"}
               />
             </Form.Group>
             <Form.Group>
