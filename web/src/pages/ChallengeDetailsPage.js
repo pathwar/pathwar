@@ -75,7 +75,7 @@ const ChallengeDetailsPage = props => {
         <Grid.Row className="mb-6">
           <Grid.Col width={12} sm={12} md={7}>
             <p css={paragraph}>
-              Hello Ol`salt! Try to be the {flavorChallenge.name} challenge.
+              Hello Ol'salt! Try to beat the {flavorChallenge.name} challenge.
               Heave ho!
             </p>
           </Grid.Col>
