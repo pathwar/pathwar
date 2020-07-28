@@ -12,10 +12,10 @@ type config struct {
 	Networks map[string]network
 	Volumes  map[string]volume
 	Services map[string]Service
-	XPathwar struct {
-		Challenge pwdb.Challenge       `yaml:"challenge"`
-		Flavor    pwdb.ChallengeFlavor `yaml:"flavor"`
-	} `yaml:"x-pathwar"`
+	Pathwar  struct {
+		Challenge pwdb.Challenge       `yaml:"challenge" json:"challenge"`
+		Flavor    pwdb.ChallengeFlavor `yaml:"flavor" json:"flavor"`
+	} `yaml:"x-pathwar" json:"pathwar"`
 }
 
 type network struct {
