@@ -45,18 +45,6 @@ const ChallengeCard = ({ challenge }) => {
               <p>{flavor.changelog}</p>
             </Grid.Col>
           </Grid.Row>
-          <Grid.Row>
-            <Grid.Col auto>
-              <Tag.List>
-                <Tag color="dark" addOn={flavor.version} addOnColor="warning">
-                  version
-                </Tag>
-                <Tag addOn={flavor.is_latest.toString()} addOnColor="success">
-                  is_latest
-                </Tag>
-              </Tag.List>
-            </Grid.Col>
-          </Grid.Row>
           <ChallengeModal
             open={modalOpen}
             onClose={onCloseModal}

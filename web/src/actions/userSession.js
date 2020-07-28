@@ -36,15 +36,13 @@ export const fetchUserSession = postPreferences => async dispatch => {
   try {
     const userSessionResponse = await getUserSession();
     const { data: userSessionData } = userSessionResponse;
-    const defaultSeasonTeamSet = userSessionData.seasons.find(
-      item => item.season.is_default
-    );
+
     const activeSeasonId = userSessionData.user.active_season_id;
 
     dispatch(setUserSession(userSessionData));
 
     if (postPreferences) {
-      dispatch(fetchPreferencesAction(defaultSeasonTeamSet.season.id));
+      dispatch(fetchPreferencesAction(activeSeasonId));
     }
 
     if (activeSeasonId) {
