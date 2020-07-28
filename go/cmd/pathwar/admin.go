@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 
@@ -781,6 +782,21 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
+			}
+
+			if compose := input.ChallengeFlavor.ComposeBundle; compose != "" {
+				if _, err := os.Stat(compose); err == nil {
+					f, err := os.Open(compose)
+					if err != nil {
+						return errcode.TODO.Wrap(err)
+					}
+					defer f.Close()
+					b, err := ioutil.ReadAll(f)
+					if err != nil {
+						return errcode.TODO.Wrap(err)
+					}
+					input.ChallengeFlavor.ComposeBundle = string(b)
+				}
 			}
 
 			ret, err := apiClient.AdminAddChallengeFlavor(ctx, &input)
