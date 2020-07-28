@@ -1,9 +1,17 @@
 version: '3.7'
 
+# releases metadata (optional)
 x-pathwar:
   challenge:
-    version: 1.0.0
     name: "Hello World!"
+    slug: helloworld
+    locale: "en"
+    author: "Pathwar Staff"
+    homepage: https://github.com/pathwar/pathwar/tree/master/challenges/web/helloworld
+  flavor:
+    purchase_price: 0
+    validation_reward: 5
+    body: "Introduction challenge."
 
 services:
   front:

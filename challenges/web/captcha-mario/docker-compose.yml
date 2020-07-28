@@ -1,9 +1,17 @@
 version: '3.7'
 
+# releases metadata (optional)
 x-pathwar:
   challenge:
-    version: 1.0.0
-    name: "Captcha Mario"
+    name: "Mario"
+    slug: captcha-mario
+    locale: "en"
+    author: "Pathwar Staff"
+    homepage: https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-mario
+  flavor:
+    purchase_price: 5
+    validation_reward: 15
+    body: "Bypass this Captcha protection."
 
 services:
   front:

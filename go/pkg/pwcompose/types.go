@@ -7,7 +7,7 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
-type config struct {
+type PathwarConfig struct {
 	Version  string
 	Networks map[string]network
 	Volumes  map[string]volume

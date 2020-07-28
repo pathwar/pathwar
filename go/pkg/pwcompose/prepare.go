@@ -83,7 +83,7 @@ func Prepare(opts PrepareOpts) (string, error) {
 		return "", errcode.ErrComposeInvalidConfig.Wrap(err)
 	}
 
-	composeStruct := config{}
+	composeStruct := PathwarConfig{}
 	err = yaml.Unmarshal(composeData, &composeStruct)
 	if err != nil {
 		return "", errcode.ErrComposeInvalidConfig.Wrap(err)

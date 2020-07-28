@@ -4,6 +4,7 @@ require (
 	cloud.google.com/go v0.37.4 // indirect
 	github.com/Bearer/bearer-go v1.2.1
 	github.com/Microsoft/go-winio v0.4.14 // indirect
+	github.com/alessio/shellescape v1.2.2
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
@@ -58,7 +59,7 @@ require (
 	google.golang.org/genproto v0.0.0-20190927181202-20e1ac93f88c
 	google.golang.org/grpc v1.28.0-pre
 	gopkg.in/gormigrate.v1 v1.6.0
-	gopkg.in/yaml.v2 v2.3.0 // indirect
+	gopkg.in/yaml.v2 v2.3.0
 	gopkg.in/yaml.v3 v3.0.0-20200506231410-2ff61e1afc86
 	honnef.co/go/tools v0.0.1-2020.1.4 // indirect
 	moul.io/banner v1.0.1

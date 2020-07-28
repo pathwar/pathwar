@@ -70,7 +70,7 @@ func Up(ctx context.Context, cli *client.Client, opts UpOpts) (map[string]Servic
 	opts.Logger.Debug("up", zap.Any("opts", opts))
 
 	// parse prepared compose yaml
-	preparedComposeStruct := config{}
+	preparedComposeStruct := PathwarConfig{}
 	err := yaml.Unmarshal([]byte(opts.PreparedCompose), &preparedComposeStruct)
 	if err != nil {
 		return nil, errcode.ErrComposeParseConfig.Wrap(err)
@@ -265,7 +265,7 @@ func Up(ctx context.Context, cli *client.Client, opts UpOpts) (map[string]Servic
 	return preparedComposeStruct.Services, nil
 }
 
-func updateDockerComposeTempFile(preparedComposeStruct config, tmpPreparedComposePath string) error {
+func updateDockerComposeTempFile(preparedComposeStruct PathwarConfig, tmpPreparedComposePath string) error {
 	// create tmp docker-compose file
 	tmpData, err := yaml.Marshal(&preparedComposeStruct)
 	if err != nil {

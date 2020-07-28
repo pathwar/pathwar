@@ -1,9 +1,17 @@
 version: '3.7'
 
+# releases metadata (optional)
 x-pathwar:
   challenge:
-    version: 1.0.0
-    name: "Captcha Luigi"
+    name: "Luigi"
+    slug: captcha-luigi
+    locale: "en"
+    author: "Pathwar Staff"
+    homepage: https://github.com/pathwar/pathwar/tree/master/challenges/web/captcha-luigi
+  flavor:
+    purchase_price: 5
+    validation_reward: 15
+    body: "Bypass this Captcha protection."
 
 services:
   front:

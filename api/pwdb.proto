@@ -41,8 +41,8 @@ message ChallengeFlavor {
   string source_url = 104 [(gogoproto.customname) = "SourceURL"];
   string compose_bundle = 105 [(gogoproto.moretags) = "gorm:\"size:100000\""];
   Driver driver = 106;
-  int64 purchase_price = 107;
-  int64 validation_reward = 108;
+  int64 purchase_price = 107 [(gogoproto.moretags) = "yaml:\"purchase_price\""];
+  int64 validation_reward = 108 [(gogoproto.moretags) = "yaml:\"validation_reward\""];
   string slug = 109 [(gogoproto.moretags) = "gorm:\"unique_index\""];
   string body = 110;
 

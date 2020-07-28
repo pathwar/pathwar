@@ -1,9 +1,17 @@
 version: '3.7'
 
+# releases metadata (optional)
 x-pathwar:
   challenge:
-    version: 1.0.0
-    name: "Upload Hi"
+    name: "Upload Hi!"
+    slug: upload-hi
+    locale: "en"
+    author: "Pathwar Staff"
+    homepage: https://github.com/pathwar/pathwar/tree/master/challenges/web/upload-hi
+  flavor:
+    purchase_price: 5
+    validation_reward: 15
+    body: "Execute your code."
 
 services:
   front:

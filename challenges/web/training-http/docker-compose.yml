@@ -1,9 +1,17 @@
 version: '3.7'
 
+# releases metadata (optional)
 x-pathwar:
   challenge:
-    version: 1.0.0
-    name: "Training HTTP"
+    name: "Training: HTTP"
+    slug: training-http
+    locale: "en"
+    author: "Pathwar Staff"
+    homepage: https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http
+  flavor:
+    purchase_price: 0
+    validation_reward: 5
+    body: "Learn to play with HTTP."
 
 services:
   front:

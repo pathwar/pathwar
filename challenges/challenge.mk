@@ -2,8 +2,7 @@ PREFIX ?= pathwar/
 PATHWAR_OPTS ?=
 
 .PHONY: pathwar.run
-pathwar.run:
-	pathwar $(PATHWAR_OPTS) compose prepare --no-push ./ > pathwar-compose.yml
+pathwar.run: pathwar.prepare
 	pathwar $(PATHWAR_OPTS) compose up --force-recreate pathwar-compose.yml
 
 .PHONY: pathwar.down
@@ -20,11 +19,15 @@ docker.build:
 
 .PHONY: pathwar.prepare
 pathwar.prepare:
-	pathwar $(PATHWAR_OPTS) compose prepare --prefix=$(PREFIX) --no-push . > pathwar-compose.yml
+	pathwar $(PATHWAR_OPTS) compose prepare --no-push . > pathwar-compose.yml
 
 .PHONY: pathwar.push
 pathwar.push:
-	pathwar $(PATHWAR_OPTS) compose prepare --prefix=$(PREFIX) .
+	pathwar $(PATHWAR_OPTS) compose prepare --prefix=$(PREFIX) . > pathwar-compose.yml
+
+.PHONY: pathwar.register
+pathwar.register: pathwar.push
+	pathwar $(PATHWAR_OPTS) compose register --print ./pathwar-compose.yml
 
 .PHONY: make.bump
 make.bump:
