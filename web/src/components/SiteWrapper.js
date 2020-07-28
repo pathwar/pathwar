@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Site, Nav, Dropdown, Tag } from "tabler-react";
+import { Site, Nav, Dropdown, Tag, Grid } from "tabler-react";
 import { Link } from "gatsby";
 import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
 
@@ -82,7 +82,8 @@ const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
   };
 };
 
-const navItemsProps = ({ activeUserSession }, activeSeason) => {
+const SeasonDropdownSelector = ({ userSession, activeSeason }) => {
+  const { activeUserSession } = userSession || {};
   const clicked = e => {
     e.preventDefault();
     alert(activeSeason.name);
@@ -119,15 +120,30 @@ const navItemsProps = ({ activeUserSession }, activeSeason) => {
     });
 
   return (
-    <Nav.Item type="div" className="d-none d-md-flex">
-      <Dropdown
-        triggerContent={(activeSeason && activeSeason.name) || "Loading.."}
-        type="button"
-        color="primary"
-        icon="flag"
-        items={items}
-      />
-    </Nav.Item>
+    <Dropdown
+      triggerContent={(activeSeason && activeSeason.name) || "Loading.."}
+      type="button"
+      color="primary"
+      icon="flag"
+      items={items}
+    />
+  );
+};
+
+const NavBar = () => {
+  return (
+    <Grid.Row className="align-items-center">
+      <Grid.Col width={6} className="ml-auto text-right" ignoreCol={true}>
+        <ValidateCouponForm />
+      </Grid.Col>
+      <Grid.Col className="col-lg order-lg-first">
+        <Nav
+          tabbed
+          className="border-0 flex-column flex-lg-row"
+          itemsObjects={navBarItems}
+        />
+      </Grid.Col>
+    </Grid.Row>
   );
 };
 
@@ -142,16 +158,15 @@ class SiteWrapper extends React.Component {
           alt: "Pathwar Project",
           imageURL: logo,
           accountDropdown: accountDropdownProps(userSession),
-          navItems: navItemsProps(userSession, activeSeason),
+          navItems: (
+            <SeasonDropdownSelector
+              userSession={userSession}
+              activeSeason={activeSeason}
+            />
+          ),
         }}
         navProps={{
-          itemsObjects: navBarItems,
-          rightColumnComponent: (
-            <>
-              <ValidateCouponForm />
-              {navItemsProps(userSession, activeSeason)}
-            </>
-          ),
+          children: <NavBar />,
         }}
       >
         {this.props.children}
