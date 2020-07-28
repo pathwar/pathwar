@@ -73,43 +73,19 @@ const ChallengeDetailsPage = props => {
         subTitle={`Author: ${flavorChallenge.author}`}
       >
         <Grid.Row className="mb-6">
-          <Grid.Col width={12} sm={12} md={8}>
+          <Grid.Col width={12} sm={12} md={7}>
             <p css={paragraph}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sem
-              arcu, tristique id elementum quis, pulvinar ac lorem. Integer id
-              sem condimentum, aliquam erat in, lobortis nisi. Aliquam pretium
-              mi purus. Donec sit amet neque nulla. Pellentesque mollis egestas
-              nisl a placerat.
+              Hello Ol`salt! Try to be the {flavorChallenge.name} challenge.
+              Heave ho!
             </p>
-            <Button.List>
-              <Button
-                href={flavorChallenge.homepage}
-                target="_blank"
-                RootComponent="a"
-                social="github"
-                size="sm"
-              >
-                Visit page
-              </Button>
-            </Button.List>
           </Grid.Col>
-          <Grid.Col md={4} sm={12} width={12} className="text-right">
+          <Grid.Col md={5} sm={12} width={12} className="text-right">
             <Button.List>
               <ChallengeBuyButton
                 challenge={challenge}
                 buyChallenge={buyChallenge}
                 isClosed={isClosed}
               />
-              {/* <Button
-                RootComponent="a"
-                target="_blank"
-                href={instances[0].nginx_url}
-                color="gray-dark"
-                icon="terminal"
-                disabled={isClosed || !subscription}
-              >
-                Solve
-              </Button> */}
               {subscriptions && (
                 <ChallengeCloseButton
                   challenge={challenge}
