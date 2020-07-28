@@ -35,12 +35,12 @@ const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
   const { user, claims } = activeUserSession || {};
 
   const username =
-    claims && claims.preferred_username ? claims.preferred_username : "Account";
+    claims && claims.preferred_username ? claims.preferred_username : "Log in";
   const avatar = user && user.gravatar_url ? user.gravatar_url : logo;
   const options = [];
 
   if (!activeUserSession && !activeKeycloakSession) {
-    options.push({ icon: "log-in", value: "Log in", to: "/app/login" });
+    options.push({ icon: "log-in", value: "Log in", to: "/app/challenges" });
   }
 
   if (activeUserSession && activeKeycloakSession) {
