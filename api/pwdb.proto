@@ -44,6 +44,7 @@ message ChallengeFlavor {
   int64 purchase_price = 107;
   int64 validation_reward = 108;
   string slug = 109 [(gogoproto.moretags) = "gorm:\"unique_index\""];
+  string body = 110;
 
   Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
   int64 challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];

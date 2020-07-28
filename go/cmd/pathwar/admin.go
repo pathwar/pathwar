@@ -120,7 +120,7 @@ func adminChallengesCommand() *ffcli.Command {
 			{
 				fmt.Println("FLAVORS")
 				table := tablewriter.NewWriter(os.Stdout)
-				table.SetHeader([]string{"FLAVOR", "CREATED", "UPDATED", "INSTANCES", "SEASON CHALLENGES", "PRICE/REWARD", "ID"})
+				table.SetHeader([]string{"FLAVOR", "CREATED", "UPDATED", "INSTANCES", "SEASON CHALLENGES", "PRICE/REWARD", "ID", "BODY"})
 				table.SetAlignment(tablewriter.ALIGN_CENTER)
 				table.SetBorder(false)
 
@@ -141,7 +141,11 @@ func adminChallengesCommand() *ffcli.Command {
 							price = fmt.Sprintf("$%d", flavor.PurchasePrice)
 						}
 						priceReward := fmt.Sprintf("%s / $%d", price, flavor.ValidationReward)
-						table.Append([]string{slug, createdAgo, updatedAgo, instances, seasonChallenges, priceReward, id})
+						body := flavor.Body
+						if len(body) > 10 {
+							body = body[:8] + "..."
+						}
+						table.Append([]string{slug, createdAgo, updatedAgo, instances, seasonChallenges, priceReward, id, body})
 					}
 				}
 				table.Render()
@@ -756,6 +760,7 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 	flags.BoolVar(&input.ChallengeFlavor.IsLatest, "latest", input.ChallengeFlavor.IsLatest, "Is Latest")
 	flags.Int64Var(&input.ChallengeFlavor.PurchasePrice, "purchase-price", input.ChallengeFlavor.PurchasePrice, "Purchase Price")
 	flags.Int64Var(&input.ChallengeFlavor.ValidationReward, "validation-reward", input.ChallengeFlavor.ValidationReward, "Validation reward")
+	flags.StringVar(&input.ChallengeFlavor.Body, "body", input.ChallengeFlavor.Body, "Body")
 
 	return &ffcli.Command{
 		Name:      "challenge-flavor-add",

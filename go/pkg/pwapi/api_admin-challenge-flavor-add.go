@@ -2,6 +2,7 @@ package pwapi
 
 import (
 	"context"
+	"strings"
 
 	"github.com/jinzhu/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
@@ -28,7 +29,26 @@ func (svc *service) AdminChallengeFlavorAdd(ctx context.Context, in *AdminChalle
 
 	err := svc.db.Transaction(func(tx *gorm.DB) error {
 		err := tx.Create(in.ChallengeFlavor).Error
-		if err != nil {
+		switch {
+		case err != nil && strings.Contains(err.Error(), "Error 1062: Duplicate entry"):
+			// flavor already exists, update it
+			var existing pwdb.ChallengeFlavor
+			if err := svc.db.First(&existing, "slug = ?", in.ChallengeFlavor.Slug).Error; err != nil {
+				return pwdb.GormToErrcode(err)
+			}
+			in.ChallengeFlavor.ID = 0
+			in.ChallengeFlavor.CreatedAt = nil
+			in.ChallengeFlavor.UpdatedAt = nil
+			in.ChallengeFlavor.Slug = ""
+			in.ChallengeFlavor.ChallengeID = 0
+			in.ChallengeFlavor.Version = ""
+			if err = svc.db.Model(&existing).Updates(in.ChallengeFlavor).Error; err != nil {
+				return pwdb.GormToErrcode(err)
+			}
+			// FIXME: need redump if compose bundle changes
+			in.ChallengeFlavor = &existing
+			return nil
+		case err != nil:
 			return errcode.ErrChallengeFlavorAdd.Wrap(err)
 		}
 

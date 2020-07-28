@@ -646,6 +646,8 @@ definitions:
     type: object
   dbChallengeFlavor:
     properties:
+      body:
+        type: string
       challenge:
         $ref: '#/definitions/dbChallenge'
       challenge_id:
