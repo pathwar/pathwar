@@ -28,12 +28,12 @@ func TestSvc_UserGetSession(t *testing.T) {
 		assert.Len(t, session.Seasons, 2)
 		assert.Equal(t, session.Claims, pwsso.TestingClaims(t))
 		assert.True(t, session.IsNewUser)
-		assert.Equal(t, session.User.ActiveTeamMember.Team.Season.Name, "Solo Mode")
+		assert.Equal(t, session.User.ActiveTeamMember.Team.Season.Name, "Global")
 		assert.Equal(t, session.User.ActiveTeamMember.Team.Organization.Name, "moul")
-		assert.True(t, session.User.ActiveTeamMember.Team.Organization.SoloSeason)
+		assert.True(t, session.User.ActiveTeamMember.Team.Organization.GlobalSeason)
 		assert.Equal(t, session.User.ActiveTeamMember.Role, pwdb.TeamMember_Owner)
 		for _, season := range session.Seasons {
-			if season.Season.Name == "Solo Mode" {
+			if season.Season.Name == "Global" {
 				assert.Equal(t, season.Team.Organization.Name, "moul")
 			}
 		}
@@ -49,9 +49,9 @@ func TestSvc_UserGetSession(t *testing.T) {
 		assert.Len(t, session2.Seasons, 2)
 		assert.Equal(t, session2.Claims, pwsso.TestingClaims(t))
 		assert.False(t, session2.IsNewUser)
-		assert.Equal(t, session2.User.ActiveTeamMember.Team.Season.Name, "Solo Mode")
+		assert.Equal(t, session2.User.ActiveTeamMember.Team.Season.Name, "Global")
 		assert.Equal(t, session2.User.ActiveTeamMember.Team.Organization.Name, "moul")
-		assert.True(t, session2.User.ActiveTeamMember.Team.Organization.SoloSeason)
+		assert.True(t, session2.User.ActiveTeamMember.Team.Organization.GlobalSeason)
 		assert.Equal(t, session2.User.ActiveTeamMember.Role, pwdb.TeamMember_Owner)
 
 		// standardize dynamic fields before comparison

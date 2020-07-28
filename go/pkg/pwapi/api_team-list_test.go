@@ -30,8 +30,8 @@ func TestSvc_TeamList(t *testing.T) {
 	}{
 		{"empty", &TeamList_Input{}, errcode.ErrMissingInput, 0},
 		{"unknown-season-id", &TeamList_Input{SeasonID: -42}, errcode.ErrInvalidSeasonID, 0},
-		{"solo-mode", &TeamList_Input{SeasonID: seasons["Solo Mode"]}, nil, 1},
-		{"test-season", &TeamList_Input{SeasonID: seasons["Test Season"]}, nil, 0},
+		{"global-mode", &TeamList_Input{SeasonID: seasons["Global"]}, nil, 1},
+		{"test-season", &TeamList_Input{SeasonID: seasons["Unit Test Season"]}, nil, 0},
 	}
 
 	for _, test := range tests {

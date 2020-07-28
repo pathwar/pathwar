@@ -16,7 +16,7 @@ func TestSvc_ChallengeBuy(t *testing.T) {
 	defer cleanup()
 	ctx := testingSetContextToken(context.Background(), t)
 
-	solo := testingSoloSeason(t, svc)
+	gs := testingGlobalSeason(t, svc)
 
 	// fetch user session
 	session, err := svc.UserGetSession(ctx, nil)
@@ -24,7 +24,7 @@ func TestSvc_ChallengeBuy(t *testing.T) {
 	activeTeam := session.User.ActiveTeamMember.Team
 
 	// fetch challenges
-	challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
+	challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{gs.ID})
 	require.NoError(t, err)
 
 	var expensiveChallenge, freeChallenge *pwdb.SeasonChallenge
@@ -65,7 +65,7 @@ func TestSvc_ChallengeBuy(t *testing.T) {
 		assert.Equalf(t, session.User.ID, subscription.ChallengeSubscription.BuyerID, test.name)
 
 		// check if challenge subscription is now visible in season challenge list
-		challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
+		challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{gs.ID})
 		if assert.NoError(t, err, test.name) {
 			found := 0
 			for _, challenge := range challenges.Items {

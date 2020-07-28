@@ -32,17 +32,17 @@ func TestSvc_TeamCreate(t *testing.T) {
 	session, err := svc.UserGetSession(ctx, nil)
 	require.NoError(t, err)
 
-	// create a non-solo organization
-	nonSoloOrganization := pwdb.Organization{
-		Name:       "non solo",
-		SoloSeason: false,
-		Members:    []*pwdb.OrganizationMember{{UserID: session.User.ID}},
+	// create a non-global organization
+	nonGlobalOrganization := pwdb.Organization{
+		Name:         "non global",
+		GlobalSeason: false,
+		Members:      []*pwdb.OrganizationMember{{UserID: session.User.ID}},
 	}
-	err = db.Create(&nonSoloOrganization).Error
+	err = db.Create(&nonGlobalOrganization).Error
 	require.NoError(t, err)
 	nonMemberOrganization := pwdb.Organization{
-		Name:       "non member",
-		SoloSeason: false,
+		Name:         "non member",
+		GlobalSeason: false,
 	}
 	err = db.Create(&nonMemberOrganization).Error
 	require.NoError(t, err)
@@ -63,13 +63,13 @@ func TestSvc_TeamCreate(t *testing.T) {
 		{"invalid-season-id", &TeamCreate_Input{SeasonID: 4242, Name: "hello"}, errcode.ErrGetSeason},
 		{"invalid-organization-id", &TeamCreate_Input{SeasonID: seasonMap["Test1"].Season.ID, OrganizationID: 4242}, errcode.ErrGetOrganization},
 		{"blacklisted-name", &TeamCreate_Input{SeasonID: seasonMap["Test1"].Season.ID, Name: " STAFF "}, errcode.ErrReservedName},
-		{"new-team-in-solo-mode-with-organization", &TeamCreate_Input{SeasonID: seasonMap["Solo Mode"].Season.ID, OrganizationID: session.User.ActiveTeamMember.Team.OrganizationID}, errcode.ErrAlreadyHasTeamForSeason},
-		{"new-team-in-solo-mode-with-name", &TeamCreate_Input{SeasonID: seasonMap["Solo Mode"].Season.ID, Name: "yolo"}, errcode.ErrAlreadyHasTeamForSeason},
-		{"too-many-arguments", &TeamCreate_Input{SeasonID: seasonMap["Solo Mode"].Season.ID, Name: "yolo", OrganizationID: session.User.ActiveTeamMember.Team.OrganizationID}, errcode.ErrInvalidInput},
+		{"new-team-in-global-mode-with-organization", &TeamCreate_Input{SeasonID: seasonMap["Global"].Season.ID, OrganizationID: session.User.ActiveTeamMember.Team.OrganizationID}, errcode.ErrAlreadyHasTeamForSeason},
+		{"new-team-in-global-mode-with-name", &TeamCreate_Input{SeasonID: seasonMap["Global"].Season.ID, Name: "yolo"}, errcode.ErrAlreadyHasTeamForSeason},
+		{"too-many-arguments", &TeamCreate_Input{SeasonID: seasonMap["Global"].Season.ID, Name: "yolo", OrganizationID: session.User.ActiveTeamMember.Team.OrganizationID}, errcode.ErrInvalidInput},
 		{"conflict-org-name", &TeamCreate_Input{SeasonID: seasonMap["Test1"].Season.ID, Name: session.User.ActiveTeamMember.Team.Organization.Name}, errcode.ErrCheckOrganizationUniqueName},
-		{"from-solo-organization", &TeamCreate_Input{SeasonID: seasonMap["Test2"].Season.ID, OrganizationID: session.User.ActiveTeamMember.Team.OrganizationID}, errcode.ErrCannotCreateTeamForSoloOrganization},
+		{"from-global-organization", &TeamCreate_Input{SeasonID: seasonMap["Test2"].Season.ID, OrganizationID: session.User.ActiveTeamMember.Team.OrganizationID}, errcode.ErrCannotCreateTeamForGlobalOrganization},
 		{"non-member-organization", &TeamCreate_Input{SeasonID: seasonMap["Test2"].Season.ID, OrganizationID: nonMemberOrganization.ID}, errcode.ErrUserNotInOrganization},
-		{"valid-with-organization", &TeamCreate_Input{SeasonID: seasonMap["Test2"].Season.ID, OrganizationID: nonSoloOrganization.ID}, nil},
+		{"valid-with-organization", &TeamCreate_Input{SeasonID: seasonMap["Test2"].Season.ID, OrganizationID: nonGlobalOrganization.ID}, nil},
 		{"valid-with-name", &TeamCreate_Input{SeasonID: seasonMap["Test3"].Season.ID, Name: "yolo"}, nil},
 		{"closed-season", &TeamCreate_Input{SeasonID: seasonMap["Test4"].Season.ID, Name: "yolo2"}, errcode.ErrSeasonDenied},
 	}
@@ -88,7 +88,7 @@ func TestSvc_TeamCreate(t *testing.T) {
 			if test.input.OrganizationID != 0 {
 				assert.Equal(t, test.input.OrganizationID, ret.Team.OrganizationID)
 			}
-			assert.False(t, ret.Team.Organization.SoloSeason)
+			assert.False(t, ret.Team.Organization.GlobalSeason)
 		})
 	}
 }

@@ -35,8 +35,8 @@ func TestSvc_SeasonChallengeGet(t *testing.T) {
 	}{
 		{"empty", &SeasonChallengeGet_Input{}, errcode.ErrMissingInput, "", ""},
 		{"unknown-season-id", &SeasonChallengeGet_Input{SeasonChallengeID: -42}, errcode.ErrGetSeasonFromSeasonChallenge, "", ""},
-		{"solo-mode-hello-world", &SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Solo Mode/Hello World"]}, nil, "Solo Mode", "Hello World"},
-		{"no-team-in-season", &SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Test Season/dummy challenge 1"]}, errcode.ErrGetUserTeamFromSeason, "Test Season", "Hello World"},
+		{"global-mode-hello-world", &SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Global/Hello World"]}, nil, "Global", "Hello World"},
+		{"no-team-in-season", &SeasonChallengeGet_Input{SeasonChallengeID: seasonChallenges["Unit Test Season/dummy challenge 1"]}, errcode.ErrGetUserTeamFromSeason, "Test Season", "Hello World"},
 	}
 
 	for _, test := range tests {

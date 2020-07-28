@@ -52,7 +52,7 @@ func (in *AdminAddCoupon_Input) ApplyDefaults() {
 		in.MaxValidationCount = 1
 	}
 	if in.SeasonID == "" {
-		in.SeasonID = "solo-mode"
+		in.SeasonID = "global"
 	}
 	if in.Value == 0 {
 		in.Value = 1

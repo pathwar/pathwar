@@ -233,7 +233,7 @@ message Organization {
   string gravatar_url = 101 [(gogoproto.customname) = "GravatarURL"];
   string locale = 102;
   DeletionStatus deletion_status = 103;
-  bool solo_season = 104;
+  bool global_season = 104;
   string slug = 105;
 
   repeated Team teams = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];

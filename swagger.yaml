@@ -1053,6 +1053,9 @@ definitions:
         type: string
       deletion_status:
         $ref: '#/definitions/dbDeletionStatus'
+      global_season:
+        format: boolean
+        type: boolean
       gravatar_url:
         type: string
       id:
@@ -1072,9 +1075,6 @@ definitions:
         type: array
       slug:
         type: string
-      solo_season:
-        format: boolean
-        type: boolean
       teams:
         items:
           $ref: '#/definitions/dbTeam'

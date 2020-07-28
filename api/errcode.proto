@@ -102,7 +102,7 @@ enum ErrCode {
   ErrOrganizationAlreadyHasTeamForSeason = 4025;
   ErrGetOrganization = 4026;
   ErrGetSeasonChallenge = 4027;
-  ErrCannotCreateTeamForSoloOrganization = 4028;
+  ErrCannotCreateTeamForGlobalOrganization = 4028;
   ErrUserNotInOrganization = 4029;
   ErrCreateTeam = 4030;
   ErrGetTeam = 4031;
