@@ -130,11 +130,22 @@ const SeasonDropdownSelector = ({ userSession, activeSeason }) => {
   );
 };
 
-const NavBar = () => {
+const NavBar = ({ userSession }) => {
+  const {
+    activeUserSession: {
+      user: {
+        active_team_member: { team },
+      },
+    },
+  } = userSession;
+
   return (
     <Grid.Row className="align-items-center">
       <Grid.Col width={6} className="ml-auto text-right" ignoreCol={true}>
         <ValidateCouponForm />
+        <Tag color="lime" addOn={team.cash || "$0"} addOnColor="green">
+          Cash
+        </Tag>
       </Grid.Col>
       <Grid.Col className="col-lg order-lg-first">
         <Nav
@@ -168,7 +179,7 @@ class SiteWrapper extends React.Component {
           ),
         }}
         navProps={{
-          children: <NavBar />,
+          children: <NavBar userSession={userSession} />,
         }}
       >
         {this.props.children}
