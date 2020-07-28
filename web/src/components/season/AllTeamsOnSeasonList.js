@@ -9,10 +9,10 @@ const TeamsRows = ({ teams }) => {
   return teams.map(item => {
     return (
       <Table.Row key={item.organization.id}>
-        <Table.Col colSpan={2}>
-          <Link to={`/app/team/${item.id}`}>{item.organization.name}</Link>
-        </Table.Col>
-        <Table.Col colSpan={1} alignContent="center">
+        <Table.Col>{item.organization.name}</Table.Col>
+        <Table.Col alignContent="center">{item.cash || "$0"}</Table.Col>
+        <Table.Col alignContent="center">{item.created_at}</Table.Col>
+        {/* <Table.Col colSpan={1} alignContent="center">
           {item.score}
         </Table.Col>
         <Table.Col colSpan={1} alignContent="center">
@@ -26,7 +26,7 @@ const TeamsRows = ({ teams }) => {
         </Table.Col>
         <Table.Col colSpan={1} alignContent="center">
           {item.nb_achievements || 0}
-        </Table.Col>
+        </Table.Col> */}
       </Table.Row>
     );
   });
@@ -45,8 +45,10 @@ const AllTeamsOnSeasonList = ({ activeSeason, allTeamsOnSeason }) => {
       >
         <Table.Header>
           <Table.Row>
-            <Table.ColHeader colSpan={2}>Team</Table.ColHeader>
-            <Table.ColHeader colSpan={1} alignContent="center">
+            <Table.ColHeader>Team</Table.ColHeader>
+            <Table.ColHeader alignContent="center">Cash</Table.ColHeader>
+            <Table.ColHeader alignContent="center">Joined at</Table.ColHeader>
+            {/* <Table.ColHeader colSpan={1} alignContent="center">
               Score
             </Table.ColHeader>
             <Table.ColHeader colSpan={1}>
@@ -60,7 +62,7 @@ const AllTeamsOnSeasonList = ({ activeSeason, allTeamsOnSeason }) => {
             </Table.ColHeader>
             <Table.ColHeader colSpan={1} alignContent="center">
               Achievements
-            </Table.ColHeader>
+            </Table.ColHeader> */}
           </Table.Row>
         </Table.Header>
         <Table.Body>
