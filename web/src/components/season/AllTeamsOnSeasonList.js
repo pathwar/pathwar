@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Link } from "@reach/router";
-import { Card, Table, Dimmer, Icon } from "tabler-react";
+// import { Link } from "@reach/router";
+import { Card, Table, Dimmer } from "tabler-react";
 import PropTypes from "prop-types";
 import moment from "moment";
 
-import styles from "./style.module.css";
+// import styles from "./style.module.css";
 
 const TeamsRows = ({ teams }) => {
   return teams.map(item => {
