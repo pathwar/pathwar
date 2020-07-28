@@ -10,7 +10,7 @@ const TeamsRows = ({ teams }) => {
     return (
       <Table.Row key={item.organization.id}>
         <Table.Col>{item.organization.name}</Table.Col>
-        <Table.Col alignContent="center">{item.cash || "$0"}</Table.Col>
+        <Table.Col alignContent="center">{`$${item.cash}` || "$0"}</Table.Col>
         <Table.Col alignContent="center">{item.created_at}</Table.Col>
         {/* <Table.Col colSpan={1} alignContent="center">
           {item.score}
