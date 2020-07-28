@@ -1,18 +1,23 @@
 import * as React from "react";
-import { Link } from "@reach/router";
-import { Card, Table, Dimmer, Icon } from "tabler-react";
+// import { Link } from "@reach/router";
+import { Card, Table, Dimmer } from "tabler-react";
 import PropTypes from "prop-types";
+import moment from "moment";
 
-import styles from "./style.module.css";
+// import styles from "./style.module.css";
 
 const TeamsRows = ({ teams }) => {
   return teams.map(item => {
     return (
       <Table.Row key={item.organization.id}>
-        <Table.Col colSpan={2}>
-          <Link to={`/app/team/${item.id}`}>{item.organization.name}</Link>
+        <Table.Col>{item.organization.name}</Table.Col>
+        <Table.Col alignContent="center">
+          {(item.cash && `$${item.cash}`) || "$0"}
         </Table.Col>
-        <Table.Col colSpan={1} alignContent="center">
+        <Table.Col alignContent="center">
+          {moment(item.created_at).calendar()}
+        </Table.Col>
+        {/* <Table.Col colSpan={1} alignContent="center">
           {item.score}
         </Table.Col>
         <Table.Col colSpan={1} alignContent="center">
@@ -26,7 +31,7 @@ const TeamsRows = ({ teams }) => {
         </Table.Col>
         <Table.Col colSpan={1} alignContent="center">
           {item.nb_achievements || 0}
-        </Table.Col>
+        </Table.Col> */}
       </Table.Row>
     );
   });
@@ -45,8 +50,10 @@ const AllTeamsOnSeasonList = ({ activeSeason, allTeamsOnSeason }) => {
       >
         <Table.Header>
           <Table.Row>
-            <Table.ColHeader colSpan={2}>Team</Table.ColHeader>
-            <Table.ColHeader colSpan={1} alignContent="center">
+            <Table.ColHeader>Team</Table.ColHeader>
+            <Table.ColHeader alignContent="center">Cash</Table.ColHeader>
+            <Table.ColHeader alignContent="center">Joined</Table.ColHeader>
+            {/* <Table.ColHeader colSpan={1} alignContent="center">
               Score
             </Table.ColHeader>
             <Table.ColHeader colSpan={1}>
@@ -60,7 +67,7 @@ const AllTeamsOnSeasonList = ({ activeSeason, allTeamsOnSeason }) => {
             </Table.ColHeader>
             <Table.ColHeader colSpan={1} alignContent="center">
               Achievements
-            </Table.ColHeader>
+            </Table.ColHeader> */}
           </Table.Row>
         </Table.Header>
         <Table.Body>
