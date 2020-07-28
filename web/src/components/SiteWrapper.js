@@ -146,7 +146,12 @@ class SiteWrapper extends React.Component {
         }}
         navProps={{
           itemsObjects: navBarItems,
-          rightColumnComponent: <ValidateCouponForm />,
+          rightColumnComponent: (
+            <>
+              <ValidateCouponForm />
+              {navItemsProps(userSession, activeSeason)}
+            </>
+          ),
         }}
       >
         {this.props.children}
