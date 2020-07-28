@@ -18,11 +18,11 @@ pathwar.ps:
 docker.build:
 	docker-compose build --pull
 
-.PHONY: pathwar-prepare
+.PHONY: pathwar.prepare
 pathwar.prepare:
-	pathwar $(PATHWAR_OPTS) compose prepare --prefix=$(PREFIX) --no-push .
+	pathwar $(PATHWAR_OPTS) compose prepare --prefix=$(PREFIX) --no-push . > pathwar-compose.yml
 
-.PHONY: pathwar-push
+.PHONY: pathwar.push
 pathwar.push:
 	pathwar $(PATHWAR_OPTS) compose prepare --prefix=$(PREFIX) .
 

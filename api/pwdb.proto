@@ -11,9 +11,9 @@ option (gogoproto.marshaler_all) = true;
 option (gogoproto.unmarshaler_all) = true;
 
 message Challenge {
-  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
-  google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\" yaml:\"id,omitempty\"", (gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true, (gogoproto.moretags) = "yaml:\"created_at,omitempty\""];
+  google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true, (gogoproto.moretags) = "yaml:\"updated_at,omitempty\""];
 
   string name = 100;
   string description = 101;
@@ -26,13 +26,13 @@ message Challenge {
   // AuthorProfile
   // repeated string tags = ;
 
-  repeated ChallengeFlavor flavors = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+  repeated ChallengeFlavor flavors = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\" yaml:\"flavors,omitempty\""];
 }
 
 message ChallengeFlavor {
-  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
-  google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\" yaml:\"id,omitempty\"", (gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true, (gogoproto.moretags) = "yaml:\"created_at,omitempty\""];
+  google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true, (gogoproto.moretags) = "yaml:\"updated_at,omitempty\""];
 
   string version = 100;
   string changelog = 101;
@@ -46,10 +46,10 @@ message ChallengeFlavor {
   string slug = 109 [(gogoproto.moretags) = "gorm:\"unique_index\""];
   string body = 110;
 
-  Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\""];
-  int64 challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
-  repeated SeasonChallenge season_challenges = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false;foreignkey:FlavorID\""];
-  repeated ChallengeInstance instances = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false;foreignkey:FlavorID\""];
+  Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\" yaml:\"challenge,omitempty\""];
+  int64 challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\" yaml:\"challenge_id,omitempty\""];
+  repeated SeasonChallenge season_challenges = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false;foreignkey:FlavorID\" yaml:\"season_challenges,omitempty\""];
+  repeated ChallengeInstance instances = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false;foreignkey:FlavorID\" yaml:\"instances,omitempty\""];
   //repeated ChallengeSubscription subscriptions = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 
   enum Driver {

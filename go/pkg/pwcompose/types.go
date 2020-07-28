@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/docker/docker/api/types"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
 type config struct {
@@ -11,6 +12,10 @@ type config struct {
 	Networks map[string]network
 	Volumes  map[string]volume
 	Services map[string]Service
+	XPathwar struct {
+		Challenge pwdb.Challenge       `yaml:"challenge"`
+		Flavor    pwdb.ChallengeFlavor `yaml:"flavor"`
+	} `yaml:"x-pathwar"`
 }
 
 type network struct {
