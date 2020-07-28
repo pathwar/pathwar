@@ -2,6 +2,7 @@ package pwapi
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -16,9 +17,10 @@ func TestSvc_TeamGet(t *testing.T) {
 
 	// FIXME: check for permissions
 
-	organizations := map[string]int64{}
-	for _, organization := range testingTeams(t, svc).Items {
-		organizations[organization.Organization.Name] = organization.ID
+	teams := map[string]int64{}
+	for _, team := range testingTeams(t, svc).Items {
+		key := fmt.Sprintf("%s/%s", team.Season.Name, team.Organization.Name)
+		teams[key] = team.ID
 	}
 
 	var tests = []struct {
@@ -30,7 +32,7 @@ func TestSvc_TeamGet(t *testing.T) {
 	}{
 		{"empty", &TeamGet_Input{}, errcode.ErrMissingInput, "", ""},
 		{"unknown-season-id", &TeamGet_Input{TeamID: -42}, errcode.ErrGetTeam, "", ""},
-		{"Staff", &TeamGet_Input{TeamID: organizations["Staff"]}, nil, "Staff", "Solo Mode"},
+		{"Staff", &TeamGet_Input{TeamID: teams["Global/Staff"]}, nil, "Staff", "Global"},
 	}
 
 	for _, test := range tests {

@@ -44,17 +44,17 @@ func testingSeasonChallenges(t *testing.T, svc Service) *pwdb.SeasonChallengeLis
 	return &list
 }
 
-func testingSoloSeason(t *testing.T, svc Service) *pwdb.Season {
+func testingGlobalSeason(t *testing.T, svc Service) *pwdb.Season {
 	t.Helper()
 
 	seasons := testingSeasons(t, svc)
 	for _, season := range seasons.Items {
-		if season.Name == "Solo Mode" {
+		if season.Name == "Global" {
 			return season
 		}
 	}
 
-	t.Fatalf("no such solo season")
+	t.Fatalf("no such global season")
 	return nil
 }
 

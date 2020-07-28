@@ -32,21 +32,43 @@ func (svc *service) AdminChallengeFlavorAdd(ctx context.Context, in *AdminChalle
 			return errcode.ErrChallengeFlavorAdd.Wrap(err)
 		}
 
-		var agentsToInstanciate []*pwdb.Agent
-		if err = tx.Where(pwdb.Agent{DefaultAgent: true}).Find(&agentsToInstanciate).Error; err != nil {
-			return err
+		// testing seasons
+		{
+			var testingSeasons []*pwdb.Season
+			if err = tx.Where(pwdb.Season{IsTesting: true}).Find(&testingSeasons).Error; err != nil {
+				return err
+			}
+
+			for _, season := range testingSeasons {
+				seasonChallenge := pwdb.SeasonChallenge{
+					SeasonID: season.ID,
+					FlavorID: in.ChallengeFlavor.ID,
+				}
+				err = tx.Create(&seasonChallenge).Error
+				if err != nil {
+					return pwdb.GormToErrcode(err)
+				}
+			}
 		}
 
-		for _, agent := range agentsToInstanciate {
-			instance := pwdb.ChallengeInstance{
-				Status:         pwdb.ChallengeInstance_IsNew,
-				AgentID:        agent.ID,
-				FlavorID:       in.ChallengeFlavor.ID,
-				InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
+		// default agents
+		{
+			var agentsToInstanciate []*pwdb.Agent
+			if err = tx.Where(pwdb.Agent{DefaultAgent: true}).Find(&agentsToInstanciate).Error; err != nil {
+				return err
 			}
-			err = tx.Create(&instance).Error
-			if err != nil {
-				return pwdb.GormToErrcode(err)
+
+			for _, agent := range agentsToInstanciate {
+				instance := pwdb.ChallengeInstance{
+					Status:         pwdb.ChallengeInstance_IsNew,
+					AgentID:        agent.ID,
+					FlavorID:       in.ChallengeFlavor.ID,
+					InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
+				}
+				err = tx.Create(&instance).Error
+				if err != nil {
+					return pwdb.GormToErrcode(err)
+				}
 			}
 		}
 		return nil

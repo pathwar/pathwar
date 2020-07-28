@@ -54,6 +54,6 @@ func (in *AdminSeasonChallengeAdd_Input) ApplyDefaults() {
 		in.SeasonChallenge = &pwdb.SeasonChallenge{}
 	}
 	if in.SeasonID == "" {
-		in.SeasonID = "solo-mode"
+		in.SeasonID = "global"
 	}
 }

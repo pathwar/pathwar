@@ -16,7 +16,7 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 	defer cleanup()
 	ctx := testingSetContextToken(context.Background(), t)
 
-	solo := testingSoloSeason(t, svc)
+	gs := testingGlobalSeason(t, svc)
 
 	// fetch user session
 	session, err := svc.UserGetSession(ctx, nil)
@@ -24,7 +24,7 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 	activeTeam := session.User.ActiveTeamMember.Team
 
 	// fetch challenges
-	challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{SeasonID: solo.ID})
+	challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{SeasonID: gs.ID})
 	require.NoError(t, err)
 
 	// buy challenges

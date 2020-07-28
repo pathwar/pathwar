@@ -95,9 +95,9 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 		return nil, errcode.ErrGetOrganization.Wrap(err)
 	}
 
-	// check if organization is in solo season
-	if organization.SoloSeason {
-		return nil, errcode.ErrCannotCreateTeamForSoloOrganization
+	// check if organization is in global season
+	if organization.GlobalSeason {
+		return nil, errcode.ErrCannotCreateTeamForGlobalOrganization
 	}
 
 	// check if user belongs to the organization

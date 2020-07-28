@@ -143,6 +143,6 @@ func (in *SeasonChallengeBuy_Input) ApplyDefaults() {
 		return
 	}
 	if in.SeasonID == "" {
-		in.SeasonID = "solo-mode"
+		in.SeasonID = "global"
 	}
 }

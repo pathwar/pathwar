@@ -33,7 +33,7 @@ func TestActivity(t *testing.T) {
 		assert.Equal(t, activity.Author.ID, session.User.ID)
 		assert.Equal(t, activity.User.ID, session.User.ID)
 		assert.Equal(t, activity.Team.ID, session.User.ActiveTeamMember.Team.ID)
-		assert.Equal(t, activity.Season.Name, "Solo Mode")
+		assert.Equal(t, activity.Season.Name, "Global")
 		assert.Equal(t, activity.Organization.ID, session.User.ActiveTeamMember.Team.Organization.ID)
 		assert.Equal(t, activity.TeamMember.ID, session.User.ActiveTeamMember.ID)
 	}
@@ -55,9 +55,9 @@ func TestActivity(t *testing.T) {
 	var freeChallenge, expensiveChallenge *pwdb.SeasonChallenge
 	var subscription *SeasonChallengeBuy_Output
 	{
-		solo := testingSoloSeason(t, svc)
+		gs := testingGlobalSeason(t, svc)
 		activeTeam := session.User.ActiveTeamMember.Team
-		challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{solo.ID})
+		challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{gs.ID})
 		require.NoError(t, err)
 
 		for _, challenge := range challenges.Items {
@@ -84,7 +84,7 @@ func TestActivity(t *testing.T) {
 		assert.Equal(t, activity.Kind, pwdb.Activity_SeasonChallengeBuy)
 		assert.Equal(t, activity.AuthorID, session.User.ID)
 		assert.Equal(t, activity.TeamID, session.User.ActiveTeamMember.Team.ID)
-		assert.Equal(t, activity.Season.Name, "Solo Mode")
+		assert.Equal(t, activity.Season.Name, "Global")
 		assert.Equal(t, activity.ChallengeSubscriptionID, subscription.ChallengeSubscription.ID)
 		assert.Equal(t, activity.SeasonChallengeID, subscription.ChallengeSubscription.SeasonChallenge.ID)
 	}
@@ -119,7 +119,7 @@ func TestActivity(t *testing.T) {
 		assert.Equal(t, activity.ChallengeSubscriptionID, subscription.ChallengeSubscription.ID)
 		assert.Equal(t, activity.SeasonChallengeID, subscription.ChallengeSubscription.SeasonChallenge.ID)
 		assert.Equal(t, activity.ChallengeFlavorID, subscription.ChallengeSubscription.SeasonChallenge.Flavor.ID)
-		assert.Equal(t, activity.Season.Name, "Solo Mode")
+		assert.Equal(t, activity.Season.Name, "Global")
 		assert.Equal(t, activity.TeamID, session.User.ActiveTeamMember.Team.ID)
 		//fmt.Println(godev.PrettyJSON(activity))
 	}
@@ -148,7 +148,7 @@ func TestActivity(t *testing.T) {
 		assert.Equal(t, activity.Kind, pwdb.Activity_CouponValidate)
 		assert.Equal(t, activity.AuthorID, session.User.ID)
 		assert.Equal(t, activity.TeamID, session.User.ActiveTeamMember.Team.ID)
-		assert.Equal(t, activity.Season.Name, "Solo Mode")
+		assert.Equal(t, activity.Season.Name, "Global")
 		assert.Equal(t, activity.CouponID, ret.CouponValidation.CouponID)
 	}
 
@@ -176,7 +176,7 @@ func TestActivity(t *testing.T) {
 		assert.Equal(t, activity.Kind, pwdb.Activity_SeasonChallengeBuy)
 		assert.Equal(t, activity.AuthorID, session.User.ID)
 		assert.Equal(t, activity.TeamID, session.User.ActiveTeamMember.Team.ID)
-		assert.Equal(t, activity.Season.Name, "Solo Mode")
+		assert.Equal(t, activity.Season.Name, "Global")
 		assert.Equal(t, activity.ChallengeSubscriptionID, subscription.ChallengeSubscription.ID)
 		assert.Equal(t, activity.SeasonChallengeID, subscription.ChallengeSubscription.SeasonChallenge.ID)
 	}

@@ -42,8 +42,8 @@ func TestingCreateEntities(t *testing.T, db *gorm.DB) {
 	t.Helper()
 	if err := db.Transaction(func(tx *gorm.DB) error {
 		// load base objects
-		soloSeason := Season{Name: "Solo Mode"}
-		err := tx.Where(&soloSeason).First(&soloSeason).Error
+		globalSeason := Season{IsGlobal: true}
+		err := tx.Where(&globalSeason).First(&globalSeason).Error
 		if err != nil {
 			return GormToErrcode(err)
 		}
@@ -52,7 +52,7 @@ func TestingCreateEntities(t *testing.T, db *gorm.DB) {
 		if err != nil {
 			return GormToErrcode(err)
 		}
-		staffTeam := Team{SeasonID: soloSeason.ID, OrganizationID: staffOrg.ID}
+		staffTeam := Team{SeasonID: globalSeason.ID, OrganizationID: staffOrg.ID}
 		err = tx.Where(&staffTeam).First(&staffTeam).Error
 		if err != nil {
 			return GormToErrcode(err)
@@ -65,7 +65,7 @@ func TestingCreateEntities(t *testing.T, db *gorm.DB) {
 
 		// seasons
 		testSeason := &Season{
-			Name:       "Test Season",
+			Name:       "Unit Test Season",
 			Status:     Season_Started,
 			Visibility: Season_Public,
 		}
@@ -104,15 +104,113 @@ func TestingCreateEntities(t *testing.T, db *gorm.DB) {
 			}
 		}
 
+		// challenges
+		bundle := `version: "3.7"
+networks: {}
+volumes: {}
+services:
+  gotty:
+    image: pathwar/challenge-debug@sha256:a5f48f8c2eaf7f5cd106b2d115cfce351bb64653211f45cfe4829b668d3547f3
+    ports:
+      - "8080"
+    labels:
+      land.pathwar.compose.challenge-name: challenge-debug
+      land.pathwar.compose.challenge-version: 1.0.0
+      land.pathwar.compose.origin: was-built
+      land.pathwar.compose.service-name: gotty
+`
+		challengeDebug := newOfficialChallengeWithFlavor("Debug", "https://github.com/pathwar/challenge-debug", bundle)
+		challengeDebug.PurchasePrice = 0
+		challengeDebug.addSeasonChallengeByID(globalSeason.ID)
+
+		bundle = `version: "3.7"
+networks: {}
+volumes: {}
+services:
+    front:
+        image: pathwar/helloworld@sha256:bf7a6384b4f19127ca1dd3c383d695030478e6d68ec27f24bb83edc42a5f3d26
+        ports:
+            - "80"
+        labels:
+            land.pathwar.compose.challenge-name: helloworld
+            land.pathwar.compose.challenge-version: 1.0.0
+            land.pathwar.compose.origin: was-built
+            land.pathwar.compose.service-name: front
+`
+		helloworld := newOfficialChallengeWithFlavor("Hello World", "https://github.com/pathwar/pathwar/tree/master/challenges/web/helloworld", bundle)
+		helloworld.PurchasePrice = 0
+		helloworld.addSeasonChallengeByID(globalSeason.ID)
+
+		bundle = `version: "3.7"
+networks: {}
+volumes: {}
+services:
+    front:
+        image: pathwar/training-sqli@sha256:77c49c7907e19cd92baf2d6278dd017d2f5f6b9d6214d308694fba1572693545
+        ports:
+            - "80"
+        depends_on:
+            - mysql
+        labels:
+            land.pathwar.compose.challenge-name: training-sqli
+            land.pathwar.compose.challenge-version: 1.0.0
+            land.pathwar.compose.origin: was-built
+            land.pathwar.compose.service-name: front
+    mysql:
+        image: pathwar/training-sqli@sha256:914ee0d8bf48e176b378c43ad09751c341d0266381e76ae12c385fbc6beb5983
+        expose:
+            - "3306"
+        labels:
+            land.pathwar.compose.challenge-name: training-sqli
+            land.pathwar.compose.challenge-version: 1.0.0
+            land.pathwar.compose.origin: was-built
+            land.pathwar.compose.service-name: mysql
+`
+		trainingSQLI := newOfficialChallengeWithFlavor("Training SQLI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-sqli", bundle)
+		trainingSQLI.addSeasonChallengeByID(globalSeason.ID)
+
+		bundle = `version: "3.7"
+networks: {}
+volumes: {}
+services:
+    front:
+        image: pathwar/training-http@sha256:92c46270f8d7be9d927345353b7ea49b37dbf6c82ab6b2da3bc401f9fbacf5e5
+        ports:
+          - "80"
+        labels:
+            land.pathwar.compose.challenge-name: training-http
+            land.pathwar.compose.challenge-version: 1.0.0
+            land.pathwar.compose.origin: was-built
+            land.pathwar.compose.service-name: front
+`
+
+		trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http", bundle)
+		trainingHTTP.addSeasonChallengeByID(globalSeason.ID)
+
+		for _, flavor := range []*ChallengeFlavor{
+			challengeDebug, helloworld, trainingSQLI, trainingHTTP,
+		} {
+			err = tx.Set("gorm:association_autoupdate", false).Create(flavor.Challenge).Error
+			if err != nil {
+				return GormToErrcode(err)
+			}
+			flavor.ChallengeID = flavor.Challenge.ID
+
+			err = tx.Set("gorm:association_autoupdate", false).Create(flavor).Error
+			if err != nil {
+				return GormToErrcode(err)
+			}
+		}
+
 		dummyChallenge1 := newOfficialChallengeWithFlavor("dummy challenge 1", "https://...", "")
 		dummyChallenge1.PurchasePrice = 0
-		dummyChallenge1.addSeasonChallengeByID(soloSeason.ID)
+		dummyChallenge1.addSeasonChallengeByID(globalSeason.ID)
 		dummyChallenge1.addSeasonChallengeByID(testSeason.ID)
 		dummyChallenge2 := newOfficialChallengeWithFlavor("dummy challenge 2", "https://...", "")
-		dummyChallenge2.addSeasonChallengeByID(soloSeason.ID)
+		dummyChallenge2.addSeasonChallengeByID(globalSeason.ID)
 		dummyChallenge2.addSeasonChallengeByID(testSeason.ID)
 		dummyChallenge3 := newOfficialChallengeWithFlavor("dummy challenge 3", "https://...", "")
-		dummyChallenge3.addSeasonChallengeByID(soloSeason.ID)
+		dummyChallenge3.addSeasonChallengeByID(globalSeason.ID)
 		dummyChallenge3.addSeasonChallengeByID(testSeason.ID)
 
 		for _, flavor := range []*ChallengeFlavor{
@@ -181,10 +279,10 @@ func TestingCreateEntities(t *testing.T, db *gorm.DB) {
 
 		// coupons
 		coupons := []*Coupon{
-			{Hash: "test-coupon-1", Value: 42, MaxValidationCount: 1, SeasonID: soloSeason.ID},
+			{Hash: "test-coupon-1", Value: 42, MaxValidationCount: 1, SeasonID: globalSeason.ID},
 			{Hash: "test-coupon-2", Value: 42, MaxValidationCount: 1, SeasonID: testSeason.ID},
-			{Hash: "test-coupon-3", Value: 42, MaxValidationCount: 0, SeasonID: soloSeason.ID},
-			{Hash: "test-coupon-4", Value: 42, MaxValidationCount: 2, SeasonID: soloSeason.ID},
+			{Hash: "test-coupon-3", Value: 42, MaxValidationCount: 0, SeasonID: globalSeason.ID},
+			{Hash: "test-coupon-4", Value: 42, MaxValidationCount: 2, SeasonID: globalSeason.ID},
 		}
 		for _, coupon := range coupons {
 			err := tx.

@@ -30,11 +30,11 @@ func TestSvc_UserSetPreferences(t *testing.T) {
 		expectedSeasonID     int64
 		expectedTeamMemberID int64
 	}{
-		{"empty", &UserSetPreferences_Input{}, errcode.ErrMissingInput, seasons["Solo Mode"], beforeSession.User.ActiveTeamMemberID},
-		{"unknown-season-id", &UserSetPreferences_Input{ActiveSeasonID: -42}, errcode.ErrInvalidSeasonID, seasons["Solo Mode"], beforeSession.User.ActiveTeamMemberID},
-		{"solo-mode", &UserSetPreferences_Input{ActiveSeasonID: seasons["Solo Mode"]}, nil, seasons["Solo Mode"], beforeSession.User.ActiveTeamMemberID},
-		{"test-season", &UserSetPreferences_Input{ActiveSeasonID: seasons["Test Season"]}, nil, seasons["Test Season"], 0},
-		{"solo-mode-again", &UserSetPreferences_Input{ActiveSeasonID: seasons["Solo Mode"]}, nil, seasons["Solo Mode"], beforeSession.User.ActiveTeamMemberID},
+		{"empty", &UserSetPreferences_Input{}, errcode.ErrMissingInput, seasons["Global"], beforeSession.User.ActiveTeamMemberID},
+		{"unknown-season-id", &UserSetPreferences_Input{ActiveSeasonID: -42}, errcode.ErrInvalidSeasonID, seasons["Global"], beforeSession.User.ActiveTeamMemberID},
+		{"global-mode", &UserSetPreferences_Input{ActiveSeasonID: seasons["Global"]}, nil, seasons["Global"], beforeSession.User.ActiveTeamMemberID},
+		{"test-season", &UserSetPreferences_Input{ActiveSeasonID: seasons["Unit Test Season"]}, nil, seasons["Unit Test Season"], 0},
+		{"global-mode-again", &UserSetPreferences_Input{ActiveSeasonID: seasons["Global"]}, nil, seasons["Global"], beforeSession.User.ActiveTeamMemberID},
 	}
 
 	for _, test := range tests {

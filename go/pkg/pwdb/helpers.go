@@ -97,11 +97,11 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 			Name:       gofakeit.HipsterWord(),
 			Status:     Season_Started,
 			Visibility: Season_Public,
-			IsDefault:  false,
+			IsGlobal:   false,
 		}
 		seasons = append(seasons, season)
 	}
-	seasons[0].IsDefault = true
+	seasons[0].IsGlobal = true
 	logger.Debug("Generating seasons")
 	for _, entity := range seasons {
 		if err := db.Set("gorm:association_autoupdate", true).Create(entity).Error; err != nil {
