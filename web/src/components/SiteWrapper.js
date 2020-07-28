@@ -84,45 +84,54 @@ const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
 
 const SeasonDropdownSelector = ({ userSession, activeSeason }) => {
   const { activeUserSession } = userSession || {};
+  let items;
+
+  const multipleItems =
+    activeUserSession &&
+    activeUserSession.seasons &&
+    activeUserSession.seasons.length >= 2;
+
   const clicked = e => {
     e.preventDefault();
     alert(activeSeason.name);
   };
 
-  const items =
-    activeUserSession &&
-    activeUserSession.seasons.map(dataSet => {
-      const { season } = dataSet;
-      const isActive = activeSeason && season.id === activeSeason.id;
+  if (multipleItems) {
+    items =
+      activeUserSession &&
+      activeUserSession.seasons.map(dataSet => {
+        const { season } = dataSet;
+        const isActive = activeSeason && season.id === activeSeason.id;
 
-      return (
-        <Dropdown.Item
-          className={isActive && "active bold"}
-          key={season.id}
-          to="#"
-          onClick={e => clicked(e)}
-        >
-          <div style={{ fontWeight: isActive ? "bold" : "initial" }}>
-            {season.name}
-          </div>
-          <div>
-            <Tag.List>
-              <Tag addOn={season.status} addOnColor="indigo">
-                Status
-              </Tag>
-              <Tag addOn={season.visibility} addOnColor="indigo">
-                Visibility
-              </Tag>
-            </Tag.List>
-          </div>
-        </Dropdown.Item>
-      );
-    });
+        return (
+          <Dropdown.Item
+            className={isActive && "active bold"}
+            key={season.id}
+            to="#"
+            onClick={e => clicked(e)}
+          >
+            <div style={{ fontWeight: isActive ? "bold" : "initial" }}>
+              {season.name}
+            </div>
+            <div>
+              <Tag.List>
+                <Tag addOn={season.status} addOnColor="indigo">
+                  Status
+                </Tag>
+                <Tag addOn={season.visibility} addOnColor="indigo">
+                  Visibility
+                </Tag>
+              </Tag.List>
+            </div>
+          </Dropdown.Item>
+        );
+      });
+  }
 
   return (
     <Dropdown
       triggerContent={(activeSeason && activeSeason.name) || "Loading.."}
-      type="button"
+      toggle={multipleItems}
       color="primary"
       icon="flag"
       items={items}
@@ -131,19 +140,19 @@ const SeasonDropdownSelector = ({ userSession, activeSeason }) => {
 };
 
 const NavBar = ({ userSession }) => {
-  const {
-    activeUserSession: {
-      user: {
-        active_team_member: { team },
-      },
-    },
-  } = userSession;
+  const { activeUserSession } = userSession;
+  const user = activeUserSession && activeUserSession.user;
+  const team = user && user.active_team_member && user.active_team_member.team;
 
   return (
     <Grid.Row className="align-items-center">
       <Grid.Col width={6} className="ml-auto text-right" ignoreCol={true}>
         <ValidateCouponForm />
-        <Tag color="lime" addOn={team.cash || "$0"} addOnColor="green">
+        <Tag
+          color="lime"
+          addOn={(team && team.cash) || "$0"}
+          addOnColor="green"
+        >
           Cash
         </Tag>
       </Grid.Col>
