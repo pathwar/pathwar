@@ -36,14 +36,14 @@ const StatisticsPage = () => {
       </Helmet>
       <Page.Content title={`Statistics`}>
         <Grid.Row cards={true}>
-          <Grid.Col auto>
+          <Grid.Col xs={12} sm={12} md={3}>
             <CreateTeamButton
               activeSeason={activeSeason}
               createTeam={dispatchCreateTeamAction}
               activeTeamInSeason={activeTeamInSeason}
             />
           </Grid.Col>
-          <Grid.Col xs={12} sm={12} lg={9}>
+          <Grid.Col xs={12} sm={12} md={9}>
             <AllTeamsOnSeasonList
               activeSeason={activeSeason}
               allTeamsOnSeason={allTeamsOnSeason}
