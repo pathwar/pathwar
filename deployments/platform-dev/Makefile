@@ -6,7 +6,10 @@ ps restart pull:
 	docker-compose $@
 
 .PHONY: up
-up:
+up: up-slow
+
+.PHONY: up-fast
+up-fast:
 	docker-compose up -d
 
 .PHONY: up-slow

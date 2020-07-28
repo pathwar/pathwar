@@ -42,6 +42,14 @@ integration:
 # rules.mk will already build the original Dockerfile
 docker.build: agent.docker.build
 
+api.docker.push: api.docker.build
+api.docker.push:
+	docker push pathwar/pathwar
+
 .PHONY: agent.docker.build
 agent.docker.build:
 	$(call docker_build,Dockerfile.agent,pathwar/agent)
+
+.PHONY: api.docker.build
+api.docker.build:
+	$(call docker_build,Dockerfile,pathwar/pathwar)

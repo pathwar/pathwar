@@ -18,7 +18,7 @@ if($_POST['posted'])
     echo '<b>Image uploaded !</b>';
     echo '<hr>';
     echo '<p align="center">';
-    echo '<b>File :</b> <a href='.$target.$_FILES['file']['name'].'>'.$_FILES['file']['name'].'</a><br>';
+    echo '<b>File :</b> <a href="'.$target.$_FILES['file']['name'].'">'.$_FILES['file']['name'].'</a><br>';
     echo '<b>Size :</b> '.$_FILES['file']['size'].' Octets<br><br>';
     echo '<img src='.$target.$_FILES['file']['name'].' alt="Preview" style="max-height: 420px; max-width: 420px"">';
     echo '<hr>';
