@@ -93,6 +93,7 @@ const App = () => {
             />
             <ProtectedRoute path="/app/settings" component={SettingsPage} />
             <ProtectedRoute path="/app/logout" component={LogoutPage} />
+            <ProtectedRoute path="/app" component={ChallengesPage} />
           </Router>
         )}
       </Location>
