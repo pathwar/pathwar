@@ -11,26 +11,6 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/pwinit"
 )
 
-func newOfficialChallengeWithFlavor(name string, homepage string, composeBundle string) *ChallengeFlavor {
-	return &ChallengeFlavor{
-		Challenge: &Challenge{
-			Name:     name,
-			Author:   "Staff Team",
-			Homepage: homepage,
-			IsDraft:  false,
-		},
-		SourceURL:        homepage,
-		IsLatest:         true,
-		IsDraft:          false,
-		Changelog:        "Initial Version",
-		Version:          "v1",
-		ComposeBundle:    composeBundle,
-		PurchasePrice:    5,
-		ValidationReward: 10,
-		Driver:           ChallengeFlavor_DockerCompose,
-	}
-}
-
 func (cf *ChallengeFlavor) addSeasonChallengeByID(seasonID int64) {
 	if cf.SeasonChallenges == nil {
 		cf.SeasonChallenges = []*SeasonChallenge{}

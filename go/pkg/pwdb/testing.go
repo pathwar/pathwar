@@ -299,3 +299,20 @@ services:
 		t.Fatalf("create testing entities: %v", err)
 	}
 }
+
+func newOfficialChallengeWithFlavor(name string, homepage string, composeBundle string) *ChallengeFlavor {
+	return &ChallengeFlavor{
+		Challenge: &Challenge{
+			Name:     name,
+			Author:   "Staff Team",
+			Homepage: homepage,
+			IsDraft:  false,
+		},
+		SourceURL:        homepage,
+		Version:          "default",
+		ComposeBundle:    composeBundle,
+		PurchasePrice:    5,
+		ValidationReward: 10,
+		Driver:           ChallengeFlavor_DockerCompose,
+	}
+}

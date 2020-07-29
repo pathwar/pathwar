@@ -2,7 +2,9 @@ package pwapi
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"strings"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -51,6 +53,16 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 	for _, sc := range seasonChallenges {
 		// FIXME: hide challenges without flavors?
 		//fmt.Println(sc.ID, godev.PrettyJSON(sc.Flavor.Instances))
+		if sc.Flavor.TagList != "" {
+			sc.Flavor.Tags = strings.Split(sc.Flavor.TagList, ",")
+			sc.Flavor.TagList = ""
+		}
+		if sc.Flavor.RedumpPolicyConfig != "" {
+			err := json.Unmarshal([]byte(sc.Flavor.RedumpPolicyConfig), &sc.Flavor.RedumpPolicy)
+			if err == nil {
+				sc.Flavor.RedumpPolicyConfig = ""
+			}
+		}
 		for _, instance := range sc.Flavor.Instances {
 			// FIXME: hide instances without nginx-url?
 			instance.InstanceConfig = nil

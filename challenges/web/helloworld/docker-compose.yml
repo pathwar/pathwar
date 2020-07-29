@@ -12,6 +12,13 @@ x-pathwar:
     purchase_price: 0
     validation_reward: 1
     body: "Introduction challenge."
+    passphrases: 1
+    category: web
+    tags:
+      - intro
+    redump-policy:
+      strategy: every
+      delay: 1d
 
 services:
   front:
