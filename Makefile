@@ -45,7 +45,6 @@ docker.build: agent.docker.build
 api.docker.push: api.docker.build
 api.docker.push:
 	docker push pathwar/pathwar
-
 agent.docker.push: agent.docker.build
 agent.docker.push:
 	docker push pathwar/agent
@@ -53,7 +52,13 @@ agent.docker.push:
 .PHONY: agent.docker.build
 agent.docker.build:
 	$(call docker_build,Dockerfile.agent,pathwar/agent)
-
 .PHONY: api.docker.build
 api.docker.build:
 	$(call docker_build,Dockerfile,pathwar/pathwar)
+
+.PHONY: agent.deploy
+agent.deploy: agent.docker.push
+	ssh $(PATHWAR_AGENT_DEPLOY_HOST) 'cd $(PATHWAR_AGENT_DEPLOY_PATH) && make down pull up logs'
+.PHONY: api.deploy
+api.deploy: api.docker.push
+	ssh $(PATHWAR_API_DEPLOY_HOST) 'cd $(PATHWAR_API_DEPLOY_PATH) && make pull up-fast logs'
