@@ -10,7 +10,7 @@ x-pathwar:
     homepage: https://github.com/pathwar/pathwar/tree/master/challenges/web/helloworld
   flavor:
     purchase_price: 0
-    validation_reward: 5
+    validation_reward: 1
     body: "Introduction challenge."
 
 services:

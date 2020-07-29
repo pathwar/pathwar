@@ -32,6 +32,7 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 	err = svc.db.
 		//Preload("Season").
 		Preload("Flavor").
+		Joins("LEFT JOIN challenge_flavor ON season_challenge.flavor_id = challenge_flavor.id").
 		Preload("Flavor.Challenge").
 		Preload("Flavor.Instances").
 		Preload("Flavor.Instances.Agent"). // FIXME: where status==active
@@ -39,6 +40,7 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 		Preload("Subscriptions.Team").
 		Preload("Subscriptions.Team.Season").
 		Where(pwdb.SeasonChallenge{SeasonID: in.SeasonID}).
+		Order("challenge_flavor.purchase_price asc, challenge_flavor.validation_reward asc").
 		Find(&seasonChallenges).
 		Error
 	if err != nil {
