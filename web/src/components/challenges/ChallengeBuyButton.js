@@ -1,8 +1,17 @@
-import React from "react";
+import React, { memo } from "react";
 import { Button } from "tabler-react";
+import { css } from "@emotion/core";
+
+const rewardText = css`
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin-top: 0.5rem;
+`;
 
 const ChallengeBuyButton = ({ challenge, buyChallenge, isClosed, ...rest }) => {
-  const hasSubscriptions = challenge.subscriptions;
+  const { subscriptions, flavor } = challenge;
+  const hasSubscriptions = subscriptions;
+  const { purchase_price: price, validation_reward: reward } = flavor;
 
   const handleBuyChallenge = async event => {
     event.preventDefault();
@@ -10,16 +19,19 @@ const ChallengeBuyButton = ({ challenge, buyChallenge, isClosed, ...rest }) => {
   };
 
   return (
-    <Button
-      icon={hasSubscriptions ? "check" : "dollar-sign"}
-      color="indigo"
-      disabled={hasSubscriptions || isClosed}
-      onClick={handleBuyChallenge}
-      {...rest}
-    >
-      {hasSubscriptions ? "Purchased" : "Buy"}
-    </Button>
+    <>
+      <Button
+        icon={hasSubscriptions ? "check" : "dollar-sign"}
+        color="indigo"
+        disabled={hasSubscriptions || isClosed}
+        onClick={handleBuyChallenge}
+        {...rest}
+      >
+        {hasSubscriptions ? "Purchased" : `${price || 0} Buy`}
+      </Button>
+      <p css={rewardText}>Reward: {reward}</p>
+    </>
   );
 };
 
-export default ChallengeBuyButton;
+export default memo(ChallengeBuyButton);
