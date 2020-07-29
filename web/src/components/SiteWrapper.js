@@ -44,7 +44,6 @@ const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
   }
 
   if (activeUserSession && activeKeycloakSession) {
-    options.push("profile");
     options.push({
       icon: "edit",
       value: "Edit account",
@@ -150,7 +149,7 @@ const NavBar = ({ userSession }) => {
         <ValidateCouponForm />
         <Tag
           color="lime"
-          addOn={(team && `$${team.cash}`) || "$0"}
+          addOn={(team && team.cash && `$${team.cash}`) || "$0"}
           addOnColor="green"
         >
           Cash
@@ -174,7 +173,7 @@ class SiteWrapper extends React.Component {
     return (
       <Site.Wrapper
         headerProps={{
-          href: "/",
+          href: "/app",
           alt: "Pathwar Project",
           imageURL: logo,
           accountDropdown: accountDropdownProps(userSession),

@@ -4,7 +4,7 @@ import { Button } from "tabler-react";
 const ChallengeBuyButton = ({ challenge, buyChallenge, ...rest }) => {
   const { subscriptions, flavor } = challenge;
   const hasSubscriptions = subscriptions;
-  const { purchase_price: price, validation_reward: reward } = flavor;
+  const { purchase_price: price } = flavor;
 
   const handleBuyChallenge = async event => {
     event.preventDefault();

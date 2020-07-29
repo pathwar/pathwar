@@ -2,7 +2,12 @@
 import React, { useState } from "react";
 import { Button, Card, Grid, Tag } from "tabler-react";
 import { useQueryParam, StringParam } from "use-query-params";
+import { css } from "@emotion/core";
 import ChallengeModal from "./ChallengeModal";
+
+const cardTag = css`
+  margin-right: 0.5rem;
+`;
 
 const ChallengeCard = ({ challenge }) => {
   const [modalQueryId, setModalQueryId] = useQueryParam("modal", StringParam);
@@ -41,6 +46,28 @@ const ChallengeCard = ({ challenge }) => {
                   `Hello Ol'salt! Try to beat the ${flavor.challenge.name} challenge.
               Heave ho!`}
               </p>
+            </Grid.Col>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Col width={12}>
+              <Tag
+                css={cardTag}
+                color="lime"
+                addOn={
+                  flavor.purchase_price ? `$${flavor.purchase_price}` : "$0"
+                }
+                addOnColor="green"
+              >
+                Price
+              </Tag>
+              <Tag
+                css={cardTag}
+                color="yellow"
+                addOn={flavor.validation_reward}
+                addOnColor="yellow"
+              >
+                Reward
+              </Tag>
             </Grid.Col>
           </Grid.Row>
           <ChallengeModal
