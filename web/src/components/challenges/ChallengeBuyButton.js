@@ -1,8 +1,10 @@
-import React from "react";
+import React, { memo } from "react";
 import { Button } from "tabler-react";
 
-const ChallengeBuyButton = ({ challenge, buyChallenge, isClosed, ...rest }) => {
-  const hasSubscriptions = challenge.subscriptions;
+const ChallengeBuyButton = ({ challenge, buyChallenge, ...rest }) => {
+  const { subscriptions, flavor } = challenge;
+  const hasSubscriptions = subscriptions;
+  const { purchase_price: price, validation_reward: reward } = flavor;
 
   const handleBuyChallenge = async event => {
     event.preventDefault();
@@ -10,16 +12,18 @@ const ChallengeBuyButton = ({ challenge, buyChallenge, isClosed, ...rest }) => {
   };
 
   return (
-    <Button
-      icon={hasSubscriptions ? "check" : "dollar-sign"}
-      color="indigo"
-      disabled={hasSubscriptions || isClosed}
-      onClick={handleBuyChallenge}
-      {...rest}
-    >
-      {hasSubscriptions ? "Purchased" : "Buy"}
-    </Button>
+    <>
+      <Button
+        icon={hasSubscriptions ? "check" : "dollar-sign"}
+        color="indigo"
+        disabled={hasSubscriptions}
+        onClick={handleBuyChallenge}
+        {...rest}
+      >
+        {hasSubscriptions ? "Purchased" : `${price || 0} Buy`}
+      </Button>
+    </>
   );
 };
 
-export default ChallengeBuyButton;
+export default memo(ChallengeBuyButton);
