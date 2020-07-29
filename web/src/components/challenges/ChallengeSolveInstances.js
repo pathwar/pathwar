@@ -10,10 +10,10 @@ const terminal = css`
     color: #fff;
     margin-right: 1.5rem;
   }
+`;
 
-  span {
-    color: #16b279;
-  }
+const statusStyle = status => css`
+  color: ${status === "Available" ? "#16b279" : "orange"};
 `;
 
 const ChallengeSolveInstances = ({ instances, purchased }) => {
@@ -25,17 +25,21 @@ const ChallengeSolveInstances = ({ instances, purchased }) => {
     >
       {!purchased && <p>Purchase the challenge to get resolution links...</p>}
       {purchased &&
-        instances.map(item => (
-          <div key={item.id}>
-            <a href={item.nginx_url} target="_blank" rel="noreferrer">
-              {item.nginx_url}
-            </a>
-            <span>
-              <Icon name="check-circle" />
-              {item.status}
-            </span>
-          </div>
-        ))}
+        instances.map(item => {
+          const isAvailable = item.status === "Available";
+
+          return (
+            <div key={item.id}>
+              <a href={item.nginx_url} target="_blank" rel="noreferrer">
+                {item.nginx_url}
+              </a>
+              <span css={statusStyle(item.status)}>
+                <Icon name={isAvailable ? "check-circle" : "x-circle"} />
+                {isAvailable ? item.status : "Available soon.."}
+              </span>
+            </div>
+          );
+        })}
     </Terminal>
   );
 };
