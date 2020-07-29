@@ -122,15 +122,17 @@ const ChallengeDetailsPage = props => {
               )} */}
           </Grid.Col>
         </Grid.Row>
-        {/* <hr /> */}
         <Grid.Row>
-          <Grid.Col width={12} sm={12} md={12}>
-            <h3>Solve challenge</h3>
-            <ChallengeSolveInstances
-              instances={flavor.instances}
-              purchased={purchased}
-            />
-          </Grid.Col>
+          {!validations && (
+            <Grid.Col width={12} sm={12} md={12}>
+              <h3>Solve challenge</h3>
+              <ChallengeSolveInstances
+                instances={flavor.instances}
+                purchased={purchased}
+              />
+            </Grid.Col>
+          )}
+
           {purchased && !validations && (
             <Grid.Col width={12} sm={12} md={12} className="text-right">
               <ChallengeValidateForm
