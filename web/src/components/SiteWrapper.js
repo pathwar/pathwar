@@ -44,7 +44,6 @@ const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
   }
 
   if (activeUserSession && activeKeycloakSession) {
-    options.push("profile");
     options.push({
       icon: "edit",
       value: "Edit account",
