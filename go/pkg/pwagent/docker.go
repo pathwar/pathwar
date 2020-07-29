@@ -2,6 +2,7 @@ package pwagent
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -9,10 +10,12 @@ import (
 	"github.com/docker/docker/client"
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
+	"pathwar.land/pathwar/v2/go/internal/randstring"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwcompose"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
+	"pathwar.land/pathwar/v2/go/pkg/pwinit"
 )
 
 func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstances_Output, dockerClient *client.Client, opts Opts) error {
@@ -81,10 +84,11 @@ func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstanc
 		}
 
 		// parse pwinit config
-		configData, err := instance.ParseInstanceConfig()
-		if err != nil {
-			errs = multierr.Append(errs, err)
-			continue
+		configData := pwinit.InitConfig{
+			Passphrases: make([]string, instance.Flavor.Passphrases),
+		}
+		for i := 0; i < int(instance.Flavor.Passphrases); i++ {
+			configData.Passphrases[i] = randstring.RandString(14)
 		}
 
 		bundle := instance.GetFlavor().GetComposeBundle()
@@ -96,7 +100,7 @@ func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstanc
 			InstanceKey:     instanceID, // WARN -> normal?
 			ForceRecreate:   true,
 			ProxyNetworkID:  proxyNetworkID,
-			PwinitConfig:    configData,
+			PwinitConfig:    &configData,
 			Logger:          opts.Logger,
 		}
 		containers, err := pwcompose.Up(ctx, dockerClient, upOpts)
@@ -104,6 +108,13 @@ func applyDockerConfig(ctx context.Context, apiInstances *pwapi.AgentListInstanc
 			errs = multierr.Append(errs, errcode.ErrUpPathwarInstance.Wrap(err))
 			continue
 		}
+
+		out, err := json.Marshal(configData)
+		if err != nil {
+			errs = multierr.Append(errs, errcode.TODO.Wrap(err))
+			continue
+		}
+		instance.InstanceConfig = out
 
 		l.Info(
 			"started instance",

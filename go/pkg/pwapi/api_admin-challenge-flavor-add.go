@@ -80,10 +80,9 @@ func (svc *service) AdminChallengeFlavorAdd(ctx context.Context, in *AdminChalle
 
 			for _, agent := range agentsToInstanciate {
 				instance := pwdb.ChallengeInstance{
-					Status:         pwdb.ChallengeInstance_IsNew,
-					AgentID:        agent.ID,
-					FlavorID:       in.ChallengeFlavor.ID,
-					InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
+					Status:   pwdb.ChallengeInstance_IsNew,
+					AgentID:  agent.ID,
+					FlavorID: in.ChallengeFlavor.ID,
 				}
 				err = tx.Create(&instance).Error
 				if err != nil {
