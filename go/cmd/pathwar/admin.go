@@ -121,7 +121,7 @@ func adminChallengesCommand() *ffcli.Command {
 			{
 				fmt.Println("FLAVORS")
 				table := tablewriter.NewWriter(os.Stdout)
-				table.SetHeader([]string{"FLAVOR", "CREATED", "UPDATED", "INSTANCES", "SEASON CHALLENGES", "PRICE/REWARD", "ID", "BODY"})
+				table.SetHeader([]string{"FLAVOR", "CREATED", "UPDATED", "INSTANCES", "SEASON CHALLENGES", "PRICE/REWARD", "PASSPHRASES", "BODY"})
 				table.SetAlignment(tablewriter.ALIGN_CENTER)
 				table.SetBorder(false)
 
@@ -136,17 +136,18 @@ func adminChallengesCommand() *ffcli.Command {
 							seasonChallengeParts = append(seasonChallengeParts, seasonChallenge.Season.Slug)
 						}
 						seasonChallenges := strings.Join(seasonChallengeParts, ", ")
-						id := fmt.Sprintf("%d", flavor.ID)
 						price := "free"
 						if flavor.PurchasePrice > 0 {
 							price = fmt.Sprintf("$%d", flavor.PurchasePrice)
 						}
 						priceReward := fmt.Sprintf("%s / $%d", price, flavor.ValidationReward)
 						body := flavor.Body
-						if len(body) > 10 {
-							body = body[:8] + "..."
+						if len(body) > 16 {
+							body = body[:15] + "..."
 						}
-						table.Append([]string{slug, createdAgo, updatedAgo, instances, seasonChallenges, priceReward, id, body})
+						passphrases := fmt.Sprintf("%d", flavor.Passphrases)
+						slug = strings.TrimSuffix(slug, "@default")
+						table.Append([]string{slug, createdAgo, updatedAgo, instances, seasonChallenges, priceReward, passphrases, body})
 					}
 				}
 				table.Render()
@@ -173,6 +174,10 @@ func adminChallengesCommand() *ffcli.Command {
 							updatedAgo := humanize.Time(*instance.UpdatedAt)
 							configStruct, _ := instance.ParseInstanceConfig()
 							config := godev.JSONPB(configStruct)
+							if len(config) > 30 {
+								config = config[:28] + "..."
+							}
+
 							seasonChallenges := fmt.Sprintf("%d", len(flavor.SeasonChallenges))
 							table.Append([]string{id, flavorSlug, agentSlug, status, createdAgo, updatedAgo, config, seasonChallenges})
 						}
