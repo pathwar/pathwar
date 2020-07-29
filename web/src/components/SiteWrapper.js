@@ -174,7 +174,7 @@ class SiteWrapper extends React.Component {
     return (
       <Site.Wrapper
         headerProps={{
-          href: "/",
+          href: "/app",
           alt: "Pathwar Project",
           imageURL: logo,
           accountDropdown: accountDropdownProps(userSession),
