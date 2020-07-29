@@ -35,14 +35,12 @@ const ChallengeCard = ({ challenge }) => {
       <Card.Body>
         <>
           <Grid.Row>
-            <Grid.Col auto>
-              <p>Author: {flavor.challenge.author}</p>
-            </Grid.Col>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Col auto>
-              <h3>changelog:</h3>
-              <p>{flavor.changelog}</p>
+            <Grid.Col width={12}>
+              <p>
+                {flavor.body ||
+                  `Hello Ol'salt! Try to beat the ${flavor.challenge.name} challenge.
+              Heave ho!`}
+              </p>
             </Grid.Col>
           </Grid.Row>
           <ChallengeModal
