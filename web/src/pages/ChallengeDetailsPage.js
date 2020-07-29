@@ -9,7 +9,7 @@ import {
   fetchChallengeDetail as fetchChallengeDetailAction,
   buyChallenge as buyChallengeAction,
   validateChallenge as validateChallengeAction,
-  closeChallenge as closeChallengeAction,
+  // closeChallenge as closeChallengeAction,
 } from "../actions/seasons";
 import ChallengeBuyButton from "../components/challenges/ChallengeBuyButton";
 // import ChallengeCloseButton from "../components/challenges/ChallengeCloseButton";
@@ -30,8 +30,8 @@ const ChallengeDetailsPage = props => {
     dispatch(buyChallengeAction(flavorChallengeID, seasonID));
   const validateChallenge = (validationData, seasonId) =>
     dispatch(validateChallengeAction(validationData, seasonId));
-  const closeChallenge = subscriptionID =>
-    dispatch(closeChallengeAction(subscriptionID));
+  // const closeChallenge = subscriptionID =>
+  //   dispatch(closeChallengeAction(subscriptionID));
   const fetchChallengeDetail = challengeID =>
     dispatch(fetchChallengeDetailAction(challengeID));
 
