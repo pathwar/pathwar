@@ -5,9 +5,15 @@ import { useQueryParam, StringParam } from "use-query-params";
 import { css } from "@emotion/core";
 import ChallengeModal from "./ChallengeModal";
 
+const notPurchased = css`
+  box-shadow: none;
+  opacity: 0.8;
+`;
+
 const closedStyle = css`
   opacity: 0.4;
   pointer-events: none;
+  box-shadow: none;
 `;
 
 const ChallengeCard = ({ challenge }) => {
@@ -28,10 +34,10 @@ const ChallengeCard = ({ challenge }) => {
     setModalQueryId(challengeID);
   };
 
-  const cardColor = isClosed ? "red" : purchased ? "blue" : "green";
+  const cardColor = isClosed ? "red" : purchased ? "blue" : "gray";
 
   return (
-    <Card css={isClosed && closedStyle}>
+    <Card css={[!purchased && notPurchased, isClosed && closedStyle]}>
       <Card.Status color={cardColor} side />
       <Card.Header>
         <Card.Title>{flavor.challenge.name}</Card.Title>
