@@ -46,7 +46,7 @@ message ChallengeFlavor {
   string category = 112;
   repeated string tags = 113 [(gogoproto.moretags) = "gorm:\"-\""];
   string tag_list = 114 [(gogoproto.moretags) = "yaml:\"-\""];
-  RedumpPolicy redump_policy = 115 [(gogoproto.moretags) = "gorm:\"-\" yaml:\"redump-policy\""];
+  repeated RedumpPolicy redump_policy = 115 [(gogoproto.moretags) = "gorm:\"-\" yaml:\"redump-policy\""];
   string redump_policy_config = 116 [(gogoproto.moretags) = "yaml:\"-\""];
 
   Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\" yaml:\"challenge,omitempty\""];
@@ -57,7 +57,7 @@ message ChallengeFlavor {
 
   message RedumpPolicy {
     string strategy = 1;
-    string delay = 2;
+    string delay = 2 [(gogoproto.moretags) = "yaml:\"delay,omitempty\""];
   }
 
   enum Driver {

@@ -683,7 +683,9 @@ definitions:
         format: int64
         type: string
       redump_policy:
-        $ref: '#/definitions/ChallengeFlavorRedumpPolicy'
+        items:
+          $ref: '#/definitions/ChallengeFlavorRedumpPolicy'
+        type: array
       redump_policy_config:
         type: string
       season_challenges:

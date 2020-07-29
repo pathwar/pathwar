@@ -17,8 +17,8 @@ x-pathwar:
     tags:
       - intro
     redump-policy:
-      strategy: every
-      delay: 1d
+      - strategy: every
+        delay: 1d
 
 services:
   front:

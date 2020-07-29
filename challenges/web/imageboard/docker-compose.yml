@@ -12,6 +12,14 @@ x-pathwar:
     purchase_price: 5
     validation_reward: 15
     body: "The passphrase is commented somewhere in the source."
+    passphrases: 1
+    category: web
+    tags:
+      - injection
+    redump-policy:
+      - strategy: on-validation
+      - strategy: every
+        delay: 1d
 
 services:
   front:
