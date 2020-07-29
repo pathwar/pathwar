@@ -15,7 +15,7 @@ import {
 import ChallengeBuyButton from "../components/challenges/ChallengeBuyButton";
 // import ChallengeCloseButton from "../components/challenges/ChallengeCloseButton";
 import ChallengeValidateForm from "../components/challenges/ChallengeValidateForm";
-import ValidationsList from "../components/challenges/ValidationsList";
+// import ValidationsList from "../components/challenges/ValidationsList";
 import ChallengeSolveInstances from "../components/challenges/ChallengeSolveInstances";
 import { CLEAN_CHALLENGE_DETAIL } from "../constants/actionTypes";
 
@@ -23,7 +23,7 @@ const paragraph = css`
   margin-top: 0.5rem;
 `;
 
-const statusStamp = css`
+const statusTag = css`
   font-size: 0.75rem;
   opacity: 0.7;
 `;
@@ -66,9 +66,17 @@ const ChallengeDetailsPage = props => {
 
   const subscription = subscriptions && subscriptions[0];
   const validations = subscription && subscription.validations;
+  const validation = validations && validations[0];
   const isClosed = subscription && subscription.status === "Closed";
   const purchased = subscriptions;
   const { title, description } = siteMetaData;
+
+  const validationStatusColor =
+    validation && validation.status === "NeedReview"
+      ? "orange"
+      : validation && validation.status === "Rejected"
+      ? "red"
+      : "green";
 
   return (
     <>
@@ -88,12 +96,17 @@ const ChallengeDetailsPage = props => {
             </p>
           </Grid.Col>
           <Grid.Col md={5} sm={12} width={12} className="text-right">
-            {purchased && (
-              <Tag css={statusStamp}>
+            {purchased && validations && (
+              <Tag color={validationStatusColor}>
+                validated {moment(validation.created_at).calendar()}
+              </Tag>
+            )}
+            {purchased && !validations && (
+              <Tag css={statusTag}>
                 purchased {moment(subscription.created_at).calendar()}
               </Tag>
             )}
-            {!purchased && (
+            {!purchased && !validations && (
               <ChallengeBuyButton
                 challenge={challenge}
                 buyChallenge={buyChallenge}
@@ -118,14 +131,13 @@ const ChallengeDetailsPage = props => {
               purchased={purchased}
             />
           </Grid.Col>
-          {purchased && (
+          {purchased && !validations && (
             <Grid.Col width={12} sm={12} md={12} className="text-right">
               <ChallengeValidateForm
                 challenge={challenge}
                 validateChallenge={validateChallenge}
                 disabled={isClosed}
               />
-              {validations && <ValidationsList validations={validations} />}
             </Grid.Col>
           )}
         </Grid.Row>
