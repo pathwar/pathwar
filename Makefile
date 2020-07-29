@@ -46,6 +46,10 @@ api.docker.push: api.docker.build
 api.docker.push:
 	docker push pathwar/pathwar
 
+agent.docker.push: agent.docker.build
+agent.docker.push:
+	docker push pathwar/agent
+
 .PHONY: agent.docker.build
 agent.docker.build:
 	$(call docker_build,Dockerfile.agent,pathwar/agent)

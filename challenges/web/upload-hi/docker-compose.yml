@@ -12,6 +12,14 @@ x-pathwar:
     purchase_price: 5
     validation_reward: 15
     body: "Execute your code."
+    passphrases: 1
+    category: web
+    tags:
+      - exec
+    redump-policy:
+      - strategy: on-validation
+      - strategy: every
+        delay: 1d
 
 services:
   front:

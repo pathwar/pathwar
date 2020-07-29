@@ -127,9 +127,6 @@ func GenerateFakeData(db *gorm.DB, sfn *snowflake.Node, logger *zap.Logger) erro
 			flavor := &ChallengeFlavor{
 				Driver:           ChallengeFlavor_Docker,
 				Version:          gofakeit.IPv4Address(),
-				Changelog:        gofakeit.HipsterSentence(5),
-				IsDraft:          false,
-				IsLatest:         i == 0,
 				SourceURL:        gofakeit.URL(),
 				SeasonChallenges: []*SeasonChallenge{},
 			}

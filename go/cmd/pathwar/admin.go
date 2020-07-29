@@ -755,13 +755,14 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 	flags.StringVar(&input.ChallengeFlavor.Slug, "slug", input.ChallengeFlavor.Slug, "Slug")
 	flags.StringVar(&input.ChallengeFlavor.Version, "version", input.ChallengeFlavor.Version, "Challenge flavor version")
 	flags.StringVar(&input.ChallengeFlavor.ComposeBundle, "compose-bundle", input.ChallengeFlavor.ComposeBundle, "Challenge flavor compose bundle")
-	flags.StringVar(&input.ChallengeFlavor.Changelog, "changelog", input.ChallengeFlavor.Changelog, "Changelog")
 	flags.StringVar(&input.ChallengeFlavor.SourceURL, "source-url", input.ChallengeFlavor.SourceURL, "Source URL")
-	flags.BoolVar(&input.ChallengeFlavor.IsDraft, "draft", input.ChallengeFlavor.IsDraft, "Is Draft")
-	flags.BoolVar(&input.ChallengeFlavor.IsLatest, "latest", input.ChallengeFlavor.IsLatest, "Is Latest")
 	flags.Int64Var(&input.ChallengeFlavor.PurchasePrice, "purchase-price", input.ChallengeFlavor.PurchasePrice, "Purchase Price")
 	flags.Int64Var(&input.ChallengeFlavor.ValidationReward, "validation-reward", input.ChallengeFlavor.ValidationReward, "Validation reward")
 	flags.StringVar(&input.ChallengeFlavor.Body, "body", input.ChallengeFlavor.Body, "Body")
+	flags.StringVar(&input.ChallengeFlavor.Category, "category", input.ChallengeFlavor.Category, "Category")
+	flags.StringVar(&input.ChallengeFlavor.TagList, "tags", input.ChallengeFlavor.TagList, "Comma-separated tags")
+	flags.StringVar(&input.ChallengeFlavor.RedumpPolicyConfig, "redump-policy", input.ChallengeFlavor.RedumpPolicyConfig, "JSON config for redump-policy")
+	flags.Int64Var(&input.ChallengeFlavor.Passphrases, "passphrases", input.ChallengeFlavor.Passphrases, "Amount of passphrases")
 
 	return &ffcli.Command{
 		Name:      "challenge-flavor-add",

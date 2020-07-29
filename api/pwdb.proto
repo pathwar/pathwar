@@ -35,22 +35,30 @@ message ChallengeFlavor {
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true, (gogoproto.moretags) = "yaml:\"updated_at,omitempty\""];
 
   string version = 100;
-  string changelog = 101;
-  bool is_draft = 102;
-  bool is_latest = 103;
   string source_url = 104 [(gogoproto.customname) = "SourceURL"];
   string compose_bundle = 105 [(gogoproto.moretags) = "gorm:\"size:100000\""];
-  Driver driver = 106;
+  Driver driver = 106 [(gogoproto.moretags) = "yaml:\"-\""];
   int64 purchase_price = 107 [(gogoproto.moretags) = "yaml:\"purchase_price\""];
   int64 validation_reward = 108 [(gogoproto.moretags) = "yaml:\"validation_reward\""];
   string slug = 109 [(gogoproto.moretags) = "gorm:\"unique_index\""];
   string body = 110;
+  int64 passphrases = 111;
+  string category = 112;
+  repeated string tags = 113 [(gogoproto.moretags) = "gorm:\"-\""];
+  string tag_list = 114 [(gogoproto.moretags) = "yaml:\"-\""];
+  repeated RedumpPolicy redump_policy = 115 [(gogoproto.moretags) = "gorm:\"-\" yaml:\"redump-policy\""];
+  string redump_policy_config = 116 [(gogoproto.moretags) = "yaml:\"-\""];
 
   Challenge challenge = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeID\" yaml:\"challenge,omitempty\""];
   int64 challenge_id = 201 [(gogoproto.customname) = "ChallengeID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\" yaml:\"challenge_id,omitempty\""];
   repeated SeasonChallenge season_challenges = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false;foreignkey:FlavorID\" yaml:\"season_challenges,omitempty\""];
   repeated ChallengeInstance instances = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false;foreignkey:FlavorID\" yaml:\"instances,omitempty\""];
   //repeated ChallengeSubscription subscriptions = 203 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
+
+  message RedumpPolicy {
+    string strategy = 1;
+    string delay = 2 [(gogoproto.moretags) = "yaml:\"delay,omitempty\""];
+  }
 
   enum Driver {
     Unknown = 0;

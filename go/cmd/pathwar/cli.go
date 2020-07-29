@@ -255,7 +255,7 @@ func cliChallengesCommand() *ffcli.Command {
 					fmt.Printf("Season: %s\n", seasonEntry.Season.Name)
 				}
 				table := tablewriter.NewWriter(os.Stdout)
-				table.SetHeader([]string{"FLAVOR", "INSTANCES", "SUBSCRIPTION", "URLS"})
+				table.SetHeader([]string{"FLAVOR", "INSTANCES", "PRICE/REWARD", "SUBSCRIPTION", "URLS"})
 				table.SetAlignment(tablewriter.ALIGN_CENTER)
 				table.SetBorder(false)
 				table.SetColWidth(100)
@@ -274,15 +274,16 @@ func cliChallengesCommand() *ffcli.Command {
 				logger.Debug("GET "+url, zap.Any("ret", ret))
 
 				for _, challengeEntry := range ret.Items {
-					flavor := challengeEntry.Flavor.ASCIIID()
+					flavor := challengeEntry.Flavor
+					flavorID := flavor.ASCIIID()
 					subscription := "-"
 					if len(challengeEntry.Subscriptions) > 0 {
 						subscription = challengeEntry.Subscriptions[0].Status.String()
 					}
 					subscription = asciiStatus(subscription)
-					instances := fmt.Sprintf("%d", len(challengeEntry.Flavor.Instances))
+					instances := fmt.Sprintf("%d", len(flavor.Instances))
 					urlParts := []string{}
-					for _, instance := range challengeEntry.Flavor.Instances {
+					for _, instance := range flavor.Instances {
 						if instance.NginxURL != "" {
 							url := instance.NginxURL
 							switch instance.Status {
@@ -295,7 +296,12 @@ func cliChallengesCommand() *ffcli.Command {
 						}
 					}
 					urls := strings.Join(urlParts, ", ")
-					table.Append([]string{flavor, instances, subscription, urls})
+					price := "free"
+					if flavor.PurchasePrice > 0 {
+						price = fmt.Sprintf("$%d", flavor.PurchasePrice)
+					}
+					priceReward := fmt.Sprintf("%s / $%d", price, flavor.ValidationReward)
+					table.Append([]string{flavorID, instances, priceReward, subscription, urls})
 				}
 				table.Render()
 			}

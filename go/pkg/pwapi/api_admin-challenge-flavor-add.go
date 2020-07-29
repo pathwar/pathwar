@@ -113,4 +113,13 @@ func (in *AdminChallengeFlavorAdd_Input) ApplyDefaults() {
 	if in.ChallengeFlavor.Version == "" {
 		in.ChallengeFlavor.Version = "default"
 	}
+	if in.ChallengeFlavor.Category == "" {
+		in.ChallengeFlavor.Category = "uncategorized"
+	}
+	if in.ChallengeFlavor.RedumpPolicyConfig == "" {
+		in.ChallengeFlavor.RedumpPolicyConfig = `{"strategy":"on-validation"}`
+	}
+	if in.ChallengeFlavor.Passphrases == 0 {
+		in.ChallengeFlavor.Passphrases = 1
+	}
 }

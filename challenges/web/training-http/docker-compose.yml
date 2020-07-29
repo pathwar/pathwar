@@ -12,6 +12,14 @@ x-pathwar:
     purchase_price: 0
     validation_reward: 5
     body: "Learn to play with HTTP."
+    passphrases: 5
+    category: web
+    tags:
+      - tutorial
+      - http
+    redump-policy:
+      - strategy: every
+        delay: 1d
 
 services:
   front:

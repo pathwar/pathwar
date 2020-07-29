@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -221,7 +222,7 @@ func composeRegisterCommand() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
-			// fmt.Println(godev.PrettyJSON(config))
+			//fmt.Println(godev.PrettyJSON(config))
 
 			slug := config.Pathwar.Challenge.Slug
 			if slug == "" {
@@ -253,14 +254,24 @@ func composeRegisterCommand() *ffcli.Command {
 			if slug := config.Pathwar.Flavor.Slug; slug != "" {
 				command = append(command, "--slug", shellescape.Quote(slug))
 			}
-			if changelog := config.Pathwar.Flavor.Changelog; changelog != "" {
-				command = append(command, "--changelog", shellescape.Quote(changelog))
-			}
 			if body := config.Pathwar.Flavor.Body; body != "" {
 				command = append(command, "--body", shellescape.Quote(body))
 			}
 			if version := config.Pathwar.Flavor.Version; version != "" {
 				command = append(command, "--version", shellescape.Quote(version))
+			}
+			if passphrases := config.Pathwar.Flavor.Passphrases; passphrases != 0 {
+				command = append(command, "--passphrases", fmt.Sprintf("%d", passphrases))
+			}
+			if category := config.Pathwar.Flavor.Category; category != "" {
+				command = append(command, "--category", shellescape.Quote(category))
+			}
+			if redumpPolicy := config.Pathwar.Flavor.RedumpPolicy; redumpPolicy != nil {
+				policy, _ := json.Marshal(config.Pathwar.Flavor.RedumpPolicy)
+				command = append(command, "--redump-policy", shellescape.Quote(string(policy)))
+			}
+			if tags := config.Pathwar.Flavor.Tags; len(tags) > 0 {
+				command = append(command, "--tags", shellescape.Quote(strings.Join(tags, ",")))
 			}
 			if validationReward := config.Pathwar.Flavor.ValidationReward; validationReward != 0 {
 				command = append(command, "--validation-reward", fmt.Sprintf("%d", validationReward))

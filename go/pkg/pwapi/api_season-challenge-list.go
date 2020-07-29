@@ -2,7 +2,9 @@ package pwapi
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"strings"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -32,6 +34,7 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 	err = svc.db.
 		//Preload("Season").
 		Preload("Flavor").
+		Joins("LEFT JOIN challenge_flavor ON season_challenge.flavor_id = challenge_flavor.id").
 		Preload("Flavor.Challenge").
 		Preload("Flavor.Instances").
 		Preload("Flavor.Instances.Agent"). // FIXME: where status==active
@@ -39,6 +42,7 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 		Preload("Subscriptions.Team").
 		Preload("Subscriptions.Team.Season").
 		Where(pwdb.SeasonChallenge{SeasonID: in.SeasonID}).
+		Order("challenge_flavor.purchase_price asc, challenge_flavor.validation_reward asc").
 		Find(&seasonChallenges).
 		Error
 	if err != nil {
@@ -49,6 +53,16 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 	for _, sc := range seasonChallenges {
 		// FIXME: hide challenges without flavors?
 		//fmt.Println(sc.ID, godev.PrettyJSON(sc.Flavor.Instances))
+		if sc.Flavor.TagList != "" {
+			sc.Flavor.Tags = strings.Split(sc.Flavor.TagList, ",")
+			sc.Flavor.TagList = ""
+		}
+		if sc.Flavor.RedumpPolicyConfig != "" {
+			err := json.Unmarshal([]byte(sc.Flavor.RedumpPolicyConfig), &sc.Flavor.RedumpPolicy)
+			if err == nil {
+				sc.Flavor.RedumpPolicyConfig = ""
+			}
+		}
 		for _, instance := range sc.Flavor.Instances {
 			// FIXME: hide instances without nginx-url?
 			instance.InstanceConfig = nil

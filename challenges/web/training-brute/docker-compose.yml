@@ -12,6 +12,15 @@ x-pathwar:
     purchase_price: 0
     validation_reward: 5
     body: "Learn to brute force."
+    passphrases: 1
+    category: web
+    tags:
+      - tutorial
+      - bruteforce
+    redump-policy:
+      - strategy: on-validation
+      - strategy: every
+        delay: 1d
 
 services:
   front:
