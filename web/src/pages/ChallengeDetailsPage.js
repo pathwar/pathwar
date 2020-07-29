@@ -80,20 +80,18 @@ const ChallengeDetailsPage = props => {
             </p>
           </Grid.Col>
           <Grid.Col md={5} sm={12} width={12} className="text-right">
-            <Button.List>
-              <ChallengeBuyButton
-                challenge={challenge}
-                buyChallenge={buyChallenge}
-                isClosed={isClosed}
-              />
-              {subscriptions && (
+            <ChallengeBuyButton
+              challenge={challenge}
+              buyChallenge={buyChallenge}
+              isClosed={isClosed}
+            />
+            {/* {subscriptions && (
                 <ChallengeCloseButton
                   challenge={challenge}
                   closeChallenge={closeChallenge}
                   isClosed={isClosed}
                 />
-              )}
-            </Button.List>
+              )} */}
           </Grid.Col>
         </Grid.Row>
         {/* <hr /> */}
