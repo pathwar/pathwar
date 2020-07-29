@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
 import { css } from "@emotion/core";
 import PropTypes from "prop-types";
-import { Page, Grid, Dimmer, Button } from "tabler-react";
+import { Page, Grid, Dimmer } from "tabler-react";
 import siteMetaData from "../constants/metadata";
 import {
   fetchChallengeDetail as fetchChallengeDetailAction,
@@ -12,7 +12,7 @@ import {
   closeChallenge as closeChallengeAction,
 } from "../actions/seasons";
 import ChallengeBuyButton from "../components/challenges/ChallengeBuyButton";
-import ChallengeCloseButton from "../components/challenges/ChallengeCloseButton";
+// import ChallengeCloseButton from "../components/challenges/ChallengeCloseButton";
 import ChallengeValidateForm from "../components/challenges/ChallengeValidateForm";
 import ValidationsList from "../components/challenges/ValidationsList";
 import ChallengeSolveInstances from "../components/challenges/ChallengeSolveInstances";
