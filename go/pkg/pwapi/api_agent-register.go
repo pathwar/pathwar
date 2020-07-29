@@ -79,10 +79,9 @@ func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) 
 
 	for _, challengeFlavor := range challengeFlavorsToInstanciate {
 		instance := pwdb.ChallengeInstance{
-			Status:         pwdb.ChallengeInstance_IsNew,
-			AgentID:        agent.ID,
-			FlavorID:       challengeFlavor.ID,
-			InstanceConfig: []byte(`{"passphrases": ["a", "b", "c", "d"]}`),
+			Status:   pwdb.ChallengeInstance_IsNew,
+			AgentID:  agent.ID,
+			FlavorID: challengeFlavor.ID,
 		}
 		err = svc.db.Create(&instance).Error
 		if err != nil {
