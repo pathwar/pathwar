@@ -1,20 +1,20 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Site, Nav, Dropdown, Tag } from "tabler-react";
+import { Site, Nav, Dropdown, Tag, Grid } from "tabler-react";
 import { Link } from "gatsby";
 import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
 
 import logo from "../images/new-pathwar-logo-dark-blue.png";
 
 const navBarItems = [
-  {
-    value: "Home",
-    to: "/app/home",
-    icon: "home",
-    LinkComponent: Link,
-    useExact: "false",
-  },
+  // {
+  //   value: "Home",
+  //   to: "/app/home",
+  //   icon: "home",
+  //   LinkComponent: Link,
+  //   useExact: "false",
+  // },
   {
     value: "Challenges",
     to: "/app/challenges",
@@ -35,12 +35,12 @@ const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
   const { user, claims } = activeUserSession || {};
 
   const username =
-    claims && claims.preferred_username ? claims.preferred_username : "Account";
+    claims && claims.preferred_username ? claims.preferred_username : "Log in";
   const avatar = user && user.gravatar_url ? user.gravatar_url : logo;
   const options = [];
 
   if (!activeUserSession && !activeKeycloakSession) {
-    options.push({ icon: "log-in", value: "Log in", to: "/app/login" });
+    options.push({ icon: "log-in", value: "Log in", to: "/app/challenges" });
   }
 
   if (activeUserSession && activeKeycloakSession) {
@@ -82,52 +82,88 @@ const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
   };
 };
 
-const navItemsProps = ({ activeUserSession }, activeSeason) => {
+const SeasonDropdownSelector = ({ userSession, activeSeason }) => {
+  const { activeUserSession } = userSession || {};
+  let items;
+
+  const multipleItems =
+    activeUserSession &&
+    activeUserSession.seasons &&
+    activeUserSession.seasons.length >= 2;
+
   const clicked = e => {
     e.preventDefault();
     alert(activeSeason.name);
   };
 
-  const items =
-    activeUserSession &&
-    activeUserSession.seasons.map(dataSet => {
-      const { season } = dataSet;
-      const isActive = activeSeason && season.id === activeSeason.id;
+  if (multipleItems) {
+    items =
+      activeUserSession &&
+      activeUserSession.seasons.map(dataSet => {
+        const { season } = dataSet;
+        const isActive = activeSeason && season.id === activeSeason.id;
 
-      return (
-        <Dropdown.Item
-          className={isActive && "active bold"}
-          key={season.id}
-          to="#"
-          onClick={e => clicked(e)}
-        >
-          <div style={{ fontWeight: isActive ? "bold" : "initial" }}>
-            {season.name}
-          </div>
-          <div>
-            <Tag.List>
-              <Tag addOn={season.status} addOnColor="indigo">
-                Status
-              </Tag>
-              <Tag addOn={season.visibility} addOnColor="indigo">
-                Visibility
-              </Tag>
-            </Tag.List>
-          </div>
-        </Dropdown.Item>
-      );
-    });
+        return (
+          <Dropdown.Item
+            className={isActive && "active bold"}
+            key={season.id}
+            to="#"
+            onClick={e => clicked(e)}
+          >
+            <div style={{ fontWeight: isActive ? "bold" : "initial" }}>
+              {season.name}
+            </div>
+            <div>
+              <Tag.List>
+                <Tag addOn={season.status} addOnColor="indigo">
+                  Status
+                </Tag>
+                <Tag addOn={season.visibility} addOnColor="indigo">
+                  Visibility
+                </Tag>
+              </Tag.List>
+            </div>
+          </Dropdown.Item>
+        );
+      });
+  }
 
   return (
-    <Nav.Item type="div" className="d-none d-md-flex">
-      <Dropdown
-        triggerContent={(activeSeason && activeSeason.name) || "Loading.."}
-        type="button"
-        color="primary"
-        icon="flag"
-        items={items}
-      />
-    </Nav.Item>
+    <Dropdown
+      triggerContent={(activeSeason && activeSeason.name) || "Loading.."}
+      toggle={multipleItems}
+      color="primary"
+      icon="flag"
+      items={items}
+    />
+  );
+};
+
+const NavBar = ({ userSession }) => {
+  const { activeUserSession } = userSession;
+  const user = activeUserSession && activeUserSession.user;
+  const team = user && user.active_team_member && user.active_team_member.team;
+
+  return (
+    <Grid.Row className="align-items-center">
+      <Grid.Col width={6} className="ml-auto text-right" ignoreCol={true}>
+        <ValidateCouponForm />
+        <Tag
+          color="lime"
+          addOn={(team && `$${team.cash}`) || "$0"}
+          addOnColor="green"
+        >
+          Cash
+        </Tag>
+      </Grid.Col>
+      <Grid.Col className="col-lg order-lg-first">
+        <Nav
+          tabbed
+          className="border-0 flex-column flex-lg-row"
+          itemsObjects={navBarItems}
+        />
+      </Grid.Col>
+    </Grid.Row>
   );
 };
 
@@ -142,11 +178,17 @@ class SiteWrapper extends React.Component {
           alt: "Pathwar Project",
           imageURL: logo,
           accountDropdown: accountDropdownProps(userSession),
-          navItems: navItemsProps(userSession, activeSeason),
+          navItems: (
+            <Nav.Item type="div" className="d-none d-md-flex">
+              <SeasonDropdownSelector
+                userSession={userSession}
+                activeSeason={activeSeason}
+              />
+            </Nav.Item>
+          ),
         }}
         navProps={{
-          itemsObjects: navBarItems,
-          rightColumnComponent: <ValidateCouponForm />,
+          children: <NavBar userSession={userSession} />,
         }}
       >
         {this.props.children}

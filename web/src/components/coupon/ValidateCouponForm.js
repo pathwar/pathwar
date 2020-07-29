@@ -4,6 +4,8 @@ import { css } from "@emotion/core";
 
 const wrapperStyle = `
   text-align: right;
+  margin-right: 1rem;
+  display: inline-block;
 `;
 
 const ValidateCouponForm = () => {
