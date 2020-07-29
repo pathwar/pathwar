@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
 import { css } from "@emotion/core";
 import PropTypes from "prop-types";
-import { Page, Grid, Dimmer } from "tabler-react";
+import { Page, Grid, Dimmer, Tag } from "tabler-react";
+import moment from "moment";
 import siteMetaData from "../constants/metadata";
 import {
   fetchChallengeDetail as fetchChallengeDetailAction,
@@ -19,6 +20,17 @@ import ChallengeSolveInstances from "../components/challenges/ChallengeSolveInst
 import { CLEAN_CHALLENGE_DETAIL } from "../constants/actionTypes";
 
 const paragraph = css`
+  margin-top: 0.5rem;
+`;
+
+const statusStamp = css`
+  font-size: 0.75rem;
+  opacity: 0.7;
+`;
+
+const rewardText = css`
+  font-size: 0.75rem;
+  font-weight: 800;
   margin-top: 0.5rem;
 `;
 
@@ -50,41 +62,44 @@ const ChallengeDetailsPage = props => {
     return <Dimmer active loader />;
   }
 
-  const {
-    flavor: { challenge: flavorChallenge, instances } = {
-      challenge: "no challenge",
-    },
-    subscriptions,
-  } = challenge || {};
+  const { flavor, subscriptions } = challenge || {};
 
-  const subscription = challenge.subscriptions && challenge.subscriptions[0];
+  const subscription = subscriptions && subscriptions[0];
   const validations = subscription && subscription.validations;
   const isClosed = subscription && subscription.status === "Closed";
+  const purchased = subscriptions;
   const { title, description } = siteMetaData;
 
   return (
     <>
       <Helmet>
-        <title>{`${title} - ${flavorChallenge.name} Challenge`}</title>
+        <title>{`${title} - ${flavor.challenge.name} Challenge`}</title>
         <meta name="description" content={description} />
       </Helmet>
       <Page.Content
-        title={flavorChallenge.name}
-        subTitle={`Author: ${flavorChallenge.author}`}
+        title={flavor.challenge.name}
+        subTitle={`Author: ${flavor.challenge.author}`}
       >
         <Grid.Row className="mb-6">
           <Grid.Col width={12} sm={12} md={7}>
             <p css={paragraph}>
-              Hello Ol&apos;salt! Try to beat the {flavorChallenge.name}{" "}
+              Hello Ol&apos;salt! Try to beat the {flavor.challenge.name}{" "}
               challenge. Heave ho!
             </p>
           </Grid.Col>
           <Grid.Col md={5} sm={12} width={12} className="text-right">
-            <ChallengeBuyButton
-              challenge={challenge}
-              buyChallenge={buyChallenge}
-              isClosed={isClosed}
-            />
+            {purchased && (
+              <Tag css={statusStamp}>
+                purchased {moment(subscription.created_at).calendar()}
+              </Tag>
+            )}
+            {!purchased && (
+              <ChallengeBuyButton
+                challenge={challenge}
+                buyChallenge={buyChallenge}
+              />
+            )}
+            <p css={rewardText}>Reward: {flavor.validation_reward}</p>
             {/* {subscriptions && (
                 <ChallengeCloseButton
                   challenge={challenge}
@@ -99,11 +114,11 @@ const ChallengeDetailsPage = props => {
           <Grid.Col width={12} sm={12} md={12}>
             <h3>Solve challenge</h3>
             <ChallengeSolveInstances
-              instances={instances}
-              purchased={subscriptions}
+              instances={flavor.instances}
+              purchased={purchased}
             />
           </Grid.Col>
-          {subscriptions && (
+          {purchased && (
             <Grid.Col width={12} sm={12} md={12} className="text-right">
               <ChallengeValidateForm
                 challenge={challenge}
