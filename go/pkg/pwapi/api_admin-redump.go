@@ -2,9 +2,9 @@ package pwapi
 
 import (
 	"context"
-	"strconv"
+	"fmt"
 
-	"go.uber.org/zap"
+	"go.uber.org/multierr"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -14,32 +14,37 @@ func (svc *service) AdminRedump(ctx context.Context, in *AdminRedump_Input) (*Ad
 		return nil, errcode.ErrRestrictedArea
 	}
 
+	var errs error
 	for _, identifier := range in.Identifiers {
-		nb, err := strconv.Atoi(identifier)
-		if err != nil {
-			// for now, we only accept numerical identifiers, but the plan is to also search for names
-			return nil, errcode.TODO.Wrap(err)
-		}
-
-		// FIXME: support passing IDs for other entities too
-		var instance pwdb.ChallengeInstance
-		err = svc.db.First(&instance, nb).Error
-		if err != nil {
-			return nil, errcode.TODO.Wrap(err)
-		}
-
-		switch instance.Status {
-		case pwdb.ChallengeInstance_NeedRedump:
-			svc.logger.Debug("level already marked as needing a redump", zap.Int64("instance-id", instance.ID))
-		default:
-			err = svc.db.Model(&instance).Updates(&pwdb.ChallengeInstance{Status: pwdb.ChallengeInstance_NeedRedump}).Error
-			if err != nil {
-				return nil, errcode.TODO.Wrap(err)
+		instances := []int64{}
+		if id, err := pwdb.GetIDBySlugAndKind(svc.db, identifier, "challenge-instance"); err == nil {
+			instances = append(instances, id)
+		} else if id, err := pwdb.GetIDBySlugAndKind(svc.db, identifier, "challenge-flavor"); err == nil {
+			var flavor pwdb.ChallengeFlavor
+			if err = svc.db.Preload("Instances").First(&flavor, id).Error; err != nil {
+				errs = multierr.Append(errs, err)
+				continue
 			}
-			svc.logger.Debug("level marked as needing a redump", zap.Int64("instance-id", instance.ID))
+			for _, instance := range flavor.Instances {
+				instances = append(instances, instance.ID)
+			}
+		}
+
+		if len(instances) == 0 {
+			errs = multierr.Append(errs, fmt.Errorf("no such entry for %q", identifier))
+			continue
+		}
+
+		err := svc.db.
+			Model(pwdb.ChallengeInstance{}).
+			Where("id IN (?)", instances).
+			Updates(&pwdb.ChallengeInstance{Status: pwdb.ChallengeInstance_NeedRedump}).
+			Error
+		if err != nil {
+			errs = multierr.Append(errs, err)
 		}
 	}
 
 	out := AdminRedump_Output{}
-	return &out, nil
+	return &out, errs
 }
