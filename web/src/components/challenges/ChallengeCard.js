@@ -8,9 +8,16 @@ import ChallengeModal from "./ChallengeModal";
 const cardTag = css`
   margin-right: 0.5rem;
 `;
+
+const notPurchased = css`
+  box-shadow: none;
+  opacity: 0.8;
+`;
+
 const closedStyle = css`
   opacity: 0.4;
   pointer-events: none;
+  box-shadow: none;
 `;
 
 const ChallengeCard = ({ challenge }) => {
@@ -31,10 +38,10 @@ const ChallengeCard = ({ challenge }) => {
     setModalQueryId(challengeID);
   };
 
-  const cardColor = isClosed ? "red" : purchased ? "blue" : "green";
+  const cardColor = isClosed ? "red" : purchased ? "blue" : "gray";
 
   return (
-    <Card css={isClosed && closedStyle}>
+    <Card css={[!purchased && notPurchased, isClosed && closedStyle]}>
       <Card.Status color={cardColor} side />
       <Card.Header>
         <Card.Title>{flavor.challenge.name}</Card.Title>
