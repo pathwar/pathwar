@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
-import { Button, Card, Grid } from "tabler-react";
+import { Button, Card, Grid, Tag } from "tabler-react";
 import { useQueryParam, StringParam } from "use-query-params";
 import { css } from "@emotion/core";
 import ChallengeModal from "./ChallengeModal";
