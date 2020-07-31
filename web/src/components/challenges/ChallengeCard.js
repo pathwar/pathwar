@@ -9,12 +9,24 @@ const cardTag = css`
   margin-right: 0.5rem;
 `;
 
+const notPurchased = css`
+  box-shadow: none;
+  opacity: 0.8;
+`;
+
+const closedStyle = css`
+  opacity: 0.4;
+  pointer-events: none;
+  box-shadow: none;
+`;
+
 const ChallengeCard = ({ challenge }) => {
   const [modalQueryId, setModalQueryId] = useQueryParam("modal", StringParam);
   const [modalOpen, setModalOpen] = useState(modalQueryId === challenge.id);
 
-  const { flavor, id: challengeID } = challenge;
-  // const isClosed = subscriptions && subscriptions[0].status === "Closed";
+  const { flavor, subscriptions, id: challengeID } = challenge;
+  const purchased = subscriptions;
+  const isClosed = subscriptions && subscriptions[0].status === "Closed";
 
   const onCloseModal = function() {
     setModalOpen(false);
@@ -26,14 +38,21 @@ const ChallengeCard = ({ challenge }) => {
     setModalQueryId(challengeID);
   };
 
+  const cardColor = isClosed ? "red" : purchased ? "blue" : "gray";
+
   return (
-    <Card>
-      <Card.Status color="green" side />
+    <Card css={[!purchased && notPurchased, isClosed && closedStyle]}>
+      <Card.Status color={cardColor} side />
       <Card.Header>
         <Card.Title>{flavor.challenge.name}</Card.Title>
         <Card.Options>
-          <Button color="indigo" size="sm" icon="compass" onClick={openModal}>
-            View
+          <Button
+            color={isClosed ? "red" : "indigo"}
+            size="sm"
+            icon={isClosed ? "x-circle" : "compass"}
+            onClick={openModal}
+          >
+            {isClosed ? "Closed" : "View"}
           </Button>
         </Card.Options>
       </Card.Header>

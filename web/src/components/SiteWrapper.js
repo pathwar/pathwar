@@ -5,7 +5,7 @@ import { Site, Nav, Dropdown, Tag, Grid } from "tabler-react";
 import { Link } from "gatsby";
 import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
 
-import logo from "../images/new-pathwar-logo-dark-blue.png";
+import logo from "../images/pathwar-skull-black.svg";
 
 const navBarItems = [
   // {
