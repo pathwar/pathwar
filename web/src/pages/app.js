@@ -10,7 +10,7 @@ import { ThemeProvider, useTheme } from "emotion-theming";
 import siteMetaData from "../constants/metadata";
 import { lightTheme } from "../styles/themes";
 import { globalStyle } from "../styles/globalStyle";
-import HomePage from "./HomePage";
+// import HomePage from "./HomePage";
 import LogoutPage from "./LogoutPage";
 import ChallengesPage from "./ChallengesPage";
 import ChallengeDetailsPage from "./ChallengeDetailsPage";
