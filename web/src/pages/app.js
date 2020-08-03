@@ -1,6 +1,7 @@
 import React from "react";
 import { Router, Location } from "@reach/router";
 import { Helmet } from "react-helmet";
+import { withPrefix } from "gatsby";
 import loadable from "@loadable/component";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,7 +10,7 @@ import { ThemeProvider, useTheme } from "emotion-theming";
 import siteMetaData from "../constants/metadata";
 import { lightTheme } from "../styles/themes";
 import { globalStyle } from "../styles/globalStyle";
-import HomePage from "./HomePage";
+// import HomePage from "./HomePage";
 import LogoutPage from "./LogoutPage";
 import ChallengesPage from "./ChallengesPage";
 import ChallengeDetailsPage from "./ChallengeDetailsPage";
@@ -73,6 +74,7 @@ const App = () => {
           href="https://fonts.googleapis.com/css2?family=Bungee&display=swap"
           rel="stylesheet"
         />
+        <script async src={withPrefix("chat-init.js")} type="text/javascript" />
       </Helmet>
 
       <Global styles={globalStyle(currentTheme)} />
