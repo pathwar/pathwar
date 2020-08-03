@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React from "react";
 import { Helmet } from "react-helmet";
-import { graphql } from "gatsby";
+import { graphql, withPrefix } from "gatsby";
 import { Global, css } from "@emotion/core";
 import { ThemeProvider, useTheme } from "emotion-theming";
 import { lightTheme, darkTheme } from "../styles/themes";
@@ -230,6 +230,7 @@ const IndexPage = ({ data }) => {
           href="https://fonts.googleapis.com/css2?family=Bungee&display=swap"
           rel="stylesheet"
         />
+        <script async src={withPrefix("chat-init.js")} type="text/javascript" />
       </Helmet>
 
       <section
