@@ -5,9 +5,11 @@ import (
 	"crypto/md5"
 	"fmt"
 	"math/rand"
+	"strings"
 
 	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
+	"pathwar.land/pathwar/v2/go/internal/randstring"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 	"pathwar.land/pathwar/v2/go/pkg/pwsso"
@@ -41,7 +43,10 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 	}
 
 	if output.User.Username != output.Claims.PreferredUsername {
-		return nil, errcode.ErrDifferentUserBetweenTokenAndDatabase
+		if err := svc.db.Model(output.User).Updates(pwdb.User{Username: output.Claims.PreferredUsername}).Error; err != nil {
+			return nil, pwdb.GormToErrcode(err)
+		}
+		// FIXME: also update the solo organization
 	}
 
 	// FIXME: output.Notifications = COUNT
@@ -148,8 +153,17 @@ func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) 
 		return nil, errcode.ErrGetDefaultSeason.Wrap(err)
 	}
 
+	username := claims.PreferredUsername
+	if claims.PreferredUsername == claims.Email {
+		username = strings.Split(claims.PreferredUsername, "@")[0]
+	}
+	username = strings.TrimSpace(username)
+	if username == "" {
+		username = randstring.RandString(8)
+	}
+
 	user := pwdb.User{
-		Username:     claims.PreferredUsername,
+		Username:     username,
 		Email:        claims.Email,
 		GravatarURL:  gravatarURL,
 		OAuthSubject: claims.ActionToken.Sub,
@@ -161,7 +175,7 @@ func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) 
 		DeletionStatus:          pwdb.DeletionStatus_Active,
 	}
 	organization := pwdb.Organization{
-		Name:           claims.PreferredUsername,
+		Name:           username,
 		GravatarURL:    gravatarURL,
 		DeletionStatus: pwdb.DeletionStatus_Active,
 		GlobalSeason:   true,
