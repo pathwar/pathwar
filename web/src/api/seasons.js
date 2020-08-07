@@ -56,3 +56,9 @@ export function postCloseChallenge(subscriptionID) {
     challenge_subscription_id: subscriptionID,
   });
 }
+
+//Coupon calls
+
+export function postCouponValidation(hash, teamID) {
+  return baseApi.post(`/coupon-validation`, { hash: hash, team_id: teamID });
+}
