@@ -3,6 +3,7 @@ import {
   LOGIN_FAILED,
   SET_USER_SESSION,
   SET_KEYCLOAK_SESSION,
+  VALIDATE_COUPON_SUCCESS,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
     isAuthenticated: false,
     activeUserSession: undefined,
     activeKeycloakSession: undefined,
+    cash: undefined,
   },
 };
 
@@ -19,6 +21,8 @@ export default function userSessionReducer(
   state = initialState.session,
   action
 ) {
+  const { activeUserSession } = action.payload || {};
+
   switch (action.type) {
     case LOGIN_FAILED:
       return {
@@ -51,7 +55,14 @@ export default function userSessionReducer(
       return {
         ...state,
         fetching: false,
-        activeUserSession: action.payload.activeUserSession,
+        activeUserSession: activeUserSession,
+        cash: activeUserSession.user.active_team_member.team.cash,
+      };
+
+    case VALIDATE_COUPON_SUCCESS:
+      return {
+        ...state,
+        cash: action.payload.team.cash,
       };
 
     default:

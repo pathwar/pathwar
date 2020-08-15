@@ -139,9 +139,7 @@ const SeasonDropdownSelector = ({ userSession, activeSeason }) => {
 };
 
 const NavBar = ({ userSession }) => {
-  const { activeUserSession } = userSession;
-  const user = activeUserSession && activeUserSession.user;
-  const team = user && user.active_team_member && user.active_team_member.team;
+  const { cash } = userSession;
 
   return (
     <Grid.Row className="align-items-center">
@@ -149,7 +147,7 @@ const NavBar = ({ userSession }) => {
         <ValidateCouponForm />
         <Tag
           color="lime"
-          addOn={(team && team.cash && `$${team.cash}`) || "$0"}
+          addOn={(cash && `$${cash}`) || "$0"}
           addOnColor="green"
         >
           Cash

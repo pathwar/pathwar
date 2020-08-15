@@ -231,13 +231,15 @@ export const closeChallenge = subscriptionID => async dispatch => {
   }
 };
 
+//Coupon Actions
 export const fetchCouponValidation = (hash, teamID) => async dispatch => {
   try {
     const response = await postCouponValidation(hash, teamID);
     dispatch({
       type: VALIDATE_COUPON_SUCCESS,
-      payload: { data: response.data },
+      payload: { team: response.data.coupon_validation.team },
     });
+    toast.success(`Coupon validation success!`);
   } catch (error) {
     dispatch({
       type: VALIDATE_COUPON_FAILED,
