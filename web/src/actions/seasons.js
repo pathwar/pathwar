@@ -211,6 +211,7 @@ export const validateChallenge = validateData => async dispatch => {
     });
 
     toast.success(`Validate challenge success!`);
+    dispatchFireworks();
   } catch (error) {
     dispatch({ type: VALIDATE_CHALLENGE_FAILED, payload: { error } });
     toast.error(`Validate challenge ERROR!`);
