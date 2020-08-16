@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Form } from "tabler-react";
 import { css } from "@emotion/core";
-import { fetchCouponValidation } from "../../actions/seasons";
+import { fetchCouponValidation } from "../../actions/userSession";
 
 const wrapperStyle = `
   text-align: right;
