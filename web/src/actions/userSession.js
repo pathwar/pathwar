@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Cookies from "js-cookie";
+import Cookies, { set } from "js-cookie";
 import { toast } from "react-toastify";
 import {
   LOGIN_FAILED,
@@ -33,11 +33,13 @@ export const setUserSession = activeUserSession => async dispatch => {
 };
 
 export const fetchUserSession = postPreferences => async dispatch => {
+  const browser = typeof window !== "undefined" && window;
+
   try {
     const userSessionResponse = await getUserSession();
     const { data: userSessionData } = userSessionResponse;
-
-    const activeSeasonId = userSessionData.user.active_season_id;
+    const { user } = userSessionData;
+    const activeSeasonId = user.active_season_id;
 
     dispatch(setUserSession(userSessionData));
 
@@ -52,6 +54,25 @@ export const fetchUserSession = postPreferences => async dispatch => {
       dispatch(setActiveSeasonAction(activeSeason.season));
       dispatch(setActiveTeamAction(activeSeason.team));
       dispatch(setActiveOrganizationAction(activeSeason.team.organization));
+    }
+
+    if (browser) {
+      setTimeout(() => {
+        window.$crisp.push(["set", "user:email", [user.email]]);
+        window.$crisp.push(["set", "user:nickname", [user.slug]]);
+        window.$crisp.push(["set", "user:avatar", [user.gravatar_url]]);
+        window.$crisp.push([
+          "set",
+          "session:data",
+          [
+            [
+              ["user_id", user.id],
+              ["active_team_member_id", user.active_team_member_id],
+              ["active_season_id", user.active_season_id],
+            ],
+          ],
+        ]);
+      }, 2000);
     }
   } catch (error) {
     dispatch({ type: SET_USER_SESSION_FAILED, payload: { error } });
