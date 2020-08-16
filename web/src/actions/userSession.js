@@ -9,15 +9,22 @@ import {
   LOGOUT,
   DELETE_ACCOUNT_FAILED,
   DELETE_ACCOUNT_SUCCESS,
+  VALIDATE_COUPON_SUCCESS,
+  VALIDATE_COUPON_FAILED,
 } from "../constants/actionTypes";
 import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
-import { getUserSession, deleteUserAccount } from "../api/userSession";
+import {
+  getUserSession,
+  deleteUserAccount,
+  postCouponValidation,
+} from "../api/userSession";
 import { setActiveOrganization as setActiveOrganizationAction } from "./organizations";
 import {
   setActiveSeason as setActiveSeasonAction,
   fetchPreferences as fetchPreferencesAction,
   setActiveTeam as setActiveTeamAction,
 } from "./seasons";
+import dispatchFireworks from "../utils/fireworks-dispatcher";
 
 export const logoutUser = () => async dispatch => {
   dispatch({
@@ -110,5 +117,24 @@ export const deleteAccount = reason => async dispatch => {
   } catch (error) {
     dispatch({ type: DELETE_ACCOUNT_FAILED, payload: { error } });
     toast.error("Delete account FAILED!");
+  }
+};
+
+//Coupon Actions
+export const fetchCouponValidation = (hash, teamID) => async dispatch => {
+  try {
+    const response = await postCouponValidation(hash, teamID);
+    dispatch({
+      type: VALIDATE_COUPON_SUCCESS,
+      payload: { team: response.data.coupon_validation.team },
+    });
+    toast.success(`Coupon validation success!`);
+    dispatchFireworks();
+  } catch (error) {
+    dispatch({
+      type: VALIDATE_COUPON_FAILED,
+      payload: { error: error.response },
+    });
+    toast.error(`Coupon validation error!`);
   }
 };
