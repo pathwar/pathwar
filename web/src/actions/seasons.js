@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+import { dispatchFireworks } from "../utils/fireworks-dispatcher";
 
 import {
   GET_ALL_SEASONS_SUCCESS,
@@ -240,6 +241,7 @@ export const fetchCouponValidation = (hash, teamID) => async dispatch => {
       payload: { team: response.data.coupon_validation.team },
     });
     toast.success(`Coupon validation success!`);
+    dispatchFireworks();
   } catch (error) {
     dispatch({
       type: VALIDATE_COUPON_FAILED,
