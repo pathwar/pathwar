@@ -5,14 +5,11 @@ import { Dimmer, Grid } from "tabler-react";
 import ChallengeCard from "./ChallengeCard";
 
 const ChallengeList = props => {
-  const activeUserSession = useSelector(
-    state => state.userSession.activeUserSession
-  );
   const activeTeam = useSelector(state => state.seasons.activeTeam);
 
   const { challenges } = props;
 
-  return !challenges || !activeUserSession ? (
+  return !challenges ? (
     <Dimmer active loader />
   ) : (
     <>

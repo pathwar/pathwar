@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Button, Form } from "tabler-react";
 import { css } from "@emotion/core";
+import { fetchCouponValidation } from "../../actions/seasons";
 
 const wrapperStyle = `
   text-align: right;
@@ -9,16 +11,24 @@ const wrapperStyle = `
 `;
 
 const ValidateCouponForm = () => {
+  const dispatch = useDispatch();
   const [formOpen, setFormOpen] = useState(false);
+  const [code, setCode] = useState("");
+  const activeTeam = useSelector(state => state.seasons.activeTeam);
 
   const handleFormOpen = function() {
     setFormOpen(true);
   };
 
+  const handleChange = event => {
+    setCode(event.target.value);
+  };
+
   const onCouponSubmit = function(event) {
     event.preventDefault();
-    alert("Comming soon...");
+    dispatch(fetchCouponValidation(code, activeTeam.id));
     setFormOpen(false);
+    setCode("");
   };
 
   return (
@@ -42,7 +52,11 @@ const ValidateCouponForm = () => {
               </Button>
             }
           >
-            <Form.Input placeholder="Coupon code" autoFocus={true} />
+            <Form.Input
+              onChange={handleChange}
+              placeholder="Coupon code"
+              autoFocus={true}
+            />
           </Form.InputGroup>
         </Form>
       )}

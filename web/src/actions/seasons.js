@@ -24,6 +24,8 @@ import {
   SET_ACTIVE_TEAM,
   CREATE_TEAM_SUCCESS,
   CREATE_TEAM_FAILED,
+  VALIDATE_COUPON_SUCCESS,
+  VALIDATE_COUPON_FAILED,
 } from "../constants/actionTypes";
 
 import {
@@ -37,6 +39,7 @@ import {
   postValidateChallenge,
   postCloseChallenge,
   postCreateTeam,
+  postCouponValidation,
 } from "../api/seasons";
 
 //Season main actions
@@ -225,5 +228,23 @@ export const closeChallenge = subscriptionID => async dispatch => {
   } catch (error) {
     dispatch({ type: CLOSE_CHALLENGE_FAILED, payload: { error } });
     toast.error(`Close challenge ERROR!`);
+  }
+};
+
+//Coupon Actions
+export const fetchCouponValidation = (hash, teamID) => async dispatch => {
+  try {
+    const response = await postCouponValidation(hash, teamID);
+    dispatch({
+      type: VALIDATE_COUPON_SUCCESS,
+      payload: { team: response.data.coupon_validation.team },
+    });
+    toast.success(`Coupon validation success!`);
+  } catch (error) {
+    dispatch({
+      type: VALIDATE_COUPON_FAILED,
+      payload: { error: error.response },
+    });
+    toast.error(`Coupon validation error!`);
   }
 };
