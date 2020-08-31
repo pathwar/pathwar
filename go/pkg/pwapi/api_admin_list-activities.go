@@ -20,9 +20,12 @@ func (svc *service) AdminListActivities(ctx context.Context, in *AdminListActivi
 		Preload("Author").
 		Preload("Team").
 		Preload("User").
+		Preload("Agent").
 		Preload("Organization").
 		Preload("Season").
 		Preload("Challenge").
+		Preload("ChallengeFlavor").
+		Preload("ChallengeInstance").
 		Preload("Coupon").
 		Preload("SeasonChallenge").
 		Preload("TeamMember").

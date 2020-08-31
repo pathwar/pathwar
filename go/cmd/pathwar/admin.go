@@ -338,7 +338,7 @@ func adminActivitiesCommand() *ffcli.Command {
 			{
 				fmt.Println("ACTIVITIES")
 				table := tablewriter.NewWriter(os.Stdout)
-				table.SetHeader([]string{"ID", "KIND", "HAPPENED", "AUTHOR", "TEAM", "USER", "ORG", "SEASON", "CHALLENGE", "COUPON", "SEASON CHAL.", "TEAM MEMBER", "CHALLENGE SUBS"})
+				table.SetHeader([]string{"ID", "KIND", "HAPPENED", "AUTHOR", "TEAM", "USER", "AGENT", "ORG", "SEASON", "CHALLENGE", "FLAVOR", "INSTANCE", "COUPON", "SEASON CHAL.", "TEAM MEMBER", "CHALLENGE SUBS"})
 				table.SetAlignment(tablewriter.ALIGN_CENTER)
 				table.SetBorder(false)
 
@@ -350,14 +350,17 @@ func adminActivitiesCommand() *ffcli.Command {
 					createdAgo := humanize.Time(*activity.CreatedAt)
 					team := activity.Team.ASCIIID()
 					user := activity.User.ASCIIID()
+					agent := activity.Agent.ASCIIID()
 					organization := activity.Organization.ASCIIID()
 					season := activity.Season.ASCIIID()
 					challenge := activity.Challenge.ASCIIID()
+					flavor := activity.ChallengeFlavor.ASCIIID()
+					instance := activity.ChallengeInstance.ASCIIID()
 					coupon := activity.Coupon.ASCIIID()
 					seasonChallenge := activity.SeasonChallenge.ASCIIID()
 					teamMember := activity.TeamMember.ASCIIID()
 					challengeSubscription := activity.ChallengeSubscription.ASCIIID()
-					table.Append([]string{id, kind, createdAgo, author, team, user, organization, season, challenge, coupon, seasonChallenge, teamMember, challengeSubscription})
+					table.Append([]string{id, kind, createdAgo, author, team, user, agent, organization, season, challenge, flavor, instance, coupon, seasonChallenge, teamMember, challengeSubscription})
 				}
 				table.Render()
 				fmt.Println("")
