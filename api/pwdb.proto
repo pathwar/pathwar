@@ -526,6 +526,10 @@ message Activity {
   int64 team_member_id = 219 [(gogoproto.customname) = "TeamMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   ChallengeSubscription challenge_subscription = 220 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeSubscriptionID\""];
   int64 challenge_subscription_id = 221 [(gogoproto.customname) = "ChallengeSubscriptionID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  ChallengeInstance challenge_instance = 222 [(gogoproto.moretags) = "gorm:\"foreignkey:ChallengeInstanceID\""];
+  int64 challenge_instance_id = 223 [(gogoproto.customname) = "ChallengeInstanceID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Agent agent = 224 [(gogoproto.moretags) = "gorm:\"foreignkey:AgentID\""];
+  int64 agent_id = 225 [(gogoproto.customname) = "AgentID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   // agent
   // inventoryitem
   // couponvalidation
@@ -542,6 +546,9 @@ message Activity {
     SeasonChallengeBuy = 5;
     ChallengeSubscriptionValidate = 6;
     CouponValidate = 7;
+    AgentRegister = 8;
+    AgentChallengeInstanceCreate = 9;
+    AgentChallengeInstanceUpdate = 10;
   }
 }
 

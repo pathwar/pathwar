@@ -81,3 +81,10 @@ func (entity *ChallengeFlavor) ASCIIID() string {
 	}
 	return strings.TrimSuffix(entity.Slug, "@default")
 }
+
+func (entity *ChallengeInstance) ASCIIID() string {
+	if entity == nil {
+		return "-"
+	}
+	return fmt.Sprint(entity.ID)
+}

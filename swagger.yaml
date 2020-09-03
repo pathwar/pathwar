@@ -14,6 +14,9 @@ definitions:
     - SeasonChallengeBuy
     - ChallengeSubscriptionValidate
     - CouponValidate
+    - AgentRegister
+    - AgentChallengeInstanceCreate
+    - AgentChallengeInstanceUpdate
     type: string
   ChallengeFlavorDriver:
     default: Unknown
@@ -484,6 +487,11 @@ definitions:
     type: string
   dbActivity:
     properties:
+      agent:
+        $ref: '#/definitions/dbAgent'
+      agent_id:
+        format: int64
+        type: string
       author:
         $ref: '#/definitions/dbUser'
       author_id:
@@ -497,6 +505,11 @@ definitions:
         format: int64
         type: string
       challenge_id:
+        format: int64
+        type: string
+      challenge_instance:
+        $ref: '#/definitions/dbChallengeInstance'
+      challenge_instance_id:
         format: int64
         type: string
       challenge_subscription:
