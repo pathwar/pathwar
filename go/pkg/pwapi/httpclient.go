@@ -109,6 +109,13 @@ func (c HTTPClient) AdminListActivities(ctx context.Context, input *AdminListAct
 	return result, err
 }
 
+func (c HTTPClient) AdminListAll(ctx context.Context, input *AdminListAll_Input) (AdminListAll_Output, error) {
+	var _ *AdminListAll_Input = input
+	var result AdminListAll_Output
+	err := c.doGet(ctx, "/admin/list-all", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) AdminAddCoupon(ctx context.Context, input *AdminAddCoupon_Input) (AdminAddCoupon_Output, error) {
 	var _ *AdminAddCoupon_Input = input
 	var result AdminAddCoupon_Output
