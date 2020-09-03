@@ -49,7 +49,7 @@ func (svc *service) AgentUpdateState(ctx context.Context, in *AgentUpdateState_I
 		}
 		if updated {
 			activity := pwdb.Activity{
-				Kind:                pwdb.Activity_AgentUpdate,
+				Kind:                pwdb.Activity_AgentChallengeInstanceUpdate,
 				AuthorID:            userID,
 				AgentID:             challengeInstance.AgentID,
 				ChallengeInstanceID: challengeInstance.ID,

@@ -546,7 +546,9 @@ message Activity {
     SeasonChallengeBuy = 5;
     ChallengeSubscriptionValidate = 6;
     CouponValidate = 7;
-    AgentUpdate = 8;
+    AgentRegister = 8;
+    AgentChallengeInstanceCreate = 9;
+    AgentChallengeInstanceUpdate = 10;
   }
 }
 

@@ -17,9 +17,14 @@ func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) 
 		return nil, errcode.ErrMissingInput
 	}
 
+	userID, err := userIDFromContext(ctx, svc.db)
+	if err != nil {
+		return nil, errcode.ErrGetUserIDFromContext.Wrap(err)
+	}
+
 	// check if agent already exists
 	var agent pwdb.Agent
-	err := svc.db.
+	err = svc.db.
 		Where(pwdb.Agent{Name: in.Name}).
 		First(&agent).
 		Error
@@ -75,6 +80,16 @@ func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) 
 			}
 			challengeFlavorsToInstanciate = append(challengeFlavorsToInstanciate, &debugFlavor)
 		}
+
+		activity := pwdb.Activity{
+			Kind:     pwdb.Activity_AgentRegister,
+			AuthorID: userID,
+			AgentID:  agent.ID,
+		}
+		err = svc.db.Create(&activity).Error
+		if err != nil {
+			return nil, pwdb.GormToErrcode(err)
+		}
 	}
 
 	for _, challengeFlavor := range challengeFlavorsToInstanciate {
@@ -86,6 +101,16 @@ func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) 
 		err = svc.db.Create(&instance).Error
 		if err != nil {
 			return nil, pwdb.GormToErrcode(err)
+		}
+		activity := pwdb.Activity{
+			Kind:                pwdb.Activity_AgentChallengeInstanceCreate,
+			AuthorID:            userID,
+			AgentID:             agent.ID,
+			ChallengeInstanceID: instance.ID,
+			ChallengeFlavorID:   challengeFlavor.ID,
+		}
+		if err := svc.db.Create(&activity).Error; err != nil {
+			return nil, errcode.ErrAgentUpdateState.Wrap(err)
 		}
 	}
 

@@ -14,7 +14,9 @@ definitions:
     - SeasonChallengeBuy
     - ChallengeSubscriptionValidate
     - CouponValidate
-    - AgentUpdate
+    - AgentRegister
+    - AgentChallengeInstanceCreate
+    - AgentChallengeInstanceUpdate
     type: string
   ChallengeFlavorDriver:
     default: Unknown
