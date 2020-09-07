@@ -39,6 +39,7 @@ func adminCommand() *ffcli.Command {
 			adminCouponsCommand(),
 			adminChallengeSubscriptionsCommand(),
 			adminListAllCommand(),
+			adminSearchCommand(),
 
 			// actions
 			adminAddCouponCommand(),
@@ -718,6 +719,35 @@ func adminListAllCommand() *ffcli.Command {
 
 			table.Render()
 			fmt.Println("")
+			return nil
+		},
+	}
+}
+
+func adminSearchCommand() *ffcli.Command {
+	return &ffcli.Command{
+		Name:  "search",
+		Usage: "pathwar [global flags] admin [admin flags] search QUERY",
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			if len(args) != 1 {
+				return flag.ErrHelp
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminSearch(ctx, &pwapi.AdminSearch_Input{Search: args[0]})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+			fmt.Println(godev.PrettyJSONPB(&ret))
 			return nil
 		},
 	}
