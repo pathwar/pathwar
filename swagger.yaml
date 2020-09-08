@@ -243,6 +243,94 @@ definitions:
     type: object
   apiAdminRedumpOutput:
     type: object
+  apiAdminSearchInput:
+    properties:
+      search:
+        type: string
+    type: object
+  apiAdminSearchOutput:
+    properties:
+      achievements:
+        items:
+          $ref: '#/definitions/dbAchievement'
+        type: array
+      activities:
+        items:
+          $ref: '#/definitions/dbActivity'
+        type: array
+      agents:
+        items:
+          $ref: '#/definitions/dbAgent'
+        type: array
+      challenge_flavors:
+        items:
+          $ref: '#/definitions/dbChallengeFlavor'
+        type: array
+      challenge_instances:
+        items:
+          $ref: '#/definitions/dbChallengeInstance'
+        type: array
+      challenge_subscriptions:
+        items:
+          $ref: '#/definitions/dbChallengeSubscription'
+        type: array
+      challenge_validations:
+        items:
+          $ref: '#/definitions/dbChallengeValidation'
+        type: array
+      challenges:
+        items:
+          $ref: '#/definitions/dbChallenge'
+        type: array
+      coupon_validations:
+        items:
+          $ref: '#/definitions/dbCouponValidation'
+        type: array
+      coupons:
+        items:
+          $ref: '#/definitions/dbCoupon'
+        type: array
+      inventory_items:
+        items:
+          $ref: '#/definitions/dbInventoryItem'
+        type: array
+      notifications:
+        items:
+          $ref: '#/definitions/dbNotification'
+        type: array
+      organization_members:
+        items:
+          $ref: '#/definitions/dbOrganizationMember'
+        type: array
+      organizations:
+        items:
+          $ref: '#/definitions/dbOrganization'
+        type: array
+      season_challenges:
+        items:
+          $ref: '#/definitions/dbSeasonChallenge'
+        type: array
+      seasons:
+        items:
+          $ref: '#/definitions/dbSeason'
+        type: array
+      team_members:
+        items:
+          $ref: '#/definitions/dbTeamMember'
+        type: array
+      teams:
+        items:
+          $ref: '#/definitions/dbTeam'
+        type: array
+      users:
+        items:
+          $ref: '#/definitions/dbUser'
+        type: array
+      whoswho_attempts:
+        items:
+          $ref: '#/definitions/dbWhoswhoAttempt'
+        type: array
+    type: object
   apiAdminSeasonChallengeAddInput:
     properties:
       flavor_id:
@@ -2005,6 +2093,34 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiAdminRedumpOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/search:
+    post:
+      operationId: Service_AdminSearch
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminSearchInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminSearchOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}

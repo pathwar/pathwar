@@ -88,6 +88,7 @@ service Service {
   rpc AdminListActivities(AdminListActivities.Input) returns (AdminListActivities.Output) { option (google.api.http) = {get: "/admin/list-activities"}; }; // admin only
   rpc AdminListChallengeSubscriptions(AdminListChallengeSubscriptions.Input) returns (AdminListChallengeSubscriptions.Output) { option (google.api.http) = {get: "/admin/list-challenge-subscriptions"}; }; // admin only
   rpc AdminListAll(AdminListAll.Input) returns (AdminListAll.Output) { option (google.api.http) = {get: "/admin/list-all"}; }; // admin only
+  rpc AdminSearch(AdminSearch.Input) returns (AdminSearch.Output) { option (google.api.http) = {post: "/admin/search"; body: "*"}; }; // admin only
   rpc AdminAddCoupon(AdminAddCoupon.Input) returns (AdminAddCoupon.Output) { option (google.api.http) = {post: "/admin/add-coupon"; body: "*"}; }; // admin only
   rpc AdminRedump(AdminRedump.Input) returns (AdminRedump.Output) { option (google.api.http) = {post: "/admin/redump"; body: "*"}; }; // admin only
   rpc AdminChallengeAdd(AdminChallengeAdd.Input) returns (AdminChallengeAdd.Output) { option (google.api.http) = {post: "/admin/challenge-add"; body: "*"}; }; // admin only
@@ -184,6 +185,34 @@ message AdminListAll {
     repeated pathwar.db.Achievement achievements = 19;
     repeated pathwar.db.Activity activities = 20;
  }
+}
+
+message AdminSearch {
+  message Input {
+    string search = 1;
+  }
+  message Output {
+    repeated pathwar.db.Challenge challenges = 1;
+    repeated pathwar.db.ChallengeFlavor challenge_flavors = 2;
+    repeated pathwar.db.SeasonChallenge season_challenges = 3;
+    repeated pathwar.db.ChallengeInstance challenge_instances = 4;
+    repeated pathwar.db.Agent agents = 5;
+    repeated pathwar.db.OrganizationMember organization_members = 6;
+    repeated pathwar.db.TeamMember team_members = 7;
+    repeated pathwar.db.User users = 8;
+    repeated pathwar.db.Organization organizations = 9;
+    repeated pathwar.db.Season seasons = 10;
+    repeated pathwar.db.Team teams = 11;
+    repeated pathwar.db.WhoswhoAttempt whoswho_attempts = 12;
+    repeated pathwar.db.ChallengeValidation challenge_validations = 13;
+    repeated pathwar.db.ChallengeSubscription challenge_subscriptions = 14;
+    repeated pathwar.db.InventoryItem inventory_items = 15;
+    repeated pathwar.db.Notification notifications = 16;
+    repeated pathwar.db.Coupon coupons = 17;
+    repeated pathwar.db.CouponValidation coupon_validations = 18;
+    repeated pathwar.db.Achievement achievements = 19;
+    repeated pathwar.db.Activity activities = 20;
+  }
 }
 
 message AdminListTeams {

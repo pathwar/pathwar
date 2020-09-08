@@ -116,6 +116,13 @@ func (c HTTPClient) AdminListAll(ctx context.Context, input *AdminListAll_Input)
 	return result, err
 }
 
+func (c HTTPClient) AdminSearch(ctx context.Context, input *AdminSearch_Input) (AdminSearch_Output, error) {
+	var _ *AdminSearch_Input = input
+	var result AdminSearch_Output
+	err := c.doPost(ctx, "/admin/search", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) AdminAddCoupon(ctx context.Context, input *AdminAddCoupon_Input) (AdminAddCoupon_Output, error) {
 	var _ *AdminAddCoupon_Input = input
 	var result AdminAddCoupon_Output
