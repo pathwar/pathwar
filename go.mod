@@ -29,6 +29,7 @@ require (
 	github.com/jinzhu/gorm v1.9.12
 	github.com/karrick/godirwalk v1.15.6 // indirect
 	github.com/keycloak/kcinit v0.0.0-20181010192927-f85c3c5390ea
+	github.com/kr/pretty v0.2.0 // indirect
 	github.com/martinlindhe/base36 v1.0.0
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/moby/moby v1.13.1
@@ -58,6 +59,7 @@ require (
 	google.golang.org/appengine v1.6.6 // indirect
 	google.golang.org/genproto v0.0.0-20190927181202-20e1ac93f88c
 	google.golang.org/grpc v1.28.0-pre
+	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/gormigrate.v1 v1.6.0
 	gopkg.in/yaml.v2 v2.3.0
 	gopkg.in/yaml.v3 v3.0.0-20200506231410-2ff61e1afc86

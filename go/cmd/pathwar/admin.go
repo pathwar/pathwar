@@ -38,6 +38,7 @@ func adminCommand() *ffcli.Command {
 			adminTeamsCommand(),
 			adminCouponsCommand(),
 			adminChallengeSubscriptionsCommand(),
+			adminListAllCommand(),
 
 			// actions
 			adminAddCouponCommand(),
@@ -619,6 +620,104 @@ func adminChallengeSubscriptionsCommand() *ffcli.Command {
 				fmt.Println("")
 			}
 
+			return nil
+		},
+	}
+}
+
+func adminListAllCommand() *ffcli.Command {
+	return &ffcli.Command{
+		Name:  "list-all",
+		Usage: "pathwar [global flags] admin [admin flags] list-all",
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminListAll(ctx, &pwapi.AdminListAll_Input{})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+			fmt.Println("LIST ALL")
+			table := tablewriter.NewWriter(os.Stdout)
+			table.SetHeader([]string{"ID", "SLUG", "type"})
+			table.SetAlignment(tablewriter.ALIGN_CENTER)
+			table.SetBorder(false)
+
+			for _, challenge := range ret.Challenges {
+				table.Append([]string{fmt.Sprint(challenge.ID), challenge.Slug, "challenge"})
+			}
+			for _, challengeFlavor := range ret.ChallengeFlavors {
+				table.Append([]string{fmt.Sprint(challengeFlavor.ID), challengeFlavor.Slug, "challenge-flavor"})
+			}
+			for _, seasonChallenge := range ret.SeasonChallenges {
+				table.Append([]string{fmt.Sprint(seasonChallenge.ID), seasonChallenge.Slug, "season-challenge"})
+			}
+			for _, challengeInstance := range ret.ChallengeInstances {
+				table.Append([]string{fmt.Sprint(challengeInstance.ID), challengeInstance.Slug, "challenge-instance"})
+			}
+			for _, agent := range ret.Agents {
+				table.Append([]string{fmt.Sprint(agent.ID), agent.Slug, "agent"})
+			}
+			for _, organizationMember := range ret.OrganizationMembers {
+				table.Append([]string{fmt.Sprint(organizationMember.ID), organizationMember.Slug, "organization-member"})
+			}
+			for _, teamMember := range ret.TeamMembers {
+				table.Append([]string{fmt.Sprint(teamMember.ID), teamMember.Slug, "team-member"})
+			}
+			for _, user := range ret.Users {
+				table.Append([]string{fmt.Sprint(user.ID), user.Slug, "user"})
+			}
+			for _, organization := range ret.Organizations {
+				table.Append([]string{fmt.Sprint(organization.ID), organization.Slug, "organization"})
+			}
+			for _, season := range ret.Seasons {
+				table.Append([]string{fmt.Sprint(season.ID), season.Slug, "season"})
+			}
+			for _, team := range ret.Teams {
+				table.Append([]string{fmt.Sprint(team.ID), team.Slug, "team"})
+			}
+			for _, whoswhoAttempt := range ret.WhoswhoAttempts {
+				table.Append([]string{fmt.Sprint(whoswhoAttempt.ID), whoswhoAttempt.Slug, "whoswho-attempt"})
+			}
+			for _, challengeValidation := range ret.ChallengeValidations {
+				table.Append([]string{fmt.Sprint(challengeValidation.ID), challengeValidation.Slug, "challenge-validation"})
+			}
+			for _, challengeSubscription := range ret.ChallengeSubscriptions {
+				table.Append([]string{fmt.Sprint(challengeSubscription.ID), challengeSubscription.Slug, "challenge-subscription"})
+			}
+			for _, inventoryItem := range ret.InventoryItems {
+				table.Append([]string{fmt.Sprint(inventoryItem.ID), inventoryItem.Slug, "inventory-item"})
+			}
+			/*for _, notification := range ret.Notifications {
+				table.Append([]string{fmt.Sprint(notification.ID), notification.Slug, "notification"})
+			}
+			for _, coupon := range ret.Coupons {
+				table.Append([]string{fmt.Sprint(coupon.ID), coupon.Slug, "coupon"})
+			}
+			for _, couponValidation := range ret.CouponValidations {
+				table.Append([]string{fmt.Sprint(couponValidation.ID), couponValidation.Slug, "coupon-validation"})
+			}
+			for _, achievement := range ret.Achievements {
+				table.Append([]string{fmt.Sprint(achievement.ID), achievement.Slug, "achievement"})
+			}
+			for _, activity := range ret.Activities {
+				table.Append([]string{fmt.Sprint(activity.ID), activity.Slug, "activity"})
+			}*/
+
+			table.Render()
+			fmt.Println("")
 			return nil
 		},
 	}
