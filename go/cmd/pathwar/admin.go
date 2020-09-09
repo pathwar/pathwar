@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/dustin/go-humanize"
@@ -923,8 +924,12 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 			}
 
 			if compose := input.ChallengeFlavor.ComposeBundle; compose != "" {
-				if _, err := os.Stat(compose); err == nil {
-					f, err := os.Open(compose)
+				composePath, err := filepath.Abs(compose)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+				if _, err := os.Stat(composePath); err == nil {
+					f, err := os.Open(composePath)
 					if err != nil {
 						return errcode.TODO.Wrap(err)
 					}
@@ -934,6 +939,8 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 						return errcode.TODO.Wrap(err)
 					}
 					input.ChallengeFlavor.ComposeBundle = string(b)
+				} else {
+					return errcode.TODO.Wrap(err)
 				}
 			}
 
