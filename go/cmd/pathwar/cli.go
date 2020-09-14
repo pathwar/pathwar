@@ -41,6 +41,7 @@ func cliCommand() *ffcli.Command {
 			cliTeamsCommand(),
 			cliChallengesCommand(),
 			cliChallengeBuyCommand(),
+			cliChallengeValidateCommand(),
 			cliCouponValidateCommand(),
 		},
 	}
@@ -353,6 +354,47 @@ func cliChallengeBuyCommand() *ffcli.Command {
 			default:
 				return err
 			}
+			return nil
+		},
+	}
+}
+
+func cliChallengeValidateCommand() *ffcli.Command {
+	input := pwapi.ChallengeSubscriptionValidate_Input{}
+
+	passphrases := ""
+	flags := flag.NewFlagSet("cli challenge validate", flag.ExitOnError)
+	flags.StringVar(&passphrases, "passphrases", passphrases, "Passphrases separated with commas")
+	flags.Int64Var(&input.ChallengeSubscriptionID, "subscription-id", input.ChallengeSubscriptionID, "Challenge subscription ID")
+	flags.StringVar(&input.Comment, "comment", input.Comment, "Comment for validation")
+
+	return &ffcli.Command{
+		Name:      "challenge-validate",
+		Usage:     "pathwar [global flags] cli [cli flags] challenge-validate [flags]",
+		FlagSet:   flags,
+		ShortHelp: "Validate a challenge",
+		Exec: func(args []string) error {
+			if input.ChallengeSubscriptionID == 0 {
+				return flag.ErrHelp
+			}
+
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			ctx := context.Background()
+			client, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return err
+			}
+
+			input.Passphrases = strings.Split(passphrases, ",")
+			var ret pwapi.ChallengeSubscriptionValidate_Output
+			err = client.RawProto(ctx, "POST", "/challenge-subscription/validate", &input, &ret)
+			if err != nil {
+				return err
+			}
+			logger.Debug("POST /challenge-subscription/validate", zap.Any("input", input), zap.Any("ret", ret), zap.Error(err))
+			fmt.Println(godev.PrettyJSONPB(&ret))
 			return nil
 		},
 	}
