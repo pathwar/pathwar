@@ -19,9 +19,9 @@ import (
 	"github.com/openzipkin/zipkin-go/model"
 	reporterhttp "github.com/openzipkin/zipkin-go/reporter/http"
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"golang.org/x/oauth2"
 	"moul.io/srand"
+	"moul.io/zapconfig"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwagent"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
@@ -70,26 +70,16 @@ func globalPreRun() error {
 	if bearerSecretKey != "" {
 		bearer.ReplaceGlobals(bearer.Init(bearerSecretKey))
 	}
+	config := zapconfig.Configurator{}
 	if globalDebug {
-		config := zap.NewDevelopmentConfig()
-		config.Level.SetLevel(zap.DebugLevel)
-		config.DisableStacktrace = true
-		config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-		var err error
-		logger, err = config.Build()
-		if err != nil {
-			return errcode.ErrInitLogger.Wrap(err)
-		}
+		config.SetLevel(zap.DebugLevel)
 	} else {
-		config := zap.NewDevelopmentConfig()
-		config.Level.SetLevel(zap.InfoLevel)
-		config.DisableStacktrace = true
-		config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-		var err error
-		logger, err = config.Build()
-		if err != nil {
-			return errcode.ErrInitLogger.Wrap(err)
-		}
+		config.SetLevel(zap.InfoLevel)
+	}
+	var err error
+	logger, err = config.Build()
+	if err != nil {
+		return errcode.ErrInitLogger.Wrap(err)
 	}
 	if zipkinEndpoint != "" {
 		reporter := reporterhttp.NewReporter(zipkinEndpoint)
