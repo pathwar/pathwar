@@ -166,9 +166,9 @@ func (s *Server) Run() error {
 }
 
 func (s *Server) Close() {
-	//go s.grpcServer.GracefulStop()
-	//time.Sleep(time.Second)
-	//s.grpcServer.Stop()
+	// go s.grpcServer.GracefulStop()
+	// time.Sleep(time.Second)
+	// s.grpcServer.Stop()
 	if s.masterListener != nil {
 		s.masterListener.Close()
 	}
@@ -200,13 +200,13 @@ func grpcServer(svc ServiceServer, opts ServerOpts) *grpc.Server {
 	}
 	serverStreamOpts = append(serverStreamOpts,
 		grpc_auth.StreamServerInterceptor(authFunc),
-		//grpc_ctxtags.StreamServerInterceptor(),
+		// grpc_ctxtags.StreamServerInterceptor(),
 		grpc_zap.StreamServerInterceptor(logger),
 	)
 	serverUnaryOpts = append(
 		serverUnaryOpts,
 		grpc_auth.UnaryServerInterceptor(authFunc),
-		//grpc_ctxtags.UnaryServerInterceptor(),
+		// grpc_ctxtags.UnaryServerInterceptor(),
 		grpc_zap.UnaryServerInterceptor(logger),
 	)
 	if opts.Logger.Check(zap.DebugLevel, "") != nil {
@@ -294,7 +294,7 @@ func httpServer(ctx context.Context, serverListenerAddr string, opts ServerOpts)
 					r = r.WithContext(opentracing.ContextWithSpan(r.Context(), serverSpan))
 					defer serverSpan.Finish()
 				}
-				//fmt.Println(r.Context())
+				// fmt.Println(r.Context())
 				h.ServeHTTP(w, r)
 			})
 		}

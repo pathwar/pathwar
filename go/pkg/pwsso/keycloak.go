@@ -38,7 +38,7 @@ func (c *client) Logout(token string) error {
 
 	form := url.Values{}
 	form.Set("client_id", c.clientID)
-	//form.Set("client_secret", c.clientSecret)
+	// form.Set("client_secret", c.clientSecret)
 	form.Set("refresh_token", token)
 	res, err := oidc.Path("logout").Request().Form(form).Post()
 	if err != nil {

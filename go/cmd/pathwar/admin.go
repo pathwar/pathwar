@@ -168,7 +168,7 @@ func adminChallengesCommand() *ffcli.Command {
 				for _, challenge := range ret.Challenges {
 					for _, flavor := range challenge.Flavors {
 						for _, instance := range flavor.Instances {
-							//fmt.Println(godev.PrettyJSONPB(instance))
+							// fmt.Println(godev.PrettyJSONPB(instance))
 							id := fmt.Sprintf("%d", instance.ID)
 							status := asciiStatus(instance.Status.String())
 							agentSlug := instance.Agent.ASCIIID()
@@ -230,7 +230,7 @@ func adminUsersCommand() *ffcli.Command {
 				table.SetBorder(false)
 
 				for _, user := range ret.Users {
-					//fmt.Println(godev.PrettyJSONPB(user))
+					// fmt.Println(godev.PrettyJSONPB(user))
 					slug := user.Slug
 					email := user.Email
 					username := user.Username
@@ -287,7 +287,7 @@ func adminAgentsCommand() *ffcli.Command {
 				table.SetBorder(false)
 
 				for _, agent := range ret.Agents {
-					//fmt.Println(godev.PrettyJSONPB(agent))
+					// fmt.Println(godev.PrettyJSONPB(agent))
 					slug := agent.Slug
 					createdAgo := humanize.Time(*agent.CreatedAt)
 					updatedAgo := humanize.Time(*agent.UpdatedAt)
@@ -346,7 +346,7 @@ func adminActivitiesCommand() *ffcli.Command {
 				table.SetBorder(false)
 
 				for _, activity := range ret.Activities {
-					//fmt.Println(godev.PrettyJSONPB(activity))
+					// fmt.Println(godev.PrettyJSONPB(activity))
 					author := activity.Author.Slug
 					id := fmt.Sprintf("%d", activity.ID)
 					kind := activity.Kind.String()
@@ -410,7 +410,7 @@ func adminOrganizationsCommand() *ffcli.Command {
 				table.SetBorder(false)
 
 				for _, organization := range ret.Organizations {
-					//fmt.Println(godev.PrettyJSONPB(organization))
+					// fmt.Println(godev.PrettyJSONPB(organization))
 					id := fmt.Sprintf("%d", organization.ID)
 					createdAgo := humanize.Time(*organization.CreatedAt)
 					updatedAgo := humanize.Time(*organization.UpdatedAt)
@@ -474,7 +474,7 @@ func adminTeamsCommand() *ffcli.Command {
 				table.SetBorder(false)
 
 				for _, team := range ret.Teams {
-					//fmt.Println(godev.PrettyJSONPB(team))
+					// fmt.Println(godev.PrettyJSONPB(team))
 					id := fmt.Sprintf("%d", team.ID)
 					createdAgo := humanize.Time(*team.CreatedAt)
 					updatedAgo := humanize.Time(*team.UpdatedAt)
@@ -540,7 +540,7 @@ func adminCouponsCommand() *ffcli.Command {
 				table.SetBorder(false)
 
 				for _, coupon := range ret.Coupons {
-					//fmt.Println(godev.PrettyJSONPB(coupon))
+					// fmt.Println(godev.PrettyJSONPB(coupon))
 					hash := coupon.Hash
 					id := fmt.Sprintf("%d", coupon.ID)
 					value := fmt.Sprintf("%d", coupon.Value)
@@ -605,7 +605,7 @@ func adminChallengeSubscriptionsCommand() *ffcli.Command {
 				table.SetBorder(false)
 
 				for _, subscription := range ret.Subscriptions {
-					//fmt.Println(godev.PrettyJSONPB(subscription))
+					// fmt.Println(godev.PrettyJSONPB(subscription))
 					id := fmt.Sprintf("%d", subscription.ID)
 					createdAgo := humanize.Time(*subscription.CreatedAt)
 					updatedAgo := humanize.Time(*subscription.UpdatedAt)

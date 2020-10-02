@@ -158,7 +158,7 @@ func (e wrappedError) Unwrap() error {
 	return e.inner
 }
 
-/// light wrapped errors
+// light wrapped errors
 
 type lightWrappedError struct {
 	wrappedError

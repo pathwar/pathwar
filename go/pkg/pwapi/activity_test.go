@@ -28,7 +28,7 @@ func TestActivity(t *testing.T) {
 		activities = testingActivities(t, svc)
 		require.Len(t, activities.Items, 1)
 		activity := activities.Items[0]
-		//fmt.Println(godev.PrettyJSON(activity))
+		// fmt.Println(godev.PrettyJSON(activity))
 		assert.Equal(t, activity.Kind, pwdb.Activity_UserRegister)
 		assert.Equal(t, activity.Author.ID, session.User.ID)
 		assert.Equal(t, activity.User.ID, session.User.ID)
@@ -80,7 +80,7 @@ func TestActivity(t *testing.T) {
 		activities = testingActivities(t, svc)
 		require.Len(t, activities.Items, 2)
 		activity := activities.Items[1]
-		//fmt.Println(godev.PrettyJSON(activity))
+		// fmt.Println(godev.PrettyJSON(activity))
 		assert.Equal(t, activity.Kind, pwdb.Activity_SeasonChallengeBuy)
 		assert.Equal(t, activity.AuthorID, session.User.ID)
 		assert.Equal(t, activity.TeamID, session.User.ActiveTeamMember.Team.ID)
@@ -121,7 +121,7 @@ func TestActivity(t *testing.T) {
 		assert.Equal(t, activity.ChallengeFlavorID, subscription.ChallengeSubscription.SeasonChallenge.Flavor.ID)
 		assert.Equal(t, activity.Season.Name, "Global")
 		assert.Equal(t, activity.TeamID, session.User.ActiveTeamMember.Team.ID)
-		//fmt.Println(godev.PrettyJSON(activity))
+		// fmt.Println(godev.PrettyJSON(activity))
 	}
 
 	// get session again
@@ -139,12 +139,12 @@ func TestActivity(t *testing.T) {
 		}
 		ret, err := svc.CouponValidate(ctx, &input)
 		require.NoError(t, err)
-		//fmt.Println(godev.PrettyJSON(ret))
+		// fmt.Println(godev.PrettyJSON(ret))
 
 		activities = testingActivities(t, svc)
 		require.Len(t, activities.Items, 4)
 		activity := activities.Items[3]
-		//fmt.Println(godev.PrettyJSON(activity))
+		// fmt.Println(godev.PrettyJSON(activity))
 		assert.Equal(t, activity.Kind, pwdb.Activity_CouponValidate)
 		assert.Equal(t, activity.AuthorID, session.User.ID)
 		assert.Equal(t, activity.TeamID, session.User.ActiveTeamMember.Team.ID)
@@ -172,7 +172,7 @@ func TestActivity(t *testing.T) {
 		activities = testingActivities(t, svc)
 		require.Len(t, activities.Items, 5)
 		activity := activities.Items[4]
-		//fmt.Println(godev.PrettyJSON(activity))
+		// fmt.Println(godev.PrettyJSON(activity))
 		assert.Equal(t, activity.Kind, pwdb.Activity_SeasonChallengeBuy)
 		assert.Equal(t, activity.AuthorID, session.User.ID)
 		assert.Equal(t, activity.TeamID, session.User.ActiveTeamMember.Team.ID)
@@ -196,7 +196,7 @@ func TestActivity(t *testing.T) {
 		activities = testingActivities(t, svc)
 		require.Len(t, activities.Items, 6)
 		activity := activities.Items[5]
-		//fmt.Println(godev.PrettyJSON(activity))
+		// fmt.Println(godev.PrettyJSON(activity))
 		assert.Equal(t, activity.Kind, pwdb.Activity_UserDeleteAccount)
 		assert.Equal(t, activity.AuthorID, session.User.ID)
 		assert.Equal(t, activity.UserID, session.User.ID)

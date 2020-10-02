@@ -83,7 +83,7 @@ func cliMeCommand() *ffcli.Command {
 
 			// JWT Token
 			{
-				//fmt.Println(godev.PrettyJSON(session.Claims))
+				// fmt.Println(godev.PrettyJSON(session.Claims))
 				tokenAgo := humanize.Time(*session.Claims.ActionToken.AuthTime)
 				issuedAgo := humanize.Time(*session.Claims.ActionToken.Iat)
 				expireIn := humanize.Time(*session.Claims.ActionToken.Exp)
@@ -127,7 +127,7 @@ func cliSeasonsCommand() *ffcli.Command {
 
 			// seasons
 			{
-				//fmt.Println(godev.PrettyJSON(session.Seasons))
+				// fmt.Println(godev.PrettyJSON(session.Seasons))
 				table := tablewriter.NewWriter(os.Stdout)
 				table.SetHeader([]string{"SEASON", "NAME", "STATUS", "VISIBILITY", "MY TEAM", "CREATED", "UPDATED"})
 				table.SetAlignment(tablewriter.ALIGN_CENTER)

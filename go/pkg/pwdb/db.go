@@ -17,8 +17,8 @@ type Opts struct {
 
 func Configure(db *gorm.DB, sfn *snowflake.Node, opts Opts) (*gorm.DB, error) {
 	db.SetLogger(zapgorm.New(opts.Logger))
-	//db.Callback().Create().Remove("gorm:update_time_stamp")
-	//db.Callback().Update().Remove("gorm:update_time_stamp")
+	// db.Callback().Create().Remove("gorm:update_time_stamp")
+	// db.Callback().Update().Remove("gorm:update_time_stamp")
 	db.Callback().Create().Before("gorm:create").Register("pathwar_before_create", beforeCreate(sfn))
 	db = db.Set("gorm:auto_preload", false)
 	db = db.Set("gorm:association_autoupdate", false)

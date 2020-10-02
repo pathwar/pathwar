@@ -44,7 +44,7 @@ func TestSvc_SeasonChallengeList(t *testing.T) {
 				return
 			}
 
-			//fmt.Println(godev.PrettyJSON(ret.Items))
+			// fmt.Println(godev.PrettyJSON(ret.Items))
 			for _, item := range ret.Items {
 				assert.Equal(t, test.input.SeasonID, item.SeasonID)
 			}

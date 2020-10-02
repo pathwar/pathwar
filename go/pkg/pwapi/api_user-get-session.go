@@ -182,7 +182,7 @@ func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) 
 		// Locale
 	}
 	organizationMember := pwdb.OrganizationMember{
-		//User: &user,
+		// User: &user,
 		Organization: &organization,
 		Role:         pwdb.OrganizationMember_Owner,
 	}
