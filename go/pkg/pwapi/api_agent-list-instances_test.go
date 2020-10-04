@@ -46,7 +46,7 @@ func TestService_AgentListInstances(t *testing.T) {
 					// FIXME: verify seasonChallenge.ChallengeSubscriptions...
 				}
 			}
-			//fmt.Println(godev.PrettyJSON(ret))
+			// fmt.Println(godev.PrettyJSON(ret))
 		})
 	}
 }

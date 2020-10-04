@@ -13,6 +13,7 @@ import (
 	"context"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"math"
@@ -31,6 +32,13 @@ type chromeDebuggerJSONElement struct {
 type chromeDebuggerJSON []chromeDebuggerJSONElement
 
 func main() {
+	err := run()
+	if err != nil {
+		log.Fatalf("error: %v", err)
+	}
+}
+
+func run() error {
 	var host, port, screenshotURL, imgQualityArg string
 	flag.StringVar(&host, "host", "localhost", "Chrome headless instance ip")
 	flag.StringVar(&port, "port", "9222", "Chrome headless instance debug port")
@@ -41,16 +49,16 @@ func main() {
 	// Retrieve ws url
 	ipaddr, err := net.ResolveIPAddr("ip", host)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	resp, err := http.Get("http://" + ipaddr.IP.String() + ":" + port + "/json")
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	jsonResponse, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	resp.Body.Close()
 
@@ -58,7 +66,7 @@ func main() {
 	err = json.Unmarshal(jsonResponse, &jsonElements)
 
 	if err != nil || len(jsonElements) < 1 {
-		log.Fatal("Couldn't retrieve websocket headless instance URL from JSON")
+		return fmt.Errorf("couldn't retrieve websocket headless instance URL from JSON")
 	}
 
 	actxt, cancelActxt := chromedp.NewRemoteAllocator(context.Background(), jsonElements[0].WebSocketDebuggerURL)
@@ -67,18 +75,19 @@ func main() {
 	ctxt, cancelCtxt := chromedp.NewContext(actxt)
 	defer cancelCtxt()
 
-	var buf []byte
-
 	imgQuality, err := strconv.ParseInt(imgQualityArg, 10, 64)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+	var buf []byte
 	if err := chromedp.Run(ctxt, fullScreenshot(screenshotURL, imgQuality, &buf)); err != nil {
-		log.Fatal(err)
+		return err
 	}
 	if err := ioutil.WriteFile("screenshot.png", buf, 0644); err != nil {
-		log.Fatal(err)
+		return err
 	}
+
+	return nil
 }
 
 func fullScreenshot(urlstr string, quality int64, res *[]byte) chromedp.Tasks {

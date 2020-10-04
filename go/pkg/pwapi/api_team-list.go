@@ -22,10 +22,10 @@ func (svc *service) TeamList(ctx context.Context, in *TeamList_Input) (*TeamList
 	var ret TeamList_Output
 	err = svc.db.
 		Preload("Organization").
-		//Preload("Season").
-		//Preload("Members").
-		//Preload("ChallengeSubscription").
-		//Preload("Achievements").
+		// Preload("Season").
+		// Preload("Members").
+		// Preload("ChallengeSubscription").
+		// Preload("Achievements").
 		Where(pwdb.Team{
 			SeasonID:       in.SeasonID,
 			DeletionStatus: pwdb.DeletionStatus_Active,

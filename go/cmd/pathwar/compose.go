@@ -222,7 +222,7 @@ func composeRegisterCommand() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
-			//fmt.Println(godev.PrettyJSON(config))
+			// fmt.Println(godev.PrettyJSON(config))
 
 			slug := config.Pathwar.Challenge.Slug
 			if slug == "" {

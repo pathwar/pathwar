@@ -32,7 +32,7 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 
 	var seasonChallenges []*pwdb.SeasonChallenge
 	err = svc.db.
-		//Preload("Season").
+		// Preload("Season").
 		Preload("Flavor").
 		Joins("LEFT JOIN challenge_flavor ON season_challenge.flavor_id = challenge_flavor.id").
 		Preload("Flavor.Challenge").
@@ -52,7 +52,7 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 	// prepare & cleanup
 	for _, sc := range seasonChallenges {
 		// FIXME: hide challenges without flavors?
-		//fmt.Println(sc.ID, godev.PrettyJSON(sc.Flavor.Instances))
+		// fmt.Println(sc.ID, godev.PrettyJSON(sc.Flavor.Instances))
 		if sc.Flavor.TagList != "" {
 			sc.Flavor.Tags = strings.Split(sc.Flavor.TagList, ",")
 			sc.Flavor.TagList = ""

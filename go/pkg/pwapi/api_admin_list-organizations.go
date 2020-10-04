@@ -21,7 +21,7 @@ func (svc *service) AdminListOrganizations(ctx context.Context, in *AdminListOrg
 		Preload("Teams.Season").
 		Preload("Members").
 		Preload("Members.User").
-		//Preload("ReceivedWhoswhoAttempts").
+		// Preload("ReceivedWhoswhoAttempts").
 		Find(&organizations).Error
 	if err != nil {
 		return nil, errcode.ErrListOrganizations.Wrap(err)

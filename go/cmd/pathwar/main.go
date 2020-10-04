@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 
 	"github.com/peterbourgon/ff"
 	"github.com/peterbourgon/ff/ffcli"
@@ -15,11 +16,15 @@ import (
 func main() {
 	log.SetFlags(0)
 
-	defer func() {
-		if logger != nil {
-			_ = logger.Sync()
-		}
-	}()
+	var once sync.Once
+	cleanup := func() {
+		once.Do(func() {
+			if logger != nil {
+				_ = logger.Sync()
+			}
+		})
+	}
+	defer cleanup()
 
 	// setup flags
 	globalFlags := flag.NewFlagSet("pathwar", flag.ExitOnError)
@@ -60,6 +65,8 @@ func main() {
 
 	err := root.Run(os.Args[1:])
 	if err != nil && !errors.Is(err, flag.ErrHelp) {
-		log.Fatalf("fatal: %+v", err)
+		log.Printf("error: %+v", err)
+		cleanup()
+		os.Exit(1) // nolint:gocritic
 	}
 }

@@ -28,7 +28,7 @@ func (svc *service) UserDeleteAccount(ctx context.Context, in *UserDeleteAccount
 	if err != nil {
 		return nil, errcode.ErrGetUser.Wrap(err)
 	}
-	//fmt.Println(godev.PrettyJSON(user))
+	// fmt.Println(godev.PrettyJSON(user))
 
 	err = svc.db.Transaction(func(tx *gorm.DB) error {
 		// update user
