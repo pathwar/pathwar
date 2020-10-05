@@ -31,6 +31,7 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		Preload("SeasonChallenge").
 		Preload("SeasonChallenge.Flavor").
 		Preload("SeasonChallenge.Flavor.Instances").
+		Preload("SeasonChallenge.Season").
 		Joins("JOIN team ON team.id = challenge_subscription.team_id").
 		Joins("JOIN team_member ON team_member.team_id = team.id AND team_member.user_id = ?", userID).
 		First(&subscription, in.ChallengeSubscriptionID).
@@ -115,6 +116,10 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		AuthorID:                userID,
 		AuthorComment:           in.Comment,
 		Status:                  pwdb.ChallengeValidation_NeedReview,
+	}
+
+	if subscription.SeasonChallenge.Season.IsGlobal {
+		validation.Status = pwdb.ChallengeValidation_AutoAccepted
 	}
 
 	// update DB
