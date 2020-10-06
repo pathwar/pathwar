@@ -95,10 +95,21 @@ func (svc *service) loadUserSeasons(ctx context.Context) ([]*UserGetSession_Outp
 		return nil, errcode.ErrGetUserOrganizations.Wrap(err)
 	}
 
+	req := svc.db
+	switch {
+	case isAdminContext(ctx): // because it's the highest level
+		// noop
+	case isTesterContext(ctx):
+		req = req.
+			Where(pwdb.Season{Visibility: pwdb.Season_Public}).
+			Or(pwdb.Season{IsTesting: true})
+	default: // "normal" user
+		req = req.
+			Where(pwdb.Season{Visibility: pwdb.Season_Public})
+	}
+
 	// get all available seasons
-	err = svc.db.
-		Where(pwdb.Season{Visibility: pwdb.Season_Public}).
-		// FIXME: admins can see everything
+	err = req.
 		Find(&seasons).
 		Error
 	if err != nil {

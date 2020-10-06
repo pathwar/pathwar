@@ -19,8 +19,9 @@ const (
 )
 
 const (
-	adminSSORole = "admin"
-	agentSSORole = "agent"
+	adminSSORole  = "admin"
+	agentSSORole  = "agent"
+	testerSSORole = "tester"
 )
 
 // AuthFuncOverride exists to implement the grpc_auth.ServiceAuthFuncOverride interface
@@ -71,6 +72,10 @@ func isAdminContext(ctx context.Context) bool {
 
 func isAgentContext(ctx context.Context) bool {
 	return contextHasRole(ctx, agentSSORole)
+}
+
+func isTesterContext(ctx context.Context) bool {
+	return contextHasRole(ctx, testerSSORole)
 }
 
 func tokenFromContext(ctx context.Context) (*jwt.Token, error) {
