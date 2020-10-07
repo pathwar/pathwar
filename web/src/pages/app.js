@@ -74,6 +74,10 @@ const App = () => {
           href="https://fonts.googleapis.com/css2?family=Bungee&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;500;700&display=swap"
+          rel="stylesheet"
+        ></link>
         <script async src={withPrefix("chat-init.js")} type="text/javascript" />
       </Helmet>
 

@@ -3,9 +3,104 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Site, Nav, Dropdown, Tag, Grid } from "tabler-react";
 import { Link } from "gatsby";
+import { css } from "@emotion/core";
+
 import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
 
 import logo from "../images/pathwar-skull-black.svg";
+
+const wrapper = css`
+  font-family: "Barlow", sans-serif;
+  font-weight: 500;
+  width: 100%;
+  z-index: 1;
+  box-sizing: border-box;
+  background-color: transparent;
+  top: 0px;
+  padding: 1rem 4rem;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 700px) {
+    height: 54px;
+  }
+  @media (min-width: 701px) and (min-height: 600px) {
+    height: 72px;
+  }
+  .headerMenu {
+    list-style: none;
+    margin: 0;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .link {
+    display: block;
+    text-decoration: none;
+    padding: 1rem;
+    color: #919aa3;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  @media (max-width: 700px) {
+    .link {
+      font-size: 16px;
+    }
+  }
+  @media (max-width: 360px) {
+    .link {
+      font-size: 13px;
+    }
+  }
+`;
+
+const dropdown = css`
+  position: relative;
+  display: inline-block;
+  margin-left: auto;
+
+  &:hover {
+    .dropdown-content {
+      display: block;
+    }
+  }
+
+  .dropbtn {
+    background-color: white;
+    color: #072a44;
+    box-shadow: 2px 2px 24px -12px rgba(0, 0, 0, 0.75);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-weight: 500;
+    padding: 16px;
+    font-size: 21px;
+    border: none;
+    cursor: pointer;
+    min-width: 160px;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    border-bottom-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: -2px 16px 24px -12px rgba(0, 0, 0, 0.75);
+    z-index: 1;
+
+    a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+  }
+`;
 
 const navBarItems = [
   // {
@@ -164,32 +259,55 @@ const NavBar = ({ userSession }) => {
   );
 };
 
+const listItems = [
+  { link: "/app/challenges", name: "Challenges" },
+  { link: "/app/missions", name: "Missions" },
+  { link: "/app/events", name: "Tournaments" },
+  { link: "/app/community", name: "Community" },
+  { link: "/blog", name: "Blog" },
+];
+
 class SiteWrapper extends React.Component {
   render() {
     const { userSession, activeSeason } = this.props;
 
+    const { activeUserSession: { claims } = {} } = userSession;
+
+    const username =
+      claims && claims.preferred_username
+        ? claims.preferred_username
+        : "Log in";
+
     return (
-      <Site.Wrapper
-        headerProps={{
-          href: "/app",
-          alt: "Pathwar Project",
-          imageURL: logo,
-          accountDropdown: accountDropdownProps(userSession),
-          navItems: (
-            <Nav.Item type="div" className="d-none d-md-flex">
-              <SeasonDropdownSelector
-                userSession={userSession}
-                activeSeason={activeSeason}
-              />
-            </Nav.Item>
-          ),
-        }}
-        navProps={{
-          children: <NavBar userSession={userSession} />,
-        }}
-      >
-        {this.props.children}
-      </Site.Wrapper>
+      <>
+        <header css={wrapper}>
+          <img
+            src={logo}
+            className="img-responsive"
+            style={{ width: "45px" }}
+          />
+          <ul className="headerMenu">
+            {listItems.map(item => (
+              <li key={listItems.name}>
+                <Link className="link" to={item.link}>
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div css={dropdown}>
+            <button className="dropbtn">{`@${username}`}</button>
+            <div className="dropdown-content">
+              <a href="#">Profile</a>
+              <a href="#">Messages</a>
+              <a href="#">Wallet</a>
+              <a href="#">Notifications</a>
+              <a href="#">Disconnect</a>
+            </div>
+          </div>
+        </header>
+        <body>{this.props.children}</body>
+      </>
     );
   }
 }

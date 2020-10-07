@@ -78,6 +78,12 @@ export const globalStyle = ({ colors, font, type }) => {
       width: 20px;
     }
 
+    .img-responsive {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
     @media (max-width: 991px) {
       h1 {
         font-size: 1.562rem;
