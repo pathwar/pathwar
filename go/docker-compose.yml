@@ -29,7 +29,7 @@ services:
     image: mariadb:10
     restart: unless-stopped
     volumes:
-      - mysql_data:/var/lib/mysql
+      - pw_mysql_data:/var/lib/mysql
     ports:
       - 3306
     environment:
@@ -54,5 +54,5 @@ services:
       - 8025
 
 volumes:
-  mysql_data:
+  pw_mysql_data:
     driver: local

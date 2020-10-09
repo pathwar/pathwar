@@ -82,7 +82,7 @@ mysql.up:
 
 .PHONY: mysql.flush
 mysql.flush: mysql.down
-	docker volume rm -f go_mysql_data
+	docker volume rm -f go_pw_mysql_data
 
 .PHONY: mysql.down
 mysql.down:
