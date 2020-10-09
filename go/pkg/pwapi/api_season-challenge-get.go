@@ -45,6 +45,7 @@ func (svc *service) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeG
 	}
 	for _, instance := range item.Flavor.Instances {
 		// FIXME: hide instances without nginx-url?
+		instance.InstanceConfig = nil
 		if instance.Agent != nil {
 			hash, err := pwdb.ChallengeInstancePrefixHash(fmt.Sprintf("%d", instance.ID), userID, instance.Agent.AuthSalt)
 			if err != nil {
@@ -54,6 +55,7 @@ func (svc *service) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeG
 			instance.Agent = nil
 		}
 	}
+	item.Flavor.ComposeBundle = ""
 
 	ret := SeasonChallengeGet_Output{Item: &item}
 	return &ret, nil
