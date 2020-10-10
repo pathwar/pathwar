@@ -17,7 +17,7 @@ func (c *client) Whoami(token string) (map[string]interface{}, error) {
 		return nil, errcode.ErrSSOGetOIDC.Wrap(err)
 	}
 
-	res, err := oidc.Path("userinfo").Request().Header("Authorization", "brear "+token).Get()
+	res, err := oidc.Path("userinfo").Request().Header("Authorization", "bearer "+token).Get()
 	if err != nil {
 		return nil, errcode.ErrSSOFailedKeycloakRequest.Wrap(err)
 	}
