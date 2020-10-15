@@ -78,6 +78,7 @@ func (svc *service) SeasonChallengeList(ctx context.Context, in *SeasonChallenge
 				instance.Agent = nil
 			}
 		}
+		sc.Flavor.ComposeBundle = ""
 	}
 
 	ret := SeasonChallengeList_Output{
