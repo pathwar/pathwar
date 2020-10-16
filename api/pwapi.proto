@@ -372,9 +372,9 @@ message TeamList {
 
 message TeamCreate {
   message Input {
-    int64 organization_id = 1 [(gogoproto.customname) = "OrganizationID"];
+    string organization_id = 1 [(gogoproto.customname) = "OrganizationID"];
     string name = 2;
-    int64 season_id = 3 [(gogoproto.customname) = "SeasonID"];
+    string season_id = 3 [(gogoproto.customname) = "SeasonID"];
   }
   message Output {
     pathwar.db.Team team = 1;
