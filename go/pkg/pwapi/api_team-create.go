@@ -9,10 +9,10 @@ import (
 )
 
 func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*TeamCreate_Output, error) {
-	if in == nil || in.SeasonID == 0 || (in.OrganizationID == 0 && in.Name == "") {
+	if in == nil || in.SeasonID == "" || (in.OrganizationID == "" && in.Name == "") {
 		return nil, errcode.ErrMissingInput
 	}
-	if in.OrganizationID != 0 && in.Name != "" {
+	if in.OrganizationID != "" && in.Name != "" {
 		return nil, errcode.ErrInvalidInput
 	}
 	userID, err := userIDFromContext(ctx, svc.db)
@@ -20,9 +20,22 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 		return nil, errcode.ErrUnauthenticated.Wrap(err)
 	}
 
+	var organizationID int64
+	if in.OrganizationID != "" {
+		organizationID, err = pwdb.GetIDBySlugAndKind(svc.db, in.OrganizationID, "organization")
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	seasonID, err := pwdb.GetIDBySlugAndKind(svc.db, in.SeasonID, "season")
+	if err != nil {
+		return nil, err
+	}
+
 	// fetch season
 	var season pwdb.Season
-	err = svc.db.First(&season, in.SeasonID).Error
+	err = svc.db.First(&season, seasonID).Error
 	if err != nil {
 		return nil, errcode.ErrGetSeason.Wrap(err)
 	}
@@ -45,7 +58,7 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 		return nil, errcode.ErrAlreadyHasTeamForSeason.Wrap(err)
 	}
 
-	if in.OrganizationID == 0 && in.Name != "" {
+	if in.OrganizationID == "" && in.Name != "" {
 		in.Name = normalizeName(in.Name)
 		if isReservedName(in.Name) {
 			return nil, errcode.ErrReservedName
@@ -73,14 +86,14 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 			return nil, errcode.ErrCreateOrganization.Wrap(err)
 		}
 
-		in.OrganizationID = organization.ID
+		organizationID = organization.ID
 	}
 
 	// check if there is already a team for this organization and season couple
 	var count int
 	existingTeam := pwdb.Team{
-		SeasonID:       in.SeasonID,
-		OrganizationID: in.OrganizationID,
+		SeasonID:       seasonID,
+		OrganizationID: organizationID,
 		DeletionStatus: pwdb.DeletionStatus_Active,
 	}
 	err = svc.db.Model(pwdb.Team{}).Where(existingTeam).Count(&count).Error
@@ -90,7 +103,7 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 
 	// load organization
 	var organization pwdb.Organization
-	err = svc.db.Preload("Members").First(&organization, in.OrganizationID).Error
+	err = svc.db.Preload("Members").First(&organization, organizationID).Error
 	if err != nil {
 		return nil, errcode.ErrGetOrganization.Wrap(err)
 	}
@@ -114,8 +127,8 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 
 	// construct new team object
 	team := pwdb.Team{
-		SeasonID:       in.SeasonID,
-		OrganizationID: in.OrganizationID,
+		SeasonID:       seasonID,
+		OrganizationID: organizationID,
 		DeletionStatus: pwdb.DeletionStatus_Active,
 		Members: []*pwdb.TeamMember{
 			{UserID: userID},

@@ -507,10 +507,8 @@ definitions:
       name:
         type: string
       organization_id:
-        format: int64
         type: string
       season_id:
-        format: int64
         type: string
     type: object
   apiTeamCreateOutput:

@@ -39,6 +39,7 @@ func cliCommand() *ffcli.Command {
 			cliMeCommand(),
 			cliSeasonsCommand(),
 			cliTeamsCommand(),
+			cliCreateTeamCommand(),
 			cliChallengesCommand(),
 			cliChallengeBuyCommand(),
 			cliChallengeValidateCommand(),
@@ -227,6 +228,44 @@ func cliTeamsCommand() *ffcli.Command {
 				}
 				table.Render()
 			}
+			return nil
+		},
+	}
+}
+
+func cliCreateTeamCommand() *ffcli.Command {
+	input := pwapi.TeamCreate_Input{}
+
+	flags := flag.NewFlagSet("cli team create", flag.ExitOnError)
+	flags.StringVar(&input.Name, "name", input.Name, "Create new organization followed by new team in specified season")
+	flags.StringVar(&input.OrganizationID, "organization", input.OrganizationID, "Organization ID or slug if team needs to created inside an existing organization")
+	flags.StringVar(&input.SeasonID, "season", input.SeasonID, "Season ID or slug")
+	return &ffcli.Command{
+		Name:      "team-create",
+		Usage:     "pathwar [global flags] cli [cli flags] team-create [flags]",
+		ShortHelp: "Create a team in specified season",
+		FlagSet:   flags,
+		Exec: func(args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			ctx := context.Background()
+			client, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return err
+			}
+			var ret pwapi.TeamCreate_Output
+			err = client.RawProto(ctx, "POST", "/team", &input, &ret)
+			if err != nil {
+				return err
+			}
+
+			if jsonFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			fmt.Println("team created !")
 			return nil
 		},
 	}
