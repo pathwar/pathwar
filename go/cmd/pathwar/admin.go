@@ -47,6 +47,7 @@ func adminCommand() *ffcli.Command {
 			adminRedumpCommand(),
 			adminChallengeAddCommand(),
 			adminChallengeFlavorAddCommand(),
+			adminSeasonAddCommand(),
 			adminSeasonChallengeAddCommand(),
 		},
 		ShortHelp: "admin commands",
@@ -678,6 +679,9 @@ func adminListAllCommand() *ffcli.Command {
 			for _, teamMember := range ret.TeamMembers {
 				table.Append([]string{fmt.Sprint(teamMember.ID), teamMember.Slug, "team-member"})
 			}
+			for _, teamInvite := range ret.TeamInvites {
+				table.Append([]string{fmt.Sprint(teamInvite.ID), teamInvite.Slug, "team-invite"})
+			}
 			for _, user := range ret.Users {
 				table.Append([]string{fmt.Sprint(user.ID), user.Slug, "user"})
 			}
@@ -958,6 +962,75 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 			}
 
 			fmt.Println(ret.ChallengeFlavor.ID)
+			return nil
+		},
+	}
+}
+
+func adminSeasonAddCommand() *ffcli.Command {
+	input := pwapi.AdminSeasonAdd_Input{Season: &pwdb.Season{}}
+	visibility := "private"
+	status := "stopped"
+	flags := flag.NewFlagSet("admin season add", flag.ExitOnError)
+	flags.StringVar(&input.Season.Name, "name", input.Season.Name, "Name")
+	flags.BoolVar(&input.Season.IsGlobal, "global", input.Season.IsGlobal, "Global season ?")
+	flags.BoolVar(&input.Season.IsTesting, "testing", input.Season.IsGlobal, "Testing season ?")
+	flags.StringVar(&visibility, "visibility", visibility, "Season visibility (private, unlisted or public)")
+	flags.StringVar(&status, "status", status, "Season status (started or stopped)")
+
+	return &ffcli.Command{
+		Name:      "season-add",
+		Usage:     "pathwar [global flags] admin [admin flags] season-add [flags] [args...]",
+		ShortHelp: "add a Season",
+		FlagSet:   flags,
+		Exec: func(args []string) error {
+			if input.Season.Name == "" {
+				return flag.ErrHelp
+			}
+
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			switch visibility {
+			case "unlisted":
+				input.Season.Visibility = pwdb.Season_Unlisted
+			case "public":
+				input.Season.Visibility = pwdb.Season_Public
+			case "private":
+				input.Season.Visibility = pwdb.Season_Private
+			default:
+				return fmt.Errorf("unsupported visibility: %q", visibility)
+			}
+			switch status {
+			case "started":
+				input.Season.Status = pwdb.Season_Started
+			case "stopped":
+				input.Season.Status = pwdb.Season_Stopped
+			default:
+				return fmt.Errorf("unsupported status: %q", status)
+			}
+
+			ret, err := apiClient.AdminAddSeason(ctx, &input)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+			if globalDebug {
+				fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			fmt.Println(ret.Season.Slug)
 			return nil
 		},
 	}

@@ -49,6 +49,11 @@ func (svc *service) AdminListAll(ctx context.Context, in *AdminListAll_Input) (*
 		return nil, pwdb.GormToErrcode(err)
 	}
 	err = svc.db.
+		Find(&out.TeamInvites).Error
+	if err != nil {
+		return nil, pwdb.GormToErrcode(err)
+	}
+	err = svc.db.
 		Find(&out.Users).Error
 	if err != nil {
 		return nil, pwdb.GormToErrcode(err)

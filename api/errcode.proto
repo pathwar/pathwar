@@ -160,7 +160,12 @@ enum ErrCode {
   ErrAmbiguousSlug = 4083;
   ErrSeasonChallengeAdd = 4084;
   ErrInvalidFlavor = 4085;
-
+  ErrTeamDoesNotExist = 4086;
+  ErrNotTeamOwner = 4087;
+  ErrAlreadyInvitedInTeam  = 4088;
+  ErrAlreadyTeamMember = 4089;
+  ErrSeasonNameAlreadyExist = 4090;
+ 
   //// Pathwar Server (starting at 5001)
 
   ErrServerListen = 5001;

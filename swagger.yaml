@@ -17,6 +17,9 @@ definitions:
     - AgentRegister
     - AgentChallengeInstanceCreate
     - AgentChallengeInstanceUpdate
+    - TeamCreation
+    - TeamInviteSend
+    - TeamInviteAccept
     type: string
   ChallengeFlavorDriver:
     default: Unknown
@@ -175,6 +178,10 @@ definitions:
         items:
           $ref: '#/definitions/dbSeason'
         type: array
+      team_invites:
+        items:
+          $ref: '#/definitions/dbTeamInvite'
+        type: array
       team_members:
         items:
           $ref: '#/definitions/dbTeamMember'
@@ -330,6 +337,16 @@ definitions:
         items:
           $ref: '#/definitions/dbWhoswhoAttempt'
         type: array
+    type: object
+  apiAdminSeasonAddInput:
+    properties:
+      season:
+        $ref: '#/definitions/dbSeason'
+    type: object
+  apiAdminSeasonAddOutput:
+    properties:
+      season:
+        $ref: '#/definitions/dbSeason'
     type: object
   apiAdminSeasonChallengeAddInput:
     properties:
@@ -493,8 +510,7 @@ definitions:
     type: object
   apiTeamAcceptInviteInput:
     properties:
-      team_member_id:
-        format: int64
+      team_invite_id:
         type: string
     type: object
   apiTeamAcceptInviteOutput:
@@ -531,16 +547,14 @@ definitions:
   apiTeamSendInviteInput:
     properties:
       team_id:
-        format: int64
         type: string
       user_id:
-        format: int64
         type: string
     type: object
   apiTeamSendInviteOutput:
     properties:
-      team_member:
-        $ref: '#/definitions/dbTeamMember'
+      team_invite:
+        $ref: '#/definitions/dbTeamInvite'
     type: object
   apiUserDeleteAccountInput:
     properties:
@@ -717,6 +731,11 @@ definitions:
       team:
         $ref: '#/definitions/dbTeam'
       team_id:
+        format: int64
+        type: string
+      team_invite:
+        $ref: '#/definitions/dbAgent'
+      team_invite_id:
         format: int64
         type: string
       team_member:
@@ -1447,6 +1466,33 @@ definitions:
         format: date-time
         type: string
     type: object
+  dbTeamInvite:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+      deleted_at:
+        format: date-time
+        type: string
+      id:
+        format: int64
+        type: string
+      slug:
+        type: string
+      team:
+        $ref: '#/definitions/dbTeam'
+      team_id:
+        format: int64
+        type: string
+      updated_at:
+        format: date-time
+        type: string
+      user:
+        $ref: '#/definitions/dbUser'
+      user_id:
+        format: int64
+        type: string
+    type: object
   dbTeamMember:
     properties:
       achievements:
@@ -2119,6 +2165,34 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiAdminSearchOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/season-add:
+    post:
+      operationId: Service_AdminSeasonAdd
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminSeasonAddInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminSeasonAddOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}

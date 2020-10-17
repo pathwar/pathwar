@@ -1,6 +1,7 @@
 package pwdb
 
 import (
+	"github.com/gosimple/slug"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/gormigrate.v1"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
@@ -83,6 +84,10 @@ func createFirstEntities(tx *gorm.DB) error {
 		Name:           "Staff",
 		DeletionStatus: DeletionStatus_Active,
 	}
+	err = tx.Create(staffOrg).Error
+	if err != nil {
+		return GormToErrcode(err)
+	}
 	staffTeamGlobal := &Team{
 		IsGlobal:       true,
 		Season:         globalSeason,
@@ -100,6 +105,7 @@ func createFirstEntities(tx *gorm.DB) error {
 		OrganizationMemberships: []*OrganizationMember{{Organization: staffOrg}},
 		TeamMemberships:         []*TeamMember{{Team: staffTeamGlobal}, {Team: staffTeamTesting}},
 		DeletionStatus:          DeletionStatus_Active,
+		Slug:                    slug.Make("Hack Sparrow"),
 	}
 	err = tx.Set("gorm:association_autoupdate", true).Create(hackSparrow).Error
 	if err != nil {

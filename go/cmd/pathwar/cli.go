@@ -40,6 +40,8 @@ func cliCommand() *ffcli.Command {
 			cliSeasonsCommand(),
 			cliTeamsCommand(),
 			cliCreateTeamCommand(),
+			cliSendTeamInviteCommand(),
+			cliAcceptTeamInviteCommand(),
 			cliChallengesCommand(),
 			cliChallengeBuyCommand(),
 			cliChallengeValidateCommand(),
@@ -246,6 +248,10 @@ func cliCreateTeamCommand() *ffcli.Command {
 		ShortHelp: "Create a team in specified season",
 		FlagSet:   flags,
 		Exec: func(args []string) error {
+			if input.SeasonID == "" {
+				return flag.ErrHelp
+			}
+
 			if err := globalPreRun(); err != nil {
 				return err
 			}
@@ -265,7 +271,88 @@ func cliCreateTeamCommand() *ffcli.Command {
 				return nil
 			}
 
-			fmt.Println("team created !")
+			fmt.Println(ret.Team.Slug)
+			return nil
+		},
+	}
+}
+
+func cliSendTeamInviteCommand() *ffcli.Command {
+	input := pwapi.TeamSendInvite_Input{}
+
+	flags := flag.NewFlagSet("cli team send invite", flag.ExitOnError)
+	flags.StringVar(&input.UserID, "user", input.UserID, "Invited user ID or slug")
+	flags.StringVar(&input.TeamID, "team", input.TeamID, "Team ID or slug")
+	return &ffcli.Command{
+		Name:      "team-send-invite",
+		Usage:     "pathwar [global flags] cli [cli flags] team-send-invite [flags]",
+		ShortHelp: "Invite a user to specified team",
+		FlagSet:   flags,
+		Exec: func(args []string) error {
+			if input.UserID == "" || input.TeamID == "" {
+				return flag.ErrHelp
+			}
+
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			ctx := context.Background()
+			client, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return err
+			}
+			var ret pwapi.TeamSendInvite_Output
+			err = client.RawProto(ctx, "POST", "/team/invite", &input, &ret)
+			if err != nil {
+				return err
+			}
+
+			if jsonFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			fmt.Println(ret.TeamInvite.Slug)
+			return nil
+		},
+	}
+}
+
+func cliAcceptTeamInviteCommand() *ffcli.Command {
+	input := pwapi.TeamAcceptInvite_Input{}
+
+	flags := flag.NewFlagSet("cli team accept invite", flag.ExitOnError)
+	flags.StringVar(&input.TeamInviteID, "invite", input.TeamInviteID, "Invite ID or slug")
+	return &ffcli.Command{
+		Name:      "team-accept-invite",
+		Usage:     "pathwar [global flags] cli [cli flags] team-accept-invite [flags]",
+		ShortHelp: "Accept team invite",
+		FlagSet:   flags,
+		Exec: func(args []string) error {
+			if input.TeamInviteID == "" {
+				return flag.ErrHelp
+			}
+
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+			ctx := context.Background()
+			client, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return err
+			}
+			var ret pwapi.TeamAcceptInvite_Output
+			err = client.RawProto(ctx, "POST", "/team/invite/accept", &input, &ret)
+			if err != nil {
+				return err
+			}
+
+			if jsonFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			fmt.Println(ret.TeamMember.Slug)
 			return nil
 		},
 	}
