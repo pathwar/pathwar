@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"strings"
 
+	"github.com/gosimple/slug"
 	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
 	"pathwar.land/pathwar/v2/go/internal/randstring"
@@ -196,6 +197,7 @@ func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) 
 		// User: &user,
 		Organization: &organization,
 		Role:         pwdb.OrganizationMember_Owner,
+		Slug:         slug.Make(user.Username),
 	}
 	team := pwdb.Team{
 		Season:         &season,
@@ -207,6 +209,7 @@ func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) 
 		User: &user,
 		Team: &team,
 		Role: pwdb.TeamMember_Owner,
+		Slug: slug.Make(user.Username),
 	}
 	user.OrganizationMemberships = []*pwdb.OrganizationMember{&organizationMember}
 

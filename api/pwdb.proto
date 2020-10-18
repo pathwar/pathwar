@@ -205,6 +205,18 @@ message TeamMember {
   }
 }
 
+message TeamInvite {
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+
+  User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
+  int64 user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Team team = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamID\""];
+  int64 team_id = 203 [(gogoproto.customname) = "TeamID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  string slug = 204;
+}
 
 // User defines a User Account / Profile
 message User {
@@ -530,6 +542,8 @@ message Activity {
   int64 challenge_instance_id = 223 [(gogoproto.customname) = "ChallengeInstanceID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   Agent agent = 224 [(gogoproto.moretags) = "gorm:\"foreignkey:AgentID\""];
   int64 agent_id = 225 [(gogoproto.customname) = "AgentID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Agent team_invite = 226 [(gogoproto.moretags) = "gorm:\"foreignkey:TeamInviteID\""];
+  int64 team_invite_id = 227 [(gogoproto.customname) = "TeamInviteID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   // agent
   // inventoryitem
   // couponvalidation
@@ -549,6 +563,9 @@ message Activity {
     AgentRegister = 8;
     AgentChallengeInstanceCreate = 9;
     AgentChallengeInstanceUpdate = 10;
+    TeamCreation = 11;
+    TeamInviteSend = 12;
+    TeamInviteAccept = 13;
   }
 }
 

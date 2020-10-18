@@ -4,6 +4,7 @@ import (
 	"context"
 	"strings"
 
+	"github.com/jinzhu/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -75,7 +76,10 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 		organization := pwdb.Organization{
 			Name: in.Name,
 			Members: []*pwdb.OrganizationMember{
-				{UserID: userID},
+				{
+					UserID: userID,
+					Role:   pwdb.OrganizationMember_Owner,
+				},
 			},
 			DeletionStatus: pwdb.DeletionStatus_Active,
 			// GravatarURL
@@ -131,14 +135,30 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 		OrganizationID: organizationID,
 		DeletionStatus: pwdb.DeletionStatus_Active,
 		Members: []*pwdb.TeamMember{
-			{UserID: userID},
+			{
+				UserID: userID,
+				Role:   pwdb.TeamMember_Owner,
+			},
 		},
 	}
 
 	// save new team object in DB
-	err = svc.db.Create(&team).Error
+	err = svc.db.Transaction(func(tx *gorm.DB) error {
+		err = tx.Create(&team).Error
+		if err != nil {
+			return errcode.ErrCreateTeam.Wrap(err)
+		}
+		activity := pwdb.Activity{
+			Kind:           pwdb.Activity_TeamCreation,
+			AuthorID:       userID,
+			TeamID:         team.ID,
+			OrganizationID: team.OrganizationID,
+			SeasonID:       seasonID,
+		}
+		return tx.Create(&activity).Error
+	})
 	if err != nil {
-		return nil, errcode.ErrCreateTeam.Wrap(err)
+		return nil, err
 	}
 
 	// reload with associations
