@@ -50,6 +50,13 @@ definitions:
       team:
         $ref: '#/definitions/dbTeam'
     type: object
+  SeasonSubscription:
+    default: UnknownSubscription
+    enum:
+    - UnknownSubscription
+    - Open
+    - Close
+    type: string
   SeasonVisibility:
     default: UnknownVisibility
     enum:
@@ -1359,6 +1366,8 @@ definitions:
         type: string
       status:
         $ref: '#/definitions/dbSeasonStatus'
+      subscription:
+        $ref: '#/definitions/SeasonSubscription'
       teams:
         items:
           $ref: '#/definitions/dbTeam'

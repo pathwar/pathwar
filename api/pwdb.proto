@@ -270,9 +270,10 @@ message Season {
   string name = 100;
   Status status = 101;
   Visibility visibility = 102;
-  bool is_global = 103;
-  string slug = 104;
-  bool is_testing = 105;
+  Subscription subscription = 103;
+  bool is_global = 104;
+  string slug = 105;
+  bool is_testing = 106;
 
   repeated Team teams = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated Coupon coupons = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
@@ -287,6 +288,11 @@ message Season {
     Private = 1;
     Unlisted = 2;
     Public = 3;
+  }
+  enum Subscription {
+    UnknownSubscription = 0;
+    Open = 1;
+    Close = 2;
   }
 }
 

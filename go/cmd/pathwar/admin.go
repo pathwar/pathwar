@@ -971,12 +971,14 @@ func adminSeasonAddCommand() *ffcli.Command {
 	input := pwapi.AdminSeasonAdd_Input{Season: &pwdb.Season{}}
 	visibility := "private"
 	status := "stopped"
+	subscription := "close"
 	flags := flag.NewFlagSet("admin season add", flag.ExitOnError)
 	flags.StringVar(&input.Season.Name, "name", input.Season.Name, "Name")
 	flags.BoolVar(&input.Season.IsGlobal, "global", input.Season.IsGlobal, "Global season ?")
 	flags.BoolVar(&input.Season.IsTesting, "testing", input.Season.IsGlobal, "Testing season ?")
 	flags.StringVar(&visibility, "visibility", visibility, "Season visibility (private, unlisted or public)")
 	flags.StringVar(&status, "status", status, "Season status (started or stopped)")
+	flags.StringVar(&subscription, "subscription", subscription, "Susbscription status (open or close)")
 
 	return &ffcli.Command{
 		Name:      "season-add",
@@ -1015,6 +1017,14 @@ func adminSeasonAddCommand() *ffcli.Command {
 				input.Season.Status = pwdb.Season_Stopped
 			default:
 				return fmt.Errorf("unsupported status: %q", status)
+			}
+			switch subscription {
+			case "open":
+				input.Season.Subscription = pwdb.Season_Open
+			case "close":
+				input.Season.Subscription = pwdb.Season_Close
+			default:
+				return fmt.Errorf("unsupported subscription: %q", subscription)
 			}
 
 			ret, err := apiClient.AdminAddSeason(ctx, &input)

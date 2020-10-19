@@ -165,6 +165,7 @@ enum ErrCode {
   ErrAlreadyInvitedInTeam  = 4088;
   ErrAlreadyTeamMember = 4089;
   ErrSeasonNameAlreadyExist = 4090;
+  ErrUserDoesNotBelongToOrganization = 4091;
  
   //// Pathwar Server (starting at 5001)
 

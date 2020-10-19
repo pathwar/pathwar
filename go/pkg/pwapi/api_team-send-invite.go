@@ -55,23 +55,19 @@ func (svc *service) TeamSendInvite(ctx context.Context, in *TeamSendInvite_Input
 		return nil, errcode.ErrNotTeamOwner.Wrap(err)
 	}
 
-	// check that the invited user is not already in this season
-	var existCheck pwdb.TeamMember
+	// check if invited user already has a team in this season
+	var seasonMemberShipCount int
 	err = svc.db.
-		Where(pwdb.TeamMember{
-			UserID: invitedUserID,
-		}).
-		Where(&pwdb.Season{
-			ID: team.SeasonID,
-		}).
-		Joins("JOIN team ON team_member.team_id = team.id").
-		Joins("JOIN season ON team.season_id = season.id").
-		First(&existCheck).
+		Model(pwdb.TeamMember{}).
+		Joins("JOIN team on team.id = team_member.team_id").
+		Where(pwdb.TeamMember{UserID: invitedUserID}).
+		Where(&pwdb.Team{
+			SeasonID:       team.SeasonID,
+			DeletionStatus: pwdb.DeletionStatus_Active}).
+		Count(&seasonMemberShipCount).
 		Error
-	if err == nil {
-		return nil, errcode.ErrAlreadyTeamMember.Wrap(err)
-	} else if err != gorm.ErrRecordNotFound {
-		return nil, pwdb.GormToErrcode(err)
+	if err != nil || seasonMemberShipCount != 0 {
+		return nil, errcode.ErrAlreadyHasTeamForSeason.Wrap(err)
 	}
 
 	// don't create new invite if user was already invited
