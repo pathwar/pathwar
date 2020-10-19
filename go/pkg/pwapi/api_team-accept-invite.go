@@ -36,15 +36,45 @@ func (svc *service) TeamAcceptInvite(ctx context.Context, in *TeamAcceptInvite_I
 		return nil, pwdb.GormToErrcode(err)
 	}
 
-	// create team member
+	// check if user already has a team in this season
+	var seasonMemberShipCount int
+	err = svc.db.
+		Model(pwdb.TeamMember{}).
+		Preload("Team").
+		Joins("JOIN team on team.id = team_member.team_id").
+		Where(pwdb.TeamMember{UserID: userID}).
+		Where(&pwdb.Team{
+			SeasonID:       teamInvite.Team.SeasonID,
+			DeletionStatus: pwdb.DeletionStatus_Active}).
+		Count(&seasonMemberShipCount).
+		Error
+	if err != nil || seasonMemberShipCount != 0 {
+		return nil, errcode.ErrAlreadyHasTeamForSeason.Wrap(err)
+	}
+
 	teamMember := &pwdb.TeamMember{
 		UserID: userID,
 		TeamID: teamInvite.TeamID,
 	}
-	err = svc.db.
-		Create(&teamMember).Error
+	orgaMember := &pwdb.OrganizationMember{
+		UserID:         userID,
+		OrganizationID: teamInvite.Team.OrganizationID,
+	}
+	err = svc.db.Transaction(func(tx *gorm.DB) error {
+		// create team member
+		err = tx.Create(&teamMember).Error
+		if err != nil {
+			return pwdb.GormToErrcode(err)
+		}
+		// create orga member
+		err = tx.Create(&orgaMember).Error
+		if err != nil {
+			return pwdb.GormToErrcode(err)
+		}
+		return err
+	})
 	if err != nil {
-		return nil, pwdb.GormToErrcode(err)
+		return nil, err
 	}
 
 	err = svc.db.Transaction(func(tx *gorm.DB) error {

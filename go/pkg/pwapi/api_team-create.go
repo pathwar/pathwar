@@ -45,17 +45,25 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 	if season.Status != pwdb.Season_Started {
 		return nil, errcode.ErrSeasonDenied
 	}
+	if season.Visibility == pwdb.Season_Private {
+		return nil, errcode.ErrSeasonDenied
+	}
+	if season.Subscription == pwdb.Season_Close {
+		return nil, errcode.ErrSeasonDenied
+	}
 
 	// check if user already has a team in this season
-	var existingSeasonMembership pwdb.TeamMember
+	var seasonMemberShipCount int
 	err = svc.db.
 		Model(pwdb.TeamMember{}).
-		Joins("JOIN team on team.id = team_member.team_id AND team.season_id = ? AND team.deletion_status = ?", in.SeasonID, pwdb.DeletionStatus_Active).
-		Preload("Team").
+		Joins("JOIN team on team.id = team_member.team_id").
 		Where(pwdb.TeamMember{UserID: userID}).
-		First(&existingSeasonMembership).
+		Where(&pwdb.Team{
+			SeasonID:       seasonID,
+			DeletionStatus: pwdb.DeletionStatus_Active}).
+		Count(&seasonMemberShipCount).
 		Error
-	if !pwdb.IsRecordNotFoundError(err) {
+	if err != nil || seasonMemberShipCount != 0 {
 		return nil, errcode.ErrAlreadyHasTeamForSeason.Wrap(err)
 	}
 
@@ -91,6 +99,20 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 		}
 
 		organizationID = organization.ID
+	}
+
+	// check that user is member of the organization
+	var memberCount int
+	err = svc.db.
+		Model(pwdb.OrganizationMember{}).
+		Where(pwdb.OrganizationMember{
+			UserID:         userID,
+			OrganizationID: organizationID,
+		}).
+		Count(&memberCount).
+		Error
+	if err != nil || memberCount == 0 {
+		return nil, errcode.ErrUserDoesNotBelongToOrganization.Wrap(err)
 	}
 
 	// check if there is already a team for this organization and season couple
