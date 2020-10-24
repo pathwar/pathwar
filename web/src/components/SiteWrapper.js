@@ -1,7 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Site, Nav, Dropdown, Tag, Grid } from "tabler-react";
 import { Link } from "gatsby";
 import { css } from "@emotion/core";
 
@@ -22,23 +21,36 @@ const wrapper = css`
   box-sizing: border-box;
   background-color: transparent;
   top: 0px;
-  padding: 1rem 4rem;
+  padding: 1rem 4rem 0;
   margin-top: 1rem;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 
-  @media (max-width: 700px) {
-    height: 54px;
-  }
-  @media (min-width: 701px) and (min-height: 600px) {
-    height: 72px;
-  }
   .headerMenu {
     list-style: none;
     margin: 0;
     padding-left: 10px;
     display: flex;
     align-items: center;
+  }
+
+  .subHeader {
+    flex-basis: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .cash {
+      display: flex;
+      margin-right: 1.5rem;
+
+      .value {
+        font-weight: bold;
+        margin: 0;
+        padding-left: 0.5rem;
+      }
+    }
   }
 
   .link {
@@ -51,6 +63,14 @@ const wrapper = css`
       opacity: 0.8;
     }
   }
+
+  @media (max-width: 700px) {
+    height: 54px;
+  }
+  @media (min-width: 701px) and (min-height: 600px) {
+    height: 140px;
+  }
+
   @media (max-width: 700px) {
     .link {
       font-size: 16px;
@@ -123,163 +143,6 @@ const dropdown = css`
   }
 `;
 
-const navBarItems = [
-  // {
-  //   value: "Home",
-  //   to: "/app/home",
-  //   icon: "home",
-  //   LinkComponent: Link,
-  //   useExact: "false",
-  // },
-  {
-    value: "Challenges",
-    to: "/app/challenges",
-    icon: "anchor",
-    LinkComponent: Link,
-    useExact: "false",
-  },
-  {
-    value: "Statistics",
-    to: "/app/statistics",
-    icon: "activity",
-    LinkComponent: Link,
-    useExact: "false",
-  },
-];
-
-const accountDropdownProps = ({ activeUserSession, activeKeycloakSession }) => {
-  const { user, claims } = activeUserSession || {};
-
-  const username =
-    claims && claims.preferred_username ? claims.preferred_username : "Log in";
-  const avatar = user && user.gravatar_url ? user.gravatar_url : logo;
-  const options = [];
-
-  if (!activeUserSession && !activeKeycloakSession) {
-    options.push({ icon: "log-in", value: "Log in", to: "/app/challenges" });
-  }
-
-  if (activeUserSession && activeKeycloakSession) {
-    options.push({
-      icon: "edit",
-      value: "Edit account",
-      to: activeKeycloakSession.tokenParsed.iss + "/account",
-    });
-    options.push("divider");
-    options.push({
-      value: "App settings",
-      to: "/app/settings",
-      icon: "settings",
-    });
-  }
-
-  options.push({
-    icon: "help-circle",
-    value: "FAQ",
-    to: "https://github.com/pathwar/pathwar/wiki/FAQ",
-    target: "_blank",
-  });
-
-  if (activeUserSession && activeKeycloakSession) {
-    options.push({
-      icon: "log-out",
-      value: "Log out",
-      to: "/app/logout",
-    });
-  }
-
-  return {
-    avatarURL: avatar,
-    name: `${username}`,
-    description: undefined,
-    options: options,
-    optionsRootComponent: Link,
-  };
-};
-
-const SeasonDropdownSelector = ({ userSession, activeSeason }) => {
-  const { activeUserSession } = userSession || {};
-  let items;
-
-  const multipleItems =
-    activeUserSession &&
-    activeUserSession.seasons &&
-    activeUserSession.seasons.length >= 2;
-
-  const clicked = e => {
-    e.preventDefault();
-    alert(activeSeason.name);
-  };
-
-  if (multipleItems) {
-    items =
-      activeUserSession &&
-      activeUserSession.seasons.map(dataSet => {
-        const { season } = dataSet;
-        const isActive = activeSeason && season.id === activeSeason.id;
-
-        return (
-          <Dropdown.Item
-            className={isActive && "active bold"}
-            key={season.id}
-            to="#"
-            onClick={e => clicked(e)}
-          >
-            <div style={{ fontWeight: isActive ? "bold" : "initial" }}>
-              {season.name}
-            </div>
-            <div>
-              <Tag.List>
-                <Tag addOn={season.status} addOnColor="indigo">
-                  Status
-                </Tag>
-                <Tag addOn={season.visibility} addOnColor="indigo">
-                  Visibility
-                </Tag>
-              </Tag.List>
-            </div>
-          </Dropdown.Item>
-        );
-      });
-  }
-
-  return (
-    <Dropdown
-      triggerContent={(activeSeason && activeSeason.name) || "Loading.."}
-      toggle={multipleItems}
-      color="primary"
-      icon="flag"
-      items={items}
-    />
-  );
-};
-
-const NavBar = ({ userSession }) => {
-  const { cash } = userSession;
-
-  return (
-    <Grid.Row className="align-items-center">
-      <Grid.Col width={6} className="ml-auto text-right" ignoreCol={true}>
-        <ValidateCouponForm />
-        <Tag
-          color="lime"
-          addOn={(cash && `$${cash}`) || "$0"}
-          addOnColor="green"
-        >
-          Cash
-        </Tag>
-      </Grid.Col>
-      <Grid.Col className="col-lg order-lg-first">
-        <Nav
-          tabbed
-          className="border-0 flex-column flex-lg-row"
-          itemsObjects={navBarItems}
-        />
-      </Grid.Col>
-    </Grid.Row>
-  );
-};
-
 const listItems = [
   { link: "/app/challenges", name: "Challenges" },
   { link: "/app/missions", name: "Missions" },
@@ -290,9 +153,13 @@ const listItems = [
 
 class SiteWrapper extends React.Component {
   render() {
-    const { userSession, activeSeason } = this.props;
+    const { userSession } = this.props;
 
-    const { activeUserSession: { claims } = {} } = userSession;
+    const {
+      cash,
+      activeKeycloakSession,
+      activeUserSession: { claims } = {},
+    } = userSession;
 
     const username =
       claims && claims.preferred_username
@@ -309,7 +176,7 @@ class SiteWrapper extends React.Component {
           />
           <ul className="headerMenu">
             {listItems.map(item => (
-              <li key={listItems.name}>
+              <li key={item.name}>
                 <Link className="link" to={item.link}>
                   {item.name}
                 </Link>
@@ -322,7 +189,13 @@ class SiteWrapper extends React.Component {
               <ul>
                 <li>
                   <img src={iconProfile} className="img-responsive" />
-                  <a href="#" className="link">
+                  <a
+                    href={
+                      activeKeycloakSession &&
+                      activeKeycloakSession.tokenParsed.iss + "/account"
+                    }
+                    className="link"
+                  >
                     Profile
                   </a>
                 </li>
@@ -353,8 +226,15 @@ class SiteWrapper extends React.Component {
               </ul>
             </div>
           </div>
+          <div className="subHeader">
+            <div className="cash">
+              <img src={iconPwn} className="img-responsive" />
+              <p className="value">{(cash && `$${cash}`) || "$0"}</p>
+            </div>
+            <ValidateCouponForm />
+          </div>
         </header>
-        <body>{this.props.children}</body>
+        {this.props.children}
       </>
     );
   }
