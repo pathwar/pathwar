@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="16px" viewBox="0 0 20 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>noun_Mail_3451595</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.847000 0 0 0 0 0.847000 0 0 0 0 0.847000 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Pathwar-v2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Challenges" transform="translate(-1724.000000, -152.000000)">
+            <g id="Menu" transform="translate(0.000000, 40.000000)">
+                <g id="noun_Mail_3451595" transform="translate(1700.000000, 0.000000)" filter="url(#filter-1)">
+                    <g transform="translate(24.000000, 112.000000)">
+                        <path d="M10.69,8.06 C10.3093809,8.40351854 9.7306191,8.40351854 9.35,8.06 L0.87,0.35 C1.20275705,0.122058297 1.59665812,0 2,0 L18,0 C18.4033419,0 18.797243,0.122058297 19.13,0.35 L10.69,8.06 Z" id="Path" fill="#000000" fill-rule="nonzero"></path>
+                        <path d="M20,2.26 L20,13 C20,14.6568542 18.6568542,16 17,16 L3,16 C1.34314575,16 0,14.6568542 0,13 L0,2.26 L8.68,10.18 C9.04605975,10.4979353 9.51515122,10.6720678 10,10.67 C10.4908993,10.6689854 10.9642803,10.4874634 11.33,10.16 L20,2.26 Z" id="Path" fill="#000000" fill-rule="nonzero"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

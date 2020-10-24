@@ -7,7 +7,12 @@ import { css } from "@emotion/core";
 
 import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
 
-import logo from "../images/pathwar-skull-black.svg";
+import logo from "../images/new-pathwar-logo-dark-blue.svg";
+import iconProfile from "../images/icon-profile.svg";
+import iconMail from "../images/icon-mail.svg";
+import iconNotifications from "../images/icon-notifications.svg";
+import iconPwn from "../images/icon-pwn-small.svg";
+import iconClose from "../images/icon-close-filled.svg";
 
 const wrapper = css`
   font-family: "Barlow", sans-serif;
@@ -67,14 +72,18 @@ const dropdown = css`
     .dropdown-content {
       display: block;
     }
+
+    .dropbtn {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
   }
 
   .dropbtn {
     background-color: white;
     color: #072a44;
     box-shadow: 2px 2px 24px -12px rgba(0, 0, 0, 0.75);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-radius: 10px;
     font-weight: 500;
     padding: 16px;
     font-size: 21px;
@@ -87,17 +96,29 @@ const dropdown = css`
     display: none;
     position: absolute;
     border-bottom-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
     background-color: white;
     min-width: 160px;
     box-shadow: -2px 16px 24px -12px rgba(0, 0, 0, 0.75);
     z-index: 1;
 
-    a {
-      color: black;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
+    ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0 1rem;
+
+      li {
+        display: flex;
+        flex-direction: row;
+
+        a {
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+        }
+      }
     }
   }
 `;
@@ -284,7 +305,7 @@ class SiteWrapper extends React.Component {
           <img
             src={logo}
             className="img-responsive"
-            style={{ width: "45px" }}
+            style={{ width: "59px" }}
           />
           <ul className="headerMenu">
             {listItems.map(item => (
@@ -298,11 +319,38 @@ class SiteWrapper extends React.Component {
           <div css={dropdown}>
             <button className="dropbtn">{`@${username}`}</button>
             <div className="dropdown-content">
-              <a href="#">Profile</a>
-              <a href="#">Messages</a>
-              <a href="#">Wallet</a>
-              <a href="#">Notifications</a>
-              <a href="#">Disconnect</a>
+              <ul>
+                <li>
+                  <img src={iconProfile} className="img-responsive" />
+                  <a href="#" className="link">
+                    Profile
+                  </a>
+                </li>
+                <li>
+                  <img src={iconMail} className="img-responsive" />
+                  <a href="#" className="link">
+                    Messages
+                  </a>
+                </li>
+                <li>
+                  <img src={iconPwn} className="img-responsive" />
+                  <a href="#" className="link">
+                    Wallet
+                  </a>
+                </li>
+                <li>
+                  <img src={iconNotifications} className="img-responsive" />
+                  <a href="#" className="link">
+                    Notifications
+                  </a>
+                </li>
+                <li>
+                  <img src={iconClose} className="img-responsive" />
+                  <a href="#" className="link">
+                    Disconnect
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </header>
