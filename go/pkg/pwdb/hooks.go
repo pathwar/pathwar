@@ -154,6 +154,69 @@ func (entity *TeamInvite) BeforeSave(db *gorm.DB) error {
 	return nil
 }
 
+func (entity *SeasonChallenge) BeforeSave(db *gorm.DB) error {
+	if entity.Slug == "" {
+		var flavor ChallengeFlavor
+		err := db.First(&flavor, "id = ?", entity.FlavorID).Error
+		if err != nil {
+			return GormToErrcode(err)
+		}
+		var season Season
+		err = db.First(&season, "id = ?", entity.SeasonID).Error
+		if err != nil {
+			return GormToErrcode(err)
+		}
+		entity.Slug = fmt.Sprintf("%s@%s", flavor.Slug, season.Slug)
+	}
+	return nil
+}
+
+func (entity *ChallengeInstance) BeforeSave(db *gorm.DB) error {
+	if entity.Slug == "" {
+		var flavor ChallengeFlavor
+		err := db.First(&flavor, "id = ?", entity.FlavorID).Error
+		if err != nil {
+			return GormToErrcode(err)
+		}
+		var agent Agent
+		err = db.First(&agent, "id = ?", entity.AgentID).Error
+		if err != nil {
+			return GormToErrcode(err)
+		}
+		entity.Slug = fmt.Sprintf("%s@%s", flavor.Slug, agent.Slug)
+	}
+	return nil
+}
+
+func (entity *ChallengeSubscription) BeforeSave(db *gorm.DB) error {
+	if entity.Slug == "" {
+		var user User
+		err := db.First(&user, "id = ?", entity.BuyerID).Error
+		if err != nil {
+			return GormToErrcode(err)
+		}
+		var seasonChallenge SeasonChallenge
+		err = db.First(&seasonChallenge, "id = ?", entity.SeasonChallengeID).Error
+		if err != nil {
+			return GormToErrcode(err)
+		}
+		entity.Slug = fmt.Sprintf("%s@%s", user.Slug, seasonChallenge.Slug)
+	}
+	return nil
+}
+
+func (entity *ChallengeValidation) BeforeSave(db *gorm.DB) error {
+	if entity.Slug == "" {
+		var subscription ChallengeSubscription
+		err := db.First(&subscription, "id = ?", entity.ChallengeSubscriptionID).Error
+		if err != nil {
+			return GormToErrcode(err)
+		}
+		entity.Slug = subscription.Slug
+	}
+	return nil
+}
+
 /*
 func (entity *Team) BeforeSave(db *gorm.DB) error {
         // FIXME: make a join of orga and season
