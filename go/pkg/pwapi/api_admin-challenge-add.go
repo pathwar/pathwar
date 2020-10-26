@@ -28,7 +28,14 @@ func (svc *service) AdminChallengeAdd(ctx context.Context, in *AdminChallengeAdd
 		Homepage:    in.Challenge.Homepage,
 	}
 
-	err := svc.db.Create(&challenge).Error
+	challengeID, err := pwdb.GetIDBySlugAndKind(svc.db, in.Challenge.Slug, "challenge")
+	if err == nil {
+		challenge.ID = challengeID
+	} else if err != nil && err != errcode.ErrNoSuchSlug {
+		return nil, err
+	}
+
+	err = svc.db.Save(&challenge).Error
 	if err != nil {
 		return nil, errcode.ErrChallengeAdd.Wrap(err)
 	}

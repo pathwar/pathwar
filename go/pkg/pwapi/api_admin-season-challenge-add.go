@@ -3,6 +3,7 @@ package pwapi
 import (
 	"context"
 
+	"github.com/jinzhu/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -35,7 +36,21 @@ func (svc *service) AdminSeasonChallengeAdd(ctx context.Context, in *AdminSeason
 		}
 	}
 
-	err := svc.db.Create(in.SeasonChallenge).Error
+	var seasonChallenge pwdb.SeasonChallenge
+	err := svc.db.
+		Where(&pwdb.SeasonChallenge{
+			SeasonID: in.SeasonChallenge.SeasonID,
+			FlavorID: in.SeasonChallenge.FlavorID,
+		}).
+		First(&seasonChallenge).
+		Error
+	if err == nil {
+		in.SeasonChallenge.ID = seasonChallenge.ID
+	} else if err != gorm.ErrRecordNotFound {
+		return nil, pwdb.GormToErrcode(err)
+	}
+
+	err = svc.db.Save(in.SeasonChallenge).Error
 	if err != nil {
 		return nil, errcode.ErrSeasonChallengeAdd.Wrap(err)
 	}
