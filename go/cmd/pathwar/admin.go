@@ -46,6 +46,7 @@ func adminCommand() *ffcli.Command {
 			adminAddCouponCommand(),
 			adminRedumpCommand(),
 			adminChallengeAddCommand(),
+			adminChallengeRedumpCommand(),
 			adminChallengeFlavorAddCommand(),
 			adminSeasonAddCommand(),
 			adminSeasonChallengeAddCommand(),
@@ -884,6 +885,50 @@ func adminChallengeAddCommand() *ffcli.Command {
 			}
 
 			fmt.Println(ret.Challenge.ID)
+			return nil
+		},
+	}
+}
+
+func adminChallengeRedumpCommand() *ffcli.Command {
+	input := pwapi.AdminChallengeRedump_Input{}
+	flags := flag.NewFlagSet("admin challenge redump", flag.ExitOnError)
+	flags.StringVar(&input.ChallengeID, "id", input.ChallengeID, "Challenge ID or slug")
+
+	return &ffcli.Command{
+		Name:      "challenge-redump",
+		Usage:     "pathwar [global flags] admin [admin flags] challenge-redump [flags] [args...]",
+		ShortHelp: "redump a challenge",
+		FlagSet:   flags,
+		Exec: func(args []string) error {
+			if input.ChallengeID == "" {
+				return flag.ErrHelp
+			}
+
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			ctx := context.Background()
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminRedumpChallenge(ctx, &input)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+			if globalDebug {
+				fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			fmt.Println(ret.ChallengeInstances)
 			return nil
 		},
 	}

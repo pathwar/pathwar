@@ -137,6 +137,13 @@ func (c HTTPClient) AdminAddChallenge(ctx context.Context, input *AdminChallenge
 	return result, err
 }
 
+func (c HTTPClient) AdminRedumpChallenge(ctx context.Context, input *AdminChallengeRedump_Input) (AdminChallengeRedump_Output, error) {
+	var _ *AdminChallengeRedump_Input = input
+	var result AdminChallengeRedump_Output
+	err := c.doPost(ctx, "/admin/challenge-redump", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) AdminAddChallengeFlavor(ctx context.Context, input *AdminChallengeFlavorAdd_Input) (AdminChallengeFlavorAdd_Output, error) {
 	var _ *AdminChallengeFlavorAdd_Input = input
 	var result AdminChallengeFlavorAdd_Output
