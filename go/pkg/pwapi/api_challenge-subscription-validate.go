@@ -53,7 +53,17 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 	// compare input and instances' passphrases
 	var amountExpected int
 	{
-		configData, err := instances[0].ParseInstanceConfig()
+		var anyAvailableInstance *pwdb.ChallengeInstance
+		for _, instance := range instances {
+			if instance.Status == pwdb.ChallengeInstance_Available {
+				anyAvailableInstance = instance
+				break
+			}
+		}
+		if anyAvailableInstance == nil {
+			return nil, errcode.ErrNoAvailableChallengeInstance
+		}
+		configData, err := anyAvailableInstance.ParseInstanceConfig()
 		if err != nil {
 			return nil, err
 		}
@@ -71,6 +81,9 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 	validPassphrases := make([]bool, amountExpected)
 	usedInstances := make(map[int64]bool, len(instances))
 	for _, instance := range instances {
+		if instance.Status != pwdb.ChallengeInstance_Available {
+			continue
+		}
 		configData, err := instance.ParseInstanceConfig()
 		if err != nil {
 			return nil, err
