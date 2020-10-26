@@ -219,9 +219,9 @@ class SiteWrapper extends React.Component {
                 </li>
                 <li>
                   <img src={iconClose} className="img-responsive" />
-                  <a href="#" className="link">
+                  <Link className="link" to="/app/logout">
                     Disconnect
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
