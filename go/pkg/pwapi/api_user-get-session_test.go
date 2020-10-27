@@ -25,7 +25,7 @@ func TestSvc_UserGetSession(t *testing.T) {
 
 		// fmt.Println(godev.PrettyJSON(session))
 		assert.Equal(t, session.User.Username, "moul")
-		assert.Len(t, session.Seasons, 2)
+		assert.Len(t, session.Seasons, 3)
 		assert.Equal(t, session.Claims, pwsso.TestingClaims(t))
 		assert.True(t, session.IsNewUser)
 		assert.Equal(t, session.User.ActiveTeamMember.Team.Season.Name, "Global")
@@ -46,7 +46,7 @@ func TestSvc_UserGetSession(t *testing.T) {
 
 		// fmt.Println(godev.PrettyJSON(session2))
 		assert.Equal(t, session2.User.Username, "moul")
-		assert.Len(t, session2.Seasons, 2)
+		assert.Len(t, session2.Seasons, 3)
 		assert.Equal(t, session2.Claims, pwsso.TestingClaims(t))
 		assert.False(t, session2.IsNewUser)
 		assert.Equal(t, session2.User.ActiveTeamMember.Team.Season.Name, "Global")

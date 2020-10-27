@@ -2,6 +2,7 @@ package pwapi
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -59,19 +60,19 @@ func TestSvc_TeamCreate(t *testing.T) {
 	}{
 		{"nil", nil, errcode.ErrMissingInput},
 		{"empty", &TeamCreate_Input{}, errcode.ErrMissingInput},
-		{"only-season-id", &TeamCreate_Input{SeasonID: seasonMap["Test1"].Season.ID}, errcode.ErrMissingInput},
-		{"invalid-season-id", &TeamCreate_Input{SeasonID: 4242, Name: "hello"}, errcode.ErrGetSeason},
-		{"invalid-organization-id", &TeamCreate_Input{SeasonID: seasonMap["Test1"].Season.ID, OrganizationID: 4242}, errcode.ErrGetOrganization},
-		{"blacklisted-name", &TeamCreate_Input{SeasonID: seasonMap["Test1"].Season.ID, Name: " STAFF "}, errcode.ErrReservedName},
-		{"new-team-in-global-mode-with-organization", &TeamCreate_Input{SeasonID: seasonMap["Global"].Season.ID, OrganizationID: session.User.ActiveTeamMember.Team.OrganizationID}, errcode.ErrAlreadyHasTeamForSeason},
-		{"new-team-in-global-mode-with-name", &TeamCreate_Input{SeasonID: seasonMap["Global"].Season.ID, Name: "yolo"}, errcode.ErrAlreadyHasTeamForSeason},
-		{"too-many-arguments", &TeamCreate_Input{SeasonID: seasonMap["Global"].Season.ID, Name: "yolo", OrganizationID: session.User.ActiveTeamMember.Team.OrganizationID}, errcode.ErrInvalidInput},
-		{"conflict-org-name", &TeamCreate_Input{SeasonID: seasonMap["Test1"].Season.ID, Name: session.User.ActiveTeamMember.Team.Organization.Name}, errcode.ErrCheckOrganizationUniqueName},
-		{"from-global-organization", &TeamCreate_Input{SeasonID: seasonMap["Test2"].Season.ID, OrganizationID: session.User.ActiveTeamMember.Team.OrganizationID}, errcode.ErrCannotCreateTeamForGlobalOrganization},
-		{"non-member-organization", &TeamCreate_Input{SeasonID: seasonMap["Test2"].Season.ID, OrganizationID: nonMemberOrganization.ID}, errcode.ErrUserNotInOrganization},
-		{"valid-with-organization", &TeamCreate_Input{SeasonID: seasonMap["Test2"].Season.ID, OrganizationID: nonGlobalOrganization.ID}, nil},
-		{"valid-with-name", &TeamCreate_Input{SeasonID: seasonMap["Test3"].Season.ID, Name: "yolo"}, nil},
-		{"closed-season", &TeamCreate_Input{SeasonID: seasonMap["Test4"].Season.ID, Name: "yolo2"}, errcode.ErrSeasonDenied},
+		{"only-season-id", &TeamCreate_Input{SeasonID: fmt.Sprint(seasonMap["Test1"].Season.ID)}, errcode.ErrMissingInput},
+		{"invalid-season-id", &TeamCreate_Input{SeasonID: "4242", Name: "hello"}, errcode.ErrNoSuchSlug},
+		{"invalid-organization-id", &TeamCreate_Input{SeasonID: fmt.Sprint(seasonMap["Test1"].Season.ID), OrganizationID: "4242"}, errcode.ErrNoSuchSlug},
+		{"blacklisted-name", &TeamCreate_Input{SeasonID: fmt.Sprint(seasonMap["Test1"].Season.ID), Name: " STAFF "}, errcode.ErrReservedName},
+		{"new-team-in-global-mode-with-organization", &TeamCreate_Input{SeasonID: fmt.Sprint(seasonMap["Global"].Season.ID), OrganizationID: fmt.Sprint(session.User.ActiveTeamMember.Team.OrganizationID)}, errcode.ErrAlreadyHasTeamForSeason},
+		{"new-team-in-global-mode-with-name", &TeamCreate_Input{SeasonID: fmt.Sprint(seasonMap["Global"].Season.ID), Name: "yolo"}, errcode.ErrAlreadyHasTeamForSeason},
+		{"too-many-arguments", &TeamCreate_Input{SeasonID: fmt.Sprint(seasonMap["Global"].Season.ID), Name: "yolo", OrganizationID: fmt.Sprint(session.User.ActiveTeamMember.Team.OrganizationID)}, errcode.ErrInvalidInput},
+		{"conflict-org-name", &TeamCreate_Input{SeasonID: fmt.Sprint(seasonMap["Test1"].Season.ID), Name: session.User.ActiveTeamMember.Team.Organization.Name}, errcode.ErrCheckOrganizationUniqueName},
+		{"from-global-organization", &TeamCreate_Input{SeasonID: fmt.Sprint(seasonMap["Test2"].Season.ID), OrganizationID: fmt.Sprint(session.User.ActiveTeamMember.Team.OrganizationID)}, errcode.ErrCannotCreateTeamForGlobalOrganization},
+		{"non-member-organization", &TeamCreate_Input{SeasonID: fmt.Sprint(seasonMap["Test2"].Season.ID), OrganizationID: fmt.Sprint(nonMemberOrganization.ID)}, errcode.ErrUserNotInOrganization},
+		{"valid-with-organization", &TeamCreate_Input{SeasonID: fmt.Sprint(seasonMap["Test2"].Season.ID), OrganizationID: fmt.Sprint(nonGlobalOrganization.ID)}, nil},
+		{"valid-with-name", &TeamCreate_Input{SeasonID: fmt.Sprint(seasonMap["Test3"].Season.ID), Name: "yolo"}, nil},
+		{"closed-season", &TeamCreate_Input{SeasonID: fmt.Sprint(seasonMap["Test4"].Season.ID), Name: "yolo2"}, errcode.ErrSeasonDenied},
 	}
 
 	for _, test := range tests {
@@ -84,9 +85,9 @@ func TestSvc_TeamCreate(t *testing.T) {
 
 			assert.Len(t, ret.Team.Members, 1)
 			assert.Equal(t, session.User.ID, ret.Team.Members[0].UserID)
-			assert.Equal(t, test.input.SeasonID, ret.Team.SeasonID)
-			if test.input.OrganizationID != 0 {
-				assert.Equal(t, test.input.OrganizationID, ret.Team.OrganizationID)
+			assert.Equal(t, test.input.SeasonID, fmt.Sprint(ret.Team.SeasonID))
+			if test.input.OrganizationID != "" {
+				assert.Equal(t, test.input.OrganizationID, fmt.Sprint(ret.Team.OrganizationID))
 			}
 			assert.False(t, ret.Team.Organization.GlobalSeason)
 		})
