@@ -20,10 +20,10 @@ func TestSvc_TeamCreate(t *testing.T) {
 	// populate more seasons
 	db := testingSvcDB(t, svc)
 	populate := []*pwdb.Season{
-		&pwdb.Season{Name: "Test1", Status: pwdb.Season_Started, Visibility: pwdb.Season_Public},
-		&pwdb.Season{Name: "Test2", Status: pwdb.Season_Started, Visibility: pwdb.Season_Public},
-		&pwdb.Season{Name: "Test3", Status: pwdb.Season_Started, Visibility: pwdb.Season_Public},
-		&pwdb.Season{Name: "Test4", Status: pwdb.Season_Stopped, Visibility: pwdb.Season_Public},
+		{Name: "Test1", Status: pwdb.Season_Started, Visibility: pwdb.Season_Public},
+		{Name: "Test2", Status: pwdb.Season_Started, Visibility: pwdb.Season_Public},
+		{Name: "Test3", Status: pwdb.Season_Started, Visibility: pwdb.Season_Public},
+		{Name: "Test4", Status: pwdb.Season_Stopped, Visibility: pwdb.Season_Public},
 	}
 	for _, season := range populate {
 		err := db.Create(season).Error

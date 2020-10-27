@@ -23,6 +23,10 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 	require.NoError(t, err)
 	activeTeam := session.User.ActiveTeamMember.Team
 
+	// give some cash to the team
+	_, err = svc.CouponValidate(ctx, &CouponValidate_Input{Hash: "test-coupon-1", TeamID: activeTeam.ID})
+	require.NoError(t, err)
+
 	// fetch challenges
 	challenges, err := svc.SeasonChallengeList(ctx, &SeasonChallengeList_Input{SeasonID: gs.ID})
 	require.NoError(t, err)
@@ -34,7 +38,7 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 	})
 	require.NoError(t, err)
 	subscription2, err := svc.SeasonChallengeBuy(ctx, &SeasonChallengeBuy_Input{
-		FlavorID: challenges.Items[4].Flavor.Slug,
+		FlavorID: challenges.Items[5].Flavor.Slug,
 		SeasonID: activeTeam.Season.Slug,
 	})
 	require.NoError(t, err)
@@ -56,7 +60,7 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 		{"too many", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "b", "c", "d", "e"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeIncompleteValidation, "", 0, 0, 0},
 		{"bad passphrases", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"e", "f", "g", "h"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeIncompleteValidation, "", 0, 0, 0},
 		{"one good passphrase", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "f", "g", "h"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeIncompleteValidation, "", 0, 0, 0},
-		{"valid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "b", "c", "d"}, Comment: "ultra cool explanation"}, nil, "[0,1,2,3]", subscription2.ChallengeSubscription.ID, 1, 10},
+		{"valid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "b", "c", "d"}, Comment: "ultra cool explanation"}, nil, "[0,1,2,3]", subscription2.ChallengeSubscription.ID, 1, 47},
 		// {"revalid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "b", "c", "d"}, Comment: "ultra cool explanation"}, nil, "test", 1},
 		// FIXME: new validation
 	}
@@ -70,7 +74,7 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 
 		assert.Equalf(t, test.expectedChallengeSubscriptionID, ret.ChallengeValidation.ChallengeSubscriptionID, test.name)
 		assert.Equalf(t, session.User.ID, ret.ChallengeValidation.AuthorID, test.name)
-		assert.Equalf(t, pwdb.ChallengeValidation_NeedReview, ret.ChallengeValidation.Status, test.name)
+		assert.Equalf(t, pwdb.ChallengeValidation_AutoAccepted, ret.ChallengeValidation.Status, test.name)
 		assert.Equalf(t, test.input.Comment, ret.ChallengeValidation.AuthorComment, test.name)
 		assert.Equalf(t, test.expectedPassphraseIndices, ret.ChallengeValidation.Passphrases, test.name)
 		assert.NotEmptyf(t, ret.ChallengeValidation.ChallengeSubscription.Validations, test.name)
@@ -92,7 +96,7 @@ func TestSvc_ChallengeSubscriptionValidate(t *testing.T) {
 			latest := challenge.Item.Subscriptions[0].Validations[len(challenge.Item.Subscriptions[0].Validations)-1]
 			assert.Equalf(t, test.input.Comment, latest.AuthorComment, test.name)
 			assert.Equalf(t, session.User.ID, latest.AuthorID, test.name)
-			assert.Equalf(t, pwdb.ChallengeValidation_NeedReview, latest.Status, test.name)
+			assert.Equalf(t, pwdb.ChallengeValidation_AutoAccepted, latest.Status, test.name)
 			// FIXME: hide previous passphrases
 		}
 	}
