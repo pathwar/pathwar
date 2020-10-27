@@ -283,7 +283,10 @@ func composeRegisterCommand() *ffcli.Command {
 			fmt.Println(strings.Join(command, " "))
 
 			// FIXME: add a bool in the yaml file to make it dynamic
-			command = []string{"pathwar", "admin", "season-challenge-add", "--flavor", slug, "--season", "global"}
+			command = []string{"pathwar", "admin", "season-challenge-add", "--flavor", shellescape.Quote(slug), "--season", "global"}
+			fmt.Println(strings.Join(command, " "))
+
+			command = []string{"pathwar", "admin", "challenge-redump", "--id", shellescape.Quote(slug)}
 			fmt.Println(strings.Join(command, " "))
 			return nil
 		},
