@@ -1,15 +1,15 @@
 ## moul/rules.mk
 GOPATH ?= $(HOME)/go
-GOMOD_DIR = ..
+GOMOD_DIRS = ..
 GOPKG =	pathwar.land
 GOBINS = ./cmd/pathwar ./cmd/pwinit
 DOCKER_IMAGE = pathwar/pathwar
 DOCKERFILE_PATH = ../Dockerfile
 
 GO_INSTALL_OPTS = -v -ldflags "-s -w -X pathwar.land/pathwar/v2/go/pkg/pwversion.Version=`git describe --tags --abbrev` -X pathwar.land/go/pkg/pwversion.Commit=`git rev-parse HEAD` -X pathwar.land/go/pkg/pwversion.Date=`date +%s` -X pathwar.land/go/pkg/pwversion.BuiltBy=makefile"
-PRE_INSTALL_STEPS += generate
-PRE_UNITTEST_STEPS += generate
-PRE_TEST_STEPS += generate
+#PRE_INSTALL_STEPS += generate
+#PRE_UNITTEST_STEPS += generate
+#PRE_TEST_STEPS += generate
 PRE_BUILD_STEPS += generate
 PRE_LINT_STEPsS += generate
 PRE_TIDY_STEPS += generate
