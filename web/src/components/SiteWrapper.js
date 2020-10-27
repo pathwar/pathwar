@@ -6,7 +6,7 @@ import { css } from "@emotion/core";
 
 import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
 
-import logo from "../images/new-pathwar-logo-dark-blue.svg";
+import logo from "../images/new-pathwar-logo-light-blue.svg";
 import iconProfile from "../images/icon-profile.svg";
 import iconMail from "../images/icon-mail.svg";
 import iconNotifications from "../images/icon-notifications.svg";
@@ -169,11 +169,7 @@ class SiteWrapper extends React.Component {
     return (
       <>
         <header css={wrapper}>
-          <img
-            src={logo}
-            className="img-responsive"
-            style={{ width: "59px" }}
-          />
+          <img src={logo} className="img-responsive" />
           <ul className="headerMenu">
             {listItems.map(item => (
               <li key={item.name}>
