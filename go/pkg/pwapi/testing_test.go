@@ -101,6 +101,12 @@ func testingSetContextToken(ctx context.Context, t *testing.T) context.Context {
 	return context.WithValue(ctx, userTokenCtx, pwsso.TestingToken(t))
 }
 
+func testingSetContextToken2(ctx context.Context, t *testing.T) context.Context {
+	t.Helper()
+
+	return context.WithValue(ctx, userTokenCtx, pwsso.TestingToken2(t))
+}
+
 func testSameErrcodes(t *testing.T, name string, expected, got error) {
 	t.Helper()
 

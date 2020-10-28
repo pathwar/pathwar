@@ -20,12 +20,12 @@ func (svc *service) TeamSendInvite(ctx context.Context, in *TeamSendInvite_Input
 
 	teamID, err := pwdb.GetIDBySlugAndKind(svc.db, in.TeamID, "team")
 	if err != nil {
-		return nil, pwdb.GormToErrcode(err)
+		return nil, err
 	}
 
 	invitedUserID, err := pwdb.GetIDBySlugAndKind(svc.db, in.UserID, "user")
 	if err != nil {
-		return nil, pwdb.GormToErrcode(err)
+		return nil, err
 	}
 
 	// check team status

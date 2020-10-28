@@ -20,7 +20,7 @@ func (svc *service) TeamAcceptInvite(ctx context.Context, in *TeamAcceptInvite_I
 
 	teamInviteID, err := pwdb.GetIDBySlugAndKind(svc.db, in.TeamInviteID, "team-invite")
 	if err != nil {
-		return nil, pwdb.GormToErrcode(err)
+		return nil, err
 	}
 
 	var teamInvite pwdb.TeamInvite
