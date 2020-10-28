@@ -112,7 +112,7 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 		Count(&memberCount).
 		Error
 	if err != nil || memberCount == 0 {
-		return nil, errcode.ErrUserDoesNotBelongToOrganization.Wrap(err)
+		return nil, errcode.ErrUserNotInOrganization.Wrap(err)
 	}
 
 	// check if there is already a team for this organization and season couple

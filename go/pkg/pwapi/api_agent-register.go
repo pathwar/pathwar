@@ -17,14 +17,12 @@ func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) 
 		return nil, errcode.ErrMissingInput
 	}
 
-	userID, err := userIDFromContext(ctx, svc.db)
-	if err != nil {
-		return nil, errcode.ErrGetUserIDFromContext.Wrap(err)
-	}
+	userID, _ := userIDFromContext(ctx, svc.db)
+	// userID is only used for activity logging, we don't care that it returns an error
 
 	// check if agent already exists
 	var agent pwdb.Agent
-	err = svc.db.
+	err := svc.db.
 		Where(pwdb.Agent{Name: in.Name}).
 		First(&agent).
 		Error

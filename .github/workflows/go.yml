@@ -38,14 +38,14 @@ jobs:
           args: --timeout=2m
           only-new-issues: false
           working-directory: go
+
   tests-on-windows:
     needs: golangci-lint # run after golangci-lint action to not produce duplicated errors
     runs-on: windows-latest
     strategy:
       matrix:
         golang:
-          #- 1.13
-          - 1.14
+          - 1.15.x
     steps:
       - uses: actions/checkout@v2
       - name: Install Go
@@ -55,13 +55,14 @@ jobs:
       - name: Run tests on Windows
         run: make.exe unittest
         continue-on-error: true
+
   tests-on-mac:
     needs: golangci-lint # run after golangci-lint action to not produce duplicated errors
     runs-on: macos-latest
     strategy:
       matrix:
         golang:
-          - 1.14
+          - 1.15.x
     env:
       OS: macos-latest
       GOLANG: ${{ matrix.golang }}
@@ -78,9 +79,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.golang }}-
       #- name: Compile the project
-      #  run: cd go && make install
+      #  working-directory: go
+      #  run: make install
       - name: Run tests on Unix-like operating systems
-        run: cd go && make unittest
+        working-directory: go
+        run: make unittest
       - name: Check go.mod and go.sum
         run: |
           go mod tidy -v
@@ -95,16 +98,15 @@ jobs:
           env_vars: OS,GOLANG
           name: codecov-umbrella
           fail_ci_if_error: false
+
   tests-on-linux:
     needs: golangci-lint # run after golangci-lint action to not produce duplicated errors
     runs-on: ubuntu-latest
     strategy:
       matrix:
         golang:
-          #- 1.11
-          #- 1.12
-          - 1.13
-          - 1.14
+          - 1.14.x
+          - 1.15.x
     env:
       OS: ubuntu-latest
       GOLANG: ${{ matrix.golang }}
@@ -121,14 +123,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.golang }}-
       - name: Compile the project
-        run: cd go && make install
+        working-directory: go
+        run: make install
       - name: Check go.mod and go.sum
         run: |
           go mod tidy -v
           git --no-pager diff go.mod go.sum
           git --no-pager diff --quiet go.mod go.sum
       - name: Run tests on Unix-like operating systems
-        run: cd go && make unittest
+        working-directory: go
+        run: make unittest
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
