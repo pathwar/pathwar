@@ -11,7 +11,7 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
-func TestSvc_TeamAcceptInvite(t *testing.T) {
+func TestService_TeamAcceptInvite(t *testing.T) {
 	svc, cleanup := TestingService(t, ServiceOpts{Logger: testutil.Logger(t)})
 	defer cleanup()
 	db := testingSvcDB(t, svc)
