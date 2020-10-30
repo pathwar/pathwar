@@ -11,7 +11,7 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
-func TestSvc_ChallengeBuy(t *testing.T) {
+func TestService_ChallengeBuy(t *testing.T) {
 	svc, cleanup := TestingService(t, ServiceOpts{Logger: testutil.Logger(t)})
 	defer cleanup()
 	ctx := testingSetContextToken(context.Background(), t)
