@@ -104,6 +104,9 @@ func (svc *service) UserDeleteAccount(ctx context.Context, in *UserDeleteAccount
 		}
 		return tx.Create(&activity).Error
 	})
+	if err != nil {
+		return nil, errcode.ErrDeleteUserAccountTransactionCommit.Wrap(err)
+	}
 
 	ret := &UserDeleteAccount_Output{}
 	return ret, err

@@ -166,6 +166,7 @@ enum ErrCode {
   ErrAlreadyTeamMember = 4089;
   ErrSeasonNameAlreadyExist = 4090;
   ErrNoAvailableChallengeInstance = 4091;
+  ErrDeleteUserAccountTransactionCommit = 4092;
  
   //// Pathwar Server (starting at 5001)
 
