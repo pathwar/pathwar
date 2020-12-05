@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
@@ -24,7 +23,7 @@ const StatisticsPage = () => {
     if (!allTeamsOnSeason && activeSeason) {
       dispatch(fetchAllSeasonTeamsAction(activeSeason.id));
     }
-  }, [activeSeason, allTeamsOnSeason]);
+  }, [activeSeason, allTeamsOnSeason, dispatch]);
 
   const { title, description } = siteMetaData;
 

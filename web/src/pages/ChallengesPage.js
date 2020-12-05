@@ -1,68 +1,61 @@
-import * as React from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
-import PropTypes from "prop-types";
 import { Page, Grid } from "tabler-react";
 import { isNil } from "ramda";
+import { useIntl } from "react-intl";
 import siteMetaData from "../constants/metadata";
 import ChallengeList from "../components/challenges/ChallengeList";
 
 import { fetchChallenges as fetchChallengesAction } from "../actions/seasons";
+import usePrevious from "../hooks/usePrevious";
 
-class SeasonPage extends React.Component {
-  componentDidUpdate(prevProps) {
-    const {
-      fetchChallengesAction,
-      activeSeason,
-      activeChallenges,
-    } = this.props;
+const ChallengesPage = () => {
+  const intl = useIntl();
+  const dispatch = useDispatch();
 
-    const { activeSeason: prevActiveSeason } = prevProps;
+  const activeChallenges = useSelector(state => state.seasons.activeChallenges);
+  const activeSeason = useSelector(state => state.seasons.activeSeason);
+  const fetchChallenges = useCallback(
+    seasonID => dispatch(fetchChallengesAction(seasonID)),
+    [dispatch]
+  );
+
+  const prevProps = usePrevious({ activeSeason });
+  const { title, description } = siteMetaData;
+
+  useEffect(() => {
+    const { activeSeason: prevActiveSeason } = prevProps || {};
 
     if (
       (isNil(prevActiveSeason) && activeSeason) ||
-      prevActiveSeason.id === activeSeason.id
+      (prevActiveSeason && prevActiveSeason.id === activeSeason.id)
     ) {
       if (isNil(activeChallenges)) {
-        fetchChallengesAction(activeSeason.id);
+        fetchChallenges(activeSeason.id);
       }
     }
-  }
+  }, [activeChallenges, activeSeason, fetchChallenges, prevProps]);
 
-  render() {
-    const { activeChallenges } = this.props;
-    const { title, description } = siteMetaData;
+  const challengesIntl = intl.formatMessage({ id: "nav.challenges" });
 
-    return (
-      <>
-        <Helmet>
-          <title>{title} - Challenges</title>
-          <meta name="description" content={description} />
-        </Helmet>
-        <Page.Content title="Challenges">
-          <Grid.Row>
-            <Grid.Col xs={12} sm={12} lg={12}>
-              <ChallengeList challenges={activeChallenges} />
-            </Grid.Col>
-          </Grid.Row>
-        </Page.Content>
-      </>
-    );
-  }
-}
-
-SeasonPage.propTypes = {
-  seasons: PropTypes.object,
-  fetchChallengesAction: PropTypes.func,
+  return (
+    <>
+      <Helmet>
+        <title>
+          {title} - {challengesIntl}
+        </title>
+        <meta name="description" content={description} />
+      </Helmet>
+      <Page.Content title={challengesIntl}>
+        <Grid.Row>
+          <Grid.Col xs={12} sm={12} lg={12}>
+            <ChallengeList challenges={activeChallenges} />
+          </Grid.Col>
+        </Grid.Row>
+      </Page.Content>
+    </>
+  );
 };
 
-const mapStateToProps = state => ({
-  activeSeason: state.seasons.activeSeason,
-  activeChallenges: state.seasons.activeChallenges,
-});
-
-const mapDispatchToProps = {
-  fetchChallengesAction: seasonID => fetchChallengesAction(seasonID),
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SeasonPage);
+export default ChallengesPage;

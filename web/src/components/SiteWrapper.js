@@ -171,7 +171,7 @@ class SiteWrapper extends React.Component {
           <img src={logo} className="img-responsive" />
           <ul className="headerMenu">
             {listItems.map(item => (
-              <li key={item.name}>
+              <li key={item.link}>
                 <Link className="link" to={item.link}>
                   {item.name}
                 </Link>

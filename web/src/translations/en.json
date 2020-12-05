@@ -10,5 +10,7 @@
   "userNav.notifications": "Notifications",
   "userNav.disconnect": "Disconnect",
   "coupon": "Coupon",
-  "coupon.validate": "Validate"
+  "coupon.validate": "Validate",
+  "SettingsPage.settings": "Settings",
+  "SettingsPage.deleteAccount": "Delete account"
 }
