@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Form } from "tabler-react";
 import { css } from "@emotion/core";
+import { FormattedMessage } from "react-intl";
 import { fetchCouponValidation } from "../../actions/userSession";
 
 const wrapperStyle = `
@@ -39,7 +40,7 @@ const ValidateCouponForm = () => {
     >
       {!formOpen && (
         <Button color="yellow" icon="award" size="sm" onClick={handleFormOpen}>
-          Coupon
+          <FormattedMessage id="coupon" />
         </Button>
       )}
 
@@ -48,7 +49,7 @@ const ValidateCouponForm = () => {
           <Form.InputGroup
             append={
               <Button color="yellow" type="submit" size="sm">
-                Validate!
+                <FormattedMessage id="coupon.validate" />
               </Button>
             }
           >

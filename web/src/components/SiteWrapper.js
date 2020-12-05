@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "gatsby";
 import { css } from "@emotion/core";
-
+import { FormattedMessage } from "react-intl";
 import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
-
 import logo from "../images/new-pathwar-logo-light-blue.svg";
 import iconProfile from "../images/icon-profile.svg";
 import iconMail from "../images/icon-mail.svg";
@@ -144,11 +143,11 @@ const dropdown = css`
 `;
 
 const listItems = [
-  { link: "/app/challenges", name: "Challenges" },
-  { link: "/app/missions", name: "Missions" },
-  { link: "/app/events", name: "Tournaments" },
-  { link: "/app/community", name: "Community" },
-  { link: "/blog", name: "Blog" },
+  { link: "/app/challenges", name: <FormattedMessage id="nav.challenges" /> },
+  { link: "/app/missions", name: <FormattedMessage id="nav.missions" /> },
+  { link: "/app/events", name: <FormattedMessage id="nav.events" /> },
+  { link: "/app/community", name: <FormattedMessage id="nav.community" /> },
+  { link: "/blog", name: <FormattedMessage id="nav.blog" /> },
 ];
 
 class SiteWrapper extends React.Component {
@@ -192,31 +191,31 @@ class SiteWrapper extends React.Component {
                     }
                     className="link"
                   >
-                    Profile
+                    <FormattedMessage id="userNav.profile" />
                   </a>
                 </li>
                 <li>
                   <img src={iconMail} className="img-responsive" />
                   <a href="#" className="link">
-                    Messages
+                    <FormattedMessage id="userNav.messages" />
                   </a>
                 </li>
                 <li>
                   <img src={iconPwn} className="img-responsive" />
                   <a href="#" className="link">
-                    Wallet
+                    <FormattedMessage id="userNav.wallet" />
                   </a>
                 </li>
                 <li>
                   <img src={iconNotifications} className="img-responsive" />
                   <a href="#" className="link">
-                    Notifications
+                    <FormattedMessage id="userNav.notifications" />
                   </a>
                 </li>
                 <li>
                   <img src={iconClose} className="img-responsive" />
                   <Link className="link" to="/app/logout">
-                    Disconnect
+                    <FormattedMessage id="userNav.disconnect" />
                   </Link>
                 </li>
               </ul>

@@ -19,12 +19,23 @@ import SiteWrapper from "../components/SiteWrapper";
 import TeamDetailsPage from "./TeamDetailsPage";
 import SettingsPage from "./SettingsPage";
 import * as Sentry from "@sentry/browser";
+import { IntlProvider } from "react-intl";
+import { useQueryParam, StringParam } from "use-query-params";
+
 import logo from "../images/new_pathwar-logo.svg";
 const ProtectedRoute = loadable(() => import("../components/ProtectedRoute"));
 
 //Third part libs global styles
 import "tabler-react/dist/Tabler.css";
 import "react-responsive-modal/styles.css";
+
+import messages_fr from "../translations/fr.json";
+import messages_en from "../translations/en.json";
+
+const messages = {
+  fr: messages_fr,
+  en: messages_en,
+};
 
 Sentry.init({
   dsn:
@@ -34,9 +45,14 @@ toast.configure();
 
 const App = () => {
   const currentTheme = useTheme();
+  // eslint-disable-next-line no-unused-vars
+  const [langParam, setLangParam] = useQueryParam("lang", StringParam);
+  const language = langParam ? langParam : "en";
+
   const { title, description } = siteMetaData;
+
   return (
-    <>
+    <IntlProvider locale={language} messages={messages[language]}>
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -103,7 +119,7 @@ const App = () => {
           </Router>
         )}
       </Location>
-    </>
+    </IntlProvider>
   );
 };
 
