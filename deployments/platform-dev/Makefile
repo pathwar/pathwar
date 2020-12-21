@@ -39,5 +39,10 @@ sqldump:
 .PHONY: backup
 backup:
 	@mkdir -p backups/`date +%Y-%m`
-	make sqldump > backups/`date +%Y-%m`/`date +%Y-%m-%d_%H:%M:%S`.mysql
+	docker-compose exec db sh -c 'mysqldump -u$$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE --skip-extended-insert' > backups/`date +%Y-%m`/`date +%Y-%m-%d_%H:%M:%S`.mysql
 
+BACKUP_PATH ?= $(shell ls -Art backups/*/*.mysql | tail -n 1)
+
+.PHONY: restore
+restore:
+	docker-compose exec -T db sh -c 'mysql -u$$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE' < "$(BACKUP_PATH)"
