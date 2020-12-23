@@ -4,11 +4,16 @@
   "nav.events": "Événements",
   "nav.community": "Communauté",
   "nav.blog": "Blog",
+  "nav.statistics": "Statistiques",
   "userNav.profile": "Profil",
   "userNav.messages": "Messages",
   "userNav.wallet": "Besace",
   "userNav.notifications": "Notifications",
   "userNav.disconnect": "Déconnecter",
   "coupon": "Coupon",
-  "coupon.validate": "Valider"
+  "coupon.validate": "Valider",
+  "HomePage.title": "Home",
+  "HomePage.createdAt": "créé à",
+  "SettingsPage.settings": "Réglages",
+  "SettingsPage.deleteAccount": "Supprimer le compte"
 }

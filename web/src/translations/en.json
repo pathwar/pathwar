@@ -4,6 +4,7 @@
   "nav.events": "Events",
   "nav.community": "Community",
   "nav.blog": "Blog",
+  "nav.statistics": "Statistics",
   "userNav.profile": "Profile",
   "userNav.messages": "Messages",
   "userNav.wallet": "Wallet",
@@ -11,6 +12,8 @@
   "userNav.disconnect": "Disconnect",
   "coupon": "Coupon",
   "coupon.validate": "Validate",
+  "HomePage.title": "Home",
+  "HomePage.createdAt": "created at",
   "SettingsPage.settings": "Settings",
   "SettingsPage.deleteAccount": "Delete account"
 }
