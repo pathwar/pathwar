@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Grid } from "tabler-react";
 import { css } from "@emotion/core";
+import { FormattedMessage } from "react-intl";
 
 const validationCard = css`
   text-align: left;
@@ -15,7 +16,9 @@ const ValidationsList = ({ validations }) => {
   return (
     <Grid.Row cards={true}>
       <Grid.Col width={12}>
-        <h3 css={title}>Validations list:</h3>
+        <h3 css={title}>
+          <FormattedMessage id="ValidationList.title" />:
+        </h3>
       </Grid.Col>
       {validations.map(validation => {
         const status = validation.status;
@@ -35,13 +38,22 @@ const ValidationsList = ({ validations }) => {
             >
               <Card.Body>
                 <p>
-                  <strong>Status:</strong> {validation.status}
+                  <strong>
+                    <FormattedMessage id="ValidationList.status" />:
+                  </strong>{" "}
+                  {validation.status}
                 </p>
                 <p>
-                  <strong>Key:</strong> {validation.passphrase_key}
+                  <strong>
+                    <FormattedMessage id="ValidationList.key" />:
+                  </strong>{" "}
+                  {validation.passphrase_key}
                 </p>
                 <p>
-                  <strong>Comment:</strong> {validation.author_comment}
+                  <strong>
+                    <FormattedMessage id="ValidationList.comment" />:
+                  </strong>{" "}
+                  {validation.author_comment}
                 </p>
               </Card.Body>
             </Card>

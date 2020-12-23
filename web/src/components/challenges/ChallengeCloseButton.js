@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "tabler-react";
+import { FormattedMessage } from "react-intl";
 
 const ChallengeCloseButton = ({
   challenge,
@@ -23,7 +24,11 @@ const ChallengeCloseButton = ({
       disabled={isClosed || !hasSubscriptions}
       {...rest}
     >
-      {isClosed ? "Closed" : "Close"}
+      {isClosed ? (
+        <FormattedMessage id="ChallengeButton.closed" />
+      ) : (
+        <FormattedMessage id="ChallengeButton.close" />
+      )}
     </Button>
   );
 };
