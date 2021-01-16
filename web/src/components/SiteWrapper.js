@@ -142,6 +142,18 @@ const dropdown = css`
   }
 `;
 
+const langSwitcher = css`
+  margin-left: 1.5rem;
+
+  span {
+    cursor: pointer;
+
+    &:hover {
+      font-weight: bold;
+    }
+  }
+`;
+
 const listItems = [
   { link: "/app/challenges", name: <FormattedMessage id="nav.challenges" /> },
   { link: "/app/missions", name: <FormattedMessage id="nav.missions" /> },
@@ -151,6 +163,14 @@ const listItems = [
 ];
 
 class SiteWrapper extends React.Component {
+  switchLanguage(lang) {
+    const browser = typeof window !== "undefined" && window;
+    if (browser) {
+      window.localStorage.setItem("pw.lang", lang);
+      window.location.reload();
+    }
+  }
+
   render() {
     const { userSession } = this.props;
 
@@ -220,6 +240,10 @@ class SiteWrapper extends React.Component {
                 </li>
               </ul>
             </div>
+          </div>
+          <div css={langSwitcher}>
+            <span onClick={() => this.switchLanguage("en")}>EN</span> •{" "}
+            <span onClick={() => this.switchLanguage("fr")}>FR</span>
           </div>
           <div className="subHeader">
             <div className="cash">
