@@ -80,7 +80,7 @@ const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
   return (
     <>
       <Button icon={"check-circle"} color="indigo" onClick={handleFormOpen}>
-        Validate
+        <FormattedMessage id="ChallengeValidateForm.validate" />
       </Button>
       {isValidateOpen && (
         <form onSubmit={submitValidate} css={formStyle} {...rest}>

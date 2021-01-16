@@ -32,8 +32,20 @@
   "ChallengeValidateForm.commentLabel": "Comment",
   "ChallengeValidateForm.commentPlaceholder": "Leave a comment...",
   "ChallengeValidateForm.send": "Send",
+  "ChallengeDetailsPage.validated": "validated",
+  "ChallengeDetailsPage.purchased": "purchased",
+  "ChallengeDetailsPage.reward": "Reward",
+  "ChallengeDetailsPage.solve": "Solve challenge",
   "ValidationList.title": "Validations list",
   "ValidationList.status": "Status",
   "ValidationList.key": "Key",
-  "ValidationList.comment": "Comment"
+  "ValidationList.comment": "Comment",
+  "AllSeasonsList.title": "All Seasons",
+  "AllSeasonsList.name": "Name",
+  "AllSeasonsList.status": "Status",
+  "AllSeasonsList.visibility": "Visibility",
+  "AllTeamsOnSeasonList.team": "Team",
+  "AllTeamsOnSeasonList.cash": "Cash",
+  "AllTeamsOnSeasonList.joined": "Joined",
+  "CreateTeamButton.send": "Send"
 }

@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 
 // import styles from "./style.module.css";
+import { FormattedMessage } from "react-intl";
 
 const TeamsRows = ({ teams }) => {
   return teams.map(item => {
@@ -50,9 +51,15 @@ const AllTeamsOnSeasonList = ({ activeSeason, allTeamsOnSeason }) => {
       >
         <Table.Header>
           <Table.Row>
-            <Table.ColHeader>Team</Table.ColHeader>
-            <Table.ColHeader alignContent="center">Cash</Table.ColHeader>
-            <Table.ColHeader alignContent="center">Joined</Table.ColHeader>
+            <Table.ColHeader>
+              <FormattedMessage id="AllTeamsOnSeasonList.team" />
+            </Table.ColHeader>
+            <Table.ColHeader alignContent="center">
+              <FormattedMessage id="AllTeamsOnSeasonList.cash" />
+            </Table.ColHeader>
+            <Table.ColHeader alignContent="center">
+              <FormattedMessage id="AllTeamsOnSeasonList.joined" />
+            </Table.ColHeader>
             {/* <Table.ColHeader colSpan={1} alignContent="center">
               Score
             </Table.ColHeader>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { isEmpty } from "ramda";
 import { Form, Button } from "tabler-react";
+import { FormattedMessage } from "react-intl";
 
 const CreateTeamButton = ({ activeSeason, activeTeamInSeason, createTeam }) => {
   const [isFormOpen, setFormOpen] = useState(false);
@@ -55,7 +56,7 @@ const CreateTeamButton = ({ activeSeason, activeTeamInSeason, createTeam }) => {
             </Form.Group>
             <Form.Group>
               <Button type="submit" color="primary" className="ml-auto">
-                Send
+                <FormattedMessage id="CreateTeamButton.send" />
               </Button>
             </Form.Group>
           </Form.FieldSet>
