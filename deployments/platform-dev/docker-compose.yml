@@ -11,6 +11,7 @@ services:
     environment:
       # specific to prod
       - VIRTUAL_HOST=${API_DEV_VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${API_DEV_VIRTUAL_HOST}
       - VIRTUAL_PORT=8000
       # loaded from .env
       - API_URN
@@ -24,6 +25,8 @@ services:
       - server
       - --bind=0.0.0.0:8000
       # - --cors-allowed-origins=https://www.pathwar.land ## FIXME: enable in production
+    links:
+      - db
     depends_on:
       - db
       - mailserver
@@ -43,6 +46,7 @@ services:
     environment:
       # specific to prod
       - VIRTUAL_HOST=${API_UNSAFE_VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${API_UNSAFE_VIRTUAL_HOST}
       - VIRTUAL_PORT=8000
       # loaded from .env
       - API_URN
@@ -57,6 +61,8 @@ services:
       - server
       - --bind=0.0.0.0:8000
       # - --cors-allowed-origins=https://www.pathwar.land ## FIXME: enable in production
+    links:
+      - db
     depends_on:
       - db
       - mailserver
@@ -105,6 +111,7 @@ services:
       # loaded from .env
       - FOREST_AUTH_SECRET
       - FOREST_ENV_SECRET
+      - NODE_ENV=production
     networks:
       - service-proxy
       - internal
