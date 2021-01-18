@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Button, Card, Grid, Tag } from "tabler-react";
 import { useQueryParam, StringParam } from "use-query-params";
+import { FormattedMessage } from "react-intl";
 import { css } from "@emotion/core";
 import ChallengeModal from "./ChallengeModal";
 
@@ -52,7 +53,11 @@ const ChallengeCard = ({ challenge }) => {
             icon={isClosed ? "x-circle" : "compass"}
             onClick={openModal}
           >
-            {isClosed ? "Closed" : "View"}
+            {isClosed ? (
+              <FormattedMessage id="ChallengeCard.closed" />
+            ) : (
+              <FormattedMessage id="ChallengeCard.view" />
+            )}
           </Button>
         </Card.Options>
       </Card.Header>
@@ -77,7 +82,7 @@ const ChallengeCard = ({ challenge }) => {
                 }
                 addOnColor="green"
               >
-                Price
+                <FormattedMessage id="ChallengeCard.price" />
               </Tag>
               <Tag
                 css={cardTag}
@@ -85,7 +90,7 @@ const ChallengeCard = ({ challenge }) => {
                 addOn={flavor.validation_reward}
                 addOnColor="yellow"
               >
-                Reward
+                <FormattedMessage id="ChallengeCard.reward" />
               </Tag>
             </Grid.Col>
           </Grid.Row>

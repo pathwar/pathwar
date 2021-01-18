@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button } from "tabler-react";
 import { css } from "@emotion/core";
 import { isEmpty } from "ramda";
+import { useIntl, FormattedMessage } from "react-intl";
 
 const initialErrorObj = { withError: false, fieldsWithError: [] };
 
@@ -11,6 +12,7 @@ const formStyle = css`
 `;
 
 const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
+  const intl = useIntl();
   const [isValidateOpen, setValidateOpen] = useState(false);
   const [isFetching, setFetching] = useState(false);
   const [formData, setFormData] = useState({ passphrases: "", comment: "" });
@@ -67,19 +69,32 @@ const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
   const passphraseWithError =
     error.withError && error.fieldsWithError.includes("passphrases");
 
+  const passphrasePlaceholderIntl = intl.formatMessage({
+    id: "ChallengeValidateForm.passphrasePlaceholder",
+  });
+
+  const commentPlaceholderIntl = intl.formatMessage({
+    id: "ChallengeValidateForm.commentPlaceholder",
+  });
+
   return (
     <>
       <Button icon={"check-circle"} color="indigo" onClick={handleFormOpen}>
-        Validate
+        <FormattedMessage id="ChallengeValidateForm.validate" />
       </Button>
       {isValidateOpen && (
         <form onSubmit={submitValidate} css={formStyle} {...rest}>
           <Form.FieldSet>
-            <Form.Group isRequired label="Passphrase">
+            <Form.Group
+              isRequired
+              label={
+                <FormattedMessage id="ChallengeValidateForm.passphraseLabel" />
+              }
+            >
               <Form.Input
                 name="passphrases"
                 onChange={handleChange}
-                placeholder="Passphrases separated by ','"
+                placeholder={passphrasePlaceholderIntl}
                 invalid={passphraseWithError}
                 cross={passphraseWithError}
                 feedback={
@@ -88,11 +103,15 @@ const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
                 autoFocus={true}
               />
             </Form.Group>
-            <Form.Group label="Comment">
+            <Form.Group
+              label={
+                <FormattedMessage id="ChallengeValidateForm.commentLabel" />
+              }
+            >
               <Form.Textarea
                 name="comment"
                 onChange={handleChange}
-                placeholder="Leave a comment..."
+                placeholder={commentPlaceholderIntl}
                 rows={3}
               />
             </Form.Group>
@@ -103,7 +122,7 @@ const ChallengeValidateForm = ({ challenge, validateChallenge, ...rest }) => {
                 className="ml-auto"
                 disabled={isFetching}
               >
-                Send
+                <FormattedMessage id="ChallengeValidateForm.send" />
               </Button>
             </Form.Group>
           </Form.FieldSet>

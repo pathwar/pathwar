@@ -19,6 +19,7 @@ import SiteWrapper from "../components/SiteWrapper";
 import TeamDetailsPage from "./TeamDetailsPage";
 import SettingsPage from "./SettingsPage";
 import * as Sentry from "@sentry/browser";
+
 import logo from "../images/new_pathwar-logo.svg";
 const ProtectedRoute = loadable(() => import("../components/ProtectedRoute"));
 
@@ -35,6 +36,7 @@ toast.configure();
 const App = () => {
   const currentTheme = useTheme();
   const { title, description } = siteMetaData;
+
   return (
     <>
       <Helmet>

@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "gatsby";
 import { css } from "@emotion/core";
-
+import { FormattedMessage } from "react-intl";
 import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
-
 import logo from "../images/new-pathwar-logo-light-blue.svg";
 import iconProfile from "../images/icon-profile.svg";
 import iconMail from "../images/icon-mail.svg";
@@ -143,15 +142,35 @@ const dropdown = css`
   }
 `;
 
+const langSwitcher = css`
+  margin-left: 1.5rem;
+
+  span {
+    cursor: pointer;
+
+    &:hover {
+      font-weight: bold;
+    }
+  }
+`;
+
 const listItems = [
-  { link: "/app/challenges", name: "Challenges" },
-  { link: "/app/missions", name: "Missions" },
-  { link: "/app/events", name: "Tournaments" },
-  { link: "/app/community", name: "Community" },
-  { link: "/blog", name: "Blog" },
+  { link: "/app/challenges", name: <FormattedMessage id="nav.challenges" /> },
+  { link: "/app/missions", name: <FormattedMessage id="nav.missions" /> },
+  { link: "/app/events", name: <FormattedMessage id="nav.events" /> },
+  { link: "/app/community", name: <FormattedMessage id="nav.community" /> },
+  { link: "/blog", name: <FormattedMessage id="nav.blog" /> },
 ];
 
 class SiteWrapper extends React.Component {
+  switchLanguage(lang) {
+    const browser = typeof window !== "undefined" && window;
+    if (browser) {
+      window.localStorage.setItem("pw.lang", lang);
+      window.location.reload();
+    }
+  }
+
   render() {
     const { userSession } = this.props;
 
@@ -172,7 +191,7 @@ class SiteWrapper extends React.Component {
           <img src={logo} className="img-responsive" />
           <ul className="headerMenu">
             {listItems.map(item => (
-              <li key={item.name}>
+              <li key={item.link}>
                 <Link className="link" to={item.link}>
                   {item.name}
                 </Link>
@@ -192,35 +211,39 @@ class SiteWrapper extends React.Component {
                     }
                     className="link"
                   >
-                    Profile
+                    <FormattedMessage id="userNav.profile" />
                   </a>
                 </li>
                 <li>
                   <img src={iconMail} className="img-responsive" />
                   <a href="#" className="link">
-                    Messages
+                    <FormattedMessage id="userNav.messages" />
                   </a>
                 </li>
                 <li>
                   <img src={iconPwn} className="img-responsive" />
                   <a href="#" className="link">
-                    Wallet
+                    <FormattedMessage id="userNav.wallet" />
                   </a>
                 </li>
                 <li>
                   <img src={iconNotifications} className="img-responsive" />
                   <a href="#" className="link">
-                    Notifications
+                    <FormattedMessage id="userNav.notifications" />
                   </a>
                 </li>
                 <li>
                   <img src={iconClose} className="img-responsive" />
                   <Link className="link" to="/app/logout">
-                    Disconnect
+                    <FormattedMessage id="userNav.disconnect" />
                   </Link>
                 </li>
               </ul>
             </div>
+          </div>
+          <div css={langSwitcher}>
+            <span onClick={() => this.switchLanguage("en")}>EN</span> •{" "}
+            <span onClick={() => this.switchLanguage("fr")}>FR</span>
           </div>
           <div className="subHeader">
             <div className="cash">

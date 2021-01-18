@@ -18,6 +18,7 @@ import ChallengeValidateForm from "../components/challenges/ChallengeValidateFor
 // import ValidationsList from "../components/challenges/ValidationsList";
 import ChallengeSolveInstances from "../components/challenges/ChallengeSolveInstances";
 import { CLEAN_CHALLENGE_DETAIL } from "../constants/actionTypes";
+import { FormattedMessage } from "react-intl";
 
 const paragraph = css`
   margin-top: 0.5rem;
@@ -98,12 +99,14 @@ const ChallengeDetailsPage = props => {
           <Grid.Col md={5} sm={12} width={12} className="text-right">
             {purchased && validations && (
               <Tag color={validationStatusColor}>
-                validated {moment(validation.created_at).calendar()}
+                <FormattedMessage id="ChallengeDetailsPage.validated" />{" "}
+                {moment(validation.created_at).calendar()}
               </Tag>
             )}
             {purchased && !validations && (
               <Tag css={statusTag}>
-                purchased {moment(subscription.created_at).calendar()}
+                <FormattedMessage id="ChallengeDetailsPage.purchased" />{" "}
+                {moment(subscription.created_at).calendar()}
               </Tag>
             )}
             {!purchased && !validations && (
@@ -112,7 +115,10 @@ const ChallengeDetailsPage = props => {
                 buyChallenge={buyChallenge}
               />
             )}
-            <p css={rewardText}>Reward: {flavor.validation_reward}</p>
+            <p css={rewardText}>
+              <FormattedMessage id="ChallengeDetailsPage.reward" />:{" "}
+              {flavor.validation_reward}
+            </p>
             {/* {subscriptions && (
                 <ChallengeCloseButton
                   challenge={challenge}
@@ -125,7 +131,9 @@ const ChallengeDetailsPage = props => {
         <Grid.Row>
           {!validations && (
             <Grid.Col width={12} sm={12} md={12}>
-              <h3>Solve challenge</h3>
+              <h3>
+                <FormattedMessage id="ChallengeDetailsPage.solve" />
+              </h3>
               <ChallengeSolveInstances
                 instances={flavor.instances}
                 purchased={purchased}

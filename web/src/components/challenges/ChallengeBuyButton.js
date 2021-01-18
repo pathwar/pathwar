@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { FormattedMessage } from "react-intl";
 import { Button } from "tabler-react";
 
 const ChallengeBuyButton = ({ challenge, buyChallenge, ...rest }) => {
@@ -20,7 +21,13 @@ const ChallengeBuyButton = ({ challenge, buyChallenge, ...rest }) => {
         onClick={handleBuyChallenge}
         {...rest}
       >
-        {hasSubscriptions ? "Purchased" : `${price || 0} Buy`}
+        {hasSubscriptions ? (
+          <FormattedMessage id="ChallengeBuyButton.buy" />
+        ) : (
+          <>
+            {price || 0} <FormattedMessage id="ChallengeBuyButton.buy" />
+          </>
+        )}
       </Button>
     </>
   );

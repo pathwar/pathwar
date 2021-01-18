@@ -2,6 +2,7 @@ import React from "react";
 import { css } from "@emotion/core";
 import { Icon } from "tabler-react";
 import { Terminal } from "react-window-ui";
+import { FormattedMessage } from "react-intl";
 
 const terminal = css`
   margin-bottom: 1rem;
@@ -23,7 +24,11 @@ const ChallengeSolveInstances = ({ instances, purchased }) => {
       boxShadow="0px 2px 15px -8px rgba(0,0,0,0.41)"
       css={terminal}
     >
-      {!purchased && <p>Purchase the challenge to get resolution links...</p>}
+      {!purchased && (
+        <p>
+          <FormattedMessage id="ChallengeSolveInstances.purchasePhrase" />
+        </p>
+      )}
       {purchased &&
         instances.map(item => {
           const isAvailable = item.status === "Available";
@@ -35,7 +40,11 @@ const ChallengeSolveInstances = ({ instances, purchased }) => {
               </a>
               <span css={statusStyle(item.status)}>
                 <Icon name={isAvailable ? "check-circle" : "x-circle"} />
-                {isAvailable ? item.status : "Available soon.."}
+                {isAvailable ? (
+                  item.status
+                ) : (
+                  <FormattedMessage id="ChallengeSolveInstances.availableSoonPhrase" />
+                )}
               </span>
             </div>
           );
