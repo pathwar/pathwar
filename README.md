@@ -33,7 +33,11 @@
 
 ## Documentation
 
-[Dev Documentation on Notion](https://www.notion.so/Dev-Documentation-2feb388e94174c328e4369d483ca26ed)
+* [Users/Players Documentation](https://www.notion.so/9ba0af64c7854f4da092162da2d87335): If you use/play Pathwar.
+* [Community Documentation](https://www.notion.so/acc1ac1427c548fdb3b72f9355d6b6e3): If you communicate with other people involved in this project.
+* [Translators Documentation](https://www.notion.so/3a7c37db637f4bfcb37aab4008063cdb): If you want to help translating the project.
+* [Developers & Contributors Documentation](https://www.notion.so/2feb388e94174c328e4369d483ca26ed): If you want to start writing code or challenges.
+* [Contact the Staff](https://www.notion.so/85dafa5c2eff4b28ab755fbb596a6f11): For anything else.
 
 ## Licensing
 
