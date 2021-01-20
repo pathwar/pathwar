@@ -33,14 +33,11 @@
 
 ## Documentation
 
-* [API](https://github.com/pathwar/pathwar/wiki/API)
-* [Challenge Maintainers](https://github.com/pathwar/pathwar/wiki/Challenge-Maintainers)
-* [CLI](https://github.com/pathwar/pathwar/wiki/CLI)
-* [Under the Hood](https://github.com/pathwar/pathwar/wiki/Under-the-Hood)
+[Dev Documentation on Notion](https://www.notion.so/Dev-Documentation-2feb388e94174c328e4369d483ca26ed)
 
 ## Licensing
 
-© 2015-2020 [Pathwar Staff](https://pathwar.land)
+© 2015-2021 [Pathwar Staff](https://pathwar.land)
 
 Licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) ([`LICENSE-APACHE`](LICENSE-APACHE)) or the [MIT license](https://opensource.org/licenses/MIT) ([`LICENSE-MIT`](LICENSE-MIT)), at your option. See the [`COPYRIGHT`](COPYRIGHT) file for more details.
 
