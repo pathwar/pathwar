@@ -16,3 +16,4 @@ test/
 vendor/
 yarn.lock
 .github/
+.git
