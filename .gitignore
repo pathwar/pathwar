@@ -13,7 +13,6 @@ out/
 .#*
 .DS_Store
 .env
-.vscode
 coverage.txt
 node_modules
 swagger.yaml.tmp
