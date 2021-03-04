@@ -1,0 +1,74 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "GO -> Debug Api Server",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/go/cmd/pathwar",
+      "cwd": "${workspaceFolder}/go",
+      "args": [
+        "api",
+        "--sso-unsafe",
+        "server",
+        "--bind=",
+        ":8001"
+      ],
+      "showLog": true
+    },
+    {
+      "name": "GO -> Debug CLI",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceFolder}/go/cmd/pathwar",
+      "cwd": "${workspaceFolder}/go",
+      "args": [
+        // add your args by hand
+      ],
+      "showLog": true
+    },
+    {
+      "name": "GO -> Debug Test",
+      "type": "go",
+      "request": "launch",
+      "mode": "test",
+      "program": "${workspaceFolder}/go/${input:pathPkg}",
+      "cwd": "${workspaceFolder}/go",
+      "args": [
+        "-test.v",
+        "-test.run",
+        "${input:testFile}"
+      ],
+      "showLog": true
+    },
+  ],
+  "inputs": [
+    {
+      "id": "pathPkg",
+      "description": "enter the path to the package that contains the tested function",
+      "type": "pickString",
+      "options": [
+        "cmd/pathwar",
+        "cmd/pwinit",
+        "pkg/errcode",
+        "pkg/pwagent",
+        "pkg/pwapi",
+        "pkg/pwcompose",
+        "pkg/pwdb",
+        "pkg/pwinit",
+        "pkg/pwsso",
+        "pkg/pwversion"
+      ]
+    },
+    {
+      "id": "testFile",
+      "description": "enter the test function name you want test",
+      "type": "promptString",
+    }
+  ]
+}
