@@ -4,14 +4,24 @@ import (
 	"testing"
 
 	"github.com/bwmarrin/snowflake"
-	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+	"moul.io/zapgorm2"
 )
 
-func TestingSqliteDB(t *testing.T, logger *zap.Logger) *gorm.DB {
+func TestingSqliteDB(t *testing.T) *gorm.DB {
 	t.Helper()
 
-	db, err := gorm.Open("sqlite3", ":memory:")
+	// logger
+	logger := zapgorm2.New(zap.L())
+	logger.SetAsDefault()
+	DefaultGormConfig.Logger = logger
+
+	// disable foreignKey
+	//DefaultGormConfig.DisableForeignKeyConstraintWhenMigrating = true
+
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &DefaultGormConfig)
 	if err != nil {
 		t.Fatalf("init in-memory sqlite server: %v", err)
 	}
@@ -21,12 +31,7 @@ func TestingSqliteDB(t *testing.T, logger *zap.Logger) *gorm.DB {
 		t.Fatalf("init snowflake generator: %v", err)
 	}
 
-	opts := Opts{
-		Logger: logger,
-		skipFK: true, // required for sqlite :(
-	}
-
-	db, err = Configure(db, sfn, opts)
+	db, err = Configure(db, sfn)
 	if err != nil {
 		t.Fatalf("init pwdb: %v", err)
 	}

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gosimple/slug"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 func (entity *Challenge) BeforeSave(db *gorm.DB) error {

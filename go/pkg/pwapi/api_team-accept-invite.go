@@ -3,7 +3,7 @@ package pwapi
 import (
 	"context"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -37,15 +37,11 @@ func (svc *service) TeamAcceptInvite(ctx context.Context, in *TeamAcceptInvite_I
 	}
 
 	// check if user already has a team in this season
-	var seasonMemberShipCount int
+	var seasonMemberShipCount int64
 	err = svc.db.
-		Model(pwdb.TeamMember{}).
-		Preload("Team").
-		Joins("JOIN team on team.id = team_member.team_id").
-		Where(pwdb.TeamMember{UserID: userID}).
-		Where(&pwdb.Team{
-			SeasonID:       teamInvite.Team.SeasonID,
-			DeletionStatus: pwdb.DeletionStatus_Active}).
+		Model(&pwdb.TeamMember{}).
+		Where(&pwdb.TeamMember{UserID: userID}).
+		Joins("JOIN team on team.id = team_member.team_id AND team.season_id = ? AND team.deletion_status = ?", teamInvite.Team.SeasonID, pwdb.DeletionStatus_Active).
 		Count(&seasonMemberShipCount).
 		Error
 	if err != nil || seasonMemberShipCount != 0 {

@@ -3,7 +3,7 @@ package pwapi
 import (
 	"context"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -39,12 +39,11 @@ func (svc *service) UserSetPreferences(ctx context.Context, in *UserSetPreferenc
 		var seasonMemberIDs []int64
 		var teamIDs []int64
 		err = svc.db.
-			Table("team_member").
-			Joins("left join team ON team.id = team_member.team_id").
-			Where("team_member.user_id = ?", userID).
-			Where("team.season_id = ?", in.ActiveSeasonID).
-			Pluck("team.id", &teamIDs).
+			Model(&pwdb.Team{}).
+			Where(&pwdb.Team{SeasonID: in.ActiveSeasonID}).
+			Joins("INNER JOIN team_member ON team.id = team_member.team_id AND team_member.user_id = ?", userID).
 			Pluck("team_member.id", &seasonMemberIDs).
+			Pluck("team.id", &teamIDs).
 			Error
 		if err != nil || len(seasonMemberIDs) > 1 {
 			return nil, errcode.ErrGetActiveSeasonMembership.Wrap(err)
@@ -64,7 +63,7 @@ func (svc *service) UserSetPreferences(ctx context.Context, in *UserSetPreferenc
 	}
 
 	err = svc.db.Transaction(func(tx *gorm.DB) error {
-		err := tx.Model(pwdb.User{}).Where("id = ?", userID).Updates(updates).Error
+		err := tx.Model(&pwdb.User{}).Where(&pwdb.User{ID: userID}).Updates(updates).Error
 		if err != nil {
 			return err
 		}
