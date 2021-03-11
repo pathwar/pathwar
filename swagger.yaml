@@ -983,6 +983,7 @@ definitions:
         format: date-time
         type: string
       nginx_url:
+        title: / non-db fields
         type: string
       redump_count:
         format: int64
@@ -1325,13 +1326,10 @@ definitions:
       members:
         items:
           $ref: '#/definitions/dbOrganizationMember'
+        title: repeated WhoswhoAttempt received_whoswho_attempts = 201;
         type: array
       name:
         type: string
-      received_whoswho_attempts:
-        items:
-          $ref: '#/definitions/dbWhoswhoAttempt'
-        type: array
       slug:
         type: string
       teams:
@@ -1537,18 +1535,9 @@ definitions:
     type: object
   dbTeamMember:
     properties:
-      achievements:
-        items:
-          $ref: '#/definitions/dbAchievement'
-        type: array
-      challenge_validations:
-        items:
-          $ref: '#/definitions/dbChallengeValidation'
-        type: array
-      coupons:
-        items:
-          $ref: '#/definitions/dbCoupon'
-        type: array
+      active_user:
+        $ref: '#/definitions/dbUser'
+        title: has one
       created_at:
         format: date-time
         type: string
@@ -1558,17 +1547,14 @@ definitions:
       items:
         items:
           $ref: '#/definitions/dbInventoryItem'
-        type: array
-      received_whoswho_attempts:
-        items:
-          $ref: '#/definitions/dbWhoswhoAttempt'
+        title: |-
+          repeated Coupon coupons = 204;
+          repeated Achievement achievements = 205;
+          repeated WhoswhoAttempt sent_whoswho_attempts = 206;
+          repeated WhoswhoAttempt received_whoswho_attempts = 207;
         type: array
       role:
         $ref: '#/definitions/dbTeamMemberRole'
-      sent_whoswho_attempts:
-        items:
-          $ref: '#/definitions/dbWhoswhoAttempt'
-        type: array
       slug:
         type: string
       team:
@@ -1583,6 +1569,7 @@ definitions:
         $ref: '#/definitions/dbUser'
       user_id:
         format: int64
+        title: belongs to
         type: string
     type: object
   dbTeamMemberRole:

@@ -1,7 +1,7 @@
 package pwapi
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
@@ -36,9 +36,9 @@ func seasonFromSeasonChallengeID(db *gorm.DB, seasonChallengeID int64) (*pwdb.Se
 }
 
 func seasonIDExists(db *gorm.DB, seasonID int64) (bool, error) {
-	var c int
+	var c int64
 	err := db.
-		Table("season").
+		Model(&pwdb.Season{}).
 		Select("id").
 		Where(&pwdb.Season{ID: seasonID}).
 		Count(&c).

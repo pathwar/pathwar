@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -165,7 +165,7 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		err = tx.
 			Model(&instances[0]).
 			Where("id IN (?)", usedInstanceIDs).
-			Update(pwdb.ChallengeInstance{Status: pwdb.ChallengeInstance_NeedRedump, InstanceConfig: []byte{}}).
+			Updates(pwdb.ChallengeInstance{Status: pwdb.ChallengeInstance_NeedRedump, InstanceConfig: []byte{}}).
 			Error
 		if err != nil {
 			return errcode.ErrAgentUpdateState.Wrap(err)

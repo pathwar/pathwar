@@ -32,7 +32,7 @@ func (svc *service) AdminChallengeRedump(ctx context.Context, in *AdminChallenge
 	err = svc.db.
 		Model(pwdb.ChallengeInstance{}).
 		Where("flavor_id IN (?)", flavorIDs).
-		Update(&pwdb.ChallengeInstance{
+		Updates(&pwdb.ChallengeInstance{
 			Status:         pwdb.ChallengeInstance_NeedRedump,
 			InstanceConfig: []byte{},
 		}).

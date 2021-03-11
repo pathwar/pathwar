@@ -42,7 +42,10 @@ func TestService_TeamSendInvite(t *testing.T) {
 		Name:     "Test1Team",
 	})
 	require.NoError(t, err)
-	err = db.Model(pwdb.Team{}).Where(&pwdb.Team{ID: ret.Team.ID}).Update(&pwdb.Team{DeletionStatus: pwdb.DeletionStatus_Anonymized}).First(&team1).Error
+	err = db.
+		First(&team1, ret.Team.ID).
+		Updates(&pwdb.Team{DeletionStatus: pwdb.DeletionStatus_Anonymized}).
+		Error
 	require.NoError(t, err)
 	ret, err = svc.TeamCreate(ctx, &TeamCreate_Input{
 		SeasonID: fmt.Sprint(seasonMap["Test1"].Season.ID),

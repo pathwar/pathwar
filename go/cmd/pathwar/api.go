@@ -10,13 +10,15 @@ import (
 	"time"
 
 	"github.com/bwmarrin/snowflake"
-	"github.com/jinzhu/gorm"
 	"github.com/oklog/run"
 	"github.com/peterbourgon/ff/v3"
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"go.uber.org/zap"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"moul.io/banner"
 	"moul.io/motd"
+	"moul.io/zapgorm2"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -156,10 +158,15 @@ func apiCommand() *ffcli.Command {
 }
 
 func svcFromFlags(logger *zap.Logger) (pwapi.Service, *gorm.DB, func(), error) {
+	// logger
+	gormLogger := zapgorm2.New(zap.L())
+	gormLogger.SetAsDefault()
+	pwdb.DefaultGormConfig.Logger = gormLogger
+
 	// init database
 	dbConnectTries := 0
 dbConnectLoop:
-	db, err := gorm.Open("mysql", DBURN)
+	db, err := gorm.Open(mysql.Open(DBURN), &pwdb.DefaultGormConfig)
 	if err != nil {
 		dbConnectTries++
 		if DBMaxOpenTries == 0 || dbConnectTries < DBMaxOpenTries {
@@ -173,10 +180,7 @@ dbConnectLoop:
 	if err != nil {
 		return nil, nil, nil, errcode.ErrInitSnowflake.Wrap(err)
 	}
-	dbOpts := pwdb.Opts{
-		Logger: logger.Named("gorm"),
-	}
-	db, err = pwdb.Configure(db, sfn, dbOpts)
+	db, err = pwdb.Configure(db, sfn)
 	if err != nil {
 		return nil, nil, nil, errcode.ErrConfigureDB.Wrap(err)
 	}
@@ -201,7 +205,12 @@ dbConnectLoop:
 		if err := svc.Close(); err != nil {
 			logger.Warn("close svc", zap.Error(err))
 		}
-		if err := db.Close(); err != nil {
+		sqlDB, err := db.DB()
+		if err != nil {
+			logger.Warn("retrieve generic database interface", zap.Error(err))
+		}
+		err = sqlDB.Close()
+		if err != nil {
 			logger.Warn("closed database", zap.Error(err))
 		}
 	}

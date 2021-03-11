@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/bwmarrin/snowflake"
-	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwsso"
 )

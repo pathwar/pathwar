@@ -1,54 +1,27 @@
 package pwdb
 
 import (
-	"github.com/jinzhu/gorm"
-	"gopkg.in/gormigrate.v1"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
-func migrate(db *gorm.DB, opts Opts) error {
-	migrateOpts := gormigrate.DefaultOptions
-	migrateOpts.UseTransaction = true
-	m := gormigrate.New(db, migrateOpts, []*gormigrate.Migration{})
-
-	// only called on fresh database
-	m.InitSchema(func(tx *gorm.DB) error {
-		tx.Set("gorm:table_options", "charset=utf8mb4")
-		err := tx.AutoMigrate(All()...).Error
-		if err != nil {
-			tx.Rollback()
-			return errcode.ErrDBAutoMigrate.Wrap(err)
-		}
-
-		if !opts.skipFK {
-			for _, fk := range ForeignKeys() {
-				e := ByName(fk[0])
-				if err := tx.Model(e).AddForeignKey(fk[1], fk[2], "RESTRICT", "RESTRICT").Error; err != nil {
-					tx.Rollback()
-					return errcode.ErrDBAddForeignKey.Wrap(err)
-				}
-			}
-		}
-
-		err = createFirstEntities(tx)
-		if err != nil {
-			return GormToErrcode(err)
-		}
-
-		return nil
-	})
-
-	// FIXME: add new migrations here...
-
-	err := m.Migrate()
-	if err != nil {
-		return errcode.ErrDBRunMigrations.Wrap(err)
-	}
-
-	// anyway, call db.automigrate
-	err = db.AutoMigrate(All()...).Error
+func migrate(db *gorm.DB) error {
+	err := db.AutoMigrate(All()...)
 	if err != nil {
 		return errcode.ErrDBAutoMigrate.Wrap(err)
+	}
+
+	// create first entities only on fresh database
+	err = db.First(&Season{}).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			err = createFirstEntities(db)
+			if err != nil {
+				return GormToErrcode(err)
+			}
+		} else {
+			return GormToErrcode(err)
+		}
 	}
 
 	return nil

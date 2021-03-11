@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -53,14 +53,11 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 	}
 
 	// check if user already has a team in this season
-	var seasonMemberShipCount int
+	var seasonMemberShipCount int64
 	err = svc.db.
-		Model(pwdb.TeamMember{}).
-		Joins("JOIN team on team.id = team_member.team_id").
-		Where(pwdb.TeamMember{UserID: userID}).
-		Where(&pwdb.Team{
-			SeasonID:       seasonID,
-			DeletionStatus: pwdb.DeletionStatus_Active}).
+		Model(&pwdb.TeamMember{}).
+		Where(&pwdb.TeamMember{UserID: userID}).
+		Joins("JOIN team on team.id = team_member.team_id AND team.season_id = ? AND team.deletion_status = ?", seasonID, pwdb.DeletionStatus_Active).
 		Count(&seasonMemberShipCount).
 		Error
 	if err != nil || seasonMemberShipCount != 0 {
@@ -74,8 +71,10 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 		}
 
 		// check for existing organization with that name
-		var count int
-		err = svc.db.Model(pwdb.Organization{}).Where(pwdb.Organization{Name: in.Name}).Count(&count).Error
+		var count int64
+		err = svc.db.Model(&pwdb.Organization{}).
+			Where(&pwdb.Organization{Name: in.Name}).
+			Count(&count).Error
 		if err != nil || count != 0 {
 			return nil, errcode.ErrCheckOrganizationUniqueName.Wrap(err)
 		}
@@ -102,10 +101,10 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 	}
 
 	// check that user is member of the organization
-	var memberCount int
+	var memberCount int64
 	err = svc.db.
-		Model(pwdb.OrganizationMember{}).
-		Where(pwdb.OrganizationMember{
+		Model(&pwdb.OrganizationMember{}).
+		Where(&pwdb.OrganizationMember{
 			UserID:         userID,
 			OrganizationID: organizationID,
 		}).
@@ -116,13 +115,13 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 	}
 
 	// check if there is already a team for this organization and season couple
-	var count int
+	var count int64
 	existingTeam := pwdb.Team{
 		SeasonID:       seasonID,
 		OrganizationID: organizationID,
 		DeletionStatus: pwdb.DeletionStatus_Active,
 	}
-	err = svc.db.Model(pwdb.Team{}).Where(existingTeam).Count(&count).Error
+	err = svc.db.Model(&pwdb.Team{}).Where(&existingTeam).Count(&count).Error
 	if err != nil || count != 0 {
 		return nil, errcode.ErrOrganizationAlreadyHasTeamForSeason.Wrap(err)
 	}

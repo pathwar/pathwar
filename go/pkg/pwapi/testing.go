@@ -19,7 +19,7 @@ func TestingService(t *testing.T, opts ServiceOpts) (Service, func()) {
 		opts.Logger = zap.NewNop()
 	}
 
-	db := pwdb.TestingSqliteDB(t, opts.Logger)
+	db := pwdb.TestingSqliteDB(t)
 	sso := pwsso.TestingSSO(t, opts.Logger)
 
 	api, err := NewService(db, sso, opts)
@@ -29,7 +29,8 @@ func TestingService(t *testing.T, opts ServiceOpts) (Service, func()) {
 
 	cleanup := func() {
 		api.Close()
-		db.Close()
+		sqlDB, _ := db.DB()
+		sqlDB.Close()
 	}
 
 	return api, cleanup

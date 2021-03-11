@@ -27,7 +27,7 @@ require (
 	github.com/gosimple/slug v1.9.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.0
 	github.com/grpc-ecosystem/grpc-gateway v1.14.5
-	github.com/jinzhu/gorm v1.9.12
+	github.com/jinzhu/gorm v1.9.16
 	github.com/karrick/godirwalk v1.15.6 // indirect
 	github.com/keycloak/kcinit v0.0.0-20181010192927-f85c3c5390ea
 	github.com/martinlindhe/base36 v1.0.0
@@ -58,9 +58,11 @@ require (
 	google.golang.org/appengine v1.6.6 // indirect
 	google.golang.org/genproto v0.0.0-20190927181202-20e1ac93f88c
 	google.golang.org/grpc v1.28.0-pre
-	gopkg.in/gormigrate.v1 v1.6.0
 	gopkg.in/yaml.v2 v2.3.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+	gorm.io/driver/mysql v1.0.5
+	gorm.io/driver/sqlite v1.1.4
+	gorm.io/gorm v1.21.3
 	moul.io/banner v1.0.1
 	moul.io/godev v1.6.0
 	moul.io/motd v1.0.0
@@ -68,7 +70,7 @@ require (
 	moul.io/srand v1.4.0
 	moul.io/u v1.23.0
 	moul.io/zapconfig v1.4.0
-	moul.io/zapgorm v1.0.0
+	moul.io/zapgorm2 v1.0.2
 )
 
 replace (

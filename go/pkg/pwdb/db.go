@@ -1,41 +1,60 @@
 package pwdb
 
 import (
+	"log"
+	"reflect"
+	"strings"
+
 	"github.com/bwmarrin/snowflake"
-	"github.com/jinzhu/gorm"
-	"go.uber.org/zap"
-	"moul.io/zapgorm"
+	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
-type Opts struct {
-	Logger *zap.Logger
-
-	// internal
-	skipFK bool
+// DefaultGormConfig that fits on both prod and test
+var DefaultGormConfig = gorm.Config{
+	NamingStrategy: schema.NamingStrategy{
+		SingularTable: true,
+	},
 }
 
-func Configure(db *gorm.DB, sfn *snowflake.Node, opts Opts) (*gorm.DB, error) {
-	db.SetLogger(zapgorm.New(opts.Logger))
-	// db.Callback().Create().Remove("gorm:update_time_stamp")
-	// db.Callback().Update().Remove("gorm:update_time_stamp")
-	db.Callback().Create().Before("gorm:create").Register("pathwar_before_create", beforeCreate(sfn))
-	db = db.Set("gorm:auto_preload", false)
-	db = db.Set("gorm:association_autoupdate", false)
-	db.BlockGlobalUpdate(true)
-	db.SingularTable(true)
-	db.LogMode(true)
-	if err := migrate(db, opts); err != nil {
+func Configure(db *gorm.DB, sfn *snowflake.Node) (*gorm.DB, error) {
+	err := db.Callback().Create().Before("gorm:create").Register("snowflake_id:before_create", snowFlakeIDS(sfn))
+	if err != nil {
+		return nil, errcode.ErrDBAddCallback.Wrap(err)
+	}
+	if err := migrate(db); err != nil {
 		return nil, errcode.ErrDBRunMigrations.Wrap(err)
 	}
 	return db, nil
 }
 
-func beforeCreate(sfn *snowflake.Node) func(*gorm.Scope) {
-	return func(scope *gorm.Scope) {
-		id := sfn.Generate().Int64()
-		if err := scope.SetColumn("ID", id); err != nil {
-			panic(err)
+func snowFlakeIDS(sfn *snowflake.Node) func(db *gorm.DB) {
+	return func(db *gorm.DB) {
+		if db.Statement.Schema != nil {
+			for _, field := range db.Statement.Schema.PrimaryFields {
+				// ensure that it's an ID
+				if field.DataType == schema.Int && strings.Contains(field.Name, "ID") {
+					switch db.Statement.ReflectValue.Kind() {
+					case reflect.Slice, reflect.Array:
+						for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
+							if _, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); isZero {
+								err := field.Set(db.Statement.ReflectValue.Index(i), sfn.Generate().Int64())
+								if err != nil {
+									log.Println(errcode.ErrDBSetSnowflakeID.Wrap(err))
+								}
+							}
+						}
+					case reflect.Struct:
+						if _, isZero := field.ValueOf(db.Statement.ReflectValue); isZero {
+							err := field.Set(db.Statement.ReflectValue, sfn.Generate().Int64())
+							if err != nil {
+								log.Println(errcode.ErrDBSetSnowflakeID.Wrap(err))
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

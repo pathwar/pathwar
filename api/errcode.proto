@@ -41,6 +41,8 @@ enum ErrCode {
   ErrDBConnect = 2005;
   ErrDBAutoMigrate = 2006;
   ErrDBAddForeignKey = 2007;
+  ErrDBAddCallback = 2008;
+  ErrDBSetSnowflakeID = 2009;
 
   //// Pathwar Compose (starting at 3001)
 
