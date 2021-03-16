@@ -11,13 +11,6 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
-// DefaultGormConfig that fits on both prod and test
-var DefaultGormConfig = gorm.Config{
-	NamingStrategy: schema.NamingStrategy{
-		SingularTable: true,
-	},
-}
-
 func Configure(db *gorm.DB, sfn *snowflake.Node) (*gorm.DB, error) {
 	err := db.Callback().Create().Before("gorm:create").Register("snowflake_id:before_create", snowFlakeIDS(sfn))
 	if err != nil {

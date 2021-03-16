@@ -7,6 +7,7 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 	"moul.io/zapgorm2"
 )
 
@@ -16,12 +17,16 @@ func TestingSqliteDB(t *testing.T) *gorm.DB {
 	// logger
 	logger := zapgorm2.New(zap.L())
 	logger.SetAsDefault()
-	DefaultGormConfig.Logger = logger
 
-	// disable foreignKey
-	//DefaultGormConfig.DisableForeignKeyConstraintWhenMigrating = true
+	gormConfig := gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: true,
+		},
+		Logger: logger,
+		//DefaultGormConfig.DisableForeignKeyConstraintWhenMigrating = true
+	}
 
-	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &DefaultGormConfig)
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gormConfig)
 	if err != nil {
 		t.Fatalf("init in-memory sqlite server: %v", err)
 	}

@@ -16,6 +16,7 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 	"moul.io/banner"
 	"moul.io/motd"
 	"moul.io/zapgorm2"
@@ -159,14 +160,20 @@ func apiCommand() *ffcli.Command {
 
 func svcFromFlags(logger *zap.Logger) (pwapi.Service, *gorm.DB, func(), error) {
 	// logger
-	gormLogger := zapgorm2.New(zap.L())
-	gormLogger.SetAsDefault()
-	pwdb.DefaultGormConfig.Logger = gormLogger
+	zapGormLogger := zapgorm2.New(zap.L())
+	zapGormLogger.SetAsDefault()
+
+	gormConfig := gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: true,
+		},
+		Logger: zapGormLogger,
+	}
 
 	// init database
 	dbConnectTries := 0
 dbConnectLoop:
-	db, err := gorm.Open(mysql.Open(DBURN), &pwdb.DefaultGormConfig)
+	db, err := gorm.Open(mysql.Open(DBURN), &gormConfig)
 	if err != nil {
 		dbConnectTries++
 		if DBMaxOpenTries == 0 || dbConnectTries < DBMaxOpenTries {
