@@ -8,21 +8,15 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"moul.io/zapgorm2"
 )
 
-func TestingSqliteDB(t *testing.T) *gorm.DB {
+func TestingSqliteDB(t *testing.T, logger *zap.Logger) *gorm.DB {
 	t.Helper()
-
-	// logger
-	logger := zapgorm2.New(zap.L())
-	logger.SetAsDefault()
 
 	gormConfig := gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
-		Logger: logger,
 		//DefaultGormConfig.DisableForeignKeyConstraintWhenMigrating = true
 	}
 

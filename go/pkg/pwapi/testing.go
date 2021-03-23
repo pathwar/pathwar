@@ -19,7 +19,7 @@ func TestingService(t *testing.T, opts ServiceOpts) (Service, func()) {
 		opts.Logger = zap.NewNop()
 	}
 
-	db := pwdb.TestingSqliteDB(t)
+	db := pwdb.TestingSqliteDB(t, opts.Logger)
 	sso := pwsso.TestingSSO(t, opts.Logger)
 
 	api, err := NewService(db, sso, opts)

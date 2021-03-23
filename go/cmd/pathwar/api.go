@@ -16,6 +16,7 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	gormlogger "gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 	"moul.io/banner"
 	"moul.io/motd"
@@ -160,8 +161,7 @@ func apiCommand() *ffcli.Command {
 
 func svcFromFlags(logger *zap.Logger) (pwapi.Service, *gorm.DB, func(), error) {
 	// logger
-	zapGormLogger := zapgorm2.New(zap.L())
-	zapGormLogger.SetAsDefault()
+	zapGormLogger := zapgorm2.New(logger.Named("gorm")).LogMode(gormlogger.Info)
 
 	gormConfig := gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
