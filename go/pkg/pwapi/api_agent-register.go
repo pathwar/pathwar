@@ -2,9 +2,11 @@ package pwapi
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"time"
 
+	"github.com/jinzhu/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -26,7 +28,7 @@ func (svc *service) AgentRegister(ctx context.Context, in *AgentRegister_Input) 
 		Where(pwdb.Agent{Name: in.Name}).
 		First(&agent).
 		Error
-	if err != nil && !pwdb.IsRecordNotFoundError(err) {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, errcode.ErrGetAgent.Wrap(err)
 	}
 

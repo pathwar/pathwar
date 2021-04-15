@@ -3,6 +3,7 @@ package pwapi
 import (
 	"context"
 	"crypto/md5"
+	"errors"
 	"fmt"
 	"math/rand"
 	"strings"
@@ -28,12 +29,12 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 
 	// try loading it from database
 	output.User, err = svc.loadOAuthUser(output.Claims.ActionToken.Sub)
-	if err != nil && !pwdb.IsRecordNotFoundError(err) {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound)  {
 		return nil, errcode.ErrGetOAuthUser.Wrap(err)
 	}
 
 	// new user
-	if pwdb.IsRecordNotFoundError(err) {
+	if errors.Is(err, gorm.ErrRecordNotFound)  {
 		output.IsNewUser = true
 		if _, err = svc.newUserFromClaims(output.Claims); err != nil {
 			return nil, errcode.ErrNewUserFromClaims.Wrap(err)

@@ -7,13 +7,8 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
-func IsRecordNotFoundError(err error) bool {
-	return gorm.IsRecordNotFoundError(err) ||
-		gorm.IsRecordNotFoundError(errors.Unwrap(err))
-}
-
 func GormToErrcode(err error) error {
-	if IsRecordNotFoundError(err) {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return errcode.ErrDBNotFound.Wrap(err)
 	}
 
