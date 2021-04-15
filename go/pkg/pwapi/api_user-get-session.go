@@ -29,12 +29,12 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 
 	// try loading it from database
 	output.User, err = svc.loadOAuthUser(output.Claims.ActionToken.Sub)
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound)  {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, errcode.ErrGetOAuthUser.Wrap(err)
 	}
 
 	// new user
-	if errors.Is(err, gorm.ErrRecordNotFound)  {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		output.IsNewUser = true
 		if _, err = svc.newUserFromClaims(output.Claims); err != nil {
 			return nil, errcode.ErrNewUserFromClaims.Wrap(err)
