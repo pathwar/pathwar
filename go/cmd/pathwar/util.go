@@ -13,7 +13,7 @@ import (
 	"github.com/Bearer/bearer-go"
 	"github.com/getsentry/sentry-go"
 	_ "github.com/go-sql-driver/mysql" // required by gorm
-	opentracing "github.com/opentracing/opentracing-go"
+	"github.com/opentracing/opentracing-go"
 	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
 	"github.com/openzipkin/zipkin-go"
 	"github.com/openzipkin/zipkin-go/model"
@@ -53,6 +53,8 @@ var (
 	globalSentryDSN string
 	httpAPIAddr     string
 	zipkinEndpoint  string
+
+	pathwarPath = "/tmp/pathwar/"
 )
 
 func ssoFromFlags() (pwsso.Client, error) {
@@ -115,6 +117,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		},
 	}
 
+	ssoOpts.TokenFile = pathwarPath + ssoOpts.TokenFile
 	if _, err := os.Stat(ssoOpts.TokenFile); err != nil {
 		url := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
 		fmt.Printf("Visit the URL for the auth dialog: %v\n\nthen, write the code in the terminal.\n\n", url)
@@ -129,6 +132,11 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		}
 
 		jsonText, err := json.Marshal(tok)
+		if err != nil {
+			return nil, err
+		}
+
+		err = os.Mkdir(pathwarPath, 0777)
 		if err != nil {
 			return nil, err
 		}
