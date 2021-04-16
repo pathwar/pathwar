@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"os/user"
 	"time"
 
 	"github.com/Bearer/bearer-go"
@@ -53,8 +54,6 @@ var (
 	globalSentryDSN string
 	httpAPIAddr     string
 	zipkinEndpoint  string
-
-	pathwarPath = "/tmp/pathwar/"
 )
 
 func ssoFromFlags() (pwsso.Client, error) {
@@ -116,6 +115,14 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 			TokenURL: pwsso.KeycloakBaseURL + "/auth/realms/" + ssoOpts.Realm + "/protocol/openid-connect/token",
 		},
 	}
+
+	// take current user Home Directory
+	u, err := user.Current()
+	if err != nil {
+		return nil, err
+	}
+
+	pathwarPath := u.HomeDir + "/pathwar/"
 
 	ssoOpts.TokenFile = pathwarPath + ssoOpts.TokenFile
 	if _, err := os.Stat(ssoOpts.TokenFile); err != nil {
