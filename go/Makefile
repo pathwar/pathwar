@@ -14,7 +14,7 @@ PRE_BUILD_STEPS += generate
 PRE_LINT_STEPsS += generate
 PRE_TIDY_STEPS += generate
 PRE_BUMPDEPS_STEPS += generate
-#PRE_INSTALL_STEPS += ./out/pwinit-linux-amd64
+PRE_INSTALL_STEPS += ./out/pwinit-linux-amd64
 
 DEV_BIND ?= :8001
 AGENT_NGINX_PORT ?= 8002
