@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"os/user"
+	"path"
 	"time"
 
 	"github.com/Bearer/bearer-go"
@@ -54,6 +55,7 @@ var (
 	globalSentryDSN string
 	httpAPIAddr     string
 	zipkinEndpoint  string
+	tokenDir        string
 )
 
 func ssoFromFlags() (pwsso.Client, error) {
@@ -116,15 +118,18 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		},
 	}
 
-	// take current user Home Directory
-	u, err := user.Current()
-	if err != nil {
-		return nil, err
+	if tokenDir != "" {
+		ssoOpts.TokenFile = tokenDir
+	} else {
+		// take current user Home Directory
+		u, err := user.Current()
+		if err != nil {
+			return nil, err
+		}
+
+		tokenDir = u.HomeDir
+		ssoOpts.TokenFile = path.Join(tokenDir, ssoOpts.TokenFile)
 	}
-
-	pathwarPath := u.HomeDir + "/pathwar/"
-
-	ssoOpts.TokenFile = pathwarPath + ssoOpts.TokenFile
 	if _, err := os.Stat(ssoOpts.TokenFile); err != nil {
 		url := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
 		fmt.Printf("Visit the URL for the auth dialog: %v\n\nthen, write the code in the terminal.\n\n", url)
@@ -143,7 +148,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 			return nil, err
 		}
 
-		err = os.Mkdir(pathwarPath, 0777)
+		err = os.MkdirAll(tokenDir, 0755)
 		if err != nil {
 			return nil, err
 		}
