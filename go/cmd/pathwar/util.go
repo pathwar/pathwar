@@ -119,7 +119,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 	}
 
 	if tokenDir != "" {
-		ssoOpts.TokenFile = tokenDir
+		ssoOpts.TokenFile = path.Join(tokenDir, ssoOpts.TokenFile)
 	} else {
 		// take current user Home Directory
 		u, err := user.Current()
