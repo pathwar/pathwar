@@ -5,7 +5,7 @@ import (
 	"encoding/pem"
 	"fmt"
 
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go"
 	"go.uber.org/zap"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
@@ -30,7 +30,7 @@ func NewOpts() Opts {
 		Realm:        testingRealm,
 		ClientID:     testingClientID,
 		ClientSecret: "",
-		TokenFile:    "pathwar_oauth_token.json",
+		TokenFile:    "default-user-token.json",
 		AllowUnsafe:  false,
 		Logger:       zap.NewNop(),
 	}

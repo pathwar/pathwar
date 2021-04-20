@@ -4,6 +4,7 @@ require (
 	cloud.google.com/go v0.37.4 // indirect
 	github.com/Bearer/bearer-go v1.2.1
 	github.com/Microsoft/go-winio v0.4.14 // indirect
+	github.com/adrg/xdg v0.3.3 // indirect
 	github.com/alessio/shellescape v1.2.2
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/bwmarrin/snowflake v0.3.0
@@ -45,7 +46,7 @@ require (
 	github.com/rs/cors v1.7.0
 	github.com/sirupsen/logrus v1.6.0 // indirect
 	github.com/soheilhy/cmux v0.1.4
-	github.com/stretchr/testify v1.6.1
+	github.com/stretchr/testify v1.7.0
 	github.com/treastech/logger v0.0.0-20180705232552-e381e9ecf2e3
 	go.uber.org/multierr v1.6.0
 	go.uber.org/zap v1.16.0

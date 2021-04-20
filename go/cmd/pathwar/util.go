@@ -8,11 +8,11 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"os/user"
-	"path"
+	"path/filepath"
 	"time"
 
 	"github.com/Bearer/bearer-go"
+	"github.com/adrg/xdg"
 	"github.com/getsentry/sentry-go"
 	_ "github.com/go-sql-driver/mysql" // required by gorm
 	"github.com/opentracing/opentracing-go"
@@ -118,15 +118,12 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		},
 	}
 
-	if tokenDir == "" {
-		// take current user Home Directory
-		u, err := user.Current()
-		if err != nil {
-			return nil, err
-		}
-		tokenDir = u.HomeDir
+	dir, file := filepath.Split(ssoOpts.TokenFile)
+	if dir == "" {
+		dir = filepath.Join(xdg.ConfigHome, ".pathwar")
 	}
-	ssoOpts.TokenFile = path.Join(tokenDir, ssoOpts.TokenFile)
+
+	ssoOpts.TokenFile = filepath.Join(dir, file)
 
 	if _, err := os.Stat(ssoOpts.TokenFile); err != nil {
 		url := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
@@ -146,7 +143,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 			return nil, err
 		}
 
-		err = os.MkdirAll(tokenDir, 0755)
+		err = os.MkdirAll(dir, 0755)
 		if err != nil {
 			return nil, err
 		}
