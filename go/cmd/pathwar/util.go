@@ -55,7 +55,6 @@ var (
 	globalSentryDSN string
 	httpAPIAddr     string
 	zipkinEndpoint  string
-	tokenDir        string
 )
 
 func ssoFromFlags() (pwsso.Client, error) {
