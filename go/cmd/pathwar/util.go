@@ -119,7 +119,12 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 
 	dir, file := filepath.Split(ssoOpts.TokenFile)
 	if dir == "" {
-		dir = filepath.Join(xdg.ConfigHome, ".pathwar")
+		dir = filepath.Join(xdg.ConfigHome, "pathwar")
+	}
+
+	err := os.MkdirAll(dir, 0755)
+	if err != nil {
+		return nil, err
 	}
 
 	ssoOpts.TokenFile = filepath.Join(dir, file)
@@ -138,11 +143,6 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		}
 
 		jsonText, err := json.Marshal(tok)
-		if err != nil {
-			return nil, err
-		}
-
-		err = os.MkdirAll(dir, 0755)
 		if err != nil {
 			return nil, err
 		}
