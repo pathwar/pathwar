@@ -4,7 +4,7 @@ require (
 	cloud.google.com/go v0.37.4 // indirect
 	github.com/Bearer/bearer-go v1.2.1
 	github.com/Microsoft/go-winio v0.4.14 // indirect
-	github.com/adrg/xdg v0.3.3 // indirect
+	github.com/adrg/xdg v0.3.3
 	github.com/alessio/shellescape v1.2.2
 	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/bwmarrin/snowflake v0.3.0
