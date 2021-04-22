@@ -30,7 +30,7 @@ func NewOpts() Opts {
 		Realm:        testingRealm,
 		ClientID:     testingClientID,
 		ClientSecret: "",
-		TokenFile:    "default.json",
+		TokenFile:    "default",
 		AllowUnsafe:  false,
 		Logger:       zap.NewNop(),
 	}

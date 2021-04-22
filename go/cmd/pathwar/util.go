@@ -119,17 +119,17 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 
 	dir, file := filepath.Split(ssoOpts.TokenFile)
 	if dir == "" {
-		dir = filepath.Join(xdg.ConfigHome, "pathwar")
-	}
-
-	err := os.MkdirAll(dir, 0755)
-	if err != nil {
-		return nil, err
+		dir = filepath.Join(xdg.ConfigHome, "pathwar", "tokens")
 	}
 
 	ssoOpts.TokenFile = filepath.Join(dir, file)
 
 	if _, err := os.Stat(ssoOpts.TokenFile); err != nil {
+		err := os.MkdirAll(dir, 0755)
+		if err != nil {
+			return nil, err
+		}
+
 		url := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
 		fmt.Printf("Visit the URL for the auth dialog: %v\n\nthen, write the code in the terminal.\n\n", url)
 		var code string
