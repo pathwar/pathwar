@@ -8,12 +8,14 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/Bearer/bearer-go"
+	"github.com/adrg/xdg"
 	"github.com/getsentry/sentry-go"
 	_ "github.com/go-sql-driver/mysql" // required by gorm
-	opentracing "github.com/opentracing/opentracing-go"
+	"github.com/opentracing/opentracing-go"
 	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
 	"github.com/openzipkin/zipkin-go"
 	"github.com/openzipkin/zipkin-go/model"
@@ -115,7 +117,19 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		},
 	}
 
+	dir, file := filepath.Split(ssoOpts.TokenFile)
+	if dir == "" {
+		dir = filepath.Join(xdg.ConfigHome, "pathwar", "tokens")
+	}
+
+	ssoOpts.TokenFile = filepath.Join(dir, file)
+
 	if _, err := os.Stat(ssoOpts.TokenFile); err != nil {
+		err := os.MkdirAll(dir, 0755)
+		if err != nil {
+			return nil, err
+		}
+
 		url := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
 		fmt.Printf("Visit the URL for the auth dialog: %v\n\nthen, write the code in the terminal.\n\n", url)
 		var code string
