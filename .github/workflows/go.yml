@@ -28,12 +28,15 @@ on:
 jobs:
   golangci-lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        golangci_lint: [v1.38]
     steps:
       - uses: actions/checkout@v2
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v2.5.2
         with:
-          version: v1.38
+          version: ${{ matrix.golangci_lint }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           args: --timeout=2m
           only-new-issues: false
