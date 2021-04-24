@@ -6,8 +6,8 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/peterbourgon/ff"
-	"github.com/peterbourgon/ff/ffcli"
+	"github.com/peterbourgon/ff/v3"
+	"github.com/peterbourgon/ff/v3/ffcli"
 	"moul.io/godev"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
@@ -21,23 +21,22 @@ func rawclientCommand() *ffcli.Command {
 	rawclientFlags.StringVar(&ssoOpts.TokenFile, "sso-token-file", ssoOpts.TokenFile, "Token file")
 
 	return &ffcli.Command{
-		Name:      "rawclient",
-		Usage:     "pathwar [global flags] rawclient [rawclient flags] <method> <path> [INPUT (json)]",
-		ShortHelp: "make API calls",
+		Name:       "rawclient",
+		ShortUsage: "pathwar [global flags] rawclient [rawclient flags] <method> <path> [INPUT (json)]",
+		ShortHelp:  "make API calls",
 		LongHelp: `EXAMPLES
   pathwar rawclient GET /user/session
   season=$(pathwar rawclient GET /user/session | jq -r '.seasons[0].season.id')
   pathwar rawclient GET "/season-challenges?season_id=$season"`,
 		FlagSet: rawclientFlags,
 		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec: func(args []string) error {
+		Exec: func(ctx context.Context, args []string) error {
 			if len(args) < 2 || len(args) > 3 {
 				return flag.ErrHelp
 			}
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)

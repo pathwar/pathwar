@@ -7,8 +7,8 @@ import (
 	"os"
 
 	"github.com/docker/docker/client"
-	"github.com/peterbourgon/ff"
-	"github.com/peterbourgon/ff/ffcli"
+	"github.com/peterbourgon/ff/v3"
+	"github.com/peterbourgon/ff/v3/ffcli"
 	"moul.io/banner"
 	"moul.io/motd"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
@@ -37,16 +37,16 @@ func agentCommand() *ffcli.Command {
 	agentFlags.StringVar(&agentOpts.AuthSalt, "salt", agentOpts.AuthSalt, "salt used to generate secure hashes (random if empty)")
 
 	return &ffcli.Command{
-		Name:      "agent",
-		Usage:     "pathwar [global flags] agent [agent flags] <subcommand> [flags] [args...]",
-		ShortHelp: "manage an agent node (multiple challenges)",
-		FlagSet:   agentFlags,
-		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
+		Name:       "agent",
+		ShortUsage: "pathwar [global flags] agent [agent flags] <subcommand> [flags] [args...]",
+		ShortHelp:  "manage an agent node (multiple challenges)",
+		FlagSet:    agentFlags,
+		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
 		Subcommands: []*ffcli.Command{
 			{
 				Name:      "pwinit.bin",
 				ShortHelp: "dump pwinit binary to stdout",
-				Exec: func(args []string) error {
+				Exec: func(ctx context.Context, args []string) error {
 					b, err := pwinit.Binary()
 					if err != nil {
 						return err
@@ -56,7 +56,7 @@ func agentCommand() *ffcli.Command {
 				},
 			},
 		},
-		Exec: func(args []string) error {
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
@@ -70,7 +70,6 @@ func agentCommand() *ffcli.Command {
 			}
 			defer cleanup()
 
-			ctx := context.Background()
 			dockerCli, err := client.NewEnvClient()
 			if err != nil {
 				return errcode.ErrInitDockerClient.Wrap(err)

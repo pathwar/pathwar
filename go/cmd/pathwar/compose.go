@@ -12,8 +12,8 @@ import (
 
 	"github.com/alessio/shellescape"
 	"github.com/docker/docker/client"
-	"github.com/peterbourgon/ff"
-	"github.com/peterbourgon/ff/ffcli"
+	"github.com/peterbourgon/ff/v3"
+	"github.com/peterbourgon/ff/v3/ffcli"
 	"gopkg.in/yaml.v2"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwcompose"
@@ -22,8 +22,8 @@ import (
 func composeCommand() *ffcli.Command {
 	var composeFlags = flag.NewFlagSet("compose", flag.ExitOnError)
 	return &ffcli.Command{
-		Name:  "compose",
-		Usage: "pathwar [global flags] compose [compose flags] <subcommand> [flags] [args...]",
+		Name:       "compose",
+		ShortUsage: "pathwar [global flags] compose [compose flags] <subcommand> [flags] [args...]",
 		Subcommands: []*ffcli.Command{
 			composeUpCommand(),
 			composePrepareCommand(),
@@ -34,7 +34,7 @@ func composeCommand() *ffcli.Command {
 		ShortHelp: "manage a challenge",
 		FlagSet:   composeFlags,
 		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec:      func([]string) error { return flag.ErrHelp },
+		Exec:      func(ctx context.Context, args []string) error { return flag.ErrHelp },
 	}
 }
 
@@ -46,11 +46,11 @@ func composeUpCommand() *ffcli.Command {
 	composeUpFlags.StringVar(&composeUpOpts.InstanceKey, "instance-key", composeUpOpts.InstanceKey, "instance key used to generate instance ID")
 	composeUpFlags.BoolVar(&composeUpOpts.ForceRecreate, "force-recreate", composeUpOpts.ForceRecreate, "down previously created instances of challenge")
 	return &ffcli.Command{
-		Name:    "up",
-		Usage:   "pathwar [global flags] compose [compose flags] up [flags] PATH",
-		FlagSet: composeUpFlags,
-		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec: func(args []string) error {
+		Name:       "up",
+		ShortUsage: "pathwar [global flags] compose [compose flags] up [flags] PATH",
+		FlagSet:    composeUpFlags,
+		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
+		Exec: func(ctx context.Context, args []string) error {
 			if len(args) != 1 {
 				return flag.ErrHelp
 			}
@@ -70,7 +70,6 @@ func composeUpCommand() *ffcli.Command {
 				return err
 			}
 
-			ctx := context.Background()
 			cli, err := client.NewEnvClient()
 			if err != nil {
 				return errcode.ErrInitDockerClient.Wrap(err)
@@ -102,11 +101,11 @@ func composePrepareCommand() *ffcli.Command {
 	composePrepareFlags.StringVar(&composePrepareOpts.Version, "version", composePrepareOpts.Version, "challenge version")
 	composePrepareFlags.BoolVar(&composePrepareOpts.JSON, "json", composePrepareOpts.JSON, "JSON format")
 	return &ffcli.Command{
-		Name:    "prepare",
-		Usage:   "pathwar [global flags] compose [compose flags] prepare [flags] PATH",
-		FlagSet: composePrepareFlags,
-		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec: func(args []string) error {
+		Name:       "prepare",
+		ShortUsage: "pathwar [global flags] compose [compose flags] prepare [flags] PATH",
+		FlagSet:    composePrepareFlags,
+		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
+		Exec: func(ctx context.Context, args []string) error {
 			if len(args) != 1 {
 				return flag.ErrHelp
 			}
@@ -129,17 +128,16 @@ func composePsCommand() *ffcli.Command {
 	var composePSFlags = flag.NewFlagSet("compose ps", flag.ExitOnError)
 	composePSFlags.IntVar(&composePSDepth, "depth", 0, "depth to display")
 	return &ffcli.Command{
-		Name:    "ps",
-		Usage:   "pathwar [global flags] compose [compose flags] ps [flags]",
-		FlagSet: composePSFlags,
-		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec: func(args []string) error {
+		Name:       "ps",
+		ShortUsage: "pathwar [global flags] compose [compose flags] ps [flags]",
+		FlagSet:    composePSFlags,
+		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
+		Exec: func(ctx context.Context, args []string) error {
 			err := globalPreRun()
 			if err != nil {
 				return err
 			}
 
-			ctx := context.Background()
 			cli, err := client.NewEnvClient()
 			if err != nil {
 				return errcode.ErrInitDockerClient.Wrap(err)
@@ -159,16 +157,15 @@ func composeDownCommand() *ffcli.Command {
 	composeDownFlags.BoolVar(&composeCleanOpts.RemoveImages, "rm-images", composeCleanOpts.RemoveImages, "remove images as well")
 	composeDownFlags.BoolVar(&composeCleanOpts.RemoveNginx, "rm-nginx", composeCleanOpts.RemoveNginx, "down nginx container and proxy network as well")
 	return &ffcli.Command{
-		Name:    "down",
-		Usage:   "pathwar [global flags] compose [compose flags] down [flags] ID [ID...]",
-		FlagSet: composeDownFlags,
-		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec: func(args []string) error {
+		Name:       "down",
+		ShortUsage: "pathwar [global flags] compose [compose flags] down [flags] ID [ID...]",
+		FlagSet:    composeDownFlags,
+		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
 
-			ctx := context.Background()
 			cli, err := client.NewEnvClient()
 			if err != nil {
 				return errcode.ErrInitDockerClient.Wrap(err)
@@ -188,11 +185,11 @@ func composeRegisterCommand() *ffcli.Command {
 	)
 	composeRegisterFlags.BoolVar(&registerPrint, "print", false, "print pathwar commands (pipe-friendly)")
 	return &ffcli.Command{
-		Name:    "register",
-		Usage:   "pathwar [global flags] compose [compose flags] register [flags] path/to/pathwar-compose.yml",
-		FlagSet: composeRegisterFlags,
-		Options: []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec: func(args []string) error {
+		Name:       "register",
+		ShortUsage: "pathwar [global flags] compose [compose flags] register [flags] path/to/pathwar-compose.yml",
+		FlagSet:    composeRegisterFlags,
+		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
+		Exec: func(ctx context.Context, args []string) error {
 			if len(args) != 1 {
 				return flag.ErrHelp
 			}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"flag"
@@ -12,7 +13,7 @@ import (
 	"strconv"
 	"syscall"
 
-	"github.com/peterbourgon/ff/ffcli"
+	"github.com/peterbourgon/ff/v3/ffcli"
 	"moul.io/banner"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwinit"
@@ -22,9 +23,9 @@ func main() {
 	log.SetFlags(0)
 
 	entrypoint := &ffcli.Command{
-		Name:  "entrypoint",
-		Usage: "pwinit entrypoint [args...]",
-		Exec: func(args []string) error {
+		Name:       "entrypoint",
+		ShortUsage: "pwinit entrypoint [args...]",
+		Exec: func(ctx context.Context, args []string) error {
 			// FIXME: lock to block other commands
 
 			if len(args) < 1 {
@@ -74,9 +75,9 @@ func main() {
 	}
 
 	env := &ffcli.Command{
-		Name:  "env",
-		Usage: "pwinit entrypoint [args...]",
-		Exec: func([]string) error {
+		Name:       "env",
+		ShortUsage: "pwinit entrypoint [args...]",
+		Exec: func(ctx context.Context, args []string) error {
 			for _, line := range os.Environ() {
 				fmt.Println(line)
 			}
@@ -85,9 +86,9 @@ func main() {
 	}
 
 	config := &ffcli.Command{
-		Name:  "config",
-		Usage: "pwinit config [args...]",
-		Exec: func([]string) error {
+		Name:       "config",
+		ShortUsage: "pwinit config [args...]",
+		Exec: func(ctx context.Context, args []string) error {
 			config, err := getConfig()
 			if err != nil {
 				return err
@@ -99,9 +100,9 @@ func main() {
 	}
 
 	passphrase := &ffcli.Command{
-		Name:  "passphrase",
-		Usage: "pwinit passphrase ID",
-		Exec: func(args []string) error {
+		Name:       "passphrase",
+		ShortUsage: "pwinit passphrase ID",
+		Exec: func(ctx context.Context, args []string) error {
 			if len(args) != 1 {
 				return flag.ErrHelp
 			}
@@ -121,10 +122,10 @@ func main() {
 	}
 
 	root := &ffcli.Command{
-		Usage:       "pwinit <subcommand> [flags] [args...]",
+		ShortUsage:  "pwinit <subcommand> [flags] [args...]",
 		LongHelp:    "More info here: https://github.com/pathwar/pathwar/wiki/CLI#pwinit",
 		Subcommands: []*ffcli.Command{entrypoint, env, config, passphrase},
-		Exec: func([]string) error {
+		Exec: func(ctx context.Context, args []string) error {
 			fmt.Println(banner.Inline("pwinit"))
 			return flag.ErrHelp
 		},
@@ -134,7 +135,8 @@ func main() {
 	if len(args) > 0 && args[0] == "entrypoint" && len(args) > 1 && args[1] != "--" {
 		args = append([]string{"entrypoint", "--"}, args[1:]...)
 	}
-	if err := root.Run(args); err != nil {
+	ctx := context.Background()
+	if err := root.ParseAndRun(ctx, args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
 			return
 		}

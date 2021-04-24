@@ -9,8 +9,8 @@ import (
 
 	"github.com/dustin/go-humanize"
 	"github.com/olekukonko/tablewriter"
-	"github.com/peterbourgon/ff"
-	"github.com/peterbourgon/ff/ffcli"
+	"github.com/peterbourgon/ff/v3"
+	"github.com/peterbourgon/ff/v3/ffcli"
 	"go.uber.org/zap"
 	"moul.io/godev"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
@@ -29,12 +29,12 @@ func cliCommand() *ffcli.Command {
 	cliFlags.StringVar(&ssoOpts.TokenFile, "sso-token-file", ssoOpts.TokenFile, "Token file")
 
 	return &ffcli.Command{
-		Name:      "cli",
-		Usage:     "pathwar [global flags] cli [cli flags] <cmd> [cmd flags]",
-		ShortHelp: "CLI replacement for the web portal",
-		FlagSet:   cliFlags,
-		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec:      func(args []string) error { return flag.ErrHelp },
+		Name:       "cli",
+		ShortUsage: "pathwar [global flags] cli [cli flags] <cmd> [cmd flags]",
+		ShortHelp:  "CLI replacement for the web portal",
+		FlagSet:    cliFlags,
+		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
+		Exec:       func(ctx context.Context, args []string) error { return flag.ErrHelp },
 		Subcommands: []*ffcli.Command{
 			cliMeCommand(),
 			cliSeasonsCommand(),
@@ -54,11 +54,10 @@ func cliMeCommand() *ffcli.Command {
 	return &ffcli.Command{
 		Name:      "@me",
 		ShortHelp: "Get an overview of your account (good place to start)",
-		Exec: func(args []string) error {
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			ctx := context.Background()
 			client, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return err
@@ -107,11 +106,10 @@ func cliSeasonsCommand() *ffcli.Command {
 	return &ffcli.Command{
 		Name:      "seasons",
 		ShortHelp: "List available seasons",
-		Exec: func(args []string) error {
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			ctx := context.Background()
 			client, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return err
@@ -172,11 +170,10 @@ func cliTeamsCommand() *ffcli.Command {
 	return &ffcli.Command{
 		Name:      "teams",
 		ShortHelp: "List teams, scores, etc",
-		Exec: func(args []string) error {
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			ctx := context.Background()
 			client, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return err
@@ -243,11 +240,11 @@ func cliCreateTeamCommand() *ffcli.Command {
 	flags.StringVar(&input.OrganizationID, "organization", input.OrganizationID, "Organization ID or slug if team needs to created inside an existing organization")
 	flags.StringVar(&input.SeasonID, "season", input.SeasonID, "Season ID or slug")
 	return &ffcli.Command{
-		Name:      "team-create",
-		Usage:     "pathwar [global flags] cli [cli flags] team-create [flags]",
-		ShortHelp: "Create a team in specified season",
-		FlagSet:   flags,
-		Exec: func(args []string) error {
+		Name:       "team-create",
+		ShortUsage: "pathwar [global flags] cli [cli flags] team-create [flags]",
+		ShortHelp:  "Create a team in specified season",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if input.SeasonID == "" {
 				return flag.ErrHelp
 			}
@@ -255,7 +252,6 @@ func cliCreateTeamCommand() *ffcli.Command {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			ctx := context.Background()
 			client, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return err
@@ -284,11 +280,11 @@ func cliSendTeamInviteCommand() *ffcli.Command {
 	flags.StringVar(&input.UserID, "user", input.UserID, "Invited user ID or slug")
 	flags.StringVar(&input.TeamID, "team", input.TeamID, "Team ID or slug")
 	return &ffcli.Command{
-		Name:      "team-send-invite",
-		Usage:     "pathwar [global flags] cli [cli flags] team-send-invite [flags]",
-		ShortHelp: "Invite a user to specified team",
-		FlagSet:   flags,
-		Exec: func(args []string) error {
+		Name:       "team-send-invite",
+		ShortUsage: "pathwar [global flags] cli [cli flags] team-send-invite [flags]",
+		ShortHelp:  "Invite a user to specified team",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if input.UserID == "" || input.TeamID == "" {
 				return flag.ErrHelp
 			}
@@ -296,7 +292,6 @@ func cliSendTeamInviteCommand() *ffcli.Command {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			ctx := context.Background()
 			client, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return err
@@ -324,11 +319,11 @@ func cliAcceptTeamInviteCommand() *ffcli.Command {
 	flags := flag.NewFlagSet("cli team accept invite", flag.ExitOnError)
 	flags.StringVar(&input.TeamInviteID, "invite", input.TeamInviteID, "Invite ID or slug")
 	return &ffcli.Command{
-		Name:      "team-accept-invite",
-		Usage:     "pathwar [global flags] cli [cli flags] team-accept-invite [flags]",
-		ShortHelp: "Accept team invite",
-		FlagSet:   flags,
-		Exec: func(args []string) error {
+		Name:       "team-accept-invite",
+		ShortUsage: "pathwar [global flags] cli [cli flags] team-accept-invite [flags]",
+		ShortHelp:  "Accept team invite",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if input.TeamInviteID == "" {
 				return flag.ErrHelp
 			}
@@ -336,7 +331,6 @@ func cliAcceptTeamInviteCommand() *ffcli.Command {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			ctx := context.Background()
 			client, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return err
@@ -362,11 +356,10 @@ func cliChallengesCommand() *ffcli.Command {
 	return &ffcli.Command{
 		Name:      "challenges",
 		ShortHelp: "List challenges",
-		Exec: func(args []string) error {
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			ctx := context.Background()
 			client, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return err
@@ -445,11 +438,11 @@ func cliChallengeBuyCommand() *ffcli.Command {
 	flags.StringVar(&input.SeasonID, "season", input.SeasonID, "Season ID or Slug")
 
 	return &ffcli.Command{
-		Name:      "challenge-buy",
-		Usage:     "pathwar [global flags] cli [cli flags] challenge-buy --flavor=XXX",
-		FlagSet:   flags,
-		ShortHelp: "Buy a challenge",
-		Exec: func(args []string) error {
+		Name:       "challenge-buy",
+		ShortUsage: "pathwar [global flags] cli [cli flags] challenge-buy --flavor=XXX",
+		FlagSet:    flags,
+		ShortHelp:  "Buy a challenge",
+		Exec: func(ctx context.Context, args []string) error {
 			if input.FlavorID == "" {
 				return flag.ErrHelp
 			}
@@ -457,7 +450,6 @@ func cliChallengeBuyCommand() *ffcli.Command {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			ctx := context.Background()
 			client, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return err
@@ -495,11 +487,11 @@ func cliChallengeValidateCommand() *ffcli.Command {
 	flags.StringVar(&input.Comment, "comment", input.Comment, "Comment for validation")
 
 	return &ffcli.Command{
-		Name:      "challenge-validate",
-		Usage:     "pathwar [global flags] cli [cli flags] challenge-validate [flags]",
-		FlagSet:   flags,
-		ShortHelp: "Validate a challenge",
-		Exec: func(args []string) error {
+		Name:       "challenge-validate",
+		ShortUsage: "pathwar [global flags] cli [cli flags] challenge-validate [flags]",
+		FlagSet:    flags,
+		ShortHelp:  "Validate a challenge",
+		Exec: func(ctx context.Context, args []string) error {
 			if input.ChallengeSubscriptionID == 0 {
 				return flag.ErrHelp
 			}
@@ -507,7 +499,6 @@ func cliChallengeValidateCommand() *ffcli.Command {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			ctx := context.Background()
 			client, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return err
@@ -528,10 +519,10 @@ func cliChallengeValidateCommand() *ffcli.Command {
 
 func cliCouponValidateCommand() *ffcli.Command {
 	return &ffcli.Command{
-		Name:      "coupon-validate",
-		Usage:     "pathwar [global flags] cli [cli flags] coupon-validate COUPON...",
-		ShortHelp: "Validate a coupon",
-		Exec: func(args []string) error {
+		Name:       "coupon-validate",
+		ShortUsage: "pathwar [global flags] cli [cli flags] coupon-validate COUPON...",
+		ShortHelp:  "Validate a coupon",
+		Exec: func(ctx context.Context, args []string) error {
 			if len(args) < 1 {
 				return flag.ErrHelp
 			}
@@ -539,7 +530,6 @@ func cliCouponValidateCommand() *ffcli.Command {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
-			ctx := context.Background()
 			client, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return err
