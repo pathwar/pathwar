@@ -8,8 +8,7 @@ import (
 )
 
 func IsRecordNotFoundError(err error) bool {
-	return errors.Is(err, gorm.ErrRecordNotFound) ||
-		errors.Is(errors.Unwrap(err), gorm.ErrRecordNotFound)
+	return errors.Is(err, gorm.ErrRecordNotFound)
 }
 
 func GormToErrcode(err error) error {
