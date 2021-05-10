@@ -1,13 +1,14 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
 
-	"github.com/peterbourgon/ff"
-	"github.com/peterbourgon/ff/ffcli"
+	"github.com/peterbourgon/ff/v3"
+	"github.com/peterbourgon/ff/v3/ffcli"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwinit"
 )
@@ -20,16 +21,16 @@ func miscCommand() *ffcli.Command {
 	ssoFlags.StringVar(&ssoOpts.Realm, "realm", ssoOpts.Realm, "SSO Realm")
 
 	return &ffcli.Command{
-		Name:      "misc",
-		Usage:     "pathwar [global flags] misc [misc flags] <subcommand> [flags] [args...]",
-		ShortHelp: "misc contains advanced commands",
-		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec:      func([]string) error { return flag.ErrHelp },
+		Name:       "misc",
+		ShortUsage: "pathwar [global flags] misc [misc flags] <subcommand> [flags] [args...]",
+		ShortHelp:  "misc contains advanced commands",
+		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
+		Exec:       func(ctx context.Context, args []string) error { return flag.ErrHelp },
 		Subcommands: []*ffcli.Command{
 			{
-				Name:  "pwinit-binary",
-				Usage: "pathwar [global flags] misc [misc flags] pwinit-binary",
-				Exec: func([]string) error {
+				Name:       "pwinit-binary",
+				ShortUsage: "pathwar [global flags] misc [misc flags] pwinit-binary",
+				Exec: func(ctx context.Context, args []string) error {
 					binary, err := pwinit.Binary()
 					if err != nil {
 						return err
@@ -38,17 +39,17 @@ func miscCommand() *ffcli.Command {
 					return nil
 				},
 			}, {
-				Name:      "sso",
-				Usage:     "pathwar [global flags] sso [sso flags] <subcommand> [flags] [args...]",
-				ShortHelp: "manage SSO tokens",
-				FlagSet:   ssoFlags,
-				Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
-				Exec:      func([]string) error { return flag.ErrHelp },
+				Name:       "sso",
+				ShortUsage: "pathwar [global flags] sso [sso flags] <subcommand> [flags] [args...]",
+				ShortHelp:  "manage SSO tokens",
+				FlagSet:    ssoFlags,
+				Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
+				Exec:       func(ctx context.Context, args []string) error { return flag.ErrHelp },
 				Subcommands: []*ffcli.Command{
 					{
-						Name:  "token",
-						Usage: "pathwar [global flags] sso [sso flags] token TOKEN",
-						Exec: func(args []string) error {
+						Name:       "token",
+						ShortUsage: "pathwar [global flags] sso [sso flags] token TOKEN",
+						Exec: func(ctx context.Context, args []string) error {
 							if len(args) < 1 {
 								return flag.ErrHelp
 							}
@@ -71,9 +72,9 @@ func miscCommand() *ffcli.Command {
 							return nil
 						},
 					}, {
-						Name:  "logout",
-						Usage: "pathwar [global flags] sso [sso flags] logout TOKEN",
-						Exec: func(args []string) error {
+						Name:       "logout",
+						ShortUsage: "pathwar [global flags] sso [sso flags] logout TOKEN",
+						Exec: func(ctx context.Context, args []string) error {
 							if len(args) < 1 {
 								return flag.ErrHelp
 							}
@@ -94,9 +95,9 @@ func miscCommand() *ffcli.Command {
 							return nil
 						},
 					}, {
-						Name:  "whoami",
-						Usage: "pathwar [global flags] sso [sso flags] whoami TOKEN",
-						Exec: func(args []string) error {
+						Name:       "whoami",
+						ShortUsage: "pathwar [global flags] sso [sso flags] whoami TOKEN",
+						Exec: func(ctx context.Context, args []string) error {
 							if len(args) < 1 {
 								return flag.ErrHelp
 							}

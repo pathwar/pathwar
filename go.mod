@@ -30,7 +30,6 @@ require (
 	github.com/jinzhu/gorm v1.9.12
 	github.com/karrick/godirwalk v1.15.6 // indirect
 	github.com/keycloak/kcinit v0.0.0-20181010192927-f85c3c5390ea
-	github.com/kr/pretty v0.2.0 // indirect
 	github.com/martinlindhe/base36 v1.0.0
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/moby/moby v1.13.1
@@ -40,34 +39,34 @@ require (
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
 	github.com/openzipkin/zipkin-go v0.2.2
-	github.com/peterbourgon/ff v1.7.0
+	github.com/peterbourgon/ff/v3 v3.0.0
 	github.com/pkg/errors v0.9.1
 	github.com/rogpeppe/go-internal v1.6.0 // indirect
 	github.com/rs/cors v1.7.0
 	github.com/sirupsen/logrus v1.6.0 // indirect
 	github.com/soheilhy/cmux v0.1.4
 	github.com/stretchr/testify v1.7.0
+	github.com/tailscale/depaware v0.0.0-20201214215404-77d1e9757027
 	github.com/treastech/logger v0.0.0-20180705232552-e381e9ecf2e3
 	go.uber.org/multierr v1.6.0
 	go.uber.org/zap v1.16.0
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5 // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
-	golang.org/x/tools v0.1.0 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
 	google.golang.org/appengine v1.6.6 // indirect
 	google.golang.org/genproto v0.0.0-20190927181202-20e1ac93f88c
 	google.golang.org/grpc v1.28.0-pre
-	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/gormigrate.v1 v1.6.0
 	gopkg.in/yaml.v2 v2.3.0
-	gopkg.in/yaml.v3 v3.0.0-20200506231410-2ff61e1afc86
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	honnef.co/go/tools v0.0.1-2020.1.4 // indirect
 	moul.io/banner v1.0.1
 	moul.io/godev v1.6.0
 	moul.io/motd v1.0.0
 	moul.io/roundtripper v1.0.0
 	moul.io/srand v1.4.0
+	moul.io/u v1.21.0
 	moul.io/zapconfig v1.1.0
 	moul.io/zapgorm v1.0.0
 )

@@ -11,8 +11,8 @@ import (
 
 	"github.com/dustin/go-humanize"
 	"github.com/olekukonko/tablewriter"
-	"github.com/peterbourgon/ff"
-	"github.com/peterbourgon/ff/ffcli"
+	"github.com/peterbourgon/ff/v3"
+	"github.com/peterbourgon/ff/v3/ffcli"
 	"moul.io/godev"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
@@ -27,8 +27,8 @@ func adminCommand() *ffcli.Command {
 	adminFlags.StringVar(&ssoOpts.TokenFile, "sso-token-file", ssoOpts.TokenFile, "Token file")
 	adminFlags.BoolVar(&adminJSONFormat, "json", false, "Print JSON and exit")
 	return &ffcli.Command{
-		Name:  "admin",
-		Usage: "pathwar [global flags] admin [admin flags] <subcommand> [flags] [args...]",
+		Name:       "admin",
+		ShortUsage: "pathwar [global flags] admin [admin flags] <subcommand> [flags] [args...]",
 		Subcommands: []*ffcli.Command{
 			// read-only
 			adminChallengesCommand(),
@@ -54,22 +54,21 @@ func adminCommand() *ffcli.Command {
 		ShortHelp: "admin commands",
 		FlagSet:   adminFlags,
 		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
-		Exec:      func([]string) error { return flag.ErrHelp },
+		Exec:      func(ctx context.Context, args []string) error { return flag.ErrHelp },
 	}
 }
 
 func adminChallengesCommand() *ffcli.Command {
 	flags := flag.NewFlagSet("admin challenges", flag.ExitOnError)
 	return &ffcli.Command{
-		Name:    "challenges",
-		Usage:   "pathwar [global flags] admin [admin flags] challenges [flags]",
-		FlagSet: flags,
-		Exec: func(args []string) error {
+		Name:       "challenges",
+		ShortUsage: "pathwar [global flags] admin [admin flags] challenges [flags]",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -199,15 +198,14 @@ func adminChallengesCommand() *ffcli.Command {
 func adminUsersCommand() *ffcli.Command {
 	flags := flag.NewFlagSet("admin users", flag.ExitOnError)
 	return &ffcli.Command{
-		Name:    "users",
-		Usage:   "pathwar [global flags] admin [admin flags] users [flags]",
-		FlagSet: flags,
-		Exec: func(args []string) error {
+		Name:       "users",
+		ShortUsage: "pathwar [global flags] admin [admin flags] users [flags]",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -256,15 +254,14 @@ func adminUsersCommand() *ffcli.Command {
 func adminAgentsCommand() *ffcli.Command {
 	flags := flag.NewFlagSet("admin agents", flag.ExitOnError)
 	return &ffcli.Command{
-		Name:    "agents",
-		Usage:   "pathwar [global flags] admin [admin flags] agents [flags]",
-		FlagSet: flags,
-		Exec: func(args []string) error {
+		Name:       "agents",
+		ShortUsage: "pathwar [global flags] admin [admin flags] agents [flags]",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -315,15 +312,14 @@ func adminAgentsCommand() *ffcli.Command {
 func adminActivitiesCommand() *ffcli.Command {
 	flags := flag.NewFlagSet("admin activities", flag.ExitOnError)
 	return &ffcli.Command{
-		Name:    "activities",
-		Usage:   "pathwar [global flags] admin [admin flags] activities [flags]",
-		FlagSet: flags,
-		Exec: func(args []string) error {
+		Name:       "activities",
+		ShortUsage: "pathwar [global flags] admin [admin flags] activities [flags]",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -379,15 +375,14 @@ func adminActivitiesCommand() *ffcli.Command {
 func adminOrganizationsCommand() *ffcli.Command {
 	flags := flag.NewFlagSet("admin organizations", flag.ExitOnError)
 	return &ffcli.Command{
-		Name:    "organizations",
-		Usage:   "pathwar [global flags] admin [admin flags] organizations [flags]",
-		FlagSet: flags,
-		Exec: func(args []string) error {
+		Name:       "organizations",
+		ShortUsage: "pathwar [global flags] admin [admin flags] organizations [flags]",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -443,15 +438,14 @@ func adminOrganizationsCommand() *ffcli.Command {
 func adminTeamsCommand() *ffcli.Command {
 	flags := flag.NewFlagSet("admin teams", flag.ExitOnError)
 	return &ffcli.Command{
-		Name:    "teams",
-		Usage:   "pathwar [global flags] admin [admin flags] teams [flags]",
-		FlagSet: flags,
-		Exec: func(args []string) error {
+		Name:       "teams",
+		ShortUsage: "pathwar [global flags] admin [admin flags] teams [flags]",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -509,15 +503,14 @@ func adminTeamsCommand() *ffcli.Command {
 func adminCouponsCommand() *ffcli.Command {
 	flags := flag.NewFlagSet("admin coupons", flag.ExitOnError)
 	return &ffcli.Command{
-		Name:    "coupons",
-		Usage:   "pathwar [global flags] admin [admin flags] coupons [flags]",
-		FlagSet: flags,
-		Exec: func(args []string) error {
+		Name:       "coupons",
+		ShortUsage: "pathwar [global flags] admin [admin flags] coupons [flags]",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -574,15 +567,14 @@ func adminCouponsCommand() *ffcli.Command {
 func adminChallengeSubscriptionsCommand() *ffcli.Command {
 	flags := flag.NewFlagSet("admin challengeSubscriptions", flag.ExitOnError)
 	return &ffcli.Command{
-		Name:    "subscriptions",
-		Usage:   "pathwar [global flags] admin [admin flags] subscriptions [flags]",
-		FlagSet: flags,
-		Exec: func(args []string) error {
+		Name:       "subscriptions",
+		ShortUsage: "pathwar [global flags] admin [admin flags] subscriptions [flags]",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -631,14 +623,13 @@ func adminChallengeSubscriptionsCommand() *ffcli.Command {
 
 func adminListAllCommand() *ffcli.Command {
 	return &ffcli.Command{
-		Name:  "list-all",
-		Usage: "pathwar [global flags] admin [admin flags] list-all",
-		Exec: func(args []string) error {
+		Name:       "list-all",
+		ShortUsage: "pathwar [global flags] admin [admin flags] list-all",
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -732,9 +723,9 @@ func adminListAllCommand() *ffcli.Command {
 
 func adminSearchCommand() *ffcli.Command {
 	return &ffcli.Command{
-		Name:  "search",
-		Usage: "pathwar [global flags] admin [admin flags] search QUERY",
-		Exec: func(args []string) error {
+		Name:       "search",
+		ShortUsage: "pathwar [global flags] admin [admin flags] search QUERY",
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
@@ -743,7 +734,6 @@ func adminSearchCommand() *ffcli.Command {
 				return flag.ErrHelp
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -769,15 +759,14 @@ func adminAddCouponCommand() *ffcli.Command {
 	flags.Int64Var(&input.Value, "value", input.Value, "Coupon value")
 	flags.Int64Var(&input.MaxValidationCount, "max-validations", input.MaxValidationCount, "Maximum times a coupon can be validated")
 	return &ffcli.Command{
-		Name:    "add-coupon",
-		Usage:   "pathwar admin add-coupon",
-		FlagSet: flags,
-		Exec: func(args []string) error {
+		Name:       "add-coupon",
+		ShortUsage: "pathwar admin add-coupon",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -801,10 +790,10 @@ func adminAddCouponCommand() *ffcli.Command {
 func adminRedumpCommand() *ffcli.Command {
 	flags := flag.NewFlagSet("admin redump", flag.ExitOnError)
 	return &ffcli.Command{
-		Name:    "redump",
-		Usage:   "pathwar [global flags] admin [admin flags] redump [flags] ID...",
-		FlagSet: flags,
-		Exec: func(args []string) error {
+		Name:       "redump",
+		ShortUsage: "pathwar [global flags] admin [admin flags] redump [flags] ID...",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if len(args) < 1 {
 				return flag.ErrHelp
 			}
@@ -813,7 +802,6 @@ func adminRedumpCommand() *ffcli.Command {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -852,11 +840,11 @@ func adminChallengeAddCommand() *ffcli.Command {
 	flags.StringVar(&input.Challenge.Homepage, "homepage", input.Challenge.Homepage, "Challenge homepage URL")
 
 	return &ffcli.Command{
-		Name:      "challenge-add",
-		Usage:     "pathwar [global flags] admin [admin flags] challenge-add [flags] [args...]",
-		ShortHelp: "add a challenge",
-		FlagSet:   flags,
-		Exec: func(args []string) error {
+		Name:       "challenge-add",
+		ShortUsage: "pathwar [global flags] admin [admin flags] challenge-add [flags] [args...]",
+		ShortHelp:  "add a challenge",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if input.Challenge.Name == "" {
 				return flag.ErrHelp
 			}
@@ -865,7 +853,6 @@ func adminChallengeAddCommand() *ffcli.Command {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -896,11 +883,11 @@ func adminChallengeRedumpCommand() *ffcli.Command {
 	flags.StringVar(&input.ChallengeID, "id", input.ChallengeID, "Challenge ID or slug")
 
 	return &ffcli.Command{
-		Name:      "challenge-redump",
-		Usage:     "pathwar [global flags] admin [admin flags] challenge-redump [flags] [args...]",
-		ShortHelp: "redump a challenge",
-		FlagSet:   flags,
-		Exec: func(args []string) error {
+		Name:       "challenge-redump",
+		ShortUsage: "pathwar [global flags] admin [admin flags] challenge-redump [flags] [args...]",
+		ShortHelp:  "redump a challenge",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if input.ChallengeID == "" {
 				return flag.ErrHelp
 			}
@@ -909,7 +896,6 @@ func adminChallengeRedumpCommand() *ffcli.Command {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -952,11 +938,11 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 	flags.Int64Var(&input.ChallengeFlavor.Passphrases, "passphrases", input.ChallengeFlavor.Passphrases, "Amount of passphrases")
 
 	return &ffcli.Command{
-		Name:      "challenge-flavor-add",
-		Usage:     "pathwar [global flags] admin [admin flags] challenge-flavor-add [flags] [args...]",
-		ShortHelp: "add a challenge flavor",
-		FlagSet:   flags,
-		Exec: func(args []string) error {
+		Name:       "challenge-flavor-add",
+		ShortUsage: "pathwar [global flags] admin [admin flags] challenge-flavor-add [flags] [args...]",
+		ShortHelp:  "add a challenge flavor",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			input.ApplyDefaults()
 			if input.ChallengeID == "" {
 				return flag.ErrHelp
@@ -966,7 +952,6 @@ func adminChallengeFlavorAddCommand() *ffcli.Command {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -1026,11 +1011,11 @@ func adminSeasonAddCommand() *ffcli.Command {
 	flags.StringVar(&subscription, "subscription", subscription, "Susbscription status (open or close)")
 
 	return &ffcli.Command{
-		Name:      "season-add",
-		Usage:     "pathwar [global flags] admin [admin flags] season-add [flags] [args...]",
-		ShortHelp: "add a Season",
-		FlagSet:   flags,
-		Exec: func(args []string) error {
+		Name:       "season-add",
+		ShortUsage: "pathwar [global flags] admin [admin flags] season-add [flags] [args...]",
+		ShortHelp:  "add a Season",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			if input.Season.Name == "" {
 				return flag.ErrHelp
 			}
@@ -1039,7 +1024,6 @@ func adminSeasonAddCommand() *ffcli.Command {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
@@ -1100,11 +1084,11 @@ func adminSeasonChallengeAddCommand() *ffcli.Command {
 	flags.StringVar(&input.SeasonChallenge.Slug, "slug", input.SeasonChallenge.Slug, "Slug")
 
 	return &ffcli.Command{
-		Name:      "season-challenge-add",
-		Usage:     "pathwar [global flags] admin [admin flags] season-challenge-add [flags] [args...]",
-		ShortHelp: "add a SeasonChallenge",
-		FlagSet:   flags,
-		Exec: func(args []string) error {
+		Name:       "season-challenge-add",
+		ShortUsage: "pathwar [global flags] admin [admin flags] season-challenge-add [flags] [args...]",
+		ShortHelp:  "add a SeasonChallenge",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
 			input.ApplyDefaults()
 			if input.FlavorID == "" || input.SeasonID == "" {
 				return flag.ErrHelp
@@ -1114,7 +1098,6 @@ func adminSeasonChallengeAddCommand() *ffcli.Command {
 				return err
 			}
 
-			ctx := context.Background()
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)

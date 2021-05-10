@@ -12,8 +12,8 @@ import (
 	"github.com/bwmarrin/snowflake"
 	"github.com/jinzhu/gorm"
 	"github.com/oklog/run"
-	"github.com/peterbourgon/ff"
-	"github.com/peterbourgon/ff/ffcli"
+	"github.com/peterbourgon/ff/v3"
+	"github.com/peterbourgon/ff/v3/ffcli"
 	"go.uber.org/zap"
 	"moul.io/banner"
 	"moul.io/motd"
@@ -40,18 +40,18 @@ func apiCommand() *ffcli.Command {
 	serverFlags.StringVar(&serverOpts.Bind, "bind", serverOpts.Bind, "server address")
 
 	return &ffcli.Command{
-		Name:      "api",
-		Usage:     "pathwar [global flags] api [api flags] <subcommand> [flags] [args...]",
-		ShortHelp: "manage the Pathwar API",
-		FlagSet:   apiFlags,
-		Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
+		Name:       "api",
+		ShortUsage: "pathwar [global flags] api [api flags] <subcommand> [flags] [args...]",
+		ShortHelp:  "manage the Pathwar API",
+		FlagSet:    apiFlags,
+		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
 		Subcommands: []*ffcli.Command{{
-			Name:      "server",
-			Usage:     "pathwar [global flags] server [server flags] <subcommand> [flags] [args...]",
-			ShortHelp: "start a server (HTTP + gRPC)",
-			FlagSet:   serverFlags,
-			Options:   []ff.Option{ff.WithEnvVarNoPrefix()},
-			Exec: func(args []string) error {
+			Name:       "server",
+			ShortUsage: "pathwar [global flags] server [server flags] <subcommand> [flags] [args...]",
+			ShortHelp:  "start a server (HTTP + gRPC)",
+			FlagSet:    serverFlags,
+			Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
+			Exec: func(ctx context.Context, args []string) error {
 				fmt.Println(motd.Default())
 				fmt.Println(banner.Inline("api server"))
 
@@ -73,7 +73,6 @@ func apiCommand() *ffcli.Command {
 				defer closer()
 
 				var (
-					ctx    = context.Background()
 					g      run.Group
 					server *pwapi.Server
 				)
@@ -102,9 +101,9 @@ func apiCommand() *ffcli.Command {
 				return nil
 			},
 		}, {
-			Name:  "sqlinfo",
-			Usage: "pathwar [global flags] api [api flags] sqlinfo",
-			Exec: func([]string) error {
+			Name:       "sqlinfo",
+			ShortUsage: "pathwar [global flags] api [api flags] sqlinfo",
+			Exec: func(ctx context.Context, args []string) error {
 				err := globalPreRun()
 				if err != nil {
 					return err
@@ -127,9 +126,9 @@ func apiCommand() *ffcli.Command {
 				return nil
 			},
 		}, {
-			Name:  "sqldump",
-			Usage: "pathwar [global flags] api [api flags] sqldump",
-			Exec: func([]string) error {
+			Name:       "sqldump",
+			ShortUsage: "pathwar [global flags] api [api flags] sqldump",
+			Exec: func(ctx context.Context, args []string) error {
 				err := globalPreRun()
 				if err != nil {
 					return err
@@ -152,7 +151,7 @@ func apiCommand() *ffcli.Command {
 				return nil
 			},
 		}},
-		Exec: func([]string) error { return flag.ErrHelp },
+		Exec: func(ctx context.Context, args []string) error { return flag.ErrHelp },
 	}
 }
 
