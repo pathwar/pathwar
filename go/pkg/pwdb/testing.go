@@ -7,16 +7,23 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	gormlogger "gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
+	"moul.io/zapgorm2"
 )
 
 func TestingSqliteDB(t *testing.T, logger *zap.Logger) *gorm.DB {
 	t.Helper()
 
+	zapGormLogger := zapgorm2.New(logger.Named("gorm"))
+	zapGormLogger.LogMode(gormlogger.Info)
+	zapGormLogger.SetAsDefault()
+
 	gormConfig := gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
+		Logger: zapGormLogger,
 		//DefaultGormConfig.DisableForeignKeyConstraintWhenMigrating = true
 	}
 
@@ -132,14 +139,14 @@ networks: {}
 volumes: {}
 services:
     front:
-        image: pathwar/helloworld@sha256:bf7a6384b4f19127ca1dd3c383d695030478e6d68ec27f24bb83edc42a5f3d26
-        ports:
-            - "80"
-        labels:
-            land.pathwar.compose.challenge-name: helloworld
-            land.pathwar.compose.challenge-version: 1.0.0
-            land.pathwar.compose.origin: was-built
-            land.pathwar.compose.service-name: front
+	image: pathwar/helloworld@sha256:bf7a6384b4f19127ca1dd3c383d695030478e6d68ec27f24bb83edc42a5f3d26
+	ports:
+	    - "80"
+	labels:
+	    land.pathwar.compose.challenge-name: helloworld
+	    land.pathwar.compose.challenge-version: 1.0.0
+	    land.pathwar.compose.origin: was-built
+	    land.pathwar.compose.service-name: front
 `
 		helloworld := newOfficialChallengeWithFlavor("Hello World", "https://github.com/pathwar/pathwar/tree/master/challenges/web/helloworld", bundle)
 		helloworld.PurchasePrice = 0
@@ -150,25 +157,25 @@ networks: {}
 volumes: {}
 services:
     front:
-        image: pathwar/training-sqli@sha256:77c49c7907e19cd92baf2d6278dd017d2f5f6b9d6214d308694fba1572693545
-        ports:
-            - "80"
-        depends_on:
-            - mysql
-        labels:
-            land.pathwar.compose.challenge-name: training-sqli
-            land.pathwar.compose.challenge-version: 1.0.0
-            land.pathwar.compose.origin: was-built
-            land.pathwar.compose.service-name: front
+	image: pathwar/training-sqli@sha256:77c49c7907e19cd92baf2d6278dd017d2f5f6b9d6214d308694fba1572693545
+	ports:
+	    - "80"
+	depends_on:
+	    - mysql
+	labels:
+	    land.pathwar.compose.challenge-name: training-sqli
+	    land.pathwar.compose.challenge-version: 1.0.0
+	    land.pathwar.compose.origin: was-built
+	    land.pathwar.compose.service-name: front
     mysql:
-        image: pathwar/training-sqli@sha256:914ee0d8bf48e176b378c43ad09751c341d0266381e76ae12c385fbc6beb5983
-        expose:
-            - "3306"
-        labels:
-            land.pathwar.compose.challenge-name: training-sqli
-            land.pathwar.compose.challenge-version: 1.0.0
-            land.pathwar.compose.origin: was-built
-            land.pathwar.compose.service-name: mysql
+	image: pathwar/training-sqli@sha256:914ee0d8bf48e176b378c43ad09751c341d0266381e76ae12c385fbc6beb5983
+	expose:
+	    - "3306"
+	labels:
+	    land.pathwar.compose.challenge-name: training-sqli
+	    land.pathwar.compose.challenge-version: 1.0.0
+	    land.pathwar.compose.origin: was-built
+	    land.pathwar.compose.service-name: mysql
 `
 		trainingSQLI := newOfficialChallengeWithFlavor("Training SQLI", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-sqli", bundle)
 		trainingSQLI.addSeasonChallengeByID(globalSeason.ID)
@@ -178,14 +185,14 @@ networks: {}
 volumes: {}
 services:
     front:
-        image: pathwar/training-http@sha256:92c46270f8d7be9d927345353b7ea49b37dbf6c82ab6b2da3bc401f9fbacf5e5
-        ports:
-          - "80"
-        labels:
-            land.pathwar.compose.challenge-name: training-http
-            land.pathwar.compose.challenge-version: 1.0.0
-            land.pathwar.compose.origin: was-built
-            land.pathwar.compose.service-name: front
+	image: pathwar/training-http@sha256:92c46270f8d7be9d927345353b7ea49b37dbf6c82ab6b2da3bc401f9fbacf5e5
+	ports:
+	  - "80"
+	labels:
+	    land.pathwar.compose.challenge-name: training-http
+	    land.pathwar.compose.challenge-version: 1.0.0
+	    land.pathwar.compose.origin: was-built
+	    land.pathwar.compose.service-name: front
 `
 
 		trainingHTTP := newOfficialChallengeWithFlavor("Training HTTP", "https://github.com/pathwar/pathwar/tree/master/challenges/web/training-http", bundle)
