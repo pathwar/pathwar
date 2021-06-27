@@ -14,7 +14,7 @@ PRE_BUILD_STEPS += generate
 PRE_LINT_STEPsS += generate
 PRE_TIDY_STEPS += generate
 PRE_BUMPDEPS_STEPS += generate
-PRE_INSTALL_STEPS += ./out/pwinit-linux-amd64
+#PRE_INSTALL_STEPS += ./out/pwinit-linux-amd64
 
 DEV_BIND ?= :8001
 AGENT_NGINX_PORT ?= 8002
@@ -128,14 +128,14 @@ gen.sum: $(GEN_SRC)
 	  set -xe; \
 	  GO111MODULE=on go mod vendor; \
 	  docker run \
-	    --user=`id -u` \
-	    --volume="$(PWD)/..:/go/src/pathwar.land" \
-	    --workdir="/go/src/pathwar.land/go" \
-	    --entrypoint="sh" \
-	    --rm \
-	    pathwar/protoc:6 \
-	    -xec 'make generate_local'; \
-	    make tidy \
+		--user=`id -u` \
+		--volume="$(PWD)/..:/go/src/pathwar.land" \
+		--workdir="/go/src/pathwar.land/go" \
+		--entrypoint="sh" \
+		--rm \
+		pathwar/protoc:6 \
+		-xec 'make generate_local'; \
+		make tidy \
 	)
 
 .PHONY: generate_local
