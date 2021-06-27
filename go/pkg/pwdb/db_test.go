@@ -21,19 +21,19 @@ func TestDB_SoftDelete(t *testing.T) {
 	var usersCount int64
 	err = db.Model(&User{}).Count(&usersCount).Error
 	require.NoError(t, err)
-	assert.Equal(t, int64(1), usersCount)
+	assert.Equal(t, int64(2), usersCount)
 
 	err = db.Delete(&user).Error
 	require.NoError(t, err)
 
 	err = db.Model(&User{}).Count(&usersCount).Error
 	require.NoError(t, err)
-	assert.Equal(t, int64(0), usersCount)
+	assert.Equal(t, int64(1), usersCount)
 
 	// getting soft deleted instances too
 	err = db.Unscoped().Model(&User{}).Count(&usersCount).Error
 	require.NoError(t, err)
-	assert.Equal(t, int64(1), usersCount)
+	assert.Equal(t, int64(2), usersCount)
 
 	// hard delete
 	err = db.Unscoped().Delete(&user).Error
@@ -41,5 +41,5 @@ func TestDB_SoftDelete(t *testing.T) {
 
 	err = db.Unscoped().Model(&User{}).Count(&usersCount).Error
 	require.NoError(t, err)
-	assert.Equal(t, int64(0), usersCount)
+	assert.Equal(t, int64(1), usersCount)
 }
