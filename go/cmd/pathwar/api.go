@@ -161,7 +161,9 @@ func apiCommand() *ffcli.Command {
 
 func svcFromFlags(logger *zap.Logger) (pwapi.Service, *gorm.DB, func(), error) {
 	// logger
-	zapGormLogger := zapgorm2.New(logger.Named("gorm")).LogMode(gormlogger.Info)
+	zapGormLogger := zapgorm2.New(logger.Named("gorm"))
+	zapGormLogger.LogMode(gormlogger.Info)
+	zapGormLogger.SetAsDefault()
 
 	gormConfig := gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
