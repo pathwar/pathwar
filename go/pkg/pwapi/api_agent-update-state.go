@@ -39,7 +39,7 @@ func (svc *service) AgentUpdateState(ctx context.Context, in *AgentUpdateState_I
 		}
 		cpy := challengeInstance
 		err := svc.db.Model(&cpy).
-			Update(pwdb.ChallengeInstance{
+			Updates(pwdb.ChallengeInstance{
 				Status:         challengeInstance.Status,
 				InstanceConfig: challengeInstance.InstanceConfig,
 			}).

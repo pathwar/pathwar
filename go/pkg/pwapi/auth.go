@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/jinzhu/gorm"
 	"google.golang.org/grpc/metadata"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 	"pathwar.land/pathwar/v2/go/pkg/pwsso"
@@ -106,11 +106,11 @@ func userIDFromContext(ctx context.Context, db *gorm.DB) (int64, error) {
 		return 0, errcode.ErrGetSubjectFromContext.Wrap(err)
 	}
 
-	// FIXME: only fetch the ID instead of the whole user
 	var user pwdb.User
 	err = db.
-		Where(pwdb.User{OAuthSubject: oauthSubject}).
-		Find(&user).
+		Select("id").
+		Where(&pwdb.User{OAuthSubject: oauthSubject}).
+		First(&user).
 		Error
 	if err != nil {
 		return 0, errcode.ErrGetUserBySubject.Wrap(err)

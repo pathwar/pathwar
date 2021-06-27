@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"testing"
 
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/stretchr/testify/assert"
 	"moul.io/godev"
 	"pathwar.land/pathwar/v2/go/internal/testutil"

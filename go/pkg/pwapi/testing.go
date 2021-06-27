@@ -29,7 +29,8 @@ func TestingService(t *testing.T, opts ServiceOpts) (Service, func()) {
 
 	cleanup := func() {
 		api.Close()
-		db.Close()
+		sqlDB, _ := db.DB()
+		sqlDB.Close()
 	}
 
 	return api, cleanup
