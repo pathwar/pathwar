@@ -40,7 +40,11 @@ func TokenWithClaims(bearer string, pubkey interface{}, allowUnsafe bool) (*jwt.
 			}
 			return token, claims, nil
 		}
-		return nil, nil, errcode.ErrSSOInvalidBearer.Wrap(err)
+
+		e, ok := err.(*jwt.ValidationError)
+		if !ok || (ok && e.Errors&jwt.ValidationErrorIssuedAt == 0) { // don't report error that token used before issued.
+			return nil, nil, errcode.ErrSSOInvalidBearer.Wrap(err)
+		}
 	}
 	return token, claims, nil
 }
