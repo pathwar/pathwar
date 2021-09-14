@@ -72,7 +72,7 @@ func (svc *service) AdminTestingSeasonUserAdd(ctx context.Context, in *AdminTest
 		// create team and team member
 		team := pwdb.Team{
 			Season:         &testingSeason,
-			IsGlobal:       true,
+			IsGlobal:       false, // FIXME: add a IsTesting: true?
 			OrganizationID: globalOrganizationMember.OrganizationID,
 			DeletionStatus: pwdb.DeletionStatus_Active,
 		}
