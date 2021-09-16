@@ -50,6 +50,7 @@ func adminCommand() *ffcli.Command {
 			adminChallengeFlavorAddCommand(),
 			adminSeasonAddCommand(),
 			adminSeasonChallengeAddCommand(),
+			adminTestingSeasonUserAddCommand(),
 		},
 		ShortHelp: "admin commands",
 		FlagSet:   adminFlags,
@@ -1117,6 +1118,49 @@ func adminSeasonChallengeAddCommand() *ffcli.Command {
 			}
 
 			fmt.Println(ret.SeasonChallenge.ID)
+			return nil
+		},
+	}
+}
+
+func adminTestingSeasonUserAddCommand() *ffcli.Command {
+	input := pwapi.AdminTestingSeasonUserAdd_Input{}
+	flags := flag.NewFlagSet("admin season testing user add", flag.ExitOnError)
+	flags.StringVar(&input.UserID, "user", input.UserID, "User ID or Slug")
+
+	return &ffcli.Command{
+		Name:       "testing-season-user-add",
+		ShortUsage: "pathwar [global flags] admin [admin flags] testing-season-user-add [flags] [args...]",
+		ShortHelp:  "add a user to testing season",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
+			if input.UserID == "" {
+				return flag.ErrHelp
+			}
+
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret, err := apiClient.AdminTestingSeasonUserAdd(ctx, &input)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+			if globalDebug {
+				fmt.Fprintln(os.Stderr, godev.PrettyJSONPB(&ret))
+			}
+
+			if adminJSONFormat {
+				fmt.Println(godev.PrettyJSONPB(&ret))
+				return nil
+			}
+
+			fmt.Println(ret.TeamMember.ID)
 			return nil
 		},
 	}

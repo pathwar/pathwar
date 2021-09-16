@@ -165,6 +165,13 @@ func (c HTTPClient) AdminAddSeason(ctx context.Context, input *AdminSeasonAdd_In
 	return result, err
 }
 
+func (c HTTPClient) AdminTestingSeasonUserAdd(ctx context.Context, input *AdminTestingSeasonUserAdd_Input) (AdminTestingSeasonUserAdd_Output, error) {
+	var _ *AdminTestingSeasonUserAdd_Input = input
+	var result AdminTestingSeasonUserAdd_Output
+	err := c.doPost(ctx, "/admin/testing-season-user-add", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) GetStatus(ctx context.Context, input *GetStatus_Input) (GetStatus_Output, error) {
 	var _ *GetStatus_Input = input
 	var result GetStatus_Output
