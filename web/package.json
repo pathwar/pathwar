@@ -20,7 +20,7 @@
     "@emotion/styled": "^10.0.27",
     "@loadable/component": "^5.10.2",
     "@sentry/browser": "^5.17.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "emotion-theming": "^10.0.27",
     "env-cmd": "^10.0.1",
     "fireworks": "^2.2.6",
