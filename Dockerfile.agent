@@ -1,11 +1,11 @@
 # builder
-FROM            golang:1.14-alpine as builder
-RUN             apk --no-cache --update add nodejs-npm make gcc g++ musl-dev openssl-dev git perl-utils
-RUN            	go get github.com/gobuffalo/packr/v2/packr2
-ENV             GO111MODULE=on GOPROXY=https://proxy.golang.org,direct
-COPY            go.mod go.sum /go/src/pathwar.land/
+FROM            golang:1.17-alpine as builder
+RUN             apk --no-cache --update add npm make gcc g++ musl-dev openssl-dev git perl-utils
 WORKDIR         /go/src/pathwar.land
+ENV             GO111MODULE=on GOPROXY=https://proxy.golang.org,direct
+COPY            go.mod go.sum ./
 RUN             go mod download
+RUN             go get github.com/gobuffalo/packr/v2/packr2
 COPY            . .
 WORKDIR         /go/src/pathwar.land/go
 RUN             make packr
