@@ -69,9 +69,15 @@ func Up(ctx context.Context, cli *client.Client, opts UpOpts) (map[string]Servic
 	opts.applyDefaults()
 	opts.Logger.Debug("up", zap.Any("opts", opts))
 
+	composeBin, cleanup, err := tmpComposeBin()
+	if err != nil {
+		return nil, err
+	}
+	defer cleanup()
+
 	// parse prepared compose yaml
 	preparedComposeStruct := PathwarConfig{}
-	err := yaml.Unmarshal([]byte(opts.PreparedCompose), &preparedComposeStruct)
+	err = yaml.Unmarshal([]byte(opts.PreparedCompose), &preparedComposeStruct)
 	if err != nil {
 		return nil, errcode.ErrComposeParseConfig.Wrap(err)
 	}
@@ -130,7 +136,7 @@ func Up(ctx context.Context, cli *client.Client, opts UpOpts) (map[string]Servic
 	// create containers
 	args := append(composeCliCommonArgs(tmpPreparedComposePath), "up", "--no-start", "--quiet-pull")
 	opts.Logger.Debug("docker-compose", zap.Strings("args", args))
-	cmd := exec.Command("docker-compose", args...)
+	cmd := exec.Command(composeBin.Name(), args...)
 	if opts.Logger.Check(zap.DebugLevel, "") != nil {
 		cmd.Stdout = os.Stderr
 		cmd.Stderr = os.Stderr
@@ -199,7 +205,7 @@ func Up(ctx context.Context, cli *client.Client, opts UpOpts) (map[string]Servic
 	// build definitive containers
 	args = append(composeCliCommonArgs(tmpPreparedComposePath), "up", "--no-start")
 	opts.Logger.Debug("docker-compose", zap.Strings("args", args))
-	cmd = exec.Command("docker-compose", args...)
+	cmd = exec.Command(composeBin.Name(), args...)
 	if opts.Logger.Check(zap.DebugLevel, "") != nil {
 		cmd.Stdout = os.Stderr
 		cmd.Stderr = os.Stderr
@@ -235,7 +241,7 @@ func Up(ctx context.Context, cli *client.Client, opts UpOpts) (map[string]Servic
 	// start containers
 	args = append(composeCliCommonArgs(tmpPreparedComposePath), "up", "-d")
 	opts.Logger.Debug("docker-compose", zap.Strings("args", args))
-	cmd = exec.Command("docker-compose", args...)
+	cmd = exec.Command(composeBin.Name(), args...)
 	if opts.Logger.Check(zap.DebugLevel, "") != nil {
 		cmd.Stdout = os.Stderr
 		cmd.Stderr = os.Stderr
