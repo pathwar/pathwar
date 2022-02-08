@@ -35,9 +35,9 @@
     }
   }
 
-  echo '<p>Score: ', $_SESSION['score'], '/1000';
+  echo '<p>Score: ', $_SESSION['score'], '/100';
 
-  if ($_SESSION['score'] >= 1000) {
+  if ($_SESSION['score'] >= 100) {
     echo "<p>The passphrase is: {passphrase}</p>";
   }
 

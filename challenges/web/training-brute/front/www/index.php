@@ -23,7 +23,7 @@
         <?php if (isset($_GET['pass'])) : ?>
         <p>
           <center>
-            <?php if ($_GET['pass'] == md5("763")) : ?>
+            <?php if ($_GET['pass'] == md5("__RANDNUM0__")) : ?>
             Congratz! The passphrase is <b>__PASSPHRASE0__</b>
             <?php else : ?>
             <img width='600px' src="./gandalf.jpg" alt="u_shall_not_pass" />
