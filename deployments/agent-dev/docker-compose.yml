@@ -4,6 +4,7 @@ services:
   agent-dev:
     image: pathwar/agent:latest
     restart: on-failure
+    env_file: .env
     volumes:
       - ./data/:/data/
       - /var/run/docker.sock:/var/run/docker.sock
@@ -12,6 +13,8 @@ services:
       - PATHWAR_AGENT_NAME
       - PATHWAR_AGENT_NGINX_PORT
       - PATHWAR_SENTRY_DSN
+      - PATHWAR_AGENT_MODERATOR_PASSWORD
+      - PATHWAR_AGENT_SALT
     labels:
       com.centurylinklabs.watchtower.enable: "true"
     working_dir: /data/
@@ -19,11 +22,12 @@ services:
       -   --debug
       -   --sentry-dsn=$PATHWAR_SENTRY_DSN
       - agent
-      -   --salt=uns3cur3
-      -   --moderator-password=uns3cur3
+      -   --salt=$PATHWAR_AGENT_SALT
+      -   --moderator-password=$PATHWAR_AGENT_MODERATOR_PASSWORD
       -   --domain-suffix=$PATHWAR_AGENT_NGINX_DOMAIN_SUFFIX
       -   --agent-name=$PATHWAR_AGENT_NAME
       -   --port=$PATHWAR_AGENT_NGINX_PORT
+      -   --sso-token-file=./agent-token.json
 
       #   -agent-name localhost                                Agent Name
       #   -clean false                                         remove all pathwar instances before executing
