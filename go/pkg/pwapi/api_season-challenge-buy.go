@@ -134,6 +134,9 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 		return nil, errcode.ErrGetChallengeSubscription.Wrap(err)
 	}
 
+	// cleanup output
+	subscription.SeasonChallenge.Flavor.ComposeBundle = ""
+	subscription.SeasonChallenge.Flavor.RedumpPolicyConfig = ""
 	ret := SeasonChallengeBuy_Output{ChallengeSubscription: &subscription}
 	return &ret, nil
 }
