@@ -30,6 +30,7 @@ func composeCommand() *ffcli.Command {
 			composePsCommand(),
 			composeDownCommand(),
 			composeRegisterCommand(),
+			composeBinCommand(),
 		},
 		ShortHelp: "manage a challenge",
 		FlagSet:   composeFlags,
@@ -174,6 +175,30 @@ func composeDownCommand() *ffcli.Command {
 			composeCleanOpts.Logger = logger
 			composeCleanOpts.ContainerIDs = args
 			return pwcompose.Clean(ctx, cli, composeCleanOpts)
+		},
+	}
+}
+
+func composeBinCommand() *ffcli.Command {
+	var (
+		composeBinFlags = flag.NewFlagSet("compose bin", flag.ExitOnError)
+	)
+	return &ffcli.Command{
+		Name:       "bin",
+		ShortUsage: "pathwar [global flags] compose [compose flags] bin",
+		FlagSet:    composeBinFlags,
+		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
+		Exec: func(ctx context.Context, args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			bytes, err := pwcompose.ComposeBinBytes()
+			if err != nil {
+				return err
+			}
+			_, err = os.Stdout.Write(bytes)
+			return err
 		},
 	}
 }

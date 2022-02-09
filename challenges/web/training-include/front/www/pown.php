@@ -1,5 +1,3 @@
 <?php
 
-var_dump(scandir('.', true));
-
-?>
+echo '<?php var_dump(scandir(".", true));';

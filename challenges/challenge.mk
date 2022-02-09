@@ -31,4 +31,4 @@ pathwar.register: pathwar.push
 
 .PHONY: make.bump
 make.bump:
-	wget -O rules.mk https://raw.githubusercontent.com/tree/master/challenges/challenge.mk Makefile
+	wget -O Makefile https://raw.githubusercontent.com/pathwar/pathwar/master/challenges/challenge.mk

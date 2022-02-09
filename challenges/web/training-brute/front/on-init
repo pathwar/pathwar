@@ -1,3 +1,5 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
-sed -i "s/{passhphrase}/$(pwinit passphrase 0)/g" /var/www/html/index.php
+sed -i -e "s/__PASSPHRASE0__/$(pwinit passphrase 0)/g" /var/www/html/index.php
+rand=$(( ( RANDOM % 200 ) + 650 ))
+sed -i -e "s/__RANDNUM0__/$rand/g" /var/www/html/index.php

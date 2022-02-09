@@ -6,7 +6,7 @@ package tools
 
 import (
 	_ "github.com/githubnemo/CompileDaemon"                               // required by Makefile
-	_ "github.com/gobuffalo/packr/v2"                                     // required by Makefile
+	_ "github.com/gobuffalo/packr/v2/packr2/cmd"                          // required by Makefile
 	_ "github.com/gogo/protobuf/gogoproto"                                // required by protoc
 	_ "github.com/gogo/protobuf/types"                                    // required by protoc
 	_ "github.com/golang/protobuf/proto"                                  // required by protoc

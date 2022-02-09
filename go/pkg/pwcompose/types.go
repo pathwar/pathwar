@@ -40,6 +40,7 @@ type Service struct {
 	Restart                                   string            `yaml:",omitempty"`
 	Environment                               map[string]string `yaml:",omitempty"`
 	Labels                                    map[string]string `yaml:"labels,omitempty"`
+	Links                                     []string          `yaml:"links,omitempty"`
 }
 
 func (s Service) ChallengeID() string {

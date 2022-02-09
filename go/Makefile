@@ -14,7 +14,7 @@ PRE_BUILD_STEPS += generate
 PRE_LINT_STEPsS += generate
 PRE_TIDY_STEPS += generate
 PRE_BUMPDEPS_STEPS += generate
-PRE_INSTALL_STEPS += ./out/pwinit-linux-amd64
+PRE_INSTALL_STEPS += ./out/pwinit-linux-amd64 ./out/docker-compose-dab
 
 DEV_BIND ?= :8001
 AGENT_NGINX_PORT ?= 8002
@@ -67,9 +67,15 @@ agent-down:
 agent-nginx-config:
 	docker exec pathwar-agent-nginx cat /etc/nginx/nginx.conf
 
+./out/docker-compose-dab:
+	curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-`uname -s`-`uname -m`" -o $@
+	chmod +x $@
+	@#./$@ --version
+
+
 .PHONY: ./out/pwinit-linux-amd64
 ./out/pwinit-linux-amd64:
-	mkdir -p out
+	@mkdir -p out
 	GOOS=linux GOARCH=amd64 $(GO) build -ldflags "-linkmode external -extldflags -static" -mod=readonly -o $@ ./cmd/pwinit
 
 .PHONY: up

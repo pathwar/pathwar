@@ -44,6 +44,12 @@ func Prepare(opts PrepareOpts) (string, error) {
 	opts.applyDefaults()
 	opts.Logger.Debug("prepare", zap.Any("opts", opts))
 
+	composeBin, cleanup, err := tmpComposeBin()
+	if err != nil {
+		return "", err
+	}
+	defer cleanup()
+
 	cleanPath, err := filepath.Abs(filepath.Clean(opts.ChallengeDir))
 	if err != nil {
 		return "", errcode.ErrComposeInvalidPath.Wrap(err)
@@ -73,7 +79,7 @@ func Prepare(opts PrepareOpts) (string, error) {
 	// check for error in docker-compose file
 	args := append(composeCliCommonArgs(origComposePath), "config", "-q")
 	opts.Logger.Debug("docker-compose", zap.Strings("args", args))
-	cmd := exec.Command("docker-compose", args...)
+	cmd := exec.Command(composeBin.Name(), args...)
 	if opts.Logger.Check(zap.DebugLevel, "") != nil {
 		cmd.Stdout = os.Stderr
 		cmd.Stderr = os.Stderr
@@ -135,7 +141,7 @@ func Prepare(opts PrepareOpts) (string, error) {
 		// build and push images to dockerhub (don't forget to setup your credentials just type : "docker login" in bash)
 		args = append(composeCliCommonArgs(tmpComposePath), "build")
 		opts.Logger.Debug("docker-compose", zap.Strings("args", args))
-		cmd = exec.Command("docker-compose", args...)
+		cmd = exec.Command(composeBin.Name(), args...)
 		cmd.Dir = cleanPath
 		if opts.Logger.Check(zap.DebugLevel, "") != nil {
 			cmd.Stdout = os.Stderr
@@ -148,7 +154,10 @@ func Prepare(opts PrepareOpts) (string, error) {
 
 		args = append(composeCliCommonArgs(tmpComposePath), "bundle", "--push-images")
 		opts.Logger.Debug("docker-compose", zap.Strings("args", args))
-		cmd = exec.Command("docker-compose", args...)
+		cmd = exec.Command(composeBin.Name(), args...)
+		if err != nil {
+			return "", errcode.ErrComposeBundle.Wrap(err)
+		}
 		cmd.Dir = cleanPath
 		if opts.Logger.Check(zap.DebugLevel, "") != nil {
 			cmd.Stdout = os.Stderr

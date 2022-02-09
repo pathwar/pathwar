@@ -9,7 +9,7 @@ show_source('index.php');
 ?>
 </pre>
 
-<p>So basically we would need to bypass the <b>.php</b> which is automatically happened.</p>
+<p>So basically we would need to bypass the <b>.php</b> which is automatically added.</p>
 <p>In order to bypass it, a technique with <a href="http://php.net/manual/en/security.filesystem.nullbytes.php">null-byte terminators</a> is used.</p>
 
 <p>So you would need to do something more like <b>/index.php?page=../../../../../etc/passwd%00</b>

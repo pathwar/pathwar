@@ -28,6 +28,8 @@ services:
       - 80
     depends_on:
       - mysql
+    links:
+      - mysql
 
   mysql:
     build: mysql
