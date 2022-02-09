@@ -12,7 +12,7 @@ x-pathwar:
     purchase_price: 0
     validation_reward: 5
     body: "Learn to play with HTTP."
-    passphrases: 5
+    passphrases: 1
     category: web
     tags:
       - tutorial
