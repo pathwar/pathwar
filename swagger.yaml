@@ -1987,6 +1987,21 @@ paths:
   /admin/list-activities:
     get:
       operationId: Service_AdminListActivities
+      parameters:
+      - format: int64
+        in: query
+        name: limit
+        required: false
+        type: string
+      - format: date-time
+        in: query
+        name: since
+        required: false
+        type: string
+      - in: query
+        name: filtering_preset
+        required: false
+        type: string
       responses:
         "200":
           description: A successful response.

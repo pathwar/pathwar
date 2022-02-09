@@ -13,7 +13,9 @@ import (
 	"github.com/olekukonko/tablewriter"
 	"github.com/peterbourgon/ff/v3"
 	"github.com/peterbourgon/ff/v3/ffcli"
+	"go.uber.org/zap"
 	"moul.io/godev"
+	"moul.io/zapconfig"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -311,7 +313,21 @@ func adminAgentsCommand() *ffcli.Command {
 }
 
 func adminActivitiesCommand() *ffcli.Command {
+	input := pwapi.AdminListActivities_Input{
+		FilteringPreset: "default",
+		Limit:           50,
+		Since:           nil,
+	}
 	flags := flag.NewFlagSet("admin activities", flag.ExitOnError)
+	var (
+		follow    bool
+		logFormat bool
+	)
+	flags.BoolVar(&follow, "f", follow, "follow events")
+	flags.BoolVar(&logFormat, "log", logFormat, "use a logging format")
+	flags.Int64Var(&input.Limit, "limit", input.Limit, "max entries per call")
+	flags.StringVar(&input.FilteringPreset, "preset", input.FilteringPreset, "filtering preset (registers)")
+
 	return &ffcli.Command{
 		Name:       "activities",
 		ShortUsage: "pathwar [global flags] admin [admin flags] activities [flags]",
@@ -326,18 +342,23 @@ func adminActivitiesCommand() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
-			ret, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{})
+			ret, err := apiClient.AdminListActivities(ctx, &input)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
 			}
 
-			if adminJSONFormat {
+			// adminJSONFormat is ignored if -log is provided
+			if !logFormat && adminJSONFormat {
 				fmt.Println(godev.PrettyJSONPB(&ret))
 				return nil
 			}
 
-			// activities table
-			{
+			if logFormat {
+				logger := zapconfig.New().SetPreset("light-console").MustBuild().WithOptions(zap.WithCaller(false))
+				for _, activity := range ret.Activities {
+					activity.Log(logger)
+				}
+			} else {
 				fmt.Println("ACTIVITIES")
 				table := tablewriter.NewWriter(os.Stdout)
 				table.SetHeader([]string{"ID", "KIND", "HAPPENED", "AUTHOR", "TEAM", "USER", "AGENT", "ORG", "SEASON", "CHALLENGE", "FLAVOR", "INSTANCE", "COUPON", "SEASON CHAL.", "TEAM MEMBER", "CHALLENGE SUBS"})

@@ -48,8 +48,9 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/tailscale/depaware v0.0.0-20201214215404-77d1e9757027
 	github.com/treastech/logger v0.0.0-20180705232552-e381e9ecf2e3
-	go.uber.org/multierr v1.6.0
-	go.uber.org/zap v1.16.0
+	go.uber.org/atomic v1.9.0 // indirect
+	go.uber.org/multierr v1.7.0
+	go.uber.org/zap v1.21.0
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5 // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
@@ -60,14 +61,13 @@ require (
 	gopkg.in/gormigrate.v1 v1.6.0
 	gopkg.in/yaml.v2 v2.3.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
-	honnef.co/go/tools v0.0.1-2020.1.4 // indirect
 	moul.io/banner v1.0.1
 	moul.io/godev v1.6.0
 	moul.io/motd v1.0.0
 	moul.io/roundtripper v1.0.0
 	moul.io/srand v1.4.0
-	moul.io/u v1.21.0
-	moul.io/zapconfig v1.1.0
+	moul.io/u v1.23.0
+	moul.io/zapconfig v1.4.0
 	moul.io/zapgorm v1.0.0
 )
 

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/martinlindhe/base36"
+	"go.uber.org/zap"
 	"golang.org/x/crypto/sha3"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwinit"
@@ -66,4 +67,45 @@ func (m *SeasonChallenge) GetActiveSubscriptions() []*ChallengeSubscription {
 	}
 
 	return cs
+}
+
+func (a *Activity) Log(logger *zap.Logger) {
+	var (
+		level   = zap.InfoLevel
+		inst    = logger
+		message = a.GetKind().String()
+	)
+
+	// inst = inst.With(zap.Stringer("kind", a.GetKind()))
+	if author := a.GetAuthor(); author != nil {
+		inst = inst.With(
+			zap.String("author", author.GetSlug()),
+		)
+	}
+	if season := a.GetSeason(); season != nil {
+		inst = inst.With(
+			zap.String("season", season.GetSlug()),
+		)
+	}
+	if coupon := a.GetCoupon(); coupon != nil {
+		inst = inst.With(
+			zap.String("coupon", coupon.GetHash()),
+			zap.Int("value", int(coupon.GetValue())),
+		)
+	}
+	// FIXME: support more fields
+	inst = inst.With(zap.Int("id", int(a.GetID())))
+
+	switch level {
+	case zap.DebugLevel:
+		inst.Debug(message)
+	case zap.InfoLevel:
+		inst.Info(message)
+	case zap.WarnLevel:
+		inst.Warn(message)
+	case zap.ErrorLevel:
+		inst.Error(message)
+	default:
+		panic("invalid level")
+	}
 }
