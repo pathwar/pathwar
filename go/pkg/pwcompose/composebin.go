@@ -7,9 +7,13 @@ import (
 	"moul.io/u"
 )
 
-func tmpComposeBin() (*os.File, func(), error) {
+func ComposeBinBytes() ([]byte, error) {
 	var pwinitBox = packr.New("binaries", "../../out")
-	composeBin, err := pwinitBox.Find("docker-compose-dab")
+	return pwinitBox.Find("docker-compose-dab")
+}
+
+func tmpComposeBin() (*os.File, func(), error) {
+	composeBin, err := ComposeBinBytes()
 	if err != nil {
 		return nil, nil, err
 	}
