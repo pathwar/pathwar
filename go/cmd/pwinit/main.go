@@ -15,6 +15,7 @@ import (
 
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"moul.io/banner"
+	"moul.io/u"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwinit"
 )
@@ -34,25 +35,29 @@ func main() {
 
 			fmt.Println(banner.Inline("pwinit"))
 
-			_, err := os.Stat("/pwinit/config.json")
-			if err != nil {
-				log.Printf("no such config file, skipping on-init hook (%v)", err)
+			if !u.FileExists("/pwinit/config.json") {
+				log.Print("no such config file, skipping on-init hook")
 			} else {
-				log.Print("starting on-init hook")
-				// prepare the challenge
-				err = os.Chmod("/pwinit/on-init", 0555)
-				if err != nil {
-					return errcode.ErrExecuteOnInitHook.Wrap(err)
-				}
-				cmd := exec.Command("/pwinit/on-init")
-				err = cmd.Run()
-				if err != nil {
-					return errcode.ErrExecuteOnInitHook.Wrap(err)
+				if u.FileExists("/pwinit/on-init") {
+					log.Print("starting on-init hook")
+					// prepare the challenge
+					err := os.Chmod("/pwinit/on-init", 0555)
+					if err != nil {
+						return errcode.ErrExecuteOnInitHook.Wrap(err)
+					}
+					cmd := exec.Command("/pwinit/on-init")
+					err = cmd.Run()
+					if err != nil {
+						return errcode.ErrExecuteOnInitHook.Wrap(err)
+					}
 				}
 
 				// clean pwinit config file that contains passphrases
 				for _, filename := range []string{"/pwinit/config.json", "/pwinit/on-init"} {
-					err = os.Remove(filename)
+					if !u.FileExists(filename) {
+						continue
+					}
+					err := os.Remove(filename)
 					if err != nil {
 						return errcode.ErrRemoveInitConfig.Wrap(err)
 					}
