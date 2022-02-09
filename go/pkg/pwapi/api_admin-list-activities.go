@@ -31,13 +31,14 @@ func (svc *service) AdminListActivities(ctx context.Context, in *AdminListActivi
 		Preload("Coupon").
 		Preload("SeasonChallenge").
 		Preload("TeamMember").
-		Preload("ChallengeSubscription")
+		Preload("ChallengeSubscription").
+		Order("created_at DESC")
 	if in.Limit > 0 {
 		fmt.Println("TEST, in.Limit")
 		req = req.Limit(in.Limit)
 	}
 	if in.Since != nil {
-		return nil, errcode.ErrNotImplemented
+		req = req.Where("created_at > ?", *in.Since)
 	}
 	switch in.FilteringPreset {
 	case "default", "":
@@ -50,6 +51,10 @@ func (svc *service) AdminListActivities(ctx context.Context, in *AdminListActivi
 
 	if err := req.Find(&activities).Error; err != nil {
 		return nil, errcode.ErrListActivities.Wrap(err)
+	}
+
+	for i, j := 0, len(activities)-1; i < j; i, j = i+1, j-1 {
+		activities[i], activities[j] = activities[j], activities[i]
 	}
 
 	out := AdminListActivities_Output{Activities: activities}

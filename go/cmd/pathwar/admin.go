@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/dustin/go-humanize"
 	"github.com/olekukonko/tablewriter"
@@ -315,18 +316,20 @@ func adminAgentsCommand() *ffcli.Command {
 func adminActivitiesCommand() *ffcli.Command {
 	input := pwapi.AdminListActivities_Input{
 		FilteringPreset: "default",
-		Limit:           50,
+		Limit:           10,
 		Since:           nil,
 	}
 	flags := flag.NewFlagSet("admin activities", flag.ExitOnError)
 	var (
-		follow    bool
-		logFormat bool
+		follow        bool
+		logFormat     bool
+		sleepDuration time.Duration = time.Second * 10
 	)
 	flags.BoolVar(&follow, "f", follow, "follow events")
 	flags.BoolVar(&logFormat, "log", logFormat, "use a logging format")
-	flags.Int64Var(&input.Limit, "limit", input.Limit, "max entries per call")
+	flags.Int64Var(&input.Limit, "n", input.Limit, "max entries per call")
 	flags.StringVar(&input.FilteringPreset, "preset", input.FilteringPreset, "filtering preset (registers)")
+	flags.DurationVar(&sleepDuration, "sleep", sleepDuration, "sleep duration (used with -follow)")
 
 	return &ffcli.Command{
 		Name:       "activities",
@@ -347,6 +350,10 @@ func adminActivitiesCommand() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
+			if follow {
+				logFormat = true
+			}
+
 			// adminJSONFormat is ignored if -log is provided
 			if !logFormat && adminJSONFormat {
 				fmt.Println(godev.PrettyJSONPB(&ret))
@@ -357,6 +364,34 @@ func adminActivitiesCommand() *ffcli.Command {
 				logger := zapconfig.New().SetPreset("light-console").MustBuild().WithOptions(zap.WithCaller(false))
 				for _, activity := range ret.Activities {
 					activity.Log(logger)
+				}
+
+				if follow {
+					since := time.Now().Add(-10 * time.Second)
+					if input.Since != nil {
+						since = *input.Since
+					}
+					for _, activity := range ret.Activities {
+						if activity.CreatedAt.After(since) {
+							since = *activity.CreatedAt
+						}
+					}
+					for {
+						input.Since = &since
+						input.Limit = 10
+						ret, err := apiClient.AdminListActivities(ctx, &input)
+						if err != nil {
+							logger.Warn("failed to query AdminListActivities", zap.Error(err))
+						} else {
+							for _, activity := range ret.Activities {
+								if activity.CreatedAt.After(since) {
+									since = *activity.CreatedAt
+								}
+								activity.Log(logger)
+							}
+						}
+						time.Sleep(sleepDuration)
+					}
 				}
 			} else {
 				fmt.Println("ACTIVITIES")

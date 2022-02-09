@@ -117,6 +117,17 @@ definitions:
           $ref: '#/definitions/dbChallengeInstance'
         type: array
     type: object
+  apiAdminListActivitiesInput:
+    properties:
+      filtering_preset:
+        type: string
+      limit:
+        format: int64
+        type: string
+      since:
+        format: date-time
+        type: string
+    type: object
   apiAdminListActivitiesOutput:
     properties:
       activities:
@@ -1985,23 +1996,14 @@ paths:
       tags:
       - Service
   /admin/list-activities:
-    get:
+    post:
       operationId: Service_AdminListActivities
       parameters:
-      - format: int64
-        in: query
-        name: limit
-        required: false
-        type: string
-      - format: date-time
-        in: query
-        name: since
-        required: false
-        type: string
-      - in: query
-        name: filtering_preset
-        required: false
-        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminListActivitiesInput'
       responses:
         "200":
           description: A successful response.
