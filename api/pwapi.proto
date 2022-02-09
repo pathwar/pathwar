@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package pathwar.api;
 
-//import "github.com/golang/protobuf/ptypes/timestamp/timestamp.proto";
+import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options/annotations.proto";
@@ -85,7 +85,7 @@ service Service {
   rpc AdminListOrganizations(AdminListOrganizations.Input) returns (AdminListOrganizations.Output) { option (google.api.http) = {get: "/admin/list-organizations"}; }; // admin only
   rpc AdminListTeams(AdminListTeams.Input) returns (AdminListTeams.Output) { option (google.api.http) = {get: "/admin/list-teams"}; }; // admin only
   rpc AdminListUsers(AdminListUsers.Input) returns (AdminListUsers.Output) { option (google.api.http) = {get: "/admin/list-users"}; }; // admin only
-  rpc AdminListActivities(AdminListActivities.Input) returns (AdminListActivities.Output) { option (google.api.http) = {get: "/admin/list-activities"}; }; // admin only
+  rpc AdminListActivities(AdminListActivities.Input) returns (AdminListActivities.Output) { option (google.api.http) = {post: "/admin/list-activities"; body: "*"}; }; // admin only
   rpc AdminListChallengeSubscriptions(AdminListChallengeSubscriptions.Input) returns (AdminListChallengeSubscriptions.Output) { option (google.api.http) = {get: "/admin/list-challenge-subscriptions"}; }; // admin only
   rpc AdminListAll(AdminListAll.Input) returns (AdminListAll.Output) { option (google.api.http) = {get: "/admin/list-all"}; }; // admin only
   rpc AdminSearch(AdminSearch.Input) returns (AdminSearch.Output) { option (google.api.http) = {post: "/admin/search"; body: "*"}; }; // admin only
@@ -227,7 +227,11 @@ message AdminListTeams {
 }
 
 message AdminListActivities {
-  message Input {}
+  message Input {
+    int64 limit = 1;
+    google.protobuf.Timestamp since = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+    string filtering_preset = 3;
+  }
   message Output {
     repeated pathwar.db.Activity activities = 1;
   }

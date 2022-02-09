@@ -1,13 +1,4 @@
 #!/bin/sh -e
 
-pass1=$(pwinit passphrase 0)
-pass2=$(pwinit passphrase 1)
-pass3=$(pwinit passphrase 2)
-pass4=$(pwinit passphrase 3)
-pass5=$(pwinit passphrase 4)
-sed -i -e "s/__PASSPHRASE1__/$pass1/" /var/www/html/post.php;
-sed -i -e "s/__PASSPHRASE1__/$pass1/" /var/www/html/step1.php;
-sed -i -e "s/__PASSPHRASE2__/$pass2/" /var/www/html/step2.php;
-sed -i -e "s/__PASSPHRASE3__/$pass3/" /var/www/html/step2.php;
-sed -i -e "s/__PASSPHRASE4__/$pass4/" /var/www/html/redir.php;
-sed -i -e "s/__PASSPHRASE5__/$pass5/" /var/www/html/step4.php;
+pass=$(pwinit passphrase 0)
+sed -i -e "s/__PASSPHRASE__/$pass/" /var/www/html/step4.php;

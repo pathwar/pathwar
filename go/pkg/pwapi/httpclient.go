@@ -105,7 +105,7 @@ func (c HTTPClient) AdminListChallengeSubscriptions(ctx context.Context, input *
 func (c HTTPClient) AdminListActivities(ctx context.Context, input *AdminListActivities_Input) (AdminListActivities_Output, error) {
 	var _ *AdminListActivities_Input = input
 	var result AdminListActivities_Output
-	err := c.doGet(ctx, "/admin/list-activities", input, &result)
+	err := c.doPost(ctx, "/admin/list-activities", input, &result)
 	return result, err
 }
 

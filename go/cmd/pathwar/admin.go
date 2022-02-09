@@ -8,12 +8,15 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/dustin/go-humanize"
 	"github.com/olekukonko/tablewriter"
 	"github.com/peterbourgon/ff/v3"
 	"github.com/peterbourgon/ff/v3/ffcli"
+	"go.uber.org/zap"
 	"moul.io/godev"
+	"moul.io/zapconfig"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -311,7 +314,23 @@ func adminAgentsCommand() *ffcli.Command {
 }
 
 func adminActivitiesCommand() *ffcli.Command {
+	input := pwapi.AdminListActivities_Input{
+		FilteringPreset: "default",
+		Limit:           10,
+		Since:           nil,
+	}
 	flags := flag.NewFlagSet("admin activities", flag.ExitOnError)
+	var (
+		follow        bool
+		logFormat     bool
+		sleepDuration time.Duration = time.Second * 10
+	)
+	flags.BoolVar(&follow, "f", follow, "follow events")
+	flags.BoolVar(&logFormat, "log", logFormat, "use a logging format")
+	flags.Int64Var(&input.Limit, "n", input.Limit, "max entries per call")
+	flags.StringVar(&input.FilteringPreset, "preset", input.FilteringPreset, "filtering preset (registers)")
+	flags.DurationVar(&sleepDuration, "sleep", sleepDuration, "sleep duration (used with -follow)")
+
 	return &ffcli.Command{
 		Name:       "activities",
 		ShortUsage: "pathwar [global flags] admin [admin flags] activities [flags]",
@@ -326,18 +345,55 @@ func adminActivitiesCommand() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
-			ret, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{})
+			ret, err := apiClient.AdminListActivities(ctx, &input)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
 			}
 
-			if adminJSONFormat {
+			if follow {
+				logFormat = true
+			}
+
+			// adminJSONFormat is ignored if -log is provided
+			if !logFormat && adminJSONFormat {
 				fmt.Println(godev.PrettyJSONPB(&ret))
 				return nil
 			}
 
-			// activities table
-			{
+			if logFormat {
+				logger := zapconfig.New().SetPreset("light-console").MustBuild().WithOptions(zap.WithCaller(false))
+				for _, activity := range ret.Activities {
+					activity.Log(logger)
+				}
+
+				if follow {
+					since := time.Now().Add(-10 * time.Second)
+					if input.Since != nil {
+						since = *input.Since
+					}
+					for _, activity := range ret.Activities {
+						if activity.CreatedAt.After(since) {
+							since = *activity.CreatedAt
+						}
+					}
+					for {
+						input.Since = &since
+						input.Limit = 10
+						ret, err := apiClient.AdminListActivities(ctx, &input)
+						if err != nil {
+							logger.Warn("failed to query AdminListActivities", zap.Error(err))
+						} else {
+							for _, activity := range ret.Activities {
+								if activity.CreatedAt.After(since) {
+									since = *activity.CreatedAt
+								}
+								activity.Log(logger)
+							}
+						}
+						time.Sleep(sleepDuration)
+					}
+				}
+			} else {
 				fmt.Println("ACTIVITIES")
 				table := tablewriter.NewWriter(os.Stdout)
 				table.SetHeader([]string{"ID", "KIND", "HAPPENED", "AUTHOR", "TEAM", "USER", "AGENT", "ORG", "SEASON", "CHALLENGE", "FLAVOR", "INSTANCE", "COUPON", "SEASON CHAL.", "TEAM MEMBER", "CHALLENGE SUBS"})
