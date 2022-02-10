@@ -4,8 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 	"pathwar.land/pathwar/v2/go/pkg/pwsso"
@@ -16,7 +17,7 @@ func testingSeasons(t *testing.T, svc Service) *pwdb.SeasonList {
 
 	db := testingSvcDB(t, svc)
 	var list pwdb.SeasonList
-	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
+	err := db.Preload(clause.Associations).Find(&list.Items).Error
 	assert.NoError(t, err, "list seasons")
 	return &list
 }
@@ -39,7 +40,7 @@ func testingSeasonChallenges(t *testing.T, svc Service) *pwdb.SeasonChallengeLis
 
 	db := testingSvcDB(t, svc)
 	var list pwdb.SeasonChallengeList
-	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
+	err := db.Preload("Flavor.Challenge").Preload(clause.Associations).Find(&list.Items).Error
 	assert.NoError(t, err, "list season challenges")
 	return &list
 }
@@ -63,7 +64,7 @@ func testingActivities(t *testing.T, svc Service) *pwdb.ActivityList {
 
 	db := testingSvcDB(t, svc)
 	var list pwdb.ActivityList
-	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
+	err := db.Preload(clause.Associations).Find(&list.Items).Error
 	assert.NoError(t, err, "list activities")
 	return &list
 }
@@ -73,7 +74,7 @@ func testingTeams(t *testing.T, svc Service) *pwdb.TeamList {
 
 	db := testingSvcDB(t, svc)
 	var list pwdb.TeamList
-	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
+	err := db.Preload(clause.Associations).Find(&list.Items).Error
 	assert.NoError(t, err, "list teams")
 	return &list
 }
@@ -83,7 +84,7 @@ func testingChallenges(t *testing.T, svc Service) *pwdb.ChallengeList {
 
 	db := testingSvcDB(t, svc)
 	var list pwdb.ChallengeList
-	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
+	err := db.Preload(clause.Associations).Find(&list.Items).Error
 	assert.NoError(t, err, "list challenges")
 	return &list
 }

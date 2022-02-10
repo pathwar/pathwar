@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )

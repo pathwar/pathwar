@@ -5,19 +5,24 @@ import (
 
 	"github.com/brianvoe/gofakeit"
 	"github.com/bwmarrin/snowflake"
-	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/internal/randstring"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
 func GetInfo(db *gorm.DB, logger *zap.Logger) (*Info, error) {
 	info := Info{
-		TableRows: make(map[string]uint32),
+		TableRows: make(map[string]int64),
 	}
+	stmt := &gorm.Statement{DB: db}
 	for _, model := range All() {
-		var count uint32
-		tableName := db.NewScope(model).TableName()
+		var count int64
+		err := stmt.Parse(model)
+		if err != nil {
+			return nil, GormToErrcode(err)
+		}
+		tableName := stmt.Schema.Table
 		if err := db.Model(model).Count(&count).Error; err != nil {
 			logger.Warn("get table rows", zap.String("table", tableName), zap.Error(err))
 			continue

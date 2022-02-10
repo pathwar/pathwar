@@ -12,5 +12,5 @@ import (
 	_ "github.com/golang/protobuf/proto"                                  // required by protoc
 	_ "github.com/golang/protobuf/ptypes/timestamp"                       // required by protoc
 	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options" // required by protoc
-	_ "github.com/tailscale/depaware"                                     // required by Makefile
+	_ "github.com/tailscale/depaware/depaware"                            // required by make-generate
 )

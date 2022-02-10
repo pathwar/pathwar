@@ -3,13 +3,12 @@ package pwdb
 import (
 	"errors"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
 func IsRecordNotFoundError(err error) bool {
-	return gorm.IsRecordNotFoundError(err) ||
-		gorm.IsRecordNotFoundError(errors.Unwrap(err))
+	return errors.Is(err, gorm.ErrRecordNotFound)
 }
 
 func GormToErrcode(err error) error {

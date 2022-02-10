@@ -3,7 +3,7 @@ package pwapi
 import (
 	"context"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -65,7 +65,7 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 	}
 
 	// check for duplicate
-	var c int
+	var c int64
 	err = svc.db.
 		Model(pwdb.ChallengeSubscription{}).
 		Where(pwdb.ChallengeSubscription{

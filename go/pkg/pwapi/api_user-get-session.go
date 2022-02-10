@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/gosimple/slug"
-	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"pathwar.land/pathwar/v2/go/internal/randstring"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -89,7 +89,7 @@ func (svc *service) loadUserSeasons(ctx context.Context) ([]*UserGetSession_Outp
 	err = svc.db.
 		Preload("Team").
 		Preload("Team.Organization").
-		Where(pwdb.TeamMember{UserID: userID}).
+		Where(&pwdb.TeamMember{UserID: userID}).
 		Find(&memberships).
 		Error
 	if err != nil {
@@ -102,11 +102,11 @@ func (svc *service) loadUserSeasons(ctx context.Context) ([]*UserGetSession_Outp
 		// noop
 	case isTesterContext(ctx):
 		req = req.
-			Where(pwdb.Season{Visibility: pwdb.Season_Public}).
-			Or(pwdb.Season{IsTesting: true})
+			Where(&pwdb.Season{Visibility: pwdb.Season_Public}).
+			Or(&pwdb.Season{IsTesting: true})
 	default: // "normal" user
 		req = req.
-			Where(pwdb.Season{Visibility: pwdb.Season_Public})
+			Where(&pwdb.Season{Visibility: pwdb.Season_Public})
 	}
 
 	// get all available seasons
@@ -143,7 +143,7 @@ func (svc *service) loadOAuthUser(subject string) (*pwdb.User, error) {
 		Preload("ActiveTeamMember.Team").
 		Preload("ActiveTeamMember.Team.Season").
 		Preload("ActiveTeamMember.Team.Organization").
-		Where(pwdb.User{OAuthSubject: subject}).
+		Where(&pwdb.User{OAuthSubject: subject}).
 		First(&user).
 		Error
 	if err != nil {
@@ -234,7 +234,7 @@ func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) 
 		}
 
 		// set active season
-		err := tx.Model(&user).Updates(pwdb.User{
+		err := tx.Model(&user).Updates(&pwdb.User{
 			ActiveTeamMemberID: seasonMember.ID,
 			ActiveSeasonID:     season.ID,
 		}).
