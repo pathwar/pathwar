@@ -33,7 +33,7 @@ import (
 
 const (
 	defaultDBURN       = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8mb4&parseTime=true"
-	defaultHTTPApiAddr = "https://api-dev.pathwar.land"
+	defaultHTTPApiAddr = "https://api.pathwar.land"
 )
 
 var (
