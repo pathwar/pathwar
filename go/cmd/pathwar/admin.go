@@ -361,7 +361,10 @@ func adminActivitiesCommand() *ffcli.Command {
 			}
 
 			if logFormat {
-				logger := zapconfig.New().SetPreset("light-console").MustBuild().WithOptions(zap.WithCaller(false))
+				logger := zapconfig.New().
+					SetPreset("console").
+					MustBuild().
+					WithOptions(zap.WithCaller(false))
 				for _, activity := range ret.Activities {
 					activity.Log(logger)
 				}

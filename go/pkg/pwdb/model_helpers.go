@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	time "time"
 
 	"github.com/martinlindhe/base36"
 	"go.uber.org/zap"
@@ -69,32 +70,54 @@ func (m *SeasonChallenge) GetActiveSubscriptions() []*ChallengeSubscription {
 	return cs
 }
 
+type constantClock time.Time
+
+func (c constantClock) Now() time.Time                         { return time.Time(c) }
+func (c constantClock) NewTicker(d time.Duration) *time.Ticker { return &time.Ticker{} }
+
 func (a *Activity) Log(logger *zap.Logger) {
 	var (
 		level   = zap.InfoLevel
-		inst    = logger
-		message = a.GetKind().String()
+		inst    = logger.WithOptions(zap.WithClock(constantClock(*a.CreatedAt)))
+		message = fmt.Sprintf("%-30s", a.GetKind().String())
 	)
 
-	// inst = inst.With(zap.Stringer("kind", a.GetKind()))
 	if author := a.GetAuthor(); author != nil {
 		inst = inst.With(
 			zap.String("author", author.GetSlug()),
+		)
+		if user := a.GetUser(); user != nil {
+			if user.GetID() != author.GetID() {
+				inst = inst.With(
+					zap.String("user", user.GetSlug()),
+				)
+			}
+		}
+	}
+	if agent := a.GetAgent(); agent != nil {
+		inst = inst.With(
+			zap.String("agent", agent.GetSlug()),
 		)
 	}
 	if season := a.GetSeason(); season != nil {
 		inst = inst.With(
 			zap.String("season", season.GetSlug()),
 		)
+		if !season.IsGlobal {
+			if team := a.GetTeam(); team != nil {
+				inst = inst.With(
+					zap.String("team", team.GetSlug()),
+				)
+			}
+		}
 	}
-	if coupon := a.GetCoupon(); coupon != nil {
+	if seasonChallenge := a.GetSeasonChallenge(); seasonChallenge != nil {
 		inst = inst.With(
-			zap.String("coupon", coupon.GetHash()),
-			zap.Int("value", int(coupon.GetValue())),
+			zap.String("season-challenge", seasonChallenge.GetSlug()),
 		)
 	}
 	// FIXME: support more fields
-	inst = inst.With(zap.Int("id", int(a.GetID())))
+	inst = inst.With(zap.Int("activity", int(a.GetID())))
 
 	switch level {
 	case zap.DebugLevel:
