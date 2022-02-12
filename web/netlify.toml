@@ -6,7 +6,7 @@
 
 [build.environment]
   YARN_FLAGS = "--no-ignore-optional"
-  API_URL = "https://api-dev.pathwar.land/"
+  API_URL = "https://api.pathwar.land/"
   KEYCLOAK_REALM = "Pathwar-Dev"
 
 [context.production.environment]

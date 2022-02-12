@@ -81,6 +81,12 @@ func apiCommand() *ffcli.Command {
 					serverOpts.Tracer = tracer
 					serverOpts.Logger = logger.Named("server")
 					var err error
+
+					if serverOpts.Bind == "gcloud" {
+						serverOpts.Bind = fmt.Sprintf("0.0.0.0:%s", os.Getenv("PORT"))
+						logger.Info("bind", zap.String("address", serverOpts.Bind))
+					}
+
 					server, err = pwapi.NewServer(ctx, svc, serverOpts)
 					if err != nil {
 						return errcode.ErrInitServer.Wrap(err)
@@ -159,6 +165,20 @@ func svcFromFlags(logger *zap.Logger) (pwapi.Service, *gorm.DB, func(), error) {
 	// init database
 	dbConnectTries := 0
 dbConnectLoop:
+	if DBURN == "gcloud" {
+		var (
+			dbUser                 = os.Getenv("DB_USER")
+			dbPass                 = os.Getenv("DB_PASS")
+			instanceConnectionName = os.Getenv("INSTANCE_CONNECTION_NAME")
+			dbName                 = os.Getenv("DB_NAME")
+		)
+		socketDir, isSet := os.LookupEnv("DB_SOCKET_DIR")
+		if !isSet {
+			socketDir = "/cloudsql"
+		}
+		DBURN = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s?parseTime=true", dbUser, dbPass, socketDir, instanceConnectionName, dbName)
+		logger.Info("gcloud URN", zap.String("connection", DBURN))
+	}
 	db, err := gorm.Open("mysql", DBURN)
 	if err != nil {
 		dbConnectTries++

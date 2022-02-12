@@ -30,7 +30,7 @@ func main() {
 
 func runMain(args []string) error {
 	log.SetFlags(0)
-	logger, _ := zap.NewDevelopment()
+	logger, _ := zap.NewProduction()
 	defer func() {
 		if logger != nil {
 			_ = logger.Sync()
