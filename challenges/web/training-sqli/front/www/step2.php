@@ -7,15 +7,15 @@ if (isset($_POST['password'])) {
     if ($result->num_rows > 0) { // login successful
 	$data = $result->fetch_row();
 	if ($data[1] === 'admin') {
-	    echo "Welcome $data[1] !<br />";
-	    echo "In case you have forgotten it, your password is : __PASSPHRASE0__";
+	    echo "Welcome $data[1]!<br />";
+	    echo "In case you have forgotten it, your password is: __PASSPHRASE0__";
 	}
 	else {
-	    echo 'Hey ! What are you doing here ? You are not the admin !<br />';
+	    echo 'Hey! What are you doing here? You are not the admin!<br />';
 	}
     }
     else {
-	echo '<div>Either the login or the password is wrong !</div>';
+	echo '<div>Username or password is incorrect!</div>';
     }
 }
 else {
@@ -33,7 +33,7 @@ else {
       </div>
     </div>
     <div class="span10">
-      This time, the admin has secured the website by removing its account from the database. Prove him wrong and login with his account ! (tips: take a look at the mysql documentation for UNION) <br />
+      This time, the admin has secured the website by removing their account from the database. Prove them wrong and login with their account ! (<b>Tip</b>: take a look at the mysql documentation for UNION.) <br />
       The request looks like this :<br />
       <div class="code">
 	<pre><?php echo htmlentities(file_get_contents('step2.txt'))?></pre>

@@ -4,8 +4,8 @@
   <title>1337Chan</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 </head>
-<center><p>Welcome to my new image board ! It is not finished yet, but you can already see what it will look like !</p></center>
-<center><p>For can, only the admin can upload pictures, but you will soon be able to do the same !</p></center>
+<center><p>Welcome to my new imageboard! It's not finished yet, but here's a preview to give you a sense of what it'll look like.</p></center>
+<center><p>For now, only the admins can upload pictures, but soon you'll be able to, too!</p></center>
 
 <?php
 include('db.php');
