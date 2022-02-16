@@ -1,7 +1,7 @@
-<p>Welcome on the Pathwar Training Include level</p>
+<p>Welcome to the Pathwar <b>Include</b> Training</p>
 
-<p>You wil learn how to play with some useful stuff needed for your later experiments..</p>
+<p>You'll want to play with this stuff to build a handy skillset for the challenges ahead...</p>
 
-<p>Enjoy !</p>
+<p>Enjoy!</p>
 
 <p><a href="?page=include1">Click here to continue</a></p>

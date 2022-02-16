@@ -2,9 +2,9 @@
 <p>
   <center>
   <?php if ($_GET['pass'] == md5("XXX" /* XXX == a number between 0 et 1000 */)) : ?>
-    Congratz! The passphrase is <b>XXX</b>
+    Wisely done! The passphrase is <b>XXX</b>
     <?php else : ?>
-    Invalid password.
+    Invalid password, young mage.
     <?php endif ?>
   </center>
 </p>

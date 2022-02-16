@@ -11,18 +11,18 @@
       </div>
     </div>
     <div class="span10">
-      Welcome to this training level for SQL Injection !<br />
-      With this level, you will learn to exploit some very basic injections, just to get the hang of it.<br />
+      Welcome to the SQL Injection training grounds!<br />
+      In this training level, you'll get the hang of writing basic SQL injections.<br />
       <h3>
-	What is a SQL injection ?
+	What is a SQL injection?
       </h3>
-      <p>A SQL injection is a vulnerability commonly found on websites, allowing an attacker to inject arbiraty content into a SQL request, due to a lack of sanitization of user input.<p>
+      <p>A SQL injection is a vulnerability commonly found on websites allowing an attacker to inject arbitrary content into a SQL request due to a lack of sanitization of user input.<p>
 	<h3>
-	  What are the consequences ?
+	  What are the consequences?
 	</h3>
-	<p>When you find a website vulnerable to a SQL injection, you can do pretty much whatever you want with the database. Depending on where the injection is, you can get the passwords for every users, bypass a login form or even in some rare cases execute arbitrary code on the server !</p>
+	<p>When you find a website vulnerable to a SQL injection, you can do pretty much whatever you want with its database. Depending on where the injection is, you can list passwords for all users, bypass a login form, or sometimes even execute arbitrary code on the server!</p>
 	<h3>
-	  Some ressources on the subject:
+	  Some resources on the subject:
 	</h3>
 	<ul>
 	  <li>
