@@ -26,5 +26,6 @@ packrd/
 *-packr.go
 pathwar-compose.yml
 docker-compose.tmp.yml
+challenges/*/*/_register.sh
 
 .idea

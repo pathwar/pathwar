@@ -25,9 +25,13 @@ pathwar.prepare:
 pathwar.push:
 	pathwar $(PATHWAR_OPTS) compose prepare --prefix=$(PREFIX) . > pathwar-compose.yml
 
+.PHONY: docker.pathwar.push
+docker.pathwar.push:
+	docker run -it --rm --privileged -v /var/run/docker.sock:/var/run/docker.sock -v "$(PWD):$(PWD)" -w "$(PWD)" pathwar/agent compose prepare --prefix=$(PREFIX) . > pathwar-compose.yml
+
 .PHONY: pathwar.register
-pathwar.register: pathwar.push
-	pathwar $(PATHWAR_OPTS) compose register --print ./pathwar-compose.yml
+pathwar.register:
+	pathwar $(PATHWAR_OPTS) compose register --print ./pathwar-compose.yml > _register.sh
 
 .PHONY: make.bump
 make.bump:
