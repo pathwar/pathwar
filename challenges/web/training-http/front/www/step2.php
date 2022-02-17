@@ -1,4 +1,4 @@
-<?php header('X-Pathwar-Header: __PASSPHRASE3__'); ?>
+<?php header('X-Pathwar-Header: ValidationCodeWillBeGivenAtANextStep'); ?>
 <?php include("header.php"); ?>
 <div class="container-fluid">
     <div class="row">
