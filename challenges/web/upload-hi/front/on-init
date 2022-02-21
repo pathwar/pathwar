@@ -2,3 +2,4 @@
 
 UUID=$(cat /proc/sys/kernel/random/uuid)
 echo -n "$(pwinit passphrase 0)" > $UUID.txt
+
