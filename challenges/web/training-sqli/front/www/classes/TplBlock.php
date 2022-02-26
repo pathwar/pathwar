@@ -312,7 +312,7 @@ class TplBlock
     public function applyTplFile($file)
     {
         $tplStr = file_get_contents($file);
-        if ( $tplStr = == false ) {
+        if ( $tplStr == false ) {
             throw new \UnexpectedValueException("Cannot read given file $file");
         }
 
