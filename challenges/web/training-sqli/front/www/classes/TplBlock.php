@@ -311,7 +311,8 @@ class TplBlock
      */
     public function applyTplFile($file)
     {
-        if (! $tplStr = file_get_contents($file)) {
+        $tplStr = file_get_contents($file));
+        if ( $tplStr = == false ) {
             throw new \UnexpectedValueException("Cannot read given file $file");
         }
 
