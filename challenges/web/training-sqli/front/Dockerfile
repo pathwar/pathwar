@@ -1,5 +1,5 @@
 FROM    php:7.3-apache
-RUN apt update \
+RUN apt-get update \
     && docker-php-ext-install mysqli \
     && apt-get install -y libicu-dev \
     && docker-php-ext-configure intl \
