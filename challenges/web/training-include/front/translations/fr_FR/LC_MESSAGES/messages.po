@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-27 22:32+0100\n"
-"PO-Revision-Date: 2022-02-27 23:17+0100\n"
+"PO-Revision-Date: 2022-02-27 23:36+0100\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,7 +46,7 @@ msgid ""
 "attacks such as cross site scripting (XSS)"
 msgstr ""
 "Exécution de code coté client, comme javascript qui peut aboutir à d'autres "
-"attaques comme \"cross site scripting (XSS)\" "
+"attaques comme \"cross site scripting (XSS)\"  "
 
 #: ../www/include2.php:6
 msgid "Code execution on the web server"
@@ -123,7 +123,7 @@ msgstr "Note:"
 
 #: ../www/include4.php:13
 msgid "Notice the <b>.php</b> suffix that's automatically added."
-msgstr "Remarques que le suffixe <b>.php</b>  est ajouté automatiquement."
+msgstr "Remarquez que le suffixe <b>.php</b>  est ajouté automatiquement."
 
 #: ../www/include2.php:9
 msgid "Sensitive Information Disclosure"
@@ -135,7 +135,7 @@ msgid ""
 "org/wiki/Model%E2%80%93view%E2%80%93controller\">MVC</a> architecture. "
 msgstr ""
 "Nous voyons beaucoup de sites utilisant une structure <a href=\"https://en."
-"wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller\">MVC</a>"
+"wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller\">MVC</a> "
 
 #: ../www/include5.php:2
 msgid "Some PHP configurations even allow URL include..."
@@ -165,7 +165,7 @@ msgid ""
 "the Internet is full of deprecated PHP, this is not obsolete knowledge!"
 msgstr ""
 "La vulnérabilité \"null-byte termination\" a été corrigée avec PHP 5.3.4. "
-"Mais comme internet est plein de sites PHP obsolètes, c'est bon de le savoir."
+"Mais comme internet est plein de sites PHP obsolètes, c'est bon de le savoir!"
 
 #: ../www/include2.php:4
 msgid ""
@@ -173,7 +173,7 @@ msgid ""
 "page, or, more seriously, enable:"
 msgstr ""
 "Çà peut permettre à l'attaquant d'afficher le contenu d'un fichier dans la "
-"page, ou plus grave, activer:"
+"page, ou plus grave:"
 
 #: ../www/include5.php:3
 msgid "We're going to include a file called"
@@ -193,8 +193,8 @@ msgstr ""
 
 #: ../www/include5.php:13
 msgid "here"
-msgstr "Ici"
+msgstr "ici"
 
 #: ../www/include5.php:14
 msgid "you'll be able to list all the files in this directory!"
-msgstr "Vous serez capable de lister tous les fichiers de ce répertoire!"
+msgstr "vous serez capable de lister tous les fichiers de ce répertoire!"
