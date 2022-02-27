@@ -1,0 +1,200 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-27 22:32+0100\n"
+"PO-Revision-Date: 2022-02-27 23:17+0100\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: fr_FR\n"
+
+#: ../www/include3.php:3
+msgid "...Or not?"
+msgstr "Ou pas?"
+
+#: ../www/include1.php:3
+msgid "A lot of them are homemade, with serious but subtle security flaws."
+msgstr ""
+"Beaucoup sont faits maison, avec des sérieux mais subtiles défauts de "
+"sécurité."
+
+#: ../www/include2.php:2
+msgid ""
+"By browsing the awesome <a href=\"https://www.owasp.org/index.php/"
+"Testing_for_Local_File_Inclusion\">OWASP</a> website, we learn that:"
+msgstr ""
+"En parcourant l'impressionnant site <a href=\"https://www.owasp.org/index."
+"php/Testing_for_Local_File_Inclusion\">OWASP</a> nous apprenons que:"
+
+#: ../www/home.php:5
+msgid "Click here to continue"
+msgstr "Cliquez ici pour continuer"
+
+#: ../www/include2.php:7
+msgid ""
+"Code execution on the client-side such as JavaScript which can lead to other "
+"attacks such as cross site scripting (XSS)"
+msgstr ""
+"Exécution de code coté client, comme javascript qui peut aboutir à d'autres "
+"attaques comme \"cross site scripting (XSS)\" "
+
+#: ../www/include2.php:6
+msgid "Code execution on the web server"
+msgstr "Exécution de code sur le serveur web"
+
+#: ../www/include4.php:17
+msgid "Continue"
+msgstr "Continuer"
+
+#: ../www/include1.php:5 ../www/include2.php:11
+msgid "Continue..."
+msgstr "Continuer..."
+
+#: ../www/include2.php:8
+msgid "Denial of Service (DoS)"
+msgstr "Deni de service (Denial of Service DOS)"
+
+#: ../www/include4.php:15
+msgid ""
+"Depending on your background, perhaps now you can envision a more nefarious "
+"file inclusion, e.g. a MySQL my.cnf config file."
+msgstr ""
+"En fonction de votre contexte, maintenant vous pouvez peut-être envisager "
+"l'exploitation d'une inclusion plus critique. Le fichier de configuration de "
+"MySQL my.cnf par exemple."
+
+#: ../www/home.php:4
+msgid "Enjoy!"
+msgstr "Profitez!"
+
+#: ../www/include3.php:2
+msgid ""
+"For example, you could expose the contents of the server's <b>/etc/passwd</"
+"b> file by <a href=\"?page=../../../../../etc/passwd\" target=\"_blank"
+"\">clicking here</a>."
+msgstr ""
+"Par exemple, vous pourriez afficher le contenu du fichier du serveur <b>/etc/"
+"passwd</b> en  <a href=\"?page=../../../../../etc/passwd\" target=\"_blank"
+"\">suivant ce lien</a>."
+
+#: ../www/include5.php:16
+msgid "Happy Hacking!"
+msgstr "Joyeux Hacking!"
+
+#: ../www/include1.php:4
+msgid "Here you'll learn how to exploit them."
+msgstr "Nous allons apprendre comment les exploiter."
+
+#: ../www/include5.php:13
+msgid "If you click"
+msgstr "Si vous cliquez"
+
+#: ../www/include5.php:15
+msgid "Impressed? This is nothing compared to what you'll learn later!"
+msgstr ""
+"Impressionnant? Ce n'est rien comparé à ce que vous allez apprendre plus "
+"tard!"
+
+#: ../www/include4.php:14
+msgid ""
+"In order for our request to override it, a technique with <a href=\"http://"
+"php.net/manual/en/security.filesystem.nullbytes.php\">null-byte terminators</"
+"a> is used, and we request <b>/index.php?page=../../../../../etc/passwd%00</"
+"b> instead. "
+msgstr ""
+"Pour notre requête, afin  de passer outre, une technique  <a href=\"http://"
+"php.net/manual/en/security.filesystem.nullbytes.php\"> \"null-byte "
+"terminators\"</a> est utilisée. Nous requêtons   <b>/index.php?"
+"page=../../../../../etc/passwd%00</b> à la place. "
+
+#: ../www/include4.php:16
+msgid "Note:"
+msgstr "Note:"
+
+#: ../www/include4.php:13
+msgid "Notice the <b>.php</b> suffix that's automatically added."
+msgstr "Remarques que le suffixe <b>.php</b>  est ajouté automatiquement."
+
+#: ../www/include2.php:9
+msgid "Sensitive Information Disclosure"
+msgstr "Divulgation d'information sensible"
+
+#: ../www/include1.php:2
+msgid ""
+"So, we're seeing a lot of websites using an <a href=\"http://en.wikipedia."
+"org/wiki/Model%E2%80%93view%E2%80%93controller\">MVC</a> architecture. "
+msgstr ""
+"Nous voyons beaucoup de sites utilisant une structure <a href=\"https://en."
+"wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller\">MVC</a>"
+
+#: ../www/include5.php:2
+msgid "Some PHP configurations even allow URL include..."
+msgstr ""
+"Certaines configurations PHP permettent toujours l'inclusion dans l'URL...."
+
+#: ../www/include4.php:2
+msgid "That's because the code that retrieves the page looks like this:"
+msgstr "C'est parce que le code qui génère cette page ressemble à:"
+
+#: ../www/include2.php:3
+msgid ""
+"The File Inclusion vulnerability allows an attacker to include a file, "
+"usually exploiting a \"dynamic file inclusion\" mechanisms implemented in "
+"the target application. The vulnerability occurs due to the use of user-"
+"supplied input without proper validation."
+msgstr ""
+"La vulnérabilité \"File inclusion\" permet à un attaquant d'inclure un nom "
+"de fichier, généralement en exploitant un mécanisme d'\"inclusions dynamiques"
+"\" implémenté sur l'application cible. Cette vulnérabilité est due à un "
+"manque de vérification des entrées (noms de fichiers, urls etc...) fournies "
+"par l'utilisateur."
+
+#: ../www/include4.php:16
+msgid ""
+"The null-byte termination vulnerability was fixed in PHP 5.3.4. But since "
+"the Internet is full of deprecated PHP, this is not obsolete knowledge!"
+msgstr ""
+"La vulnérabilité \"null-byte termination\" a été corrigée avec PHP 5.3.4. "
+"Mais comme internet est plein de sites PHP obsolètes, c'est bon de le savoir."
+
+#: ../www/include2.php:4
+msgid ""
+"This can allow attackers to simply output the contents of the file onto a "
+"page, or, more seriously, enable:"
+msgstr ""
+"Çà peut permettre à l'attaquant d'afficher le contenu d'un fichier dans la "
+"page, ou plus grave, activer:"
+
+#: ../www/include5.php:3
+msgid "We're going to include a file called"
+msgstr "Nous allons inclure un fichier nommé"
+
+#: ../www/home.php:2
+msgid "Welcome to the Pathwar <b>Include</b> Training"
+msgstr "Bienvenue au Challange Pathwar Entrainement <b>include</b>"
+
+#: ../www/home.php:3
+msgid ""
+"You'll want to play with this stuff to build a handy skillset for the "
+"challenges ahead..."
+msgstr ""
+"Vous allez vouloir jouer avec ce truc pour obtenir des outils pour les "
+"prochains challanges..."
+
+#: ../www/include5.php:13
+msgid "here"
+msgstr "Ici"
+
+#: ../www/include5.php:14
+msgid "you'll be able to list all the files in this directory!"
+msgstr "Vous serez capable de lister tous les fichiers de ce répertoire!"
