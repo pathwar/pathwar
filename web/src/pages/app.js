@@ -29,7 +29,7 @@ import "react-responsive-modal/styles.css";
 
 Sentry.init({
   dsn:
-    "https://8605d8e8fa21419d9a0e3f36a54df5cb@o406102.ingest.sentry.io/5272916"
+    "https://8605d8e8fa21419d9a0e3f36a54df5cb@o406102.ingest.sentry.io/5272916",
 });
 toast.configure();
 
