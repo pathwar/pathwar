@@ -14,6 +14,8 @@
   "coupon.validate": "Valider",
   "HomePage.title": "Accueil",
   "HomePage.createdAt": "créé le",
+  "ComingSoonPage.title": "Pardon,",
+  "ComingSoonPage.text": "Cette page n'est pas encore disponible",
   "SettingsPage.settings": "Paramètres",
   "SettingsPage.deleteAccount": "Supprimer le compte",
   "ChallengeBuyButton.buy": "Acheter",

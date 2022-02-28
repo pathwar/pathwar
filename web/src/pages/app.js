@@ -18,6 +18,7 @@ import StatisticsPage from "./StatisticsPage";
 import SiteWrapper from "../components/SiteWrapper";
 import TeamDetailsPage from "./TeamDetailsPage";
 import SettingsPage from "./SettingsPage";
+import ComingSoonPage from "./ComingSoonPage";
 import * as Sentry from "@sentry/browser";
 
 import logo from "../images/new_pathwar-logo.svg";
@@ -83,7 +84,7 @@ const App = () => {
         <script async src={withPrefix("chat-init.js")} type="text/javascript" />
       </Helmet>
 
-      <Global styles={globalStyle(currentTheme)} />
+      <Global styles={globalStyle(currentTheme, true)} />
       <SiteWrapper />
       <Location>
         {({ location }) => (
@@ -102,6 +103,7 @@ const App = () => {
             <ProtectedRoute path="/app/settings" component={SettingsPage} />
             <ProtectedRoute path="/app/logout" component={LogoutPage} />
             <ProtectedRoute path="/app" component={ChallengesPage} />
+            <ProtectedRoute default component={ComingSoonPage} />
           </Router>
         )}
       </Location>

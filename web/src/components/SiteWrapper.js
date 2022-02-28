@@ -1,9 +1,9 @@
 import * as React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "gatsby";
 import { css } from "@emotion/core";
 import { FormattedMessage } from "react-intl";
+import { useTheme } from "emotion-theming";
 import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
 import logo from "../images/new-pathwar-logo-light-blue.svg";
 import iconProfile from "../images/icon-profile.svg";
@@ -159,117 +159,108 @@ const listItems = [
   { link: "/app/missions", name: <FormattedMessage id="nav.missions" /> },
   { link: "/app/events", name: <FormattedMessage id="nav.events" /> },
   { link: "/app/community", name: <FormattedMessage id="nav.community" /> },
-  { link: "/blog", name: <FormattedMessage id="nav.blog" /> },
+  { link: "/app/blog", name: <FormattedMessage id="nav.blog" /> },
 ];
 
-class SiteWrapper extends React.Component {
-  switchLanguage(lang) {
+const SiteWrapper = ({ children }) => {
+  const userSession = useSelector(state => state.userSession);
+  const currentTheme = useTheme();
+
+  const {
+    cash,
+    activeKeycloakSession,
+    activeUserSession: { claims } = {},
+  } = userSession;
+
+  const username =
+    claims && claims.preferred_username ? claims.preferred_username : "Log in";
+
+  const switchLanguage = lang => {
     const browser = typeof window !== "undefined" && window;
     if (browser) {
       window.localStorage.setItem("pw.lang", lang);
       window.location.reload();
     }
-  }
+  };
 
-  render() {
-    const { userSession } = this.props;
-
-    const {
-      cash,
-      activeKeycloakSession,
-      activeUserSession: { claims } = {},
-    } = userSession;
-
-    const username =
-      claims && claims.preferred_username
-        ? claims.preferred_username
-        : "Log in";
-
-    return (
-      <>
-        <header css={wrapper}>
-          <img src={logo} className="img-responsive" />
-          <ul className="headerMenu">
-            {listItems.map(item => (
-              <li key={item.link}>
-                <Link className="link" to={item.link}>
-                  {item.name}
+  return (
+    <>
+      <header css={wrapper}>
+        <img src={logo} className="img-responsive" />
+        <ul className="headerMenu">
+          {listItems.map(item => (
+            <li key={item.link}>
+              <Link
+                className="link"
+                to={item.link}
+                activeStyle={{
+                  fontWeight: "bold",
+                  color: currentTheme.colors.primary,
+                }}
+              >
+                {item.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div css={dropdown}>
+          <button className="dropbtn">{`@${username}`}</button>
+          <div className="dropdown-content">
+            <ul>
+              <li>
+                <img src={iconProfile} className="img-responsive" />
+                <a
+                  href={
+                    activeKeycloakSession &&
+                    activeKeycloakSession.tokenParsed.iss + "/account"
+                  }
+                  className="link"
+                >
+                  <FormattedMessage id="userNav.profile" />
+                </a>
+              </li>
+              <li>
+                <img src={iconMail} className="img-responsive" />
+                <a href="#" className="link">
+                  <FormattedMessage id="userNav.messages" />
+                </a>
+              </li>
+              <li>
+                <img src={iconPwn} className="img-responsive" />
+                <a href="#" className="link">
+                  <FormattedMessage id="userNav.wallet" />
+                </a>
+              </li>
+              <li>
+                <img src={iconNotifications} className="img-responsive" />
+                <a href="#" className="link">
+                  <FormattedMessage id="userNav.notifications" />
+                </a>
+              </li>
+              <li>
+                <img src={iconClose} className="img-responsive" />
+                <Link className="link" to="/app/logout">
+                  <FormattedMessage id="userNav.disconnect" />
                 </Link>
               </li>
-            ))}
-          </ul>
-          <div css={dropdown}>
-            <button className="dropbtn">{`@${username}`}</button>
-            <div className="dropdown-content">
-              <ul>
-                <li>
-                  <img src={iconProfile} className="img-responsive" />
-                  <a
-                    href={
-                      activeKeycloakSession &&
-                      activeKeycloakSession.tokenParsed.iss + "/account"
-                    }
-                    className="link"
-                  >
-                    <FormattedMessage id="userNav.profile" />
-                  </a>
-                </li>
-                <li>
-                  <img src={iconMail} className="img-responsive" />
-                  <a href="#" className="link">
-                    <FormattedMessage id="userNav.messages" />
-                  </a>
-                </li>
-                <li>
-                  <img src={iconPwn} className="img-responsive" />
-                  <a href="#" className="link">
-                    <FormattedMessage id="userNav.wallet" />
-                  </a>
-                </li>
-                <li>
-                  <img src={iconNotifications} className="img-responsive" />
-                  <a href="#" className="link">
-                    <FormattedMessage id="userNav.notifications" />
-                  </a>
-                </li>
-                <li>
-                  <img src={iconClose} className="img-responsive" />
-                  <Link className="link" to="/app/logout">
-                    <FormattedMessage id="userNav.disconnect" />
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            </ul>
           </div>
-          <div css={langSwitcher}>
-            <span onClick={() => this.switchLanguage("en")}>EN</span> •{" "}
-            <span onClick={() => this.switchLanguage("fr")}>FR</span>
+        </div>
+        <div css={langSwitcher}>
+          <span onClick={() => switchLanguage("en")}>EN</span> •{" "}
+          <span onClick={() => switchLanguage("fr")}>FR</span>
+        </div>
+        <div className="subHeader">
+          <div className="cash">
+            <img src={iconPwn} className="img-responsive" />
+            <p className="value">{(cash && `$${cash}`) || "$0"}</p>
           </div>
-          <div className="subHeader">
-            <div className="cash">
-              <img src={iconPwn} className="img-responsive" />
-              <p className="value">{(cash && `$${cash}`) || "$0"}</p>
-            </div>
-            <ValidateCouponForm />
-          </div>
-        </header>
-        {this.props.children}
-      </>
-    );
-  }
-}
-
-SiteWrapper.propTypes = {
-  children: PropTypes.node,
-  userSession: PropTypes.object,
-  lastActiveTeam: PropTypes.object,
+          <ValidateCouponForm />
+        </div>
+      </header>
+      {children}
+    </>
+  );
 };
 
-const mapStateToProps = state => ({
-  userSession: state.userSession,
-  activeSeason: state.seasons.activeSeason,
-});
-
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SiteWrapper);
+export default React.memo(SiteWrapper);
