@@ -20,6 +20,7 @@ import footerLogoD from "../images/new-pathwar-logo-light-purple.svg";
 
 import islandLeadingBg from "../images/island-light-mode-illustration.svg";
 import islandLeadingBgDark from "../images/landing-island-darkmode-illustration.svg";
+import { App } from "./app";
 
 const logoWrapper = () => `
   width: fit-content;
@@ -183,6 +184,8 @@ const footer = ({ colors, type }) => `
     }
   }
 `;
+
+const appIsRoot = process.env.APP_ROOT === "true";
 
 const IndexPage = ({ data }) => {
   const currentTheme = useTheme();
@@ -397,7 +400,7 @@ export default ({ data }) => {
 
   return (
     <ThemeProvider theme={themeToUse}>
-      <IndexPage data={data} />
+      {appIsRoot ? <App /> : <IndexPage data={data} />}
     </ThemeProvider>
   );
 };

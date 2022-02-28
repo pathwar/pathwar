@@ -154,11 +154,22 @@ const langSwitcher = css`
   }
 `;
 
+const appPrefix = process.env.APP_ROOT === "true" ? "" : "/app";
+
 const listItems = [
-  { link: "/app/challenges", name: <FormattedMessage id="nav.challenges" /> },
-  { link: "/app/missions", name: <FormattedMessage id="nav.missions" /> },
-  { link: "/app/events", name: <FormattedMessage id="nav.events" /> },
-  { link: "/app/community", name: <FormattedMessage id="nav.community" /> },
+  {
+    link: `${appPrefix}/challenges`,
+    name: <FormattedMessage id="nav.challenges" />,
+  },
+  {
+    link: `${appPrefix}/missions`,
+    name: <FormattedMessage id="nav.missions" />,
+  },
+  { link: `${appPrefix}/events`, name: <FormattedMessage id="nav.events" /> },
+  {
+    link: `${appPrefix}/community`,
+    name: <FormattedMessage id="nav.community" />,
+  },
   { link: "/blog", name: <FormattedMessage id="nav.blog" /> },
 ];
 
