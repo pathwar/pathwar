@@ -1,0 +1,157 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-26 21:50+0100\n"
+"PO-Revision-Date: 2022-02-26 21:53+0100\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: en_US\n"
+
+#: ../www/index.php:62
+msgid ""
+"(this is not the challenge passphrase, just the current mysql user password)"
+msgstr ""
+"(this is not the challenge passphrase, just the current mysql user password)"
+
+#: ../www/index.php:161
+msgid ""
+"A SQL injection is a vulnerability commonly found on websites allowing an "
+"attacker to inject arbitrary content into a SQL request due to a lack of "
+"sanitization of user input."
+msgstr ""
+"A SQL injection is a vulnerability commonly found on websites allowing an "
+"attacker to inject arbitrary content into a SQL request due to a lack of "
+"sanitization of user input."
+
+#: ../www/index.php:75
+msgid ""
+"But you don't know their password. (Luckily or not :)), the login form is "
+"vulnerable to a SQL injection!"
+msgstr ""
+"But you don't know their password. (Luckily or not :)), the login form is "
+"vulnerable to a SQL injection!"
+
+#: ../www/index.php:50 ../www/index.php:113
+msgid "Either the login or the password is wrong!"
+msgstr "Either the login or the password is wrong!"
+
+#: ../www/index.php:15 ../www/index.php:30
+msgid "First injection"
+msgstr "First injection"
+
+#: ../www/index.php:110
+msgid "Hey! What are you doing here? You are not the admin!"
+msgstr "Hey! What are you doing here? You are not the admin!"
+
+#: ../www/index.php:14
+msgid "Home"
+msgstr "Home"
+
+#: ../www/index.php:60 ../www/index.php:123
+msgid "In case you have forgotten it, your password is: "
+msgstr "In case you have forgotten it, your password is: "
+
+#: ../www/index.php:158
+msgid ""
+"In this training level, you'll get the hang of writing basic SQL injections."
+msgstr ""
+"In this training level, you'll get the hang of writing basic SQL injections."
+
+#: ../www/index.php:171
+msgid "MySQL Documentation"
+msgstr "MySQL Documentation"
+
+#: ../www/index.php:154
+msgid "SQLi training"
+msgstr "SQLi training"
+
+#: ../www/index.php:16 ../www/index.php:89
+msgid "Second injection"
+msgstr "Second injection"
+
+#: ../www/index.php:69 ../www/index.php:132
+msgid "Sign in"
+msgstr "Sign in"
+
+#: ../www/index.php:166
+msgid "Some resources on the subject:"
+msgstr "Some resources on the subject:"
+
+#: ../www/index.php:139
+msgid "TIP"
+msgstr "TIP"
+
+#: ../www/index.php:140
+msgid "The request looks like this:"
+msgstr "The request looks like this:"
+
+#: ../www/index.php:77
+msgid "The request you must exploit looks like this:"
+msgstr "The request you must exploit looks like this:"
+
+#: ../www/index.php:138
+msgid ""
+"This time, the admin has secured the website by removing their account from "
+"the database. Prove them wrong and login with their account !"
+msgstr ""
+"This time, the admin has secured the website by removing their account from "
+"the database. Prove them wrong and login with their account !"
+
+#: ../www/index.php:76
+msgid ""
+"Try to exploit it to connect as the admin! (<b>Hint</b>: Take a look at the "
+"OR keyword.)"
+msgstr ""
+"Try to exploit it to connect as the admin! (<b>Hint</b>: Take a look at the "
+"OR keyword.)"
+
+#: ../www/index.php:59 ../www/index.php:122
+msgid "Welcome"
+msgstr "Welcome"
+
+#: ../www/index.php:157
+msgid "Welcome to the SQL Injection training grounds!"
+msgstr "Welcome to the SQL Injection training grounds!"
+
+#: ../www/index.php:163
+msgid "What are the consequences?"
+msgstr "What are the consequences?"
+
+#: ../www/index.php:160
+msgid "What is a SQL injection?"
+msgstr "What is a SQL injection?"
+
+#: ../www/index.php:164
+msgid ""
+"When you find a website vulnerable to a SQL injection, you can do pretty "
+"much whatever you want with its database. Depending on where the injection "
+"is, you can list passwords for all users, bypass a login form, or sometimes "
+"even execute arbitrary code on the server!"
+msgstr ""
+"When you find a website vulnerable to a SQL injection, you can do pretty "
+"much whatever you want with its database. Depending on where the injection "
+"is, you can list passwords for all users, bypass a login form, or sometimes "
+"even execute arbitrary code on the server!"
+
+#: ../www/index.php:137
+msgid "You need to login as the admin user again."
+msgstr "You need to login as the admin user again."
+
+#: ../www/index.php:74
+msgid "You need to login as the admin user."
+msgstr "You need to login as the admin user."
+
+#: ../www/index.php:139
+msgid "take a look at the mysql documentation for UNION."
+msgstr "take a look at the mysql documentation for UNION."

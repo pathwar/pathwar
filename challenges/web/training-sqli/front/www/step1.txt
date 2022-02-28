@@ -1,3 +1,4 @@
+<?php
 $password = $_POST['password'];
 $query="SELECT * FROM users WHERE username='admin' AND password='$password'";
 $result = $mysqli->query($query) or die($mysqli->error);

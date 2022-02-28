@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{pageTitle}}</title>
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function showPassword(inputId){
+            var inputPassword = document.getElementById(inputId);
+            if (inputPassword.type === "password") {
+                inputPassword .type = "text";
+            } else {
+                inputPassword.type = "password";
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>{{pageTitle}}</h1>
+    </header>
+    <nav class="topright">
+        {{langForm}}
+    </nav>
+    <nav class="sidebar">
+        <!-- BEGIN nav -->
+        <a href="{{nav.href}}">{{nav.caption}}</a>
+        <!-- END nav -->
+ 
+    </nav>
+    <section class="content">
+        <!-- BEGIN article -->
+        <article>
+        <h2>{{article.title}}</h2>
+        <p>{{article.content}}</p>
+        <!-- BEGIN article.code -->
+        <pre class="code">{{article.code.content}}</pre>
+        <!-- END article.code -->
+        </article>
+        <!-- END article -->
+        <!-- BEGIN loginForm -->
+        <article>
+            <h2>{{loginForm.title}}</h2>
+        <form method="POST">
+            <input type="text" name="login" value="{{loginForm.user}}" disabled/><br />
+            <input type="password" name="password" id="thePassword" /> <em style="cursor: pointer;" onclick="showPassword('thePassword');">👁</em><br />
+            <input type='submit'/> <br />
+            <p>{{loginForm.postMessage}}</p>
+        </form>
+        </article>
+        <!-- END loginForm -->
+    </section>
+    <footer></footer>
+</body>
+</html>
