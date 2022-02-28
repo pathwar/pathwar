@@ -1,14 +1,12 @@
 FROM    php:7.3-apache
-#RUN apt-get update && docker-php-ext-install \
-#    mbstring \
-#    gettext \
-#    intl
-RUN apt-get -y update \
-    && apt-get install -y libicu-dev \
-    && docker-php-ext-configure intl \
-    && docker-php-ext-install intl \
-    && docker-php-ext-install gettext
 
+RUN     apt-get update \
+        && apt-get install -y libicu-dev \
+        && docker-php-ext-configure intl \
+        && docker-php-ext-install intl \
+        && docker-php-ext-install gettext
+#locales
+RUN     apt-get install -y locales-all
 
 COPY    translations /var/www/translations/
 COPY    www/ /var/www/html/

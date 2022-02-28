@@ -3,12 +3,12 @@
 /*
 * This file is for PATHWAR challanges translation
 * The code here won't help you to solve the challenge.
-* If you find an usable fault here... We didn't do it on purpose.
+* If you find a flaw to exploit here... We didn't do it on purpose.
 */
 
 class LocaleManager
 {   
-    const LOCALES_DOMAIN = "message";
+    const LOCALES_DOMAIN = "messages";
     const LOCALES_PATH = "../translations"; //relative path from web server root
     private $currentLocale = "en_US";
     private $availablesLocales = array();
@@ -20,21 +20,22 @@ class LocaleManager
         if ( isset( $_POST['locale'] ) ){
             setcookie("locale", $_POST['locale'], strtotime( '+30 days' ) , "/", $_SERVER['SERVER_NAME'], 1);
             $this->set_locale( $_POST['locale'] );
+            header("Refresh:0");
+            die();
         }
         $this->init_current_locale();
 
     }
     private function get_available_locales()
     {
-        if( empty( $this->availablesLocales ) )
-        {
+        if( empty( $this->availablesLocales ) ){
             $this->init_available_locales();
         }
         return $this->availablesLocales;
     }
     private function init_available_locales()
     {
-        $this->availablesLocales = array( "en_US");
+        $this->availablesLocales = array();
         $cdir = scandir( self::LOCALES_PATH );
         
         foreach( $cdir as $directory ){
@@ -76,19 +77,13 @@ class LocaleManager
 
     private function set_locale($locale)
     {
-        
-      
         $this->currentLocale = $locale;
-
         putenv('LC_ALL=' . $this->currentLocale.".UTF-8");
         setlocale(LC_ALL, $this->currentLocale.".UTF-8");
-        
-        // Spécifie la localisation des tables de traduction
         bindtextdomain(self::LOCALES_DOMAIN, self::LOCALES_PATH);
-        
-        // Choisit le domaine
         textdomain(self::LOCALES_DOMAIN);
     }
+
     public function get_locale_form()
     {
         $form = '<form method="POST"><select name="locale" onchange="this.form.submit();">';
@@ -101,6 +96,10 @@ class LocaleManager
         }
         $form.='</select></form>';
         return $form;
+    }
+    public function get_langShort(){
+
+        return substr( $this->currentLocale, 0, 2 );
     }
 
 }
