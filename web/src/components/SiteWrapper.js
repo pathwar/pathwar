@@ -154,12 +154,23 @@ const langSwitcher = css`
   }
 `;
 
+const appPrefix = process.env.APP_ROOT === "true" ? "" : "/app";
+
 const listItems = [
-  { link: "/app/challenges", name: <FormattedMessage id="nav.challenges" /> },
-  { link: "/app/missions", name: <FormattedMessage id="nav.missions" /> },
-  { link: "/app/events", name: <FormattedMessage id="nav.events" /> },
-  { link: "/app/community", name: <FormattedMessage id="nav.community" /> },
-  { link: "/blog", name: <FormattedMessage id="nav.blog" /> },
+  {
+    link: `${appPrefix}/challenges`,
+    name: <FormattedMessage id="nav.challenges" />
+  },
+  {
+    link: `${appPrefix}/missions`,
+    name: <FormattedMessage id="nav.missions" />
+  },
+  { link: `${appPrefix}/events`, name: <FormattedMessage id="nav.events" /> },
+  {
+    link: `${appPrefix}/community`,
+    name: <FormattedMessage id="nav.community" />
+  },
+  { link: "/blog", name: <FormattedMessage id="nav.blog" /> }
 ];
 
 class SiteWrapper extends React.Component {
@@ -177,7 +188,7 @@ class SiteWrapper extends React.Component {
     const {
       cash,
       activeKeycloakSession,
-      activeUserSession: { claims } = {},
+      activeUserSession: { claims } = {}
     } = userSession;
 
     const username =
@@ -262,12 +273,12 @@ class SiteWrapper extends React.Component {
 SiteWrapper.propTypes = {
   children: PropTypes.node,
   userSession: PropTypes.object,
-  lastActiveTeam: PropTypes.object,
+  lastActiveTeam: PropTypes.object
 };
 
 const mapStateToProps = state => ({
   userSession: state.userSession,
-  activeSeason: state.seasons.activeSeason,
+  activeSeason: state.seasons.activeSeason
 });
 
 const mapDispatchToProps = {};
