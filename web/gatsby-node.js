@@ -24,7 +24,7 @@ exports.onCreatePage = async ({ page, actions }) => {
 exports.onCreateWebpackConfig = ({ stage, actions }) => {
   if (stage === "develop") {
     actions.setWebpackConfig({
-      devtool: "eval-source-map"
+      devtool: "eval-source-map",
     });
   }
 };
