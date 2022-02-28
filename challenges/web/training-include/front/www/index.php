@@ -1,3 +1,7 @@
+<?php
+  include ("LocaleManager.php");
+  $currentLocale = new LocaleManager();
+?>
 <html>
 <head>
   <title>Include Training</title>
@@ -6,6 +10,9 @@
 <body>
 
     <div class="container">
+      <div class="pull-right">
+        <?php echo ($currentLocale->get_locale_form()); ?>
+      </div>
       <div class="page-header">
         <h1>Training Include</h1>
       </div>
