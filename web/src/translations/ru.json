@@ -14,6 +14,8 @@
   "coupon.validate": "Validate",
   "HomePage.title": "Home",
   "HomePage.createdAt": "created at",
+  "NotAvailablePage.title": "Sorry,",
+  "NotAvailablePage.text": "This page is not available yet",
   "SettingsPage.settings": "Settings",
   "SettingsPage.deleteAccount": "Delete account",
   "ChallengeBuyButton.buy": "Buy",
