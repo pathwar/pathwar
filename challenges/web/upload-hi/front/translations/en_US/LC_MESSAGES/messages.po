@@ -1,0 +1,43 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-27 17:10+0100\n"
+"PO-Revision-Date: 2022-02-27 17:14+0100\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: en_US\n"
+
+#: ../www/index.php:63
+msgid "Choose image file"
+msgstr "Choose image file"
+
+#: ../www/index.php:37
+msgid "Error"
+msgstr "Error"
+
+#: ../www/index.php:26
+msgid "File"
+msgstr "File"
+
+#: ../www/index.php:49
+msgid "Image Upload"
+msgstr "Image Upload"
+
+#: ../www/index.php:23
+msgid "Image uploaded !"
+msgstr "Image uploaded !"
+
+#: ../www/index.php:37
+msgid "Upload error !"
+msgstr "Upload error !"
