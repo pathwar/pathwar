@@ -1,13 +1,15 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Keycloak from "keycloak-js";
 import { Dimmer } from "tabler-react";
+import { toast } from "react-toastify";
 import { setKeycloakSession } from "../actions/userSession";
 
-class ProtectedRoute extends React.PureComponent {
-  componentDidMount() {
-    const { setKeycloakSession, userSession } = this.props;
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  const dispatch = useDispatch();
+  const userSession = useSelector(state => state.userSession);
+
+  useEffect(() => {
     const { activeKeycloakSession } = userSession;
     const keycloak = new Keycloak("/keycloak.json");
     const token = activeKeycloakSession && activeKeycloakSession.token;
@@ -18,38 +20,36 @@ class ProtectedRoute extends React.PureComponent {
       .init({
         onLoad: "login-required",
         checkLoginIframe: false,
+        enableLogging: true,
         token,
         refreshToken,
       })
       .then(authenticated => {
-        setKeycloakSession(keycloak, authenticated);
+        dispatch(setKeycloakSession(keycloak, authenticated));
       });
+
+    keycloak.onTokenExpired = () => {
+      keycloak
+        .updateToken(30)
+        .success(authenticated => {
+          dispatch(setKeycloakSession(keycloak, authenticated));
+        })
+        .error(() =>
+          toast.error(`SESSION EXPIRED! Please refresh the page.`, {
+            autoClose: false,
+            hideProgressBar: true,
+          })
+        );
+    };
+  }, []);
+
+  if (userSession.activeKeycloakSession) {
+    if (userSession.isAuthenticated) {
+      return <Component {...rest} />;
+    } else return <h3>Auth error, please try again!</h3>;
   }
 
-  render() {
-    const { component: Component, userSession, ...rest } = this.props;
-
-    if (userSession.activeKeycloakSession) {
-      if (userSession.isAuthenticated) {
-        return <Component {...rest} />;
-      } else return <h3>Auth error, please try again!</h3>;
-    }
-
-    return <Dimmer active loader />;
-  }
-}
-
-ProtectedRoute.propTypes = {
-  component: PropTypes.any.isRequired,
+  return <Dimmer active loader />;
 };
 
-const mapStateToProps = state => ({
-  userSession: state.userSession,
-});
-
-const mapDispatchToProps = {
-  setKeycloakSession: (keycloakInstance, authenticated) =>
-    setKeycloakSession(keycloakInstance, authenticated),
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProtectedRoute);
+export default ProtectedRoute;
