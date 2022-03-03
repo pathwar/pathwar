@@ -154,7 +154,7 @@ const langSwitcher = css`
   }
 `;
 
-const appPrefix = process.env.APP_ROOT === "true" ? "" : "/app";
+const appPrefix = process.env.GATSBY_APP_ROOT === "true" ? "" : "/app";
 
 const listItems = [
   {
