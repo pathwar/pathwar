@@ -2,15 +2,7 @@
   base = "web/"
   publish = "public"
   command = "npm install && npm run build"
-  ignore = "git diff --quiet HEAD^ HEAD -- ."
+  #ignore = "git diff --quiet HEAD^ HEAD -- ."
 
 [build.environment]
   YARN_FLAGS = "--no-ignore-optional"
-  GATSBY_API_URL = "https://api.pathwar.land/"
-  GATSBY_KEYCLOAK_REALM = "Pathwar-Dev"
-  GATSBY_KEYCLOAK_BASE_URL = "https://id.pathwar.land/"
-
-[context.production.environment]
-  GATSBY_API_URL = "https://api.pathwar.land/"
-  GATSBY_KEYCLOAK_REALM = "Pathwar-Dev"
-  GATSBY_KEYCLOAK_BASE_URL = "https://id.pathwar.land/"
