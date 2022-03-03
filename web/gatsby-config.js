@@ -5,8 +5,8 @@ require("dotenv").config({
 const fs = require("fs");
 
 let keycloakConfig = {
-  realm: `${process.env.KEYCLOAK_REALM}`,
-  "auth-server-url": `${process.env.KEYCLOAK_BASE_URL}auth`,
+  realm: `${process.env.GATSBY_KEYCLOAK_REALM}`,
+  "auth-server-url": `${process.env.GATSBY_KEYCLOAK_BASE_URL}auth`,
   "ssl-required": "external",
   resource: "platform-front",
   "public-client": true,

@@ -188,7 +188,7 @@ const footer = ({ colors, type }) => `
   }
 `;
 
-const appIsRoot = process.env.APP_ROOT === "true";
+const appIsRoot = process.env.GATSBY_APP_ROOT === "true";
 
 const IndexPage = ({ data }) => {
   const currentTheme = useTheme();
@@ -197,11 +197,11 @@ const IndexPage = ({ data }) => {
   const description = data.site.siteMetadata.description;
   const logo = data.logo.childImageSharp.fixed;
   const featuredImage = `${data.site.siteMetadata.baseUrl}${logo.src}`;
-  const comingsoon = process.env.COMINGSOON === "true";
+  const comingsoon = process.env.GATSBY_COMINGSOON === "true";
   const headerLogo = isDark ? colorsLogo : darkBlueLogo;
 
-  const appRealm = process.env.KEYCLOAK_REALM;
-  const appBaseUrl = process.env.KEYCLOAK_BASE_URL;
+  const appRealm = process.env.GATSBY_KEYCLOAK_REALM;
+  const appBaseUrl = process.env.GATSBY_KEYCLOAK_BASE_URL;
 
   return (
     <>
