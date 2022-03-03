@@ -102,4 +102,21 @@ class LocaleManager
         return substr( $this->currentLocale, 0, 2 );
     }
 
+    /*
+    * extract tagged parts with _(' Content to translate ')
+    * and pass them on the gettext function
+    */
+    public static function translate_tagged_parts (string $text)
+    {
+        $regex = "/_\(\'(.*?)\'\)/is";
+        return preg_replace_callback(
+            $regex,
+            function ($m) {
+                return _($m[1]);
+            },
+            $text
+        );
+        
+    }
+
 }
