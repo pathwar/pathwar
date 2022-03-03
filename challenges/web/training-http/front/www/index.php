@@ -57,7 +57,6 @@ switch ($step){
         }
 
         //display the content
-
         $tplContent = new TplBlock();
         $content = $tplContent->addVars( array("pmessage"  => $pmessage) )
                     ->applyTplStr( LocaleManager::translate_tagged_parts(file_get_contents("templates/step2.html")) );
@@ -67,13 +66,40 @@ switch ($step){
         break;
 
     case "3":
-        $tpl->addVars( array("pageTitle" => htmlentities( _('HTTP redirection')) ) );
+        $tpl->addVars( array("pageTitle" => htmlentities( _('HTTP redirection')),
+                             "content"    => LocaleManager::translate_tagged_parts( file_get_contents("templates/step3.html") )
+        ) );
         break;
 
-    case "4":
-        $tpl->addVars( array("pageTitle" => htmlentities( _('HTTP Cookies')) ) );
+    case "4": //HTTP Cookies
+
+        
+
+        //check if part of challenge success or not
+        if (!isset($_COOKIE['chocolate'])) {
+            setcookie('chocolate', 'isbad');
+        }
+
+        if (isset($_COOKIE['chocolate']) && $_COOKIE['chocolate'] == 'isgood') {
+            $pmessage = _('Congrats! The passphrase is __PASSPHRASE__');
+        } else {
+            $pmessage= _('Try to set the value of the cookie <b>chocolate</b> to <b>isgood</b> !');
+        }
+
+        $tplContent = new TplBlock();
+        $content = $tplContent->addVars( array("pmessage"  => $pmessage) )
+                    ->applyTplStr( LocaleManager::translate_tagged_parts(file_get_contents("templates/step4.html")) );
+
+        $tpl->addVars( array("pageTitle"    => htmlentities( _('HTTP Cookies') )
+                             ,"content"     =>  $content
+                            )
+                );
+
         break;
     case "redir":
+        header('Location: /index.php?step=3');
+        echo 'Congrats!';
+        die();
         break;
     default: //HOME
         $tpl->addVars( array("pageTitle" => htmlentities( _('Training HTTP')),
