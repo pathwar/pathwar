@@ -8,7 +8,9 @@
   YARN_FLAGS = "--no-ignore-optional"
   API_URL = "https://api.pathwar.land/"
   KEYCLOAK_REALM = "Pathwar-Dev"
+  KEYCLOAK_BASE_URL = "https://id.pathwar.land/"
 
 [context.production.environment]
   API_URL = "https://api.pathwar.land/"
-  KEYCLOAK_REALM = "Pathwar"
+  KEYCLOAK_REALM = "Pathwar-Dev"
+  KEYCLOAK_BASE_URL = "https://id.pathwar.land/"
