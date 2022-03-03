@@ -7,7 +7,7 @@
 exports.onCreatePage = async ({ page, actions }) => {
   const { createPage } = actions;
 
-  const appIsRoot = process.env.APP_ROOT === "true";
+  const appIsRoot = process.env.GATSBY_APP_ROOT === "true";
   const matchingRegex = appIsRoot ? /^\/$/ : /^\/app/;
   const matchingPath = appIsRoot ? `/*` : `/app/*`;
 

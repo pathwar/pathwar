@@ -11,7 +11,7 @@ const withToken = function(config) {
 };
 
 export const baseApi = axios.create({
-  baseURL: process.env.API_URL,
+  baseURL: process.env.GATSBY_API_URL,
 });
 
 // Authenticated routes
