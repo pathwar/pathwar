@@ -78,14 +78,17 @@ const leadingContent = ({ colors, type }) => `
   .cta-block {
     color: ${type === "dark" ? colors.secondary : colors.tertiary};
     text-align: center;
+    display: flex;
+    flex-direction: column;
 
     a {
       font-weight: bold;
       color: ${type === "dark" ? colors.tertiary : colors.primary};
     }
 
-    button {
+    .custom-button {
       margin-bottom: 1rem;
+      color: ${type === "dark" ? colors.primary : colors.secondary};
     }
   }
 
@@ -270,7 +273,12 @@ const IndexPage = ({ data }) => {
             {comingsoon && <h3>Coming soon...</h3>}
             {!comingsoon && (
               <div className="cta-block">
-                <button className="custom-button">Join the adventure !</button>
+                <a
+                  href="https://id.pathwar.land/auth/realms/Pathwar-Dev/login-actions/registration?client_id=platform-front&tab_id=u0gkFALscWg"
+                  className="custom-button"
+                >
+                  Join the adventure !
+                </a>
                 <p>
                   Already on board ? <a href="/app/challenges">Login</a>
                 </p>
@@ -331,14 +339,18 @@ const IndexPage = ({ data }) => {
             }
           >
             <img src={isDark ? footerLogoD : footerLogo} />
-            <div className="data-col">
+            <p>
+              © 2015-2022 Pathwar Staff Licensed under the Apache License,
+              Version 2.0
+            </p>
+            {/* <div className="data-col">
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
                 eget est molestie est tincidunt varius. Suspendisse quis
                 elementum odio, vitae euismod sem.
               </p>
-            </div>
-            <div className="data-col">
+            </div> */}
+            {/* <div className="data-col">
               <ul>
                 <li>
                   <a href="#">CGU</a>
@@ -382,7 +394,7 @@ const IndexPage = ({ data }) => {
             </div>
             <div className="data-col">
               <p>Emplacement pour RS ou autre si besoin</p>
-            </div>
+            </div> */}
           </footer>
         </>
       )}
