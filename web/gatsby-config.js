@@ -1,6 +1,20 @@
 require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
+  path: `.env`,
 });
+
+const fs = require("fs");
+
+let keycloakConfig = {
+  realm: `${process.env.KEYCLOAK_REALM}`,
+  "auth-server-url": `${process.env.KEYCLOAK_BASE_URL}auth`,
+  "ssl-required": "external",
+  resource: "platform-front",
+  "public-client": true,
+  "confidential-port": 0,
+};
+
+let keycloakFileData = JSON.stringify(keycloakConfig);
+fs.writeFileSync("static/keycloak.json", keycloakFileData);
 
 module.exports = {
   siteMetadata: {
