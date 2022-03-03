@@ -81,7 +81,7 @@ switch ($step){
         }
 
         if (isset($_COOKIE['chocolate']) && $_COOKIE['chocolate'] == 'isgood') {
-            $pmessage = _('Congrats! The passphrase is __PASSPHRASE__');
+            $pmessage = _('Congrats! The passphrase is') . ' __PASSPHRASE__';
         } else {
             $pmessage= _('Try to set the value of the cookie <b>chocolate</b> to <b>isgood</b> !');
         }
