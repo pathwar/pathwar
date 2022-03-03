@@ -200,6 +200,9 @@ const IndexPage = ({ data }) => {
   const comingsoon = process.env.COMINGSOON === "true";
   const headerLogo = isDark ? colorsLogo : darkBlueLogo;
 
+  const appRealm = process.env.KEYCLOAK_REALM;
+  const appBaseUrl = process.env.KEYCLOAK_BASE_URL;
+
   return (
     <>
       <Global styles={globalStyle(currentTheme)} />
@@ -274,7 +277,7 @@ const IndexPage = ({ data }) => {
             {!comingsoon && (
               <div className="cta-block">
                 <a
-                  href="https://id.pathwar.land/auth/realms/Pathwar-Dev/login-actions/registration?client_id=platform-front&tab_id=u0gkFALscWg"
+                  href={`${appBaseUrl}auth/realms/${appRealm}/login-actions/registration?client_id=platform-front&tab_id=u0gkFALscWg`}
                   className="custom-button"
                 >
                   Join the adventure !

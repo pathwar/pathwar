@@ -8,19 +8,23 @@ Make sure you have Node.js 8+.
 
     `npm install`
 
-2. **Run develop to see it in dev mode**
+2. **Create a .env file and copy the content of .env.development to .env**
+
+    `.env.development -> .env`
+
+3. **Run develop to see it in dev mode**
 
     `npm start`
 
     Note: The -s flag is optional. It enables silent mode which suppresses unnecessary messages during the build.
 
-3. **Run build script to generate final files in /public folder**
+4. **Run build script to generate final files in /public folder**
 
     `npm run build`
 
     Note: Generates the /public folder with all the assets to final publish
 
-4. **Run build script to generate final files in /public folder**
+5. **Run build script to generate final files in /public folder**
 
     `npm run serve`
 
