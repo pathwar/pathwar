@@ -27,5 +27,6 @@ packrd/
 pathwar-compose.yml
 docker-compose.tmp.yml
 challenges/*/*/_register.sh
+web/build
 
 .idea
