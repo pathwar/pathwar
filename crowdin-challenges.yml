@@ -1,3 +1,0 @@
-files:
-  - source: /challenges/web/upload-hi/front/translations/en_US/LC_MESSAGES/*.po
-    translation: /challenges/web/upload-hi/front/translations/%two_letters_code%/LC_MESSAGES/%original_file_name%
