@@ -1,0 +1,44 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 8b78f7290bf751701e9a21b4931bf83f\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-27 17:10+0100\n"
+"PO-Revision-Date: 2022-03-04 10:55\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: fr_FR\n"
+"X-Crowdin-Project: 8b78f7290bf751701e9a21b4931bf83f\n"
+"X-Crowdin-Project-ID: 4\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: /[pathwar.pathwar] master/challenges/web/upload-hi/front/translations/en_US/LC_MESSAGES/messages.po\n"
+"X-Crowdin-File-ID: 28\n"
+
+#: ../www/index.php:63
+msgid "Choose image file"
+msgstr "Choisissez un fichier image"
+
+#: ../www/index.php:37
+msgid "Error"
+msgstr "Erreur"
+
+#: ../www/index.php:26
+msgid "File"
+msgstr "Fichier"
+
+#: ../www/index.php:49
+msgid "Image Upload"
+msgstr "Téléversement de l'image"
+
+#: ../www/index.php:23
+msgid "Image uploaded !"
+msgstr "Image transférée !"
+
+#: ../www/index.php:37
+msgid "Upload error !"
+msgstr "Erreur lors du transfert !"
+
