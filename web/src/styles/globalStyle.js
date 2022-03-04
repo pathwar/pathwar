@@ -66,8 +66,6 @@ export const globalStyle = ({ colors, font, type }, _bodyBg) => {
 
     .siteContainer {
       padding: 0 50px;
-      display: flex;
-      flex-direction: column;
       width: auto;
     }
 

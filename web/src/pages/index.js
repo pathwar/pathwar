@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { graphql, withPrefix } from "gatsby";
 import { Global, css } from "@emotion/core";
 import { ThemeProvider, useTheme } from "emotion-theming";
-import { lightTheme, darkTheme } from "../styles/themes";
+import { lightTheme } from "../styles/themes";
 import { globalStyle } from "../styles/globalStyle";
 
 import hookIcon from "../images/hook-l-icon.svg";
@@ -112,10 +112,12 @@ const leadingContent = ({ colors, type }) => `
 `;
 
 const cardsArea = ({ shadows, colors, type }) => `
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
   position: relative;
+  width: 100%;
   top: -70px;
 
   .site-card {
@@ -243,117 +245,116 @@ const IndexPage = ({ data }) => {
       </Helmet>
 
       <section
+        className="siteContainer"
         css={theme =>
           css`
             ${leading(theme)}
           `
         }
       >
-        <div className="siteContainer">
-          <span
-            css={theme => css`
-              ${logoWrapper(theme)}
-            `}
-          >
-            <img src={headerLogo} alt="Pathwar Logo" />
-          </span>
-          <div
-            css={theme =>
-              css`
-                ${leadingContent(theme)}
-              `
-            }
-          >
-            <div className="title-block">
-              <h1>Learn, hack, challenge & more!</h1>
-            </div>
-            <div className="sub-block">
-              <h2>
-                Pathwar is an educational platform with a focus on security and
-                cryptography.
-              </h2>
-            </div>
-            {comingsoon && <h3>Coming soon...</h3>}
-            {!comingsoon && (
-              <div className="cta-block">
-                <a
-                  href={`${appBaseUrl}auth/realms/${appRealm}/login-actions/registration?client_id=platform-front&tab_id=u0gkFALscWg`}
-                  className="custom-button"
-                >
-                  Join the adventure !
-                </a>
-                <p>
-                  Already on board ? <a href="/app/challenges">Login</a>
-                </p>
-              </div>
-            )}
+        <span
+          css={theme => css`
+            ${logoWrapper(theme)}
+          `}
+        >
+          <img src={headerLogo} alt="Pathwar Logo" />
+        </span>
+        <div
+          css={theme =>
+            css`
+              ${leadingContent(theme)}
+            `
+          }
+        >
+          <div className="title-block">
+            <h1>Learn, hack, challenge & more!</h1>
           </div>
+          <div className="sub-block">
+            <h2>
+              Pathwar is an educational platform with a focus on security and
+              cryptography.
+            </h2>
+          </div>
+          {comingsoon && <h3>Coming soon...</h3>}
+          {!comingsoon && (
+            <div className="cta-block">
+              <a
+                href={`${appBaseUrl}auth/realms/${appRealm}/login-actions/registration?client_id=platform-front&tab_id=u0gkFALscWg`}
+                className="custom-button"
+              >
+                Join the adventure !
+              </a>
+              <p>
+                Already on board ? <a href="/app/challenges">Login</a>
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
       {!comingsoon && (
         <>
-          <section>
-            <div
-              css={theme =>
-                css`
-                  ${cardsArea(theme)}
-                `
-              }
-              className="siteContainer"
-            >
-              <div className="site-card">
-                <img src={isDark ? shipIconD : shipIcon} />
-                <h3>Put your skills to the test</h3>
-                <p>and improve them. Beat the challenges, learn new tricks.</p>
-              </div>
-              <div className="site-card">
-                <img src={isDark ? mapIconD : mapIcon} />
-                <h3>Participate in tournaments</h3>
-                <p>
-                  with your team and win prizes. Create or join a team and
-                  compete with other players
-                </p>
-              </div>
-              <div className="site-card">
-                <img src={isDark ? hookIconD : hookIcon} />
-                <h3>Hack everything</h3>
-                <p>
-                  Levels? Other players’ profiles? The platform itself?
-                  Everything is fair game here!
-                </p>
-                <a
-                  href="https://github.com/pathwar/pathwar/blob/master/CODE_OF_CONDUCT.md"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="custom-button outline"
-                >
-                  Read our Code of Conduct
-                </a>
-              </div>
-            </div>
-          </section>
-
-          <footer
+          <section
+            className="siteContainer"
             css={theme =>
               css`
-                ${footer(theme)}
+                ${cardsArea(theme)}
               `
             }
           >
-            <img src={isDark ? footerLogoD : footerLogo} />
-            <p>
-              © 2015-2022 Pathwar Staff Licensed under the Apache License,
-              Version 2.0
-            </p>
-            {/* <div className="data-col">
+            <div className="site-card">
+              <img src={isDark ? shipIconD : shipIcon} />
+              <h3>Put your skills to the test</h3>
+              <p>and improve them. Beat the challenges, learn new tricks.</p>
+            </div>
+            <div className="site-card">
+              <img src={isDark ? mapIconD : mapIcon} />
+              <h3>Participate in tournaments</h3>
+              <p>
+                with your team and win prizes. Create or join a team and compete
+                with other players
+              </p>
+            </div>
+            <div className="site-card">
+              <img src={isDark ? hookIconD : hookIcon} />
+              <h3>Hack everything</h3>
+              <p>
+                Levels? Other players’ profiles? The platform itself? Everything
+                is fair game here!
+              </p>
+              <a
+                href="https://github.com/pathwar/pathwar/blob/master/CODE_OF_CONDUCT.md"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="custom-button outline"
+              >
+                Read our Code of Conduct
+              </a>
+            </div>
+          </section>
+        </>
+      )}
+
+      <footer
+        css={theme =>
+          css`
+            ${footer(theme)}
+          `
+        }
+      >
+        <img src={isDark ? footerLogoD : footerLogo} />
+        <p>
+          © 2015-2022 Pathwar Staff Licensed under the Apache License, Version
+          2.0
+        </p>
+        {/* <div className="data-col">
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
                 eget est molestie est tincidunt varius. Suspendisse quis
                 elementum odio, vitae euismod sem.
               </p>
             </div> */}
-            {/* <div className="data-col">
+        {/* <div className="data-col">
               <ul>
                 <li>
                   <a href="#">CGU</a>
@@ -398,20 +399,13 @@ const IndexPage = ({ data }) => {
             <div className="data-col">
               <p>Emplacement pour RS ou autre si besoin</p>
             </div> */}
-          </footer>
-        </>
-      )}
+      </footer>
     </>
   );
 };
 
 export default ({ data }) => {
-  const browser = typeof window !== "undefined" && window;
-  const browserInDarkMode =
-    browser &&
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const themeToUse = browserInDarkMode ? darkTheme : lightTheme;
+  const themeToUse = lightTheme;
 
   return (
     <ThemeProvider theme={themeToUse}>
