@@ -1,3 +1,13 @@
+base_url: "https://pathwar.crowdin.com"
+commit_message: 'chore(i18n): new %language% translations
+
+
+Signed-off-by: Pathwar Bot <11067407+pathwar-bot@users.noreply.github.com>
+'
+
+append_commit_message: false
+preserve_hierarchy: true
+
 files:
   - source: /web/src/translations/en.json
     translation: /web/src/translations/%two_letters_code%.json
