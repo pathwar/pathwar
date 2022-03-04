@@ -1,0 +1,128 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: a676df8a4165af18606c65aeb9069108\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-26 21:50+0100\n"
+"PO-Revision-Date: 2022-03-04 11:47\n"
+"Language-Team: Chinese Simplified\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: zh_CN\n"
+"X-Crowdin-Project: a676df8a4165af18606c65aeb9069108\n"
+"X-Crowdin-Project-ID: 2\n"
+"X-Crowdin-Language: zh-CN\n"
+"X-Crowdin-File: /master/challenges/web/training-sqli/front/translations/en_US/LC_MESSAGES/messages.po\n"
+"X-Crowdin-File-ID: 94\n"
+
+#: ../www/index.php:62
+msgid "(this is not the challenge passphrase, just the current mysql user password)"
+msgstr ""
+
+#: ../www/index.php:161
+msgid "A SQL injection is a vulnerability commonly found on websites allowing an attacker to inject arbitrary content into a SQL request due to a lack of sanitization of user input."
+msgstr ""
+
+#: ../www/index.php:75
+msgid "But you don't know their password. (Luckily or not :)), the login form is vulnerable to a SQL injection!"
+msgstr ""
+
+#: ../www/index.php:50 ../www/index.php:113
+msgid "Either the login or the password is wrong!"
+msgstr ""
+
+#: ../www/index.php:15 ../www/index.php:30
+msgid "First injection"
+msgstr ""
+
+#: ../www/index.php:110
+msgid "Hey! What are you doing here? You are not the admin!"
+msgstr ""
+
+#: ../www/index.php:14
+msgid "Home"
+msgstr ""
+
+#: ../www/index.php:60 ../www/index.php:123
+msgid "In case you have forgotten it, your password is: "
+msgstr ""
+
+#: ../www/index.php:158
+msgid "In this training level, you'll get the hang of writing basic SQL injections."
+msgstr ""
+
+#: ../www/index.php:171
+msgid "MySQL Documentation"
+msgstr ""
+
+#: ../www/index.php:154
+msgid "SQLi training"
+msgstr ""
+
+#: ../www/index.php:16 ../www/index.php:89
+msgid "Second injection"
+msgstr ""
+
+#: ../www/index.php:69 ../www/index.php:132
+msgid "Sign in"
+msgstr ""
+
+#: ../www/index.php:166
+msgid "Some resources on the subject:"
+msgstr ""
+
+#: ../www/index.php:139
+msgid "TIP"
+msgstr ""
+
+#: ../www/index.php:140
+msgid "The request looks like this:"
+msgstr ""
+
+#: ../www/index.php:77
+msgid "The request you must exploit looks like this:"
+msgstr ""
+
+#: ../www/index.php:138
+msgid "This time, the admin has secured the website by removing their account from the database. Prove them wrong and login with their account !"
+msgstr ""
+
+#: ../www/index.php:76
+msgid "Try to exploit it to connect as the admin! (<b>Hint</b>: Take a look at the OR keyword.)"
+msgstr ""
+
+#: ../www/index.php:59 ../www/index.php:122
+msgid "Welcome"
+msgstr ""
+
+#: ../www/index.php:157
+msgid "Welcome to the SQL Injection training grounds!"
+msgstr ""
+
+#: ../www/index.php:163
+msgid "What are the consequences?"
+msgstr ""
+
+#: ../www/index.php:160
+msgid "What is a SQL injection?"
+msgstr ""
+
+#: ../www/index.php:164
+msgid "When you find a website vulnerable to a SQL injection, you can do pretty much whatever you want with its database. Depending on where the injection is, you can list passwords for all users, bypass a login form, or sometimes even execute arbitrary code on the server!"
+msgstr ""
+
+#: ../www/index.php:137
+msgid "You need to login as the admin user again."
+msgstr ""
+
+#: ../www/index.php:74
+msgid "You need to login as the admin user."
+msgstr ""
+
+#: ../www/index.php:139
+msgid "take a look at the mysql documentation for UNION."
+msgstr ""
+
