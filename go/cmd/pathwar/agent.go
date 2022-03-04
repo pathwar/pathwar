@@ -22,6 +22,7 @@ func agentCommand() *ffcli.Command {
 	agentFlags.StringVar(&ssoOpts.ClientID, "sso-clientid", ssoOpts.ClientID, "SSO ClientID")
 	agentFlags.StringVar(&ssoOpts.ClientSecret, "sso-clientsecret", ssoOpts.ClientSecret, "SSO ClientSecret")
 	agentFlags.StringVar(&ssoOpts.Realm, "sso-realm", ssoOpts.Realm, "SSO Realm")
+	agentFlags.StringVar(&ssoOpts.Pubkey, "sso-pubkey", ssoOpts.Pubkey, "SSO Public Key")
 	agentFlags.StringVar(&ssoOpts.TokenFile, "sso-token-file", ssoOpts.TokenFile, "Token file")
 	agentFlags.BoolVar(&agentOpts.Cleanup, "clean", agentOpts.Cleanup, "remove all pathwar instances before executing")
 	agentFlags.BoolVar(&agentOpts.RunOnce, "once", agentOpts.RunOnce, "run once and don't start daemon loop")

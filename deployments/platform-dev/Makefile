@@ -11,6 +11,10 @@ up-fast:
 
 .PHONY: up
 up:
+	docker-compose up -d pathwar-dev db mailserver
+
+.PHONY: safe-up
+safe-up:
 	docker-compose up -d mailserver pathwar-dev
 	# wait for the migrations to finish
 	sleep 120

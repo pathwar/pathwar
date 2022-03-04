@@ -19,7 +19,7 @@ logs:
 
 .PHONY: auth
 auth:
-	bash -ec 'source .env; docker-compose run --rm agent-dev --debug agent --no-run --salt=$$PATHWAR_AGENT_SALT --moderator-password=$$PATHWAR_AGENT_MODERATOR_PASSWORD --domain-suffix=$$PATHWAR_AGENT_NGINX_DOMAIN_SUFFIX --agent-name=$$PATHWAR_AGENT_NAME --port=$$PATHWAR_AGENT_NGINX_PORT --sso-token-file=./agent-token.json'
+	bash -ec 'source .env; set -x; docker-compose run --rm agent-dev --debug agent --no-run --salt=$$PATHWAR_AGENT_SALT --moderator-password=$$PATHWAR_AGENT_MODERATOR_PASSWORD --domain-suffix=$$PATHWAR_AGENT_NGINX_DOMAIN_SUFFIX --agent-name=$$PATHWAR_AGENT_NAME --port=$$PATHWAR_AGENT_NGINX_PORT --sso-realm=$$PATHWAR_AGENT_SSO_REALM --sso-token-file=./agent-token.json --sso-pubkey="$$PATHWAR_AGENT_SSO_PUBKEY" --http-api-addr=$$PATHWAR_AGENT_HTTP_API_ADDR'
 
 
 .PHONY: clean
