@@ -16,15 +16,22 @@ services:
       # loaded from .env
       - API_URN
       - SENTRY_DSN
+      - SSO_REALM
+      - SSO_CLIENTID
+      - SSO_PUBKEY
+      - CORS_ALLOWED_ORIGINS
     command:
       - pathwar
       - --debug
       - --sentry-dsn=$SENTRY_DSN
       - api
       - --urn=$API_URN
+      - --sso-realm=$SSO_REALM
+      - --sso-clientid=$SSO_CLIENTID
+      - --sso-pubkey=$SSO_PUBKEY
       - server
       - --bind=0.0.0.0:8000
-      # - --cors-allowed-origins=https://www.pathwar.land ## FIXME: enable in production
+      - --cors-allowed-origins=$CORS_ALLOWED_ORIGINS
     links:
       - db
     depends_on:

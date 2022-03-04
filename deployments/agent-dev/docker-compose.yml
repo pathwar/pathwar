@@ -13,15 +13,18 @@ services:
       - PATHWAR_AGENT_NGINX_DOMAIN_SUFFIX
       - PATHWAR_AGENT_NAME
       - PATHWAR_AGENT_NGINX_PORT
-      - PATHWAR_SENTRY_DSN
+      - PATHWAR_AGENT_SENTRY_DSN
       - PATHWAR_AGENT_MODERATOR_PASSWORD
       - PATHWAR_AGENT_SALT
+      - PATHWAR_AGENT_HTTP_API_ADDR
+      - PATHWAR_AGENT_SSO_PUBKEY
+      - PATHWAR_AGENT_SSO_REALM
     labels:
       com.centurylinklabs.watchtower.enable: "true"
     working_dir: /data/
     command:
       -   --debug
-      -   --sentry-dsn=$PATHWAR_SENTRY_DSN
+      -   --sentry-dsn=$PATHWAR_AGENT_SENTRY_DSN
       - agent
       -   --salt=$PATHWAR_AGENT_SALT
       -   --moderator-password=$PATHWAR_AGENT_MODERATOR_PASSWORD
@@ -29,6 +32,9 @@ services:
       -   --agent-name=$PATHWAR_AGENT_NAME
       -   --port=$PATHWAR_AGENT_NGINX_PORT
       -   --sso-token-file=./agent-token.json
+      -   --sso-realm=$PATHWAR_AGENT_SSO_REALM
+      -   --sso-pubkey=$PATHWAR_AGENT_SSO_PUBKEY
+      -   --http-api-addr=$PATHWAR_AGENT_HTTP_API_ADDR
 
       #   -agent-name localhost                                Agent Name
       #   -clean false                                         remove all pathwar instances before executing
