@@ -1,8 +1,6 @@
 project_id: '2'
 base_url: 'https://pathwar.crowdin.com'
-commit_message: |-
-  chore(i18n): new %language% translations
-
+commit_message: 'chore(i18n): new %language% translations'
 append_commit_message: false
 preserve_hierarchy: true
 files:
