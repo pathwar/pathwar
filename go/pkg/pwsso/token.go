@@ -10,7 +10,16 @@ import (
 )
 
 func (c *client) TokenWithClaims(bearer string) (*jwt.Token, jwt.MapClaims, error) {
-	return TokenWithClaims(bearer, c.publicKey, c.opts.AllowUnsafe)
+	token, claims, err := TokenWithClaims(bearer, c.publicKey, c.opts.AllowUnsafe)
+	if err != nil {
+		c.logger.Warn("token with claims",
+			zap.Error(err),
+			zap.Any("pubkey", c.publicKey),
+			zap.Bool("allow-unsafe", c.opts.AllowUnsafe),
+			zap.String("bearer", bearer),
+		)
+	}
+	return token, claims, err
 }
 
 func TokenWithClaims(bearer string, pubkey interface{}, allowUnsafe bool) (*jwt.Token, jwt.MapClaims, error) {
