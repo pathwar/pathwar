@@ -4,9 +4,10 @@ import { Helmet } from "react-helmet";
 import { graphql, withPrefix } from "gatsby";
 import { Global, css } from "@emotion/core";
 import { ThemeProvider, useTheme } from "emotion-theming";
+
+import { FormattedMessage } from "react-intl";
 import { lightTheme } from "../styles/themes";
 import { globalStyle } from "../styles/globalStyle";
-
 import darkBlueLogo from "../images/new-pathwar-logo-dark-blue.svg";
 import colorsLogo from "../images/new_pathwar-logo.svg";
 import footerLogo from "../images/new-pathwar-logo-grey.svg";
@@ -189,10 +190,14 @@ const NotFoundPage = ({ data }) => {
           }
         >
           <div className="title-block">
-            <h1>404</h1>
+            <h1>
+              <FormattedMessage id="404Page.title" />
+            </h1>
           </div>
           <div className="sub-block">
-            <h2>Sorry, page not found!</h2>
+            <h2>
+              <FormattedMessage id="404Page.text" />
+            </h2>
           </div>
         </div>
       </section>
