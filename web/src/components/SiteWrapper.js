@@ -7,8 +7,8 @@ import { useTheme } from "emotion-theming";
 import ValidateCouponForm from "../components/coupon/ValidateCouponForm";
 import logo from "../images/new-pathwar-logo-light-blue.svg";
 import iconProfile from "../images/icon-profile.svg";
-import iconMail from "../images/icon-mail.svg";
-import iconNotifications from "../images/icon-notifications.svg";
+// import iconMail from "../images/icon-mail.svg";
+// import iconNotifications from "../images/icon-notifications.svg";
 import iconPwn from "../images/icon-pwn-small.svg";
 import iconClose from "../images/icon-close-filled.svg";
 
@@ -161,16 +161,16 @@ const listItems = [
     link: `${appPrefix}/challenges`,
     name: <FormattedMessage id="nav.challenges" />,
   },
-  {
-    link: `${appPrefix}/missions`,
-    name: <FormattedMessage id="nav.missions" />,
-  },
-  { link: `${appPrefix}/events`, name: <FormattedMessage id="nav.events" /> },
-  {
-    link: `${appPrefix}/community`,
-    name: <FormattedMessage id="nav.community" />,
-  },
-  { link: `${appPrefix}/blog`, name: <FormattedMessage id="nav.blog" /> },
+  // {
+  //   link: `${appPrefix}/missions`,
+  //   name: <FormattedMessage id="nav.missions" />,
+  // },
+  // { link: `${appPrefix}/events`, name: <FormattedMessage id="nav.events" /> },
+  // {
+  //   link: `${appPrefix}/community`,
+  //   name: <FormattedMessage id="nav.community" />,
+  // },
+  // { link: `${appPrefix}/blog`, name: <FormattedMessage id="nav.blog" /> },
 ];
 
 const SiteWrapper = ({ children }) => {
@@ -215,7 +215,7 @@ const SiteWrapper = ({ children }) => {
           ))}
         </ul>
         <div css={dropdown}>
-          <button className="dropbtn">{`@${username}`}</button>
+          <button className="dropbtn">{`${username}`}</button>
           <div className="dropdown-content">
             <ul>
               <li>
@@ -230,7 +230,7 @@ const SiteWrapper = ({ children }) => {
                   <FormattedMessage id="userNav.profile" />
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <img src={iconMail} className="img-responsive" />
                 <a href="#" className="link">
                   <FormattedMessage id="userNav.messages" />
@@ -247,7 +247,7 @@ const SiteWrapper = ({ children }) => {
                 <a href="#" className="link">
                   <FormattedMessage id="userNav.notifications" />
                 </a>
-              </li>
+              </li> */}
               <li>
                 <img src={iconClose} className="img-responsive" />
                 <Link className="link" to="/app/logout">
