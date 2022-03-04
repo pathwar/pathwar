@@ -3,126 +3,126 @@ msgstr ""
 "Project-Id-Version: a676df8a4165af18606c65aeb9069108\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-26 21:50+0100\n"
-"PO-Revision-Date: 2022-03-04 11:51\n"
-"Language-Team: French\n"
+"PO-Revision-Date: 2022-03-04 11:46\n"
+"Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.3\n"
 "Last-Translator: \n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Language: fr_FR\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es_ES\n"
 "X-Crowdin-Project: a676df8a4165af18606c65aeb9069108\n"
 "X-Crowdin-Project-ID: 2\n"
-"X-Crowdin-Language: fr\n"
+"X-Crowdin-Language: es\n"
 "X-Crowdin-File: /master/challenges/web/training-sqli/front/translations/en_US/LC_MESSAGES/messages.po\n"
 "X-Crowdin-File-ID: 94\n"
 
 #: ../www/index.php:62
 msgid "(this is not the challenge passphrase, just the current mysql user password)"
-msgstr "(Ce n'est pas la phrase de validation du challenge. C'est le mot de passe de l'utilisateur dans la base de données)"
+msgstr ""
 
 #: ../www/index.php:161
 msgid "A SQL injection is a vulnerability commonly found on websites allowing an attacker to inject arbitrary content into a SQL request due to a lack of sanitization of user input."
-msgstr "Une injection SQL est une vulnérabilité fréquemment trouvée sur les sites web. Elle permet à l'attaquant d'injecter du code SQL arbitraire en raison d'un manque de nettoyage des entrées venant de l'utilisateur."
+msgstr ""
 
 #: ../www/index.php:75
 msgid "But you don't know their password. (Luckily or not :)), the login form is vulnerable to a SQL injection!"
-msgstr "Mais vous ne connaissez pas son mot de passe (heureusement ... ou pas :) ). Le formulaire d'authentification est vulnérable à une injection SQL!"
+msgstr ""
 
 #: ../www/index.php:50 ../www/index.php:113
 msgid "Either the login or the password is wrong!"
-msgstr "Identifiant ou mot de passe incorrect!"
+msgstr ""
 
 #: ../www/index.php:15 ../www/index.php:30
 msgid "First injection"
-msgstr "Première injection"
+msgstr ""
 
 #: ../www/index.php:110
 msgid "Hey! What are you doing here? You are not the admin!"
-msgstr "Hey! Que faites vous ici! Vous n'êtes pas l'admin!"
+msgstr ""
 
 #: ../www/index.php:14
 msgid "Home"
-msgstr "Accueil"
+msgstr ""
 
 #: ../www/index.php:60 ../www/index.php:123
 msgid "In case you have forgotten it, your password is: "
-msgstr "Si vous l'aviez oublié, votre mot de passe est: "
+msgstr ""
 
 #: ../www/index.php:158
 msgid "In this training level, you'll get the hang of writing basic SQL injections."
-msgstr "Dans ce niveau d'entraînement , vous allez vous familiariser avec des injections SQL basiques."
+msgstr ""
 
 #: ../www/index.php:171
 msgid "MySQL Documentation"
-msgstr "Documentation MySQL"
+msgstr ""
 
 #: ../www/index.php:154
 msgid "SQLi training"
-msgstr "Entraînement SQLi"
+msgstr ""
 
 #: ../www/index.php:16 ../www/index.php:89
 msgid "Second injection"
-msgstr "Deuxième injection"
+msgstr ""
 
 #: ../www/index.php:69 ../www/index.php:132
 msgid "Sign in"
-msgstr "Authentification"
+msgstr ""
 
 #: ../www/index.php:166
 msgid "Some resources on the subject:"
-msgstr "Quelques ressources sur ce sujet:"
+msgstr ""
 
 #: ../www/index.php:139
 msgid "TIP"
-msgstr "ASTUCE"
+msgstr ""
 
 #: ../www/index.php:140
 msgid "The request looks like this:"
-msgstr "La requête a cette forme:"
+msgstr ""
 
 #: ../www/index.php:77
 msgid "The request you must exploit looks like this:"
-msgstr "La requête que vous devez hacker a cette forme:"
+msgstr ""
 
 #: ../www/index.php:138
 msgid "This time, the admin has secured the website by removing their account from the database. Prove them wrong and login with their account !"
-msgstr "Cette fois, l'administrateur a sécurisé son site web en supprimant son compte de la base de données. Montrez lui que ce n'est pas suffisant, et connectez vous avec son compte!"
+msgstr ""
 
 #: ../www/index.php:76
 msgid "Try to exploit it to connect as the admin! (<b>Hint</b>: Take a look at the OR keyword.)"
-msgstr "Essayez d'hacker ça pour vous connecter en tant qu'admin! (<b>ASTUCE</b>: Regardez comment fonctionne \"OR\" dans le language SQL)"
+msgstr ""
 
 #: ../www/index.php:59 ../www/index.php:122
 msgid "Welcome"
-msgstr "Bienvenue"
+msgstr ""
 
 #: ../www/index.php:157
 msgid "Welcome to the SQL Injection training grounds!"
-msgstr "Bienvenue au niveaux d'entraînement aux injections SQL!"
+msgstr ""
 
 #: ../www/index.php:163
 msgid "What are the consequences?"
-msgstr "Quelles conséquences?"
+msgstr ""
 
 #: ../www/index.php:160
 msgid "What is a SQL injection?"
-msgstr "Qu'est-ce qu'une injection SQL?"
+msgstr ""
 
 #: ../www/index.php:164
 msgid "When you find a website vulnerable to a SQL injection, you can do pretty much whatever you want with its database. Depending on where the injection is, you can list passwords for all users, bypass a login form, or sometimes even execute arbitrary code on the server!"
-msgstr "Si vous trouvez un site vulnérable à une injection SQL, vous pourrez faire à peu près ce que vous voulez avec sa base de données. En fonction d'où se place l'injection, vous pourriez lister les mots de passe des utilisateurs, outre-passer l'authentification, et parfois même exécuter du code arbitraire sur le serveur!"
+msgstr ""
 
 #: ../www/index.php:137
 msgid "You need to login as the admin user again."
-msgstr "Vous devez à nouveau vous connecter en tant qu'admin."
+msgstr ""
 
 #: ../www/index.php:74
 msgid "You need to login as the admin user."
-msgstr "Vous devez vous connecter avec l'utilisateur admin."
+msgstr ""
 
 #: ../www/index.php:139
 msgid "take a look at the mysql documentation for UNION."
-msgstr "regardez la documentation MySQL pour le connecteur UNION."
+msgstr ""
 

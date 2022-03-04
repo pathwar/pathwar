@@ -4,41 +4,41 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-27 17:10+0100\n"
 "PO-Revision-Date: 2022-03-04 11:51\n"
-"Language-Team: English\n"
+"Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.3\n"
 "Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: en_US\n"
+"Language: pt_PT\n"
 "X-Crowdin-Project: a676df8a4165af18606c65aeb9069108\n"
 "X-Crowdin-Project-ID: 2\n"
-"X-Crowdin-Language: en\n"
+"X-Crowdin-Language: pt\n"
 "X-Crowdin-File: /master/challenges/web/upload-hi/front/translations/en_US/LC_MESSAGES/messages.po\n"
 "X-Crowdin-File-ID: 92\n"
 
 #: ../www/index.php:63
 msgid "Choose image file"
-msgstr "Choose image file"
+msgstr ""
 
 #: ../www/index.php:37
 msgid "Error"
-msgstr "Error"
+msgstr ""
 
 #: ../www/index.php:26
 msgid "File"
-msgstr "File"
+msgstr ""
 
 #: ../www/index.php:49
 msgid "Image Upload"
-msgstr "Image Upload"
+msgstr ""
 
 #: ../www/index.php:23
 msgid "Image uploaded !"
-msgstr "Image uploaded !"
+msgstr ""
 
 #: ../www/index.php:37
 msgid "Upload error !"
-msgstr "Upload error !"
+msgstr ""
 
