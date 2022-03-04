@@ -13,3 +13,7 @@ files:
     translation: /web/src/translations/%two_letters_code%.json
   - source: /challenges/web/upload-hi/front/translations/en_US/LC_MESSAGES/*.po
     translation: /challenges/web/upload-hi/front/translations/%locale_with_underscore%/LC_MESSAGES/%original_file_name%
+  - source: /challenges/web/training-sqli/front/translations/en_US/LC_MESSAGES/*.po
+    translation: /challenges/web/training-sqli/front/translations/%locale_with_underscore%/LC_MESSAGES/%original_file_name%
+  - source: /challenges/web/training-include/front/translations/en_US/LC_MESSAGES/*.po
+    translation: /challenges/web/training-include/front/translations/%locale_with_underscore%/LC_MESSAGES/%original_file_name%
