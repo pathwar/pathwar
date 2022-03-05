@@ -16,17 +16,17 @@
         <p>_('The goal of this training is to learn how to write a simple brute force script.')</p>
      <article>
         <h2>_('You shall not pass!')</h2>
-        <p>
+     
           <form name="bruteforce" action="index.php" method="get">
             Password <input type="text" name="pass" />
             <input type="submit" value="go" />
           </form>
-        </p>
+       
      </article>
 
      <!-- BEGIN win -->
      <article>
-        <h2>_('Wisely done! The passphrase is') <b>{{PASSPHRASE0}}</h2>
+        <h2>_('Wisely done! The passphrase is') <b>{{win.PASSPHRASE0}}</h2>
      </article>
      <!-- END win -->
 
@@ -59,9 +59,10 @@ done;
         <article>
             <h2>The Form</h2>
 
-            <pre class="code">
-                {{source1}}
-            </pre>
+<pre class="code">
+{{source1}}
+</pre>
+
             <p>Take note of the important bits:</p>
             <ul>
                 <li>_('The action field, which indicates the script called when the form is submitted (here, index.php).')</li>
