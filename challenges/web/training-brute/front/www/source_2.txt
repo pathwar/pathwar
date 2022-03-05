@@ -12,5 +12,4 @@ if(isset($_GET['pass'])){
     * "Invalid password, young mage."
     */
   }
-
 }
