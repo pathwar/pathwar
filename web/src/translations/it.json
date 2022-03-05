@@ -16,6 +16,8 @@
   "HomePage.createdAt": "created at",
   "NotAvailablePage.title": "Sorry,",
   "NotAvailablePage.text": "This page is not available yet",
+  "404Page.title": "404",
+  "404Page.text": "Sorry, page not found!",
   "SettingsPage.settings": "Settings",
   "SettingsPage.deleteAccount": "Delete account",
   "ChallengeBuyButton.buy": "Buy",
