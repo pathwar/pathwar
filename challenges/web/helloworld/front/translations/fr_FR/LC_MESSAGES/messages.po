@@ -1,0 +1,47 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: fr_FR\n"
+
+msgid "404 page not found"
+msgstr "404 page non trouvée"
+
+msgid "Welcome to a new world"
+msgstr "Bienvenue dans un nouvel univers"
+
+msgid "This is your last chance. After this, there is no going back."
+msgstr ""
+"C'est votre dernière chance. Après, il n'y aura pas de retour possible."
+
+msgid ""
+"You take the blue pill, the story ends. You wake up in your bed        and "
+"you believe whatever you want to believe."
+msgstr ""
+"Vous prenez la pilule bleue, l'histoire prend fin. Vous vous réveillez "
+"dans votre lit et vous croyez ce que vous voulez croire."
+
+msgid ""
+"You take the red pill, you stay in Wonderland, and I show you        how "
+"deep the rabbit hole goes."
+msgstr ""
+"Vous prenez la pilule verte, vous restez dans monde-merveille, et je vous "
+"montre la profondeur des terriers de lapins."
+
+msgid "Why didn't I take the <a href=\"/\" class=\"red\">red</a> pill?"
+msgstr ""
+"Pourquoi ne pas prendre la pilule <a href=\"/\" class=\"red\">rouge</a>?"
+
+msgid "Remember that all I am offering is the truth. Nothing more."
+msgstr "Souvenez vous que je n'offre rien d'autre que la vérité."
+
+msgid "The passphrase is"
+msgstr "La phrase clef est"

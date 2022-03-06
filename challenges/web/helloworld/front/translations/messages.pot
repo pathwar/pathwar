@@ -1,0 +1,28 @@
+msgid "404 page not found"
+msgstr ""
+
+msgid "Welcome to a new world"
+msgstr ""
+
+msgid "This is your last chance. After this, there is no going back."
+msgstr ""
+
+msgid ""
+"You take the blue pill, the story ends. You wake up in your bed"
+"        and you believe whatever you want to believe."
+msgstr ""
+
+msgid ""
+"You take the red pill, you stay in Wonderland, and I show you"
+"        how deep the rabbit hole goes."
+msgstr ""
+
+msgid "Why didn't I take the <a href=\"/\" class=\"red\">red</a> pill?"
+msgstr ""
+
+msgid "Remember that all I am offering is the truth. Nothing more."
+msgstr ""
+
+msgid "The passphrase is"
+msgstr ""
+
