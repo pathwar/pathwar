@@ -1,11 +1,18 @@
 import React, { memo } from "react";
 import { FormattedMessage } from "react-intl";
-import { Button } from "tabler-react";
+import { useDispatch } from "react-redux";
+import { buyChallenge as buyChallengeAction } from "../../actions/seasons";
 
-const ChallengeBuyButton = ({ challenge, buyChallenge, ...rest }) => {
-  const { subscriptions, flavor } = challenge;
+import Button from "../Button";
+
+const ChallengeBuyButton = ({ challenge, ...rest }) => {
+  const dispatch = useDispatch();
+
+  const buyChallenge = (flavorChallengeID, seasonID) =>
+    dispatch(buyChallengeAction(flavorChallengeID, seasonID));
+
+  const { subscriptions } = challenge;
   const hasSubscriptions = subscriptions;
-  const { purchase_price: price } = flavor;
 
   const handleBuyChallenge = async event => {
     event.preventDefault();
@@ -15,19 +22,12 @@ const ChallengeBuyButton = ({ challenge, buyChallenge, ...rest }) => {
   return (
     <>
       <Button
-        icon={hasSubscriptions ? "check" : "dollar-sign"}
-        color="indigo"
+        color="yellow"
         disabled={hasSubscriptions}
         onClick={handleBuyChallenge}
         {...rest}
       >
-        {hasSubscriptions ? (
-          <FormattedMessage id="ChallengeBuyButton.buy" />
-        ) : (
-          <>
-            {price || 0} <FormattedMessage id="ChallengeBuyButton.buy" />
-          </>
-        )}
+        <FormattedMessage id="ChallengeBuyButton.buy" />
       </Button>
     </>
   );
