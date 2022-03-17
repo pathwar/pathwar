@@ -23,11 +23,19 @@ const ChallengeBuyButton = ({ challenge, ...rest }) => {
     <>
       <Button
         color="yellow"
+        textColor="secondary"
+        emotionStyle={`
+          width: 100%;
+        `}
         disabled={hasSubscriptions}
         onClick={handleBuyChallenge}
         {...rest}
       >
-        <FormattedMessage id="ChallengeBuyButton.buy" />
+        {hasSubscriptions ? (
+          <FormattedMessage id="ChallengeBuyButton.purchased" />
+        ) : (
+          <FormattedMessage id="ChallengeBuyButton.buy" />
+        )}
       </Button>
     </>
   );

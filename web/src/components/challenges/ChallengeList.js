@@ -15,7 +15,7 @@ const ChallengeList = props => {
     <>
       <Grid.Row>
         {challenges.map(challenge => (
-          <Grid.Col lg={4} sm={4} md={4} xs={4} key={challenge.id}>
+          <Grid.Col lg={6} sm={6} md={6} xs={12} key={challenge.id}>
             <ChallengeCard challenge={challenge} teamID={activeTeam.id} />
           </Grid.Col>
         ))}

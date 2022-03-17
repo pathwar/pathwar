@@ -6,8 +6,7 @@ const buttonStyle = css`
   box-shadow: 0px 5px 20px 0px rgba(7, 42, 68, 0.1);
   text-align: center;
   font-weight: 900;
-  width: 100%;
-  padding: 1rem 0;
+  padding: 0.7rem 3rem;
   border-radius: 5px;
   border: none;
   cursor: pointer;
@@ -17,7 +16,15 @@ const buttonStyle = css`
   }
 `;
 
-const Button = ({ children, color, onClick, ...rest }) => {
+const Button = ({
+  children,
+  color,
+  onClick,
+  textColor,
+  emotionStyle,
+  disabled,
+  ...rest
+}) => {
   return (
     <button
       onClick={onClick}
@@ -25,8 +32,12 @@ const Button = ({ children, color, onClick, ...rest }) => {
         buttonStyle,
         css`
           background-color: ${theme.colors[color] || theme.colors.primary};
+          color: ${theme.colors[textColor] || theme.colors.light};
+          ${disabled && `opacity: 0.7;`}
+          ${emotionStyle};
         `,
       ]}
+      disabled={disabled}
       {...rest}
     >
       {children}
