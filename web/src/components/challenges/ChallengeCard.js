@@ -203,7 +203,7 @@ const ChallengeCard = ({ challenge }) => {
             </div>
             <div className="statsWrapper">
               <p className="heading">
-                <FormattedMessage id="ChallengeCard.statsHeading" />!
+                <FormattedMessage id="ChallengeCard.statsHeading" />:
               </p>
               <p className="item">
                 <FormattedMessage id="ChallengeCard.category" />:{" "}
