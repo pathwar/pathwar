@@ -114,7 +114,7 @@ const pillStyle = color => css`
 
   width: 100%;
 
-  &:nth-child(2) {
+  &:nth-of-type(2) {
     margin-left: 0.2rem;
   }
 `;
@@ -128,6 +128,15 @@ const tagStyle = bgColor => css`
   font-weight: 300;
   font-size: 0.75rem;
 `;
+
+const islandsUrls = [
+  "https://d33wubrfki0l68.cloudfront.net/1c254da613f195cbfc2a85e94c1f792b306abea4/09aac/files/islands--pathwar-island-desert.svg",
+  "https://d33wubrfki0l68.cloudfront.net/055daf3aaf80e0bacca1db87ad3ffa001d294c69/82028/files/islands--pathwar-island-grassland.svg",
+  "https://d33wubrfki0l68.cloudfront.net/1eaa050952258bfe93771ef87c9edb9c990b9ba3/31cd1/files/islands--pathwar-island-jungle.svg",
+  "https://d33wubrfki0l68.cloudfront.net/0012a2d6917afcc1ace2e0363eef0f4697aa04b7/38329/files/islands--pathwar-island-mountain.svg",
+  "https://d33wubrfki0l68.cloudfront.net/81a67e12a8a0a40d1148465e8a777a25d1cb07bf/25190/files/islands--pathwar-island-north.svg",
+  "https://d33wubrfki0l68.cloudfront.net/7bdd23eb7ad738d1a00122d20e50c4a0df46dd2d/21303/files/islands--pathwar-island-volcano.svg",
+];
 
 const ChallengeCard = ({ challenge }) => {
   const [modalQueryId, setModalQueryId] = useQueryParam("modal", StringParam);
@@ -145,6 +154,8 @@ const ChallengeCard = ({ challenge }) => {
     setModalOpen(true);
     setModalQueryId(challengeID);
   };
+
+  const islandImg = islandsUrls[(Math.random() * islandsUrls.length) | 0];
 
   return (
     <div css={mainContainer}>
@@ -166,12 +177,7 @@ const ChallengeCard = ({ challenge }) => {
       </div>
       <div css={cardWrapper}>
         <div css={cardActionsWrapper}>
-          <img
-            src="https://d33wubrfki0l68.cloudfront.net/1c254da613f195cbfc2a85e94c1f792b306abea4/09aac/files/islands--pathwar-island-desert.svg"
-            alt="island"
-            width={206}
-            height={206}
-          />
+          <img src={islandImg} alt="island" width={206} height={206} />
           <div className="pricingWrapper">
             <div css={theme => pillStyle(theme.colors.success)}>
               <FormattedMessage id="ChallengeCard.price" />
