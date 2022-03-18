@@ -12,7 +12,8 @@ const ChallengeBuyButton = ({ challenge, ...rest }) => {
     dispatch(buyChallengeAction(flavorChallengeID, seasonID));
 
   const { subscriptions } = challenge;
-  const hasSubscriptions = subscriptions;
+  const purchased = subscriptions;
+  const isClosed = purchased && subscriptions[0].status === "Closed";
 
   const handleBuyChallenge = async event => {
     event.preventDefault();
@@ -27,11 +28,13 @@ const ChallengeBuyButton = ({ challenge, ...rest }) => {
         emotionStyle={`
           width: 100%;
         `}
-        disabled={hasSubscriptions}
+        disabled={purchased || isClosed}
         onClick={handleBuyChallenge}
         {...rest}
       >
-        {hasSubscriptions ? (
+        {isClosed ? (
+          <FormattedMessage id="ChallengeCard.closed" />
+        ) : purchased ? (
           <FormattedMessage id="ChallengeBuyButton.purchased" />
         ) : (
           <FormattedMessage id="ChallengeBuyButton.buy" />

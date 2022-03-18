@@ -23,7 +23,7 @@ const mainContainer = css`
   }
 `;
 
-const cardWrapper = css`
+const cardWrapper = isClosed => css`
   background-color: #fff;
   display: flex;
   flex-direction: row;
@@ -33,6 +33,7 @@ const cardWrapper = css`
   border-radius: 8px;
   max-height: 374px;
   width: 100%;
+  ${isClosed && `pointer-events: none`}
 `;
 
 const cardActionsWrapper = css`
@@ -175,7 +176,7 @@ const ChallengeCard = ({ challenge }) => {
           )}
         </div>
       </div>
-      <div css={cardWrapper}>
+      <div css={() => cardWrapper(isClosed)}>
         <div css={cardActionsWrapper}>
           <img src={islandImg} alt="island" width={206} height={206} />
           <div className="pricingWrapper">
