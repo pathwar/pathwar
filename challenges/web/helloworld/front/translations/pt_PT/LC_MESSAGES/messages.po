@@ -1,0 +1,43 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: a676df8a4165af18606c65aeb9069108\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2022-03-20 22:41\n"
+"Language-Team: Portuguese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: pt_PT\n"
+"X-Crowdin-Project: a676df8a4165af18606c65aeb9069108\n"
+"X-Crowdin-Project-ID: 2\n"
+"X-Crowdin-Language: pt\n"
+"X-Crowdin-File: /master/challenges/web/helloworld/front/translations/en_US/messages.po\n"
+"X-Crowdin-File-ID: 130\n"
+
+msgid "404 page not found"
+msgstr ""
+
+msgid "Welcome to a new world"
+msgstr ""
+
+msgid "This is your last chance. After this, there is no going back."
+msgstr ""
+
+msgid "You take the blue pill, the story ends. You wake up in your bed        and you believe whatever you want to believe."
+msgstr ""
+
+msgid "You take the red pill, you stay in Wonderland, and I show you        how deep the rabbit hole goes."
+msgstr ""
+
+msgid "Why didn't I take the <a href=\"/\" class=\"red\">red</a> pill?"
+msgstr ""
+
+msgid "Remember that all I am offering is the truth. Nothing more."
+msgstr ""
+
+msgid "The passphrase is"
+msgstr ""
+
