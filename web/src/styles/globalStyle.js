@@ -16,6 +16,7 @@ export const globalStyle = ({ colors, font, type }, _bodyBg) => {
       background-repeat: no-repeat;
       font-family: ${font.family.body};
       font-size: ${font.size.base};
+      font-weight: 500;
       color: ${colors.secondary};
       margin: 0;
       padding: 0;

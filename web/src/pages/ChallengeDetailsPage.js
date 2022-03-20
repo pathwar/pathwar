@@ -8,7 +8,6 @@ import moment from "moment";
 import siteMetaData from "../constants/metadata";
 import {
   fetchChallengeDetail as fetchChallengeDetailAction,
-  buyChallenge as buyChallengeAction,
   validateChallenge as validateChallengeAction,
   // closeChallenge as closeChallengeAction,
 } from "../actions/seasons";
@@ -39,8 +38,6 @@ const ChallengeDetailsPage = props => {
   const dispatch = useDispatch();
   const challenge = useSelector(state => state.seasons.challengeInDetail);
 
-  const buyChallenge = (flavorChallengeID, seasonID) =>
-    dispatch(buyChallengeAction(flavorChallengeID, seasonID));
   const validateChallenge = (validationData, seasonId) =>
     dispatch(validateChallengeAction(validationData, seasonId));
   // const closeChallenge = subscriptionID =>
@@ -110,10 +107,7 @@ const ChallengeDetailsPage = props => {
               </Tag>
             )}
             {!purchased && !validations && (
-              <ChallengeBuyButton
-                challenge={challenge}
-                buyChallenge={buyChallenge}
-              />
+              <ChallengeBuyButton challenge={challenge} />
             )}
             <p css={rewardText}>
               <FormattedMessage id="ChallengeDetailsPage.reward" />:{" "}
