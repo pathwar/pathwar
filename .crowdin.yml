@@ -12,3 +12,9 @@ files:
     translation: /challenges/web/training-sqli/front/translations/%locale_with_underscore%/LC_MESSAGES/%original_file_name%
   - source: /challenges/web/training-include/front/translations/en_US/LC_MESSAGES/*.po
     translation: /challenges/web/training-include/front/translations/%locale_with_underscore%/LC_MESSAGES/%original_file_name%
+  - source: /challenges/web/captcha-luigi/front/translations/en_US/LC_MESSAGES/*.po
+    translation: /challenges/web/captcha-luigi/front/translations/%locale_with_underscore%/LC_MESSAGES/%original_file_name%
+  - source: /challenges/web/captcha-mario/front/translations/en_US/LC_MESSAGES/*.po
+    translation: /challenges/web/captcha-mario/front/translations/%locale_with_underscore%/LC_MESSAGES/%original_file_name%
+  - source: /challenges/web/helloworld/front/translations/en_US/*.po
+    translation: /challenges/web/helloworld/front/translations/%locale_with_underscore%/LC_MESSAGES/%original_file_name%
