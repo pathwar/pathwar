@@ -1,0 +1,40 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: a676df8a4165af18606c65aeb9069108\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-07 22:16+0100\n"
+"PO-Revision-Date: 2022-03-20 22:41\n"
+"Language-Team: Portuguese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: pt_PT\n"
+"X-Crowdin-Project: a676df8a4165af18606c65aeb9069108\n"
+"X-Crowdin-Project-ID: 2\n"
+"X-Crowdin-Language: pt\n"
+"X-Crowdin-File: /master/challenges/web/captcha-mario/front/translations/en_US/LC_MESSAGES/messages.po\n"
+"X-Crowdin-File-ID: 128\n"
+
+#: ../www/index.php:31 ../www/index.php:36
+msgid "Captcha Mario"
+msgstr ""
+
+#: ../www/index.php:58
+msgid "Score:"
+msgstr ""
+
+#: ../www/index.php:61
+msgid "The passphrase is:"
+msgstr ""
+
+#: ../www/index.php:54
+msgid "You lose !"
+msgstr ""
+
+#: ../www/index.php:52
+msgid "You win !"
+msgstr ""
+
