@@ -1,10 +1,15 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: a676df8a4165af18606c65aeb9069108\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-08 13:13+0100\n"
-"PO-Revision-Date: 2022-03-20 22:41\n"
-"Language-Team: English\n"
+"PO-Revision-Date: 2022-03-08 13:14+0100\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,29 +17,23 @@ msgstr ""
 "Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: en_US\n"
-"X-Crowdin-Project: a676df8a4165af18606c65aeb9069108\n"
-"X-Crowdin-Project-ID: 2\n"
-"X-Crowdin-Language: en\n"
-"X-Crowdin-File: /master/challenges/web/captcha-luigi/front/translations/en_US/LC_MESSAGES/messages.po\n"
-"X-Crowdin-File-ID: 126\n"
 
 #: ../www/index.php:10 ../www/index.php:15
 msgid "Captcha Luigi"
-msgstr ""
+msgstr "Captcha Luigi"
 
 #: ../www/index.php:32
 msgid "You win !"
-msgstr ""
+msgstr "You win !"
 
 #: ../www/index.php:34
 msgid "You lose !"
-msgstr ""
+msgstr "You lose !"
 
 #: ../www/index.php:38
 msgid "Score:"
-msgstr ""
+msgstr "Score:"
 
 #: ../www/index.php:41
 msgid "The passphrase is:"
-msgstr ""
-
+msgstr "The passphrase is:"
