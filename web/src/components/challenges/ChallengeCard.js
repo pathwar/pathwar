@@ -23,9 +23,9 @@ const cardWrapper = isClosed => css`
   align-items: center;
   box-shadow: 0px 5px 20px 0px rgba(7, 42, 68, 0.1);
   margin-bottom: 0.5rem;
-  padding: 3rem 1rem;
+  padding: 1rem 1rem;
   border-radius: 8px;
-  min-height: 374px;
+  min-height: 200px;
   width: 100%;
   ${isClosed && `pointer-events: none`}
 `;
