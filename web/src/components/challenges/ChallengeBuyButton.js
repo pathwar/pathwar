@@ -17,6 +17,7 @@ const ChallengeBuyButton = ({ challenge, ...rest }) => {
 
   const handleBuyChallenge = async event => {
     event.preventDefault();
+    event.stopPropagation();
     await buyChallenge(challenge.flavor_id, challenge.season_id);
   };
 
@@ -32,13 +33,7 @@ const ChallengeBuyButton = ({ challenge, ...rest }) => {
         onClick={handleBuyChallenge}
         {...rest}
       >
-        {isClosed ? (
-          <FormattedMessage id="ChallengeCard.closed" />
-        ) : purchased ? (
-          <FormattedMessage id="ChallengeBuyButton.purchased" />
-        ) : (
-          <FormattedMessage id="ChallengeBuyButton.buy" />
-        )}
+        <FormattedMessage id="ChallengeBuyButton.buy" />
       </Button>
     </>
   );
