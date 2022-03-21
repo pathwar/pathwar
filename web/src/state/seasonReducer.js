@@ -98,20 +98,37 @@ export default function seasonReducer(state = initialState.seasons, action) {
       };
 
     case BUY_CHALLENGE_SUCCESS:
-      const challengeInDetailCloneBuy = clone(challengeInDetail);
+      const activeChallengesUpdated = activeChallengesInState.map(item => {
+        if (item.id === challengeSubscription.season_challenge_id) {
+          return {
+            ...item,
+            subscriptions: item.subscriptions
+              ? [...item.subscriptions, challengeSubscription]
+              : [challengeSubscription],
+          };
+        }
 
-      if (challengeInDetailCloneBuy.subscriptions) {
-        challengeInDetailCloneBuy.subscriptions = [
-          ...challengeInDetailCloneBuy.subscriptions,
-          challengeSubscription,
-        ];
-      } else {
-        challengeInDetailCloneBuy.subscriptions = [challengeSubscription];
+        return item;
+      });
+
+      if (challengeInDetail?.id === challengeSubscription.season_challenge_id) {
+        const challengeInDetailCloneBuy = {
+          ...challengeInDetail,
+          subscriptions: challengeInDetail.subscriptions
+            ? [...challengeInDetail.subscriptions, challengeSubscription]
+            : [challengeSubscription],
+        };
+
+        return {
+          ...state,
+          activeChallenges: activeChallengesUpdated,
+          challengeInDetail: challengeInDetailCloneBuy,
+        };
       }
 
       return {
         ...state,
-        challengeInDetail: challengeInDetailCloneBuy,
+        activeChallenges: activeChallengesUpdated,
       };
 
     case VALIDATE_CHALLENGE_SUCCESS:

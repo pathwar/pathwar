@@ -3,14 +3,11 @@ import React from "react";
 import { Modal } from "react-responsive-modal";
 import ChallengeDetailsPage from "../../pages/ChallengeDetailsPage";
 
-const ChallengeModal = (
-  { open, onClose: onCloseProps, challengeID },
-  ...rest
-) => {
+const ChallengeModal = ({ open, onClose, challengeID }, ...rest) => {
   return (
     <Modal
       open={open}
-      onClose={onCloseProps}
+      onClose={onClose}
       center={true}
       animationDuration={300}
       {...rest}
