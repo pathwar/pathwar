@@ -27,6 +27,9 @@ var adminJSONFormat bool
 func adminCommand() *ffcli.Command {
 	adminFlags := flag.NewFlagSet("admin", flag.ExitOnError)
 	adminFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
+	adminFlags.StringVar(&ssoOpts.ClientID, "sso-client-id", ssoOpts.ClientID, "SSO ClientID")
+	adminFlags.StringVar(&ssoOpts.ClientSecret, "sso-client-secret", ssoOpts.ClientSecret, "SSO ClientSecret")
+	adminFlags.StringVar(&ssoOpts.Realm, "sso-realm", ssoOpts.Realm, "SSO Realm")
 	adminFlags.StringVar(&ssoOpts.TokenFile, "sso-token-file", ssoOpts.TokenFile, "Token file")
 	adminFlags.BoolVar(&adminJSONFormat, "json", false, "Print JSON and exit")
 	return &ffcli.Command{
