@@ -163,3 +163,7 @@ clean:
 .PHONY: packr
 packr: ./out/pwinit-linux-amd64
 	cd pkg/pwinit && packr2
+
+.PHONY: install-light
+install-light:
+	go install ./cmd/pathwar
