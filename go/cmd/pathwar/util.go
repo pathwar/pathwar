@@ -166,6 +166,10 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		return nil, err
 	}
 
+	logger.Debug("http client",
+		zap.String("token-file", ssoOpts.TokenFile),
+		zap.String("http-api-addr", httpAPIAddr),
+	)
 	return pwapi.NewHTTPClient(oauth2.NewClient(ctx, ts), httpAPIAddr), nil
 }
 

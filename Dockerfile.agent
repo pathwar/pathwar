@@ -5,10 +5,8 @@ WORKDIR         /go/src/pathwar.land
 ENV             GO111MODULE=on GOPROXY=https://proxy.golang.org,direct
 COPY            go.mod go.sum ./
 RUN             go mod download
-RUN             go install github.com/gobuffalo/packr/v2/packr2
 COPY            . .
 WORKDIR         ./go
-RUN             make packr
 RUN             make install
 
 # runtime

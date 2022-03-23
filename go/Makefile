@@ -2,7 +2,7 @@
 GOPATH ?= $(HOME)/go
 GOMOD_DIRS = ..
 GOPKG =	pathwar.land
-GOBINS = ./cmd/pathwar ./cmd/pwinit
+GOBINS = ./cmd/pathwar
 DOCKER_IMAGE = pathwar/pathwar
 DOCKERFILE_PATH = ../Dockerfile
 
@@ -14,7 +14,6 @@ PRE_BUILD_STEPS += generate
 PRE_LINT_STEPsS += generate
 PRE_TIDY_STEPS += generate
 PRE_BUMPDEPS_STEPS += generate
-PRE_INSTALL_STEPS += ./out/pwinit-linux-amd64 ./out/docker-compose-dab
 
 DEV_BIND ?= :8001
 AGENT_NGINX_PORT ?= 8002
@@ -160,6 +159,8 @@ generate_local:
 clean:
 	rm -f gen.sum $(wildcard */*/*.pb.go */*/*.pb.gw.go) $(wildcard out/*) $(wildcard */*/packrd/*) $(wildcard */*/*-packr.go)
 
-.PHONY: packr
-packr: ./out/pwinit-linux-amd64
-	cd pkg/pwinit && packr2
+.PHONY: install-full-binary
+install-full-binary: ./out/pwinit-linux-amd64 ./out/docker-compose-dab
+	cd pkg/pwinit && go run github.com/gobuffalo/packr/v2/packr2
+	sed -i s@pathwar.land/pathwar/go/pkg@pathwar.land/pathwar/v2/go/pkg@ ./pkg/pwinit/pwinit-packr.go
+	go install $(GO_INSTALL_OPTS) ./cmd/pathwar
