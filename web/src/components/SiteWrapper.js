@@ -154,11 +154,9 @@ const langSwitcher = css`
   }
 `;
 
-const appPrefix = process.env.GATSBY_APP_ROOT === "true" ? "" : "/app";
-
 const listItems = [
   {
-    link: `${appPrefix}/challenges`,
+    link: `/challenges`,
     name: <FormattedMessage id="nav.challenges" />,
   },
   // {
