@@ -252,7 +252,7 @@ const SiteWrapper = ({ children }) => {
               </li> */}
               <li>
                 <img src={iconClose} className="img-responsive" />
-                <Link className="link" to="/app/logout">
+                <Link className="link" to="/logout">
                   <FormattedMessage id="userNav.disconnect" />
                 </Link>
               </li>
