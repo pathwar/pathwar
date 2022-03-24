@@ -226,6 +226,8 @@ const SiteWrapper = ({ children }) => {
                     activeKeycloakSession.tokenParsed.iss + "/account"
                   }
                   className="link"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <FormattedMessage id="userNav.profile" />
                 </a>
