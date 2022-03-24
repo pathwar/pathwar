@@ -34,8 +34,7 @@ Sentry.init({
 });
 toast.configure();
 
-const appIsRoot = process.env.APP_ROOT === "true";
-const appPrefix = appIsRoot ? "" : "/app";
+const appPrefix = "";
 
 export const App = () => {
   const currentTheme = useTheme();
