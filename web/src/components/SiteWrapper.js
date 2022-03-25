@@ -154,11 +154,9 @@ const langSwitcher = css`
   }
 `;
 
-const appPrefix = process.env.GATSBY_APP_ROOT === "true" ? "" : "/app";
-
 const listItems = [
   {
-    link: `${appPrefix}/challenges`,
+    link: `/challenges`,
     name: <FormattedMessage id="nav.challenges" />,
   },
   // {
@@ -226,6 +224,8 @@ const SiteWrapper = ({ children }) => {
                     activeKeycloakSession.tokenParsed.iss + "/account"
                   }
                   className="link"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <FormattedMessage id="userNav.profile" />
                 </a>
@@ -250,7 +250,7 @@ const SiteWrapper = ({ children }) => {
               </li> */}
               <li>
                 <img src={iconClose} className="img-responsive" />
-                <Link className="link" to="/app/logout">
+                <Link className="link" to="/logout">
                   <FormattedMessage id="userNav.disconnect" />
                 </Link>
               </li>

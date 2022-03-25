@@ -34,9 +34,6 @@ Sentry.init({
 });
 toast.configure();
 
-const appIsRoot = process.env.APP_ROOT === "true";
-const appPrefix = appIsRoot ? "" : "/app";
-
 export const App = () => {
   const currentTheme = useTheme();
   const { title, description } = siteMetaData;
@@ -92,30 +89,18 @@ export const App = () => {
       <Location>
         {({ location }) => (
           <Router location={location}>
+            <ProtectedRoute path={`/challenges`} component={ChallengesPage} />
+            <ProtectedRoute path={`/statistics`} component={StatisticsPage} />
             <ProtectedRoute
-              path={`${appPrefix}/challenges`}
-              component={ChallengesPage}
-            />
-            <ProtectedRoute
-              path={`${appPrefix}/statistics`}
-              component={StatisticsPage}
-            />
-            <ProtectedRoute
-              path={`${appPrefix}/team/:teamId`}
+              path={`/team/:teamId`}
               component={TeamDetailsPage}
             />
             <ProtectedRoute
-              path={`${appPrefix}/challenges/:challengeId`}
+              path={`/challenges/:challengeId`}
               component={ChallengeDetailsPage}
             />
-            <ProtectedRoute
-              path={`${appPrefix}/settings`}
-              component={SettingsPage}
-            />
-            <ProtectedRoute
-              path={`${appPrefix}/logout`}
-              component={LogoutPage}
-            />
+            <ProtectedRoute path={`/settings`} component={SettingsPage} />
+            <ProtectedRoute path={`/logout`} component={LogoutPage} />
             <ProtectedRoute path="/app" component={ChallengesPage} />
             <ProtectedRoute path="/" component={ChallengesPage} />
             <ProtectedRoute default component={NotAvailablePage} />

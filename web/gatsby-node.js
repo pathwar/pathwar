@@ -7,9 +7,8 @@
 exports.onCreatePage = async ({ page, actions }) => {
   const { createPage } = actions;
 
-  const appIsRoot = process.env.GATSBY_APP_ROOT === "true";
-  const matchingRegex = appIsRoot ? /^\/$/ : /^\/app/;
-  const matchingPath = appIsRoot ? `/*` : `/app/*`;
+  const matchingRegex = /^\/$/;
+  const matchingPath = `/*`;
 
   // page.matchPath is a special key that's used for matching pages
   // only on the client.
