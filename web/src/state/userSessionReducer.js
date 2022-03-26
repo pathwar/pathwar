@@ -4,6 +4,8 @@ import {
   SET_USER_SESSION,
   SET_KEYCLOAK_SESSION,
   VALIDATE_COUPON_SUCCESS,
+  VALIDATE_CHALLENGE_SUCCESS,
+  BUY_CHALLENGE_SUCCESS,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -63,6 +65,18 @@ export default function userSessionReducer(
       return {
         ...state,
         cash: action.payload.team.cash,
+      };
+
+    case VALIDATE_CHALLENGE_SUCCESS:
+      return {
+        ...state,
+        cash: action.payload.challengeSubscription.team.cash,
+      };
+
+    case BUY_CHALLENGE_SUCCESS:
+      return {
+        ...state,
+        cash: action.payload.challengeSubscription.team.cash,
       };
 
     default:
