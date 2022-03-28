@@ -14,7 +14,7 @@
   "coupon.validate": "Valider",
   "HomePage.title": "Accueil",
   "HomePage.createdAt": "créé le",
-  "NotAvailablePage.title": "Pardon,",
+  "NotAvailablePage.title": "404 - Pardon,",
   "NotAvailablePage.text": "Cette page n'est pas encore disponible",
   "404Page.title": "404",
   "404Page.text": "Désolé, la page n'a pas été trouvée !",

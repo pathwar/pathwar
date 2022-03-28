@@ -47,7 +47,7 @@ const ChallengeDetailsPage = props => {
 
   useEffect(() => {
     const { uri, challengeID: challengeIDFromProps } = props;
-    const challengeIDFromURI = uri && uri.split("/")[3];
+    const challengeIDFromURI = uri && uri.split("/")[2];
     const challhengeID = challengeIDFromURI || challengeIDFromProps;
 
     fetchChallengeDetail(challhengeID);
