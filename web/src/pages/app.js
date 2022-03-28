@@ -101,7 +101,6 @@ export const App = () => {
             />
             <ProtectedRoute path={`/settings`} component={SettingsPage} />
             <ProtectedRoute path={`/logout`} component={LogoutPage} />
-            <ProtectedRoute path="/app" component={ChallengesPage} />
             <ProtectedRoute path="/" component={ChallengesPage} />
             <ProtectedRoute default component={NotAvailablePage} />
           </Router>

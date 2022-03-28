@@ -14,7 +14,7 @@
   "coupon.validate": "Validate",
   "HomePage.title": "Home",
   "HomePage.createdAt": "created at",
-  "NotAvailablePage.title": "Sorry,",
+  "NotAvailablePage.title": "404 - Sorry,",
   "NotAvailablePage.text": "This page is not available yet",
   "404Page.title": "404",
   "404Page.text": "Sorry, page not found!",
