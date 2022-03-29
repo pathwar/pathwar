@@ -6,6 +6,7 @@ import { css } from "@emotion/core";
 import ChallengeModal from "./ChallengeModal";
 import ChallengeBuyButton from "./ChallengeBuyButton";
 import iconPwn from "../../images/icon-pwn-small.svg";
+import { getTagColor } from "../../config/tagMap";
 
 const mainContainer = cursor => css`
   margin-bottom: 2rem;
@@ -91,10 +92,10 @@ const cardDescriptionWrapper = theme => css`
   }
 `;
 
-const tagStyle = css`
+const tagStyle = bgColor => css`
   display: inline-block;
   text-align: center;
-  background-color: #b0e2ae;
+  background-color: ${bgColor};
   border-radius: 8px;
   padding: 0.5rem;
   margin-right: 0.5rem;
@@ -148,16 +149,18 @@ const ChallengeCard = ({ challenge, withModal = true }) => {
             </div>
             <div className="descriptionBody">
               <div className="tagsWrapper">
-                <div css={tagStyle}>{flavor.category}</div>
+                <div css={tagStyle(getTagColor(flavor.category))}>
+                  {flavor.category}
+                </div>
                 {flavor.tags &&
                   flavor.tags.map(tag => (
-                    <div css={tagStyle} key={tag}>
+                    <div css={tagStyle(getTagColor(tag))} key={tag}>
                       {tag}
                     </div>
                   ))}
                 {flavor.tag_list &&
                   flavor.tag_list.split(",").map(tag => (
-                    <div css={tagStyle} key={tag}>
+                    <div css={tagStyle(getTagColor(tag))} key={tag}>
                       {tag}
                     </div>
                   ))}
