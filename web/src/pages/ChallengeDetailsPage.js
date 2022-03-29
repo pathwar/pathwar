@@ -103,13 +103,13 @@ const ChallengeDetailsPage = props => {
               />
               {purchased && !validations && (
                 <Tag css={statusTag}>
-                  <FormattedMessage id="ChallengeDetailsPage.purchased" />{" "}
+                  <FormattedMessage id="ChallengeDetailsPage.purchased" />
                   {moment(subscription.created_at).calendar()}
                 </Tag>
               )}
               {purchased && validations && (
                 <Tag color={validationStatusColor}>
-                  <FormattedMessage id="ChallengeDetailsPage.validated" />{" "}
+                  <FormattedMessage id="ChallengeDetailsPage.validated" />
                   {moment(validation.created_at).calendar()}
                 </Tag>
               )}
