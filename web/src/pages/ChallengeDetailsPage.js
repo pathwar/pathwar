@@ -126,7 +126,7 @@ const ChallengeDetailsPage = props => {
           </Grid.Col> */}
         </Grid.Row>
         <Grid.Row>
-          {purchased && !validations && (
+          {purchased && (
             <Grid.Col width={12} sm={12} md={12}>
               <ChallengeValidateForm
                 challenge={challenge}
