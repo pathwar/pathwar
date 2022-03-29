@@ -1,8 +1,8 @@
 const tags = [
-  // {
-  //   name: "web",
-  //   color: "#a2f6a9",
-  // },
+  {
+    name: "web",
+    color: "#a2f6a9",
+  },
   {
     name: "intro",
     color: "#92c4e9",
