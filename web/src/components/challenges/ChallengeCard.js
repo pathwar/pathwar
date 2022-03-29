@@ -6,14 +6,13 @@ import { css } from "@emotion/core";
 import ChallengeModal from "./ChallengeModal";
 import ChallengeBuyButton from "./ChallengeBuyButton";
 import iconPwn from "../../images/icon-pwn-small.svg";
-import generateLightColorHex from "../../utils/generateLightColorHex";
 
-const mainContainer = css`
+const mainContainer = cursor => css`
   margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
+  ${cursor && `cursor: pointer;`}
 `;
 
 const cardWrapper = isClosed => css`
@@ -27,7 +26,7 @@ const cardWrapper = isClosed => css`
   border-radius: 8px;
   min-height: 200px;
   width: 100%;
-  ${isClosed && `pointer-events: none`}
+  ${isClosed && `pointer-events: none;`}
 `;
 
 const cardActionsWrapper = css`
@@ -92,18 +91,19 @@ const cardDescriptionWrapper = theme => css`
   }
 `;
 
-const tagStyle = bgColor => css`
+const tagStyle = css`
   display: inline-block;
   text-align: center;
-  background-color: ${bgColor};
+  background-color: #b0e2ae;
   border-radius: 8px;
   padding: 0.5rem;
   margin-right: 0.5rem;
+  margin-bottom: 0.2rem;
   font-weight: 300;
   font-size: 0.75rem;
 `;
 
-const ChallengeCard = ({ challenge }) => {
+const ChallengeCard = ({ challenge, withModal = true }) => {
   const [modalQueryId, setModalQueryId] = useQueryParam("modal", StringParam);
   const [modalOpen, setModalOpen] = useState(modalQueryId === challenge.id);
 
@@ -122,8 +122,8 @@ const ChallengeCard = ({ challenge }) => {
 
   return (
     <>
-      <div css={mainContainer} onClick={openModal}>
-        <div css={() => cardWrapper(isClosed)}>
+      <div css={mainContainer(withModal)} onClick={withModal && openModal}>
+        <div css={() => cardWrapper(isClosed, withModal)}>
           <div css={cardActionsWrapper}>
             <img
               src="https://d33wubrfki0l68.cloudfront.net/1c254da613f195cbfc2a85e94c1f792b306abea4/09aac/files/islands--pathwar-island-desert.svg"
@@ -148,14 +148,19 @@ const ChallengeCard = ({ challenge }) => {
             </div>
             <div className="descriptionBody">
               <div className="tagsWrapper">
-                <div css={theme => tagStyle(theme.colors.gray)}>
-                  {flavor.category}
-                </div>
-                {flavor.tags.map(tag => (
-                  <div css={tagStyle(generateLightColorHex())} key={tag}>
-                    {tag}
-                  </div>
-                ))}
+                <div css={tagStyle}>{flavor.category}</div>
+                {flavor.tags &&
+                  flavor.tags.map(tag => (
+                    <div css={tagStyle} key={tag}>
+                      {tag}
+                    </div>
+                  ))}
+                {flavor.tag_list &&
+                  flavor.tag_list.split(",").map(tag => (
+                    <div css={tagStyle} key={tag}>
+                      {tag}
+                    </div>
+                  ))}
               </div>
               <div className="statsWrapper">
                 <p className="heading">
@@ -177,11 +182,13 @@ const ChallengeCard = ({ challenge }) => {
           </div>
         </div>
       </div>
-      <ChallengeModal
-        open={modalOpen}
-        onClose={onCloseModal}
-        challengeID={challengeID}
-      />
+      {withModal && (
+        <ChallengeModal
+          open={modalOpen}
+          onClose={onCloseModal}
+          challengeID={challengeID}
+        />
+      )}
     </>
   );
 };
