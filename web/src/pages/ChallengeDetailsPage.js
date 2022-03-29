@@ -11,27 +11,27 @@ import {
   validateChallenge as validateChallengeAction,
   // closeChallenge as closeChallengeAction,
 } from "../actions/seasons";
-import ChallengeBuyButton from "../components/challenges/ChallengeBuyButton";
 // import ChallengeCloseButton from "../components/challenges/ChallengeCloseButton";
 import ChallengeValidateForm from "../components/challenges/ChallengeValidateForm";
 // import ValidationsList from "../components/challenges/ValidationsList";
 import ChallengeSolveInstances from "../components/challenges/ChallengeSolveInstances";
 import { CLEAN_CHALLENGE_DETAIL } from "../constants/actionTypes";
 import { FormattedMessage } from "react-intl";
-
-const paragraph = css`
-  margin-top: 0.5rem;
-`;
+import ChallengeCard from "../components/challenges/ChallengeCard";
 
 const statusTag = css`
   font-size: 0.75rem;
   opacity: 0.7;
 `;
 
-const rewardText = css`
-  font-size: 0.75rem;
-  font-weight: 800;
-  margin-top: 0.5rem;
+const whiteWrapper = css`
+  background-color: #fff;
+  box-shadow: 0px 5px 20px 0px rgba(7, 42, 68, 0.1);
+  margin-bottom: 0.5rem;
+  padding: 1rem 1rem;
+  border-radius: 8px;
+  min-height: 200px;
+  width: 100%;
 `;
 
 const ChallengeDetailsPage = props => {
@@ -86,45 +86,14 @@ const ChallengeDetailsPage = props => {
         title={flavor.challenge.name}
         subTitle={`Author: ${flavor.challenge.author}`}
       >
-        <Grid.Row className="mb-6">
-          <Grid.Col width={12} sm={12} md={7}>
-            <p css={paragraph}>
-              Hello Ol&apos;salt! Try to beat the {flavor.challenge.name}{" "}
-              challenge. Heave ho!
-            </p>
-          </Grid.Col>
-          <Grid.Col md={5} sm={12} width={12} className="text-right">
-            {purchased && validations && (
-              <Tag color={validationStatusColor}>
-                <FormattedMessage id="ChallengeDetailsPage.validated" />{" "}
-                {moment(validation.created_at).calendar()}
-              </Tag>
-            )}
-            {purchased && !validations && (
-              <Tag css={statusTag}>
-                <FormattedMessage id="ChallengeDetailsPage.purchased" />{" "}
-                {moment(subscription.created_at).calendar()}
-              </Tag>
-            )}
-            {!purchased && !validations && (
-              <ChallengeBuyButton challenge={challenge} />
-            )}
-            <p css={rewardText}>
-              <FormattedMessage id="ChallengeDetailsPage.reward" />:{" "}
-              {flavor.validation_reward}
-            </p>
-            {/* {subscriptions && (
-                <ChallengeCloseButton
-                  challenge={challenge}
-                  closeChallenge={closeChallenge}
-                  isClosed={isClosed}
-                />
-              )} */}
-          </Grid.Col>
-        </Grid.Row>
-        <Grid.Row>
-          {!validations && (
-            <Grid.Col width={12} sm={12} md={12}>
+        <Grid.Row className="mb-3">
+          {challenge && (
+            <Grid.Col sm={12} md={7}>
+              <ChallengeCard challenge={challenge} withModal={false} />
+            </Grid.Col>
+          )}
+          <Grid.Col sm={12} md={5}>
+            <div css={whiteWrapper}>
               <h3>
                 <FormattedMessage id="ChallengeDetailsPage.solve" />
               </h3>
@@ -132,11 +101,33 @@ const ChallengeDetailsPage = props => {
                 instances={flavor.instances}
                 purchased={purchased}
               />
-            </Grid.Col>
-          )}
-
-          {purchased && !validations && (
-            <Grid.Col width={12} sm={12} md={12} className="text-right">
+              {purchased && !validations && (
+                <Tag css={statusTag}>
+                  <FormattedMessage id="ChallengeDetailsPage.purchased" />{" "}
+                  {moment(subscription.created_at).calendar()}
+                </Tag>
+              )}
+              {purchased && validations && (
+                <Tag color={validationStatusColor}>
+                  <FormattedMessage id="ChallengeDetailsPage.validated" />{" "}
+                  {moment(validation.created_at).calendar()}
+                </Tag>
+              )}
+            </div>
+          </Grid.Col>
+          {/* <Grid.Col width={12} sm={12} md={7}>
+             {subscriptions && (
+                <ChallengeCloseButton
+                  challenge={challenge}
+                  closeChallenge={closeChallenge}
+                  isClosed={isClosed}
+                />
+              )}
+          </Grid.Col> */}
+        </Grid.Row>
+        <Grid.Row>
+          {purchased && (
+            <Grid.Col width={12} sm={12} md={12}>
               <ChallengeValidateForm
                 challenge={challenge}
                 validateChallenge={validateChallenge}
