@@ -1,8 +1,8 @@
 const tags = [
-  {
-    name: "web",
-    color: "#a2f6a9",
-  },
+  // {
+  //   name: "web",
+  //   color: "#a2f6a9",
+  // },
   {
     name: "intro",
     color: "#92c4e9",
@@ -38,7 +38,8 @@ const tags = [
 ];
 
 export const getTagColor = tag => {
-  return tags.find(tagObj => tagObj.name === tag).color;
+  const tagObj = tags.find(tagObj => tagObj.name === tag);
+  return tagObj ? tagObj.color : "#E3E3E4";
 };
 
 export default tags;
