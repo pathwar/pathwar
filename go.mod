@@ -21,7 +21,7 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/gobuffalo/packr/v2 v2.8.0
 	github.com/gogo/gateway v1.1.0
-	github.com/gogo/protobuf v1.3.1
+	github.com/gogo/protobuf v1.3.2
 	github.com/golang/protobuf v1.3.2
 	github.com/google/go-querystring v1.0.0
 	github.com/gosimple/slug v1.9.0
