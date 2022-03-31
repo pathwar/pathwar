@@ -159,10 +159,10 @@ const listItems = [
     link: `/challenges`,
     name: <FormattedMessage id="nav.challenges" />,
   },
-  // {
-  //   link: `${appPrefix}/missions`,
-  //   name: <FormattedMessage id="nav.missions" />,
-  // },
+  {
+    link: `/statistics`,
+    name: <FormattedMessage id="nav.statistics" />,
+  },
   // { link: `${appPrefix}/events`, name: <FormattedMessage id="nav.events" /> },
   // {
   //   link: `${appPrefix}/community`,
