@@ -20,31 +20,32 @@ const TeamsRows = ({ teams }) => {
   ]);
 
   return sortedTeamsByScoreAndCash.map((item, idx) => {
-    return (
-      <Table.Row key={item.organization.id}>
-        <Table.Col alignContent="center">{idx + 1}</Table.Col>
+    if (item.score && item.cash) {
+      return (
+        <Table.Row key={item.organization.id}>
+          <Table.Col alignContent="center">{idx + 1}</Table.Col>
 
-        <Table.Col
-          css={css`
-            display: flex;
-            align-items: center;
-          `}
-        >
-          <Avatar
-            className="mr-2"
-            imageURL={`${item.organization.gravatar_url}?d=identicon`}
-          />
-          <span>{item.organization.name}</span>
-        </Table.Col>
-        <Table.Col alignContent="center">{item.score}</Table.Col>
-        {/* <Table.Col colSpan={1} alignContent="center">
+          <Table.Col
+            css={css`
+              display: flex;
+              align-items: center;
+            `}
+          >
+            <Avatar
+              className="mr-2"
+              imageURL={`${item.organization.gravatar_url}?d=identicon`}
+            />
+            <span>{item.organization.name}</span>
+          </Table.Col>
+          <Table.Col alignContent="center">{item.score}</Table.Col>
+          {/* <Table.Col colSpan={1} alignContent="center">
           {item.nb_achievements}
         </Table.Col> */}
-        <Table.Col alignContent="center">
-          {(item.cash && `$${item.cash}`) || "$0"}
-        </Table.Col>
+          <Table.Col alignContent="center">
+            {(item.cash && `$${item.cash}`) || "$0"}
+          </Table.Col>
 
-        {/*<Table.Col colSpan={1} alignContent="center">
+          {/*<Table.Col colSpan={1} alignContent="center">
           {item.gold_medals || 0}
         </Table.Col>
         <Table.Col colSpan={1} alignContent="center">
@@ -56,8 +57,9 @@ const TeamsRows = ({ teams }) => {
         <Table.Col colSpan={1} alignContent="center">
           {item.nb_achievements || 0}
         </Table.Col> */}
-      </Table.Row>
-    );
+        </Table.Row>
+      );
+    }
   });
 };
 
