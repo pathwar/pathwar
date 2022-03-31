@@ -66,5 +66,14 @@ module.exports = {
         trackingId: "UA-47629346-5",
       },
     },
+    {
+      resolve: "gatsby-plugin-simple-analytics",
+      options: {
+        domain: "sa.moul.io",
+        eventsGlobal: "sa",
+        events: true,
+        trackPageViews: true,
+      },
+    },
   ],
 };
