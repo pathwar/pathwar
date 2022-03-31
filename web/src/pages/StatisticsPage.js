@@ -5,21 +5,21 @@ import { Grid, Page } from "tabler-react";
 import { useIntl } from "react-intl";
 import siteMetaData from "../constants/metadata";
 import AllTeamsOnSeasonList from "../components/season/AllTeamsOnSeasonList";
-import CreateTeamButton from "../components/team/CreateTeamButton";
+// import CreateTeamButton from "../components/team/CreateTeamButton";
 import {
   fetchAllSeasonTeams as fetchAllSeasonTeamsAction,
-  createTeam as createTeamAction,
+  // createTeam as createTeamAction,
 } from "../actions/seasons";
 
 const StatisticsPage = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const activeSeason = useSelector(state => state.seasons.activeSeason);
-  const activeTeamInSeason = useSelector(
-    state => state.seasons.activeTeamInSeason
-  );
+  // const activeTeamInSeason = useSelector(
+  //   state => state.seasons.activeTeamInSeason
+  // );
   const allTeamsOnSeason = useSelector(state => state.seasons.allTeamsOnSeason);
-  const dispatchCreateTeamAction = dispatch(createTeamAction);
+  // const dispatchCreateTeamAction = dispatch(createTeamAction);
 
   useEffect(() => {
     if (!allTeamsOnSeason && activeSeason) {
@@ -40,14 +40,14 @@ const StatisticsPage = () => {
       </Helmet>
       <Page.Content title={statisticsIntl}>
         <Grid.Row cards={true}>
-          <Grid.Col xs={12} sm={12} md={3}>
+          {/* <Grid.Col xs={12} sm={12} md={3}>
             <CreateTeamButton
               activeSeason={activeSeason}
               createTeam={dispatchCreateTeamAction}
               activeTeamInSeason={activeTeamInSeason}
             />
-          </Grid.Col>
-          <Grid.Col xs={12} sm={12} md={9}>
+          </Grid.Col> */}
+          <Grid.Col xs={12} sm={12} md={12}>
             <AllTeamsOnSeasonList
               activeSeason={activeSeason}
               allTeamsOnSeason={allTeamsOnSeason}
