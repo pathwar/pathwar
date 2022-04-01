@@ -11,6 +11,7 @@ import iconProfile from "../images/icon-profile.svg";
 // import iconNotifications from "../images/icon-notifications.svg";
 import iconPwn from "../images/icon-pwn-small.svg";
 import iconClose from "../images/icon-close-filled.svg";
+import { Avatar } from "tabler-react";
 
 const wrapper = css`
   font-family: "Barlow", sans-serif;
@@ -109,6 +110,9 @@ const dropdown = css`
     border: none;
     cursor: pointer;
     min-width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .dropdown-content {
@@ -178,7 +182,7 @@ const SiteWrapper = ({ children }) => {
   const {
     cash,
     activeKeycloakSession,
-    activeUserSession: { claims } = {},
+    activeUserSession: { claims, user } = {},
   } = userSession;
 
   const username =
@@ -213,7 +217,16 @@ const SiteWrapper = ({ children }) => {
           ))}
         </ul>
         <div css={dropdown}>
-          <button className="dropbtn">{`${username}`}</button>
+          <button className="dropbtn">
+            <span className="mr-2">
+              {user.gravatar_url ? (
+                <Avatar imageURL={`${user.gravatar_url}?d=identicon`} />
+              ) : (
+                <Avatar icon="users" />
+              )}
+            </span>
+            <span>{`${username}`}</span>
+          </button>
           <div className="dropdown-content">
             <ul>
               <li>
