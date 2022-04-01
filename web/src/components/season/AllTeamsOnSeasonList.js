@@ -14,9 +14,15 @@ const TeamsRows = ({ teams }) => {
     R.descend(R.prop("cash")),
   ]);
 
-  const sortedTeamsByScoreAndCash = useMemo(() => scoreCashSort(teams), [
+  const parsedTeams = teams.map(item => ({
+    ...item,
+    score: item.score ? parseInt(item.score, 10) : undefined,
+    cash: item.cash ? parseInt(item.cash, 10) : undefined,
+  }));
+
+  const sortedTeamsByScoreAndCash = useMemo(() => scoreCashSort(parsedTeams), [
     scoreCashSort,
-    teams,
+    parsedTeams,
   ]);
 
   return sortedTeamsByScoreAndCash.map((item, idx) => {
