@@ -219,7 +219,7 @@ const SiteWrapper = ({ children }) => {
         <div css={dropdown}>
           <button className="dropbtn">
             <span className="mr-2">
-              {user.gravatar_url ? (
+              {user && user.gravatar_url ? (
                 <Avatar imageURL={`${user.gravatar_url}?d=identicon`} />
               ) : (
                 <Avatar icon="users" />
