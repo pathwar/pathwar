@@ -160,6 +160,10 @@ const langSwitcher = css`
 
 const listItems = [
   {
+    link: `/`,
+    name: <FormattedMessage id="nav.home" />,
+  },
+  {
     link: `/challenges`,
     name: <FormattedMessage id="nav.challenges" />,
   },
@@ -199,7 +203,9 @@ const SiteWrapper = ({ children }) => {
   return (
     <>
       <header css={wrapper}>
-        <img src={logo} className="img-responsive" />
+        <Link className="link" to={"/"}>
+          <img src={logo} className="img-responsive" />
+        </Link>
         <ul className="headerMenu">
           {listItems.map(item => (
             <li key={item.link}>
