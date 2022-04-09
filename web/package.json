@@ -38,7 +38,7 @@
     "gatsby-transformer-sharp": "^2.2.4",
     "js-cookie": "^2.2.0",
     "keycloak-js": "^9.0.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "object-assign": "4.1.1",
     "path": "^0.12.7",
     "prop-types": "^15.6.1",
