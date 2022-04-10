@@ -13,6 +13,21 @@
                 inputPassword.type = "password";
             }
         }
+        function updateQuery(step,value){
+            let code = '';
+            switch(step) {
+                case '1':
+                    code ='$query="SELECT * FROM users WHERE username=\'admin\' AND password=\'' + value + '\'";';
+                    break;
+                case '2':
+                    code = '$query="SELECT * FROM users2 WHERE username=\'user\' AND password=\'' + value + '\'";';
+                    break;
+                default:
+                    code = '';
+                    break;
+                }
+           document.getElementById("queryHint").innerText = code;
+        }
     </script>
 </head>
 <body>
@@ -43,11 +58,16 @@
             <h2>{{loginForm.title}}</h2>
         <form method="POST">
             <input type="text" name="login" value="{{loginForm.user}}" disabled/><br />
-            <input type="password" name="password" id="thePassword" /> <em style="cursor: pointer;" onclick="showPassword('thePassword');">👁</em><br />
+            <input type="password" name="password" id="thePassword" onkeyup="updateQuery('{{step}}',this.value);" /> <em style="cursor: pointer;" onclick="showPassword('thePassword');">👁</em><br />
             <input type='submit'/> <br />
             <p>{{loginForm.postMessage}}</p>
         </form>
+        <pre class="code" id="queryHint">
+        </pre>
+      
         </article>
+
+
         <!-- END loginForm -->
     </section>
     <footer></footer>
