@@ -5,9 +5,14 @@ $tpl = new TplBlock();
 
 require_once ("classes/LocaleManager.php");
 $currentLocale = new LocaleManager();
-$tpl->addVars(array("langForm" => $currentLocale->get_locale_form()));
 
 $step = isset($_GET['step'])? $_GET['step'] : 0;
+
+$tpl->addVars(array(
+	"langForm" 	=> $currentLocale->get_locale_form(),
+	"step"		=> $step
+));
+
 
 //fill the left menus links
 $navMenus = array(
