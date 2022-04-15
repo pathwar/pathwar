@@ -7,7 +7,6 @@ const wrapper = css`
   margin-bottom: 0.5rem;
   padding: 1rem 1rem;
   border-radius: 8px;
-  min-height: 200px;
   width: 100%;
 `;
 
