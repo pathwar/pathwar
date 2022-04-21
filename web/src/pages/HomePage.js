@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Page, Grid, Avatar, Dimmer, ProgressCard } from "tabler-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
@@ -12,6 +12,7 @@ import {
 } from "../actions/seasons";
 import { isNil } from "ramda";
 import UserChallengesView from "../components/home/UserChallengesView";
+import getTeamRank from "../utils/getTeamRank";
 
 const cardStyle = {
   margin: "1rem",
@@ -45,6 +46,22 @@ const HomePage = () => {
   const activeChallenges = useSelector(state => state.seasons.activeChallenges);
   const activeSeason = useSelector(state => state.seasons.activeSeason);
   const teamDetails = useSelector(state => state.seasons.teamInDetail);
+
+  const [rank, setRank] = useState();
+
+  useEffect(() => {
+    if (activeTeam && activeSeason && !rank) {
+      const fetchRank = async () => {
+        const calculatedRank = await getTeamRank(
+          activeTeam.team_id,
+          activeSeason.id
+        );
+        setRank(calculatedRank);
+      };
+
+      fetchRank();
+    }
+  }, [activeSeason, activeTeam, rank]);
 
   useEffect(() => {
     if (activeTeam && !teamDetails) {
@@ -91,31 +108,27 @@ const HomePage = () => {
           </Grid.Col>
           <Grid.Col width={12} lg={8}>
             <ShadowBox>
-              <h2>Season stats</h2>
+              <h2>
+                <FormattedMessage id="HomePage.statsTitle" />
+              </h2>
               {teamDetails && (
                 <div css={{ display: "flex", justifyContent: "space-around" }}>
-                  {/* <span
-                    css={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Score:
-                    <span>{teamDetails.score}</span>
-                  </span> */}
                   <ProgressCard
                     css={cardStyle}
-                    content={teamDetails.score}
-                    header="Score"
+                    content={`# ${rank || "-"}`}
+                    header={intl.formatMessage({ id: "HomePage.rank" })}
                   />
                   <ProgressCard
                     css={cardStyle}
-                    content={`$${teamDetails.cash}`}
+                    content={teamDetails.score ? teamDetails.score : 0}
+                    header={intl.formatMessage({ id: "HomePage.score" })}
+                  />
+                  <ProgressCard
+                    css={cardStyle}
+                    content={`$${teamDetails.cash ? teamDetails.cash : 0}`}
                     header={
                       <>
-                        Cash{" "}
+                        <FormattedMessage id="HomePage.cash" />{" "}
                         <img
                           css={{ display: "inline-block" }}
                           src={iconPwn}
@@ -124,27 +137,11 @@ const HomePage = () => {
                       </>
                     }
                   />
-                  {/* <span
-                    css={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Cash:
-                    <span>${teamDetails.cash}</span>
-                    <span>
-                      <img src={iconPwn} className="img-responsive" />
-                    </span>
-                  </span> */}
                 </div>
               )}
             </ShadowBox>
 
-            <ShadowBox>
-              <UserChallengesView challenges={activeChallenges} />
-            </ShadowBox>
+            <UserChallengesView challenges={activeChallenges} />
           </Grid.Col>
         </Grid.Row>
       </div>
