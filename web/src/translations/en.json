@@ -21,6 +21,8 @@
   "SettingsPage.settings": "Settings",
   "SettingsPage.deleteAccount": "Delete account",
   "ChallengeBuyButton.buy": "Buy",
+  "ChallengesPage.title": "Over four hundred challenges available to learn hacking",
+  "ChallengesPage.description": "You may only access remote challenges after having authenticated to this portal. You need to be authenticated on this website with the same IP address you use to solve challenges",
   "ChallengeList.purchasedTitle": "My challenges",
   "ChallengeList.openTitle": "Open challenges",
   "ChallengeList.closedTitle": "Closed challenges",

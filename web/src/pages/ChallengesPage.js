@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
-import { Page, Grid } from "tabler-react";
+import { Grid, Page } from "tabler-react";
 import { isNil } from "ramda";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import siteMetaData from "../constants/metadata";
 import ChallengeList from "../components/challenges/ChallengeList";
 
@@ -49,10 +49,16 @@ const ChallengesPage = () => {
       </Helmet>
       <Page.Content title={challengesIntl}>
         <Grid.Row>
-          <Grid.Col xs={12} sm={12} lg={12}>
-            <ChallengeList challenges={activeChallenges} />
+          <Grid.Col lg={5}>
+            <h1 css={{ fontSize: "2rem" }}>
+              <FormattedMessage id="ChallengesPage.title" />
+            </h1>
+            <p css={{ marginBottom: "3rem" }}>
+              <FormattedMessage id="ChallengesPage.description" />
+            </p>
           </Grid.Col>
         </Grid.Row>
+        <ChallengeList challenges={activeChallenges} />
       </Page.Content>
     </>
   );
