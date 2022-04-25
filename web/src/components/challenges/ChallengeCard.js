@@ -16,10 +16,10 @@ const mainContainer = cursor => css`
   ${cursor && `cursor: pointer;`}
 `;
 
-const cardWrapper = isClosed => css`
+const cardWrapper = (isClosed, columnMode) => css`
   background-color: #fff;
   display: flex;
-  flex-direction: row;
+  flex-direction: ${columnMode ? "column" : "row"};
   align-items: center;
   box-shadow: 0px 5px 20px 0px rgba(7, 42, 68, 0.1);
   margin-bottom: 0.5rem;
@@ -53,6 +53,7 @@ const cardDescriptionWrapper = theme => css`
       font-weight: bolder;
       border-bottom: 1px solid;
       padding-bottom: 1rem;
+      margin-top: 0.5rem;
     }
 
     .subtitle {
@@ -104,7 +105,7 @@ const tagStyle = bgColor => css`
   font-size: 0.75rem;
 `;
 
-const ChallengeCard = ({ challenge, withModal = true }) => {
+const ChallengeCard = ({ challenge, withModal = true, columnMode = false }) => {
   const [modalQueryId, setModalQueryId] = useQueryParam("modal", StringParam);
   const [modalOpen, setModalOpen] = useState(modalQueryId === challenge.id);
 
@@ -124,7 +125,7 @@ const ChallengeCard = ({ challenge, withModal = true }) => {
   return (
     <>
       <div css={mainContainer(withModal)} onClick={withModal && openModal}>
-        <div css={() => cardWrapper(isClosed, withModal)}>
+        <div css={() => cardWrapper(isClosed, columnMode)}>
           <div css={cardActionsWrapper}>
             <img
               src="https://d33wubrfki0l68.cloudfront.net/1c254da613f195cbfc2a85e94c1f792b306abea4/09aac/files/islands--pathwar-island-desert.svg"

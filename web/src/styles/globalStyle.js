@@ -31,7 +31,7 @@ export const globalStyle = ({ colors, font, type }, _bodyBg) => {
 
     h2 {
       font-size: 1.25rem;
-      font-weight: normal;
+      font-weight: bold;
     }
 
     h3 {
@@ -85,6 +85,12 @@ export const globalStyle = ({ colors, font, type }, _bodyBg) => {
       max-width: 100%;
       height: auto;
       display: block;
+    }
+
+    @media (max-width: 700px) {
+      .page-content {
+        margin: 160px 0 0;
+      }
     }
 
     @media (max-width: 991px) {

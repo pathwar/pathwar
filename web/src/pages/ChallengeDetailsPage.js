@@ -18,20 +18,11 @@ import ChallengeSolveInstances from "../components/challenges/ChallengeSolveInst
 import { CLEAN_CHALLENGE_DETAIL } from "../constants/actionTypes";
 import { FormattedMessage } from "react-intl";
 import ChallengeCard from "../components/challenges/ChallengeCard";
+import ShadowBox from "../components/ShadowBox";
 
 const statusTag = css`
   font-size: 0.75rem;
   opacity: 0.7;
-`;
-
-const whiteWrapper = css`
-  background-color: #fff;
-  box-shadow: 0px 5px 20px 0px rgba(7, 42, 68, 0.1);
-  margin-bottom: 0.5rem;
-  padding: 1rem 1rem;
-  border-radius: 8px;
-  min-height: 200px;
-  width: 100%;
 `;
 
 const ChallengeDetailsPage = props => {
@@ -93,7 +84,7 @@ const ChallengeDetailsPage = props => {
             </Grid.Col>
           )}
           <Grid.Col sm={12} md={5}>
-            <div css={whiteWrapper}>
+            <ShadowBox>
               <h3>
                 <FormattedMessage id="ChallengeDetailsPage.solve" />
               </h3>
@@ -113,7 +104,7 @@ const ChallengeDetailsPage = props => {
                   {moment(validation.created_at).calendar()}
                 </Tag>
               )}
-            </div>
+            </ShadowBox>
           </Grid.Col>
           {/* <Grid.Col width={12} sm={12} md={7}>
              {subscriptions && (
