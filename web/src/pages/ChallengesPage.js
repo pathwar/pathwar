@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
-import { Page, Grid } from "tabler-react";
+import { Page } from "tabler-react";
 import { isNil } from "ramda";
 import { useIntl } from "react-intl";
 import siteMetaData from "../constants/metadata";
@@ -48,11 +48,7 @@ const ChallengesPage = () => {
         <meta name="description" content={description} />
       </Helmet>
       <Page.Content title={challengesIntl}>
-        <Grid.Row>
-          <Grid.Col xs={12} sm={12} lg={12}>
-            <ChallengeList challenges={activeChallenges} />
-          </Grid.Col>
-        </Grid.Row>
+        <ChallengeList challenges={activeChallenges} />
       </Page.Content>
     </>
   );
