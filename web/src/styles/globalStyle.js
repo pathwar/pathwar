@@ -12,7 +12,7 @@ export const globalStyle = ({ colors, font, type }, _bodyBg) => {
     body,
     html {
       background-color: ${colors.body};
-      background-position: -37rem 0;
+      background-position: -15rem 0;
       background-repeat: no-repeat;
       font-family: ${font.family.body};
       font-size: ${font.size.base};
