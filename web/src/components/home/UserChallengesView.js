@@ -55,7 +55,7 @@ const UserChallengesView = ({ challenges }) => {
             {purchasedNotSolved && purchasedNotSolved.length ? (
               <Grid.Row>
                 {purchasedNotSolved.map(challenge => (
-                  <Grid.Col lg={4} sm={12} xs={12} key={challenge.id}>
+                  <Grid.Col xl={4} lg={6} sm={12} xs={12} key={challenge.id}>
                     <ChallengeCard challenge={challenge} columnMode={true} />
                   </Grid.Col>
                 ))}

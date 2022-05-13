@@ -79,11 +79,11 @@ const ChallengeDetailsPage = props => {
       >
         <Grid.Row className="mb-3">
           {challenge && (
-            <Grid.Col sm={12} md={7}>
+            <Grid.Col sm={12}>
               <ChallengeCard challenge={challenge} withModal={false} />
             </Grid.Col>
           )}
-          <Grid.Col sm={12} md={5}>
+          <Grid.Col sm={12}>
             <ShadowBox>
               <h3>
                 <FormattedMessage id="ChallengeDetailsPage.solve" />
@@ -94,13 +94,13 @@ const ChallengeDetailsPage = props => {
               />
               {purchased && !validations && (
                 <Tag css={statusTag}>
-                  <FormattedMessage id="ChallengeDetailsPage.purchased" />
+                  <FormattedMessage id="ChallengeDetailsPage.purchased" />{" "}
                   {moment(subscription.created_at).calendar()}
                 </Tag>
               )}
               {purchased && validations && (
                 <Tag color={validationStatusColor}>
-                  <FormattedMessage id="ChallengeDetailsPage.validated" />
+                  <FormattedMessage id="ChallengeDetailsPage.validated" />{" "}
                   {moment(validation.created_at).calendar()}
                 </Tag>
               )}
