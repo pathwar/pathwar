@@ -113,7 +113,7 @@ const HomePage = () => {
               </h2>
               {teamDetails && (
                 <div css={{ display: "flex", justifyContent: "space-around" }}>
-                  <ProgressCard
+                  {/* <ProgressCard
                     css={cardStyle}
                     content={`# ${rank || "-"}`}
                     header={intl.formatMessage({ id: "HomePage.rank" })}
@@ -122,7 +122,7 @@ const HomePage = () => {
                     css={cardStyle}
                     content={teamDetails.score ? teamDetails.score : 0}
                     header={intl.formatMessage({ id: "HomePage.score" })}
-                  />
+                  /> */}
                   <ProgressCard
                     css={cardStyle}
                     content={`$${teamDetails.cash ? teamDetails.cash : 0}`}
