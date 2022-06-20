@@ -11,7 +11,7 @@ x-pathwar:
   flavor:
     purchase_price: 0
     validation_reward: 1
-    body: "Introduction crypto challenge."
+    body: "Introduction crypto challenge. \n Encoding for sure make my secret secure : `706174687761727b6865785f656e636f64696e675f737472696e677d`"
     passphrases: 1
     category: crypto
     tags:
