@@ -1,0 +1,9 @@
+server {
+    listen       80;
+    server_name  localhost;
+    root /chal;
+    index index.txt index.html index.htm;
+    location / {
+        autoindex on;
+    }
+}
