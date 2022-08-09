@@ -6,7 +6,7 @@ x-pathwar:
     name: "Binary encoding!"
     slug: binaryencoding
     locale: "en"
-    author: "Undercover L3mon"
+    author: "Undercover L3mons"
     homepage: https://github.com/pathwar/pathwar/tree/master/challenges/crypto/binaryencoding
   flavor:
     purchase_price: 0
