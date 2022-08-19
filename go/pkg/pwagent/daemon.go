@@ -3,6 +3,7 @@ package pwagent
 import (
 	"context"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/docker/docker/client"
@@ -131,6 +132,10 @@ func (opts *Opts) applyDefaults() {
 		opts.ModeratorPassword = randstring.RandString(10)
 		opts.Logger.Warn("random moderator password generated", zap.String("password", opts.ModeratorPassword))
 	}
+}
+
+func (opts *Opts) DomainSuffixWithoutPort() string {
+	return strings.Split(opts.DomainSuffix, ":")[0]
 }
 
 func getHostname() string {
