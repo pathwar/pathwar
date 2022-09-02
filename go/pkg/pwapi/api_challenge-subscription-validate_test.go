@@ -43,7 +43,7 @@ func TestService_ChallengeSubscriptionValidate(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	var tests = []struct {
+	tests := []struct {
 		name                            string
 		input                           *ChallengeSubscriptionValidate_Input
 		expectedErr                     error

@@ -21,7 +21,7 @@ func TestError(t *testing.T) {
 		errStdHello  = fmt.Errorf("hello")
 		errCodeUndef = ErrCode(65530) // simulate a client receiving an error generated from a more recent API
 	)
-	var tests = []struct {
+	tests := []struct {
 		name              string
 		input             error
 		expectedString    string

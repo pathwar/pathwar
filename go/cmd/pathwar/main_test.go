@@ -15,5 +15,4 @@ func Test(t *testing.T) {
 	require.NoError(t, err)
 	stdout := cleanup()
 	require.Contains(t, stdout, "version=\"dev\"")
-
 }

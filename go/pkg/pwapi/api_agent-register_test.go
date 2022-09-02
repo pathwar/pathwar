@@ -16,7 +16,7 @@ func TestService_AgentRegister(t *testing.T) {
 		defer cleanup()
 		ctx := testingSetContextToken(context.Background(), t)
 
-		var tests = []struct {
+		tests := []struct {
 			name        string
 			input       *AgentRegister_Input
 			expectedErr error

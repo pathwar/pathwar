@@ -45,7 +45,8 @@ func (svc *service) AdminTestingSeasonUserAdd(ctx context.Context, in *AdminTest
 		Where(pwdb.TeamMember{UserID: userID}).
 		Where(&pwdb.Team{
 			SeasonID:       testingSeasonID,
-			DeletionStatus: pwdb.DeletionStatus_Active}).
+			DeletionStatus: pwdb.DeletionStatus_Active,
+		}).
 		Count(&seasonMemberShipCount).
 		Error
 	if err != nil || seasonMemberShipCount != 0 {

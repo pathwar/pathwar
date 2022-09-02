@@ -21,7 +21,7 @@ func TestService_ChallengeGet(t *testing.T) {
 		challenges[challenge.Name] = challenge.ID
 	}
 
-	var tests = []struct {
+	tests := []struct {
 		name                  string
 		input                 *ChallengeGet_Input
 		expectedErr           error

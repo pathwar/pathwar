@@ -60,7 +60,8 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 		Where(pwdb.TeamMember{UserID: userID}).
 		Where(&pwdb.Team{
 			SeasonID:       seasonID,
-			DeletionStatus: pwdb.DeletionStatus_Active}).
+			DeletionStatus: pwdb.DeletionStatus_Active,
+		}).
 		Count(&seasonMemberShipCount).
 		Error
 	if err != nil || seasonMemberShipCount != 0 {
@@ -156,6 +157,11 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 		SeasonID:       seasonID,
 		OrganizationID: organizationID,
 		DeletionStatus: pwdb.DeletionStatus_Active,
+		Score:          0,
+		GoldMedals:     0,
+		SilverMedals:   0,
+		BronzeMedals:   0,
+		NbAchievements: 0,
 		Members: []*pwdb.TeamMember{
 			{
 				UserID: userID,

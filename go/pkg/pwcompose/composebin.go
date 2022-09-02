@@ -8,7 +8,7 @@ import (
 )
 
 func ComposeBinBytes() ([]byte, error) {
-	var pwinitBox = packr.New("binaries", "../../out")
+	pwinitBox := packr.New("binaries", "../../out")
 	return pwinitBox.Find("docker-compose-dab")
 }
 
@@ -27,7 +27,7 @@ func tmpComposeBin() (*os.File, func(), error) {
 		return nil, nil, err
 	}
 
-	if err := os.Chmod(file.Name(), 0555); err != nil {
+	if err := os.Chmod(file.Name(), 0o555); err != nil {
 		return nil, nil, err
 	}
 

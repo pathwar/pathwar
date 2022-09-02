@@ -241,7 +241,7 @@ func buildNginxConfigTar(config *nginxConfig, logger *zap.Logger) (*bytes.Buffer
 	tw := tar.NewWriter(&buf)
 	err = tw.WriteHeader(&tar.Header{
 		Name: "nginx.conf",
-		Mode: 0755,
+		Mode: 0o755,
 		Size: int64(len(configBytes)),
 	})
 	if err != nil {

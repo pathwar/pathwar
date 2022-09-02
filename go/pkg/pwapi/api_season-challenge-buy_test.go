@@ -36,7 +36,7 @@ func TestService_ChallengeBuy(t *testing.T) {
 		}
 	}
 
-	var tests = []struct {
+	tests := []struct {
 		name        string
 		input       *SeasonChallengeBuy_Input
 		expectedErr error
