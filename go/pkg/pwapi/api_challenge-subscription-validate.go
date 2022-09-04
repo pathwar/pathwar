@@ -180,6 +180,15 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 			return err
 		}
 
+		// update team score
+		err = tx.Model(&pwdb.Team{}).
+			Where("id = ?", subscription.TeamID).
+			UpdateColumn("score", gorm.Expr("score + ?", subscription.SeasonChallenge.Flavor.ValidationReward)).
+			Error
+		if err != nil {
+			return err
+		}
+
 		activity := pwdb.Activity{
 			Kind:                    pwdb.Activity_ChallengeSubscriptionValidate,
 			AuthorID:                userID,
