@@ -125,7 +125,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 	ssoOpts.TokenFile = filepath.Join(dir, file)
 
 	if _, err := os.Stat(ssoOpts.TokenFile); err != nil {
-		err := os.MkdirAll(dir, 0755)
+		err := os.MkdirAll(dir, 0o755)
 		if err != nil {
 			return nil, err
 		}
@@ -147,7 +147,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 			return nil, err
 		}
 
-		if err := ioutil.WriteFile(ssoOpts.TokenFile, jsonText, 0777); err != nil {
+		if err := ioutil.WriteFile(ssoOpts.TokenFile, jsonText, 0o777); err != nil {
 			return nil, err
 		}
 	}

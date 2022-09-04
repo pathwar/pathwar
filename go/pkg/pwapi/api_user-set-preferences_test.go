@@ -23,7 +23,7 @@ func TestService_UserSetPreferences(t *testing.T) {
 		seasons[season.Season.Name] = season.Season.ID
 	}
 
-	var tests = []struct {
+	tests := []struct {
 		name                 string
 		input                *UserSetPreferences_Input
 		expectedErr          error

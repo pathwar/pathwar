@@ -278,7 +278,7 @@ func httpServer(ctx context.Context, serverListenerAddr string, opts ServerOpts)
 	var gwmux http.Handler = runtimeMux
 	dialOpts := []grpc.DialOption{grpc.WithInsecure()}
 	if opts.Tracer != nil {
-		var grpcGatewayTag = opentracing.Tag{Key: string(ext.Component), Value: "grpc-gateway"}
+		grpcGatewayTag := opentracing.Tag{Key: string(ext.Component), Value: "grpc-gateway"}
 		tracingWrapper := func(h http.Handler) http.Handler {
 			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				parentSpanContext, err := opts.Tracer.Extract(

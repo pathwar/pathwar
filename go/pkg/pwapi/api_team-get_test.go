@@ -23,7 +23,7 @@ func TestService_TeamGet(t *testing.T) {
 		teams[key] = team.ID
 	}
 
-	var tests = []struct {
+	tests := []struct {
 		name                     string
 		input                    *TeamGet_Input
 		expectedErr              error

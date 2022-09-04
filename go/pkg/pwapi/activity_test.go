@@ -208,5 +208,4 @@ func TestActivity(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, sess.User.ActiveTeamMember.Team.Cash, int64(0))
 	}
-
 }

@@ -53,7 +53,7 @@ func TestService_TeamCreate(t *testing.T) {
 		seasonMap[item.Season.Name] = item
 	}
 
-	var tests = []struct {
+	tests := []struct {
 		name        string
 		input       *TeamCreate_Input
 		expectedErr error

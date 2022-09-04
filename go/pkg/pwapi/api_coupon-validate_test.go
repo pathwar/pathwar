@@ -22,7 +22,7 @@ func TestEngine_CouponValidate(t *testing.T) {
 	assert.NoError(t, err)
 	activeTeam := session.User.ActiveTeamMember.Team
 
-	var tests = []struct {
+	tests := []struct {
 		name         string
 		input        *CouponValidate_Input
 		expectedCash int64

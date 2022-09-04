@@ -63,7 +63,7 @@ func TestService_TeamSendInvite(t *testing.T) {
 	require.NoError(t, err)
 	team4 := ret.Team
 
-	var tests = []struct {
+	tests := []struct {
 		name        string
 		input       *TeamSendInvite_Input
 		expectedErr error
