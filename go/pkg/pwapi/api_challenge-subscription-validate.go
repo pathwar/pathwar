@@ -182,7 +182,7 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 
 		// update team score
 		err = tx.Model(&pwdb.Team{}).
-			Where("id = ?", subscription.TeamID).
+			Where(pwdb.Team{ID: subscription.TeamID}).
 			UpdateColumn("score", gorm.Expr("score + ?", subscription.SeasonChallenge.Flavor.ValidationReward)).
 			Error
 		if err != nil {
