@@ -15,7 +15,7 @@ PRE_LINT_STEPsS += generate
 PRE_TIDY_STEPS += generate
 PRE_BUMPDEPS_STEPS += generate
 
-DEV_BIND ?= :8001
+DEV_BIND ?= 8000
 AGENT_NGINX_PORT ?= 8002
 COMMON_RUN_OPTS ?= --debug --zipkin-endpoint=http://localhost:9411/api/v2/spans
 API_DEV_OPTS ?=
@@ -40,7 +40,8 @@ help::
 local-api: mysql.up zipkin.up generate
 	$(GO) install github.com/githubnemo/CompileDaemon
 	$(GO) install $(GO_INSTALL_OPTS) ./cmd/pathwar
-	CompileDaemon $(COMPILEDAEMON_OPTIONS) -command="pathwar $(COMMON_RUN_OPTS) api --sso-unsafe server --with-pprof --bind=$(DEV_BIND) $(API_DEV_OPTS)"
+	export HTTP_API_ADDR=http://localhost:$(DEV_BIND)
+	CompileDaemon $(COMPILEDAEMON_OPTIONS) -command="pathwar $(COMMON_RUN_OPTS) api --sso-unsafe server --with-pprof --bind=:$(DEV_BIND) $(API_DEV_OPTS)"
 
 .PHONY: api-down
 api-down: mysql.down zipkin.down
@@ -48,8 +49,9 @@ api-down: mysql.down zipkin.down
 .PHONY: local-agent
 local-agent: install
 	$(GO) install github.com/githubnemo/CompileDaemon
-	CompileDaemon $(COMPILEDAEMON_OPTIONS) -command="pathwar $(COMMON_RUN_OPTS) agent --http-api-addr=http://localhost:8001 --port=$(AGENT_NGINX_PORT) $(AGENT_DEV_OPTS)"
-
+	export HTTP_API_ADDR=http://localhost:$(DEV_BIND)
+	CompileDaemon $(COMPILEDAEMON_OPTIONS) -command="pathwar $(COMMON_RUN_OPTS) agent --http-api-addr=http://localhost:$(DEV_BIND) --domain-suffix=localhost:$(AGENT_NGINX_PORT) $(AGENT_DEV_OPTS)"
+export HTTP_API_ADDR=http://localhost:$(DEV_BIND)
 .PHONY: local-agent.auth
 local-agent.auth: install
 	pathwar --debug agent --no-run
