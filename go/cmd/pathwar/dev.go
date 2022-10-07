@@ -4,26 +4,29 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/docker/docker/client"
 	"github.com/oklog/run"
 	"github.com/peterbourgon/ff/v3"
 	"github.com/peterbourgon/ff/v3/ffcli"
+	"github.com/soheilhy/cmux"
 	"go.uber.org/zap"
 	"moul.io/banner"
 	"moul.io/motd"
 	"os"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
+	"pathwar.land/pathwar/v2/go/pkg/pwagent"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"syscall"
 )
 
 func devCommand() *ffcli.Command {
-	cliFlags := flag.NewFlagSet("dev", flag.ExitOnError)
+	devFlags := flag.NewFlagSet("dev", flag.ExitOnError)
 
 	return &ffcli.Command{
 		Name:       "dev",
 		ShortUsage: "pathwar [global flags] dev [dev flags] <cmd> [cmd flags]",
 		ShortHelp:  "carries out actions that help contribute to pathwar",
-		FlagSet:    cliFlags,
+		FlagSet:    devFlags,
 		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec:       func(ctx context.Context, args []string) error { return flag.ErrHelp },
 		Subcommands: []*ffcli.Command{
@@ -33,9 +36,16 @@ func devCommand() *ffcli.Command {
 }
 
 func serverCommand() *ffcli.Command {
+	devServerFlags := flag.NewFlagSet("dev", flag.ExitOnError)
+	devServerFlags.StringVar(&serverOpts.Bind, "api-bind", ":8000", "api port (ex: :8000)")
+	devServerFlags.BoolVar(&ssoOpts.AllowUnsafe, "sso-unsafe", true, "Allow unsafe SSO")
+	devServerFlags.StringVar(&httpAPIAddr, "http-api-addr", "http://localhost:8000", "HTTP API address")
+	devServerFlags.StringVar(&agentOpts.DomainSuffix, "domain-suffix", "localhost:8001", "Domain suffix to append")
+	devServerFlags.BoolVar(&serverOpts.WithPprof, "with-pprof", true, "enable pprof endpoints")
 	return &ffcli.Command{
 		Name:      "server",
-		ShortHelp: "start server (api + agent + nginx)",
+		ShortHelp: "launch api, agent & nginx",
+		FlagSet:   devServerFlags,
 		Exec: func(ctx context.Context, args []string) error {
 			fmt.Println(motd.Default())
 			fmt.Println(banner.Inline("server"))
@@ -64,8 +74,10 @@ func serverCommand() *ffcli.Command {
 
 			g.Add(run.SignalHandler(ctx, syscall.SIGTERM, syscall.SIGINT, os.Interrupt, os.Kill))
 			{
+				fmt.Println("Lancement API")
 				serverOpts.Tracer = tracer
 				serverOpts.Logger = logger.Named("server")
+				fmt.Println(serverOpts)
 				var err error
 
 				if serverOpts.Bind == "gcloud" {
@@ -77,6 +89,27 @@ func serverCommand() *ffcli.Command {
 				if err != nil {
 					return errcode.ErrInitServer.Wrap(err)
 				}
+				fmt.Println("I'm here !")
+
+				dockerCli, err := client.NewEnvClient()
+				if err != nil {
+					return errcode.ErrInitDockerClient.Wrap(err)
+				}
+				apiClient, err := httpClientFromEnv(ctx)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+				server.Workers.Add(func() error {
+					fmt.Println("Lancement Agent")
+					err := pwagent.Run(ctx, dockerCli, apiClient, agentOpts)
+					if err != cmux.ErrListenerClosed {
+						return err
+					}
+					return nil
+				}, func(error) {
+					_, cancel := context.WithTimeout(ctx, 5)
+					defer cancel()
+				})
 				g.Add(
 					server.Run,
 					func(error) { server.Close() },
