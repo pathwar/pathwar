@@ -127,3 +127,23 @@ func serverCommand() *ffcli.Command {
 		},
 	}
 }
+
+func challengeRunCommand() *ffcli.Command {
+	devChallengeFlags := flag.NewFlagSet("dev", flag.ExitOnError)
+
+	return &ffcli.Command{
+		Name:      "challenge-run",
+		ShortHelp: "register a challenge",
+		FlagSet:   devChallengeFlags,
+		Exec: func(ctx context.Context, args []string) error {
+			fmt.Println(motd.Default())
+			fmt.Println(banner.Inline("run challenge"))
+
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			return nil
+		},
+	}
+}
