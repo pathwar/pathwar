@@ -159,7 +159,14 @@ func challengeRunCommand() *ffcli.Command {
 
 			}
 
-			fmt.Println(preparedComposeData)
+			pwComposeFile, err := os.Create("pathwar-compose.yml")
+			if err != nil {
+				return err
+			}
+			_, err = pwComposeFile.WriteString(preparedComposeData)
+			if err != nil {
+				return err
+			}
 
 			return nil
 		},
