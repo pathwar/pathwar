@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"github.com/docker/docker/client"
@@ -10,6 +11,7 @@ import (
 	"github.com/peterbourgon/ff/v3/ffcli"
 	"github.com/soheilhy/cmux"
 	"go.uber.org/zap"
+	"gopkg.in/yaml.v2"
 	"moul.io/banner"
 	"moul.io/motd"
 	"os"
@@ -159,13 +161,55 @@ func challengeRunCommand() *ffcli.Command {
 
 			}
 
-			pwComposeFile, err := os.Create("pathwar-compose.yml")
-			if err != nil {
-				return err
+			var config pwcompose.PathwarConfig
+			if err = yaml.Unmarshal([]byte(preparedComposeData), &config); err != nil {
+				return errcode.TODO.Wrap(err)
 			}
-			_, err = pwComposeFile.WriteString(preparedComposeData)
+
+			slug := config.Pathwar.Challenge.Slug
+			if slug == "" {
+				return errors.New("a challenge slug is required in docker-compose.yml")
+			}
+
+			input := pwapi.AdminChallengeAdd_Input{
+				Challenge: &config.Pathwar.Challenge,
+			}
+
+			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
-				return err
+				return errcode.TODO.Wrap(err)
+			}
+
+			_, err = apiClient.AdminAddChallenge(ctx, &input)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			flavor := pwapi.AdminChallengeFlavorAdd_Input{
+				ChallengeID:     slug,
+				ChallengeFlavor: &config.Pathwar.Flavor,
+			}
+
+			_, err = apiClient.AdminAddChallengeFlavor(ctx, &flavor)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			season := pwapi.AdminSeasonChallengeAdd_Input{
+				FlavorID: slug,
+				SeasonID: "global",
+			}
+
+			_, err = apiClient.AdminAddSeasonChallenge(ctx, &season)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			_, err = apiClient.AdminRedumpChallenge(ctx, &pwapi.AdminChallengeRedump_Input{
+				ChallengeID: slug,
+			})
+			if err != nil {
+				return errcode.TODO.Wrap(err)
 			}
 
 			return nil
