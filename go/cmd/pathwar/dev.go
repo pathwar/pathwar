@@ -16,6 +16,7 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwagent"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
+	"pathwar.land/pathwar/v2/go/pkg/pwcompose"
 	"syscall"
 )
 
@@ -31,6 +32,8 @@ func devCommand() *ffcli.Command {
 		Exec:       func(ctx context.Context, args []string) error { return flag.ErrHelp },
 		Subcommands: []*ffcli.Command{
 			serverCommand(),
+			challengeRunCommand(),
+			challengeDeployCommand(),
 		},
 	}
 }
@@ -131,6 +134,10 @@ func serverCommand() *ffcli.Command {
 func challengeRunCommand() *ffcli.Command {
 	devChallengeFlags := flag.NewFlagSet("dev", flag.ExitOnError)
 
+	var (
+		composePrepareOpts = pwcompose.NewPrepareOpts()
+	)
+
 	return &ffcli.Command{
 		Name:      "challenge-run",
 		ShortHelp: "register a challenge",
@@ -142,6 +149,17 @@ func challengeRunCommand() *ffcli.Command {
 			if err := globalPreRun(); err != nil {
 				return err
 			}
+
+			composePrepareOpts.ChallengeDir = "."
+			composePrepareOpts.Logger = logger
+			composePrepareOpts.NoPush = true
+
+			preparedComposeData, err := pwcompose.Prepare(composePrepareOpts)
+			if err != nil {
+
+			}
+
+			fmt.Println(preparedComposeData)
 
 			return nil
 		},
