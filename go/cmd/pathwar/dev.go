@@ -5,6 +5,9 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"os"
+	"syscall"
+
 	"github.com/docker/docker/client"
 	"github.com/oklog/run"
 	"github.com/peterbourgon/ff/v3"
@@ -14,12 +17,10 @@ import (
 	"gopkg.in/yaml.v2"
 	"moul.io/banner"
 	"moul.io/motd"
-	"os"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwagent"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwcompose"
-	"syscall"
 )
 
 func devCommand() *ffcli.Command {
@@ -228,10 +229,6 @@ func challengeDeployCommand() *ffcli.Command {
 		Exec: func(ctx context.Context, args []string) error {
 			fmt.Println(motd.Default())
 			fmt.Println(banner.Inline("deploy challenge"))
-
-			if err := globalPreRun(); err != nil {
-				return err
-			}
 
 			return nil
 		},
