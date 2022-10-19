@@ -47,7 +47,7 @@ func serverCommand() *ffcli.Command {
 	devServerFlags.BoolVar(&ssoOpts.AllowUnsafe, "sso-unsafe", true, "Allow unsafe SSO")
 	devServerFlags.StringVar(&httpAPIAddr, "http-api-addr", "http://localhost:8000", "HTTP API address")
 	devServerFlags.StringVar(&agentOpts.HostPort, "host-port", "8001", "Port nginx")
-	devServerFlags.StringVar(&agentOpts.DomainSuffix, "host-port", "localhost:8001", "Domain suffix to append")
+	devServerFlags.StringVar(&agentOpts.DomainSuffix, "domaine-suffix", "localhost:8001", "Domain suffix to append")
 	devServerFlags.BoolVar(&serverOpts.WithPprof, "with-pprof", true, "enable pprof endpoints")
 	return &ffcli.Command{
 		Name:      "server",
