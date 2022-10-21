@@ -40,7 +40,6 @@ help::
 local-api: mysql.up zipkin.up generate
 	$(GO) install github.com/githubnemo/CompileDaemon
 	$(GO) install $(GO_INSTALL_OPTS) ./cmd/pathwar
-	export HTTP_API_ADDR=http://localhost:$(DEV_BIND)
 	CompileDaemon $(COMPILEDAEMON_OPTIONS) -command="pathwar $(COMMON_RUN_OPTS) api --sso-unsafe server --with-pprof --bind=:$(DEV_BIND) $(API_DEV_OPTS)"
 
 .PHONY: api-down
@@ -49,9 +48,7 @@ api-down: mysql.down zipkin.down
 .PHONY: local-agent
 local-agent: install
 	$(GO) install github.com/githubnemo/CompileDaemon
-	export HTTP_API_ADDR=http://localhost:$(DEV_BIND)
 	CompileDaemon $(COMPILEDAEMON_OPTIONS) -command="pathwar $(COMMON_RUN_OPTS) agent --http-api-addr=http://localhost:$(DEV_BIND) --domain-suffix=localhost:$(AGENT_NGINX_PORT) $(AGENT_DEV_OPTS)"
-export HTTP_API_ADDR=http://localhost:$(DEV_BIND)
 .PHONY: local-agent.auth
 local-agent.auth: install
 	pathwar --debug agent --no-run
