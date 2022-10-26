@@ -8,12 +8,18 @@ import iconPwn from "../images/icon-pwn-small.svg";
 
 import {
   fetchChallenges,
-  fetchTeamDetails as fetchTeamDetailsAction,
+  fetchTeamDetails as fetchTeamDetailsAction,c
 } from "../actions/seasons";
+
+import {
+  fetchAllSeasons
+} from "../actions/seasons";
+
 import { isNil } from "ramda";
 import UserChallengesView from "../components/home/UserChallengesView";
 import getTeamRank from "../utils/getTeamRank";
 import SwitchSeasonButton from "../components/season/SwitchSeasonButton";
+import AllSeasonsList from "../components/season/AllSeasonsList";
 
 const cardStyle = {
   margin: "1rem",
@@ -47,6 +53,7 @@ const HomePage = () => {
   const activeChallenges = useSelector(state => state.seasons.activeChallenges);
   const activeSeason = useSelector(state => state.seasons.activeSeason);
   const teamDetails = useSelector(state => state.seasons.teamInDetail);
+  const allSeasons = useSelector(state => state.seasons.allSeasons);
 
   const [rank, setRank] = useState();
 
@@ -76,6 +83,12 @@ const HomePage = () => {
     }
   }, [activeChallenges, activeSeason, dispatch]);
 
+  useEffect( () => {
+    if (isNil(allSeasons)) {
+      dispatch(fetchAllSeasons());
+    }
+  }, [allSeasons, dispatch])
+
   if (!activeUserSession) {
     return <Dimmer active loader />;
   }
@@ -100,7 +113,7 @@ const HomePage = () => {
                 )}
                 <h2 className="mb-0 mt-2">{username}</h2>
                 <p>{email}</p>
-                <SwitchSeasonButton />
+                <SwitchSeasonButton seasons={allSeasons}/>
                 <h3>
                   <FormattedMessage id="HomePage.createdAt" />
                 </h3>

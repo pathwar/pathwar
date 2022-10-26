@@ -1,57 +1,65 @@
-import React, { useState, useEffect } from "react";
-import './SwitchSeasonButton.css'
-import { isEmpty } from "ramda";
-import { Form, Button } from "tabler-react";
 import { FormattedMessage } from "react-intl";
+import * as React from "react";
+import { Card, Table } from "tabler-react";
+import PropTypes from "prop-types";
 
-const SwitchSeasonButton = () => {
-  const handleMenuOne = () => {
-    console.log('clicked one');
-  };
+const SeasonsRows = ({ allSeasons }) => {
 
-  const handleMenuTwo = () => {
-    console.log('clicked two');
-  };
+  return allSeasons.map(season => {
 
+    const handleSwitchSeason = () => {
+      console.log(season.name);
+    }
+
+
+    return (
+      <Table.Row key={season.id}>
+        <Table.Col colSpan={2}><button onClick={handleSwitchSeason}>{season.name}</button></Table.Col>
+        <Table.Col>{season.status}</Table.Col>
+        <Table.Col>{season.visibility}</Table.Col>
+      </Table.Row>
+    );
+  });
+};
+
+const SwitchSeasonButton = props => {
+  const { seasons } = props;
   return (
-    <Dropdown
-      trigger={<button>Dropdown</button>}
-      menu={[
-        <button onClick={handleMenuOne}>Menu 1</button>,
-        <button onClick={handleMenuTwo}>Menu 2</button>,
-      ]}
-    />
+    <Card>
+      <Card.Header>
+        <Card.Title>
+          <FormattedMessage id="AllSeasonsList.title" />
+        </Card.Title>
+      </Card.Header>
+      <Table
+        cards={true}
+        striped={true}
+        responsive={true}
+        className="table-vcenter"
+      >
+        <Table.Header>
+          <Table.Row>
+            <Table.ColHeader colSpan={2}>
+              <FormattedMessage id="AllSeasonsList.name" />
+            </Table.ColHeader>
+            <Table.ColHeader>
+              <FormattedMessage id="AllSeasonsList.status" />
+            </Table.ColHeader>
+            <Table.ColHeader>
+              <FormattedMessage id="AllSeasonsList.visibility" />
+            </Table.ColHeader>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {seasons && <SeasonsRows allSeasons={seasons} />}
+        </Table.Body>
+      </Table>
+    </Card>
   );
 };
 
-const Dropdown = ({ trigger, menu }) => {
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(!open);
-  };
-
-  return (
-    <div className="dropdown">
-      {React.cloneElement(trigger, {
-        onClick: handleOpen,
-      })}
-      {open ? (
-        <ul className="menu">
-          {menu.map((menuItem, index) => (
-            <li key={index} className="menu-item">
-              {React.cloneElement(menuItem, {
-                onClick: () => {
-                  menuItem.props.onClick();
-                  setOpen(false);
-                },
-              })}
-            </li>
-          ))}
-        </ul>
-      ) : null}
-    </div>
-  );
+SwitchSeasonButton.propTypes = {
+  seasons: PropTypes.array,
 };
 
 export default SwitchSeasonButton;
