@@ -109,7 +109,6 @@ const HomePage = () => {
                 )}
                 <h2 className="mb-0 mt-2">{username}</h2>
                 <p>{email}</p>
-                <SwitchSeasonInput />
                 <h3>
                   <FormattedMessage id="HomePage.createdAt" />
                 </h3>
@@ -151,8 +150,23 @@ const HomePage = () => {
                 </div>
               )}
             </ShadowBox>
-
             <UserChallengesView challenges={activeChallenges} />
+            <ShadowBox>
+              <h2>
+                Switching Season
+              </h2>
+                <>
+                  <div
+                    css={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                  <SwitchSeasonInput />
+                  </div>
+                </>
+            </ShadowBox>
           </Grid.Col>
         </Grid.Row>
       </div>
