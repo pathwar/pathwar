@@ -15,7 +15,7 @@ import {
 import { isNil } from "ramda";
 import UserChallengesView from "../components/home/UserChallengesView";
 import getTeamRank from "../utils/getTeamRank";
-import SwitchSeasonButton from "../components/season/SwitchSeasonButton";
+import SwitchSeasonInput from "../components/season/SwitchSeasonInput";
 
 const cardStyle = {
   margin: "1rem",
@@ -109,7 +109,7 @@ const HomePage = () => {
                 )}
                 <h2 className="mb-0 mt-2">{username}</h2>
                 <p>{email}</p>
-                <SwitchSeasonButton seasons={allSeasons}/>
+                <SwitchSeasonInput />
                 <h3>
                   <FormattedMessage id="HomePage.createdAt" />
                 </h3>
