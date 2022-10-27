@@ -2,20 +2,20 @@ import { FormattedMessage } from "react-intl";
 import * as React from "react";
 import { Card, Table } from "tabler-react";
 import PropTypes from "prop-types";
-import {setPreference as setUserPreference} from "../../actions/userSession";
 import { useDispatch } from "react-redux";
 import { Button } from "tabler-react";
+import {setSwitchSeason} from "../../actions/seasons";
 
 const SeasonsRows = ({ allSeasons }) => {
 
   const [isFetching, setFetching] = React.useState(false);
 
   const dispatch = useDispatch();
-  const setPreferenceDispatch = seasonID => dispatch(setUserPreference(seasonID));
+  const setActiveSeasonDispatch = seasonID => dispatch(setSwitchSeason(seasonID));
 
   const SwitchSeason = async seasonID => {
     setFetching(true);
-    setPreferenceDispatch(seasonID).then(response => {
+    setActiveSeasonDispatch(seasonID).then(response => {
       setFetching(false);
       return response;
     });
