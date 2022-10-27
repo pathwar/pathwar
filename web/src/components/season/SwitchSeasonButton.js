@@ -2,19 +2,39 @@ import { FormattedMessage } from "react-intl";
 import * as React from "react";
 import { Card, Table } from "tabler-react";
 import PropTypes from "prop-types";
+import {setPreference as setUserPreference} from "../../actions/userSession";
+import { useDispatch } from "react-redux";
+import { Button } from "tabler-react";
 
 const SeasonsRows = ({ allSeasons }) => {
 
+  const [isFetching, setFetching] = React.useState(false);
+
+  const dispatch = useDispatch();
+  const setPreferenceDispatch = seasonID => dispatch(setUserPreference(seasonID));
+
+  const SwitchSeason = async seasonID => {
+    setFetching(true);
+    setPreferenceDispatch(seasonID).then(response => {
+      setFetching(false);
+      return response;
+    });
+  };
+
   return allSeasons.map(season => {
-
-    const handleSwitchSeason = () => {
-      console.log(season.name);
-    }
-
 
     return (
       <Table.Row key={season.id}>
-        <Table.Col colSpan={2}><button onClick={handleSwitchSeason}>{season.name}</button></Table.Col>
+        <Table.Col colSpan={2}>
+          <Button.List>
+            <Button
+              onClick={() => SwitchSeason(season.id)}
+              loading={isFetching}
+              color="primary"
+            >{season.name}
+            </Button>
+          </Button.List>
+        </Table.Col>
         <Table.Col>{season.status}</Table.Col>
         <Table.Col>{season.visibility}</Table.Col>
       </Table.Row>

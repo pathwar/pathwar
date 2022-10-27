@@ -9,6 +9,10 @@ export function deleteUserAccount(reason) {
   return baseApi.post(`/user/delete-account`, { reason: reason });
 }
 
+export function setUserPreference(seasonID) {
+  return baseApi.post(`/user/preferences`, { active_season_id: seasonID})
+}
+
 //Coupon calls
 
 export function postCouponValidation(hash, teamID) {

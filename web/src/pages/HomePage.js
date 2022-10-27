@@ -8,18 +8,14 @@ import iconPwn from "../images/icon-pwn-small.svg";
 
 import {
   fetchChallenges,
-  fetchTeamDetails as fetchTeamDetailsAction,c
-} from "../actions/seasons";
-
-import {
-  fetchAllSeasons
+  fetchAllSeasons,
+  fetchTeamDetails as fetchTeamDetailsAction,
 } from "../actions/seasons";
 
 import { isNil } from "ramda";
 import UserChallengesView from "../components/home/UserChallengesView";
 import getTeamRank from "../utils/getTeamRank";
 import SwitchSeasonButton from "../components/season/SwitchSeasonButton";
-import AllSeasonsList from "../components/season/AllSeasonsList";
 
 const cardStyle = {
   margin: "1rem",
