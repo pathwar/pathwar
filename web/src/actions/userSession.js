@@ -16,7 +16,7 @@ import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
 import {
   getUserSession,
   deleteUserAccount,
-  postCouponValidation, setUserPreference,
+  postCouponValidation,
 } from "../api/userSession";
 import { setActiveOrganization as setActiveOrganizationAction } from "./organizations";
 import {
@@ -119,21 +119,6 @@ export const deleteAccount = reason => async dispatch => {
     toast.error("Delete account FAILED!");
   }
 };
-
-export const setPreference = seasonID => async dispatch => {
-  try {
-    await setUserPreference(seasonID);
-    dispatch({
-      type:   SET_ACTIVE_SEASON,
-      payload: { seasonID }
-    });
-    toast.success("Set active season SUCCESS!");
-  } catch (error) {
-    console.log(error)
-    dispatch({type: SET_ACTIVE_SEASON_FAILED, payload: { error}});
-    toast.error("Set active season FAILED!");
-  }
-}
 
 //Coupon Actions
 export const fetchCouponValidation = (hash, teamID) => async dispatch => {

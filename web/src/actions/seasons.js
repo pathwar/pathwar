@@ -39,6 +39,7 @@ import {
   postCloseChallenge,
   postCreateTeam,
 } from "../api/seasons";
+import {fetchUserSession} from "./userSession";
 
 //Season main actions
 export const fetchPreferences = seasonID => async dispatch => {
@@ -53,6 +54,23 @@ export const fetchPreferences = seasonID => async dispatch => {
       type: FETCH_PREFERENCES_FAILED,
       payload: { error },
     });
+  }
+};
+
+export const setSwitchSeason = seasonID => async dispatch => {
+  try {
+    await postPreferences(seasonID);
+
+    dispatch({
+      type: FETCH_PREFERENCES_SUCCESS,
+    });
+    toast.success("Switch season SUCCESS!");
+  } catch (error) {
+    dispatch({
+      type: FETCH_PREFERENCES_FAILED,
+      payload: { error },
+    });
+    toast.error("Switch season FAILED!");
   }
 };
 
