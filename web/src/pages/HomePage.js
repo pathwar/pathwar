@@ -49,7 +49,6 @@ const HomePage = () => {
   const activeChallenges = useSelector(state => state.seasons.activeChallenges);
   const activeSeason = useSelector(state => state.seasons.activeSeason);
   const teamDetails = useSelector(state => state.seasons.teamInDetail);
-  const allSeasons = useSelector(state => state.seasons.allSeasons);
 
   const [rank, setRank] = useState();
 
@@ -78,12 +77,6 @@ const HomePage = () => {
       dispatch(fetchChallenges(activeSeason.id));
     }
   }, [activeChallenges, activeSeason, dispatch]);
-
-  useEffect( () => {
-    if (isNil(allSeasons)) {
-      dispatch(fetchAllSeasons());
-    }
-  }, [allSeasons, dispatch])
 
   if (!activeUserSession) {
     return <Dimmer active loader />;

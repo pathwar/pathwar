@@ -3,14 +3,14 @@ import * as React from "react";
 import { Card } from "tabler-react";;
 import { useDispatch } from "react-redux";
 import { Button } from "tabler-react";
-import {setSwitchSeason} from "../../actions/seasons";
+import {switchSeason} from "../../actions/seasons";
 
 const SwitchSeasonInput = () => {
 
   const [season, setSeason] = React.useState('');
 
   const dispatch = useDispatch();
-  const setActiveSeasonDispatch = seasonID => dispatch(setSwitchSeason(seasonID));
+  const setActiveSeasonDispatch = seasonID => dispatch(switchSeason(seasonID));
 
   const SwitchSeason = async seasonID => {
     setActiveSeasonDispatch(seasonID).then(response => {
