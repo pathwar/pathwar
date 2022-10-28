@@ -22,18 +22,13 @@ const SwitchSeasonInput = () => {
     <Card>
       <Card.Header>
         <Card.Title>
-          Season switch
+          <FormattedMessage id="SwitchSeasonInput.title"/>
         </Card.Title>
       </Card.Header>
-        <input
-          value={season}
-          onChange={e => setSeason(e.target.value)}
-        />
+        <input value={season} onChange={e => setSeason(e.target.value)}/>
         <Button.List>
-          <Button
-            onClick={() => SwitchSeason(season)}
-            color="primary"
-          >Switch
+          <Button onClick={() => SwitchSeason(season)} color="primary">
+            <FormattedMessage id="SwitchSeasonInput.action"/>
           </Button>
         </Button.List>
     </Card>

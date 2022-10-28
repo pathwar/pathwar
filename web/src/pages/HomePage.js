@@ -153,7 +153,7 @@ const HomePage = () => {
             <UserChallengesView challenges={activeChallenges} />
             <ShadowBox>
               <h2>
-                Switching Season
+                <FormattedMessage id="HomePage.switchSeason" />
               </h2>
                 <>
                   <div
