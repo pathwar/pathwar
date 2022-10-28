@@ -62,6 +62,9 @@ func serverCommand() *ffcli.Command {
 			}
 
 			cleanup, err := initSentryFromEnv("starting API")
+			if err != nil {
+				return err
+			}
 
 			svc, _, closer, err := svcFromFlags(logger)
 			if err != nil {
@@ -160,7 +163,7 @@ func challengeRunCommand() *ffcli.Command {
 
 			preparedComposeData, err := pwcompose.Prepare(composePrepareOpts)
 			if err != nil {
-
+				return err
 			}
 
 			var config pwcompose.PathwarConfig
