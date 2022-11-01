@@ -7,14 +7,14 @@ Pathwar est une plateforme de formation à la cybersécurité.
 Par son approche gamifiée, la plateforme permet une montée en compétences progressive des participants depuis un niveau de programmation basique jusqu’à un niveau expert.
 Composée de challenges et de thématiques variées, la plateforme a pour ambition de délivrer une formation la plus complète possible à toutes les problématiques passées, actuelles, et futures de la sécurité.
 
-Qu’ils soient salariés d’une entreprise, étudiants, freelance, ou jeunes passionnés, les utilisateurs de la plateforme disposent d’une interface ludique au design original, donnant accès à des challenges de plus en plus complexe.
+Qu’ils soient salariés d’une entreprise, étudiants, freelances, ou jeunes passionnés, les utilisateurs de la plateforme disposent d’une interface ludique au design original, donnant accès à des challenges de plus en plus complexes.
 
-La plateforme est pensée pour être alimentée par la communauté elle-même et disposer d’une évolution permanente. Un utilisateur ayant remporté différents niveaux et challenge peut ainsi lui-même proposer de nouveaux défis à la communauté et venir nourrir la formation pour les utilisateurs suivants.
+La plateforme est pensée pour être alimentée par la communauté elle-même et disposer d’une évolution permanente. Un utilisateur ayant remporté différents niveaux et challenges peut ainsi lui-même proposer de nouveaux défis à la communauté et venir nourrir la formation pour les utilisateurs suivants.
 
-Une fois que les utilisateurs ont atteint un haut niveau sur la plateforme, ils vont disposer d’accès à différents challenge déposés par des entreprises sur pathwar.
-Ces challenges, accessible à un nombre restreint d’utilisateur “haut niveau” sont comparables à une campagne de “bug bounty” et donnent parfois droit à une rémunération pour le participant qui en relève le défi.
+Une fois que les utilisateurs ont atteint un haut niveau sur la plateforme, ils vont disposer d’accès à différents challenges déposés par des entreprises sur Pathwar.
+Ces challenges, accessibles à un nombre restreint d’utilisateurs “haut niveau” sont comparables à une campagne de “bug bounty” et donnent parfois droit à une rémunération pour le participant qui en relève le défi.
 
-La plateforme offre régulièrement de nouveaux “épisodes”, prenant la forme de nouveaux challenges lié à un événement éphémère. Ainsi de nouvelles “îles” apparaissent régulièrement sur la carte et sont ouvertes aux utilisateurs en fonction de leur niveau.
+La plateforme offre régulièrement de nouveaux “épisodes”, prenant la forme de nouveaux challenges liés à un événement éphémère. Ainsi de nouvelles “îles” apparaissent régulièrement sur la carte et sont ouvertes aux utilisateurs en fonction de leur niveau.
 Une entreprise peut par exemple disposer d’une île dédiée à ses challenges, durant une période donnée, ou de façon durable au sein de la carte.
 
 ---
