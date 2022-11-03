@@ -40,6 +40,11 @@ func (svc *service) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeG
 		Preload("Subscriptions.Validations").
 		First(&item).
 		Error
+
+	var nbValidation int64
+	for _, subscription := range item.Subscriptions {
+		nbValidation += (int64)(len(subscription.Validations))
+	}
 	if err != nil {
 		return nil, errcode.ErrGetSeasonChallenge.Wrap(err)
 	}
@@ -57,6 +62,6 @@ func (svc *service) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeG
 	}
 	item.Flavor.ComposeBundle = ""
 
-	ret := SeasonChallengeGet_Output{Item: &item}
+	ret := SeasonChallengeGet_Output{Item: &item, NbValidation: nbValidation}
 	return &ret, nil
 }
