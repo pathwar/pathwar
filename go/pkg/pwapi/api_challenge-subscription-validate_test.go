@@ -87,7 +87,6 @@ func TestService_ChallengeSubscriptionValidate(t *testing.T) {
 		assert.NotEmptyf(t, ret.ChallengeValidation.ChallengeSubscription.Validations, test.name)
 		assert.Equal(t, ret.ChallengeValidation.ChallengeSubscription.Team.Cash, test.expectedCash, test.name)
 		assert.Equal(t, ret.ChallengeValidation.ChallengeSubscription.Team.Score, test.expectedScore, test.name)
-
 		{
 			challenge, err := svc.SeasonChallengeGet(ctx, &SeasonChallengeGet_Input{SeasonChallengeID: ret.ChallengeValidation.ChallengeSubscription.SeasonChallenge.ID})
 			require.NoErrorf(t, err, test.name)

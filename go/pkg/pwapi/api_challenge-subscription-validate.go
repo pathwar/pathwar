@@ -180,8 +180,8 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 			Where(pwdb.SeasonChallenge{ID: subscription.SeasonChallengeID}).
 			Count(&nb)
 
-		// calcule score : (1/(x/10) * 95 + 5)
-		score := 1/(nb/10+1)*95 + 5
+		// compute score : 1 / (x/10 + 1) * 95 + 5
+		validationScore := 1/(nb/10+1)*95 + 5
 
 		// update team cash
 		err = tx.Model(&pwdb.Team{}).
@@ -195,7 +195,7 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		// update team score
 		err = tx.Model(&pwdb.Team{}).
 			Where(pwdb.Team{ID: subscription.TeamID}).
-			UpdateColumn("score", gorm.Expr("score + ?", score)).
+			UpdateColumn("score", gorm.Expr("score + ?", validationScore)).
 			Error
 		if err != nil {
 			return err
