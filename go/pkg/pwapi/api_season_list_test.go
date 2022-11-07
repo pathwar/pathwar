@@ -2,8 +2,9 @@ package pwapi
 
 import (
 	"context"
-	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 	"testing"
+
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
