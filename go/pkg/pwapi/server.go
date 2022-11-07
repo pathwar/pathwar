@@ -57,7 +57,7 @@ func NewServer(ctx context.Context, svc ServiceServer, opts ServerOpts) (*Server
 
 	// grpc server
 	s.grpcServer = grpcServer(svc, opts)
-	s.workers.Add(func() error {
+	s.Workers.Add(func() error {
 		err := s.grpcServer.Serve(s.grpcListener)
 		if err != cmux.ErrListenerClosed {
 			return err
@@ -74,7 +74,7 @@ func NewServer(ctx context.Context, svc ServiceServer, opts ServerOpts) (*Server
 	if err != nil {
 		return nil, errcode.TODO.Wrap(err)
 	}
-	s.workers.Add(func() error {
+	s.Workers.Add(func() error {
 		err := httpServer.Serve(s.httpListener)
 		if err != cmux.ErrListenerClosed {
 			return err
@@ -97,7 +97,7 @@ func NewServer(ctx context.Context, svc ServiceServer, opts ServerOpts) (*Server
 	})
 
 	// mux
-	s.workers.Add(
+	s.Workers.Add(
 		func() error {
 			err := s.cmux.Serve()
 			return err
@@ -107,7 +107,7 @@ func NewServer(ctx context.Context, svc ServiceServer, opts ServerOpts) (*Server
 		},
 	)
 	// listen for canceled context
-	s.workers.Add(func() error {
+	s.Workers.Add(func() error {
 		<-s.ctx.Done()
 		return nil
 	}, func(error) {})
@@ -122,7 +122,7 @@ type Server struct {
 	httpListener   net.Listener
 	cmux           cmux.CMux
 	logger         *zap.Logger
-	workers        run.Group
+	Workers        run.Group
 	ctx            context.Context
 	cancel         func()
 }
@@ -162,7 +162,7 @@ func (opts *ServerOpts) applyDefaults() {
 }
 
 func (s *Server) Run() error {
-	return s.workers.Run()
+	return s.Workers.Run()
 }
 
 func (s *Server) Close() {

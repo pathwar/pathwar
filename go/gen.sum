@@ -5,4 +5,4 @@
 58202a11cc54640949aaacb09c0e0db6f26d57c2  ../api/pwsso.proto
 70d67f1cebb3b7f9e86fd0197d43db4c1f795f65  ../api/pwinit.proto
 938d0b10041d408da360734ce20ba0d65eb20521  ../api/pwagent.proto
-e7f8f5276b74a2def30b58d87e92ac8ac199103d  Makefile
+a65bb911c95219fcccdd43b5584dcadaad07a63c  Makefile
