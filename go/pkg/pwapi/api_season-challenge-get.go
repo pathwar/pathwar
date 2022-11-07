@@ -40,6 +40,7 @@ func (svc *service) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeG
 		Preload("Subscriptions.Validations").
 		First(&item).
 		Error
+
 	if err != nil {
 		return nil, errcode.ErrGetSeasonChallenge.Wrap(err)
 	}
