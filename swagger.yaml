@@ -548,6 +548,13 @@ definitions:
           $ref: '#/definitions/dbSeasonChallenge'
         type: array
     type: object
+  apiSeasonListOutput:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dbSeason'
+        type: array
+    type: object
   apiTeamAcceptInviteInput:
     properties:
       team_invite_id:
@@ -2664,6 +2671,28 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiSeasonChallengeListOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /seasons:
+    get:
+      operationId: Service_SeasonList
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiSeasonListOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}
