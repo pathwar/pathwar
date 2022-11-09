@@ -19,6 +19,7 @@
   "HomePage.score": "Score",
   "HomePage.cash": "Argent",
   "HomePage.createdAt": "créé le",
+  "HomePage.switchSeason": "Change the season",
   "UserChallengesView.tab1": "Mes défis",
   "UserChallengesView.tab2": "Finished",
   "UserChallengesView.doneEmpty": "Pas encore de défis terminés",
@@ -70,5 +71,7 @@
   "AllTeamsOnSeasonList.rank": "Classement",
   "AllTeamsOnSeasonList.score": "Score",
   "AllTeamsOnSeasonList.achievements": "Succès",
+  "SwitchSeasonInput.title": "Switch season",
+  "SwitchSeasonInput.action": "Apply",
   "CreateTeamButton.send": "Envoyer"
 }
