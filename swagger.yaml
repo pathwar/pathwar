@@ -40,16 +40,6 @@ definitions:
     enum:
     - Unknown
     type: string
-  OutputSeasonAndTeam:
-    properties:
-      is_active:
-        format: boolean
-        type: boolean
-      season:
-        $ref: '#/definitions/dbSeason'
-      team:
-        $ref: '#/definitions/dbTeam'
-    type: object
   SeasonSubscription:
     default: UnknownSubscription
     enum:
@@ -550,10 +540,20 @@ definitions:
     type: object
   apiSeasonListOutput:
     properties:
-      items:
+      seasons:
         items:
-          $ref: '#/definitions/dbSeason'
+          $ref: '#/definitions/apiSeasonListOutputSeasonAndTeam'
         type: array
+    type: object
+  apiSeasonListOutputSeasonAndTeam:
+    properties:
+      is_active:
+        format: boolean
+        type: boolean
+      season:
+        $ref: '#/definitions/dbSeason'
+      team:
+        $ref: '#/definitions/dbTeam'
     type: object
   apiTeamAcceptInviteInput:
     properties:
@@ -622,10 +622,20 @@ definitions:
         type: integer
       seasons:
         items:
-          $ref: '#/definitions/OutputSeasonAndTeam'
+          $ref: '#/definitions/apiUserGetSessionOutputSeasonAndTeam'
         type: array
       user:
         $ref: '#/definitions/dbUser'
+    type: object
+  apiUserGetSessionOutputSeasonAndTeam:
+    properties:
+      is_active:
+        format: boolean
+        type: boolean
+      season:
+        $ref: '#/definitions/dbSeason'
+      team:
+        $ref: '#/definitions/dbTeam'
     type: object
   apiUserSetPreferencesInput:
     properties:
