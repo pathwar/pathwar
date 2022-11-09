@@ -16,8 +16,8 @@ func (svc *service) SeasonList(ctx context.Context, in *SeasonList_Input) (*Seas
 		return nil, errcode.ErrLoadUserSeasons
 	}
 
-	for i, season := range seasons {
-		ret.Seasons[i] = &SeasonList_Output_SeasonAndTeam{season.Season, season.Team, season.IsActive}
+	for _, season := range seasons {
+		ret.Seasons = append(ret.Seasons, &SeasonList_Output_SeasonAndTeam{season.Season, season.Team, season.IsActive})
 	}
 
 	return &ret, nil
