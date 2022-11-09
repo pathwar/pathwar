@@ -4,8 +4,6 @@ import (
 	"context"
 	"testing"
 
-	"pathwar.land/pathwar/v2/go/pkg/pwdb"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"pathwar.land/pathwar/v2/go/internal/testutil"
@@ -20,15 +18,15 @@ func TestService_SeasonList(t *testing.T) {
 	_, err := svc.UserGetSession(ctx, nil)
 	require.NoError(t, err)
 
+	seasons := testingSeasons(t, svc).Items
+
 	tests := []struct {
-		name              string
-		input             *SeasonList_Input
-		expectedErr       error
-		ExpectedStatus    pwdb.Season_Status
-		ExpectedGlobal    bool
-		ExpectedIsTesting bool
+		name            string
+		input           *SeasonList_Input
+		expectedErr     error
+		expectedSeasons int
 	}{
-		{"all-seasons", &SeasonList_Input{}, nil, pwdb.Season_Started, true, false},
+		{"all-seasons", &SeasonList_Input{}, nil, len(seasons)},
 	}
 
 	for _, test := range tests {
@@ -38,12 +36,7 @@ func TestService_SeasonList(t *testing.T) {
 			if err != nil {
 				return
 			}
-
-			for _, season := range ret.Items {
-				assert.Equal(t, test.ExpectedStatus, season.Status)
-				assert.Equal(t, test.ExpectedGlobal, season.IsGlobal)
-				assert.Equal(t, test.ExpectedIsTesting, season.IsTesting)
-			}
+			assert.Equal(t, test.expectedSeasons, len(ret.Seasons))
 		})
 	}
 }
