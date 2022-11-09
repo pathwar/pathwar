@@ -58,6 +58,12 @@ service Service {
   rpc CouponValidate(CouponValidate.Input) returns (CouponValidate.Output) { option (google.api.http) = {post: "/coupon-validation"; body: "*"}; };
 
   //
+  // Seasons
+  //
+
+  rpc SeasonList(SeasonList.Input) returns (SeasonList.Output) { option (google.api.http) = {get: "/seasons"};};
+
+  //
   // Tool
   //
 
@@ -432,6 +438,18 @@ message TeamAcceptInvite {
   }
   message Output {
     pathwar.db.TeamMember team_member = 1;
+  }
+}
+
+message SeasonList {
+  message Input {}
+  message Output {
+    repeated SeasonAndTeam seasons = 5;
+    message SeasonAndTeam {
+      pathwar.db.Season season = 1;
+      pathwar.db.Team team = 2;
+      bool is_active = 3;
+    }
   }
 }
 

@@ -19,6 +19,7 @@
   "HomePage.score": "Score",
   "HomePage.cash": "Cash",
   "HomePage.createdAt": "created at",
+  "HomePage.switchSeason": "Change the season",
   "UserChallengesView.tab1": "My challenges",
   "UserChallengesView.tab2": "Finished",
   "UserChallengesView.doneEmpty": "No challenges done yet",
@@ -70,5 +71,7 @@
   "AllTeamsOnSeasonList.rank": "Rank",
   "AllTeamsOnSeasonList.score": "Score",
   "AllTeamsOnSeasonList.achievements": "Achievements",
+  "SwitchSeasonInput.title": "Switch season",
+  "SwitchSeasonInput.action": "Apply",
   "CreateTeamButton.send": "Send"
 }
