@@ -63,6 +63,7 @@ func runMain(args []string) error {
 				agentCommand(),
 				miscCommand(),
 				adminCommand(),
+				devCommand(),
 				{
 					Name:       "version",
 					ShortUsage: "pathwar [global flags] version",
