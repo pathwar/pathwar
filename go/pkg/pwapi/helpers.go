@@ -27,7 +27,6 @@ func seasonFromSeasonChallengeID(db *gorm.DB, seasonChallengeID int64) (*pwdb.Se
 		Preload("Season").
 		First(&seasonChallenge, seasonChallengeID).
 		Error
-
 	if err != nil {
 		return nil, err
 	}

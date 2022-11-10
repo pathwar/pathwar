@@ -8,11 +8,14 @@ import iconPwn from "../images/icon-pwn-small.svg";
 
 import {
   fetchChallenges,
+  fetchAllSeasons,
   fetchTeamDetails as fetchTeamDetailsAction,
 } from "../actions/seasons";
+
 import { isNil } from "ramda";
 import UserChallengesView from "../components/home/UserChallengesView";
 import getTeamRank from "../utils/getTeamRank";
+import SwitchSeasonInput from "../components/season/SwitchSeasonInput";
 
 const cardStyle = {
   margin: "1rem",
@@ -140,8 +143,23 @@ const HomePage = () => {
                 </div>
               )}
             </ShadowBox>
-
             <UserChallengesView challenges={activeChallenges} />
+            <ShadowBox>
+              <h2>
+                <FormattedMessage id="HomePage.switchSeason" />
+              </h2>
+                <>
+                  <div
+                    css={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                  <SwitchSeasonInput />
+                  </div>
+                </>
+            </ShadowBox>
           </Grid.Col>
         </Grid.Row>
       </div>

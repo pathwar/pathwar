@@ -45,7 +45,8 @@ func (svc *service) TeamAcceptInvite(ctx context.Context, in *TeamAcceptInvite_I
 		Where(pwdb.TeamMember{UserID: userID}).
 		Where(&pwdb.Team{
 			SeasonID:       teamInvite.Team.SeasonID,
-			DeletionStatus: pwdb.DeletionStatus_Active}).
+			DeletionStatus: pwdb.DeletionStatus_Active,
+		}).
 		Count(&seasonMemberShipCount).
 		Error
 	if err != nil || seasonMemberShipCount != 0 {

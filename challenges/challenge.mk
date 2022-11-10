@@ -32,6 +32,7 @@ docker.pathwar.push:
 .PHONY: pathwar.register
 pathwar.register:
 	pathwar $(PATHWAR_OPTS) compose register --print ./pathwar-compose.yml > _register.sh
+	chmod +x _register.sh
 
 .PHONY: make.bump
 make.bump:

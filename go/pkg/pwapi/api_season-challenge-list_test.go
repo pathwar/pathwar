@@ -24,7 +24,7 @@ func TestService_SeasonChallengeList(t *testing.T) {
 		seasons[season.Name] = season.ID
 	}
 
-	var tests = []struct {
+	tests := []struct {
 		name          string
 		input         *SeasonChallengeList_Input
 		expectedErr   error

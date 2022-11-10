@@ -21,7 +21,7 @@ func TestService_TeamList(t *testing.T) {
 		seasons[season.Name] = season.ID
 	}
 
-	var tests = []struct {
+	tests := []struct {
 		name                  string
 		input                 *TeamList_Input
 		expectedErr           error

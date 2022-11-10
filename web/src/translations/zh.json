@@ -14,6 +14,7 @@
   "coupon.validate": "Validate",
   "HomePage.title": "Home",
   "HomePage.createdAt": "created at",
+  "HomePage.switchSeason": "Change the season",
   "NotAvailablePage.title": "404 - Sorry,",
   "NotAvailablePage.text": "This page is not available yet",
   "404Page.title": "404",
@@ -53,5 +54,7 @@
   "AllTeamsOnSeasonList.team": "Team",
   "AllTeamsOnSeasonList.cash": "Cash",
   "AllTeamsOnSeasonList.joined": "Joined",
+  "SwitchSeasonInput.title": "Switch season",
+  "SwitchSeasonInput.action": "Apply",
   "CreateTeamButton.send": "Send"
 }

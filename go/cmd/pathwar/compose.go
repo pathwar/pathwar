@@ -20,7 +20,7 @@ import (
 )
 
 func composeCommand() *ffcli.Command {
-	var composeFlags = flag.NewFlagSet("compose", flag.ExitOnError)
+	composeFlags := flag.NewFlagSet("compose", flag.ExitOnError)
 	return &ffcli.Command{
 		Name:       "compose",
 		ShortUsage: "pathwar [global flags] compose [compose flags] <subcommand> [flags] [args...]",
@@ -126,7 +126,7 @@ func composePrepareCommand() *ffcli.Command {
 }
 
 func composePsCommand() *ffcli.Command {
-	var composePSFlags = flag.NewFlagSet("compose ps", flag.ExitOnError)
+	composePSFlags := flag.NewFlagSet("compose ps", flag.ExitOnError)
 	composePSFlags.IntVar(&composePSDepth, "depth", 0, "depth to display")
 	return &ffcli.Command{
 		Name:       "ps",
@@ -180,9 +180,7 @@ func composeDownCommand() *ffcli.Command {
 }
 
 func composeBinCommand() *ffcli.Command {
-	var (
-		composeBinFlags = flag.NewFlagSet("compose bin", flag.ExitOnError)
-	)
+	composeBinFlags := flag.NewFlagSet("compose bin", flag.ExitOnError)
 	return &ffcli.Command{
 		Name:       "bin",
 		ShortUsage: "pathwar [global flags] compose [compose flags] bin",

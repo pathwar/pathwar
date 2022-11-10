@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+import os
+
+passphrase = os.popen("pwinit passphrase 0").read().strip()
+encrypted_passphrase = ("FLAG{" + passphrase + "}").encode('utf-8').hex()
+instructions = """
+Hello!
+
+Here is my secure secret: '{}'.
+""".format(encrypted_passphrase).strip()
+
+with open("/chal/index.txt", "w") as w:
+    w.write(instructions)

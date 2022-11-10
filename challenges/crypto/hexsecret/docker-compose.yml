@@ -1,0 +1,30 @@
+version: '3.7'
+
+# releases metadata (optional)
+x-pathwar:
+  challenge:
+    name: "Hexadecimal secret!"
+    slug: hexsecret
+    locale: "en"
+    author: "Undercover L3mons"
+    homepage: https://github.com/pathwar/pathwar/tree/master/challenges/crypto/hexsecret
+  flavor:
+    purchase_price: 0
+    validation_reward: 1
+    body: |
+      Introduction to crypto challenges.
+
+      "Encoding, for sure, make my secret secure."
+    passphrases: 1
+    category: crypto
+    tags:
+      - intro
+      - crypto
+    redump-policy:
+      - strategy: every
+        delay: 1d
+
+services:
+  chal:
+    build: chal
+    ports: [80]

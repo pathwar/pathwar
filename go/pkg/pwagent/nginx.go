@@ -241,7 +241,7 @@ func buildNginxConfigTar(config *nginxConfig, logger *zap.Logger) (*bytes.Buffer
 	tw := tar.NewWriter(&buf)
 	err = tw.WriteHeader(&tar.Header{
 		Name: "nginx.conf",
-		Mode: 0755,
+		Mode: 0o755,
 		Size: int64(len(configBytes)),
 	})
 	if err != nil {
@@ -447,7 +447,7 @@ http {
   upstream upstream_{{.Name}} { server {{.Host}}:{{.Port}}; }
   server {
     listen      80;
-    server_name moderator-{{.Name}}.{{$root.Opts.DomainSuffix}};
+    server_name moderator-{{.Name}}.{{$root.Opts.DomainSuffixWithoutPort}};
     access_log  /proc/self/fd/1;
     error_log   /proc/self/fd/2;
     # FIXME: add auth
@@ -471,7 +471,7 @@ http {
   {{- if not (eq (len .Hashes) 0) }}
   server {
     listen      80;
-    server_name{{range .Hashes}} {{.}}.{{$root.Opts.DomainSuffix}}{{end}};
+    server_name{{range .Hashes}} {{.}}.{{$root.Opts.DomainSuffixWithoutPort}}{{end}};
     access_log  /proc/self/fd/1;
     error_log   /proc/self/fd/2;
     location = /robots.txt {

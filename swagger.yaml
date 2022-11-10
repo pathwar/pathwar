@@ -40,16 +40,6 @@ definitions:
     enum:
     - Unknown
     type: string
-  OutputSeasonAndTeam:
-    properties:
-      is_active:
-        format: boolean
-        type: boolean
-      season:
-        $ref: '#/definitions/dbSeason'
-      team:
-        $ref: '#/definitions/dbTeam'
-    type: object
   SeasonSubscription:
     default: UnknownSubscription
     enum:
@@ -548,6 +538,23 @@ definitions:
           $ref: '#/definitions/dbSeasonChallenge'
         type: array
     type: object
+  apiSeasonListOutput:
+    properties:
+      seasons:
+        items:
+          $ref: '#/definitions/apiSeasonListOutputSeasonAndTeam'
+        type: array
+    type: object
+  apiSeasonListOutputSeasonAndTeam:
+    properties:
+      is_active:
+        format: boolean
+        type: boolean
+      season:
+        $ref: '#/definitions/dbSeason'
+      team:
+        $ref: '#/definitions/dbTeam'
+    type: object
   apiTeamAcceptInviteInput:
     properties:
       team_invite_id:
@@ -615,10 +622,20 @@ definitions:
         type: integer
       seasons:
         items:
-          $ref: '#/definitions/OutputSeasonAndTeam'
+          $ref: '#/definitions/apiUserGetSessionOutputSeasonAndTeam'
         type: array
       user:
         $ref: '#/definitions/dbUser'
+    type: object
+  apiUserGetSessionOutputSeasonAndTeam:
+    properties:
+      is_active:
+        format: boolean
+        type: boolean
+      season:
+        $ref: '#/definitions/dbSeason'
+      team:
+        $ref: '#/definitions/dbTeam'
     type: object
   apiUserSetPreferencesInput:
     properties:
@@ -2664,6 +2681,28 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiSeasonChallengeListOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /seasons:
+    get:
+      operationId: Service_SeasonList
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiSeasonListOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}

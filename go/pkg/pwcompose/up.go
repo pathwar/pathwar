@@ -306,7 +306,7 @@ func buildPWInitTar(config pwinit.InitConfig) (*bytes.Buffer, error) {
 	// write pwinit binary into tar file
 	err = tw.WriteHeader(&tar.Header{
 		Name: "/bin/pwinit",
-		Mode: 0755,
+		Mode: 0o755,
 		Size: int64(len(pwInitBuf)),
 	})
 	if err != nil {
@@ -324,7 +324,7 @@ func buildPWInitTar(config pwinit.InitConfig) (*bytes.Buffer, error) {
 	}
 	err = tw.WriteHeader(&tar.Header{
 		Name: "/pwinit/config.json",
-		Mode: 0755,
+		Mode: 0o755,
 		Size: int64(len(pwInitConfigJSON)),
 		// FIXME: chown it to container's default user
 	})

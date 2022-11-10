@@ -8,6 +8,8 @@ import {
   GET_ALL_SEASON_TEAMS_FAILED,
   SET_ACTIVE_SEASON,
   SET_ACTIVE_SEASON_FAILED,
+  SWITCH_SEASON,
+  SWITCH_SEASON_FAILED,
   FETCH_PREFERENCES_SUCCESS,
   FETCH_PREFERENCES_FAILED,
   SET_CHALLENGES_LIST,
@@ -53,6 +55,23 @@ export const fetchPreferences = seasonID => async dispatch => {
       type: FETCH_PREFERENCES_FAILED,
       payload: { error },
     });
+  }
+};
+
+export const switchSeason = seasonID => async dispatch => {
+  try {
+    await postPreferences(seasonID);
+
+    dispatch({
+      type: SWITCH_SEASON,
+    });
+    toast.success("Switch season SUCCESS!");
+  } catch (error) {
+    dispatch({
+      type: SWITCH_SEASON_FAILED,
+      payload: { error },
+    });
+    toast.error("Switch season FAILED!");
   }
 };
 
