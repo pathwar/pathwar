@@ -9,7 +9,7 @@ import (
 
 type challengeValidation struct {
 	validations []*pwdb.Activity
-	score       int
+	score       int64
 }
 
 //TODO: Don't forget to test the function
@@ -22,17 +22,38 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient) error {
 	activities := res.GetActivities()
 
 	//TODO: Perhaps a better way to split validations per challenges
-	challenges := make(map[int64]challengeValidation)
+	challenges := make(map[int64]*challengeValidation)
 	for _, activity := range activities {
-		challenges[activity.ChallengeID] = challengeValidation{append(challenges[activity.ChallengeID].validations, activity), 0}
+		if _, ok := challenges[activity.ChallengeID]; ok {
+			challenges[activity.ChallengeID].validations = append(challenges[activity.ChallengeID].validations, activity)
+		} else {
+			challenges[activity.ChallengeID] = &challengeValidation{[]*pwdb.Activity{activity}, 0}
+		}
 	}
 
 	// TODO: Apply a better function: compute score : 1 / (x/10 + 1) * 95 + 5
 	for _, challenge := range challenges {
 		nbValidations := len(challenge.validations)
-		challenge.score = 1/(nbValidations/10+1)*95 + 5
+		challenge.score = int64(1/(nbValidations/10+1)*95 + 5)
+		fmt.Println(challenge.score)
+	}
+	for _, challenge := range challenges {
+		fmt.Println(challenge.score)
 	}
 
-	fmt.Println(challenges)
+	teams := make(map[int64]*pwdb.Team)
+	for _, activity := range activities {
+		if _, ok := teams[activity.TeamID]; !ok {
+			teams[activity.TeamID] = activity.Team
+			teams[activity.TeamID].Score = challenges[activity.ChallengeID].score
+		} else {
+			teams[activity.TeamID].Score += challenges[activity.ChallengeID].score
+		}
+	}
+
+	for _, v := range teams {
+		fmt.Println(v.Score)
+	}
+
 	return nil
 }
