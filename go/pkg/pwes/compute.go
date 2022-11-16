@@ -9,6 +9,7 @@ import (
 
 type challengeValidation struct {
 	validations []*pwdb.Activity
+	score       uint64
 }
 
 func Compute(ctx context.Context, apiClient *pwapi.HTTPClient) error {
@@ -21,11 +22,7 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient) error {
 	//TODO: Perhaps a better way to split validations per challenges
 	challenges := make(map[int64]challengeValidation)
 	for _, activity := range activities {
-		if _, ok := challenges[activity.ChallengeID]; ok {
-			challenges[activity.ChallengeID] = challengeValidation{append(challenges[activity.ChallengeID].validations, activity)}
-		} else {
-			challenges[activity.ChallengeID] = challengeValidation{[]*pwdb.Activity{activity}}
-		}
+		challenges[activity.ChallengeID] = challengeValidation{append(challenges[activity.ChallengeID].validations, activity), 0}
 	}
 
 	fmt.Println(challenges)
