@@ -2,7 +2,7 @@ package pwes
 
 import (
 	"context"
-	"fmt"
+
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -21,7 +21,6 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient) error {
 	}
 	activities := res.GetActivities()
 
-	//TODO: Perhaps a better way to split validations per challenges
 	challenges := make(map[int64]*challengeValidation)
 	for _, activity := range activities {
 		if _, ok := challenges[activity.ChallengeID]; ok {
@@ -35,10 +34,6 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient) error {
 	for _, challenge := range challenges {
 		nbValidations := len(challenge.validations)
 		challenge.score = int64(1/(nbValidations/10+1)*95 + 5)
-		fmt.Println(challenge.score)
-	}
-	for _, challenge := range challenges {
-		fmt.Println(challenge.score)
 	}
 
 	teams := make(map[int64]*pwdb.Team)
@@ -49,10 +44,6 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient) error {
 		} else {
 			teams[activity.TeamID].Score += challenges[activity.ChallengeID].score
 		}
-	}
-
-	for _, v := range teams {
-		fmt.Println(v.Score)
 	}
 
 	return nil

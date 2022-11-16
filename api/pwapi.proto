@@ -102,6 +102,7 @@ service Service {
   rpc AdminChallengeFlavorAdd(AdminChallengeFlavorAdd.Input) returns (AdminChallengeFlavorAdd.Output) { option (google.api.http) = {post: "/admin/challenge-flavor-add"; body: "*"}; }; // admin only
   rpc AdminSeasonChallengeAdd(AdminSeasonChallengeAdd.Input) returns (AdminSeasonChallengeAdd.Output) { option (google.api.http) = {post: "/admin/season-challenge-add"; body: "*"}; }; // admin only
   rpc AdminSeasonAdd(AdminSeasonAdd.Input) returns (AdminSeasonAdd.Output) { option (google.api.http) = {post: "/admin/season-add"; body: "*"}; }; // admin only
+  rpc AdminSetTeams(AdminSetTeams.Input) returns (AdminSetTeams.Output) { option (google.api.http) = {post: "/admin/set-teams"; body: "*"}; }; // admin only
   rpc AdminTestingSeasonUserAdd(AdminTestingSeasonUserAdd.Input) returns (AdminTestingSeasonUserAdd.Output) { option (google.api.http) = {post: "/admin/testing-season-user-add"; body: "*"}; }; // admin only
 }
 
@@ -289,6 +290,13 @@ message AdminSeasonAdd {
   message Output {
     pathwar.db.Season season = 1;
   }
+}
+
+message AdminSetTeams {
+  message Input {
+    repeated pathwar.db.Team teams = 1;
+  }
+  message Output {}
 }
 
 message AdminTestingSeasonUserAdd {
