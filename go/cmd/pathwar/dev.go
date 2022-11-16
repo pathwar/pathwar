@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"pathwar.land/pathwar/v2/go/pkg/pwes"
 	"syscall"
 
 	"github.com/docker/docker/client"
@@ -240,6 +241,7 @@ func challengeDeployCommand() *ffcli.Command {
 	}
 }
 
+// TODO: Return error adapted
 func computeScore() *ffcli.Command {
 	var (
 		devComputeFlags = flag.NewFlagSet("compute-score", flag.ExitOnError)
@@ -259,11 +261,15 @@ func computeScore() *ffcli.Command {
 				return err
 			}
 
-			_, err := httpClientFromEnv(ctx)
+			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return err
 			}
 
+			err = pwes.Compute(ctx, apiClient)
+			if err != nil {
+				return err
+			}
 			return nil
 		},
 	}
