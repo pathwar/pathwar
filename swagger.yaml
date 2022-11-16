@@ -382,6 +382,15 @@ definitions:
       season_challenge:
         $ref: '#/definitions/dbSeasonChallenge'
     type: object
+  apiAdminSetTeamsInput:
+    properties:
+      teams:
+        items:
+          $ref: '#/definitions/dbTeam'
+        type: array
+    type: object
+  apiAdminSetTeamsOutput:
+    type: object
   apiAdminTestingSeasonUserAddInput:
     properties:
       user_id:
@@ -2314,6 +2323,34 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiAdminSeasonChallengeAddOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/set-teams:
+    post:
+      operationId: Service_AdminSetTeams
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminSetTeamsInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminSetTeamsOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}

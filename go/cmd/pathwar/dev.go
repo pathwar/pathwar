@@ -6,8 +6,9 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"pathwar.land/pathwar/v2/go/pkg/pwes"
 	"syscall"
+
+	"pathwar.land/pathwar/v2/go/pkg/pwes"
 
 	"github.com/docker/docker/client"
 	"github.com/oklog/run"
