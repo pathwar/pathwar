@@ -84,7 +84,6 @@ func serverCommand() *ffcli.Command {
 
 			g.Add(run.SignalHandler(ctx, syscall.SIGTERM, syscall.SIGINT, os.Interrupt, os.Kill))
 			{
-				fmt.Println("Lancement API")
 				serverOpts.Tracer = tracer
 				serverOpts.Logger = logger.Named("server")
 				fmt.Println(serverOpts)
@@ -232,6 +231,28 @@ func challengeDeployCommand() *ffcli.Command {
 		Exec: func(ctx context.Context, args []string) error {
 			fmt.Println(motd.Default())
 			fmt.Println(banner.Inline("deploy challenge"))
+
+			//TODO: Deploying challenge from current folder
+
+			return nil
+		},
+	}
+}
+
+func computeScore() *ffcli.Command {
+	devChallengeFlags := flag.NewFlagSet("dev", flag.ExitOnError)
+
+	return &ffcli.Command{
+		Name:      "compute-score",
+		ShortHelp: "Compute the score thanks to retrieving all events",
+		FlagSet:   devChallengeFlags,
+		Exec: func(ctx context.Context, args []string) error {
+			fmt.Println(motd.Default())
+			fmt.Println(banner.Inline("compute score"))
+
+			if err := globalPreRun(); err != nil {
+				return err
+			}
 
 			return nil
 		},

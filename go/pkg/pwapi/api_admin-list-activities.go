@@ -45,6 +45,8 @@ func (svc *service) AdminListActivities(ctx context.Context, in *AdminListActivi
 	// noop
 	case "registers":
 		req = req.Where(&pwdb.Activity{Kind: pwdb.Activity_UserRegister})
+	case "validations":
+		req = req.Where(&pwdb.Activity{Kind: pwdb.Activity_ChallengeSubscriptionValidate})
 	default:
 		return nil, errcode.TODO
 	}
