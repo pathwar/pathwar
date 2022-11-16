@@ -37,6 +37,7 @@ func devCommand() *ffcli.Command {
 			serverCommand(),
 			challengeRunCommand(),
 			challengeDeployCommand(),
+			computeScore(),
 		},
 	}
 }
@@ -240,17 +241,26 @@ func challengeDeployCommand() *ffcli.Command {
 }
 
 func computeScore() *ffcli.Command {
-	devChallengeFlags := flag.NewFlagSet("dev", flag.ExitOnError)
+	var (
+		devComputeFlags = flag.NewFlagSet("compute-score", flag.ExitOnError)
+	)
+
+	devComputeFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
 
 	return &ffcli.Command{
 		Name:      "compute-score",
 		ShortHelp: "Compute the score thanks to retrieving all events",
-		FlagSet:   devChallengeFlags,
+		FlagSet:   devComputeFlags,
 		Exec: func(ctx context.Context, args []string) error {
 			fmt.Println(motd.Default())
 			fmt.Println(banner.Inline("compute score"))
 
 			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			_, err := httpClientFromEnv(ctx)
+			if err != nil {
 				return err
 			}
 
