@@ -175,8 +175,8 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		var nb int64
 		svc.db.
 			Table("season_challenge").
-			Joins("JOIN challenge_subscription on season_challenge.id = challenge_subscription.season_challenge_id").
-			Joins("JOIN challenge_validation on cs.id = challenge_validation.challenge_subscription_id").
+			Joins("JOIN challenge_subscription ON challenge_subscription.season_challenge_id = season_challenge.id").
+			Joins("JOIN challenge_validation ON challenge_validation.challenge_subscription_id = challenge_subscription.id").
 			Where(pwdb.SeasonChallenge{ID: subscription.SeasonChallengeID}).
 			Count(&nb)
 
