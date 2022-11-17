@@ -51,16 +51,17 @@ func TestService_ChallengeSubscriptionValidate(t *testing.T) {
 		expectedChallengeSubscriptionID int64
 		expectedValidations             int
 		expectedCash                    int64
+		expectedScore                   int64
 	}{
-		{"nil", nil, errcode.ErrMissingInput, "", 0, 0, 0},
-		{"empty", &ChallengeSubscriptionValidate_Input{}, errcode.ErrMissingInput, "", 0, 0, 0},
-		{"invalid challenge subscription", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: 42, Passphrases: []string{"secret"}, Comment: "explanation"}, errcode.ErrGetChallengeSubscription, "", 0, 0, 0},
-		{"challenge with no instance", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription1.ChallengeSubscription.ID, Passphrases: []string{"secret"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeInactiveValidation, "test", 0, 0, 0},
-		{"3/4 valid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "b", "c"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeIncompleteValidation, "", 0, 0, 0},
-		{"too many", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "b", "c", "d", "e"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeIncompleteValidation, "", 0, 0, 0},
-		{"bad passphrases", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"e", "f", "g", "h"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeIncompleteValidation, "", 0, 0, 0},
-		{"one good passphrase", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "f", "g", "h"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeIncompleteValidation, "", 0, 0, 0},
-		{"valid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "b", "c", "d"}, Comment: "ultra cool explanation"}, nil, "[0,1,2,3]", subscription2.ChallengeSubscription.ID, 1, 47},
+		{"nil", nil, errcode.ErrMissingInput, "", 0, 0, 0, 0},
+		{"empty", &ChallengeSubscriptionValidate_Input{}, errcode.ErrMissingInput, "", 0, 0, 0, 0},
+		{"invalid challenge subscription", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: 42, Passphrases: []string{"secret"}, Comment: "explanation"}, errcode.ErrGetChallengeSubscription, "", 0, 0, 0, 0},
+		{"challenge with no instance", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription1.ChallengeSubscription.ID, Passphrases: []string{"secret"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeInactiveValidation, "test", 0, 0, 0, 0},
+		{"3/4 valid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "b", "c"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeIncompleteValidation, "", 0, 0, 0, 0},
+		{"too many", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "b", "c", "d", "e"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeIncompleteValidation, "", 0, 0, 0, 0},
+		{"bad passphrases", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"e", "f", "g", "h"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeIncompleteValidation, "", 0, 0, 0, 0},
+		{"one good passphrase", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "f", "g", "h"}, Comment: "ultra cool explanation"}, errcode.ErrChallengeIncompleteValidation, "", 0, 0, 0, 0},
+		{"valid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "b", "c", "d"}, Comment: "ultra cool explanation"}, nil, "[0,1,2,3]", subscription2.ChallengeSubscription.ID, 1, 47, 10},
 		// {"revalid", &ChallengeSubscriptionValidate_Input{ChallengeSubscriptionID: subscription2.ChallengeSubscription.ID, Passphrases: []string{"a", "b", "c", "d"}, Comment: "ultra cool explanation"}, nil, "test", 1},
 		// FIXME: new validation
 	}
