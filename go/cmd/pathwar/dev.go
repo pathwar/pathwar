@@ -84,7 +84,6 @@ func serverCommand() *ffcli.Command {
 
 			g.Add(run.SignalHandler(ctx, syscall.SIGTERM, syscall.SIGINT, os.Interrupt, os.Kill))
 			{
-				fmt.Println("Lancement API")
 				serverOpts.Tracer = tracer
 				serverOpts.Logger = logger.Named("server")
 				fmt.Println(serverOpts)
@@ -99,7 +98,6 @@ func serverCommand() *ffcli.Command {
 				if err != nil {
 					return errcode.ErrInitServer.Wrap(err)
 				}
-				fmt.Println("I'm here !")
 
 				dockerCli, err := client.NewEnvClient()
 				if err != nil {
@@ -110,7 +108,6 @@ func serverCommand() *ffcli.Command {
 					return errcode.TODO.Wrap(err)
 				}
 				server.Workers.Add(func() error {
-					fmt.Println("Lancement Agent")
 					err := pwagent.Run(ctx, dockerCli, apiClient, agentOpts)
 					if err != cmux.ErrListenerClosed {
 						return err
