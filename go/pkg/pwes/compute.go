@@ -19,7 +19,6 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 		return err
 	}
 	activities := res.GetActivities()
-	timestamp = activities[len(activities)-1].CreatedAt
 
 	challengesMap := make(map[int64]*challengeValidation)
 	for _, activity := range activities {
