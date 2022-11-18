@@ -125,7 +125,6 @@ func serverCommand() *ffcli.Command {
 				server.Workers.Add(func() error {
 					for {
 						time.Sleep(10 * time.Second)
-						fmt.Println("COMPUTE SCORE")
 						_ = pwes.Compute(ctx, apiClient)
 					}
 				}, func(error) {
@@ -275,7 +274,7 @@ func computeScore() *ffcli.Command {
 
 			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
-				return err
+				return errcode.TODO.Wrap(err)
 			}
 
 			err = pwes.Compute(ctx, apiClient)
