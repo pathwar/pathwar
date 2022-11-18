@@ -58,7 +58,6 @@ func serverCommand() *ffcli.Command {
 		FlagSet:   devServerFlags,
 		Exec: func(ctx context.Context, args []string) error {
 			fmt.Println(motd.Default())
-			fmt.Println(banner.Inline("server"))
 
 			if err := globalPreRun(); err != nil {
 				return err
@@ -101,7 +100,6 @@ func serverCommand() *ffcli.Command {
 				if err != nil {
 					return errcode.ErrInitServer.Wrap(err)
 				}
-				fmt.Println("I'm here !")
 
 				dockerCli, err := client.NewEnvClient()
 				if err != nil {
@@ -112,7 +110,6 @@ func serverCommand() *ffcli.Command {
 					return errcode.TODO.Wrap(err)
 				}
 				server.Workers.Add(func() error {
-					fmt.Println("Lancement Agent")
 					err := pwagent.Run(ctx, dockerCli, apiClient, agentOpts)
 					if err != cmux.ErrListenerClosed {
 						return err

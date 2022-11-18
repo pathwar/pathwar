@@ -171,31 +171,10 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 			return errcode.ErrAgentUpdateState.Wrap(err)
 		}
 
-		// get nb of validations
-		var nb int64
-		svc.db.
-			Table("season_challenge").
-			Joins("inner join challenge_subscription cs on season_challenge.id = cs.season_challenge_id").
-			Joins("inner join challenge_validation cv on cs.id = cv.challenge_subscription_id").
-			Where(pwdb.SeasonChallenge{ID: subscription.SeasonChallengeID}).
-			Count(&nb)
-
-		// compute score : 1 / (x/10 + 1) * 95 + 5
-		validationScore := 1/(nb/10+1)*95 + 5
-
 		// update team cash
 		err = tx.Model(&pwdb.Team{}).
 			Where("id = ?", subscription.TeamID).
 			UpdateColumn("cash", gorm.Expr("cash + ?", subscription.SeasonChallenge.Flavor.ValidationReward)).
-			Error
-		if err != nil {
-			return err
-		}
-
-		// update team score
-		err = tx.Model(&pwdb.Team{}).
-			Where(pwdb.Team{ID: subscription.TeamID}).
-			UpdateColumn("score", gorm.Expr("score + ?", validationScore)).
 			Error
 		if err != nil {
 			return err
