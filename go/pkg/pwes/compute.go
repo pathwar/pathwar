@@ -2,6 +2,7 @@ package pwes
 
 import (
 	"context"
+	"time"
 
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -12,14 +13,13 @@ type challengeValidation struct {
 	score       int64
 }
 
-//TODO: Don't forget to test the function
-
-func Compute(ctx context.Context, apiClient *pwapi.HTTPClient) error {
-	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{FilteringPreset: "validations"})
+func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.Time) error {
+	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: timestamp, FilteringPreset: "validations"})
 	if err != nil {
 		return err
 	}
 	activities := res.GetActivities()
+	timestamp = activities[len(activities)-1].CreatedAt
 
 	challengesMap := make(map[int64]*challengeValidation)
 	for _, activity := range activities {
