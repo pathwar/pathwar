@@ -1450,6 +1450,9 @@ definitions:
       id:
         format: int64
         type: string
+      nb_validations:
+        format: int64
+        type: string
       season:
         $ref: '#/definitions/dbSeason'
       season_id:
