@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"syscall"
+	"time"
 
 	"pathwar.land/pathwar/v2/go/pkg/pwes"
 
@@ -109,6 +110,7 @@ func serverCommand() *ffcli.Command {
 				if err != nil {
 					return errcode.TODO.Wrap(err)
 				}
+
 				server.Workers.Add(func() error {
 					err := pwagent.Run(ctx, dockerCli, apiClient, agentOpts)
 					if err != cmux.ErrListenerClosed {
@@ -119,6 +121,18 @@ func serverCommand() *ffcli.Command {
 					_, cancel := context.WithTimeout(ctx, 5)
 					defer cancel()
 				})
+
+				server.Workers.Add(func() error {
+					for {
+						time.Sleep(10 * time.Second)
+						fmt.Println("COMPUTE SCORE")
+						_ = pwes.Compute(ctx, apiClient)
+					}
+				}, func(error) {
+					_, cancel := context.WithTimeout(ctx, 5)
+					defer cancel()
+				})
+
 				g.Add(
 					server.Run,
 					func(error) { server.Close() },
