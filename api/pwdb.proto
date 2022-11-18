@@ -75,6 +75,7 @@ message SeasonChallenge {
   google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 
   string slug = 100;
+  int64 nb_validations = 101;
 
   ChallengeFlavor flavor = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:FlavorID\""];
   int64 flavor_id = 201 [(gogoproto.customname) = "FlavorID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index;unique_index:idx_seasonchallenge_flavor_season\""];
