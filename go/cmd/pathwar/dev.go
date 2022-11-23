@@ -47,12 +47,12 @@ func devCommand() *ffcli.Command {
 
 func serverCommand() *ffcli.Command {
 	devServerFlags := flag.NewFlagSet("dev", flag.ExitOnError)
-	devServerFlags.StringVar(&serverOpts.Bind, "api-bind", serverOpts.Bind, "api port (ex: :8000)")
-	devServerFlags.BoolVar(&ssoOpts.AllowUnsafe, "sso-unsafe", ssoOpts.AllowUnsafe, "Allow unsafe SSO")
-	devServerFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
-	devServerFlags.StringVar(&agentOpts.HostPort, "host-port", agentOpts.HostPort, "Port nginx")
-	devServerFlags.StringVar(&agentOpts.DomainSuffix, "domaine-suffix", agentOpts.DomainSuffix, "Domain suffix to append")
-	devServerFlags.BoolVar(&serverOpts.WithPprof, "with-pprof", serverOpts.WithPprof, "enable pprof endpoints")
+	devServerFlags.StringVar(&serverOpts.Bind, "api-bind", ":8000", "api port (ex: :8000)")
+	devServerFlags.BoolVar(&ssoOpts.AllowUnsafe, "sso-unsafe", true, "Allow unsafe SSO")
+	devServerFlags.StringVar(&httpAPIAddr, "http-api-addr", "http://localhost:8000", "HTTP API address")
+	devServerFlags.StringVar(&agentOpts.HostPort, "host-port", "8001", "Port nginx")
+	devServerFlags.StringVar(&agentOpts.DomainSuffix, "domaine-suffix", "localhost:8001", "Domain suffix to append")
+	devServerFlags.BoolVar(&serverOpts.WithPprof, "with-pprof", true, "enable pprof endpoints")
 
 	return &ffcli.Command{
 		Name:      "server",
