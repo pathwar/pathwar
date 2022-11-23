@@ -53,6 +53,7 @@ func serverCommand() *ffcli.Command {
 	devServerFlags.StringVar(&agentOpts.HostPort, "host-port", "8001", "Port nginx")
 	devServerFlags.StringVar(&agentOpts.DomainSuffix, "domaine-suffix", "localhost:8001", "Domain suffix to append")
 	devServerFlags.BoolVar(&serverOpts.WithPprof, "with-pprof", true, "enable pprof endpoints")
+
 	return &ffcli.Command{
 		Name:      "server",
 		ShortHelp: "launch api, agent & nginx",
@@ -261,8 +262,6 @@ func computeScore() *ffcli.Command {
 	var (
 		devComputeFlags = flag.NewFlagSet("compute-score", flag.ExitOnError)
 	)
-
-	devComputeFlags.StringVar(&httpAPIAddr, "http-api-addr", defaultHTTPApiAddr, "HTTP API address")
 
 	return &ffcli.Command{
 		Name:      "compute-score",
