@@ -401,6 +401,15 @@ definitions:
       team_member:
         $ref: '#/definitions/dbTeamMember'
     type: object
+  apiAdminUpdateValidationsInput:
+    properties:
+      season_challenge:
+        items:
+          $ref: '#/definitions/dbSeasonChallenge'
+        type: array
+    type: object
+  apiAdminUpdateValidationsOutput:
+    type: object
   apiAgentListInstancesOutput:
     properties:
       instances:
@@ -2382,6 +2391,34 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiAdminTestingSeasonUserAddOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/update-validations:
+    post:
+      operationId: Service_AdminUpdateValidations
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminUpdateValidationsInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminUpdateValidationsOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}

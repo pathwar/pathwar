@@ -28,10 +28,10 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 
 	challengesMap := make(map[int64]*challengeValidation)
 	for _, activity := range activities {
-		if _, ok := challengesMap[activity.ChallengeID]; ok {
-			challengesMap[activity.ChallengeID].validations = append(challengesMap[activity.ChallengeID].validations, activity)
+		if _, ok := challengesMap[activity.SeasonChallengeID]; ok {
+			challengesMap[activity.SeasonChallengeID].validations = append(challengesMap[activity.SeasonChallengeID].validations, activity)
 		} else {
-			challengesMap[activity.ChallengeID] = &challengeValidation{[]*pwdb.Activity{activity}, 0}
+			challengesMap[activity.SeasonChallengeID] = &challengeValidation{[]*pwdb.Activity{activity}, 0}
 		}
 	}
 
@@ -45,9 +45,9 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 	for _, activity := range activities {
 		if _, ok := teamsMap[activity.TeamID]; !ok {
 			teamsMap[activity.TeamID] = activity.Team
-			teamsMap[activity.TeamID].Score = challengesMap[activity.ChallengeID].score
+			teamsMap[activity.TeamID].Score = challengesMap[activity.SeasonChallengeID].score
 		} else {
-			teamsMap[activity.TeamID].Score += challengesMap[activity.ChallengeID].score
+			teamsMap[activity.TeamID].Score += challengesMap[activity.SeasonChallengeID].score
 		}
 	}
 
