@@ -24,5 +24,5 @@ func (svc *service) AdminUpdateValidations(ctx context.Context, in *AdminUpdateV
 		}
 	}
 
-	return nil, nil
+	return &AdminUpdateValidations_Output{}, nil
 }
