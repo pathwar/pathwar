@@ -182,7 +182,7 @@ func (c HTTPClient) AdminUpdateValidations(ctx context.Context, input *AdminUpda
 func (c HTTPClient) AdminListSeasonChallenges(ctx context.Context, input *AdminListSeasonChallenges_Input) (AdminListSeasonChallenges_Output, error) {
 	var _ *AdminListSeasonChallenges_Input = input
 	var result AdminListSeasonChallenges_Output
-	err := c.doPost(ctx, "/admin/update-validations", input, &result)
+	err := c.doPost(ctx, "/admin/list-season-challenges", input, &result)
 	return result, err
 }
 
