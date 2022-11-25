@@ -50,11 +50,16 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 		}
 	}
 
+	seasonChallenges := []*pwdb.SeasonChallenge{}
+	for _, seasonChallenge := range challengesMap {
+		seasonChallenges = append(seasonChallenges, seasonChallenge.seasonChallenge)
+	}
+	_, err = apiClient.AdminUpdateValidations(ctx, &pwapi.AdminUpdateValidations_Input{SeasonChallenge: seasonChallenges})
+
 	teams := []*pwdb.Team{}
 	for _, team := range teamsMap {
 		teams = append(teams, team)
 	}
-
 	_, err = apiClient.AdminSetTeams(ctx, &pwapi.AdminSetTeams_Input{Teams: teams})
 	if err != nil {
 		return err
