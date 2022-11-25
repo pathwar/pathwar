@@ -249,9 +249,10 @@ definitions:
     type: object
   apiAdminListSeasonChallengesInput:
     properties:
-      season_challenge:
+      id:
         items:
-          $ref: '#/definitions/dbSeasonChallenge'
+          format: int64
+          type: string
         type: array
     type: object
   apiAdminListSeasonChallengesOutput:
