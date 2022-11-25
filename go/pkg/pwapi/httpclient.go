@@ -172,6 +172,13 @@ func (c HTTPClient) AdminSetTeams(ctx context.Context, input *AdminSetTeams_Inpu
 	return result, err
 }
 
+func (c HTTPClient) AdminUpdateValidations(ctx context.Context, input *AdminUpdateValidations_Input) (AdminUpdateValidations_Output, error) {
+	var _ *AdminUpdateValidations_Input = input
+	var result AdminUpdateValidations_Output
+	err := c.doPost(ctx, "/admin/update-validations", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) AdminTestingSeasonUserAdd(ctx context.Context, input *AdminTestingSeasonUserAdd_Input) (AdminTestingSeasonUserAdd_Output, error) {
 	var _ *AdminTestingSeasonUserAdd_Input = input
 	var result AdminTestingSeasonUserAdd_Output
