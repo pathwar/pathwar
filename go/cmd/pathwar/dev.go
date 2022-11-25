@@ -187,6 +187,7 @@ func challengeRunCommand() *ffcli.Command {
 			if err = yaml.Unmarshal([]byte(preparedComposeData), &config); err != nil {
 				return errcode.TODO.Wrap(err)
 			}
+			config.Pathwar.Flavor.ComposeBundle = preparedComposeData
 
 			slug := config.Pathwar.Challenge.Slug
 			if slug == "" {
