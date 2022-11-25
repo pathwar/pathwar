@@ -303,7 +303,7 @@ message AdminSetTeams {
 
 message AdminListSeasonChallenges {
   message Input {
-    repeated pathwar.db.SeasonChallenge season_challenge = 1;
+    repeated int64 id = 1;
   }
   message Output {
     repeated pathwar.db.SeasonChallenge season_challenge = 1;

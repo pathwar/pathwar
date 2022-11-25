@@ -17,10 +17,10 @@ func (svc *service) AdminListSeasonChallenges(ctx context.Context, in *AdminList
 	}
 
 	var seasonChallenges []*pwdb.SeasonChallenge
-	if in.SeasonChallenge == nil {
+	if len(in.Id) == 0 {
 		svc.db.Find(&seasonChallenges)
 	} else {
-		svc.db.Find(&seasonChallenges, in.SeasonChallenge)
+		svc.db.Find(&seasonChallenges, in.Id)
 	}
 
 	return &AdminListSeasonChallenges_Output{SeasonChallenge: seasonChallenges}, nil
