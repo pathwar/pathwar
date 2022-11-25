@@ -9,8 +9,8 @@ import (
 )
 
 type challengeValidation struct {
-	validations []*pwdb.Activity
-	score       int64
+	seasonChallenge *pwdb.SeasonChallenge
+	score           int64
 }
 
 func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.Time) error {
@@ -29,16 +29,15 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 	challengesMap := make(map[int64]*challengeValidation)
 	for _, activity := range activities {
 		if _, ok := challengesMap[activity.SeasonChallengeID]; ok {
-			challengesMap[activity.SeasonChallengeID].validations = append(challengesMap[activity.SeasonChallengeID].validations, activity)
+			challengesMap[activity.SeasonChallengeID].seasonChallenge.NbValidations += 1
 		} else {
-			challengesMap[activity.SeasonChallengeID] = &challengeValidation{[]*pwdb.Activity{activity}, 0}
+			challengesMap[activity.SeasonChallengeID] = &challengeValidation{&pwdb.SeasonChallenge{ID: activity.SeasonChallengeID, NbValidations: 1}, 0}
 		}
 	}
 
 	// TODO: Apply a better function: compute score : 1 / (x/10 + 1) * 95 + 5
 	for _, challenge := range challengesMap {
-		nbValidations := len(challenge.validations)
-		challenge.score = int64(1/(nbValidations/10+1)*95 + 5)
+		challenge.score = 1/(challenge.seasonChallenge.NbValidations/10+1)*95 + 5
 	}
 
 	teamsMap := make(map[int64]*pwdb.Team)
