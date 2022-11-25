@@ -130,7 +130,10 @@ func serverCommand() *ffcli.Command {
 					}
 					for {
 						time.Sleep(10 * time.Second)
-						_ = pwes.Compute(ctx, apiClient, &timestamp)
+						err = pwes.Compute(ctx, apiClient, &timestamp)
+						if err != nil {
+							return err
+						}
 					}
 				}, func(error) {
 					_, cancel := context.WithTimeout(ctx, 5)

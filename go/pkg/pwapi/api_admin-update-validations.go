@@ -17,8 +17,9 @@ func (svc *service) AdminUpdateValidations(ctx context.Context, in *AdminUpdateV
 		return nil, errcode.ErrMissingInput
 	}
 
+	// I need Where 1=1 bc of that : https://gorm.io/docs/update.html#block_global_updates
 	for _, challenge := range in.SeasonChallenge {
-		err := svc.db.Model(&pwdb.SeasonChallenge{}).Update("nb_validations", challenge.NbValidations).Error
+		err := svc.db.Model(&pwdb.SeasonChallenge{}).Where("1 = 1").Update("nb_validations", challenge.NbValidations).Error
 		if err != nil {
 			return nil, err
 		}

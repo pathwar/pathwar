@@ -27,12 +27,23 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 	*timestamp = *activities[len(activities)-1].CreatedAt
 
 	challengesMap := make(map[int64]*challengeValidation)
+	var seasonChallengesID []int64
 	for _, activity := range activities {
 		if _, ok := challengesMap[activity.SeasonChallengeID]; ok {
 			challengesMap[activity.SeasonChallengeID].seasonChallenge.NbValidations++
 		} else {
 			challengesMap[activity.SeasonChallengeID] = &challengeValidation{&pwdb.SeasonChallenge{ID: activity.SeasonChallengeID, NbValidations: 1}, 0}
+			seasonChallengesID = append(seasonChallengesID, activity.SeasonChallengeID)
 		}
+	}
+	listSeasonChallenges, err := apiClient.AdminListSeasonChallenges(ctx, &pwapi.AdminListSeasonChallenges_Input{Id: seasonChallengesID})
+	if err != nil {
+		return err
+	}
+	seasonChallenges := listSeasonChallenges.GetSeasonChallenge()
+	for _, seasonChallenge := range seasonChallenges {
+		seasonChallenge.NbValidations += challengesMap[seasonChallenge.ID].seasonChallenge.NbValidations
+		challengesMap[seasonChallenge.ID].seasonChallenge.NbValidations = seasonChallenge.NbValidations
 	}
 
 	// TODO: Apply a better function: compute score : 1 / (x/10 + 1) * 95 + 5
@@ -50,10 +61,6 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 		}
 	}
 
-	seasonChallenges := []*pwdb.SeasonChallenge{}
-	for _, seasonChallenge := range challengesMap {
-		seasonChallenges = append(seasonChallenges, seasonChallenge.seasonChallenge)
-	}
 	_, err = apiClient.AdminUpdateValidations(ctx, &pwapi.AdminUpdateValidations_Input{SeasonChallenge: seasonChallenges})
 	if err != nil {
 		return err
