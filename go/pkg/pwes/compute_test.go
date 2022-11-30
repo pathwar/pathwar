@@ -2,9 +2,10 @@ package pwes
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
-	"testing"
 )
 
 func TestCompute(t *testing.T) {
