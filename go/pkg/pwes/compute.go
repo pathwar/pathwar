@@ -2,8 +2,9 @@ package pwes
 
 import (
 	"context"
-	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"time"
+
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
 
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -25,8 +26,6 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 		return nil
 	}
 
-	*timestamp = *activities[len(activities)-1].CreatedAt
-
 	challengesMap := make(map[int64]*challengeValidation)
 	var seasonChallengesID []int64
 	for _, activity := range activities {
@@ -37,14 +36,21 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 			seasonChallengesID = append(seasonChallengesID, activity.SeasonChallengeID)
 		}
 	}
+
 	listSeasonChallenges, err := apiClient.AdminListSeasonChallenges(ctx, &pwapi.AdminListSeasonChallenges_Input{Id: seasonChallengesID})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
 	seasonChallenges := listSeasonChallenges.GetSeasonChallenge()
-	for _, seasonChallenge := range seasonChallenges {
-		seasonChallenge.NbValidations += challengesMap[seasonChallenge.ID].seasonChallenge.NbValidations
-		challengesMap[seasonChallenge.ID].seasonChallenge.NbValidations = seasonChallenge.NbValidations
+	if timestamp.After(time.Date(2012, time.December, 12, 12, 12, 12, 0, time.UTC)) {
+		for _, seasonChallenge := range seasonChallenges {
+			seasonChallenge.NbValidations += challengesMap[seasonChallenge.ID].seasonChallenge.NbValidations
+			challengesMap[seasonChallenge.ID].seasonChallenge.NbValidations = seasonChallenge.NbValidations
+		}
+	} else {
+		for _, seasonChallenge := range seasonChallenges {
+			seasonChallenge.NbValidations = challengesMap[seasonChallenge.ID].seasonChallenge.NbValidations
+		}
 	}
 
 	// TODO: Apply a better function: compute score : 1 / (x/10 + 1) * 95 + 5
@@ -76,5 +82,6 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 		return errcode.TODO.Wrap(err)
 	}
 
+	*timestamp = *activities[len(activities)-1].CreatedAt
 	return nil
 }

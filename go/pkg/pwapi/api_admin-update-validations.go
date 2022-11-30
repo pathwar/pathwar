@@ -2,7 +2,6 @@ package pwapi
 
 import (
 	"context"
-	"fmt"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
@@ -17,7 +16,6 @@ func (svc *service) AdminUpdateValidations(ctx context.Context, in *AdminUpdateV
 	}
 
 	for _, challenge := range in.SeasonChallenge {
-		fmt.Println("---- ", challenge.ID)
 		err := svc.db.Model(challenge).Update("NbValidations", challenge.NbValidations).Error
 		if err != nil {
 			return nil, err
