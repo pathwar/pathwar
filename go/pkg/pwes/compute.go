@@ -2,6 +2,7 @@ package pwes
 
 import (
 	"context"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"time"
 
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
@@ -16,7 +17,7 @@ type challengeValidation struct {
 func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.Time) error {
 	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: timestamp, FilteringPreset: "validations"})
 	if err != nil {
-		return err
+		return errcode.TODO.Wrap(err)
 	}
 
 	activities := res.GetActivities()
@@ -38,7 +39,7 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 	}
 	listSeasonChallenges, err := apiClient.AdminListSeasonChallenges(ctx, &pwapi.AdminListSeasonChallenges_Input{Id: seasonChallengesID})
 	if err != nil {
-		return err
+		return errcode.TODO.Wrap(err)
 	}
 	seasonChallenges := listSeasonChallenges.GetSeasonChallenge()
 	for _, seasonChallenge := range seasonChallenges {
@@ -63,7 +64,7 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 
 	_, err = apiClient.AdminUpdateValidations(ctx, &pwapi.AdminUpdateValidations_Input{SeasonChallenge: seasonChallenges})
 	if err != nil {
-		return err
+		return errcode.TODO.Wrap(err)
 	}
 
 	teams := []*pwdb.Team{}
@@ -72,7 +73,7 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 	}
 	_, err = apiClient.AdminSetTeams(ctx, &pwapi.AdminSetTeams_Input{Teams: teams})
 	if err != nil {
-		return err
+		return errcode.TODO.Wrap(err)
 	}
 
 	return nil
