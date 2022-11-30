@@ -16,6 +16,10 @@ type challengeValidation struct {
 }
 
 func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.Time) error {
+	if apiClient == nil || timestamp == nil {
+		return errcode.ErrMissingInput
+	}
+
 	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: timestamp, FilteringPreset: "validations"})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
