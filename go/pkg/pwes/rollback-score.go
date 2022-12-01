@@ -2,7 +2,6 @@ package pwes
 
 import (
 	"context"
-	"time"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 
@@ -15,12 +14,12 @@ type challengeValidation struct {
 	score           int64
 }
 
-func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.Time) error {
-	if apiClient == nil || timestamp == nil {
+func RollbackScore(ctx context.Context, apiClient *pwapi.HTTPClient) error {
+	if apiClient == nil {
 		return errcode.ErrMissingInput
 	}
 
-	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: timestamp, FilteringPreset: "validations"})
+	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{FilteringPreset: "validations"})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
@@ -46,15 +45,8 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 		return errcode.TODO.Wrap(err)
 	}
 	seasonChallenges := listSeasonChallenges.GetSeasonChallenge()
-	if timestamp.After(time.Date(2012, time.December, 12, 12, 12, 12, 0, time.UTC)) {
-		for _, seasonChallenge := range seasonChallenges {
-			seasonChallenge.NbValidations += challengesMap[seasonChallenge.ID].seasonChallenge.NbValidations
-			challengesMap[seasonChallenge.ID].seasonChallenge.NbValidations = seasonChallenge.NbValidations
-		}
-	} else {
-		for _, seasonChallenge := range seasonChallenges {
-			seasonChallenge.NbValidations = challengesMap[seasonChallenge.ID].seasonChallenge.NbValidations
-		}
+	for _, seasonChallenge := range seasonChallenges {
+		seasonChallenge.NbValidations = challengesMap[seasonChallenge.ID].seasonChallenge.NbValidations
 	}
 
 	// TODO: Apply a better function: compute score : 1 / (x/10 + 1) * 95 + 5
@@ -86,6 +78,5 @@ func Compute(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.T
 		return errcode.TODO.Wrap(err)
 	}
 
-	*timestamp = *activities[len(activities)-1].CreatedAt
 	return nil
 }

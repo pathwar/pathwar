@@ -40,7 +40,7 @@ func devCommand() *ffcli.Command {
 			serverCommand(),
 			challengeRunCommand(),
 			challengeDeployCommand(),
-			computeScore(),
+			rollbackScore(),
 		},
 	}
 }
@@ -124,13 +124,12 @@ func serverCommand() *ffcli.Command {
 				})
 
 				server.Workers.Add(func() error {
-					timestamp, err := time.Parse("2006-01-02", "1212-12-12")
 					if err != nil {
 						return err
 					}
 					for {
 						time.Sleep(10 * time.Second)
-						err = pwes.Compute(ctx, apiClient, &timestamp)
+						err = pwes.RollbackScore(ctx, apiClient)
 						if err != nil {
 							return err
 						}
@@ -262,13 +261,13 @@ func challengeDeployCommand() *ffcli.Command {
 }
 
 // TODO: Return error adapted
-func computeScore() *ffcli.Command {
+func rollbackScore() *ffcli.Command {
 	var (
 		devComputeFlags = flag.NewFlagSet("compute-score", flag.ExitOnError)
 	)
 
 	return &ffcli.Command{
-		Name:      "compute-score",
+		Name:      "rollback-score",
 		ShortHelp: "Compute the score thanks to retrieving all events",
 		FlagSet:   devComputeFlags,
 		Exec: func(ctx context.Context, args []string) error {
@@ -284,12 +283,11 @@ func computeScore() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
-			timestamp, err := time.Parse("2006-01-02", "1212-12-12")
 			if err != nil {
 				return err
 			}
 
-			err = pwes.Compute(ctx, apiClient, &timestamp)
+			err = pwes.RollbackScore(ctx, apiClient)
 			if err != nil {
 				return err
 			}
