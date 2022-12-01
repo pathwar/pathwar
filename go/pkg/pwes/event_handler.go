@@ -34,6 +34,9 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 			e = &EventChallengeSubscriptionValidate{ID: activity.ID, CreatedAt: activity.CreatedAt, SeasonChallenge: activity.SeasonChallenge}
 		case pwdb.Activity_Unknown:
 			logger.Debug("The event : " + strconv.Itoa(int(e.getID())) + " is unknown kind.")
+			continue
+		default:
+			continue
 		}
 
 		err = e.execute()
