@@ -124,12 +124,13 @@ func serverCommand() *ffcli.Command {
 				})
 
 				server.Workers.Add(func() error {
+					timestamp, err := time.Parse("2006-01-02", "1212-12-12")
 					if err != nil {
 						return err
 					}
 					for {
 						time.Sleep(10 * time.Second)
-						err = pwes.RollbackScore(ctx, apiClient)
+						err = pwes.EventHandler(ctx, apiClient, &timestamp, logger)
 						if err != nil {
 							return err
 						}
