@@ -8,7 +8,7 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
-func (svc *service) AdminSetTeams(ctx context.Context, in *AdminSetTeams_Input) (*AdminSetTeams_Output, error) {
+func (svc *service) AdminUpdateTeamsMetadata(ctx context.Context, in *AdminUpdateTeamsMetadata_Input) (*AdminUpdateTeamsMetadata_Output, error) {
 	if !isAdminContext(ctx) {
 		return nil, errcode.ErrRestrictedArea
 	}
@@ -24,5 +24,5 @@ func (svc *service) AdminSetTeams(ctx context.Context, in *AdminSetTeams_Input) 
 		}
 	}
 
-	return &AdminSetTeams_Output{}, nil
+	return &AdminUpdateTeamsMetadata_Output{}, nil
 }

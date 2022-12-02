@@ -73,7 +73,7 @@ func RollbackScore(ctx context.Context, apiClient *pwapi.HTTPClient) error {
 	for _, team := range teamsMap {
 		teams = append(teams, team)
 	}
-	_, err = apiClient.AdminSetTeams(ctx, &pwapi.AdminSetTeams_Input{Teams: teams})
+	_, err = apiClient.AdminUpdateTeamsMetadata(ctx, &pwapi.AdminUpdateTeamsMetadata_Input{Teams: teams})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}

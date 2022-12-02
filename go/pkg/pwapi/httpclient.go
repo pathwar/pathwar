@@ -165,10 +165,10 @@ func (c HTTPClient) AdminAddSeason(ctx context.Context, input *AdminSeasonAdd_In
 	return result, err
 }
 
-func (c HTTPClient) AdminSetTeams(ctx context.Context, input *AdminSetTeams_Input) (AdminSetTeams_Output, error) {
-	var _ *AdminSetTeams_Input = input
-	var result AdminSetTeams_Output
-	err := c.doPost(ctx, "/admin/set-teams", input, &result)
+func (c HTTPClient) AdminUpdateTeamsMetadata(ctx context.Context, input *AdminUpdateTeamsMetadata_Input) (AdminUpdateTeamsMetadata_Output, error) {
+	var _ *AdminUpdateTeamsMetadata_Input = input
+	var result AdminUpdateTeamsMetadata_Output
+	err := c.doPost(ctx, "/admin/update-teams-metadata", input, &result)
 	return result, err
 }
 
