@@ -286,7 +286,7 @@ func esRebuild() *ffcli.Command {
 				return err
 			}
 
-			err = pwes.Rebuild(ctx, apiClient)
+			err = pwes.Rebuild(ctx, apiClient, esOpts)
 			if err != nil {
 				return err
 			}

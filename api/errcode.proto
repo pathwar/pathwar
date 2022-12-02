@@ -167,7 +167,7 @@ enum ErrCode {
   ErrSeasonNameAlreadyExist = 4090;
   ErrNoAvailableChallengeInstance = 4091;
   ErrDeleteUserAccountTransactionCommit = 4092;
- 
+
   //// Pathwar Server (starting at 5001)
 
   ErrServerListen = 5001;
@@ -244,5 +244,8 @@ enum ErrCode {
 
   ErrExecuteOnInitHook = 9001;
   ErrRemoveInitConfig = 9002;
+
+  //// Pathwar event sourcing (starting at 10,000)
+  ErrNothingToRebuild = 10001;
 
 }
