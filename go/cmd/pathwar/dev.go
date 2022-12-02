@@ -260,14 +260,15 @@ func challengeDeployCommand() *ffcli.Command {
 
 // TODO: Return error adapted
 func esRebuild() *ffcli.Command {
-	var (
-		devComputeFlags = flag.NewFlagSet("compute-score", flag.ExitOnError)
-	)
+	devRebuildFlags := flag.NewFlagSet("es-rebuild", flag.ExitOnError)
+	devRebuildFlags.BoolVar(&esOpts.WithoutScore, "without-score", esOpts.WithoutScore, "rebuild without score")
+	devRebuildFlags.StringVar(&esOpts.From, "from", esOpts.From, "rebuild from, format: DD-MM-YYYY")
+	devRebuildFlags.StringVar(&esOpts.To, "to", esOpts.To, "rebuild to, format: DD-MM-YYYY")
 
 	return &ffcli.Command{
 		Name:      "es-rebuild",
 		ShortHelp: "Rebuild current state from all events",
-		FlagSet:   devComputeFlags,
+		FlagSet:   devRebuildFlags,
 		Exec: func(ctx context.Context, args []string) error {
 			fmt.Println(motd.Default())
 			fmt.Println(banner.Inline("es rebuild"))

@@ -11,6 +11,8 @@ import (
 	"path/filepath"
 	"time"
 
+	"pathwar.land/pathwar/v2/go/pkg/pwes"
+
 	"github.com/Bearer/bearer-go"
 	"github.com/adrg/xdg"
 	"github.com/getsentry/sentry-go"
@@ -46,6 +48,7 @@ var (
 	agentOpts  = pwagent.NewOpts()
 	serverOpts = pwapi.NewServerOpts()
 	ssoOpts    = pwsso.NewOpts()
+	esOpts     = pwes.NewOpts()
 
 	DBURN           string
 	DBMaxOpenTries  int

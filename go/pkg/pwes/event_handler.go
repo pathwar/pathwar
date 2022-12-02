@@ -48,3 +48,20 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 
 	return nil
 }
+
+// NewOpts returns sane default values for development
+func NewOpts() Opts {
+	return Opts{
+		WithoutScore: false,
+		From:         "",
+		To:           "",
+		Logger:       zap.NewNop(),
+	}
+}
+
+type Opts struct {
+	WithoutScore bool
+	From         string
+	To           string
+	Logger       *zap.Logger
+}
