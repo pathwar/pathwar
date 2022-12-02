@@ -40,7 +40,7 @@ func devCommand() *ffcli.Command {
 			serverCommand(),
 			challengeRunCommand(),
 			challengeDeployCommand(),
-			rollbackScore(),
+			esRebuild(),
 		},
 	}
 }
@@ -259,18 +259,18 @@ func challengeDeployCommand() *ffcli.Command {
 }
 
 // TODO: Return error adapted
-func rollbackScore() *ffcli.Command {
+func esRebuild() *ffcli.Command {
 	var (
 		devComputeFlags = flag.NewFlagSet("compute-score", flag.ExitOnError)
 	)
 
 	return &ffcli.Command{
-		Name:      "rollback-score",
-		ShortHelp: "Compute the score thanks to retrieving all events",
+		Name:      "es-rebuild",
+		ShortHelp: "Rebuild current state from all events",
 		FlagSet:   devComputeFlags,
 		Exec: func(ctx context.Context, args []string) error {
 			fmt.Println(motd.Default())
-			fmt.Println(banner.Inline("compute score"))
+			fmt.Println(banner.Inline("es rebuild"))
 
 			if err := globalPreRun(); err != nil {
 				return err
@@ -285,7 +285,7 @@ func rollbackScore() *ffcli.Command {
 				return err
 			}
 
-			err = pwes.RollbackScore(ctx, apiClient)
+			err = pwes.Rebuild(ctx, apiClient)
 			if err != nil {
 				return err
 			}

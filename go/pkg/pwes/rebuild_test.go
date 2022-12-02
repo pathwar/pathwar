@@ -8,7 +8,7 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
-func TestCompute(t *testing.T) {
+func TestRebuild(t *testing.T) {
 
 	tests := []struct {
 		name          string
@@ -20,7 +20,7 @@ func TestCompute(t *testing.T) {
 	var ctx context.Context
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			err := RollbackScore(ctx, nil)
+			err := Rebuild(ctx, nil)
 			assert.Equal(t, test.expectedErr, err, test.name)
 		})
 	}

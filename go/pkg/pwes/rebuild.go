@@ -14,7 +14,7 @@ type challengeValidation struct {
 	score           int64
 }
 
-func RollbackScore(ctx context.Context, apiClient *pwapi.HTTPClient) error {
+func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient) error {
 	if apiClient == nil {
 		return errcode.ErrMissingInput
 	}
