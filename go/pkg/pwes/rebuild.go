@@ -2,6 +2,7 @@ package pwes
 
 import (
 	"context"
+	"time"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 
@@ -23,14 +24,15 @@ func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error 
 		return errcode.ErrNothingToRebuild
 	}
 
-	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{FilteringPreset: "validations"})
+	from, _ := time.Parse("02-01-2006", opts.From)
+	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: &from, FilteringPreset: "validations"})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
 
 	activities := res.GetActivities()
 	if len(activities) == 0 {
-		return nil
+		return errcode.ErrNothingToRebuild
 	}
 
 	challengesMap := make(map[int64]*challengeValidation)
