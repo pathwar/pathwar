@@ -19,6 +19,10 @@ func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error 
 		return errcode.ErrMissingInput
 	}
 
+	if opts.WithoutScore {
+		return errcode.ErrNothingToRebuild
+	}
+
 	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{FilteringPreset: "validations"})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
