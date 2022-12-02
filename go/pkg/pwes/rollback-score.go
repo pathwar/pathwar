@@ -64,7 +64,7 @@ func RollbackScore(ctx context.Context, apiClient *pwapi.HTTPClient) error {
 		}
 	}
 
-	_, err = apiClient.AdminUpdateValidations(ctx, &pwapi.AdminUpdateValidations_Input{SeasonChallenge: seasonChallenges})
+	_, err = apiClient.AdminUpdateSeasonChallengesMetadata(ctx, &pwapi.AdminUpdateSeasonChallengesMetadata_Input{SeasonChallenge: seasonChallenges})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}

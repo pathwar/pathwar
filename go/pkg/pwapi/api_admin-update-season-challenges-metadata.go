@@ -6,7 +6,7 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
-func (svc *service) AdminUpdateValidations(ctx context.Context, in *AdminUpdateValidations_Input) (*AdminUpdateValidations_Output, error) {
+func (svc *service) AdminUpdateSeasonChallengesMetadata(ctx context.Context, in *AdminUpdateSeasonChallengesMetadata_Input) (*AdminUpdateSeasonChallengesMetadata_Output, error) {
 	if !isAdminContext(ctx) {
 		return nil, errcode.ErrRestrictedArea
 	}
@@ -22,5 +22,5 @@ func (svc *service) AdminUpdateValidations(ctx context.Context, in *AdminUpdateV
 		}
 	}
 
-	return &AdminUpdateValidations_Output{}, nil
+	return &AdminUpdateSeasonChallengesMetadata_Output{}, nil
 }

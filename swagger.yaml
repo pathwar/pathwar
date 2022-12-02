@@ -397,15 +397,6 @@ definitions:
       season_challenge:
         $ref: '#/definitions/dbSeasonChallenge'
     type: object
-  apiAdminSetTeamsInput:
-    properties:
-      teams:
-        items:
-          $ref: '#/definitions/dbTeam'
-        type: array
-    type: object
-  apiAdminSetTeamsOutput:
-    type: object
   apiAdminTestingSeasonUserAddInput:
     properties:
       user_id:
@@ -416,14 +407,23 @@ definitions:
       team_member:
         $ref: '#/definitions/dbTeamMember'
     type: object
-  apiAdminUpdateValidationsInput:
+  apiAdminUpdateSeasonChallengesMetadataInput:
     properties:
       season_challenge:
         items:
           $ref: '#/definitions/dbSeasonChallenge'
         type: array
     type: object
-  apiAdminUpdateValidationsOutput:
+  apiAdminUpdateSeasonChallengesMetadataOutput:
+    type: object
+  apiAdminUpdateTeamsMetadataInput:
+    properties:
+      teams:
+        items:
+          $ref: '#/definitions/dbTeam'
+        type: array
+    type: object
+  apiAdminUpdateTeamsMetadataOutput:
     type: object
   apiAgentListInstancesOutput:
     properties:
@@ -2392,34 +2392,6 @@ paths:
             $ref: '#/definitions/runtimeError'
       tags:
       - Service
-  /admin/set-teams:
-    post:
-      operationId: Service_AdminSetTeams
-      parameters:
-      - in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/apiAdminSetTeamsInput'
-      responses:
-        "200":
-          description: A successful response.
-          schema:
-            $ref: '#/definitions/apiAdminSetTeamsOutput'
-        "403":
-          description: Returned when the user does not have permission to access the resource.
-          schema: {}
-        "404":
-          description: Returned when the resource does not exist.
-          schema:
-            format: string
-            type: string
-        default:
-          description: An unexpected error response
-          schema:
-            $ref: '#/definitions/runtimeError'
-      tags:
-      - Service
   /admin/testing-season-user-add:
     post:
       operationId: Service_AdminTestingSeasonUserAdd
@@ -2448,20 +2420,48 @@ paths:
             $ref: '#/definitions/runtimeError'
       tags:
       - Service
-  /admin/update-validations:
+  /admin/update-season-challenges-metadata:
     post:
-      operationId: Service_AdminUpdateValidations
+      operationId: Service_AdminUpdateSeasonChallengesMetadata
       parameters:
       - in: body
         name: body
         required: true
         schema:
-          $ref: '#/definitions/apiAdminUpdateValidationsInput'
+          $ref: '#/definitions/apiAdminUpdateSeasonChallengesMetadataInput'
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/apiAdminUpdateValidationsOutput'
+            $ref: '#/definitions/apiAdminUpdateSeasonChallengesMetadataOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/update-teams-metadata:
+    post:
+      operationId: Service_AdminUpdateTeamsMetadata
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiAdminUpdateTeamsMetadataInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminUpdateTeamsMetadataOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}

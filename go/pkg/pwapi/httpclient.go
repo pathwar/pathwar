@@ -172,10 +172,10 @@ func (c HTTPClient) AdminUpdateTeamsMetadata(ctx context.Context, input *AdminUp
 	return result, err
 }
 
-func (c HTTPClient) AdminUpdateValidations(ctx context.Context, input *AdminUpdateValidations_Input) (AdminUpdateValidations_Output, error) {
-	var _ *AdminUpdateValidations_Input = input
-	var result AdminUpdateValidations_Output
-	err := c.doPost(ctx, "/admin/update-validations", input, &result)
+func (c HTTPClient) AdminUpdateSeasonChallengesMetadata(ctx context.Context, input *AdminUpdateSeasonChallengesMetadata_Input) (AdminUpdateSeasonChallengesMetadata_Output, error) {
+	var _ *AdminUpdateSeasonChallengesMetadata_Input = input
+	var result AdminUpdateSeasonChallengesMetadata_Output
+	err := c.doPost(ctx, "/admin/update-season-challenges-metadata", input, &result)
 	return result, err
 }
 
