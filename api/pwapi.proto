@@ -104,7 +104,7 @@ service Service {
   rpc AdminSeasonAdd(AdminSeasonAdd.Input) returns (AdminSeasonAdd.Output) { option (google.api.http) = {post: "/admin/season-add"; body: "*"}; }; // admin only
   rpc AdminUpdateTeamsMetadata(AdminUpdateTeamsMetadata.Input) returns (AdminUpdateTeamsMetadata.Output) { option (google.api.http) = {post: "/admin/update-teams-metadata"; body: "*"}; }; // admin only
   rpc AdminListSeasonChallenges(AdminListSeasonChallenges.Input) returns (AdminListSeasonChallenges.Output) { option (google.api.http) = {post: "/admin/list-season-challenges"; body: "*"}; }; // admin only
-  rpc AdminUpdateValidations(AdminUpdateValidations.Input) returns (AdminUpdateValidations.Output) { option (google.api.http) = {post: "/admin/update-validations"; body: "*"}; }; // admin only
+  rpc AdminUpdateSeasonChallengesMetadata(AdminUpdateSeasonChallengesMetadata.Input) returns (AdminUpdateSeasonChallengesMetadata.Output) { option (google.api.http) = {post: "/admin/update-season-challenges-metadata"; body: "*"}; }; // admin only
   rpc AdminTestingSeasonUserAdd(AdminTestingSeasonUserAdd.Input) returns (AdminTestingSeasonUserAdd.Output) { option (google.api.http) = {post: "/admin/testing-season-user-add"; body: "*"}; }; // admin only
 }
 
@@ -310,7 +310,7 @@ message AdminListSeasonChallenges {
   }
 }
 
-message AdminUpdateValidations {
+message AdminUpdateSeasonChallengesMetadata {
   message Input {
     repeated pathwar.db.SeasonChallenge season_challenge = 1;
   }
