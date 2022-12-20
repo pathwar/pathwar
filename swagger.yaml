@@ -117,6 +117,9 @@ definitions:
       since:
         format: date-time
         type: string
+      to:
+        format: date-time
+        type: string
     type: object
   apiAdminListActivitiesOutput:
     properties:

@@ -240,6 +240,7 @@ message AdminListActivities {
     int64 limit = 1;
     google.protobuf.Timestamp since = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
     string filtering_preset = 3;
+    google.protobuf.Timestamp to = 4 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
   }
   message Output {
     repeated pathwar.db.Activity activities = 1;
