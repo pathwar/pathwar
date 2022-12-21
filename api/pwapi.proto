@@ -314,7 +314,7 @@ message AdminListSeasonChallenges {
 
 message AdminUpdateSeasonChallengesMetadata {
   message Input {
-    repeated pathwar.db.SeasonChallenge season_challenge = 1;
+    repeated pathwar.db.SeasonChallenge season_challenges = 1;
   }
   message Output {}
 }

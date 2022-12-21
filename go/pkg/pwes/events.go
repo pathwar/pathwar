@@ -19,6 +19,7 @@ type EventChallengeSubscriptionValidate struct {
 	ID              int64
 	CreatedAt       *time.Time
 	SeasonChallenge *pwdb.SeasonChallenge
+	Team            *pwdb.Team
 }
 
 func (e EventChallengeSubscriptionValidate) getID() int64 {
