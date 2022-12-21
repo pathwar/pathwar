@@ -13,10 +13,13 @@ func (e EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClie
 		return errcode.ErrMissingInput
 	}
 	fmt.Println("Input : ", e.SeasonChallenge.ID)
-	challenge, err := apiClient.SeasonChallengeGet(ctx, &pwapi.SeasonChallengeGet_Input{SeasonChallengeID: e.SeasonChallenge.ID})
-	if err != nil || challenge.Item == nil {
+	res, err := apiClient.SeasonChallengeGet(ctx, &pwapi.SeasonChallengeGet_Input{SeasonChallengeID: e.SeasonChallenge.ID})
+	challenge := res.GetItem()
+	if err != nil || challenge == nil {
 		return errcode.TODO.Wrap(err)
 	}
-	fmt.Println("Item Slug : ", challenge.Item.Slug)
+
+	score := computeScore(challenge.NbValidations)
+	var _ = score
 	return nil
 }
