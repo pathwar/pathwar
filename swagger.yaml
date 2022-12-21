@@ -114,6 +114,8 @@ definitions:
       limit:
         format: int64
         type: string
+      season_challenge_id:
+        type: string
       since:
         format: date-time
         type: string
