@@ -58,7 +58,7 @@ func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error 
 
 	// TODO: Apply a better function: compute score : 1 / (x/10 + 1) * 95 + 5
 	for _, challenge := range challengesMap {
-		challenge.score = 1/(challenge.seasonChallenge.NbValidations/10+1)*95 + 5
+		challenge.score = computeScore(challenge.seasonChallenge.NbValidations)
 	}
 
 	teamsMap := make(map[int64]*pwdb.Team)
