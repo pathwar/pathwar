@@ -27,8 +27,8 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 	}
 
 	//TODO: Handle other events
+	var e Event
 	for _, activity := range activities {
-		var e Event
 		switch activity.Kind {
 		case pwdb.Activity_ChallengeSubscriptionValidate:
 			e = &EventChallengeSubscriptionValidate{ID: activity.ID, CreatedAt: activity.CreatedAt, SeasonChallenge: activity.SeasonChallenge}
@@ -49,7 +49,7 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 	return nil
 }
 
-// NewOpts returns sane default values for development
+// NewOpts returns same default values for development
 func NewOpts() Opts {
 	return Opts{
 		WithoutScore: false,
