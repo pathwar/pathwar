@@ -26,6 +26,16 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 		return nil
 	}
 
+	// Use rebuild to process all events to be up-to-date in an efficient way
+	if timestamp.IsZero() {
+		*timestamp = *activities[len(activities)-1].CreatedAt
+		err := Rebuild(ctx, apiClient, Opts{WithoutScore: false, From: "", To: timestamp.Format(TimeLayout), Logger: logger})
+		if err != nil && err != errcode.ErrNothingToRebuild {
+			return errcode.TODO.Wrap(err)
+		}
+		return nil
+	}
+
 	//TODO: Handle other events
 	var e Event
 	for _, activity := range activities {
