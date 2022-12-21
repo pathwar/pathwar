@@ -19,7 +19,10 @@ func (e EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClie
 		return errcode.TODO.Wrap(err)
 	}
 
-	score := computeScore(challenge.NbValidations)
-	var _ = score
+	oldScore := computeScore(challenge.NbValidations)
+	newScore := computeScore(challenge.NbValidations + 1)
+	if oldScore != newScore {
+		return nil
+	}
 	return nil
 }
