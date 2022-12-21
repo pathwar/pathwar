@@ -2128,6 +2128,15 @@ paths:
   /admin/list-challenge-subscriptions:
     get:
       operationId: Service_AdminListChallengeSubscriptions
+      parameters:
+      - in: query
+        name: filtering_preset
+        required: false
+        type: string
+      - in: query
+        name: season_challenge_id
+        required: false
+        type: string
       responses:
         "200":
           description: A successful response.

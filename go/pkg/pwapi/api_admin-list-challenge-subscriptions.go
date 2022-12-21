@@ -16,7 +16,7 @@ func (svc *service) AdminListChallengeSubscriptions(ctx context.Context, in *Adm
 	}
 
 	var challengeSubscriptions []*pwdb.ChallengeSubscription
-	err := svc.db.
+	req := svc.db.
 		Preload("Team").
 		Preload("Team.Organization").
 		Preload("Closer").
@@ -25,8 +25,21 @@ func (svc *service) AdminListChallengeSubscriptions(ctx context.Context, in *Adm
 		Preload("SeasonChallenge.Season").
 		Preload("SeasonChallenge.Flavor").
 		Preload("SeasonChallenge.Flavor.Challenge").
-		Preload("Buyer").
-		Find(&challengeSubscriptions).Error
+		Preload("Buyer")
+	if in.SeasonChallengeID != "" {
+		req = req.Where("season_challenge_id = ?", in.SeasonChallengeID)
+	}
+	switch in.FilteringPreset {
+	case "default", "":
+		// noop
+	case "closed":
+		req = req.Where(&pwdb.ChallengeSubscription{Status: pwdb.ChallengeSubscription_Closed})
+	case "open":
+		req = req.Where(&pwdb.ChallengeSubscription{Status: pwdb.ChallengeSubscription_Active})
+	default:
+		return nil, errcode.TODO
+	}
+	err := req.Find(&challengeSubscriptions).Error
 	if err != nil {
 		return nil, errcode.ErrListChallengeSubscriptions.Wrap(err)
 	}
