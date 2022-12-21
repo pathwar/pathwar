@@ -2,7 +2,6 @@ package pwes
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -16,7 +15,6 @@ func (e EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClie
 	if apiClient == nil {
 		return errcode.ErrMissingInput
 	}
-	fmt.Println("Input : ", e.SeasonChallenge.ID)
 	res, err := apiClient.SeasonChallengeGet(ctx, &pwapi.SeasonChallengeGet_Input{SeasonChallengeID: e.SeasonChallenge.ID})
 	challenge := res.GetItem()
 	if err != nil || challenge == nil {
