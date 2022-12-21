@@ -25,7 +25,8 @@ func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error 
 	}
 
 	from, _ := time.Parse("02-01-2006", opts.From)
-	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: &from, FilteringPreset: "validations"})
+	to, _ := time.Parse("02-01-2006", opts.To)
+	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: &from, FilteringPreset: "validations", To: &to})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
