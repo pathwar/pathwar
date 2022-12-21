@@ -193,6 +193,13 @@ func (c HTTPClient) AdminTestingSeasonUserAdd(ctx context.Context, input *AdminT
 	return result, err
 }
 
+func (c HTTPClient) SeasonChallengeGet(ctx context.Context, input *SeasonChallengeGet_Input) (SeasonChallengeGet_Output, error) {
+	var _ *SeasonChallengeGet_Input = input
+	var result SeasonChallengeGet_Output
+	err := c.doGet(ctx, "/season-challenge", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) GetStatus(ctx context.Context, input *GetStatus_Input) (GetStatus_Output, error) {
 	var _ *GetStatus_Input = input
 	var result GetStatus_Output
