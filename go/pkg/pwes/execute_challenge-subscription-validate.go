@@ -11,6 +11,7 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 )
 
+// TODO: Add a better way to get challenges validations, maybe a challenge could be closed without be validated
 func (e EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClient *pwapi.HTTPClient) error {
 	if apiClient == nil {
 		return errcode.ErrMissingInput
@@ -23,22 +24,25 @@ func (e EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClie
 	}
 
 	oldScore := computeScore(challenge.NbValidations)
-	newScore := computeScore(challenge.NbValidations + 1)
+	challenge.NbValidations++
+	newScore := computeScore(challenge.NbValidations)
+
 	teams := []*pwdb.Team{}
 	if oldScore != newScore {
-		res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{SeasonChallengeID: strconv.Itoa(int(e.SeasonChallenge.ID)), FilteringPreset: "validations"})
-		validations := res.GetActivities()
+		diffScore := oldScore - newScore
+		res, err := apiClient.AdminListChallengeSubscriptions(ctx, &pwapi.AdminListChallengeSubscriptions_Input{SeasonChallengeID: strconv.Itoa(int(e.SeasonChallenge.ID)), FilteringPreset: "closed"})
+		validations := res.GetSubscriptions()
 		if err != nil {
 			return errcode.TODO.Wrap(err)
 		}
 		for _, validation := range validations {
-			validation.Team.Score -= newScore - oldScore
+			validation.Team.Score -= diffScore
 			teams = append(teams, validation.Team)
 		}
-	} else {
-		e.Team.Score += newScore
-		teams = append(teams, e.Team)
 	}
+	e.Team.Score += newScore
+	teams = append(teams, e.Team)
+
 	_, err = apiClient.AdminUpdateSeasonChallengesMetadata(ctx, &pwapi.AdminUpdateSeasonChallengesMetadata_Input{SeasonChallenges: []*pwdb.SeasonChallenge{challenge}})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
