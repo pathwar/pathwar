@@ -32,9 +32,11 @@ func (e EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClie
 			return errcode.TODO.Wrap(err)
 		}
 		for _, validation := range validations {
+			validation.Team.Score -= newScore - oldScore
 			teams = append(teams, validation.Team)
 		}
 	} else {
+		e.Team.Score += newScore
 		teams = append(teams, e.Team)
 	}
 	_, err = apiClient.AdminUpdateSeasonChallengesMetadata(ctx, &pwapi.AdminUpdateSeasonChallengesMetadata_Input{SeasonChallenges: []*pwdb.SeasonChallenge{challenge}})
