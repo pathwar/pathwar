@@ -126,7 +126,7 @@ func serverCommand() *ffcli.Command {
 				server.Workers.Add(func() error {
 					var timestamp time.Time
 					for {
-						time.Sleep(10 * time.Second)
+						time.Sleep(2 * time.Second)
 						err = pwes.EventHandler(ctx, apiClient, &timestamp, logger)
 						if err != nil {
 							return err

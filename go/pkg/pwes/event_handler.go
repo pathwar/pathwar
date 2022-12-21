@@ -39,7 +39,7 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 			continue
 		}
 
-		err = e.execute(apiClient)
+		err = e.execute(ctx, apiClient)
 		if err != nil {
 			logger.Debug("The event : " + strconv.Itoa(int(e.getID())) + " failed to execute.")
 		}
