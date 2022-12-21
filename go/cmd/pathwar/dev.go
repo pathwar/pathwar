@@ -262,8 +262,8 @@ func challengeDeployCommand() *ffcli.Command {
 func esRebuild() *ffcli.Command {
 	devRebuildFlags := flag.NewFlagSet("es-rebuild", flag.ExitOnError)
 	devRebuildFlags.BoolVar(&esOpts.WithoutScore, "without-score", esOpts.WithoutScore, "rebuild without score")
-	devRebuildFlags.StringVar(&esOpts.From, "from", esOpts.From, "rebuild from, format: DD-MM-YYYY")
-	devRebuildFlags.StringVar(&esOpts.To, "to", esOpts.To, "rebuild to, format: DD-MM-YYYY")
+	devRebuildFlags.StringVar(&esOpts.From, "from", esOpts.From, "rebuild from, format: YYYY-MM-DD HH:MM:SS")
+	devRebuildFlags.StringVar(&esOpts.To, "to", esOpts.To, "rebuild to, format: YYYY-MM-DD HH:MM:SS")
 
 	return &ffcli.Command{
 		Name:      "es-rebuild",

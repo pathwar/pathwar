@@ -38,10 +38,10 @@ func (svc *service) AdminListActivities(ctx context.Context, in *AdminListActivi
 		req = req.Limit(in.Limit)
 	}
 	if in.Since != nil && !in.Since.IsZero() {
-		req = req.Where("created_at > ?", *in.Since)
+		req = req.Where("created_at >= ?", *in.Since)
 	}
 	if in.To != nil && !in.To.IsZero() {
-		req = req.Where("created_at < ?", *in.To)
+		req = req.Where("created_at <= ?", *in.To)
 	}
 	if in.SeasonChallengeID != "" {
 		req = req.Where("season_challenge_id = ?", in.SeasonChallengeID)
