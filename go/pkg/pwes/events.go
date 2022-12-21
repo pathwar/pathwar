@@ -1,6 +1,7 @@
 package pwes
 
 import (
+	"context"
 	"time"
 
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
@@ -11,7 +12,7 @@ import (
 type Event interface {
 	getID() int64
 	getCreatedAt() *time.Time
-	execute(apiClient *pwapi.HTTPClient) error
+	execute(ctx context.Context, apiClient *pwapi.HTTPClient) error
 }
 
 type EventChallengeSubscriptionValidate struct {
