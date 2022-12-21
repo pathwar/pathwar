@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
+
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 )
@@ -21,8 +23,11 @@ func (e EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClie
 
 	oldScore := computeScore(challenge.NbValidations)
 	newScore := computeScore(challenge.NbValidations + 1)
+
+	teamsMap := make(map[int64]*pwdb.Team)
 	if oldScore != newScore {
 		return nil
 	}
+	var _ = teamsMap
 	return nil
 }

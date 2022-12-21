@@ -241,6 +241,7 @@ message AdminListActivities {
     google.protobuf.Timestamp since = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
     string filtering_preset = 3;
     google.protobuf.Timestamp to = 4 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+    string season_challenge_id = 5 [(gogoproto.customname) = "SeasonChallengeID"];
   }
   message Output {
     repeated pathwar.db.Activity activities = 1;
