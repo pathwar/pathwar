@@ -414,7 +414,7 @@ definitions:
     type: object
   apiAdminUpdateSeasonChallengesMetadataInput:
     properties:
-      season_challenge:
+      season_challenges:
         items:
           $ref: '#/definitions/dbSeasonChallenge'
         type: array
