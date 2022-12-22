@@ -65,6 +65,7 @@ func NewOpts() Opts {
 		WithoutScore: false,
 		From:         "",
 		To:           "",
+		RefreshRate:  5,
 		Logger:       zap.NewNop(),
 	}
 }
@@ -73,5 +74,6 @@ type Opts struct {
 	WithoutScore bool
 	From         string
 	To           string
+	RefreshRate  int
 	Logger       *zap.Logger
 }

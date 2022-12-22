@@ -53,6 +53,7 @@ func serverCommand() *ffcli.Command {
 	devServerFlags.StringVar(&agentOpts.HostPort, "host-port", "8001", "Port nginx")
 	devServerFlags.StringVar(&agentOpts.DomainSuffix, "domaine-suffix", "localhost:8001", "Domain suffix to append")
 	devServerFlags.BoolVar(&serverOpts.WithPprof, "with-pprof", true, "enable pprof endpoints")
+	devServerFlags.IntVar(&esOpts.RefreshRate, "es-refresh-rate", esOpts.RefreshRate, "refresh rate in seconds")
 
 	return &ffcli.Command{
 		Name:      "server",
@@ -126,7 +127,7 @@ func serverCommand() *ffcli.Command {
 				server.Workers.Add(func() error {
 					var timestamp time.Time
 					for {
-						time.Sleep(2 * time.Second)
+						time.Sleep(time.Duration(esOpts.RefreshRate) * time.Second)
 						err = pwes.EventHandler(ctx, apiClient, &timestamp, logger)
 						if err != nil {
 							return err
