@@ -18,7 +18,8 @@ func (svc *service) AdminUpdateTeamsMetadata(ctx context.Context, in *AdminUpdat
 	}
 
 	for _, team := range in.Teams {
-		err := svc.db.Model(&pwdb.Team{}).Update(team).Error
+		updates := pwdb.Team{Score: team.Score}
+		err := svc.db.Model(team).Update(&updates).Error
 		if err != nil {
 			return nil, err
 		}

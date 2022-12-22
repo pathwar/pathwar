@@ -38,10 +38,10 @@ func (svc *service) AdminListActivities(ctx context.Context, in *AdminListActivi
 		req = req.Limit(in.Limit)
 	}
 	if in.Since != nil {
-		req = req.Where("created_at >= ?", *in.Since)
+		req = req.Where("created_at > ?", *in.Since)
 	}
-	if in.To != nil && !in.To.IsZero() {
-		req = req.Where("created_at <= ?", *in.To)
+	if !in.GetTo().IsZero() {
+		req = req.Where("created_at < ?", *in.To)
 	}
 	switch in.FilteringPreset {
 	case "default", "":
