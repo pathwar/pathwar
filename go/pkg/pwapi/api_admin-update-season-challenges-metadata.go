@@ -3,6 +3,8 @@ package pwapi
 import (
 	"context"
 
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
+
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
@@ -16,7 +18,8 @@ func (svc *service) AdminUpdateSeasonChallengesMetadata(ctx context.Context, in 
 	}
 
 	for _, challenge := range in.SeasonChallenges {
-		err := svc.db.Model(challenge).Update("NbValidations", challenge.NbValidations).Error
+		updates := pwdb.SeasonChallenge{NbValidations: challenge.NbValidations}
+		err := svc.db.Model(challenge).Update(&updates).Error
 		if err != nil {
 			return nil, err
 		}

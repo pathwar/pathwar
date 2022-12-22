@@ -15,6 +15,7 @@ type challengeValidation struct {
 	score           int64
 }
 
+// Should use ID instead of timestamp to retrieve next events
 func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error {
 	if apiClient == nil {
 		return errcode.ErrMissingInput
@@ -65,10 +66,9 @@ func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error 
 	for _, activity := range activities {
 		if _, ok := teamsMap[activity.TeamID]; !ok {
 			teamsMap[activity.TeamID] = activity.Team
-			teamsMap[activity.TeamID].Score = challengesMap[activity.SeasonChallengeID].score
-		} else {
-			teamsMap[activity.TeamID].Score += challengesMap[activity.SeasonChallengeID].score
+			teamsMap[activity.TeamID].Score = 0
 		}
+		teamsMap[activity.TeamID].Score += challengesMap[activity.SeasonChallengeID].score
 	}
 
 	_, err = apiClient.AdminUpdateSeasonChallengesMetadata(ctx, &pwapi.AdminUpdateSeasonChallengesMetadata_Input{SeasonChallenges: seasonChallenges})
