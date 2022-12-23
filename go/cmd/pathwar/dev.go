@@ -40,6 +40,7 @@ func devCommand() *ffcli.Command {
 			serverCommand(),
 			challengeRunCommand(),
 			challengeDeployCommand(),
+			eventSourcing(),
 			esRebuild(),
 		},
 	}
@@ -255,6 +256,39 @@ func challengeDeployCommand() *ffcli.Command {
 			//TODO: Deploying challenge from current folder
 
 			return nil
+		},
+	}
+}
+
+func eventSourcing() *ffcli.Command {
+	devEventSourcingFlags := flag.NewFlagSet("event-sourcing", flag.ExitOnError)
+
+	return &ffcli.Command{
+		Name:      "event-sourcing",
+		ShortHelp: "start event sourcing agent",
+		FlagSet:   devEventSourcingFlags,
+		Exec: func(ctx context.Context, args []string) error {
+			fmt.Println(motd.Default())
+			fmt.Println(banner.Inline("event sourcing"))
+
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			var timestamp time.Time
+			for {
+				time.Sleep(time.Duration(esOpts.RefreshRate) * time.Second)
+				err = pwes.EventHandler(ctx, apiClient, &timestamp, logger)
+				if err != nil {
+					return err
+				}
+			}
+
 		},
 	}
 }
