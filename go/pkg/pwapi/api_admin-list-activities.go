@@ -40,7 +40,7 @@ func (svc *service) AdminListActivities(ctx context.Context, in *AdminListActivi
 	if in.Since != nil {
 		req = req.Where("created_at > ?", *in.Since)
 	}
-	if !in.GetTo().IsZero() {
+	if in.GetTo() != nil && !in.GetTo().IsZero() {
 		req = req.Where("created_at < ?", *in.To)
 	}
 	switch in.FilteringPreset {
