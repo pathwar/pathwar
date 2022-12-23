@@ -289,7 +289,6 @@ func eventSourcing() *ffcli.Command {
 					return err
 				}
 			}
-
 		},
 	}
 }

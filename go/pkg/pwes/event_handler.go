@@ -16,6 +16,7 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 		return errcode.ErrMissingInput
 	}
 
+	logger.Info("event handler started", zap.Time("timestamp", *timestamp))
 	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: timestamp})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
@@ -23,11 +24,13 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 
 	activities := res.GetActivities()
 	if len(activities) == 0 {
+		logger.Info("no activities to handle")
 		return nil
 	}
 
 	// Use rebuild to process all events to be up-to-date in an efficient way
 	if timestamp.IsZero() {
+		logger.Info("Recompute all events from the beginning")
 		*timestamp = *activities[len(activities)-1].CreatedAt
 		err := Rebuild(ctx, apiClient, Opts{WithoutScore: false, From: "", To: timestamp.Format(TimeLayout), Logger: logger})
 		if err != nil && err != errcode.ErrNothingToRebuild {
