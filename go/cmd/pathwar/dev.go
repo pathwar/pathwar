@@ -262,6 +262,7 @@ func challengeDeployCommand() *ffcli.Command {
 
 func eventSourcing() *ffcli.Command {
 	devEventSourcingFlags := flag.NewFlagSet("event-sourcing", flag.ExitOnError)
+	devEventSourcingFlags.IntVar(&esOpts.RefreshRate, "refresh-rate", esOpts.RefreshRate, "refresh rate in seconds")
 
 	return &ffcli.Command{
 		Name:      "event-sourcing",
