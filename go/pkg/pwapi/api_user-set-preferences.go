@@ -24,6 +24,13 @@ func (svc *service) UserSetPreferences(ctx context.Context, in *UserSetPreferenc
 		activity   = pwdb.Activity{}
 	)
 
+	// get ID thanks to the slug
+	if in.ActiveSeasonSlug != "" {
+		in.ActiveSeasonID, err = pwdb.GetIDBySlugAndKind(svc.db, in.ActiveSeasonSlug, "season")
+		if err != nil {
+			return nil, err
+		}
+	}
 	// update active season
 	if in.ActiveSeasonID != 0 {
 		hasChanges = true

@@ -486,6 +486,7 @@ message SeasonList {
 message UserSetPreferences {
   message Input {
     int64 active_season_id = 1 [(gogoproto.customname) = "ActiveSeasonID"];
+    string active_season_slug = 2;
     // bool dark_mode
   }
   message Output {}
