@@ -159,6 +159,7 @@ func serverCommand() *ffcli.Command {
 
 func challengeRunCommand() *ffcli.Command {
 	devChallengeFlags := flag.NewFlagSet("dev", flag.ExitOnError)
+	devChallengeFlags.StringVar(&seasonSlug, "season-slug", defaultSeasonSlug, "season slug")
 
 	var (
 		composePrepareOpts = pwcompose.NewPrepareOpts()
@@ -222,7 +223,7 @@ func challengeRunCommand() *ffcli.Command {
 
 			season := pwapi.AdminSeasonChallengeAdd_Input{
 				FlavorID: slug,
-				SeasonID: "global",
+				SeasonID: seasonSlug,
 			}
 
 			_, err = apiClient.AdminAddSeasonChallenge(ctx, &season)
