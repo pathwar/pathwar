@@ -33,7 +33,7 @@ func TestService_UserSetPreferences(t *testing.T) {
 		{"empty", &UserSetPreferences_Input{}, errcode.ErrMissingInput, seasons["Global"], beforeSession.User.ActiveTeamMemberID},
 		{"unknown-season-id", &UserSetPreferences_Input{ActiveSeasonID: -42}, errcode.ErrInvalidSeasonID, seasons["Global"], beforeSession.User.ActiveTeamMemberID},
 		{"global-mode", &UserSetPreferences_Input{ActiveSeasonID: seasons["Global"]}, nil, seasons["Global"], beforeSession.User.ActiveTeamMemberID},
-		{"test-season", &UserSetPreferences_Input{ActiveSeasonID: seasons["Unit Test Season"]}, nil, seasons["Unit Test Season"], 0},
+		{"test-season", &UserSetPreferences_Input{ActiveSeasonID: seasons["Unit Test Season"]}, errcode.ErrUserHasNoTeamForSeason, seasons["Global"], beforeSession.User.ActiveTeamMemberID},
 		{"global-mode-again", &UserSetPreferences_Input{ActiveSeasonID: seasons["Global"]}, nil, seasons["Global"], beforeSession.User.ActiveTeamMemberID},
 	}
 
