@@ -14,6 +14,7 @@ const SwitchSeasonInput = () => {
 
   const SwitchSeason = async seasonSlug => {
     setActiveSeasonDispatch(seasonSlug).then(response => {
+      window.location.reload();
       return response;
     });
   };
