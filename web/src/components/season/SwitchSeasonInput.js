@@ -1,6 +1,6 @@
 import { FormattedMessage } from "react-intl";
 import * as React from "react";
-import { Card } from "tabler-react";;
+import { Card } from "tabler-react";
 import { useDispatch } from "react-redux";
 import { Button } from "tabler-react";
 import {switchSeason} from "../../actions/seasons";
@@ -14,7 +14,9 @@ const SwitchSeasonInput = () => {
 
   const SwitchSeason = async seasonSlug => {
     setActiveSeasonDispatch(seasonSlug).then(response => {
-      window.location.reload();
+      if (response.status === 200) {
+        window.location.reload();
+      }
       return response;
     });
   };
