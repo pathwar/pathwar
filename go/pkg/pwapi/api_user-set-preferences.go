@@ -62,7 +62,7 @@ func (svc *service) UserSetPreferences(ctx context.Context, in *UserSetPreferenc
 			activity.TeamID = teamIDs[0]
 		}
 		if len(seasonMemberIDs) == 0 {
-			updates["active_team_member_id"] = 0 // nil instead?
+			return nil, errcode.ErrUserHasNoTeamForSeason // FIXME: should we create a team for the user?
 		}
 	}
 
