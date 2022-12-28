@@ -1,8 +1,12 @@
 import { baseApi } from "./index";
 
 //Season main calls
-export function postPreferences(seasonID) {
+export function postPreferencesByID(seasonID) {
   return baseApi.post(`/user/preferences`, { active_season_id: seasonID });
+}
+
+export function postPreferencesBySlug(seasonSlug) {
+  return baseApi.post(`/user/preferences`, { active_season_slug: seasonSlug });
 }
 
 //TODO: Verify endpoint to return all seasons

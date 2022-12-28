@@ -10,10 +10,10 @@ const SwitchSeasonInput = () => {
   const [season, setSeason] = React.useState('');
 
   const dispatch = useDispatch();
-  const setActiveSeasonDispatch = seasonID => dispatch(switchSeason(seasonID));
+  const setActiveSeasonDispatch = seasonSlug => dispatch(switchSeason(seasonSlug));
 
-  const SwitchSeason = async seasonID => {
-    setActiveSeasonDispatch(seasonID).then(response => {
+  const SwitchSeason = async seasonSlug => {
+    setActiveSeasonDispatch(seasonSlug).then(response => {
       return response;
     });
   };

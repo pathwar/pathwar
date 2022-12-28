@@ -32,7 +32,6 @@ import {
 import {
   getAllSeasons,
   getAllSeasonTeams,
-  postPreferences,
   getChallenges,
   getChallengeDetails,
   getTeamDetails,
@@ -40,12 +39,14 @@ import {
   postValidateChallenge,
   postCloseChallenge,
   postCreateTeam,
+  postPreferencesByID,
+  postPreferencesBySlug,
 } from "../api/seasons";
 
 //Season main actions
 export const fetchPreferences = seasonID => async dispatch => {
   try {
-    await postPreferences(seasonID);
+    await postPreferencesByID(seasonID);
 
     dispatch({
       type: FETCH_PREFERENCES_SUCCESS,
@@ -58,9 +59,9 @@ export const fetchPreferences = seasonID => async dispatch => {
   }
 };
 
-export const switchSeason = seasonID => async dispatch => {
+export const switchSeason = seasonSlug => async dispatch => {
   try {
-    await postPreferences(seasonID);
+    await postPreferencesBySlug(seasonSlug);
 
     dispatch({
       type: SWITCH_SEASON,
