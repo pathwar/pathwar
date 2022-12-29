@@ -50,15 +50,3 @@ func seasonIDExists(db *gorm.DB, seasonID int64) (bool, error) {
 	}
 	return true, nil
 }
-
-func seasonIsPublic(db *gorm.DB, seasonID int64) (bool, error) {
-	var season pwdb.Season
-	err := db.
-		Where(&pwdb.Season{ID: seasonID}).
-		First(&season).
-		Error
-	if err != nil {
-		return false, err
-	}
-	return season.Visibility == pwdb.Season_Public, nil
-}

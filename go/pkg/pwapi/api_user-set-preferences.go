@@ -62,11 +62,7 @@ func (svc *service) UserSetPreferences(ctx context.Context, in *UserSetPreferenc
 			activity.TeamID = teamIDs[0]
 		}
 		if len(seasonMemberIDs) == 0 {
-			public, err := seasonIsPublic(svc.db, in.ActiveSeasonID)
-			if err != nil || !public {
-				return nil, errcode.ErrSeasonDenied //FIXME: Create
-			}
-			return nil, errcode.ErrUserHasNoTeamForSeason // FIXME: should we create a team for the user?
+			return nil, errcode.ErrUserHasNoTeamForSeason
 		}
 	}
 
