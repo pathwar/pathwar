@@ -25,7 +25,7 @@
     "env-cmd": "^10.0.1",
     "fireworks": "^2.2.6",
     "formik": "^1.5.8",
-    "gatsby": "^2.18.10",
+    "gatsby": "^5.3.3",
     "gatsby-image": "^2.2.6",
     "gatsby-plugin-emotion": "^4.3.2",
     "gatsby-plugin-favicon": "^3.1.6",
