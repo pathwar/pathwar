@@ -15,13 +15,13 @@ import (
 )
 
 func eventsCommand() *ffcli.Command {
-	devFlags := flag.NewFlagSet("dev", flag.ExitOnError)
+	events := flag.NewFlagSet("events", flag.ExitOnError)
 
 	return &ffcli.Command{
 		Name:       "events",
 		ShortUsage: "pathwar [global flags] events [events flags] <cmd> [cmd flags]",
 		ShortHelp:  "manage an event sourcing agent which process all events",
-		FlagSet:    devFlags,
+		FlagSet:    events,
 		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec:       func(ctx context.Context, args []string) error { return flag.ErrHelp },
 		Subcommands: []*ffcli.Command{
@@ -32,13 +32,13 @@ func eventsCommand() *ffcli.Command {
 }
 
 func eventSourcing() *ffcli.Command {
-	devEventSourcingFlags := flag.NewFlagSet("start", flag.ExitOnError)
-	devEventSourcingFlags.IntVar(&esOpts.RefreshRate, "refresh-rate", esOpts.RefreshRate, "refresh rate in seconds")
+	eventsSourcingFlags := flag.NewFlagSet("start", flag.ExitOnError)
+	eventsSourcingFlags.IntVar(&esOpts.RefreshRate, "refresh-rate", esOpts.RefreshRate, "refresh rate in seconds")
 
 	return &ffcli.Command{
 		Name:      "start",
 		ShortHelp: "start event sourcing agent",
-		FlagSet:   devEventSourcingFlags,
+		FlagSet:   eventsSourcingFlags,
 		Exec: func(ctx context.Context, args []string) error {
 			fmt.Println(motd.Default())
 			fmt.Println(banner.Inline("event sourcing"))
@@ -65,16 +65,16 @@ func eventSourcing() *ffcli.Command {
 }
 
 // TODO: Return error adapted
-func esRebuild() *ffcli.Command {
-	devRebuildFlags := flag.NewFlagSet("rebuild", flag.ExitOnError)
-	devRebuildFlags.BoolVar(&esOpts.WithoutScore, "without-score", esOpts.WithoutScore, "rebuild without score")
-	devRebuildFlags.StringVar(&esOpts.From, "from", esOpts.From, "rebuild from, format: YYYY-MM-DD HH:MM:SS")
-	devRebuildFlags.StringVar(&esOpts.To, "to", esOpts.To, "rebuild to, format: YYYY-MM-DD HH:MM:SS")
+func eventsRebuild() *ffcli.Command {
+	eventsRebuildFlags := flag.NewFlagSet("rebuild", flag.ExitOnError)
+	eventsRebuildFlags.BoolVar(&esOpts.WithoutScore, "without-score", esOpts.WithoutScore, "rebuild without score")
+	eventsRebuildFlags.StringVar(&esOpts.From, "from", esOpts.From, "rebuild from, format: YYYY-MM-DD HH:MM:SS")
+	eventsRebuildFlags.StringVar(&esOpts.To, "to", esOpts.To, "rebuild to, format: YYYY-MM-DD HH:MM:SS")
 
 	return &ffcli.Command{
 		Name:      "rebuild",
 		ShortHelp: "Rebuild current state from all events",
-		FlagSet:   devRebuildFlags,
+		FlagSet:   eventsRebuildFlags,
 		Exec: func(ctx context.Context, args []string) error {
 			fmt.Println(motd.Default())
 			fmt.Println(banner.Inline("es rebuild"))
