@@ -25,13 +25,13 @@ func eventsCommand() *ffcli.Command {
 		Options:    []ff.Option{ff.WithEnvVarNoPrefix()},
 		Exec:       func(ctx context.Context, args []string) error { return flag.ErrHelp },
 		Subcommands: []*ffcli.Command{
-			eventsSourcing(),
+			eventsStart(),
 			eventsRebuild(),
 		},
 	}
 }
 
-func eventsSourcing() *ffcli.Command {
+func eventsStart() *ffcli.Command {
 	eventsSourcingFlags := flag.NewFlagSet("start", flag.ExitOnError)
 	eventsSourcingFlags.IntVar(&esOpts.RefreshRate, "refresh-rate", esOpts.RefreshRate, "refresh rate in seconds")
 
