@@ -40,7 +40,6 @@ func devCommand() *ffcli.Command {
 			serverCommand(),
 			challengeRunCommand(),
 			challengeDeployCommand(),
-			eventSourcing(),
 		},
 	}
 }
