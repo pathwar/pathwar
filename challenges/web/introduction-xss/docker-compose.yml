@@ -1,0 +1,29 @@
+version: '3.7'
+
+# releases metadata (optional)
+x-pathwar:
+  challenge:
+    name: "XSS Introduction"
+    slug:  Learn what is a Cross-site scripting attacks
+    locale: "en"
+    author: "Mikatech"
+    homepage: https://github.com/pathwar/pathwar/tree/master/challenges/web/introduction-xss
+  flavor:
+    purchase_price: 0
+    validation_reward: 5
+    body: "Learn to use Cross-site scripting attacks"
+    passphrases: 1
+    category: web
+    tags:
+      - client
+      - injection
+      - xss
+    redump-policy:
+      - strategy: every
+        delay: 1d
+
+services:
+  front:
+    build: front
+    ports:
+      - "5000:80"
