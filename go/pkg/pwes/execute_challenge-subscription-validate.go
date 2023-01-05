@@ -2,6 +2,7 @@ package pwes
 
 import (
 	"context"
+	"go.uber.org/zap"
 	"strconv"
 
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -11,7 +12,7 @@ import (
 )
 
 // TODO: Add a better way to get challenges validations, maybe a challenge could be closed without be validated
-func (e EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClient *pwapi.HTTPClient) error {
+func (e EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClient *pwapi.HTTPClient, logger *zap.Logger) error {
 	if apiClient == nil {
 		return errcode.ErrMissingInput
 	}

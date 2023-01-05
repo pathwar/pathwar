@@ -2,6 +2,7 @@ package pwes
 
 import (
 	"context"
+	"go.uber.org/zap"
 	"time"
 
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
@@ -12,7 +13,7 @@ import (
 type Event interface {
 	getID() int64
 	getCreatedAt() *time.Time
-	execute(ctx context.Context, apiClient *pwapi.HTTPClient) error
+	execute(ctx context.Context, apiClient *pwapi.HTTPClient, logger *zap.Logger) error
 }
 
 type EventUserRegister struct {
