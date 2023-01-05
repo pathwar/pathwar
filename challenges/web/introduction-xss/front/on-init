@@ -1,1 +1,0 @@
-echo -n "$(pwinit passphrase 0)" > /var/www/html/passphrase.txt
