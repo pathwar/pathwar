@@ -73,6 +73,7 @@ type EventSeasonChallengeBuy struct {
 	ID              int64
 	CreatedAt       *time.Time
 	SeasonChallenge *pwdb.SeasonChallenge
+	Team            *pwdb.Team
 }
 
 func (e EventSeasonChallengeBuy) getID() int64 {
