@@ -20,6 +20,10 @@ func (e EventSeasonChallengeBuy) execute(ctx context.Context, apiClient *pwapi.H
 		return errcode.TODO.Wrap(err)
 	}
 
+	if e.Team.Cash-challenge.Flavor.PurchasePrice < 0 {
+		return errcode.ErrNotEnoughCash
+	}
+
 	e.Team.Cash -= challenge.Flavor.PurchasePrice
 	_, err = apiClient.AdminUpdateTeamsMetadata(ctx, &pwapi.AdminUpdateTeamsMetadata_Input{Teams: []*pwdb.Team{e.Team}})
 	if err != nil {
