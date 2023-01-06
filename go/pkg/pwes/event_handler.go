@@ -43,8 +43,32 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 	var e Event
 	for _, activity := range activities {
 		switch activity.Kind {
+		case pwdb.Activity_UserRegister:
+			e = EventUserRegister{ID: activity.ID, CreatedAt: activity.CreatedAt}
+		case pwdb.Activity_UserLogin:
+			e = EventUserLogin{ID: activity.ID, CreatedAt: activity.CreatedAt}
+		case pwdb.Activity_UserSetPreferences:
+			e = EventUserSetPreferences{ID: activity.ID, CreatedAt: activity.CreatedAt}
+		case pwdb.Activity_UserDeleteAccount:
+			e = EventUserDeleteAccount{ID: activity.ID, CreatedAt: activity.CreatedAt}
+		case pwdb.Activity_SeasonChallengeBuy:
+			e = EventSeasonChallengeBuy{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_ChallengeSubscriptionValidate:
 			e = &EventChallengeSubscriptionValidate{ID: activity.ID, CreatedAt: activity.CreatedAt, SeasonChallenge: activity.SeasonChallenge, Team: activity.Team}
+		case pwdb.Activity_CouponValidate:
+			e = EventCouponValidate{ID: activity.ID, CreatedAt: activity.CreatedAt}
+		case pwdb.Activity_AgentRegister:
+			e = EventAgentRegister{ID: activity.ID, CreatedAt: activity.CreatedAt}
+		case pwdb.Activity_AgentChallengeInstanceCreate:
+			e = EventAgentChallengeInstanceCreate{ID: activity.ID, CreatedAt: activity.CreatedAt}
+		case pwdb.Activity_AgentChallengeInstanceUpdate:
+			e = EventAgentChallengeInstanceUpdate{ID: activity.ID, CreatedAt: activity.CreatedAt}
+		case pwdb.Activity_TeamCreation:
+			e = EventTeamCreation{ID: activity.ID, CreatedAt: activity.CreatedAt}
+		case pwdb.Activity_TeamInviteSend:
+			e = EventTeamInviteSend{ID: activity.ID, CreatedAt: activity.CreatedAt}
+		case pwdb.Activity_TeamInviteAccept:
+			e = EventTeamInviteAccept{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_Unknown:
 			logger.Debug("The event : " + strconv.Itoa(int(e.getID())) + " is unknown kind.")
 			continue
