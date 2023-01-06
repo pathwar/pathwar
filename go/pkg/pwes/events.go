@@ -2,8 +2,9 @@ package pwes
 
 import (
 	"context"
-	"go.uber.org/zap"
 	"time"
+
+	"go.uber.org/zap"
 
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 
