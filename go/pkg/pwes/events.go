@@ -70,8 +70,9 @@ func (e EventUserDeleteAccount) getCreatedAt() *time.Time {
 }
 
 type EventSeasonChallengeBuy struct {
-	ID        int64
-	CreatedAt *time.Time
+	ID              int64
+	CreatedAt       *time.Time
+	SeasonChallenge *pwdb.SeasonChallenge
 }
 
 func (e EventSeasonChallengeBuy) getID() int64 {
