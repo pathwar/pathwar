@@ -95,6 +95,17 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 			return err
 		}
 
+		// update team cash
+		if cash := seasonChallenge.Flavor.PurchasePrice; cash != 0 {
+			err = tx.Model(&pwdb.Team{}).
+				Where("id = ?", team.ID).
+				UpdateColumn("cash", gorm.Expr("cash - ?", cash)).
+				Error
+			if err != nil {
+				return err
+			}
+		}
+
 		activity := pwdb.Activity{
 			Kind:                    pwdb.Activity_SeasonChallengeBuy,
 			AuthorID:                userID,

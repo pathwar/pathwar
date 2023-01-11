@@ -42,7 +42,6 @@ func (e EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClie
 		}
 	}
 	e.Team.Score += newScore
-	e.Team.Cash += challenge.Flavor.ValidationReward
 	teams = append(teams, e.Team)
 
 	_, err = apiClient.AdminUpdateSeasonChallengesMetadata(ctx, &pwapi.AdminUpdateSeasonChallengesMetadata_Input{SeasonChallenges: []*pwdb.SeasonChallenge{challenge}})
