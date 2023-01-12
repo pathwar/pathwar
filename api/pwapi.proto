@@ -92,7 +92,7 @@ service Service {
   rpc AdminListTeams(AdminListTeams.Input) returns (AdminListTeams.Output) { option (google.api.http) = {get: "/admin/list-teams"}; }; // admin only
   rpc AdminListUsers(AdminListUsers.Input) returns (AdminListUsers.Output) { option (google.api.http) = {get: "/admin/list-users"}; }; // admin only
   rpc AdminListActivities(AdminListActivities.Input) returns (AdminListActivities.Output) { option (google.api.http) = {post: "/admin/list-activities"; body: "*"}; }; // admin only
-  rpc AdminListAdminListAdminListChallengeSubscriptions(AdminListChallengeSubscriptions.Input) returns (AdminListChallengeSubscriptions.Output) { option (google.api.http) = {get: "/admin/list-challenge-subscriptions"}; }; // admin only
+  rpc AdminListChallengeSubscriptions(AdminListChallengeSubscriptions.Input) returns (AdminListChallengeSubscriptions.Output) { option (google.api.http) = {get: "/admin/list-challenge-subscriptions"}; }; // admin only
   rpc AdminListAll(AdminListAll.Input) returns (AdminListAll.Output) { option (google.api.http) = {get: "/admin/list-all"}; }; // admin only
   rpc AdminSearch(AdminSearch.Input) returns (AdminSearch.Output) { option (google.api.http) = {post: "/admin/search"; body: "*"}; }; // admin only
   rpc AdminAddCoupon(AdminAddCoupon.Input) returns (AdminAddCoupon.Output) { option (google.api.http) = {post: "/admin/add-coupon"; body: "*"}; }; // admin only
