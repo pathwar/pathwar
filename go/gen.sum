@@ -4,5 +4,5 @@
 70d67f1cebb3b7f9e86fd0197d43db4c1f795f65  ../api/pwinit.proto
 938d0b10041d408da360734ce20ba0d65eb20521  ../api/pwagent.proto
 9a11ebaddc86d7495b9b69a59acd40a4393c78d8  ../api/errcode.proto
+9a32dbe5d5594473ece01cd25cdf3fa9abbb5c66  ../api/pwapi.proto
 a65bb911c95219fcccdd43b5584dcadaad07a63c  Makefile
-e8844583d5cbd4f9f1b33f399e208bfe09d696cf  ../api/pwapi.proto
