@@ -2,8 +2,6 @@ package pwapi
 
 import (
 	"context"
-	"fmt"
-
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -15,8 +13,7 @@ func (svc *service) AdminListChallengeSubscriptions(ctx context.Context, in *Adm
 	if in == nil {
 		return nil, errcode.ErrMissingInput
 	}
-
-	fmt.Println("WESH", in, "WESH")
+	
 	var challengeSubscriptions []*pwdb.ChallengeSubscription
 	req := svc.db.
 		Preload("Team").
