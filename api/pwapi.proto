@@ -40,6 +40,7 @@ service Service {
   //
 
   rpc OrganizationList(OrganizationList.Input) returns (OrganizationList.Output) { option (google.api.http) = {get: "/organizations"}; };
+  rpc OrganizationCreate(OrganizationCreate.Input) returns (OrganizationCreate.Output) { option (google.api.http) = {post: "/organization"; body: "*"}; };
 
   //
   // Team
@@ -504,6 +505,15 @@ message OrganizationList {
   message Input {}
   message Output {
     repeated pathwar.db.Organization items = 1;
+  }
+}
+
+message OrganizationCreate {
+  message Input {
+    string name = 1;
+  }
+  message Output {
+    pathwar.db.Organization organization = 1;
   }
 }
 
