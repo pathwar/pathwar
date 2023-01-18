@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { isEmpty } from "ramda";
-import { Form, Button } from "tabler-react";
-import { FormattedMessage } from "react-intl";
+import React, {useEffect, useState} from "react";
+import {isEmpty} from "ramda";
+import {Button, Form} from "tabler-react";
+import {FormattedMessage} from "react-intl";
 
-const CreateTeamButton = ({ activeSeason, activeTeamInSeason, createTeam }) => {
+const createOrganizationButton = () => {
+
   const [isFormOpen, setFormOpen] = useState(false);
   const [name, setName] = useState("");
   const [error, setError] = useState(false);
@@ -20,29 +21,18 @@ const CreateTeamButton = ({ activeSeason, activeTeamInSeason, createTeam }) => {
     setFormOpen(!isFormOpen);
   };
 
-  const submitTeamCreate = async event => {
-    event.preventDefault();
-    if (isEmpty(name)) {
-      setError(true);
-    } else {
-      await createTeam(activeSeason.id, name);
-      setFormOpen(false);
-    }
-  };
-
   return (
     <>
       <Button
         color="success"
         onClick={handleFormOpen}
-        icon={activeTeamInSeason ? "anchor" : "users"}
-        disabled={activeTeamInSeason}
+        icon={"users"}
         size="sm"
       >
-        {activeTeamInSeason ? "Team on season" : "Create team"}
+        {"Create Organization"}
       </Button>
       {isFormOpen && (
-        <form onSubmit={submitTeamCreate}>
+        <form>
           <Form.FieldSet>
             <Form.Group isRequired label="Name">
               <Form.Input
@@ -63,6 +53,6 @@ const CreateTeamButton = ({ activeSeason, activeTeamInSeason, createTeam }) => {
       )}
     </>
   );
-};
+}
 
-export default CreateTeamButton;
+export default createOrganizationButton;

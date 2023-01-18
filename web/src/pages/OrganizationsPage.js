@@ -5,8 +5,9 @@ import {Helmet} from "react-helmet";
 import siteMetaData from "../constants/metadata";
 import AllTeamsOnSeasonList from "../components/season/AllTeamsOnSeasonList";
 import {useDispatch, useSelector} from "react-redux";
-import {createTeam, fetchAllSeasonTeams as fetchAllSeasonTeamsAction} from "../actions/seasons";
-import CreateTeamButton from "../components/team/CreateTeamButton";
+import CreateOrganizationButton from "../components/organization/CreateOrganizationButton";
+import {fetchOrganizationsList} from "../actions/organizations";
+import UserOrganizationsList from "../components/organization/UserOrganizationsList";
 
 //TODO: Lister les organisations de l'utilisateur dans un tableau
 //TODO: Créer un boutton permettant de créer une organisation pour l'utilisateur
@@ -18,25 +19,15 @@ const OrganizationsPage = () => {
   const pageTitleIntl = intl.formatMessage({ id: "OrganizationsPage.title" });
   const { title, description } = siteMetaData;
   const dispatch = useDispatch();
-
-  const activeSeason = useSelector(state => state.seasons.activeSeason);
-  // const activeTeamInSeason = useSelector(
-  //   state => state.seasons.activeTeamInSeason
-  // );
-  const allTeamsOnSeason = useSelector(state => state.seasons.allTeamsOnSeason);
+  const userOrganizations = useSelector(state => state.organizations.userOrganizationsList);
   // const dispatchCreateTeamAction = dispatch(createTeamAction);
 
   useEffect(() => {
-    if (!allTeamsOnSeason && activeSeason) {
-      dispatch(fetchAllSeasonTeamsAction(activeSeason.id));
+    if (!userOrganizations) {
+      dispatch(fetchOrganizationsList());
     }
-  }, [activeSeason, allTeamsOnSeason, dispatch]);
+  }, [userOrganizations, dispatch]);
 
-  const activeTeamInSeason = useSelector(
-     state => state.seasons.activeTeamInSeason
-  );
-
-  const dispatchCreateTeamAction = dispatch(createTeam);
 
   return (
     <>
@@ -49,24 +40,18 @@ const OrganizationsPage = () => {
     <Page.Content title={pageTitleIntl}>
       <Grid.Row>
         <Grid.Col offset={10}>
-          <CreateTeamButton
-            activeSeason={activeSeason}
-            createTeam={dispatchCreateTeamAction}
-            activeTeamInSeason={activeTeamInSeason}
-          />
+          <CreateOrganizationButton />
         </Grid.Col>
       </Grid.Row>
       <Grid.Row cards={true}>
         <Grid.Col xs={12} sm={12} md={6}>
-          <AllTeamsOnSeasonList
-            activeSeason={activeSeason}
-            allTeamsOnSeason={allTeamsOnSeason}
+          <UserOrganizationsList
+            userOrganizationsList={userOrganizations}
           />
         </Grid.Col>
         <Grid.Col xs={12} sm={12} md={6}>
-          <AllTeamsOnSeasonList
-            activeSeason={activeSeason}
-            allTeamsOnSeason={allTeamsOnSeason}
+          <UserOrganizationsList
+            userOrganizationsList={userOrganizations}
           />
         </Grid.Col>
       </Grid.Row>
