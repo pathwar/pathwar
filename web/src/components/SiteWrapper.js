@@ -171,6 +171,10 @@ const listItems = [
     link: `/statistics`,
     name: <FormattedMessage id="nav.statistics" />,
   },
+  {
+    link: `/organizations`,
+    name: <FormattedMessage id="nav.organizations" />,
+  },
   // { link: `${appPrefix}/events`, name: <FormattedMessage id="nav.events" /> },
   // {
   //   link: `${appPrefix}/community`,
