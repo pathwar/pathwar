@@ -70,8 +70,38 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 		}
 	}
 	*/
-
+	output.Organizations, err = svc.loadUserOrganizations(ctx)
+	if err != nil {
+		return nil, errcode.ErrGetUserOrganizations.Wrap(err)
+	}
 	return output, nil
+}
+
+func (svc *service) loadUserOrganizations(ctx context.Context) ([]*pwdb.Organization, error) {
+	var (
+		organizationsMemberships []int64
+		organizations            []*pwdb.Organization
+	)
+
+	userID, err := userIDFromContext(ctx, svc.db)
+	if err != nil {
+		return nil, errcode.ErrUnauthenticated
+	}
+
+	err = svc.db.Model(&pwdb.OrganizationMember{}).
+		Where(pwdb.OrganizationMember{UserID: userID}).
+		Pluck("organization_id", &organizationsMemberships).
+		Error
+	if err != nil {
+		return nil, errcode.ErrGetUserOrganizations.Wrap(err)
+	}
+
+	err = svc.db.Where(organizationsMemberships).Where(map[string]interface{}{"global_season": "false"}).Find(&organizations).Error
+	if err != nil {
+		return nil, errcode.ErrGetUserOrganizations.Wrap(err)
+	}
+
+	return organizations, nil
 }
 
 func (svc *service) loadUserSeasons(ctx context.Context) ([]*UserGetSession_Output_SeasonAndTeam, error) {

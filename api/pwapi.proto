@@ -537,6 +537,7 @@ message UserGetSession {
       pathwar.db.Team team = 2;
       bool is_active = 3;
     }
+    repeated pathwar.db.Organization organizations = 6;
   }
 }
 
