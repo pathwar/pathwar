@@ -1,4 +1,5 @@
 import {
+  GET_ORGANIZATION_DETAILS_SUCCESS,
   SET_ACTIVE_ORGANIZATION,
   SET_ORGANIZATIONS_LIST,
   SET_USER_ORGANIZATIONS_LIST,
@@ -10,6 +11,7 @@ const initialState = {
     userOrganizationsList: undefined,
     activeOrganization: undefined,
     allOrganizationsList: undefined,
+    organizationInDetail: undefined,
   },
 };
 
@@ -34,6 +36,12 @@ export default function organizationsReducer(
       return {
         ...state,
         userOrganizationsList: action.payload.userOrganizationsList,
+      }
+      
+    case GET_ORGANIZATION_DETAILS_SUCCESS:
+      return {
+        ...state,
+        organizationInDetail: action.payload.organization,
       }
 
     default:
