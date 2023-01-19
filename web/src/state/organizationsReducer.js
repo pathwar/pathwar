@@ -1,6 +1,7 @@
 import {
   SET_ACTIVE_ORGANIZATION,
   SET_ORGANIZATIONS_LIST,
+  SET_USER_ORGANIZATIONS_LIST,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -12,7 +13,7 @@ const initialState = {
   },
 };
 
-export default function teamsReducer(
+export default function organizationsReducer(
   state = initialState.organizations,
   action
 ) {
@@ -28,6 +29,12 @@ export default function teamsReducer(
         ...state,
         allOrganizationsList: action.payload.allOrganizationsList,
       };
+
+    case SET_USER_ORGANIZATIONS_LIST:
+      return {
+        ...state,
+        userOrganizationsList: action.payload.userOrganizationsList,
+      }
 
     default:
       return state;
