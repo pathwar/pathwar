@@ -46,10 +46,10 @@ const UserOrganizationsList = ({ userOrganizationsList }) => {
         <Table.Header>
           <Table.Row>
             <Table.ColHeader alignContent="center">
-              <FormattedMessage id="AllTeamsOnSeasonList.rank" />
+              <FormattedMessage id="UserOrganizationsList.rank" />
             </Table.ColHeader>
             <Table.ColHeader>
-              <FormattedMessage id="AllTeamsOnSeasonList.team" />
+              <FormattedMessage id="UserOrganizationsList.organization" />
             </Table.ColHeader>
           </Table.Row>
         </Table.Header>

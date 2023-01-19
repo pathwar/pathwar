@@ -56,6 +56,8 @@
   "AllTeamsOnSeasonList.team": "Team",
   "AllTeamsOnSeasonList.cash": "Cash",
   "AllTeamsOnSeasonList.joined": "Joined",
+  "UserOrganizationsList.organization": "Organization",
+  "UserOrganizationsList.rank": "Rank",
   "SwitchSeasonInput.title": "Switch season",
   "SwitchSeasonInput.action": "Apply",
   "CreateTeamButton.send": "Send"
