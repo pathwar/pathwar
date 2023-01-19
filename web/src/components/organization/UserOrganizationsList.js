@@ -28,8 +28,7 @@ const OrganizationsRows = ({ organizations }) => {
             />
             <Link
               className="link"
-              to={`/`}
-              //to={"/organization/" + item.id}
+              to={"/organization/" + item.id}
               activeStyle={{
                 fontWeight: "bold",
                 color: currentTheme.colors.primary,

@@ -28,6 +28,7 @@ const ProtectedRoute = loadable(() => import("../components/ProtectedRoute"));
 import "tabler-react/dist/Tabler.css";
 import "react-responsive-modal/styles.css";
 import OrganizationsPage from "./UserOrganizationsPage";
+import OrganizationDetailsPage from "./OrganizationDetailsPage";
 
 Sentry.init({
   dsn:
@@ -96,6 +97,10 @@ export const App = () => {
             <ProtectedRoute
               path={`/team/:teamId`}
               component={TeamDetailsPage}
+            />
+            <ProtectedRoute
+              path={`/organization/:organizationId`}
+              component={OrganizationDetailsPage}
             />
             <ProtectedRoute
               path={`/challenges/:challengeId`}

@@ -1,4 +1,5 @@
 import {
+  CLEAN_CHALLENGE_DETAIL, CLEAN_ORGANIZATION_DETAILS,
   GET_ORGANIZATION_DETAILS_SUCCESS,
   SET_ACTIVE_ORGANIZATION,
   SET_ORGANIZATIONS_LIST,
@@ -37,12 +38,18 @@ export default function organizationsReducer(
         ...state,
         userOrganizationsList: action.payload.userOrganizationsList,
       }
-      
+
     case GET_ORGANIZATION_DETAILS_SUCCESS:
       return {
         ...state,
         organizationInDetail: action.payload.organization,
       }
+
+    case CLEAN_ORGANIZATION_DETAILS:
+      return {
+        ...state,
+        organizationInDetail: undefined,
+      };
 
     default:
       return state;

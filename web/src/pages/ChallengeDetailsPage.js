@@ -39,9 +39,9 @@ const ChallengeDetailsPage = props => {
   useEffect(() => {
     const { uri, challengeID: challengeIDFromProps } = props;
     const challengeIDFromURI = uri && uri.split("/")[2];
-    const challhengeID = challengeIDFromURI || challengeIDFromProps;
+    const challengeID = challengeIDFromURI || challengeIDFromProps;
 
-    fetchChallengeDetail(challhengeID);
+    fetchChallengeDetail(challengeID);
 
     return () => dispatch({ type: CLEAN_CHALLENGE_DETAIL });
     // eslint-disable-next-line react-hooks/exhaustive-deps
