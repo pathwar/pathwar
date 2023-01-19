@@ -555,7 +555,7 @@ definitions:
     type: object
   apiOrganizationGetOutput:
     properties:
-      organization:
+      item:
         $ref: '#/definitions/dbOrganization'
     type: object
   apiOrganizationListOutput:

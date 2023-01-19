@@ -523,7 +523,7 @@ message OrganizationGet {
     int64 organization_id = 1 [(gogoproto.customname) = "OrganizationID"];
   }
   message Output {
-    pathwar.db.Organization organization = 1;
+    pathwar.db.Organization item = 1;
   }
 }
 

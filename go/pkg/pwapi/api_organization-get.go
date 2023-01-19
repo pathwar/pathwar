@@ -2,6 +2,7 @@ package pwapi
 
 import (
 	"context"
+
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
@@ -24,7 +25,7 @@ func (svc *service) OrganizationGet(ctx context.Context, in *OrganizationGet_Inp
 		return nil, errcode.ErrGetOrganization.Wrap(err)
 	}
 
-	ret := OrganizationGet_Output{}
+	ret := OrganizationGet_Output{Item: &item}
 
 	return &ret, nil
 }
