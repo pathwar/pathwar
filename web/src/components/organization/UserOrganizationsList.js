@@ -23,9 +23,9 @@ const OrganizationsRows = ({ organizations }) => {
           >
             <Avatar
               className="mr-2"
-              imageURL={`${item.organization.gravatar_url}?d=identicon`}
+              imageURL={`${item.gravatar_url}?d=identicon`}
             />
-            <span>{item.organization.name}</span>
+            <span>{item.name}</span>
           </Table.Col>
         </Table.Row>
       );

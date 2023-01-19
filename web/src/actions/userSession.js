@@ -18,7 +18,7 @@ import {
   deleteUserAccount,
   postCouponValidation,
 } from "../api/userSession";
-import { setActiveOrganization as setActiveOrganizationAction } from "./organizations";
+import {setActiveOrganization as setActiveOrganizationAction, setUserOrganizationsList} from "./organizations";
 import {
   setActiveSeason as setActiveSeasonAction,
   fetchPreferences as fetchPreferencesAction,
@@ -45,7 +45,7 @@ export const fetchUserSession = postPreferences => async dispatch => {
   try {
     const userSessionResponse = await getUserSession();
     const { data: userSessionData } = userSessionResponse;
-    const { user } = userSessionData;
+    const { user, organizations } = userSessionData;
     const activeSeasonId = user.active_season_id;
 
     dispatch(setUserSession(userSessionData));
@@ -61,6 +61,7 @@ export const fetchUserSession = postPreferences => async dispatch => {
       dispatch(setActiveSeasonAction(activeSeason.season));
       dispatch(setActiveTeamAction(activeSeason.team));
       dispatch(setActiveOrganizationAction(activeSeason.team.organization));
+      dispatch(setUserOrganizationsList(organizations));
     }
 
     if (browser) {

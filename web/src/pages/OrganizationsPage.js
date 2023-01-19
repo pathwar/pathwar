@@ -20,7 +20,6 @@ const OrganizationsPage = () => {
   const { title, description } = siteMetaData;
   const dispatch = useDispatch();
   const userOrganizations = useSelector(state => state.organizations.userOrganizationsList);
-  // const dispatchCreateTeamAction = dispatch(createTeamAction);
 
   useEffect(() => {
     if (!userOrganizations) {
