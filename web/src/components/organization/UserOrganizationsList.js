@@ -1,14 +1,15 @@
 import React, { useMemo } from "react";
-// import { Link } from "@reach/router";
 import { Card, Table, Dimmer, Avatar } from "tabler-react";
 import PropTypes from "prop-types";
 import { css } from "@emotion/core";
-import * as R from "ramda";
 
 // import styles from "./style.module.css";
 import { FormattedMessage } from "react-intl";
+import {Link} from "gatsby";
+import {useTheme} from "emotion-theming";
 
 const OrganizationsRows = ({ organizations }) => {
+  const currentTheme = useTheme();
 
   return organizations.map((item, idx) => {
       return (
@@ -25,7 +26,17 @@ const OrganizationsRows = ({ organizations }) => {
               className="mr-2"
               imageURL={`${item.gravatar_url}?d=identicon`}
             />
-            <span>{item.name}</span>
+            <Link
+              className="link"
+              to={`/`}
+              //to={"/organization/" + item.id}
+              activeStyle={{
+                fontWeight: "bold",
+                color: currentTheme.colors.primary,
+              }}
+            >
+              {item.name}
+            </Link>
           </Table.Col>
         </Table.Row>
       );

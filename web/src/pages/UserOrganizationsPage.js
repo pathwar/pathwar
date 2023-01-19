@@ -13,7 +13,7 @@ import UserOrganizationsList from "../components/organization/UserOrganizationsL
 //TODO: Créer un boutton permettant de créer une organisation pour l'utilisateur
 //TODO: Le button devrait ouvrier un modal permettant de créer une organisation
 //TODO: Lister les invitations de l'utilisateur dans un tableau
-const OrganizationsPage = () => {
+const UserOrganizationsPage = () => {
   const intl = useIntl();
   const organizationsIntl = intl.formatMessage({ id: "nav.organizations" });
   const pageTitleIntl = intl.formatMessage({ id: "OrganizationsPage.title" });
@@ -59,4 +59,4 @@ const OrganizationsPage = () => {
   );
 };
 
-export default React.memo(OrganizationsPage);
+export default React.memo(UserOrganizationsPage);
