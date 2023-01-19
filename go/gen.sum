@@ -5,4 +5,4 @@
 938d0b10041d408da360734ce20ba0d65eb20521  ../api/pwagent.proto
 9a11ebaddc86d7495b9b69a59acd40a4393c78d8  ../api/errcode.proto
 a65bb911c95219fcccdd43b5584dcadaad07a63c  Makefile
-e8151d91a8a3b5710995ba798532b5e96c2748dd  ../api/pwapi.proto
+d122f270dd4bf9ec4dde1da5432363ae5aa0dfff  ../api/pwapi.proto
