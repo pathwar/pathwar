@@ -8,6 +8,8 @@ import {CLEAN_ORGANIZATION_DETAILS} from "../constants/actionTypes";
 import ShadowBox from "../components/ShadowBox";
 import {FormattedMessage} from "react-intl";
 import moment from "moment/moment";
+import UserOrganizationsList from "../components/organization/UserOrganizationsList";
+import TeamsOnOrganizationList from "../components/organization/AllTeamsOnOrganization";
 
 const OrganizationDetailsPage = props => {
   const dispatch = useDispatch();
@@ -55,6 +57,11 @@ const OrganizationDetailsPage = props => {
               <p >{moment(organization.created_at).format("ll")}</p>
             </div>
           </ShadowBox>
+        </Grid.Col>
+        <Grid.Col xs={12} sm={12} md={6}>
+          <TeamsOnOrganizationList
+            teams={organization.teams}
+          />
         </Grid.Col>
       </Grid.Row>
     </Page.Content>

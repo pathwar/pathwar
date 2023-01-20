@@ -1,41 +1,21 @@
-import React, { useMemo } from "react";
-import { Card, Table, Dimmer, Avatar } from "tabler-react";
-import PropTypes from "prop-types";
-import { css } from "@emotion/core";
+import React from "react";
+import { Card, Table, Dimmer } from "tabler-react";
 
 // import styles from "./style.module.css";
 import { FormattedMessage } from "react-intl";
-import {Link} from "gatsby";
-import {useTheme} from "emotion-theming";
 
 const TeamsOnOrganizationRow = ({ teams }) => {
-  const currentTheme = useTheme();
-
   return teams.map((item, idx) => {
     return (
       <Table.Row key={item.id}>
-        <Table.Col alignContent="center">{idx + 1}</Table.Col>
-
-        <Table.Col
-          css={css`
-              display: flex;
-              align-items: center;
-            `}
-        >
-          <Avatar
-            className="mr-2"
-            imageURL={`${item.gravatar_url}?d=identicon`}
-          />
-          <Link
-            className="link"
-            to={"/organization/" + item.id}
-            activeStyle={{
-              fontWeight: "bold",
-              color: currentTheme.colors.primary,
-            }}
-          >
-            {item.name}
-          </Link>
+        <Table.Col alignContent="center">
+          {item.season.name}
+        </Table.Col>
+        <Table.Col alignContent="center">
+          {item.score}
+        </Table.Col>
+        <Table.Col alignContent="center">
+          {item.cash}
         </Table.Col>
       </Table.Row>
     );
@@ -56,16 +36,19 @@ const TeamsOnOrganizationList = ({ teams }) => {
         <Table.Header>
           <Table.Row>
             <Table.ColHeader alignContent="center">
-              <FormattedMessage id="UserOrganizationsList.rank" />
+              <FormattedMessage id="AllTeamsOnOrganization.season" />
             </Table.ColHeader>
-            <Table.ColHeader>
-              <FormattedMessage id="UserOrganizationsList.organization" />
+            <Table.ColHeader alignContent="center">
+              <FormattedMessage id="AllTeamsOnOrganization.score" />
+            </Table.ColHeader>
+            <Table.ColHeader alignContent="center">
+              <FormattedMessage id="AllTeamsOnOrganization.cash" />
             </Table.ColHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {teams && (
-            <OrganizationsRows organizations={teams} />
+            <TeamsOnOrganizationRow teams={teams} />
           )}
         </Table.Body>
       </Table>
@@ -73,8 +56,4 @@ const TeamsOnOrganizationList = ({ teams }) => {
   );
 };
 
-UserOrganizationsList.propTypes = {
-  seasons: PropTypes.object,
-};
-
-export default UserOrganizationsList;
+export default TeamsOnOrganizationList;
