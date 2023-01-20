@@ -8,7 +8,6 @@ import iconPwn from "../images/icon-pwn-small.svg";
 
 import {
   fetchChallenges,
-  fetchAllSeasons,
   fetchTeamDetails as fetchTeamDetailsAction,
 } from "../actions/seasons";
 
