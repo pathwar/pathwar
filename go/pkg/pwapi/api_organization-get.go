@@ -15,6 +15,7 @@ func (svc *service) OrganizationGet(ctx context.Context, in *OrganizationGet_Inp
 	var item pwdb.Organization
 	err := svc.db.
 		Preload("Members").
+		Preload("Teams.Season").
 		Where(pwdb.Organization{
 			ID:             in.OrganizationID,
 			DeletionStatus: pwdb.DeletionStatus_Active,
