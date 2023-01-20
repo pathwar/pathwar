@@ -75,6 +75,10 @@
   "AllTeamsOnSeasonList.achievements": "Achievements",
   "UserOrganizationsList.organization": "Organization",
   "UserOrganizationsList.rank": "Rank",
+  "AllTeamsonOrganization.season": "Season",
+  "AllTeamsonOrganization.rank": "Rank",
+  "AllTeamsonOrganization.score": "Score",
+  "AllTeamsonOrganization.cash": "Cash",
   "SwitchSeasonInput.title": "Switch season",
   "SwitchSeasonInput.action": "Apply",
   "CreateTeamButton.send": "Send"
