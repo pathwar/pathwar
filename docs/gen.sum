@@ -1,7 +1,7 @@
 04575c89be1815909d61a17a12ad23ae1cf8379d  ../api/pwcompose.proto
+11c33d0950be492d62d365720c140d4a0797c90c  ../api/errcode.proto
 3c9f0e812897995dee655945bcbf4ffdfad1fecd  ../api/pwapi.proto
 58202a11cc54640949aaacb09c0e0db6f26d57c2  ../api/pwsso.proto
-5de6c5d6f1b76f32d40b53f95d329296f9b7556d  ../api/errcode.proto
 70d67f1cebb3b7f9e86fd0197d43db4c1f795f65  ../api/pwinit.proto
 788a097cef809b398b9a7c8ce11955a1d19ecd27  ../api/pwdb.proto
 938d0b10041d408da360734ce20ba0d65eb20521  ../api/pwagent.proto

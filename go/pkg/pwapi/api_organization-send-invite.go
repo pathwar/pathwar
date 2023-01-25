@@ -67,5 +67,18 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 		return nil, errcode.ErrOrganizationUserAlreadyMember.Wrap(err)
 	}
 
+	// don't create a new invite if one already exists
+	var organizationInvite pwdb.OrganizationInvite
+	err = svc.db.
+		Where(pwdb.OrganizationInvite{
+			UserID:         inviteUserID,
+			OrganizationID: organizationID,
+		}).
+		First(&organizationInvite).
+		Error
+	if err != nil {
+		return nil, errcode.ErrAlreadyInvitedInOrganization.Wrap(err)
+	}
+
 	return nil, errcode.ErrNotImplemented
 }
