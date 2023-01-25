@@ -2,6 +2,7 @@ package pwapi
 
 import (
 	"context"
+	"github.com/jinzhu/gorm"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -42,7 +43,19 @@ func (svc *service) OrganizationCreate(ctx context.Context, in *OrganizationCrea
 		// GravatarURL
 		// Locale
 	}
-	err = svc.db.Create(&organization).Error
+
+	//save new organization object in database
+	err = svc.db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&organization).Error; err != nil {
+			return errcode.ErrCreateOrganization.Wrap(err)
+		}
+		activity := pwdb.Activity{
+			Kind:           pwdb.Activity_OrganizationCreation,
+			AuthorID:       userID,
+			OrganizationID: organization.ID,
+		}
+		return tx.Create(&activity).Error
+	})
 	if err != nil {
 		return nil, errcode.ErrCreateOrganization.Wrap(err)
 	}
