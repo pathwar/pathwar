@@ -63,7 +63,7 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 		}).
 		First(&organizationMember).
 		Error
-	if err == nil {
+	if err != nil {
 		return nil, errcode.ErrOrganizationUserAlreadyMember.Wrap(err)
 	}
 
