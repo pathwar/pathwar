@@ -29,7 +29,7 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 		return nil, errcode.ErrGetUser.Wrap(err)
 	}
 
-	//check organization status
+	// check organization status
 	var organization pwdb.Organization
 	err = svc.db.
 		Where(pwdb.Organization{
@@ -89,7 +89,6 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 		OrganizationID: organizationID,
 	}
 
-	//TODO: Create an Activity which corresponds to the organization invite
 	err = svc.db.Transaction(func(tx *gorm.DB) error {
 		err = tx.Create(&organizationInvite).Error
 		if err != nil {

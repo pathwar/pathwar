@@ -45,7 +45,7 @@ func (svc *service) OrganizationCreate(ctx context.Context, in *OrganizationCrea
 		// Locale
 	}
 
-	//save new organization object in database
+	// save new organization object in database
 	err = svc.db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&organization).Error; err != nil {
 			return errcode.ErrCreateOrganization.Wrap(err)
