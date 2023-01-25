@@ -28,7 +28,6 @@ func TestService_OrganizationList(t *testing.T) {
 			if err != nil {
 				return
 			}
-
 			assert.Equal(t, test.expectedTeams, len(ret.Items))
 		})
 	}
