@@ -54,5 +54,18 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 		return nil, errcode.ErrNotOrganizationOwner.Wrap(err)
 	}
 
+	// check if invited user is not already a member of the organization
+	var organizationMember pwdb.OrganizationMember
+	err = svc.db.
+		Where(pwdb.OrganizationMember{
+			UserID:         inviteUserID,
+			OrganizationID: organizationID,
+		}).
+		First(&organizationMember).
+		Error
+	if err == nil {
+		return nil, errcode.ErrOrganizationUserAlreadyMember.Wrap(err)
+	}
+
 	return nil, errcode.ErrNotImplemented
 }

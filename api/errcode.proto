@@ -169,6 +169,7 @@ enum ErrCode {
   ErrDeleteUserAccountTransactionCommit = 4092;
   ErrOrganizationDoesNotExist = 4093;
   ErrNotOrganizationOwner = 4094;
+  ErrOrganizationUserAlreadyMember = 4095;
 
   //// Pathwar Server (starting at 5001)
 
