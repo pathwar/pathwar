@@ -83,5 +83,19 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 		return nil, pwdb.GormToErrcode(err)
 	}
 
+	organizationInvite = pwdb.OrganizationInvite{
+		UserID:         inviteUserID,
+		OrganizationID: organizationID,
+	}
+
+	//TODO: Create an Activity which corresponds to the organization invite
+	err = svc.db.Transaction(func(tx *gorm.DB) error {
+		return tx.Create(&organizationInvite).Error
+	})
+
+	if err != nil {
+		return nil, pwdb.GormToErrcode(err)
+	}
+
 	return nil, errcode.ErrNotImplemented
 }
