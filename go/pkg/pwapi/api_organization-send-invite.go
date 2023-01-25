@@ -91,12 +91,27 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 
 	//TODO: Create an Activity which corresponds to the organization invite
 	err = svc.db.Transaction(func(tx *gorm.DB) error {
-		return tx.Create(&organizationInvite).Error
+		err = tx.Create(&organizationInvite).Error
+		if err != nil {
+			return pwdb.GormToErrcode(err)
+		}
+		activity := pwdb.Activity{
+			Kind:           pwdb.Activity_OrganizationInviteSend,
+			AuthorID:       userID,
+			UserID:         inviteUserID,
+			OrganizationID: organizationID,
+		}
+		return tx.Create(&activity).Error
 	})
-
 	if err != nil {
 		return nil, pwdb.GormToErrcode(err)
 	}
 
-	return nil, errcode.ErrNotImplemented
+	// FIXME: Notify invited user
+
+	ret := OrganizationSendInvite_Output{
+		OrganizationInvite: &organizationInvite,
+	}
+
+	return &ret, nil
 }
