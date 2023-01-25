@@ -265,6 +265,11 @@ func GetIDBySlugAndKind(db *gorm.DB, slug string, kind string) (int64, error) {
 			Model(Organization{}).
 			Where("id = ? OR slug = ?", slug, slug).
 			Pluck("id", &ids).Error
+	case "organization-invite":
+		err = db.
+			Model(OrganizationInvite{}).
+			Where("id = ? OR slug = ?", slug, slug).
+			Pluck("id", &ids).Error
 	case "team":
 		err = db.
 			Model(Team{}).

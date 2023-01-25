@@ -60,6 +60,31 @@ func (entity *OrganizationMember) BeforeSave(db *gorm.DB) error {
 	return nil
 }
 
+func (entity *OrganizationInvite) BeforeSave(db *gorm.DB) error {
+	if entity.Slug == "" {
+		var user User
+		if entity.User == nil {
+			err := db.First(&user, "id = ?", entity.UserID).Error
+			if err != nil {
+				return GormToErrcode(err)
+			}
+		} else {
+			user = *entity.User
+		}
+		var organization Organization
+		if entity.Organization == nil {
+			err := db.First(&organization, "id = ?", entity.OrganizationID).Error
+			if err != nil {
+				return GormToErrcode(err)
+			}
+		} else {
+			organization = *entity.Organization
+		}
+		entity.Slug = fmt.Sprintf("%s@%s", user.Slug, organization.Slug)
+	}
+	return nil
+}
+
 func (entity *ChallengeFlavor) BeforeSave(db *gorm.DB) error {
 	if entity.Slug == "" {
 		var challenge Challenge

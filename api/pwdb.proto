@@ -263,6 +263,19 @@ message Organization {
   repeated OrganizationMember members = 202 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 }
 
+message OrganizationInvite {
+  int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  google.protobuf.Timestamp updated_at = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  google.protobuf.Timestamp deleted_at = 4 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+
+  User user = 200 [(gogoproto.moretags) = "gorm:\"foreignkey:UserID\""];
+  int64 user_id = 201 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  Organization organization = 202 [(gogoproto.moretags) = "gorm:\"foreignkey:OrganizationID\""];
+  int64 organization_id = 203 [(gogoproto.customname) = "OrganizationID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  string slug = 204;
+}
+
 message Season {
   int64 id = 1 [(gogoproto.moretags) = "gorm:\"primary_key\"", (gogoproto.customname) = "ID"];
   google.protobuf.Timestamp created_at = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];

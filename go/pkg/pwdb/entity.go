@@ -19,6 +19,7 @@ func AllMap() map[string]interface{} {
 		"Notification":          Notification{},
 		"Organization":          Organization{},
 		"OrganizationMember":    OrganizationMember{},
+		"OrganizationInvite":    OrganizationInvite{},
 		"Season":                Season{},
 		"SeasonChallenge":       SeasonChallenge{},
 		"Team":                  Team{},
