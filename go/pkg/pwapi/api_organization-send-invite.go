@@ -96,10 +96,12 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 			return pwdb.GormToErrcode(err)
 		}
 		activity := pwdb.Activity{
-			Kind:           pwdb.Activity_OrganizationInviteSend,
-			AuthorID:       userID,
-			UserID:         inviteUserID,
-			OrganizationID: organizationID,
+			Kind:                 pwdb.Activity_OrganizationInviteSend,
+			AuthorID:             userID,
+			UserID:               inviteUserID,
+			OrganizationID:       organizationID,
+			OrganizationMemberID: organizationOwner.OrganizationID,
+			OrganizationInviteID: organizationInvite.ID,
 		}
 		return tx.Create(&activity).Error
 	})

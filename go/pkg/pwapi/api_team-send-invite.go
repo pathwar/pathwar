@@ -104,6 +104,7 @@ func (svc *service) TeamSendInvite(ctx context.Context, in *TeamSendInvite_Input
 			TeamMemberID:   teamOwner.ID,
 			OrganizationID: team.OrganizationID,
 			SeasonID:       team.SeasonID,
+			TeamInviteID:   teamInvite.ID,
 		}
 		return tx.Create(&activity).Error
 	})
