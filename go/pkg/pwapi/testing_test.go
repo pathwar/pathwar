@@ -68,6 +68,16 @@ func testingActivities(t *testing.T, svc Service) *pwdb.ActivityList {
 	return &list
 }
 
+func testingOrganizations(t *testing.T, svc Service) *pwdb.OrganizationList {
+	t.Helper()
+
+	db := testingSvcDB(t, svc)
+	var list pwdb.OrganizationList
+	err := db.Set("gorm:auto_preload", true).Find(&list.Items).Error
+	assert.NoError(t, err, "list organizations")
+	return &list
+}
+
 func testingTeams(t *testing.T, svc Service) *pwdb.TeamList {
 	t.Helper()
 
