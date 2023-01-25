@@ -6,6 +6,8 @@ import { FormattedMessage } from "react-intl";
 
 const TeamsOnOrganizationRow = ({ teams }) => {
   return teams.map((item, idx) => {
+    item.cash = item.cash ? item.cash : 0;
+    item.score = item.score ? item.score : 0;
     return (
       <Table.Row key={item.id}>
         <Table.Col alignContent="center">
@@ -23,9 +25,7 @@ const TeamsOnOrganizationRow = ({ teams }) => {
 }
 
 const TeamsOnOrganizationList = ({ teams }) => {
-  return !teams ? (
-    <Dimmer active loader />
-  ) : (
+  return (
     <Card>
       <Table
         striped={true}
