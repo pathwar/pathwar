@@ -566,6 +566,8 @@ message Activity {
   int64 team_invite_id = 227 [(gogoproto.customname) = "TeamInviteID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   Agent organization_invite = 228 [(gogoproto.moretags) = "gorm:\"foreignkey:OrganizationInviteID\""];
   int64 organization_invite_id = 229 [(gogoproto.customname) = "OrganizationInviteID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
+  OrganizationMember organization_member = 230 [(gogoproto.moretags) = "gorm:\"foreignkey:OrganizationMemberID\""];
+  int64 organization_member_id = 231 [(gogoproto.customname) = "OrganizationMemberID", (gogoproto.moretags) = "sql:\"not null\" gorm:\"index\""];
   // agent
   // inventoryitem
   // couponvalidation

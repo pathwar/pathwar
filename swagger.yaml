@@ -862,6 +862,11 @@ definitions:
       organization_invite_id:
         format: int64
         type: string
+      organization_member:
+        $ref: '#/definitions/dbOrganizationMember'
+      organization_member_id:
+        format: int64
+        type: string
       season:
         $ref: '#/definitions/dbSeason'
       season_challenge:
