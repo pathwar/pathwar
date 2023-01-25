@@ -62,6 +62,8 @@ func ForeignKeys() [][3]string {
 		{"Notification", "user_id", "user(id)"},
 		{"OrganizationMember", "organization_id", "organization(id)"},
 		{"OrganizationMember", "user_id", "user(id)"},
+		{"OrganizationInvite", "organization_id", "organization(id)"},
+		{"OrganizationInvite", "user_id", "user(id)"},
 		{"SeasonChallenge", "flavor_id", "challenge_flavor(id)"},
 		{"SeasonChallenge", "season_id", "season(id)"},
 		{"Team", "organization_id", "organization(id)"},
