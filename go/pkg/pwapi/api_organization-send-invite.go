@@ -40,5 +40,19 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 		return nil, errcode.ErrOrganizationDoesNotExist.Wrap(err)
 	}
 
+	// check that the user is owner of the organization
+	var organizationOwner pwdb.OrganizationMember
+	err = svc.db.
+		Where(pwdb.OrganizationMember{
+			UserID:         userID,
+			OrganizationID: organizationID,
+			Role:           pwdb.OrganizationMember_Owner,
+		}).
+		First(&organizationOwner).
+		Error
+	if err != nil {
+		return nil, errcode.ErrNotOrganizationOwner.Wrap(err)
+	}
+
 	return nil, errcode.ErrNotImplemented
 }

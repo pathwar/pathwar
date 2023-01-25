@@ -168,6 +168,7 @@ enum ErrCode {
   ErrNoAvailableChallengeInstance = 4091;
   ErrDeleteUserAccountTransactionCommit = 4092;
   ErrOrganizationDoesNotExist = 4093;
+  ErrNotOrganizationOwner = 4094;
 
   //// Pathwar Server (starting at 5001)
 
