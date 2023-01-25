@@ -2,6 +2,7 @@ package pwapi
 
 import (
 	"context"
+	"github.com/jinzhu/gorm"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -76,8 +77,10 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 		}).
 		First(&organizationInvite).
 		Error
-	if err != nil {
+	if err == nil {
 		return nil, errcode.ErrAlreadyInvitedInOrganization.Wrap(err)
+	} else if err != gorm.ErrRecordNotFound {
+		return nil, pwdb.GormToErrcode(err)
 	}
 
 	return nil, errcode.ErrNotImplemented
