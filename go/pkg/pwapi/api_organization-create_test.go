@@ -2,10 +2,11 @@ package pwapi
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/require"
 	"pathwar.land/pathwar/v2/go/internal/testutil"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
-	"testing"
 )
 
 func TestService_OrganizationCreate(t *testing.T) {

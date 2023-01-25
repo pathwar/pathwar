@@ -2,9 +2,10 @@ package pwapi
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"pathwar.land/pathwar/v2/go/internal/testutil"
-	"testing"
 )
 
 func TestService_OrganizationList(t *testing.T) {
