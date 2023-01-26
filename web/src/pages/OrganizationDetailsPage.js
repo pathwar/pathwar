@@ -38,8 +38,25 @@ const OrganizationDetailsPage = props => {
 
   return (
     <Page.Content title={pageTitleIntl}>
+      <Grid.Row css={{
+        "margin-bottom": "20px",
+      }}>
+        <Grid.Col xs={12} sm={12} md={3} offsetMd={1}>
+          Natus Vincere
+        </Grid.Col>
+        <Grid.Col xs={12} sm={12} md={3} offsetMd={1}>
+          Membres
+        </Grid.Col>
+        <Grid.Col xs={12} sm={12} md={3}>
+          Seasons & Teams
+        </Grid.Col>
+      </Grid.Row>
+      <div css={{
+
+      }}>
+      </div>
       <Grid.Row>
-        <Grid.Col width={12} lg={5}>
+        <Grid.Col width={12} lg={5} >
           <ShadowBox>
             <div
               css={{
