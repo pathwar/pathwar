@@ -21,12 +21,12 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 
 	organizationID, err := pwdb.GetIDBySlugAndKind(svc.db, in.OrganizationID, "organization")
 	if err != nil {
-		return nil, errcode.ErrGetOrganization.Wrap(err)
+		return nil, err
 	}
 
 	inviteUserID, err := pwdb.GetIDBySlugAndKind(svc.db, in.UserID, "user")
 	if err != nil {
-		return nil, errcode.ErrGetUser.Wrap(err)
+		return nil, err
 	}
 
 	// check organization status
@@ -56,16 +56,17 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 		return nil, errcode.ErrNotOrganizationOwner.Wrap(err)
 	}
 
-	// check if invited user is not already a member of the organization
-	var organizationMember pwdb.OrganizationMember
+	// check if invited user already is a member of this organization
+	var organizationMembership int
 	err = svc.db.
+		Model(&pwdb.OrganizationMember{}).
 		Where(pwdb.OrganizationMember{
 			UserID:         inviteUserID,
 			OrganizationID: organizationID,
 		}).
-		First(&organizationMember).
+		Count(&organizationMembership).
 		Error
-	if err != nil {
+	if err != nil || organizationMembership != 0 {
 		return nil, errcode.ErrOrganizationUserAlreadyMember.Wrap(err)
 	}
 
