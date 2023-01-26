@@ -101,7 +101,6 @@ func (svc *service) OrganizationSendInvite(ctx context.Context, in *Organization
 			UserID:               inviteUserID,
 			OrganizationID:       organizationID,
 			OrganizationMemberID: organizationOwner.OrganizationID,
-			OrganizationInviteID: organizationInvite.ID,
 		}
 		return tx.Create(&activity).Error
 	})
