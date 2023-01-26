@@ -6,12 +6,15 @@ import {
 } from "../actions/organizations";
 import {CLEAN_ORGANIZATION_DETAILS} from "../constants/actionTypes";
 import ShadowBox from "../components/ShadowBox";
-import {FormattedMessage} from "react-intl";
+import {FormattedMessage, useIntl} from "react-intl";
 import moment from "moment/moment";
 import UserOrganizationsList from "../components/organization/UserOrganizationsList";
 import TeamsOnOrganizationList from "../components/organization/AllTeamsOnOrganization";
 
 const OrganizationDetailsPage = props => {
+  const intl = useIntl();
+  const pageTitleIntl = intl.formatMessage({ id: "OrganizationsPage.title" });
+
   const dispatch = useDispatch();
 
   const organization = useSelector(state => state.organizations.organizationInDetail);
@@ -34,7 +37,7 @@ const OrganizationDetailsPage = props => {
   }
 
   return (
-    <Page.Content title={organization.name}>
+    <Page.Content title={pageTitleIntl}>
       <Grid.Row>
         <Grid.Col width={12} lg={5}>
           <ShadowBox>
