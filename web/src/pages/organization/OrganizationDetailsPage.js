@@ -79,7 +79,7 @@ const OrganizationDetailsPage = props => {
               color: currentTheme.colors.primary,
             }}
           >
-            Membres
+            <FormattedMessage id="OrganizationDetailsSubmenu.members" />
           </Link>
         </Grid.Col>
         <Grid.Col xs={12} sm={12} md={3}>
@@ -91,7 +91,7 @@ const OrganizationDetailsPage = props => {
               color: currentTheme.colors.primary,
             }}
           >
-            Seasons & Teams
+            <FormattedMessage id="OrganizationDetailsSubmenu.teams" />
           </Link>
         </Grid.Col>
       </Grid.Row>

@@ -78,6 +78,8 @@
   "AllTeamsOnOrganization.season": "Season",
   "AllTeamsOnOrganization.score": "Score",
   "AllTeamsOnOrganization.cash": "Cash",
+  "OrganizationDetailsSubmenu.members": "Members",
+  "OrganizationDetailsSubmenu.teams": "Teams & Seasons",
   "SwitchSeasonInput.title": "Switch season",
   "SwitchSeasonInput.action": "Apply",
   "CreateTeamButton.send": "Send"
