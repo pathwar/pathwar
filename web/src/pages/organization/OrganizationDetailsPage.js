@@ -3,12 +3,12 @@ import { Page, Grid, Avatar, Dimmer } from "tabler-react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchOrganizationDetail as fetchOrganizationDetailAction,
-} from "../actions/organizations";
-import {CLEAN_ORGANIZATION_DETAILS} from "../constants/actionTypes";
-import ShadowBox from "../components/ShadowBox";
+} from "../../actions/organizations";
+import {CLEAN_ORGANIZATION_DETAILS} from "../../constants/actionTypes";
+import ShadowBox from "../../components/ShadowBox";
 import {FormattedMessage, useIntl} from "react-intl";
 import moment from "moment/moment";
-import TeamsOnOrganizationList from "../components/organization/AllTeamsOnOrganization";
+import TeamsOnOrganizationList from "../../components/organization/AllTeamsOnOrganization";
 import {Link} from "gatsby";
 import {useTheme} from "emotion-theming";
 import {css} from "@emotion/core";

@@ -2,12 +2,11 @@ import {useIntl} from "react-intl";
 import {Grid, Page} from "tabler-react";
 import React, {useEffect} from "react";
 import {Helmet} from "react-helmet";
-import siteMetaData from "../constants/metadata";
-import AllTeamsOnSeasonList from "../components/season/AllTeamsOnSeasonList";
+import siteMetaData from "../../constants/metadata";
 import {useDispatch, useSelector} from "react-redux";
-import CreateOrganizationButton from "../components/organization/CreateOrganizationButton";
-import {fetchOrganizationsList} from "../actions/organizations";
-import UserOrganizationsList from "../components/organization/UserOrganizationsList";
+import CreateOrganizationButton from "../../components/organization/CreateOrganizationButton";
+import {fetchOrganizationsList} from "../../actions/organizations";
+import UserOrganizationsList from "../../components/organization/UserOrganizationsList";
 
 //TODO: Lister les organisations de l'utilisateur dans un tableau
 //TODO: Créer un boutton permettant de créer une organisation pour l'utilisateur

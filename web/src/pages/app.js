@@ -27,8 +27,8 @@ const ProtectedRoute = loadable(() => import("../components/ProtectedRoute"));
 //Third part libs global styles
 import "tabler-react/dist/Tabler.css";
 import "react-responsive-modal/styles.css";
-import OrganizationsPage from "./UserOrganizationsPage";
-import OrganizationDetailsPage from "./OrganizationDetailsPage";
+import OrganizationsPage from "./organization/UserOrganizationsPage";
+import OrganizationDetailsPage from "./organization/OrganizationDetailsPage";
 
 Sentry.init({
   dsn:
