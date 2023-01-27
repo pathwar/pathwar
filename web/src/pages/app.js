@@ -29,6 +29,8 @@ import "tabler-react/dist/Tabler.css";
 import "react-responsive-modal/styles.css";
 import OrganizationsPage from "./organization/UserOrganizationsPage";
 import OrganizationDetailsPage from "./organization/OrganizationDetailsPage";
+import OrganizationMembersPage from "./organization/OrganizationMembersPage";
+import OrganizationTeamsAndSeasonsPage from "./organization/OrganizationTeamsAndSeasons";
 
 Sentry.init({
   dsn:
@@ -101,6 +103,14 @@ export const App = () => {
             <ProtectedRoute
               path={`/organization/:organizationId`}
               component={OrganizationDetailsPage}
+            />
+            <ProtectedRoute
+              path={`/organization/:organizationId/members`}
+              component={OrganizationMembersPage}
+            />
+            <ProtectedRoute
+              path={`/organization/:organizationId/teams`}
+              component={OrganizationTeamsAndSeasonsPage}
             />
             <ProtectedRoute
               path={`/challenges/:challengeId`}

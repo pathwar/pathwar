@@ -27,7 +27,7 @@ const wrapper = css`
 }
 `
 
-const OrganizationMembersPage = props => {
+const OrganizationTeamsAndSeasonsPage = props => {
   const intl = useIntl();
   const pageTitleIntl = intl.formatMessage({ id: "OrganizationsPage.title" });
   const currentTheme = useTheme();
@@ -131,4 +131,4 @@ const OrganizationMembersPage = props => {
   );
 };
 
-export default React.memo(OrganizationMembersPage);
+export default React.memo(OrganizationTeamsAndSeasonsPage);
