@@ -3,6 +3,12 @@ import {isEmpty} from "ramda";
 import {Button, Form} from "tabler-react";
 import {FormattedMessage} from "react-intl";
 
+const styles = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+}
+
 const InviteOrganizationButton = () => {
 
   /*TODO: Center when activate*/
@@ -23,25 +29,20 @@ const InviteOrganizationButton = () => {
   };
 
   return (
-    <div>
+    <div style={styles}>
       <Button
         color="success"
         onClick={handleFormOpen}
         icon={"users"}
         size="sm"
-        css={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginBottom: "1rem",
-        }}
+        css={styles}
       >
         {"Invite new member"}
       </Button>
       {isFormOpen && (
         <form>
-          <Form.FieldSet>
-            <Form.Group isRequired label="Username">
+          <Form.FieldSet css={styles}>
+            <Form.Group isRequired label="Username" css={styles}>
               <Form.Input
                 name="name"
                 onChange={handleChange}
