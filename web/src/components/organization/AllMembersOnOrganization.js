@@ -34,16 +34,16 @@ const MembersOnOrganizationList = ({ members }) => {
         <Table.Header>
           <Table.Row>
             <Table.ColHeader alignContent="center">
-              Index
+              <FormattedMessage id="AllMembersOnOrganization.index" />
             </Table.ColHeader>
             <Table.ColHeader alignContent="center">
-              Name
+              <FormattedMessage id="AllMembersOnOrganization.name" />
             </Table.ColHeader>
             <Table.ColHeader alignContent="center">
-              Role
+              <FormattedMessage id="AllMembersOnOrganization.role" />
             </Table.ColHeader>
             <Table.ColHeader alignContent="center">
-              Joined at
+              <FormattedMessage id="AllMembersOnOrganization.since" />
             </Table.ColHeader>
           </Table.Row>
         </Table.Header>
