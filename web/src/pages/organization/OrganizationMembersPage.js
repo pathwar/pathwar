@@ -5,14 +5,10 @@ import {
   fetchOrganizationDetail as fetchOrganizationDetailAction,
 } from "../../actions/organizations";
 import {CLEAN_ORGANIZATION_DETAILS} from "../../constants/actionTypes";
-import ShadowBox from "../../components/ShadowBox";
-import {FormattedMessage, useIntl} from "react-intl";
-import moment from "moment/moment";
-import TeamsOnOrganizationList from "../../components/organization/AllTeamsOnOrganization";
-import {Link} from "gatsby";
-import {useTheme} from "emotion-theming";
+import {useIntl} from "react-intl";
 import {css} from "@emotion/core";
 import OrganizationSubMenu from "../../components/organization/OrganizationSubMenu";
+import MembersOnOrganizationList from "../../components/organization/AllMembersOnOrganization";
 
 const wrapper = css`
 .link {
@@ -60,31 +56,9 @@ const OrganizationMembersPage = props => {
         <OrganizationSubMenu organization={organization} />
       </Grid.Row>
       <Grid.Row>
-        <Grid.Col width={12} lg={5} >
-          <ShadowBox>
-            <div
-              css={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <h2 className="mb-4 mt-2" style={{fontSize: '1.60rem'}}>{organization.name}</h2>
-              {organization.gravatar_url ? (
-                <Avatar size="xxl" imageURL={`${organization.gravatar_url}?d=identicon`} />
-              ) : (
-                <Avatar size="xxl" icon="users" />
-              )}
-              <h3 className="mb-0 mt-4">
-                <FormattedMessage id="HomePage.createdAt" />
-              </h3>
-              <p >{moment(organization.created_at).format("ll")}</p>
-            </div>
-          </ShadowBox>
-        </Grid.Col>
-        <Grid.Col xs={12} sm={12} md={6}>
-          <TeamsOnOrganizationList
-            teams={organization.teams}
+        <Grid.Col xs={12} sm={12} md={12}>
+          <MembersOnOrganizationList
+            members={organization.teams}
           />
         </Grid.Col>
       </Grid.Row>
