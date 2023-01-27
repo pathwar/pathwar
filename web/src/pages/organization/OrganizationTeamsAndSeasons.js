@@ -12,6 +12,7 @@ import TeamsOnOrganizationList from "../../components/organization/AllTeamsOnOrg
 import {Link} from "gatsby";
 import {useTheme} from "emotion-theming";
 import {css} from "@emotion/core";
+import OrganizationSubMenu from "../../components/organization/OrganizationSubMenu";
 
 const wrapper = css`
 .link {
@@ -57,42 +58,7 @@ const OrganizationTeamsAndSeasonsPage = props => {
       <Grid.Row css={{
         "margin-bottom": "15px",
       }}>
-        <Grid.Col xs={12} sm={12} md={3} offsetMd={1}>
-          <Link
-            className="link"
-            to={"/organization/" + organization.id}
-            activeStyle={{
-              fontWeight: "bold",
-              color: currentTheme.colors.primary,
-            }}
-          >
-            {organization.name}
-          </Link>
-        </Grid.Col>
-        <Grid.Col xs={12} sm={12} md={3} offsetMd={1}>
-          <Link
-            className="link"
-            to={"/organization/" + organization.id + "/members"}
-            activeStyle={{
-              fontWeight: "bold",
-              color: currentTheme.colors.primary,
-            }}
-          >
-            <FormattedMessage id="OrganizationDetailsSubmenu.members" />
-          </Link>
-        </Grid.Col>
-        <Grid.Col xs={12} sm={12} md={3}>
-          <Link
-            className="link"
-            to={"/organization/" + organization.id + "/teams"}
-            activeStyle={{
-              fontWeight: "bold",
-              color: currentTheme.colors.primary,
-            }}
-          >
-            <FormattedMessage id="OrganizationDetailsSubmenu.teams" />
-          </Link>
-        </Grid.Col>
+        <OrganizationSubMenu organization={organization} />
       </Grid.Row>
       <Grid.Row>
         <Grid.Col width={12} lg={5} >
