@@ -45,10 +45,11 @@ export default function organizationsReducer(
         organizationInDetail: action.payload.organization,
       }
 
+      //Don't want to reload the page when we change the organization subpage
     case CLEAN_ORGANIZATION_DETAILS:
       return {
         ...state,
-        organizationInDetail: undefined,
+        /*organizationInDetail: undefined,*/
       };
 
     default:
