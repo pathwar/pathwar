@@ -58,6 +58,7 @@ const OrganizationDetailsPage = props => {
       <Grid.Row css={{
         "margin-bottom": "15px",
       }}>
+        {/*TODO: Make an component for the submenu*/}
         <Grid.Col xs={12} sm={12} md={3} offsetMd={1}>
           <Link
             className="link"
@@ -95,10 +96,6 @@ const OrganizationDetailsPage = props => {
           </Link>
         </Grid.Col>
       </Grid.Row>
-      <div css={{
-
-      }}>
-      </div>
       <Grid.Row>
         <Grid.Col width={12} lg={5} >
           <ShadowBox>
@@ -115,11 +112,16 @@ const OrganizationDetailsPage = props => {
               ) : (
                 <Avatar size="xxl" icon="users" />
               )}
+              <h3 className="mb-0 mt-6">
+                <FormattedMessage id="OrganizationDetailsSubmenu.members" />
+              </h3>
+              <p >{organization.members.length}</p>
               <h3 className="mb-0 mt-4">
                 <FormattedMessage id="HomePage.createdAt" />
               </h3>
               <p >{moment(organization.created_at).format("ll")}</p>
             </div>
+
           </ShadowBox>
         </Grid.Col>
         <Grid.Col xs={12} sm={12} md={6}>

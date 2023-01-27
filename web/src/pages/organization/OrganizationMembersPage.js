@@ -94,10 +94,6 @@ const OrganizationMembersPage = props => {
           </Link>
         </Grid.Col>
       </Grid.Row>
-      <div css={{
-
-      }}>
-      </div>
       <Grid.Row>
         <Grid.Col width={12} lg={5} >
           <ShadowBox>
