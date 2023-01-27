@@ -58,7 +58,7 @@ const OrganizationMembersPage = props => {
       <Grid.Row>
         <Grid.Col xs={12} sm={12} md={12}>
           <MembersOnOrganizationList
-            members={organization.teams}
+            members={organization.members}
           />
         </Grid.Col>
       </Grid.Row>

@@ -1,21 +1,30 @@
 import React from "react";
-import { Card, Table, Dimmer } from "tabler-react";
+import {Card, Table, Dimmer, Avatar} from "tabler-react";
 
 // import styles from "./style.module.css";
 import { FormattedMessage } from "react-intl";
+import moment from "moment";
+import {css} from "@emotion/core";
 
 const MembersOnOrganizationRow = ({ members }) => {
   return members.map((item, idx) => {
     return (
       <Table.Row key={item.id}>
         <Table.Col alignContent="center">
-          {item.season.name}
+          {idx+1}
         </Table.Col>
         <Table.Col alignContent="center">
-          {item.score}
+          <Avatar
+            className="mr-2"
+            imageURL={`${item.user.gravatar_url}?d=identicon`}
+          />
+          <span>{item.user.username}</span>
         </Table.Col>
         <Table.Col alignContent="center">
-          {item.cash}
+          {item.role}
+        </Table.Col>
+        <Table.Col alignContent="center">
+          {moment(item.created_at).format("ll")}
         </Table.Col>
       </Table.Row>
     );
