@@ -8,15 +8,32 @@ import {CLEAN_ORGANIZATION_DETAILS} from "../constants/actionTypes";
 import ShadowBox from "../components/ShadowBox";
 import {FormattedMessage, useIntl} from "react-intl";
 import moment from "moment/moment";
-import UserOrganizationsList from "../components/organization/UserOrganizationsList";
 import TeamsOnOrganizationList from "../components/organization/AllTeamsOnOrganization";
+import {Link} from "gatsby";
+import {useTheme} from "emotion-theming";
+import {css} from "@emotion/core";
 
+const wrapper = css`
+
+.link {
+  display: block;
+  text-decoration: none;
+  padding: 1rem;
+  color: #919aa3;
+  font-size: 1.2rem;
+
+&:hover {
+    opacity: 0.8;
+  }
+}
+
+`
 const OrganizationDetailsPage = props => {
   const intl = useIntl();
   const pageTitleIntl = intl.formatMessage({ id: "OrganizationsPage.title" });
+  const currentTheme = useTheme();
 
   const dispatch = useDispatch();
-
   const organization = useSelector(state => state.organizations.organizationInDetail);
 
   const fetchOrganizationDetail = organizationID =>
@@ -37,18 +54,45 @@ const OrganizationDetailsPage = props => {
   }
 
   return (
-    <Page.Content title={pageTitleIntl}>
+    <Page.Content title={pageTitleIntl} css={wrapper}>
       <Grid.Row css={{
-        "margin-bottom": "20px",
+        "margin-bottom": "15px",
       }}>
         <Grid.Col xs={12} sm={12} md={3} offsetMd={1}>
-          Natus Vincere
+          <Link
+            className="link"
+            to={"/organization/" + organization.id}
+            activeStyle={{
+              fontWeight: "bold",
+              color: currentTheme.colors.primary,
+            }}
+          >
+            {organization.name}
+          </Link>
         </Grid.Col>
         <Grid.Col xs={12} sm={12} md={3} offsetMd={1}>
-          Membres
+          <Link
+            className="link"
+            to={"/organization/" + organization.id + "/members"}
+            activeStyle={{
+              fontWeight: "bold",
+              color: currentTheme.colors.primary,
+            }}
+          >
+            Membres
+          </Link>
         </Grid.Col>
         <Grid.Col xs={12} sm={12} md={3}>
-          Seasons & Teams
+          <Link
+            className="link"
+            to={"/organization/" + organization.id + "/teams"}
+            activeStyle={{
+              fontWeight: "bold",
+              color: currentTheme.colors.primary,
+            }}
+          >
+            Seasons & Teams
+          </Link>
         </Grid.Col>
       </Grid.Row>
       <div css={{
