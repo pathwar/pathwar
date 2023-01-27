@@ -9,10 +9,10 @@ import ShadowBox from "../../components/ShadowBox";
 import {FormattedMessage, useIntl} from "react-intl";
 import moment from "moment/moment";
 import TeamsOnOrganizationList from "../../components/organization/AllTeamsOnOrganization";
-import {Link} from "gatsby";
 import {useTheme} from "emotion-theming";
 import {css} from "@emotion/core";
 import OrganizationSubMenu from "../../components/organization/OrganizationSubMenu";
+import InviteOrganizationButton from "../../components/organization/inviteOrganizationButton";
 
 const wrapper = css`
 
@@ -85,14 +85,13 @@ const OrganizationDetailsPage = props => {
                 <FormattedMessage id="HomePage.createdAt" />
               </h3>
               <p >{moment(organization.created_at).format("ll")}</p>
+              <InviteOrganizationButton />
             </div>
-
           </ShadowBox>
         </Grid.Col>
         <Grid.Col xs={12} sm={12} md={6}>
           <TeamsOnOrganizationList
-            teams={organization.teams}
-          />
+            teams={organization.teams}/>
         </Grid.Col>
       </Grid.Row>
     </Page.Content>
