@@ -21,6 +21,16 @@ const createOrganizationButton = () => {
     setFormOpen(!isFormOpen);
   };
 
+  const submitTeamCreate = async event => {
+    event.preventDefault();
+    if (isEmpty(name)) {
+      setError(true);
+    } else {
+      await createTeam(activeSeason.id, name);
+      setFormOpen(false);
+    }
+  };
+
   return (
     <>
       <Button
@@ -45,7 +55,7 @@ const createOrganizationButton = () => {
             </Form.Group>
             <Form.Group>
               <Button type="submit" color="primary" className="ml-auto">
-                <FormattedMessage id="CreateTeamButton.send" />
+                <FormattedMessage id="InviteOrganizationMemberButton.send" />
               </Button>
             </Form.Group>
           </Form.FieldSet>

@@ -86,5 +86,6 @@
   "OrganizationDetailsSubmenu.teams": "Teams & Seasons",
   "SwitchSeasonInput.title": "Switch season",
   "SwitchSeasonInput.action": "Apply",
-  "CreateTeamButton.send": "Send"
+  "CreateTeamButton.send": "Send",
+  "InviteOrganizationMemberButton.send": "Send"
 }
