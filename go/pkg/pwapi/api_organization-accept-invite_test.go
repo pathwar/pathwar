@@ -39,8 +39,8 @@ func TestService_OrganizationAcceptInvite(t *testing.T) {
 	}{
 		{"nil", nil, errcode.ErrMissingInput},
 		{"empty", &OrganizationAcceptInvite_Input{}, errcode.ErrMissingInput},
-		{"invalid-invite", &OrganizationAcceptInvite_Input{OrganizationInviteID: "invalid"}, errcode.ErrNoSuchSlug},
-		{"valid", &OrganizationAcceptInvite_Input{OrganizationInviteID: fmt.Sprint(organizationInvite1.ID)}, nil},
+		{"invalid-invite", &OrganizationAcceptInvite_Input{OrganizationInviteID: "invalid", Accept: true}, errcode.ErrNoSuchSlug},
+		{"valid", &OrganizationAcceptInvite_Input{OrganizationInviteID: fmt.Sprint(organizationInvite1.ID), Accept: true}, nil},
 	}
 
 	for _, test := range tests {

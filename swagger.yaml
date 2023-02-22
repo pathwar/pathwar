@@ -548,6 +548,9 @@ definitions:
     type: object
   apiOrganizationAcceptInviteInput:
     properties:
+      accept:
+        format: boolean
+        type: boolean
       organization_invite_id:
         type: string
     type: object

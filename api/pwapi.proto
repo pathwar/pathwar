@@ -542,6 +542,7 @@ message OrganizationSendInvite {
 message OrganizationAcceptInvite {
   message Input {
     string organization_invite_id = 1 [(gogoproto.customname) = "OrganizationInviteID"];
+    bool accept = 2;
   }
   message Output {
     pathwar.db.OrganizationMember organization_member = 1;

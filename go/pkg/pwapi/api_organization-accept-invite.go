@@ -35,6 +35,15 @@ func (svc *service) OrganizationAcceptInvite(ctx context.Context, in *Organizati
 		return nil, pwdb.GormToErrcode(err)
 	}
 
+	//TODO: Create an activity "invitation refused"
+	if !in.Accept {
+		err = svc.db.Delete(&organizationInvite).Error
+		if err != nil {
+			return nil, pwdb.GormToErrcode(err)
+		}
+		return &OrganizationAcceptInvite_Output{}, nil
+	}
+
 	// check organization status
 	var organization pwdb.Organization
 	err = svc.db.

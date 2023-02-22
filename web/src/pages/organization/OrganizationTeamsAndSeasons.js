@@ -9,7 +9,6 @@ import ShadowBox from "../../components/ShadowBox";
 import {FormattedMessage, useIntl} from "react-intl";
 import moment from "moment/moment";
 import TeamsOnOrganizationList from "../../components/organization/AllTeamsOnOrganization";
-import {Link} from "gatsby";
 import {useTheme} from "emotion-theming";
 import {css} from "@emotion/core";
 import OrganizationSubMenu from "../../components/organization/OrganizationSubMenu";

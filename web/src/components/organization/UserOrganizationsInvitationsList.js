@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Table, Dimmer, Avatar } from "tabler-react";
+import {Card, Table, Dimmer, Avatar, Button} from "tabler-react";
 import PropTypes from "prop-types";
 
 // import styles from "./style.module.css";
@@ -34,7 +34,15 @@ const OrganizationsInvitationsRows = ({ organizationsInvitations }) => {
         </Table.Col>
 
         <Table.Col alignContent="center">{item.user.slug}</Table.Col>
-        <Table.Col alignContent="center">Accept/Refuse</Table.Col>
+        <Table.Col alignContent="center">
+          <Button type="submit" color="success" className="mx-lg-auto">
+            ✔
+          </Button>
+
+          <Button type="submit" color="red" className="ml-auto">
+            ✖
+          </Button>
+        </Table.Col>
       </Table.Row>
     );
   });
