@@ -5,8 +5,11 @@ import PropTypes from "prop-types";
 // import styles from "./style.module.css";
 import { FormattedMessage } from "react-intl";
 import {Link} from "gatsby";
+import {useTheme} from "emotion-theming";
 
 const OrganizationsInvitationsRows = ({ organizationsInvitations }) => {
+  const currentTheme = useTheme();
+
   return organizationsInvitations.map((item, idx) => {
     return (
       <Table.Row key={item.id}>
@@ -16,29 +19,29 @@ const OrganizationsInvitationsRows = ({ organizationsInvitations }) => {
         >
           <Avatar
             className="mr-2"
-            imageURL={`${item.gravatar_url}?d=identicon`}
+            imageURL={`${item.organization.gravatar_url}?d=identicon`}
           />
           <Link
             className="link"
-            to={"/organization/" + item.id}
+            to={"/organization/" + item.organization.id}
             activeStyle={{
               fontWeight: "bold",
               color: currentTheme.colors.primary,
             }}
           >
-            {item.name}
+            {item.organization.name}
           </Link>
         </Table.Col>
-        <Table.Col alignContent="center">{idx + 1}</Table.Col>
+
+        <Table.Col alignContent="center">{item.user.slug}</Table.Col>
+        <Table.Col alignContent="center">Accept/Refuse</Table.Col>
       </Table.Row>
     );
   });
 }
 
 const UserOrganizationsInvitationsList = ({ userOrganizationsInvitationsList }) => {
-  return !UserOrganizationsInvitationsList ? (
-    <Dimmer active loader />
-  ) : (
+  return (
     <Card>
       <Table
         striped={true}
@@ -49,10 +52,16 @@ const UserOrganizationsInvitationsList = ({ userOrganizationsInvitationsList }) 
         <Table.Header>
           <Table.Row>
             <Table.ColHeader alignContent="center">
-              <FormattedMessage id="UserOrganizationsList.rank" />
+              <FormattedMessage id="UserOrganizationsInvitationsList.rank" />
             </Table.ColHeader>
             <Table.ColHeader alignContent="center">
-              <FormattedMessage id="UserOrganizationsList.organization" />
+              <FormattedMessage id="UserOrganizationsInvitationsList.organization" />
+            </Table.ColHeader>
+            <Table.ColHeader alignContent="center">
+              <FormattedMessage id="UserOrganizationsInvitationsList.invitedBy" />
+            </Table.ColHeader>
+            <Table.ColHeader alignContent="center">
+              <FormattedMessage id="UserOrganizationsInvitationsList.accept" />
             </Table.ColHeader>
           </Table.Row>
         </Table.Header>

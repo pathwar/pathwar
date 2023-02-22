@@ -8,8 +8,8 @@ export const UserOrganizationBadges = ({organizations}) => {
     ) : (
       <Avatar.List>
         {organizations.map(organization => (
-          <Link to={"/organization/" + organization.id}>
-            <Avatar key={organization.id} size="md" imageURL={`${organization.gravatar_url}?d=identicon`}/>
+          <Link key={organization.id} to={"/organization/" + organization.id}>
+            <Avatar size="md" imageURL={`${organization.gravatar_url}?d=identicon`}/>
           </Link>
      ))}
       </Avatar.List>

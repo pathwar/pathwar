@@ -23,7 +23,7 @@ const UserOrganizationsPage = () => {
   const dispatch = useDispatch();
   const userOrganizations = useSelector(state => state.organizations.userOrganizationsList);
   const activeUserSession = useSelector(state => state.userSession.activeUserSession);
-  const userOrganizationsInvitations = useSelector(state => state.organizations.userOrganizationsInvitationsList);
+  const userOrganizationsInvitations = useSelector(state => state.organizations.userOrganizationsInvitations);
   const {
     user: {
       gravatar_url,
@@ -38,12 +38,6 @@ const UserOrganizationsPage = () => {
       dispatch(fetchOrganizationsList());
     }
   }, [userOrganizations, dispatch]);
-
-  useEffect(() => {
-    if (!userOrganizationsInvitations) {
-      dispatch(fetchUserOrganizationsInvitations());
-    }
-  }, [userOrganizationsInvitations, dispatch]);
 
   return (
     <>
@@ -87,7 +81,7 @@ const UserOrganizationsPage = () => {
         </Grid.Col>
         <Grid.Col xs={12} sm={12} md={8}>
           <UserOrganizationsInvitationsList
-            userOrganizationsInvitationsList={userOrganizations}
+            userOrganizationsInvitationsList={userOrganizationsInvitations}
           />
         </Grid.Col>
       </Grid.Row>

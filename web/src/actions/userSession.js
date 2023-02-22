@@ -49,7 +49,7 @@ export const fetchUserSession = postPreferences => async dispatch => {
   try {
     const userSessionResponse = await getUserSession();
     const { data: userSessionData } = userSessionResponse;
-    const { user, organizations, organizations_invites } = userSessionData;
+    const { user, organizations, organization_invites } = userSessionData;
     const activeSeasonId = user.active_season_id;
 
     dispatch(setUserSession(userSessionData));
@@ -66,7 +66,7 @@ export const fetchUserSession = postPreferences => async dispatch => {
       dispatch(setActiveTeamAction(activeSeason.team));
       dispatch(setActiveOrganizationAction(activeSeason.team.organization));
       dispatch(setUserOrganizationsList(organizations));
-      dispatch(fetchUserOrganizationsInvitations(organizations_invites));
+      dispatch(fetchUserOrganizationsInvitations(organization_invites));
     }
 
     if (browser) {
