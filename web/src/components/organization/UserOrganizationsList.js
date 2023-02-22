@@ -16,11 +16,7 @@ const OrganizationsRows = ({ organizations }) => {
         <Table.Row key={item.id}>
           <Table.Col alignContent="center">{idx + 1}</Table.Col>
 
-          <Table.Col
-            css={css`
-              display: flex;
-              align-items: center;
-            `}
+          <Table.Col alignContent="center"
           >
             <Avatar
               className="mr-2"
@@ -58,7 +54,7 @@ const UserOrganizationsList = ({ userOrganizationsList }) => {
             <Table.ColHeader alignContent="center">
               <FormattedMessage id="UserOrganizationsList.rank" />
             </Table.ColHeader>
-            <Table.ColHeader>
+            <Table.ColHeader alignContent="center">
               <FormattedMessage id="UserOrganizationsList.organization" />
             </Table.ColHeader>
           </Table.Row>

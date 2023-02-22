@@ -15,6 +15,7 @@ import { isNil } from "ramda";
 import UserChallengesView from "../components/home/UserChallengesView";
 import getTeamRank from "../utils/getTeamRank";
 import SwitchSeasonInput from "../components/season/SwitchSeasonInput";
+import UserOrganizationBadges from "../components/organization/UserOrganizationBadges";
 
 const cardStyle = {
   margin: "1rem",
@@ -48,6 +49,7 @@ const HomePage = () => {
   const activeChallenges = useSelector(state => state.seasons.activeChallenges);
   const activeSeason = useSelector(state => state.seasons.activeSeason);
   const teamDetails = useSelector(state => state.seasons.teamInDetail);
+  const userOrganizations = useSelector(state => state.organizations.userOrganizationsList);
 
   const [rank, setRank] = useState();
 
@@ -105,6 +107,10 @@ const HomePage = () => {
                   <FormattedMessage id="HomePage.createdAt" />
                 </h3>
                 <p>{moment(created_at).format("ll")}</p>
+                <h3 className="mb-2 mt-4">
+                  <FormattedMessage id="OrganizationsPage.title" />
+                </h3>
+                <UserOrganizationBadges organizations={userOrganizations}/>
               </div>
             </ShadowBox>
           </Grid.Col>

@@ -11,7 +11,6 @@ const styles = {
 
 const InviteOrganizationButton = () => {
 
-  /*TODO: Center when activate*/
   const [isFormOpen, setFormOpen] = useState(false);
   const [name, setName] = useState("");
   const [error, setError] = useState(false);

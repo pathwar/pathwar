@@ -3,6 +3,12 @@ import {isEmpty} from "ramda";
 import {Button, Form} from "tabler-react";
 import {FormattedMessage} from "react-intl";
 
+const styles = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+}
+
 const createOrganizationButton = () => {
 
   const [isFormOpen, setFormOpen] = useState(false);
@@ -32,19 +38,20 @@ const createOrganizationButton = () => {
   };
 
   return (
-    <>
+    <div style={styles}>
       <Button
         color="success"
         onClick={handleFormOpen}
         icon={"users"}
         size="sm"
+        css={styles}
       >
         {"Create Organization"}
       </Button>
       {isFormOpen && (
         <form>
-          <Form.FieldSet>
-            <Form.Group isRequired label="Name">
+          <Form.FieldSet css={styles}>
+            <Form.Group isRequired label="Name" css={styles}>
               <Form.Input
                 name="name"
                 onChange={handleChange}
@@ -61,7 +68,7 @@ const createOrganizationButton = () => {
           </Form.FieldSet>
         </form>
       )}
-    </>
+    </div>
   );
 }
 

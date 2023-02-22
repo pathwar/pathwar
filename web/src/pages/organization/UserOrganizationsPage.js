@@ -30,6 +30,7 @@ const UserOrganizationsPage = () => {
       gravatar_url,
       username,
       email,
+      created_at,
     },
   } = activeUserSession || { user: {} };
 
@@ -50,7 +51,7 @@ const UserOrganizationsPage = () => {
     </Helmet>
     <Page.Content title={pageTitleIntl}>
       <Grid.Row>
-        <Grid.Col width={12} lg={5}>
+        <Grid.Col width={12} lg={4}>
           <ShadowBox>
             <div
               css={{
@@ -66,14 +67,21 @@ const UserOrganizationsPage = () => {
               )}
               <h2 className="mb-0 mt-2">{username}</h2>
               <p>{email}</p>
-              <h3 className="mb-2 mt-4">
+              <h3>
+                <FormattedMessage id="HomePage.createdAt" />
+              </h3>
+              <p>{moment(created_at).format("ll")}</p>
+              <h3 className="mb-2 mt-0">
                 <FormattedMessage id="OrganizationsPage.title" />
               </h3>
+              <h3 className="mb-4 mt-0">
               <UserOrganizationBadges organizations={userOrganizations}/>
+              </h3>
+              <CreateOrganizationButton/>
             </div>
           </ShadowBox>
         </Grid.Col>
-        <Grid.Col xs={12} sm={12} md={6}>
+        <Grid.Col xs={12} sm={12} md={8}>
           <UserOrganizationsList
             userOrganizationsList={userOrganizations}
           />
