@@ -85,7 +85,7 @@ const OrganizationDetailsPage = props => {
                 <FormattedMessage id="HomePage.createdAt" />
               </h3>
               <p >{moment(organization.created_at).format("ll")}</p>
-              <InviteOrganizationButton />
+              <InviteOrganizationButton organizationID={organization.id} organizationName={organization.name}/>
             </div>
           </ShadowBox>
         </Grid.Col>

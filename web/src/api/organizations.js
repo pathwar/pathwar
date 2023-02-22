@@ -8,3 +8,10 @@ export function getAllOrganizations() {
 export function getOrganizationDetails(organizationID) {
   return baseApi.get(`/organization?organization_id=${organizationID}`);
 }
+
+export function postInviteUserToOrganization(organizationID, name) {
+  return baseApi.post(`/organization/invite`, {
+    organization_id: organizationID,
+    user_id: name,
+  });
+}
