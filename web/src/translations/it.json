@@ -16,6 +16,7 @@
   "HomePage.title": "Home",
   "HomePage.createdAt": "created at",
   "HomePage.switchSeason": "Change the season",
+  "HomePage.organizations": "organizations",
   "OrganizationsPage.title": "Organizations",
   "NotAvailablePage.title": "404 - Sorry,",
   "NotAvailablePage.text": "This page is not available yet",

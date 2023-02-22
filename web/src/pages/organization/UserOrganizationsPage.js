@@ -71,8 +71,8 @@ const UserOrganizationsPage = () => {
                 <FormattedMessage id="HomePage.createdAt" />
               </h3>
               <p>{moment(created_at).format("ll")}</p>
-              <h3 className="mb-2 mt-0">
-                <FormattedMessage id="OrganizationsPage.title" />
+              <h3 className="mb-2 mt-2">
+                <FormattedMessage id="HomePage.organizations" />
               </h3>
               <h3 className="mb-4 mt-0">
               <UserOrganizationBadges organizations={userOrganizations}/>
