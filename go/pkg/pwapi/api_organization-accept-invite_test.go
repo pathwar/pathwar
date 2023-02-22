@@ -3,10 +3,11 @@ package pwapi
 import (
 	"context"
 	"fmt"
+	"testing"
+
 	"github.com/stretchr/testify/require"
 	"pathwar.land/pathwar/v2/go/internal/testutil"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
-	"testing"
 )
 
 func TestService_OrganizationAcceptInvite(t *testing.T) {

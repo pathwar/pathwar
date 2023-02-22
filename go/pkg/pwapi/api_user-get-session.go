@@ -74,6 +74,7 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 	if err != nil {
 		return nil, errcode.ErrGetUserOrganizations.Wrap(err)
 	}
+	output.OrganizationInvites = []*pwdb.OrganizationInvite{}
 	return output, nil
 }
 

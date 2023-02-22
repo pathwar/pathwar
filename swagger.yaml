@@ -696,6 +696,10 @@ definitions:
       notifications:
         format: int32
         type: integer
+      organization_invites:
+        items:
+          $ref: '#/definitions/dbOrganizationInvite'
+        type: array
       organizations:
         items:
           $ref: '#/definitions/dbOrganization'
