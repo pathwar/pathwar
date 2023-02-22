@@ -89,7 +89,11 @@ func (svc *service) loadUserOrganizationsInvite(ctx context.Context) ([]*pwdb.Or
 		return nil, errcode.ErrUnauthenticated
 	}
 
-	err = svc.db.Where(pwdb.OrganizationInvite{UserID: userID}).Find(&organizationInvites).Error
+	err = svc.db.
+		Where(pwdb.OrganizationInvite{UserID: userID}).
+		Preload("Organization").
+		Preload("User").
+		Find(&organizationInvites).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, errcode.ErrGetUserOrganizationsInvitations
 	}
