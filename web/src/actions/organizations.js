@@ -3,6 +3,8 @@ import {
   GET_ORGANIZATION_DETAILS_SUCCESS,
   INVITE_USER_TO_ORGANIZATION_FAILED,
   INVITE_USER_TO_ORGANIZATION_SUCCESS,
+  LIST_USER_ORGANIZATIONS_INVITATIONS_FAILED,
+  LIST_USER_ORGANIZATIONS_INVITATIONS_SUCCESS,
   SET_ACTIVE_ORGANIZATION,
   SET_ORGANIZATIONS_LIST,
   SET_ORGANIZATIONS_LIST_FAILED,
@@ -50,6 +52,17 @@ export const fetchOrganizationDetail = organizationID => async dispatch => {
     });
   } catch (error) {
     dispatch({ type: GET_ORGANIZATION_DETAILS_FAILED, payload: { error } });
+  }
+}
+
+export const fetchUserOrganizationsInvitations = userOrganizationsInvitations => async dispatch => {
+  try {
+    dispatch({
+      type: LIST_USER_ORGANIZATIONS_INVITATIONS_SUCCESS,
+      payload: { userOrganizationsInvitations: userOrganizationsInvitations },
+    });
+  } catch (error) {
+    dispatch({ type: LIST_USER_ORGANIZATIONS_INVITATIONS_FAILED, payload: { error } });
   }
 }
 

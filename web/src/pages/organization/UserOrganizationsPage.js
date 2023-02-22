@@ -5,11 +5,11 @@ import {Helmet} from "react-helmet";
 import siteMetaData from "../../constants/metadata";
 import {useDispatch, useSelector} from "react-redux";
 import CreateOrganizationButton from "../../components/organization/CreateOrganizationButton";
-import {fetchOrganizationsList} from "../../actions/organizations";
-import UserOrganizationsList from "../../components/organization/UserOrganizationsList";
+import {fetchOrganizationsList, fetchUserOrganizationsInvitations} from "../../actions/organizations";
 import ShadowBox from "../../components/ShadowBox";
 import moment from "moment/moment";
 import UserOrganizationBadges from "../../components/organization/UserOrganizationBadges";
+import UserOrganizationsInvitationsList from "../../components/organization/UserOrganizationsInvitationsList";
 
 //TODO: Lister les organisations de l'utilisateur dans un tableau
 //TODO: Créer un boutton permettant de créer une organisation pour l'utilisateur
@@ -22,9 +22,8 @@ const UserOrganizationsPage = () => {
   const { title, description } = siteMetaData;
   const dispatch = useDispatch();
   const userOrganizations = useSelector(state => state.organizations.userOrganizationsList);
-  const activeUserSession = useSelector(
-    state => state.userSession.activeUserSession
-  );
+  const activeUserSession = useSelector(state => state.userSession.activeUserSession);
+  const userOrganizationsInvitations = useSelector(state => state.organizations.userOrganizationsInvitationsList);
   const {
     user: {
       gravatar_url,
@@ -40,6 +39,11 @@ const UserOrganizationsPage = () => {
     }
   }, [userOrganizations, dispatch]);
 
+  useEffect(() => {
+    if (!userOrganizationsInvitations) {
+      dispatch(fetchUserOrganizationsInvitations());
+    }
+  }, [userOrganizationsInvitations, dispatch]);
 
   return (
     <>
@@ -82,8 +86,8 @@ const UserOrganizationsPage = () => {
           </ShadowBox>
         </Grid.Col>
         <Grid.Col xs={12} sm={12} md={8}>
-          <UserOrganizationsList
-            userOrganizationsList={userOrganizations}
+          <UserOrganizationsInvitationsList
+            userOrganizationsInvitationsList={userOrganizations}
           />
         </Grid.Col>
       </Grid.Row>

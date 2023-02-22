@@ -1,6 +1,6 @@
 import {
   CLEAN_CHALLENGE_DETAIL, CLEAN_ORGANIZATION_DETAILS,
-  GET_ORGANIZATION_DETAILS_SUCCESS,
+  GET_ORGANIZATION_DETAILS_SUCCESS, LIST_USER_ORGANIZATIONS_INVITATIONS_SUCCESS,
   SET_ACTIVE_ORGANIZATION,
   SET_ORGANIZATIONS_LIST,
   SET_USER_ORGANIZATIONS_LIST,
@@ -13,6 +13,7 @@ const initialState = {
     activeOrganization: undefined,
     allOrganizationsList: undefined,
     organizationInDetail: undefined,
+    userOrganizationsInvitations: undefined,
   },
 };
 
@@ -43,6 +44,12 @@ export default function organizationsReducer(
       return {
         ...state,
         organizationInDetail: action.payload.organization,
+      }
+
+    case LIST_USER_ORGANIZATIONS_INVITATIONS_SUCCESS:
+      return {
+        ...state,
+        userOrganizationsInvitations: action.payload.userOrganizationsInvitations,
       }
 
       //Don't want to reload the page when we change the organization subpage
