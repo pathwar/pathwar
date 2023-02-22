@@ -74,8 +74,27 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 	if err != nil {
 		return nil, errcode.ErrGetUserOrganizations.Wrap(err)
 	}
-	output.OrganizationInvites = []*pwdb.OrganizationInvite{}
+	output.OrganizationInvites, err = svc.loadUserOrganizationsInvite(ctx)
+	if err != nil {
+		return nil, errcode.ErrGetUserOrganizationsInvitations.Wrap(err)
+	}
 	return output, nil
+}
+
+func (svc *service) loadUserOrganizationsInvite(ctx context.Context) ([]*pwdb.OrganizationInvite, error) {
+	var organizationInvites []*pwdb.OrganizationInvite
+
+	userID, err := userIDFromContext(ctx, svc.db)
+	if err != nil {
+		return nil, errcode.ErrUnauthenticated
+	}
+
+	err = svc.db.Where(pwdb.OrganizationInvite{UserID: userID}).Find(&organizationInvites).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, errcode.ErrGetUserOrganizationsInvitations
+	}
+
+	return organizationInvites, nil
 }
 
 func (svc *service) loadUserOrganizations(ctx context.Context) ([]*pwdb.Organization, error) {

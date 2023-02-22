@@ -171,6 +171,7 @@ enum ErrCode {
   ErrNotOrganizationOwner = 4094;
   ErrOrganizationUserAlreadyMember = 4095;
   ErrAlreadyInvitedInOrganization = 4096;
+  ErrGetUserOrganizationsInvitations = 4097;
 
   //// Pathwar Server (starting at 5001)
 
