@@ -28,7 +28,7 @@ const createOrganizationButton = () => {
     setFormOpen(!isFormOpen);
   };
 
-  const submitTeamCreate = async event => {
+  const submitOrganizationCreate = async event => {
     event.preventDefault();
     if (isEmpty(name)) {
       setError(true);

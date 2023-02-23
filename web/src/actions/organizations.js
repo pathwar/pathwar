@@ -1,6 +1,6 @@
 import {
   ACCEPT_ORGANIZATION_INVITATION_FAILED,
-  ACCEPT_ORGANIZATION_INVITATION_SUCCESS,
+  ACCEPT_ORGANIZATION_INVITATION_SUCCESS, CREATE_TEAM_FAILED, CREATE_TEAM_SUCCESS,
   GET_ORGANIZATION_DETAILS_FAILED,
   GET_ORGANIZATION_DETAILS_SUCCESS,
   INVITE_USER_TO_ORGANIZATION_FAILED,
@@ -21,6 +21,7 @@ import {
   postInviteUserToOrganization
 } from "../api/organizations";
 import {toast} from "react-toastify";
+import {postCreateTeam} from "../api/seasons";
 
 export const setActiveOrganization = teamObjData => async dispatch => {
   dispatch({
@@ -132,3 +133,25 @@ export const rejectOrganizationInvite = (organizationInviteID) => async dispatch
     console.log('WSH'  + error);
   }
 }
+
+export const createOrganization = (name, gravatar_url) => async dispatch => {
+  try {
+    const response = await postCreateTeam(seasonID, name);
+
+    dispatch({
+      type: CREATE_TEAM_SUCCESS,
+      payload: {
+        team: response.data,
+      },
+    });
+
+    toast.success(`Create team ${name} success!`);
+  } catch (error) {
+    dispatch({
+      type: CREATE_TEAM_FAILED,
+      payload: { error },
+    });
+
+    toast.error(`Create team ERROR!`);
+  }
+};

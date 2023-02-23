@@ -2,6 +2,8 @@ package pwapi
 
 import (
 	"context"
+	"crypto/md5"
+	"fmt"
 
 	"github.com/jinzhu/gorm"
 
@@ -31,6 +33,9 @@ func (svc *service) OrganizationCreate(ctx context.Context, in *OrganizationCrea
 		return nil, errcode.ErrCheckOrganizationUniqueName.Wrap(err)
 	}
 
+	// check for gravatar image
+	gravatarURL := fmt.Sprintf("https://www.gravatar.com/avatar/%x", md5.Sum([]byte(in.GravatarMail)))
+
 	// create new organization
 	organization := pwdb.Organization{
 		Name: in.Name,
@@ -41,7 +46,7 @@ func (svc *service) OrganizationCreate(ctx context.Context, in *OrganizationCrea
 			},
 		},
 		DeletionStatus: pwdb.DeletionStatus_Active,
-		// GravatarURL
+		GravatarURL:    gravatarURL,
 		// Locale
 	}
 
