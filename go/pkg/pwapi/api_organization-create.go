@@ -34,7 +34,7 @@ func (svc *service) OrganizationCreate(ctx context.Context, in *OrganizationCrea
 	}
 
 	// check for gravatar image
-	gravatarURL := fmt.Sprintf("https://www.gravatar.com/avatar/%x", md5.Sum([]byte(in.GravatarMail)))
+	gravatarURL := fmt.Sprintf("https://www.gravatar.com/avatar/%x", md5.Sum([]byte(in.GravatarEmail)))
 
 	// create new organization
 	organization := pwdb.Organization{

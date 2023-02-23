@@ -561,7 +561,7 @@ definitions:
     type: object
   apiOrganizationCreateInput:
     properties:
-      gravatar_mail:
+      gravatar_email:
         type: string
       name:
         type: string

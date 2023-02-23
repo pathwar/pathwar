@@ -514,7 +514,7 @@ message OrganizationList {
 message OrganizationCreate {
   message Input {
     string name = 1;
-    string gravatar_mail = 2;
+    string gravatar_email = 2;
   }
   message Output {
     pathwar.db.Organization organization = 1;
