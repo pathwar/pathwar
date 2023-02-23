@@ -6,6 +6,7 @@ import {FormattedMessage} from "react-intl";
 const styles = {
   display: "flex",
   flexDirection: "column",
+  marginBottom: "0.5rem",
   alignItems: "center",
 }
 
@@ -51,17 +52,25 @@ const createOrganizationButton = () => {
       {isFormOpen && (
         <form>
           <Form.FieldSet css={styles}>
-            <Form.Group isRequired label="Name" css={styles}>
+            <Form.Group isRequired label="Organization Name" css={styles}>
               <Form.Input
                 name="name"
                 onChange={handleChange}
                 invalid={error}
                 cross={error}
-                feedback={error && "Please, insert a name"}
+                feedback={error && "Please, insert an organization name"}
+              />
+            </Form.Group>
+            <Form.Group label="Gravatar email (optional)" css={styles}>
+              <Form.Input
+                name="mail"
+                onChange={handleChange}
+                invalid={error}
+                cross={error}
               />
             </Form.Group>
             <Form.Group>
-              <Button type="submit" color="primary" className="ml-auto">
+              <Button type="submit" color="success" className="ml-auto">
                 <FormattedMessage id="InviteOrganizationMemberButton.send" />
               </Button>
             </Form.Group>

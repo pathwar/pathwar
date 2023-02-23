@@ -9,6 +9,7 @@ const styles = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  marginBottom: "0.5rem",
 }
 
 const InviteOrganizationButton = ({organizationID, organizationName}) => {
@@ -65,7 +66,7 @@ const InviteOrganizationButton = ({organizationID, organizationName}) => {
               />
             </Form.Group>
             <Form.Group>
-              <Button type="submit" color="primary" className="ml-auto">
+              <Button type="submit" color="success" className="ml-auto">
                 <FormattedMessage id="CreateTeamButton.send" />
               </Button>
             </Form.Group>
