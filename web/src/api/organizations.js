@@ -15,3 +15,10 @@ export function postInviteUserToOrganization(organizationID, name) {
     user_id: name,
   });
 }
+
+export function postAnswerOrganizationInvitation(organizationInviteID, accept) {
+  return baseApi.post(`/organization/invite/accept`, {
+    organization_invite_id: organizationInviteID,
+    accept: accept,
+  });
+}

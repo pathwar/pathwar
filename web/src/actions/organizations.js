@@ -1,16 +1,25 @@
 import {
+  ACCEPT_ORGANIZATION_INVITATION_FAILED,
+  ACCEPT_ORGANIZATION_INVITATION_SUCCESS,
   GET_ORGANIZATION_DETAILS_FAILED,
   GET_ORGANIZATION_DETAILS_SUCCESS,
   INVITE_USER_TO_ORGANIZATION_FAILED,
   INVITE_USER_TO_ORGANIZATION_SUCCESS,
   LIST_USER_ORGANIZATIONS_INVITATIONS_FAILED,
   LIST_USER_ORGANIZATIONS_INVITATIONS_SUCCESS,
+  REJECT_ORGANIZATION_INVITATION_FAILED,
+  REJECT_ORGANIZATION_INVITATION_SUCCESS,
   SET_ACTIVE_ORGANIZATION,
   SET_ORGANIZATIONS_LIST,
   SET_ORGANIZATIONS_LIST_FAILED,
   SET_USER_ORGANIZATIONS_LIST,
 } from "../constants/actionTypes";
-import {getAllOrganizations, getOrganizationDetails, postInviteUserToOrganization} from "../api/organizations";
+import {
+  getAllOrganizations,
+  getOrganizationDetails,
+  postAnswerOrganizationInvitation,
+  postInviteUserToOrganization
+} from "../api/organizations";
 import {toast} from "react-toastify";
 
 export const setActiveOrganization = teamObjData => async dispatch => {
@@ -82,5 +91,44 @@ export const inviteUserToOrganization = (organizationID, name, organizationName)
       payload: { error },
     });
     toast.error(`invite ${name} to ${organizationName} fail!`);
+  }
+}
+
+export const acceptOrganizationInvite = (organizationInviteID) => async dispatch => {
+  try {
+    const response = await postAnswerOrganizationInvitation(organizationInviteID, true);
+    dispatch({
+      type: ACCEPT_ORGANIZATION_INVITATION_SUCCESS,
+      payload: {
+        team: response.data,
+      },
+    });
+    toast.success(`accept invitation success!`);
+  } catch (error) {
+    dispatch({
+      type: ACCEPT_ORGANIZATION_INVITATION_FAILED,
+      payload: { error },
+    });
+    toast.error(`accept invitation fail!`);
+  }
+}
+
+export const rejectOrganizationInvite = (organizationInviteID) => async dispatch => {
+  try {
+    const response = await postAnswerOrganizationInvitation(organizationInviteID, false);
+    dispatch({
+      type: REJECT_ORGANIZATION_INVITATION_SUCCESS,
+      payload: {
+        team: response.data,
+      },
+    });
+    toast.success(`reject invitation success!`);
+  } catch (error) {
+    dispatch({
+      type: REJECT_ORGANIZATION_INVITATION_FAILED,
+      payload: { error },
+    });
+    toast.error(`reject invitation fail!`);
+    console.log('WSH'  + error);
   }
 }
