@@ -54,17 +54,15 @@ export default function organizationsReducer(
       }
 
     case ACCEPT_ORGANIZATION_INVITATION_SUCCESS:
-      const newAcceptInvitations = state.userOrganizationsInvitations.filter(invitation => invitation.id !== action.payload.organizationInviteID)
       return {
         ...state,
-        userOrganizationsInvitations: newAcceptInvitations,
+        userOrganizationsInvitations: state.userOrganizationsInvitations.filter(invitation => invitation.id !== action.payload.organizationInviteID)
       }
 
     case REJECT_ORGANIZATION_INVITATION_SUCCESS:
-      const newRejectInvitations = state.userOrganizationsInvitations.filter(invitation => invitation.id !== action.payload.organizationInviteID)
       return {
         ...state,
-        userOrganizationsInvitations: newRejectInvitations,
+        userOrganizationsInvitations: state.userOrganizationsInvitations.filter(invitation => invitation.id !== action.payload.organizationInviteID)
       }
 
       //Don't want to reload the page when we change the organization subpage
