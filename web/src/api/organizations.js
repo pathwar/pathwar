@@ -22,3 +22,10 @@ export function postAnswerOrganizationInvitation(organizationInviteID, accept) {
     accept: accept,
   });
 }
+
+export function postCreateOrganization(name, gravatarEmail) {
+  return baseApi.post(`/organization`, {
+    name: name,
+    gravatar_email: gravatarEmail,
+  });
+}

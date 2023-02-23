@@ -1,6 +1,10 @@
 import {
   ACCEPT_ORGANIZATION_INVITATION_FAILED,
-  ACCEPT_ORGANIZATION_INVITATION_SUCCESS, CREATE_TEAM_FAILED, CREATE_TEAM_SUCCESS,
+  ACCEPT_ORGANIZATION_INVITATION_SUCCESS,
+  CREATE_ORGANIZATION_FAILED,
+  CREATE_ORGANIZATION_SUCCESS,
+  CREATE_TEAM_FAILED,
+  CREATE_TEAM_SUCCESS,
   GET_ORGANIZATION_DETAILS_FAILED,
   GET_ORGANIZATION_DETAILS_SUCCESS,
   INVITE_USER_TO_ORGANIZATION_FAILED,
@@ -17,7 +21,7 @@ import {
 import {
   getAllOrganizations,
   getOrganizationDetails,
-  postAnswerOrganizationInvitation,
+  postAnswerOrganizationInvitation, postCreateOrganization,
   postInviteUserToOrganization
 } from "../api/organizations";
 import {toast} from "react-toastify";
@@ -130,28 +134,27 @@ export const rejectOrganizationInvite = (organizationInviteID) => async dispatch
       payload: { error },
     });
     toast.error(`reject invitation fail!`);
-    console.log('WSH'  + error);
   }
 }
 
-export const createOrganization = (name, gravatar_url) => async dispatch => {
+export const createOrganization = (name, gravatarEmail) => async dispatch => {
   try {
-    const response = await postCreateTeam(seasonID, name);
+    const response = await postCreateOrganization(name, gravatarEmail);
 
     dispatch({
-      type: CREATE_TEAM_SUCCESS,
+      type: CREATE_ORGANIZATION_SUCCESS,
       payload: {
         team: response.data,
       },
     });
 
-    toast.success(`Create team ${name} success!`);
+    toast.success(`Create organization ${name} success!`);
   } catch (error) {
     dispatch({
-      type: CREATE_TEAM_FAILED,
+      type: CREATE_ORGANIZATION_FAILED,
       payload: { error },
     });
 
-    toast.error(`Create team ERROR!`);
+    toast.error(`Create organization ERROR!`);
   }
 };
