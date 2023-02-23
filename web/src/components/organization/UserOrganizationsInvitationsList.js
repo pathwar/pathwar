@@ -6,19 +6,10 @@ import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
 import {Link} from "gatsby";
 import {useTheme} from "emotion-theming";
-import {
-  acceptOrganizationInvite as acceptOrganizationInviteAction,
-  rejectOrganizationInvite as rejectOrganizationInviteAction,
-} from "../../actions/organizations";
-import {useDispatch} from "react-redux";
+import AcceptOrganizationInviteButton from "./AcceptOrganizationInviteButton";
 
 const OrganizationsInvitationsRows = ({ organizationsInvitations }) => {
   const currentTheme = useTheme();
-  const dispatch = useDispatch();
-  const acceptOrganizationInvite = (organizationInviteID) =>
-    dispatch(acceptOrganizationInviteAction(organizationInviteID));
-  const rejectOrganizationInvite = (organizationInviteID) =>
-    dispatch(rejectOrganizationInviteAction(organizationInviteID));
 
   return organizationsInvitations.map((item, idx) => {
     return (
@@ -45,10 +36,7 @@ const OrganizationsInvitationsRows = ({ organizationsInvitations }) => {
 
         <Table.Col alignContent="center">{item.user.slug}</Table.Col>
         <Table.Col alignContent="center">
-          <Button.List>
-            <Button color="success" className="mx-lg-auto" onClick={() => acceptOrganizationInvite(item.id)}>✔</Button>
-            <Button color="red" className="ml-auto" onClick={() => rejectOrganizationInvite(item.id)}>✖</Button>
-          </Button.List>
+          <AcceptOrganizationInviteButton organizationInvite={item} />
         </Table.Col>
       </Table.Row>
     );

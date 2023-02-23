@@ -96,11 +96,11 @@ export const inviteUserToOrganization = (organizationID, name, organizationName)
 
 export const acceptOrganizationInvite = (organizationInviteID) => async dispatch => {
   try {
-    const response = await postAnswerOrganizationInvitation(organizationInviteID, true);
+    await postAnswerOrganizationInvitation(organizationInviteID, true);
     dispatch({
       type: ACCEPT_ORGANIZATION_INVITATION_SUCCESS,
       payload: {
-        team: response.data,
+        organizationInviteID: organizationInviteID,
       },
     });
     toast.success(`accept invitation success!`);
@@ -115,11 +115,11 @@ export const acceptOrganizationInvite = (organizationInviteID) => async dispatch
 
 export const rejectOrganizationInvite = (organizationInviteID) => async dispatch => {
   try {
-    const response = await postAnswerOrganizationInvitation(organizationInviteID, false);
+    await postAnswerOrganizationInvitation(organizationInviteID, false);
     dispatch({
       type: REJECT_ORGANIZATION_INVITATION_SUCCESS,
       payload: {
-        team: response.data,
+        organizationInviteID: organizationInviteID,
       },
     });
     toast.success(`reject invitation success!`);

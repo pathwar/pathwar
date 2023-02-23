@@ -12,7 +12,7 @@ import TeamsOnOrganizationList from "../../components/organization/AllTeamsOnOrg
 import {useTheme} from "emotion-theming";
 import {css} from "@emotion/core";
 import OrganizationSubMenu from "../../components/organization/OrganizationSubMenu";
-import InviteOrganizationButton from "../../components/organization/inviteOrganizationButton";
+import InviteOrganizationButton from "../../components/organization/InviteOrganizationButton";
 
 const wrapper = css`
 
@@ -32,7 +32,6 @@ const wrapper = css`
 const OrganizationDetailsPage = props => {
   const intl = useIntl();
   const pageTitleIntl = intl.formatMessage({ id: "OrganizationsPage.title" });
-  const currentTheme = useTheme();
 
   const dispatch = useDispatch();
   const organization = useSelector(state => state.organizations.organizationInDetail);
