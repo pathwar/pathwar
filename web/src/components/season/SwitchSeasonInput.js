@@ -6,20 +6,17 @@ import {Autocomplete} from "@material-ui/lab";
 import {TextField} from "@material-ui/core";
 import {switchSeason} from "../../actions/seasons";
 import {Button} from "tabler-react";
+import {fetchUserSession} from "../../actions/userSession";
 
 const SwitchSeasonInput = ({seasons}) => {
   const dispatch = useDispatch();
-  const setActiveSeasonDispatch = seasonSlug => dispatch(switchSeason(seasonSlug));
+  const setActiveSeasonDispatch = season => dispatch(switchSeason(season));
   const [season, setSeason] = React.useState('');
 
   const SwitchSeason = async seasonSlug => {
-    setActiveSeasonDispatch(seasonSlug).then(response => {
-      if (response.status === 200) {
-        window.location.reload();
-      }
-      return response;
-    });
-  };
+    await setActiveSeasonDispatch(seasonSlug);
+    window.location.reload();
+  }
 
   return (
     <Card>
