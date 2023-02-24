@@ -12,6 +12,7 @@ import TeamsOnOrganizationList from "../../components/organization/AllTeamsOnOrg
 import {css} from "@emotion/core";
 import OrganizationSubMenu from "../../components/organization/OrganizationSubMenu";
 import InviteOrganizationButton from "../../components/organization/InviteOrganizationButton";
+import CreateTeamButton from "../../components/team/CreateTeamButton";
 
 const wrapper = css`
 
@@ -91,7 +92,7 @@ const OrganizationDetailsPage = props => {
               {adminActions ?
                 <>
                 <InviteOrganizationButton organizationID={organization.id} organizationName={organization.name}/>
-                <InviteOrganizationButton organizationID={organization.id} organizationName={organization.name}/>
+                <CreateTeamButton organizationID={organization.id} organizationName={organization.name}/>
                 </>: null
               }
             </div>
