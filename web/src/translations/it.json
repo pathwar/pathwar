@@ -15,6 +15,7 @@
   "coupon.validate": "Validate",
   "HomePage.title": "Home",
   "HomePage.createdAt": "created at",
+  "HomePage.activeSeason": "Active season",
   "HomePage.switchSeason": "Change the season",
   "HomePage.organizations": "organizations",
   "OrganizationsPage.title": "Organizations",
