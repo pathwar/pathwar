@@ -7,6 +7,7 @@ import ShadowBox from "../components/ShadowBox";
 import iconPwn from "../images/icon-pwn-small.svg";
 
 import {
+  fetchAllSeasons,
   fetchChallenges,
   fetchTeamDetails as fetchTeamDetailsAction,
 } from "../actions/seasons";
@@ -50,6 +51,7 @@ const HomePage = () => {
   const activeSeason = useSelector(state => state.seasons.activeSeason);
   const teamDetails = useSelector(state => state.seasons.teamInDetail);
   const userOrganizations = useSelector(state => state.organizations.userOrganizationsList);
+  const allSeasons = useSelector(state => state.seasons.allSeasons);
 
   const [rank, setRank] = useState();
 
@@ -67,11 +69,18 @@ const HomePage = () => {
     }
   }, [activeSeason, activeTeam, rank]);
 
+
   useEffect(() => {
     if (activeTeam && !teamDetails) {
       dispatch(fetchTeamDetailsAction(activeTeam.team_id));
     }
   }, [activeTeam, dispatch, teamDetails]);
+
+  useEffect(() => {
+    if (!allSeasons) {
+      dispatch(fetchAllSeasons());
+    }
+  }, [allSeasons, dispatch]);
 
   useEffect(() => {
     if (isNil(activeChallenges) && activeSeason) {
@@ -110,12 +119,28 @@ const HomePage = () => {
                 <h3 className="mb-0 mt-2">
                   <FormattedMessage id="HomePage.activeSeason" />
                 </h3>
-                <p>{activeSeason.slug}</p>
+                <p>{activeSeason ? activeSeason.name : ''}</p>
                 <h3 className="mb-2 mt-2">
                   <FormattedMessage id="HomePage.organizations" />
                 </h3>
                 <UserOrganizationBadges organizations={userOrganizations}/>
               </div>
+            </ShadowBox>
+            <ShadowBox>
+              <h2>
+                <FormattedMessage id="HomePage.switchSeason" />
+              </h2>
+              <>
+                <div
+                  css={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <SwitchSeasonInput seasons={allSeasons}/>
+                </div>
+              </>
             </ShadowBox>
           </Grid.Col>
           <Grid.Col width={12} lg={8}>
@@ -153,22 +178,6 @@ const HomePage = () => {
               )}
             </ShadowBox>
             <UserChallengesView challenges={activeChallenges} />
-            <ShadowBox>
-              <h2>
-                <FormattedMessage id="HomePage.switchSeason" />
-              </h2>
-                <>
-                  <div
-                    css={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                  <SwitchSeasonInput />
-                  </div>
-                </>
-            </ShadowBox>
           </Grid.Col>
         </Grid.Row>
       </div>

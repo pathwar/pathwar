@@ -1,14 +1,13 @@
 import { FormattedMessage } from "react-intl";
 import * as React from "react";
 import { Card } from "tabler-react";
-import { useDispatch } from "react-redux";
-import { Button } from "tabler-react";
+import {useDispatch} from "react-redux";
+import {Autocomplete} from "@material-ui/lab";
+import {TextField} from "@material-ui/core";
 import {switchSeason} from "../../actions/seasons";
+import {Button} from "tabler-react";
 
-const SwitchSeasonInput = () => {
-
-  const [season, setSeason] = React.useState('');
-
+const SwitchSeasonInput = ({seasons}) => {
   const dispatch = useDispatch();
   const setActiveSeasonDispatch = seasonSlug => dispatch(switchSeason(seasonSlug));
 
@@ -23,17 +22,28 @@ const SwitchSeasonInput = () => {
 
   return (
     <Card>
-      <Card.Header>
+      <Card.Header css={{ display: "flex", justifyContent: "space-around" }}>
         <Card.Title>
           <FormattedMessage id="SwitchSeasonInput.title"/>
         </Card.Title>
       </Card.Header>
-        <input value={season} onChange={e => setSeason(e.target.value)}/>
-        <Button.List>
-          <Button onClick={() => SwitchSeason(season)} color="primary">
-            <FormattedMessage id="SwitchSeasonInput.action"/>
-          </Button>
-        </Button.List>
+      <Autocomplete
+        freeSolo
+        autoComplete
+        autoHighlight
+        options={seasons ? seasons.map(season => season.season.slug) : []}
+        renderInput={(params) => (
+          <TextField {...params}
+                     variant="outlined"
+                     label="Search Box"
+          />
+        )}
+      />
+      <Button.List css={{ display: "flex", justifyContent: "space-around" }}>
+        <Button onClick={() => SwitchSeason(season)} color="primary">
+          <FormattedMessage id="SwitchSeasonInput.action"/>
+        </Button>
+      </Button.List>
     </Card>
   );
 };

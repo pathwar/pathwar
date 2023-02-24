@@ -91,7 +91,7 @@ export const setActiveSeason = seasonData => async dispatch => {
 export const fetchAllSeasons = () => async dispatch => {
   try {
     const response = await getAllSeasons();
-    const allSeasons = response.data.items;
+    const allSeasons = response.data.seasons;
 
     dispatch({
       type: GET_ALL_SEASONS_SUCCESS,
