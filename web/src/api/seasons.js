@@ -25,8 +25,8 @@ export function getAllSeasonTeams(seasonID) {
   return baseApi.get(`/teams?season_id=${urlIdParam}`);
 }
 
-export function postCreateTeam(seasonID, name) {
-  return baseApi.post(`/team`, { season_id: seasonID, name: name });
+export function postCreateTeam(seasonID, organizationID, name) {
+  return baseApi.post(`/team`, { season_id: seasonID, name: name, organization_id: organizationID });
 }
 
 //Challenge calls

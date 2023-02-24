@@ -145,9 +145,9 @@ export const setActiveTeam = teamData => async dispatch => {
   });
 };
 
-export const createTeam = (seasonID, name) => async dispatch => {
+export const createTeam = (seasonID, organizationID, name) => async dispatch => {
   try {
-    const response = await postCreateTeam(seasonID, name);
+    const response = await postCreateTeam(seasonID, organizationID, name);
 
     dispatch({
       type: CREATE_TEAM_SUCCESS,

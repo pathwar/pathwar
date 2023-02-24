@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {isEmpty} from "ramda";
 import {Button, Form} from "tabler-react";
 import {FormattedMessage} from "react-intl";
-import {inviteUserToOrganization as InviteUserToOrganizationAction} from "../../actions/organizations";
+import {createTeam as createTeamAction} from "../../actions/seasons";
 import {useDispatch} from "react-redux";
 import {Autocomplete} from "@material-ui/lab";
 import {TextField} from "@material-ui/core";
@@ -19,27 +19,26 @@ const CreateTeamButton = ({organizationID, allSeasons}) => {
   const [isFormOpen, setFormOpen] = useState(false);
   const [season, setSeason] = useState("");
   const [error, setError] = useState(false);
-  const inviteUserToOrganization = (organizationID, name, organizationName) =>
-    dispatch(InviteUserToOrganizationAction(organizationID, name, organizationName));
+  const createTeam = (organizationID, organizationName, name) =>
+    dispatch(createTeamAction(organizationID, organizationName, name));
 
   useEffect(() => {
-    if (!isEmpty(name)) {
+    if (!isEmpty(season)) {
       setError(false);
     }
-  }, [name]);
+  }, [season]);
 
-  const handleChange = event => setName(event.target.value);
   const handleFormOpen = event => {
     event.preventDefault();
     setFormOpen(!isFormOpen);
   };
 
-  const submitOrganizationInvite = async event => {
+  const submitCreateTeam = async event => {
     event.preventDefault();
-    if (isEmpty(name)) {
+    if (isEmpty(season)) {
       setError(true);
     } else {
-      await inviteUserToOrganization(organizationID, name, organizationName);
+      await createTeam(organizationID, season, organizationName);
       setFormOpen(false);
     }
   }
@@ -61,14 +60,15 @@ const CreateTeamButton = ({organizationID, allSeasons}) => {
         {"Create new team"}
       </Button>
       {isFormOpen && (
-        <form onSubmit={submitOrganizationInvite}>
+        <form onSubmit={submitCreateTeam}>
           <Form.FieldSet css={styles}>
             <Form.Group isRequired label="Season" css={styles}>
               <Autocomplete
                 freeSolo
                 autoComplete
                 autoHighlight
-                options={[]}
+                onInputChange={(event, newInputValue) => {setSeason(newInputValue)}}
+                options={allSeasons ? [] : []}
                 css={{width: "213px", backgroundColor: "white", height: "38px"}}
                 renderInput={(params) => (
                   <TextField {...params}
