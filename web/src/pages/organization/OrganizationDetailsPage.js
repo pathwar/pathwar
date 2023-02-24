@@ -9,7 +9,6 @@ import ShadowBox from "../../components/ShadowBox";
 import {FormattedMessage, useIntl} from "react-intl";
 import moment from "moment/moment";
 import TeamsOnOrganizationList from "../../components/organization/AllTeamsOnOrganization";
-import {useTheme} from "emotion-theming";
 import {css} from "@emotion/core";
 import OrganizationSubMenu from "../../components/organization/OrganizationSubMenu";
 import InviteOrganizationButton from "../../components/organization/InviteOrganizationButton";
@@ -36,6 +35,9 @@ const OrganizationDetailsPage = props => {
   const dispatch = useDispatch();
   const organization = useSelector(state => state.organizations.organizationInDetail);
 
+  const activeUserSession = useSelector(
+    state => state.userSession.activeUserSession
+  );
   const fetchOrganizationDetail = organizationID =>
     dispatch(fetchOrganizationDetailAction(organizationID));
 
@@ -52,6 +54,8 @@ const OrganizationDetailsPage = props => {
   if (!organization) {
     return <Dimmer active loader />;
   }
+
+  const adminActions = activeUserSession && organization.members.filter(member => member.role === "Owner" && member.user.id === activeUserSession.user.id).length > 0;
 
   return (
     <Page.Content title={pageTitleIntl} css={wrapper}>
@@ -84,8 +88,12 @@ const OrganizationDetailsPage = props => {
                 <FormattedMessage id="HomePage.createdAt" />
               </h3>
               <p >{moment(organization.created_at).format("ll")}</p>
-              <InviteOrganizationButton organizationID={organization.id} organizationName={organization.name}/>
-              <InviteOrganizationButton organizationID={organization.id} organizationName={organization.name}/>
+              {adminActions ?
+                <>
+                <InviteOrganizationButton organizationID={organization.id} organizationName={organization.name}/>
+                <InviteOrganizationButton organizationID={organization.id} organizationName={organization.name}/>
+                </>: null
+              }
             </div>
           </ShadowBox>
         </Grid.Col>

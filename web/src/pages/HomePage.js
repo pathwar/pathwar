@@ -42,6 +42,7 @@ const HomePage = () => {
       username,
       email,
       created_at,
+      id,
     },
   } = activeUserSession || { user: {} };
 
