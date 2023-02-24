@@ -21,7 +21,7 @@ const MembersOnOrganizationRow = ({ members }) => {
           <span>{item.user.username}</span>
         </Table.Col>
         <Table.Col alignContent="center">
-          {item.role}
+          {item.role ? item.role : "Member"}
         </Table.Col>
         <Table.Col alignContent="center">
           {moment(item.created_at).format("ll")}
