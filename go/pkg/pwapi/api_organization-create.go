@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/md5"
 	"fmt"
-
 	"github.com/jinzhu/gorm"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
@@ -33,6 +32,9 @@ func (svc *service) OrganizationCreate(ctx context.Context, in *OrganizationCrea
 		return nil, errcode.ErrCheckOrganizationUniqueName.Wrap(err)
 	}
 
+	if in.GravatarEmail == "" {
+		in.GravatarEmail = in.Name + "@pathwar.net"
+	}
 	// check for gravatar image
 	gravatarURL := fmt.Sprintf("https://s.gravatar.com/avatar/%x", md5.Sum([]byte(in.GravatarEmail)))
 
