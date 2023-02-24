@@ -6,7 +6,6 @@ import {Autocomplete} from "@material-ui/lab";
 import {TextField} from "@material-ui/core";
 import {switchSeason} from "../../actions/seasons";
 import {Button} from "tabler-react";
-import {fetchUserSession} from "../../actions/userSession";
 
 const SwitchSeasonInput = ({seasons}) => {
   const dispatch = useDispatch();
@@ -30,7 +29,7 @@ const SwitchSeasonInput = ({seasons}) => {
         autoComplete
         autoHighlight
         onInputChange={(event, newInputValue) => {setSeason(newInputValue)}}
-        options={seasons ? seasons.map(season => season.season.slug) : []}
+        options={seasons ? seasons.filter(season => season.team).map(season => season.season.slug) : []}
         renderInput={(params) => (
           <TextField {...params}
                      variant="outlined"

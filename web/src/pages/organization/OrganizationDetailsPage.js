@@ -85,6 +85,7 @@ const OrganizationDetailsPage = props => {
               </h3>
               <p >{moment(organization.created_at).format("ll")}</p>
               <InviteOrganizationButton organizationID={organization.id} organizationName={organization.name}/>
+              <InviteOrganizationButton organizationID={organization.id} organizationName={organization.name}/>
             </div>
           </ShadowBox>
         </Grid.Col>
