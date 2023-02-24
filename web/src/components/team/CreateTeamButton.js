@@ -14,19 +14,12 @@ const styles = {
   marginBottom: "0.5rem",
 }
 
-const CreateTeamButton = ({organizationID, allSeasons}) => {
+const CreateTeamButton = ({organizationID, seasons}) => {
   const dispatch = useDispatch();
   const [isFormOpen, setFormOpen] = useState(false);
   const [season, setSeason] = useState("");
-  const [error, setError] = useState(false);
-  const createTeam = (organizationID, organizationName, name) =>
-    dispatch(createTeamAction(organizationID, organizationName, name));
-
-  useEffect(() => {
-    if (!isEmpty(season)) {
-      setError(false);
-    }
-  }, [season]);
+  const createTeam = (seasonID, organizationID, name) =>
+    dispatch(createTeamAction(seasonID, organizationID, name));
 
   const handleFormOpen = event => {
     event.preventDefault();
@@ -35,10 +28,8 @@ const CreateTeamButton = ({organizationID, allSeasons}) => {
 
   const submitCreateTeam = async event => {
     event.preventDefault();
-    if (isEmpty(season)) {
-      setError(true);
-    } else {
-      await createTeam(organizationID, season, organizationName);
+    if (!isEmpty(season)) {
+      await createTeam(season, organizationID, "");
       setFormOpen(false);
     }
   }
@@ -68,7 +59,7 @@ const CreateTeamButton = ({organizationID, allSeasons}) => {
                 autoComplete
                 autoHighlight
                 onInputChange={(event, newInputValue) => {setSeason(newInputValue)}}
-                options={allSeasons ? [] : []}
+                options={seasons ? seasons.filter(season => !season.team).map(season => season.season.slug) : []}
                 css={{width: "213px", backgroundColor: "white", height: "38px"}}
                 renderInput={(params) => (
                   <TextField {...params}

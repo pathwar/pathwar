@@ -13,6 +13,7 @@ import {css} from "@emotion/core";
 import OrganizationSubMenu from "../../components/organization/OrganizationSubMenu";
 import InviteOrganizationButton from "../../components/organization/InviteOrganizationButton";
 import CreateTeamButton from "../../components/team/CreateTeamButton";
+import {fetchAllSeasons} from "../../actions/seasons";
 
 const wrapper = css`
 
@@ -35,6 +36,7 @@ const OrganizationDetailsPage = props => {
 
   const dispatch = useDispatch();
   const organization = useSelector(state => state.organizations.organizationInDetail);
+  const allSeasons = useSelector(state => state.seasons.allSeasons);
 
   const activeUserSession = useSelector(
     state => state.userSession.activeUserSession
@@ -51,6 +53,12 @@ const OrganizationDetailsPage = props => {
 
     return () => dispatch({ type: CLEAN_ORGANIZATION_DETAILS });
    }, []);
+
+  useEffect(() => {
+    if (!allSeasons) {
+      dispatch(fetchAllSeasons());
+    }
+  }, [allSeasons, dispatch]);
 
   if (!organization) {
     return <Dimmer active loader />;
@@ -92,7 +100,7 @@ const OrganizationDetailsPage = props => {
               {adminActions ?
                 <>
                 <InviteOrganizationButton organizationID={organization.id} organizationName={organization.name}/>
-                <CreateTeamButton organizationID={organization.id} organizationName={organization.name}/>
+                <CreateTeamButton organizationID={organization.id} seasons={allSeasons}/>
                 </>: null
               }
             </div>
