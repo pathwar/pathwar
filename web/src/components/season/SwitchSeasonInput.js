@@ -10,6 +10,7 @@ import {Button} from "tabler-react";
 const SwitchSeasonInput = ({seasons}) => {
   const dispatch = useDispatch();
   const setActiveSeasonDispatch = seasonSlug => dispatch(switchSeason(seasonSlug));
+  const [season, setSeason] = React.useState('');
 
   const SwitchSeason = async seasonSlug => {
     setActiveSeasonDispatch(seasonSlug).then(response => {
@@ -31,6 +32,7 @@ const SwitchSeasonInput = ({seasons}) => {
         freeSolo
         autoComplete
         autoHighlight
+        onInputChange={(event, newInputValue) => {setSeason(newInputValue)}}
         options={seasons ? seasons.map(season => season.season.slug) : []}
         renderInput={(params) => (
           <TextField {...params}
