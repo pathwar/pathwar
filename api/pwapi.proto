@@ -469,6 +469,7 @@ message TeamSendInvite {
 message TeamAcceptInvite {
   message Input {
     string team_invite_id = 1 [(gogoproto.customname) = "TeamInviteID"];
+    bool accept = 2;
   }
   message Output {
     pathwar.db.TeamMember team_member = 1;

@@ -36,6 +36,15 @@ func (svc *service) TeamAcceptInvite(ctx context.Context, in *TeamAcceptInvite_I
 		return nil, pwdb.GormToErrcode(err)
 	}
 
+	//TODO: Create an activity "invitation refused"
+	if !in.Accept {
+		err = svc.db.Delete(&teamInvite).Error
+		if err != nil {
+			return nil, pwdb.GormToErrcode(err)
+		}
+		return &TeamAcceptInvite_Output{}, nil
+	}
+
 	// check if user already has a team in this season
 	var seasonMemberShipCount int
 	err = svc.db.

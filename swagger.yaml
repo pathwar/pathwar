@@ -638,6 +638,9 @@ definitions:
     type: object
   apiTeamAcceptInviteInput:
     properties:
+      accept:
+        format: boolean
+        type: boolean
       team_invite_id:
         type: string
     type: object
