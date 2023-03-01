@@ -16,7 +16,7 @@ import ChallengesPage from "./ChallengesPage";
 import ChallengeDetailsPage from "./ChallengeDetailsPage";
 import StatisticsPage from "./StatisticsPage";
 import SiteWrapper from "../components/SiteWrapper";
-import TeamDetailsPage from "./TeamDetailsPage";
+import TeamDetailsPage from "./team/TeamDetailsPage";
 import SettingsPage from "./SettingsPage";
 import NotAvailablePage from "./NotAvailablePage";
 import * as Sentry from "@sentry/browser";
