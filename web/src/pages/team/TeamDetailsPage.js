@@ -7,9 +7,8 @@ import {Page, Grid, Dimmer, Avatar} from "tabler-react";
 import { fetchTeamDetails as fetchTeamDetailsAction } from "../../actions/seasons";
 import ShadowBox from "../../components/ShadowBox";
 import {FormattedMessage} from "react-intl";
-import moment from "moment";
-import TeamsOnOrganizationList from "../../components/organization/AllTeamsOnOrganization";
 import SwitchSeasonButton from "../../components/season/SwitchSeasonButton";
+import AllMembersOnTeam from "../../components/team/AllMembersOnTeam";
 
 class TeamDetailsPage extends React.PureComponent {
   componentDidMount() {
@@ -54,8 +53,7 @@ class TeamDetailsPage extends React.PureComponent {
             </ShadowBox>
           </Grid.Col>
           <Grid.Col xs={12} sm={12} md={6}>
-            <TeamsOnOrganizationList
-            />
+            <AllMembersOnTeam members={teamInDetail.members} />
           </Grid.Col>
         </Grid.Row>
       </Page.Content>

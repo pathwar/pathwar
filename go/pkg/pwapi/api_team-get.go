@@ -16,7 +16,8 @@ func (svc *service) TeamGet(ctx context.Context, in *TeamGet_Input) (*TeamGet_Ou
 	err := svc.db.
 		Preload("Season").
 		Preload("Organization").
-		Preload("Members").                // FIXME: only if member of the team or if admin
+		Preload("Members").
+		Preload("Members.User").           // FIXME: only if member of the team or if admin
 		Preload("ChallengeSubscriptions"). // FIXME: only if member of the team or if admin
 		Preload("Achievements").
 		Where(pwdb.Team{
