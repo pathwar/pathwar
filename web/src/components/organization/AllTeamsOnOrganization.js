@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Table, Dimmer } from "tabler-react";
+import { Card, Table } from "tabler-react";
 
 // import styles from "./style.module.css";
 import { FormattedMessage } from "react-intl";
@@ -30,7 +30,7 @@ const TeamsOnOrganizationRow = ({ teams }) => {
           {item.score}
         </Table.Col>
         <Table.Col alignContent="center">
-          {item.cash}
+          ${item.cash}
         </Table.Col>
       </Table.Row>
     );
