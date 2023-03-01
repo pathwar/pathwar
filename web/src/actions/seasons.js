@@ -27,6 +27,9 @@ import {
   SET_ACTIVE_TEAM,
   CREATE_TEAM_SUCCESS,
   CREATE_TEAM_FAILED,
+  LIST_USER_ORGANIZATIONS_INVITATIONS_SUCCESS,
+  LIST_USER_ORGANIZATIONS_INVITATIONS_FAILED,
+  LIST_USER_TEAMS_INVITATIONS_SUCCESS, LIST_USER_TEAMS_INVITATIONS_FAILED,
 } from "../constants/actionTypes";
 
 import {
@@ -167,6 +170,17 @@ export const createTeam = (seasonID, organizationID, name) => async dispatch => 
   }
 };
 
+export const fetchUserTeamsInvitations = userTeamsInvitations => async dispatch => {
+  try {
+    dispatch({
+      type: LIST_USER_TEAMS_INVITATIONS_SUCCESS,
+      payload: { userOrganizationsInvitations: userTeamsInvitations },
+    });
+  } catch (error) {
+    dispatch({ type: LIST_USER_TEAMS_INVITATIONS_FAILED, payload: { error } });
+  }
+};
+
 //Challenge actions
 export const fetchChallengeDetail = challengeID => async dispatch => {
   try {
@@ -249,3 +263,4 @@ export const closeChallenge = subscriptionID => async dispatch => {
     toast.error(`Close challenge ERROR!`);
   }
 };
+

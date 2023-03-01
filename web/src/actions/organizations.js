@@ -3,8 +3,6 @@ import {
   ACCEPT_ORGANIZATION_INVITATION_SUCCESS,
   CREATE_ORGANIZATION_FAILED,
   CREATE_ORGANIZATION_SUCCESS,
-  CREATE_TEAM_FAILED,
-  CREATE_TEAM_SUCCESS,
   GET_ORGANIZATION_DETAILS_FAILED,
   GET_ORGANIZATION_DETAILS_SUCCESS,
   INVITE_USER_TO_ORGANIZATION_FAILED,
@@ -55,7 +53,7 @@ export const setUserOrganizationsList = organisations => async dispatch => {
   } catch (error) {
     dispatch({ type: SET_ORGANIZATIONS_LIST_FAILED, payload: { error } });
   }
-}
+};
 
 export const fetchOrganizationDetail = organizationID => async dispatch => {
   try {
@@ -67,7 +65,7 @@ export const fetchOrganizationDetail = organizationID => async dispatch => {
   } catch (error) {
     dispatch({ type: GET_ORGANIZATION_DETAILS_FAILED, payload: { error } });
   }
-}
+};
 
 export const fetchUserOrganizationsInvitations = userOrganizationsInvitations => async dispatch => {
   try {
@@ -78,7 +76,7 @@ export const fetchUserOrganizationsInvitations = userOrganizationsInvitations =>
   } catch (error) {
     dispatch({ type: LIST_USER_ORGANIZATIONS_INVITATIONS_FAILED, payload: { error } });
   }
-}
+};
 
 export const inviteUserToOrganization = (organizationID, name, organizationName) => async dispatch => {
   try {
@@ -97,7 +95,7 @@ export const inviteUserToOrganization = (organizationID, name, organizationName)
     });
     toast.error(`invite ${name} to ${organizationName} fail!`);
   }
-}
+};
 
 export const acceptOrganizationInvite = (organizationInviteID) => async dispatch => {
   try {
@@ -116,7 +114,7 @@ export const acceptOrganizationInvite = (organizationInviteID) => async dispatch
     });
     toast.error(`accept invitation fail!`);
   }
-}
+};
 
 export const rejectOrganizationInvite = (organizationInviteID) => async dispatch => {
   try {
@@ -135,7 +133,7 @@ export const rejectOrganizationInvite = (organizationInviteID) => async dispatch
     });
     toast.error(`reject invitation fail!`);
   }
-}
+};
 
 export const createOrganization = (name, gravatarEmail) => async dispatch => {
   try {
