@@ -76,5 +76,6 @@
   "TeamDetails.stats": "Stats",
   "SwitchSeasonInput.title": "Switch season",
   "SwitchSeasonInput.action": "Apply",
+  "SwitchSeasonButton.title": "Switch to this season",
   "CreateTeamButton.send": "Send"
 }

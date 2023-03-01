@@ -9,6 +9,7 @@ import ShadowBox from "../components/ShadowBox";
 import {FormattedMessage} from "react-intl";
 import moment from "moment";
 import TeamsOnOrganizationList from "../components/organization/AllTeamsOnOrganization";
+import SwitchSeasonButton from "../components/season/SwitchSeasonButton";
 
 class TeamDetailsPage extends React.PureComponent {
   componentDidMount() {
@@ -48,6 +49,7 @@ class TeamDetailsPage extends React.PureComponent {
                   <FormattedMessage id="TeamDetails.stats" />
                 </h3>
                 <p>Score: {teamInDetail.score ? teamInDetail.score : 0} Cash: ${teamInDetail.cash ? teamInDetail.cash : 0}</p>
+                <SwitchSeasonButton seasonID={teamInDetail.season.id}/>
               </div>
             </ShadowBox>
           </Grid.Col>
