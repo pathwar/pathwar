@@ -113,6 +113,10 @@ export const App = () => {
               component={OrganizationTeamsAndSeasonsPage}
             />
             <ProtectedRoute
+              path={`/team/:teamId`}
+              component={TeamDetailsPage}
+            />
+            <ProtectedRoute
               path={`/challenges/:challengeId`}
               component={ChallengeDetailsPage}
             />
