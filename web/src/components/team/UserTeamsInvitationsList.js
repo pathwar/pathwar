@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
 import {Link} from "gatsby";
 import {useTheme} from "emotion-theming";
-import AcceptOrganizationInviteButton from "../organization/AcceptOrganizationInviteButton";
+import AcceptTeamInviteButton from "./AcceptTeamInviteButton";
 
 const TeamsInvitationsRows = ({ teamsInvitations }) => {
   const currentTheme = useTheme();
@@ -34,7 +34,7 @@ const TeamsInvitationsRows = ({ teamsInvitations }) => {
           </Link>
         </Table.Col>
         <Table.Col alignContent="center">
-          <AcceptOrganizationInviteButton organizationInvite={item} organizationName={item.team.organization.name}/>
+          <AcceptTeamInviteButton teamInvite={item} seasonName={item.team.season.name} organizationName={item.team.organization.name}/>
         </Table.Col>
       </Table.Row>
     );

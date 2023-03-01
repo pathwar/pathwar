@@ -3,36 +3,36 @@ import { useDispatch } from "react-redux";
 
 import {Button} from "tabler-react";
 import {
-  acceptOrganizationInvite as acceptOrganizationInviteAction,
-  rejectOrganizationInvite as rejectOrganizationInviteAction
-} from "../../actions/organizations";
+  acceptTeamInvite as acceptTeamInviteAction,
+  rejectTeamInvite as rejectTeamInviteAction
+} from "../../actions/seasons";
 
-const AcceptTeamInviteButton = ({ teamInvite, organizationName }) => {
+const AcceptTeamInviteButton = ({ teamInvite, seasonName, organizationName }) => {
   const dispatch = useDispatch();
-  const acceptOrganizationInvite = (organizationInviteID, organizationName) =>
-    dispatch(acceptOrganizationInviteAction(organizationInviteID, organizationName));
-  const rejectOrganizationInvite = (organizationInviteID, organizationName) =>
-    dispatch(rejectOrganizationInviteAction(organizationInviteID, organizationName));
+  const acceptTeamInvite = (teamInviteID, seasonName, organizationName) =>
+    dispatch(acceptTeamInviteAction(teamInviteID, seasonName, organizationName));
+  const rejectTeamInvite = (teamInviteID, seasonName, organizationName) =>
+    dispatch(rejectTeamInviteAction(teamInviteID, seasonName, organizationName));
 
-  const handleAcceptOrganizationInvite = async event => {
+  const handleAcceptTeamInvite = async event => {
     event.preventDefault();
     event.stopPropagation();
-    await acceptOrganizationInvite(teamInvite.id, organizationName);
+    await acceptTeamInvite(teamInvite.id, seasonName,organizationName);
   };
-  const handleRejectOrganizationInvite = async event => {
+  const handleRejectTeamInvite = async event => {
     event.preventDefault();
     event.stopPropagation();
-    await rejectOrganizationInvite(teamInvite.id, organizationName);
+    await rejectTeamInvite(teamInvite.id, seasonName,organizationName);
   };
 
   return (
     <>
       <Button.List>
-        <Button color="success" className="mx-lg-auto" onClick={handleAcceptOrganizationInvite}>✔</Button>
-        <Button color="red" className="ml-auto" onClick={handleRejectOrganizationInvite}>✖</Button>
+        <Button color="success" className="mx-lg-auto" onClick={handleAcceptTeamInvite}>✔</Button>
+        <Button color="red" className="ml-auto" onClick={handleRejectTeamInvite}>✖</Button>
       </Button.List>
     </>
   );
 };
 
-export default memo(AcceptOrganizationInviteButton);
+export default memo(AcceptTeamInviteButton);
