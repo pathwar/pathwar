@@ -29,6 +29,8 @@ import {
   CREATE_TEAM_FAILED,
   LIST_USER_TEAMS_INVITATIONS_SUCCESS,
   LIST_USER_TEAMS_INVITATIONS_FAILED,
+  INVITE_USER_TO_TEAM_SUCCESS,
+  INVITE_USER_TO_TEAM_FAILED,
 } from "../constants/actionTypes";
 
 import {
@@ -42,8 +44,9 @@ import {
   postCloseChallenge,
   postCreateTeam,
   postPreferencesByID,
-  postPreferencesBySlug,
+  postPreferencesBySlug, postInviteUserToTeam,
 } from "../api/seasons";
+import {postInviteUserToOrganization} from "../api/organizations";
 
 //Season main actions
 export const fetchPreferences = seasonID => async dispatch => {
@@ -177,6 +180,25 @@ export const fetchUserTeamsInvitations = userTeamsInvitations => async dispatch 
     });
   } catch (error) {
     dispatch({ type: LIST_USER_TEAMS_INVITATIONS_FAILED, payload: { error } });
+  }
+};
+
+export const inviteUserToTeam = (teamID, name, organizationName, seasonName) => async dispatch => {
+  try {
+    const response = await postInviteUserToTeam(teamID, name);
+    dispatch({
+      type: INVITE_USER_TO_TEAM_SUCCESS,
+      payload: {
+        team: response.data,
+      },
+    });
+    toast.success(`invite ${name} to the team ${organizationName} in ${seasonName} season success!`);
+  } catch (error) {
+    dispatch({
+      type: INVITE_USER_TO_TEAM_FAILED,
+      payload: { error },
+    });
+    toast.error(`invite ${name} to the team ${organizationName} in ${seasonName} season failed!`);
   }
 };
 

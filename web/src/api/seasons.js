@@ -29,6 +29,13 @@ export function postCreateTeam(seasonID, organizationID, name) {
   return baseApi.post(`/team`, { season_id: seasonID, name: name, organization_id: organizationID });
 }
 
+export function postInviteUserToTeam(teamID, name) {
+  return baseApi.post(`/team/invite`, {
+    team_id: teamID,
+    user_id: name,
+  });
+}
+
 //Challenge calls
 export function getChallenges(seasonID) {
   return baseApi.get(`/season-challenges?season_id=${seasonID}`);
