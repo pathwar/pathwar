@@ -12,7 +12,10 @@ import {
   SET_ACTIVE_TEAM,
   CLOSE_CHALLENGE_SUCCESS,
   BUY_CHALLENGE_SUCCESS,
-  VALIDATE_CHALLENGE_SUCCESS, LIST_USER_ORGANIZATIONS_INVITATIONS_SUCCESS, LIST_USER_TEAMS_INVITATIONS_SUCCESS,
+  VALIDATE_CHALLENGE_SUCCESS,
+  LIST_USER_TEAMS_INVITATIONS_SUCCESS,
+  ACCEPT_TEAM_INVITATION_SUCCESS,
+  REJECT_TEAM_INVITATION_SUCCESS,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -89,6 +92,18 @@ export default function seasonReducer(state = initialState.seasons, action) {
       return {
         ...state,
         userTeamsInvitations: action.payload.userTeamsInvitations,
+      }
+
+    case ACCEPT_TEAM_INVITATION_SUCCESS:
+      return {
+        ...state,
+        userTeamsInvitations: state.userOrganizationsInvitations.filter(invitation => invitation.id !== action.payload.teamInviteID)
+      }
+
+    case REJECT_TEAM_INVITATION_SUCCESS:
+      return {
+        ...state,
+        userTeamsInvitations: state.userOrganizationsInvitations.filter(invitation => invitation.id !== action.payload.teamInviteID)
       }
 
     case SET_ACTIVE_TEAM:
