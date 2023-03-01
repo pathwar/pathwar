@@ -97,13 +97,17 @@ export default function seasonReducer(state = initialState.seasons, action) {
     case ACCEPT_TEAM_INVITATION_SUCCESS:
       return {
         ...state,
-        userTeamsInvitations: state.userOrganizationsInvitations.filter(invitation => invitation.id !== action.payload.teamInviteID)
+        userTeamsInvitations: state.userTeamsInvitations ?
+          state.userTeamsInvitations.filter(invitation => invitation.id !== action.payload.teamInviteID) :
+          state.userTeamsInvitations
       }
 
     case REJECT_TEAM_INVITATION_SUCCESS:
       return {
         ...state,
-        userTeamsInvitations: state.userOrganizationsInvitations.filter(invitation => invitation.id !== action.payload.teamInviteID)
+        userTeamsInvitations: state.userTeamsInvitations ?
+          state.userTeamsInvitations.filter(invitation => invitation.id !== action.payload.teamInviteID) :
+          state.userTeamsInvitations
       }
 
     case SET_ACTIVE_TEAM:
