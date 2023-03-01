@@ -61,28 +61,8 @@ const OrganizationTeamsAndSeasonsPage = props => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Col width={12} lg={5} >
-          <ShadowBox>
-            <div
-              css={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <h2 className="mb-4 mt-2" style={{fontSize: '1.60rem'}}>{organization.name}</h2>
-              {organization.gravatar_url ? (
-                <Avatar size="xxl" imageURL={`${organization.gravatar_url}?d=identicon`} />
-              ) : (
-                <Avatar size="xxl" icon="users" />
-              )}
-              <h3 className="mb-0 mt-4">
-                <FormattedMessage id="HomePage.createdAt" />
-              </h3>
-              <p >{moment(organization.created_at).format("ll")}</p>
-            </div>
-          </ShadowBox>
         </Grid.Col>
-        <Grid.Col xs={12} sm={12} md={6}>
+        <Grid.Col xs={12} sm={12} md={12}>
           <TeamsOnOrganizationList
             teams={organization.teams}
           />
