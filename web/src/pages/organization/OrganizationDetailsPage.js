@@ -108,7 +108,9 @@ const OrganizationDetailsPage = props => {
         </Grid.Col>
         <Grid.Col xs={12} sm={12} md={6}>
           <TeamsOnOrganizationList
-            teams={organization.teams}/>
+            teams={organization.teams}
+            limit={10}
+          />
         </Grid.Col>
       </Grid.Row>
     </Page.Content>

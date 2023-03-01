@@ -65,6 +65,7 @@ const OrganizationTeamsAndSeasonsPage = props => {
         <Grid.Col xs={12} sm={12} md={12}>
           <TeamsOnOrganizationList
             teams={organization.teams}
+            limit={NaN}
           />
         </Grid.Col>
       </Grid.Row>

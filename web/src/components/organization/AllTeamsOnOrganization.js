@@ -24,7 +24,10 @@ const TeamsOnOrganizationRow = ({ teams }) => {
   });
 }
 
-const TeamsOnOrganizationList = ({ teams }) => {
+const TeamsOnOrganizationList = ({ teams, limit }) => {
+  if (limit !== undefined && !isNaN(limit)) {
+    teams = teams.slice(0, limit);
+  }
   return (
     <Card>
       <Table
