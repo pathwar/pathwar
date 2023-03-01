@@ -44,7 +44,9 @@ const OrganizationsInvitationsRows = ({ organizationsInvitations }) => {
 }
 
 const UserOrganizationsInvitationsList = ({ userOrganizationsInvitationsList }) => {
-  return (
+  return !userOrganizationsInvitationsList ? (
+    <h3><FormattedMessage id="UserOrganizationsInvitationsList.NoInvitations" /></h3>
+  ) : (
     <Card>
       <Table
         striped={true}

@@ -80,6 +80,15 @@ const UserOrganizationsPage = () => {
           </ShadowBox>
         </Grid.Col>
         <Grid.Col xs={12} sm={12} md={8}>
+          <h2 className="mb-4">
+            <FormattedMessage id="OrganizationsPage.organizationsInvitations" />
+          </h2>
+          <UserOrganizationsInvitationsList
+            userOrganizationsInvitationsList={userOrganizationsInvitations}
+          />
+          <h2 className="mb-4">
+            <FormattedMessage id="OrganizationsPage.teamsInvitations" />
+          </h2>
           <UserOrganizationsInvitationsList
             userOrganizationsInvitationsList={userOrganizationsInvitations}
           />
