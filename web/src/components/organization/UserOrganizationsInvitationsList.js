@@ -33,8 +33,6 @@ const OrganizationsInvitationsRows = ({ organizationsInvitations }) => {
             {item.organization.name}
           </Link>
         </Table.Col>
-
-        <Table.Col alignContent="center">{item.user.slug}</Table.Col>
         <Table.Col alignContent="center">
           <AcceptOrganizationInviteButton organizationInvite={item} />
         </Table.Col>
@@ -61,9 +59,6 @@ const UserOrganizationsInvitationsList = ({ userOrganizationsInvitationsList }) 
             </Table.ColHeader>
             <Table.ColHeader alignContent="center">
               <FormattedMessage id="UserOrganizationsInvitationsList.organization" />
-            </Table.ColHeader>
-            <Table.ColHeader alignContent="center">
-              <FormattedMessage id="UserOrganizationsInvitationsList.invitedBy" />
             </Table.ColHeader>
             <Table.ColHeader alignContent="center">
               <FormattedMessage id="UserOrganizationsInvitationsList.accept" />

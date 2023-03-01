@@ -26,7 +26,7 @@ const UserOrganizationsPage = () => {
   const activeUserSession = useSelector(state => state.userSession.activeUserSession);
   const userOrganizationsInvitations = useSelector(state => state.organizations.userOrganizationsInvitations);
   const userTeamsInvitations = useSelector(state => state.seasons.userTeamsInvitations);
-  
+
   const {
     user: {
       gravatar_url,
