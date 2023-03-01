@@ -25,6 +25,8 @@ const UserOrganizationsPage = () => {
   const userOrganizations = useSelector(state => state.organizations.userOrganizationsList);
   const activeUserSession = useSelector(state => state.userSession.activeUserSession);
   const userOrganizationsInvitations = useSelector(state => state.organizations.userOrganizationsInvitations);
+  const userTeamsInvitations = useSelector(state => state.seasons.userTeamsInvitations);
+  
   const {
     user: {
       gravatar_url,
@@ -91,7 +93,7 @@ const UserOrganizationsPage = () => {
             <FormattedMessage id="OrganizationsPage.teamsInvitations" />
           </h2>
           <UserTeamsInvitationsList
-            userTeamsInvitationsList={userOrganizationsInvitations}
+            userTeamsInvitationsList={userTeamsInvitations}
           />
         </Grid.Col>
       </Grid.Row>

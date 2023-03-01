@@ -14,23 +14,23 @@ const TeamsInvitationsRows = ({ teamsInvitations }) => {
   return teamsInvitations.map((item, idx) => {
     return (
       <Table.Row key={item.id}>
-        <Table.Col alignContent="center">{idx + 1}</Table.Col>
+        <Table.Col alignContent="center">{item.team.season.name}</Table.Col>
 
         <Table.Col alignContent="center"
         >
           <Avatar
             className="mr-2"
-            imageURL={`${item.organization.gravatar_url}?d=identicon`}
+            imageURL={`${item.team.organization.gravatar_url}?d=identicon`}
           />
           <Link
             className="link"
-            to={"/organization/" + item.organization.id}
+            to={"/organization/" + item.team.organization.id}
             activeStyle={{
               fontWeight: "bold",
               color: currentTheme.colors.primary,
             }}
           >
-            {item.organization.name}
+            {item.team.organization.name}
           </Link>
         </Table.Col>
 

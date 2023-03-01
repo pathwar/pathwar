@@ -27,9 +27,8 @@ import {
   SET_ACTIVE_TEAM,
   CREATE_TEAM_SUCCESS,
   CREATE_TEAM_FAILED,
-  LIST_USER_ORGANIZATIONS_INVITATIONS_SUCCESS,
-  LIST_USER_ORGANIZATIONS_INVITATIONS_FAILED,
-  LIST_USER_TEAMS_INVITATIONS_SUCCESS, LIST_USER_TEAMS_INVITATIONS_FAILED,
+  LIST_USER_TEAMS_INVITATIONS_SUCCESS,
+  LIST_USER_TEAMS_INVITATIONS_FAILED,
 } from "../constants/actionTypes";
 
 import {
@@ -174,7 +173,7 @@ export const fetchUserTeamsInvitations = userTeamsInvitations => async dispatch 
   try {
     dispatch({
       type: LIST_USER_TEAMS_INVITATIONS_SUCCESS,
-      payload: { userOrganizationsInvitations: userTeamsInvitations },
+      payload: { userTeamsInvitations: userTeamsInvitations },
     });
   } catch (error) {
     dispatch({ type: LIST_USER_TEAMS_INVITATIONS_FAILED, payload: { error } });
