@@ -45,13 +45,9 @@ class TeamDetailsPage extends React.PureComponent {
                   <Avatar size="xxl" icon="users" />
                 )}
                 <h3 className="mb-0 mt-6">
-                  <FormattedMessage id="OrganizationDetailsSubmenu.members" />
+                  <FormattedMessage id="TeamDetails.stats" />
                 </h3>
-                <p>Score: {teamInDetail.score} Cash: ${teamInDetail.cash}</p>
-                <h3 className="mb-0 mt-4">
-                  <FormattedMessage id="HomePage.createdAt" />
-                </h3>
-                <p >{moment(teamInDetail.organization.created_at).format("ll")}</p>
+                <p>Score: {teamInDetail.score ? teamInDetail.score : 0} Cash: ${teamInDetail.cash ? teamInDetail.cash : 0}</p>
               </div>
             </ShadowBox>
           </Grid.Col>

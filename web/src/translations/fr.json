@@ -90,6 +90,7 @@
   "AllMembersOnOrganization.since": "Depuis",
   "OrganizationDetailsSubmenu.members": "Membres",
   "OrganizationDetailsSubmenu.teams": "Equipes & saisons",
+  "TeamDetails.stats": "Statistiques",
   "SwitchSeasonInput.title": "Changement de season",
   "SwitchSeasonInput.action": "Appliquer",
   "CreateTeamButton.send": "Envoyer"
