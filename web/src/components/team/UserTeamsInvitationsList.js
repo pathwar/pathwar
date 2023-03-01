@@ -34,7 +34,7 @@ const TeamsInvitationsRows = ({ teamsInvitations }) => {
           </Link>
         </Table.Col>
         <Table.Col alignContent="center">
-          <AcceptOrganizationInviteButton organizationInvite={item} />
+          <AcceptOrganizationInviteButton organizationInvite={item} organizationName={item.team.organization.name}/>
         </Table.Col>
       </Table.Row>
     );

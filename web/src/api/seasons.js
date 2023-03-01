@@ -36,6 +36,14 @@ export function postInviteUserToTeam(teamID, name) {
   });
 }
 
+export function postAnswerTeamInvitation(teamInviteID, accept) {
+  return baseApi.post(`/organization/invite/accept`, {
+    team_invite_id: teamInviteID,
+    accept: accept,
+  });
+}
+
+
 //Challenge calls
 export function getChallenges(seasonID) {
   return baseApi.get(`/season-challenges?season_id=${seasonID}`);

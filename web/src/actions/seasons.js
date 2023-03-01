@@ -31,6 +31,12 @@ import {
   LIST_USER_TEAMS_INVITATIONS_FAILED,
   INVITE_USER_TO_TEAM_SUCCESS,
   INVITE_USER_TO_TEAM_FAILED,
+  ACCEPT_ORGANIZATION_INVITATION_SUCCESS,
+  ACCEPT_ORGANIZATION_INVITATION_FAILED,
+  REJECT_ORGANIZATION_INVITATION_SUCCESS,
+  REJECT_ORGANIZATION_INVITATION_FAILED,
+  ACCEPT_TEAM_INVITATION_SUCCESS,
+  ACCEPT_TEAM_INVITATION_FAILED, REJECT_TEAM_INVITATION_SUCCESS, REJECT_TEAM_INVITATION_FAILED,
 } from "../constants/actionTypes";
 
 import {
@@ -44,9 +50,9 @@ import {
   postCloseChallenge,
   postCreateTeam,
   postPreferencesByID,
-  postPreferencesBySlug, postInviteUserToTeam,
+  postPreferencesBySlug, postInviteUserToTeam, postAnswerTeamInvitation,
 } from "../api/seasons";
-import {postInviteUserToOrganization} from "../api/organizations";
+import {postAnswerOrganizationInvitation, postInviteUserToOrganization} from "../api/organizations";
 
 //Season main actions
 export const fetchPreferences = seasonID => async dispatch => {
@@ -199,6 +205,44 @@ export const inviteUserToTeam = (teamID, name, organizationName, seasonName) => 
       payload: { error },
     });
     toast.error(`invite ${name} to the team ${organizationName} in ${seasonName} season failed!`);
+  }
+};
+
+export const acceptTeamInvite = (teamInviteID, seasonName, organizationName) => async dispatch => {
+  try {
+    await postAnswerTeamInvitation(teamInviteID, true);
+    dispatch({
+      type: ACCEPT_TEAM_INVITATION_SUCCESS,
+      payload: {
+        teamInviteID: teamInviteID,
+      },
+    });
+    toast.success(`accept invite to the team ${organizationName} in ${seasonName} season success!`);
+  } catch (error) {
+    dispatch({
+      type: ACCEPT_TEAM_INVITATION_FAILED,
+      payload: { error },
+    });
+    toast.error(`accept invite to the team ${organizationName} in ${seasonName} season failed!`);
+  }
+};
+
+export const rejectTeamInvite = (teamInviteID, seasonName, organizationName) => async dispatch => {
+  try {
+    await postAnswerTeamInvitation(teamInviteID, false);
+    dispatch({
+      type: REJECT_TEAM_INVITATION_SUCCESS,
+      payload: {
+        teamInviteID: teamInviteID,
+      },
+    });
+    toast.success(`reject invite to the team ${organizationName} in ${seasonName} season success!`);
+  } catch (error) {
+    dispatch({
+      type: REJECT_TEAM_INVITATION_FAILED,
+      payload: { error },
+    });
+    toast.error(`reject invite to the team ${organizationName} in ${seasonName} season failed!`);
   }
 };
 

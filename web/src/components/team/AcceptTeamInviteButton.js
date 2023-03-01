@@ -7,7 +7,7 @@ import {
   rejectOrganizationInvite as rejectOrganizationInviteAction
 } from "../../actions/organizations";
 
-const AcceptOrganizationInviteButton = ({ organizationInvite, organizationName }) => {
+const AcceptTeamInviteButton = ({ teamInvite, organizationName }) => {
   const dispatch = useDispatch();
   const acceptOrganizationInvite = (organizationInviteID, organizationName) =>
     dispatch(acceptOrganizationInviteAction(organizationInviteID, organizationName));
@@ -17,12 +17,12 @@ const AcceptOrganizationInviteButton = ({ organizationInvite, organizationName }
   const handleAcceptOrganizationInvite = async event => {
     event.preventDefault();
     event.stopPropagation();
-    await acceptOrganizationInvite(organizationInvite.id, organizationName);
+    await acceptOrganizationInvite(teamInvite.id, organizationName);
   };
   const handleRejectOrganizationInvite = async event => {
     event.preventDefault();
     event.stopPropagation();
-    await rejectOrganizationInvite(organizationInvite.id, organizationName);
+    await rejectOrganizationInvite(teamInvite.id, organizationName);
   };
 
   return (

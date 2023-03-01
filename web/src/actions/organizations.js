@@ -97,7 +97,7 @@ export const inviteUserToOrganization = (organizationID, name, organizationName)
   }
 };
 
-export const acceptOrganizationInvite = (organizationInviteID) => async dispatch => {
+export const acceptOrganizationInvite = (organizationInviteID, organizationName) => async dispatch => {
   try {
     await postAnswerOrganizationInvitation(organizationInviteID, true);
     dispatch({
@@ -106,17 +106,17 @@ export const acceptOrganizationInvite = (organizationInviteID) => async dispatch
         organizationInviteID: organizationInviteID,
       },
     });
-    toast.success(`accept invitation success!`);
+    toast.success(`accept invitation to organization ${organizationName} success!`);
   } catch (error) {
     dispatch({
       type: ACCEPT_ORGANIZATION_INVITATION_FAILED,
       payload: { error },
     });
-    toast.error(`accept invitation fail!`);
+    toast.error(`accept invitation to organization ${organizationName} failed!`);
   }
 };
 
-export const rejectOrganizationInvite = (organizationInviteID) => async dispatch => {
+export const rejectOrganizationInvite = (organizationInviteID, organizationName) => async dispatch => {
   try {
     await postAnswerOrganizationInvitation(organizationInviteID, false);
     dispatch({
@@ -125,13 +125,13 @@ export const rejectOrganizationInvite = (organizationInviteID) => async dispatch
         organizationInviteID: organizationInviteID,
       },
     });
-    toast.success(`reject invitation success!`);
+    toast.success(`reject invitation to organization ${organizationName} success!`);
   } catch (error) {
     dispatch({
       type: REJECT_ORGANIZATION_INVITATION_FAILED,
       payload: { error },
     });
-    toast.error(`reject invitation fail!`);
+    toast.error(`reject invitation to organization ${organizationName} failed!`);
   }
 };
 
