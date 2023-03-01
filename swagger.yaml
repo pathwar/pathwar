@@ -713,6 +713,10 @@ definitions:
         items:
           $ref: '#/definitions/apiUserGetSessionOutputSeasonAndTeam'
         type: array
+      team_invites:
+        items:
+          $ref: '#/definitions/dbTeamInvite'
+        type: array
       user:
         $ref: '#/definitions/dbUser'
     type: object

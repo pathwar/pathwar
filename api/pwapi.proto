@@ -572,6 +572,7 @@ message UserGetSession {
     }
     repeated pathwar.db.Organization organizations = 6;
     repeated pathwar.db.OrganizationInvite organization_invites = 7;
+    repeated pathwar.db.TeamInvite team_invites = 8;
   }
 }
 
