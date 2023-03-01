@@ -10,6 +10,7 @@ import ShadowBox from "../../components/ShadowBox";
 import moment from "moment/moment";
 import UserOrganizationBadges from "../../components/organization/UserOrganizationBadges";
 import UserOrganizationsInvitationsList from "../../components/organization/UserOrganizationsInvitationsList";
+import UserTeamsInvitationsList from "../../components/team/UserTeamsInvitationsList";
 
 //TODO: Lister les organisations de l'utilisateur dans un tableau
 //TODO: Créer un boutton permettant de créer une organisation pour l'utilisateur
@@ -89,8 +90,8 @@ const UserOrganizationsPage = () => {
           <h2 className="mb-4">
             <FormattedMessage id="OrganizationsPage.teamsInvitations" />
           </h2>
-          <UserOrganizationsInvitationsList
-            userOrganizationsInvitationsList={userOrganizationsInvitations}
+          <UserTeamsInvitationsList
+            userTeamsInvitationsList={userOrganizationsInvitations}
           />
         </Grid.Col>
       </Grid.Row>
