@@ -3,15 +3,28 @@ import { Card, Table, Dimmer } from "tabler-react";
 
 // import styles from "./style.module.css";
 import { FormattedMessage } from "react-intl";
+import {Link} from "gatsby";
+import {useTheme} from "emotion-theming";
 
 const TeamsOnOrganizationRow = ({ teams }) => {
+  const currentTheme = useTheme();
+
   return teams.map((item, idx) => {
     item.cash = item.cash ? item.cash : 0;
     item.score = item.score ? item.score : 0;
     return (
       <Table.Row key={item.id}>
         <Table.Col alignContent="center">
-          {item.season.name}
+          <Link
+            className="link"
+            to={"/team/" + item.id}
+            activeStyle={{
+              fontWeight: "bold",
+              color: currentTheme.colors.primary,
+            }}
+          >
+            {item.season.name}
+          </Link>
         </Table.Col>
         <Table.Col alignContent="center">
           {item.score}
@@ -25,7 +38,7 @@ const TeamsOnOrganizationRow = ({ teams }) => {
 }
 
 const TeamsOnOrganizationList = ({ teams, limit }) => {
-  if (limit !== undefined && !isNaN(limit)) {
+  if (teams !== undefined && limit !== undefined && !isNaN(limit)) {
     teams = teams.slice(0, limit);
   }
   return (
