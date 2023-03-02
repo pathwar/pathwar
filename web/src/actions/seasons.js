@@ -48,9 +48,10 @@ import {
   postCloseChallenge,
   postCreateTeam,
   postPreferencesByID,
-  postPreferencesBySlug, postInviteUserToTeam, postAnswerTeamInvitation,
+  postPreferencesBySlug,
+  postInviteUserToTeam,
+  postAnswerTeamInvitation,
 } from "../api/seasons";
-import {postAnswerOrganizationInvitation, postInviteUserToOrganization} from "../api/organizations";
 
 //Season main actions
 export const fetchPreferences = seasonID => async dispatch => {
