@@ -590,9 +590,11 @@ message Activity {
     TeamCreation = 11;
     TeamInviteSend = 12;
     TeamInviteAccept = 13;
-    OrganizationCreation = 14;
-    OrganizationInviteSend = 15;
-    OrganizationInviteAccept = 16;
+    TeamInviteDecline = 14;
+    OrganizationCreation = 15;
+    OrganizationInviteSend = 16;
+    OrganizationInviteAccept = 17;
+    OrganizationInviteDecline = 18;
   }
 }
 

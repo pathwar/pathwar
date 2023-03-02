@@ -5,4 +5,4 @@
 70d67f1cebb3b7f9e86fd0197d43db4c1f795f65  ../api/pwinit.proto
 938d0b10041d408da360734ce20ba0d65eb20521  ../api/pwagent.proto
 a65bb911c95219fcccdd43b5584dcadaad07a63c  Makefile
-b9d4515fba54725645b0443304701a373a55a8bc  ../api/pwdb.proto
+cf270cb20c1fa16e9ec075631fb6237058a94e87  ../api/pwdb.proto

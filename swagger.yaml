@@ -20,9 +20,11 @@ definitions:
     - TeamCreation
     - TeamInviteSend
     - TeamInviteAccept
+    - TeamInviteDecline
     - OrganizationCreation
     - OrganizationInviteSend
     - OrganizationInviteAccept
+    - OrganizationInviteDecline
     type: string
   ChallengeFlavorDriver:
     default: Unknown
