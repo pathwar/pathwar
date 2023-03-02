@@ -2,6 +2,7 @@ package pwapi
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/jinzhu/gorm"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
@@ -25,22 +26,21 @@ func (svc *service) UserSetPreferences(ctx context.Context, in *UserSetPreferenc
 	)
 
 	// get ID thanks to the slug
-	if in.ActiveSeasonSlug != "" {
-		in.ActiveSeasonID, err = pwdb.GetIDBySlugAndKind(svc.db, in.ActiveSeasonSlug, "season")
-		if err != nil {
-			return nil, err
-		}
+	ActiveSeasonID, err := pwdb.GetIDBySlugAndKind(svc.db, in.ActiveSeasonID, "season")
+	if err != nil {
+		ActiveSeasonID, _ = strconv.ParseInt(in.ActiveSeasonID, 10, 64)
 	}
+
 	// update active season
-	if in.ActiveSeasonID != 0 {
+	if ActiveSeasonID != 0 {
 		hasChanges = true
 
-		exists, err := seasonIDExists(svc.db, in.ActiveSeasonID)
+		exists, err := seasonIDExists(svc.db, ActiveSeasonID)
 		if err != nil || !exists {
 			return nil, errcode.ErrInvalidSeasonID.Wrap(err)
 		}
-		activity.SeasonID = in.ActiveSeasonID
-		updates["active_season_id"] = in.ActiveSeasonID
+		activity.SeasonID = ActiveSeasonID
+		updates["active_season_id"] = ActiveSeasonID
 
 		// get active season membership (if user already has a team for this season)
 		var seasonMemberIDs []int64
@@ -49,7 +49,7 @@ func (svc *service) UserSetPreferences(ctx context.Context, in *UserSetPreferenc
 			Table("team_member").
 			Joins("left join team ON team.id = team_member.team_id").
 			Where("team_member.user_id = ?", userID).
-			Where("team.season_id = ?", in.ActiveSeasonID).
+			Where("team.season_id = ?", ActiveSeasonID).
 			Pluck("team.id", &teamIDs).
 			Pluck("team_member.id", &seasonMemberIDs).
 			Error

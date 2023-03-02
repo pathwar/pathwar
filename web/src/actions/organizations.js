@@ -23,7 +23,6 @@ import {
   postInviteUserToOrganization
 } from "../api/organizations";
 import {toast} from "react-toastify";
-import {postCreateTeam} from "../api/seasons";
 
 export const setActiveOrganization = teamObjData => async dispatch => {
   dispatch({

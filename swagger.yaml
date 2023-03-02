@@ -738,9 +738,6 @@ definitions:
   apiUserSetPreferencesInput:
     properties:
       active_season_id:
-        format: int64
-        type: string
-      active_season_slug:
         type: string
     type: object
   apiUserSetPreferencesOutput:
