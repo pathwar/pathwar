@@ -2,7 +2,7 @@ import {
   ACCEPT_ORGANIZATION_INVITATION_FAILED,
   ACCEPT_ORGANIZATION_INVITATION_SUCCESS,
   CREATE_ORGANIZATION_FAILED,
-  CREATE_ORGANIZATION_SUCCESS,
+  CREATE_ORGANIZATION_SUCCESS, DECLINE_ORGANIZATION_INVITATION_FAILED, DECLINE_ORGANIZATION_INVITATION_SUCCESS,
   GET_ORGANIZATION_DETAILS_FAILED,
   GET_ORGANIZATION_DETAILS_SUCCESS,
   INVITE_USER_TO_ORGANIZATION_FAILED,
@@ -116,11 +116,11 @@ export const acceptOrganizationInvite = (organizationInviteID, organizationName)
   }
 };
 
-export const rejectOrganizationInvite = (organizationInviteID, organizationName) => async dispatch => {
+export const declineOrganizationInvite = (organizationInviteID, organizationName) => async dispatch => {
   try {
     await postAnswerOrganizationInvitation(organizationInviteID, false);
     dispatch({
-      type: REJECT_ORGANIZATION_INVITATION_SUCCESS,
+      type: DECLINE_ORGANIZATION_INVITATION_SUCCESS,
       payload: {
         organizationInviteID: organizationInviteID,
       },
@@ -128,7 +128,7 @@ export const rejectOrganizationInvite = (organizationInviteID, organizationName)
     toast.success(`reject invitation to organization ${organizationName} success!`);
   } catch (error) {
     dispatch({
-      type: REJECT_ORGANIZATION_INVITATION_FAILED,
+      type: DECLINE_ORGANIZATION_INVITATION_FAILED,
       payload: { error },
     });
     toast.error(`reject invitation to organization ${organizationName} failed!`);

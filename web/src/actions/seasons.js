@@ -33,8 +33,8 @@ import {
   INVITE_USER_TO_TEAM_FAILED,
   ACCEPT_TEAM_INVITATION_SUCCESS,
   ACCEPT_TEAM_INVITATION_FAILED,
-  REJECT_TEAM_INVITATION_SUCCESS,
-  REJECT_TEAM_INVITATION_FAILED,
+  DECLINE_TEAM_INVITATION_SUCCESS,
+  DECLINE_TEAM_INVITATION_FAILED,
 } from "../constants/actionTypes";
 
 import {
@@ -225,11 +225,11 @@ export const acceptTeamInvite = (teamInviteID, seasonName, organizationName) => 
   }
 };
 
-export const rejectTeamInvite = (teamInviteID, seasonName, organizationName) => async dispatch => {
+export const declineTeamInvite = (teamInviteID, seasonName, organizationName) => async dispatch => {
   try {
     await postAnswerTeamInvitation(teamInviteID, false);
     dispatch({
-      type: REJECT_TEAM_INVITATION_SUCCESS,
+      type: DECLINE_TEAM_INVITATION_SUCCESS,
       payload: {
         teamInviteID: teamInviteID,
       },
@@ -237,7 +237,7 @@ export const rejectTeamInvite = (teamInviteID, seasonName, organizationName) => 
     toast.success(`reject invite to the team ${organizationName} in ${seasonName} season success!`);
   } catch (error) {
     dispatch({
-      type: REJECT_TEAM_INVITATION_FAILED,
+      type: DECLINE_TEAM_INVITATION_FAILED,
       payload: { error },
     });
     toast.error(`reject invite to the team ${organizationName} in ${seasonName} season failed!`);

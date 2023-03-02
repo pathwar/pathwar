@@ -4,32 +4,32 @@ import { useDispatch } from "react-redux";
 import {Button} from "tabler-react";
 import {
   acceptOrganizationInvite as acceptOrganizationInviteAction,
-  rejectOrganizationInvite as rejectOrganizationInviteAction
+  declineOrganizationInvite as declineOrganizationInviteAction
 } from "../../actions/organizations";
 
 const AcceptOrganizationInviteButton = ({ organizationInvite, organizationName }) => {
   const dispatch = useDispatch();
   const acceptOrganizationInvite = (organizationInviteID, organizationName) =>
     dispatch(acceptOrganizationInviteAction(organizationInviteID, organizationName));
-  const rejectOrganizationInvite = (organizationInviteID, organizationName) =>
-    dispatch(rejectOrganizationInviteAction(organizationInviteID, organizationName));
+  const declineOrganizationInvite = (organizationInviteID, organizationName) =>
+    dispatch(declineOrganizationInviteAction(organizationInviteID, organizationName));
 
   const handleAcceptOrganizationInvite = async event => {
     event.preventDefault();
     event.stopPropagation();
     await acceptOrganizationInvite(organizationInvite.id, organizationName);
   };
-  const handleRejectOrganizationInvite = async event => {
+  const handleDeclineOrganizationInvite = async event => {
     event.preventDefault();
     event.stopPropagation();
-    await rejectOrganizationInvite(organizationInvite.id, organizationName);
+    await declineOrganizationInvite(organizationInvite.id, organizationName);
   };
 
   return (
     <>
       <Button.List>
         <Button color="success" className="mx-lg-auto" onClick={handleAcceptOrganizationInvite}>✔</Button>
-        <Button color="red" className="ml-auto" onClick={handleRejectOrganizationInvite}>✖</Button>
+        <Button color="red" className="ml-auto" onClick={handleDeclineOrganizationInvite}>✖</Button>
       </Button.List>
     </>
   );

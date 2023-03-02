@@ -15,7 +15,7 @@ import {
   VALIDATE_CHALLENGE_SUCCESS,
   LIST_USER_TEAMS_INVITATIONS_SUCCESS,
   ACCEPT_TEAM_INVITATION_SUCCESS,
-  REJECT_TEAM_INVITATION_SUCCESS,
+  DECLINE_TEAM_INVITATION_SUCCESS,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -102,7 +102,7 @@ export default function seasonReducer(state = initialState.seasons, action) {
           state.userTeamsInvitations
       }
 
-    case REJECT_TEAM_INVITATION_SUCCESS:
+    case DECLINE_TEAM_INVITATION_SUCCESS:
       return {
         ...state,
         userTeamsInvitations: state.userTeamsInvitations ?
