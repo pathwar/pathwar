@@ -83,9 +83,25 @@ func (svc *service) TeamAcceptInvite(ctx context.Context, in *TeamAcceptInvite_I
 		UserID: userID,
 		TeamID: teamInvite.TeamID,
 	}
-	orgaMember := &pwdb.OrganizationMember{
-		UserID:         userID,
-		OrganizationID: teamInvite.Team.OrganizationID,
+	var organizationMembership int
+	err = svc.db.
+		Model(&pwdb.OrganizationMember{}).
+		Where(pwdb.OrganizationMember{
+			UserID:         userID,
+			OrganizationID: teamInvite.Team.OrganizationID,
+		}).
+		Count(&organizationMembership).
+		Error
+	if err != nil {
+		return nil, pwdb.GormToErrcode(err)
+	}
+
+	var orgaMember *pwdb.OrganizationMember
+	if organizationMembership == 0 {
+		orgaMember = &pwdb.OrganizationMember{
+			UserID:         userID,
+			OrganizationID: teamInvite.Team.OrganizationID,
+		}
 	}
 	err = svc.db.Transaction(func(tx *gorm.DB) error {
 		// create team member
@@ -93,10 +109,13 @@ func (svc *service) TeamAcceptInvite(ctx context.Context, in *TeamAcceptInvite_I
 		if err != nil {
 			return pwdb.GormToErrcode(err)
 		}
-		// create orga member
-		err = tx.Create(&orgaMember).Error
-		if err != nil {
-			return pwdb.GormToErrcode(err)
+
+		// create orga member if needed
+		if orgaMember != nil {
+			err = tx.Create(&orgaMember).Error
+			if err != nil {
+				return pwdb.GormToErrcode(err)
+			}
 		}
 		return err
 	})
