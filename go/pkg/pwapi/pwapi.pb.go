@@ -917,8 +917,8 @@ func (m *AdminListChallengeSubscriptions) XXX_DiscardUnknown() {
 var xxx_messageInfo_AdminListChallengeSubscriptions proto.InternalMessageInfo
 
 type AdminListChallengeSubscriptions_Input struct {
-	FilteringPreset   string `protobuf:"bytes,1,opt,name=filtering_preset,json=filteringPreset,proto3" json:"filtering_preset,omitempty"`
-	SeasonChallengeID string `protobuf:"bytes,2,opt,name=season_challenge_id,json=seasonChallengeId,proto3" json:"season_challenge_id,omitempty"`
+	FilteringPreset   string `protobuf:"bytes,1,opt,name=filtering_preset,json=filteringPreset,proto3" json:"filtering_preset,omitempty" url:"filtering_preset"`
+	SeasonChallengeID string `protobuf:"bytes,2,opt,name=season_challenge_id,json=seasonChallengeId,proto3" json:"season_challenge_id,omitempty" url:"season_challenge_id"`
 }
 
 func (m *AdminListChallengeSubscriptions_Input) Reset()         { *m = AdminListChallengeSubscriptions_Input{} }

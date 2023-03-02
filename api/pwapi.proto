@@ -172,8 +172,8 @@ message AdminListUsers {
 
 message AdminListChallengeSubscriptions {
   message Input {
-    string filtering_preset = 1;
-    string season_challenge_id = 2 [(gogoproto.customname) = "SeasonChallengeID"];
+    string filtering_preset = 1 [(gogoproto.customname) = "FilteringPreset", (gogoproto.moretags) = "url:\"filtering_preset\""];
+    string season_challenge_id = 2 [(gogoproto.customname) = "SeasonChallengeID", (gogoproto.moretags) = "url:\"season_challenge_id\""];
   }
   message Output {
     repeated pathwar.db.ChallengeSubscription subscriptions = 1;
