@@ -18,6 +18,7 @@ func TestService_TeamAcceptInvite(t *testing.T) {
 	populate := []*pwdb.Season{
 		{Name: "Test1", Status: pwdb.Season_Started, Visibility: pwdb.Season_Public},
 		{Name: "Test2", Status: pwdb.Season_Started, Visibility: pwdb.Season_Public},
+		{Name: "Test3", Status: pwdb.Season_Started, Visibility: pwdb.Season_Public},
 	}
 	for _, season := range populate {
 		err := db.Create(season).Error
@@ -65,6 +66,18 @@ func TestService_TeamAcceptInvite(t *testing.T) {
 	})
 	require.NoError(t, err)
 	teamInvite2 := ret2.TeamInvite
+	ret, err = svc.TeamCreate(ctx2, &TeamCreate_Input{
+		SeasonID: fmt.Sprint(seasonMap["Test3"].Season.ID),
+		Name:     "Test4Team",
+	})
+	require.NoError(t, err)
+	team3 := ret.Team
+	ret2, err = svc.TeamSendInvite(ctx2, &TeamSendInvite_Input{
+		TeamID: fmt.Sprint(team3.ID),
+		UserID: fmt.Sprint(session.User.ID),
+	})
+	require.NoError(t, err)
+	teamInvite3 := ret2.TeamInvite
 
 	tests := []struct {
 		name        string
@@ -76,6 +89,7 @@ func TestService_TeamAcceptInvite(t *testing.T) {
 		{"invalid-invite", &TeamAcceptInvite_Input{TeamInviteID: "yolo", Accept: true}, errcode.ErrNoSuchSlug},
 		{"has-team", &TeamAcceptInvite_Input{TeamInviteID: fmt.Sprint(teamInvite1.ID), Accept: true}, errcode.ErrAlreadyHasTeamForSeason},
 		{"valid", &TeamAcceptInvite_Input{TeamInviteID: fmt.Sprint(teamInvite2.ID), Accept: true}, nil},
+		{"decline", &TeamAcceptInvite_Input{TeamInviteID: fmt.Sprint(teamInvite3.ID), Accept: false}, nil},
 	}
 
 	for _, test := range tests {
