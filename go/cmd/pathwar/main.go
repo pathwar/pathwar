@@ -63,6 +63,7 @@ func runMain(args []string) error {
 				agentCommand(),
 				miscCommand(),
 				adminCommand(),
+				eventsCommand(),
 				devCommand(),
 				{
 					Name:       "version",

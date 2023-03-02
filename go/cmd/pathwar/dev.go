@@ -40,8 +40,6 @@ func devCommand() *ffcli.Command {
 			serverCommand(),
 			challengeRunCommand(),
 			challengeDeployCommand(),
-			eventSourcing(),
-			esRebuild(),
 		},
 	}
 }
@@ -256,76 +254,6 @@ func challengeDeployCommand() *ffcli.Command {
 
 			//TODO: Deploying challenge from current folder
 
-			return nil
-		},
-	}
-}
-
-func eventSourcing() *ffcli.Command {
-	devEventSourcingFlags := flag.NewFlagSet("event-sourcing", flag.ExitOnError)
-	devEventSourcingFlags.IntVar(&esOpts.RefreshRate, "refresh-rate", esOpts.RefreshRate, "refresh rate in seconds")
-
-	return &ffcli.Command{
-		Name:      "event-sourcing",
-		ShortHelp: "start event sourcing agent",
-		FlagSet:   devEventSourcingFlags,
-		Exec: func(ctx context.Context, args []string) error {
-			fmt.Println(motd.Default())
-			fmt.Println(banner.Inline("event sourcing"))
-
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-
-			apiClient, err := httpClientFromEnv(ctx)
-			if err != nil {
-				return errcode.TODO.Wrap(err)
-			}
-
-			var timestamp time.Time
-			for {
-				time.Sleep(time.Duration(esOpts.RefreshRate) * time.Second)
-				err = pwes.EventHandler(ctx, apiClient, &timestamp, logger)
-				if err != nil {
-					return err
-				}
-			}
-		},
-	}
-}
-
-// TODO: Return error adapted
-func esRebuild() *ffcli.Command {
-	devRebuildFlags := flag.NewFlagSet("es-rebuild", flag.ExitOnError)
-	devRebuildFlags.BoolVar(&esOpts.WithoutScore, "without-score", esOpts.WithoutScore, "rebuild without score")
-	devRebuildFlags.StringVar(&esOpts.From, "from", esOpts.From, "rebuild from, format: YYYY-MM-DD HH:MM:SS")
-	devRebuildFlags.StringVar(&esOpts.To, "to", esOpts.To, "rebuild to, format: YYYY-MM-DD HH:MM:SS")
-
-	return &ffcli.Command{
-		Name:      "es-rebuild",
-		ShortHelp: "Rebuild current state from all events",
-		FlagSet:   devRebuildFlags,
-		Exec: func(ctx context.Context, args []string) error {
-			fmt.Println(motd.Default())
-			fmt.Println(banner.Inline("es rebuild"))
-
-			if err := globalPreRun(); err != nil {
-				return err
-			}
-
-			apiClient, err := httpClientFromEnv(ctx)
-			if err != nil {
-				return errcode.TODO.Wrap(err)
-			}
-
-			if err != nil {
-				return err
-			}
-
-			err = pwes.Rebuild(ctx, apiClient, esOpts)
-			if err != nil {
-				return err
-			}
 			return nil
 		},
 	}
