@@ -73,9 +73,9 @@ func TestService_TeamAcceptInvite(t *testing.T) {
 	}{
 		{"nil", nil, errcode.ErrMissingInput},
 		{"empty", &TeamAcceptInvite_Input{}, errcode.ErrMissingInput},
-		{"invalid-invite", &TeamAcceptInvite_Input{TeamInviteID: "yolo"}, errcode.ErrNoSuchSlug},
-		{"has-team", &TeamAcceptInvite_Input{TeamInviteID: fmt.Sprint(teamInvite1.ID)}, errcode.ErrAlreadyHasTeamForSeason},
-		{"valid", &TeamAcceptInvite_Input{TeamInviteID: fmt.Sprint(teamInvite2.ID)}, nil},
+		{"invalid-invite", &TeamAcceptInvite_Input{TeamInviteID: "yolo", Accept: true}, errcode.ErrNoSuchSlug},
+		{"has-team", &TeamAcceptInvite_Input{TeamInviteID: fmt.Sprint(teamInvite1.ID), Accept: true}, errcode.ErrAlreadyHasTeamForSeason},
+		{"valid", &TeamAcceptInvite_Input{TeamInviteID: fmt.Sprint(teamInvite2.ID), Accept: true}, nil},
 	}
 
 	for _, test := range tests {
