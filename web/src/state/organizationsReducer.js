@@ -72,12 +72,13 @@ export default function organizationsReducer(
           state.userOrganizationsInvitations
       }
 
-    case CREATE_ORGANIZATION_SUCCESS:
-      const { organization } = action.payload.organization;
+    case CREATE_ORGANIZATION_SUCCESS: {
+      const {organization} = action.payload.organization;
       return {
         ...state,
         userOrganizationsList: state.userOrganizationsList ? [...state.userOrganizationsList, organization] : [organization],
       }
+    }
 
       //Don't want to reload the page when we change the organization subpage
     case CLEAN_ORGANIZATION_DETAILS:
