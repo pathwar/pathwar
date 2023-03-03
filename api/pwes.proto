@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package pathwar.es;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "pathwar.land/go/pkg/pwes";
+option (gogoproto.sizer_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+
+import "pwdb.proto";
+
+message Event {
+  int64 id = 1;
+  google.protobuf.Timestamp createdAt = 2;
+}
+
+message EventUserRegister {
+  Event event = 1;
+}
+
+message EventUserLogin {
+  Event event = 1;
+}
+
+message EventUserSetPreferences {
+  Event event = 1;
+}
+
+message EventUserDeleteAccount {
+  Event event = 1;
+}
+
+message EventSeasonChallengeBuy {
+  Event event = 1;
+  pathwar.db.Challenge seasonChallenge = 2;
+  pathwar.db.Team team = 3;
+}
+
+message EventChallengeSubscriptionValidate {
+  Event event = 1;
+  pathwar.db.Challenge seasonChallenge = 2;
+  pathwar.db.Team team = 3;
+}
+
+message EventCouponValidate {
+  Event event = 1;
+}
+
+message EventAgentRegister {
+  Event event = 1;
+}
+
+message EventAgentChallengeInstanceCreate {
+  Event event = 1;
+}
+
+message EventAgentChallengeInstanceUpdate {
+  Event event = 1;
+}
+
+message EventTeamCreation {
+  Event event = 1;
+}
+
+message EventTeamInviteSend {
+  Event event = 1;
+}
+
+message EventTeamInviteAccept {
+  Event event = 1;
+}

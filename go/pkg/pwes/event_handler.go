@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"go.uber.org/zap"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -44,7 +45,7 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 	for _, activity := range activities {
 		switch activity.Kind {
 		case pwdb.Activity_UserRegister:
-			e = EventUserRegister{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = EventUserRegister{Event: {Id: activity.ID, CreatedAt: timestamppb.New(activity.CreatedAt)}}
 		case pwdb.Activity_UserLogin:
 			e = EventUserLogin{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_UserSetPreferences:

@@ -9,7 +9,7 @@ import (
 )
 
 // TODO: Handle event
-func (e EventSeasonChallengeBuy) execute(ctx context.Context, apiClient *pwapi.HTTPClient, logger *zap.Logger) error {
+func (e *EventSeasonChallengeBuy) execute(ctx context.Context, apiClient *pwapi.HTTPClient, logger *zap.Logger) error {
 	if apiClient == nil {
 		logger.Debug("missing apiClient in execute event method")
 		return errcode.ErrMissingInput

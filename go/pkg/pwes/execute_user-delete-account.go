@@ -9,7 +9,7 @@ import (
 )
 
 // TODO: Handle this event
-func (e EventUserDeleteAccount) execute(_ context.Context, apiClient *pwapi.HTTPClient, logger *zap.Logger) error {
+func (e *EventUserDeleteAccount) execute(_ context.Context, apiClient *pwapi.HTTPClient, logger *zap.Logger) error {
 	if apiClient == nil {
 		logger.Debug("missing apiClient in execute event method")
 		return errcode.ErrMissingInput

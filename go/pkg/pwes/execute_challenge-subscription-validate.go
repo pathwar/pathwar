@@ -13,7 +13,7 @@ import (
 )
 
 // TODO: Add a better way to get challenges validations, maybe a challenge could be closed without be validated
-func (e EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClient *pwapi.HTTPClient, logger *zap.Logger) error {
+func (e *EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClient *pwapi.HTTPClient, logger *zap.Logger) error {
 	if apiClient == nil {
 		logger.Debug("missing apiClient in execute event method")
 		return errcode.ErrMissingInput
