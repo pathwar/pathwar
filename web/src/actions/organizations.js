@@ -141,7 +141,7 @@ export const createOrganization = (name, gravatarEmail) => async dispatch => {
     dispatch({
       type: CREATE_ORGANIZATION_SUCCESS,
       payload: {
-        team: response.data,
+        organization: response.data,
       },
     });
 
@@ -152,6 +152,6 @@ export const createOrganization = (name, gravatarEmail) => async dispatch => {
       payload: { error },
     });
 
-    toast.error(`Create organization ERROR!`);
+    toast.error(`Create organization ${name} failed!`);
   }
 };

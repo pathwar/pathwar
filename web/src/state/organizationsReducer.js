@@ -7,6 +7,7 @@ import {
   SET_ACTIVE_ORGANIZATION,
   SET_ORGANIZATIONS_LIST,
   SET_USER_ORGANIZATIONS_LIST,
+  CREATE_ORGANIZATION_SUCCESS,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -69,6 +70,13 @@ export default function organizationsReducer(
         userOrganizationsInvitations: state.userOrganizationsInvitations ?
           state.userOrganizationsInvitations.filter(invitation => invitation.id !== action.payload.organizationInviteID) :
           state.userOrganizationsInvitations
+      }
+
+    case CREATE_ORGANIZATION_SUCCESS:
+      const { organization } = action.payload.organization;
+      return {
+        ...state,
+        userOrganizationsList: state.userOrganizationsList ? [...state.userOrganizationsList, organization] : [action.payload.organization],
       }
 
       //Don't want to reload the page when we change the organization subpage
