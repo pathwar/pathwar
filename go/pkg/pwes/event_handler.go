@@ -6,11 +6,16 @@ import (
 	"time"
 
 	"go.uber.org/zap"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwapi"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
+
+type Event interface {
+	GetID() int64
+	GetCreatedAt() *time.Time
+	execute(ctx context.Context, apiClient *pwapi.HTTPClient, logger *zap.Logger) error
+}
 
 func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *time.Time, logger *zap.Logger) error {
 	if apiClient == nil || timestamp == nil {
@@ -45,33 +50,33 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 	for _, activity := range activities {
 		switch activity.Kind {
 		case pwdb.Activity_UserRegister:
-			e = EventUserRegister{Event: {Id: activity.ID, CreatedAt: timestamppb.New(activity.CreatedAt)}}
+			e = &EventUserRegister{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_UserLogin:
-			e = EventUserLogin{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventUserLogin{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_UserSetPreferences:
-			e = EventUserSetPreferences{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventUserSetPreferences{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_UserDeleteAccount:
-			e = EventUserDeleteAccount{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventUserDeleteAccount{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_SeasonChallengeBuy:
-			e = EventSeasonChallengeBuy{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventSeasonChallengeBuy{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_ChallengeSubscriptionValidate:
 			e = &EventChallengeSubscriptionValidate{ID: activity.ID, CreatedAt: activity.CreatedAt, SeasonChallenge: activity.SeasonChallenge, Team: activity.Team}
 		case pwdb.Activity_CouponValidate:
-			e = EventCouponValidate{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventCouponValidate{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_AgentRegister:
-			e = EventAgentRegister{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventAgentRegister{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_AgentChallengeInstanceCreate:
-			e = EventAgentChallengeInstanceCreate{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventAgentChallengeInstanceCreate{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_AgentChallengeInstanceUpdate:
-			e = EventAgentChallengeInstanceUpdate{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventAgentChallengeInstanceUpdate{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_TeamCreation:
-			e = EventTeamCreation{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventTeamCreation{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_TeamInviteSend:
-			e = EventTeamInviteSend{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventTeamInviteSend{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_TeamInviteAccept:
-			e = EventTeamInviteAccept{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventTeamInviteAccept{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_Unknown:
-			logger.Debug("The event : " + strconv.Itoa(int(e.getID())) + " is unknown kind.")
+			logger.Debug("The event : " + strconv.Itoa(int(e.GetID())) + " is unknown kind.")
 			continue
 		default:
 			continue
@@ -79,9 +84,9 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 
 		err = e.execute(ctx, apiClient, logger)
 		if err != nil {
-			logger.Debug("The event : " + strconv.Itoa(int(e.getID())) + " failed to execute.")
+			logger.Debug("The event : " + strconv.Itoa(int(e.GetID())) + " failed to execute.")
 		}
-		*timestamp = *e.getCreatedAt()
+		*timestamp = *e.GetCreatedAt()
 	}
 
 	return nil

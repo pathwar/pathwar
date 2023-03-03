@@ -4,6 +4,7 @@ package pathwar.es;
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
 
 option go_package = "pathwar.land/go/pkg/pwes";
 option (gogoproto.sizer_all) = true;
@@ -12,63 +13,71 @@ option (gogoproto.unmarshaler_all) = true;
 
 import "pwdb.proto";
 
-message Event {
-  int64 id = 1;
-  google.protobuf.Timestamp createdAt = 2;
-}
-
 message EventUserRegister {
-  Event event = 1;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 }
 
 message EventUserLogin {
-  Event event = 1;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 }
 
 message EventUserSetPreferences {
-  Event event = 1;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 }
 
 message EventUserDeleteAccount {
-  Event event = 1;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 }
 
 message EventSeasonChallengeBuy {
-  Event event = 1;
-  pathwar.db.Challenge seasonChallenge = 2;
-  pathwar.db.Team team = 3;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  pathwar.db.SeasonChallenge seasonChallenge = 3;
+  pathwar.db.Team team = 4;
 }
 
 message EventChallengeSubscriptionValidate {
-  Event event = 1;
-  pathwar.db.Challenge seasonChallenge = 2;
-  pathwar.db.Team team = 3;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+  pathwar.db.SeasonChallenge seasonChallenge = 3;
+  pathwar.db.Team team = 4;
 }
 
 message EventCouponValidate {
-  Event event = 1;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 }
 
 message EventAgentRegister {
-  Event event = 1;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 }
 
 message EventAgentChallengeInstanceCreate {
-  Event event = 1;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 }
 
 message EventAgentChallengeInstanceUpdate {
-  Event event = 1;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 }
 
 message EventTeamCreation {
-  Event event = 1;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 }
 
 message EventTeamInviteSend {
-  Event event = 1;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 }
 
 message EventTeamInviteAccept {
-  Event event = 1;
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 }
