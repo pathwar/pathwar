@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Page, Grid, Avatar, Dimmer, ProgressCard } from "tabler-react";
+import { Page, Grid, Avatar, Dimmer, ProgressCard, Dropdown } from "tabler-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import moment from "moment";
@@ -93,6 +93,8 @@ const HomePage = () => {
     return <Dimmer active loader />;
   }
 
+  const seasonsDropdown = allSeasons && allSeasons.map((season) => <Dropdown.Item>{season.season.slug}</Dropdown.Item>);
+
   return (
     <Page.Content title={pageTitleIntl}>
       <div>
@@ -142,6 +144,10 @@ const HomePage = () => {
                   <SwitchSeasonInput seasons={allSeasons}/>
                 </div>
               </>
+              <Dropdown
+                triggerContent={activeSeason.name}
+                items={seasonsDropdown}
+              />
             </ShadowBox>
           </Grid.Col>
           <Grid.Col width={12} lg={8}>
