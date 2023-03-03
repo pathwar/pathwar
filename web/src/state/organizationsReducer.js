@@ -76,7 +76,7 @@ export default function organizationsReducer(
       const { organization } = action.payload.organization;
       return {
         ...state,
-        userOrganizationsList: state.userOrganizationsList ? [...state.userOrganizationsList, organization] : [action.payload.organization],
+        userOrganizationsList: state.userOrganizationsList ? [...state.userOrganizationsList, organization] : [organization],
       }
 
       //Don't want to reload the page when we change the organization subpage

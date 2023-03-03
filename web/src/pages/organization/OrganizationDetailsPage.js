@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Page, Grid, Avatar, Dimmer } from "tabler-react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  fetchOrganizationDetail as fetchOrganizationDetailAction,
+  fetchOrganizationDetail as fetchOrganizationDetailAction, fetchOrganizationsList,
 } from "../../actions/organizations";
 import {CLEAN_ORGANIZATION_DETAILS} from "../../constants/actionTypes";
 import ShadowBox from "../../components/ShadowBox";
@@ -52,7 +52,7 @@ const OrganizationDetailsPage = props => {
     fetchOrganizationDetail(organizationID);
 
     return () => dispatch({ type: CLEAN_ORGANIZATION_DETAILS });
-   }, []);
+   }, [organization]);
 
   useEffect(() => {
     if (!allSeasons) {
