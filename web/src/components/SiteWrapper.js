@@ -86,7 +86,7 @@ const wrapper = css`
 const dropdown = css`
   position: relative;
   display: inline-block;
-  margin-left: auto;
+  margin-left: 1rem;
 
   &:hover {
     .dropdown-content {
@@ -131,6 +131,8 @@ const dropdown = css`
       flex-direction: column;
       margin: 0;
       padding: 0 1rem;
+      max-height: 200px;
+      overflow-y: auto;
 
       li {
         display: flex;
@@ -185,7 +187,11 @@ const listItems = [
 
 const SiteWrapper = ({ children }) => {
   const userSession = useSelector(state => state.userSession);
+  const activeTeam = useSelector(state => state.seasons.activeTeam);
+  const activeSeason = useSelector(state => state.seasons.activeSeason);
   const currentTheme = useTheme();
+  console.log(activeTeam)
+  console.log(activeSeason)
 
   const {
     cash,
@@ -226,58 +232,135 @@ const SiteWrapper = ({ children }) => {
             </li>
           ))}
         </ul>
-        <div css={dropdown}>
-          <button className="dropbtn">
-            <span className="mr-2">
-              {user && user.gravatar_url ? (
-                <Avatar imageURL={`${user.gravatar_url}?d=identicon`} />
-              ) : (
-                <Avatar icon="users" />
-              )}
-            </span>
-            <span>{`${username}`}</span>
-          </button>
-          <div className="dropdown-content">
-            <ul>
-              <li>
-                <img src={iconProfile} className="img-responsive" />
-                <a
-                  href={
-                    activeKeycloakSession &&
-                    activeKeycloakSession.tokenParsed.iss + "/account"
-                  }
-                  className="link"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <FormattedMessage id="userNav.profile" />
-                </a>
-              </li>
-              {/* <li>
-                <img src={iconMail} className="img-responsive" />
-                <a href="#" className="link">
-                  <FormattedMessage id="userNav.messages" />
-                </a>
-              </li>
-              <li>
-                <img src={iconPwn} className="img-responsive" />
-                <a href="#" className="link">
-                  <FormattedMessage id="userNav.wallet" />
-                </a>
-              </li>
-              <li>
-                <img src={iconNotifications} className="img-responsive" />
-                <a href="#" className="link">
-                  <FormattedMessage id="userNav.notifications" />
-                </a>
-              </li> */}
-              <li>
-                <img src={iconClose} className="img-responsive" />
-                <Link className="link" to="/logout">
-                  <FormattedMessage id="userNav.disconnect" />
-                </Link>
-              </li>
-            </ul>
+        <div css={{marginLeft: "auto"}}>
+          <div css={dropdown}>
+            <button className="dropbtn">
+              <span className="mr-2">
+                {activeTeam && activeTeam.organization && activeTeam.organization.gravatar_url ? (
+                  <Avatar imageURL={`${activeTeam.organization.gravatar_url}?d=identicon`} />
+                ) : (
+                  <Avatar icon="users" />
+                )}
+              </span>
+              <span>{`${activeSeason.name ? activeSeason.name : 'Loading'}`}</span>
+            </button>
+            <div className="dropdown-content">
+              <ul>
+                <li>
+              <span className="mr-2">
+                {activeTeam && activeTeam.organization && activeTeam.organization.gravatar_url ? (
+                  <Avatar size="sm" imageURL={`${activeTeam.organization.gravatar_url}?d=identicon`} />
+                ) : (
+                  <Avatar size="sm" icon="users" />
+                )}
+              </span>
+                  <span>{`${activeSeason.name ? activeSeason.name : 'Loading'}`}</span>
+                </li>
+                <li>
+                  <img src={iconClose} className="img-responsive" />
+                  <Link className="link" to="/logout">
+                    <FormattedMessage id="userNav.disconnect" />
+                  </Link>
+                </li>
+                <li>
+                  <img src={iconClose} className="img-responsive" />
+                  <Link className="link" to="/logout">
+                    <FormattedMessage id="userNav.disconnect" />
+                  </Link>
+                </li>
+                <li>
+                  <img src={iconClose} className="img-responsive" />
+                  <Link className="link" to="/logout">
+                    <FormattedMessage id="userNav.disconnect" />
+                  </Link>
+                </li>
+                <li>
+                  <img src={iconClose} className="img-responsive" />
+                  <Link className="link" to="/logout">
+                    <FormattedMessage id="userNav.disconnect" />
+                  </Link>
+                </li>
+                <li>
+                  <img src={iconClose} className="img-responsive" />
+                  <Link className="link" to="/logout">
+                    <FormattedMessage id="userNav.disconnect" />
+                  </Link>
+                </li>
+                <li>
+                  <img src={iconClose} className="img-responsive" />
+                  <Link className="link" to="/logout">
+                    <FormattedMessage id="userNav.disconnect" />
+                  </Link>
+                </li>
+                <li>
+                  <img src={iconClose} className="img-responsive" />
+                  <Link className="link" to="/logout">
+                    <FormattedMessage id="userNav.disconnect" />
+                  </Link>
+                </li>
+                <li>
+                  <img src={iconClose} className="img-responsive" />
+                  <Link className="link" to="/logout">
+                    <FormattedMessage id="userNav.disconnect" />
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div css={dropdown}>
+            <button className="dropbtn">
+              <span className="mr-2">
+                {user && user.gravatar_url ? (
+                  <Avatar imageURL={`${user.gravatar_url}?d=identicon`} />
+                ) : (
+                  <Avatar icon="users" />
+                )}
+              </span>
+              <span>{`${username}`}</span>
+            </button>
+            <div className="dropdown-content">
+              <ul>
+                <li>
+                  <img src={iconProfile} className="img-responsive" />
+                  <a
+                    href={
+                      activeKeycloakSession &&
+                      activeKeycloakSession.tokenParsed.iss + "/account"
+                    }
+                    className="link"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FormattedMessage id="userNav.profile" />
+                  </a>
+                </li>
+                {/* <li>
+                  <img src={iconMail} className="img-responsive" />
+                  <a href="#" className="link">
+                    <FormattedMessage id="userNav.messages" />
+                  </a>
+                </li>
+                <li>
+                  <img src={iconPwn} className="img-responsive" />
+                  <a href="#" className="link">
+                    <FormattedMessage id="userNav.wallet" />
+                  </a>
+                </li>
+                <li>
+                  <img src={iconNotifications} className="img-responsive" />
+                  <a href="#" className="link">
+                    <FormattedMessage id="userNav.notifications" />
+                  </a>
+                </li> */}
+                <li>
+                  <img src={iconClose} className="img-responsive" />
+                  <Link className="link" to="/logout">
+                    <FormattedMessage id="userNav.disconnect" />
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
           </div>
         </div>
         <div css={langSwitcher}>

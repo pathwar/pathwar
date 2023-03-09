@@ -35,6 +35,8 @@ import {
   ACCEPT_TEAM_INVITATION_FAILED,
   DECLINE_TEAM_INVITATION_SUCCESS,
   DECLINE_TEAM_INVITATION_FAILED,
+  FETCH_USER_SEASONS_SUCCES,
+  FETCH_USER_SEASONS_FAILED,
 } from "../constants/actionTypes";
 
 import {
@@ -96,6 +98,18 @@ export const setActiveSeason = seasonData => async dispatch => {
     toast.error(`Set season active failed, please try again!`);
   }
 };
+
+export const fetchUserSeasons = userSeasons => async dispatch => {
+  try {
+    dispatch({
+      type: FETCH_USER_SEASONS_SUCCES,
+      payload: { userSeasons: userSeasons },
+    });
+  } catch (error) {
+    dispatch({ type: FETCH_USER_SEASONS_FAILED, payload: { error } });
+    toast.error(`Fetch user seasons failed, please try again!`);
+  }
+}
 
 export const fetchAllSeasons = () => async dispatch => {
   try {

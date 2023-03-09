@@ -16,6 +16,7 @@ import {
   LIST_USER_TEAMS_INVITATIONS_SUCCESS,
   ACCEPT_TEAM_INVITATION_SUCCESS,
   DECLINE_TEAM_INVITATION_SUCCESS,
+  FETCH_USER_SEASONS_SUCCES,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -30,6 +31,7 @@ const initialState = {
     activeChallenges: undefined,
     challengeInDetail: undefined,
     userTeamsInvitations: undefined,
+    userSeasons: undefined,
   },
 };
 
@@ -63,6 +65,12 @@ export default function seasonReducer(state = initialState.seasons, action) {
         ...state,
         activeSeason: action.payload.activeSeason,
       };
+
+    case FETCH_USER_SEASONS_SUCCES:
+      return {
+        ...state,
+        userSeasons: action.payload.userSeasons,
+      }
 
     case GET_CHALLENGE_DETAILS_SUCCESS:
       return {

@@ -26,7 +26,7 @@ import {
 import {
   setActiveSeason as setActiveSeasonAction,
   fetchPreferences as fetchPreferencesAction,
-  setActiveTeam as setActiveTeamAction, fetchUserTeamsInvitations,
+  setActiveTeam as setActiveTeamAction, fetchUserTeamsInvitations, fetchUserSeasons,
 } from "./seasons";
 import dispatchFireworks from "../utils/fireworks-dispatcher";
 
@@ -49,7 +49,7 @@ export const fetchUserSession = postPreferences => async dispatch => {
   try {
     const userSessionResponse = await getUserSession();
     const { data: userSessionData } = userSessionResponse;
-    const { user, organizations, organization_invites, team_invites } = userSessionData;
+    const { user, organizations, organization_invites, team_invites, seasons } = userSessionData;
     const activeSeasonId = user.active_season_id;
 
     dispatch(setUserSession(userSessionData));
@@ -64,6 +64,7 @@ export const fetchUserSession = postPreferences => async dispatch => {
       );
       dispatch(setActiveSeasonAction(activeSeason.season));
       dispatch(setActiveTeamAction(activeSeason.team));
+      dispatch(fetchUserSeasons(seasons));
       dispatch(setActiveOrganizationAction(activeSeason.team.organization));
       dispatch(setUserOrganizationsList(organizations));
       dispatch(fetchUserOrganizationsInvitations(organization_invites));

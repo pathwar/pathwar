@@ -145,7 +145,7 @@ const HomePage = () => {
                 </div>
               </>
               <Dropdown
-                triggerContent={activeSeason.name}
+                triggerContent={activeSeason ? activeSeason.name : 'Select a season'}
                 items={seasonsDropdown}
               />
             </ShadowBox>
