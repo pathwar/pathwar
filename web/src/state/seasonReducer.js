@@ -66,11 +66,15 @@ export default function seasonReducer(state = initialState.seasons, action) {
         activeSeason: action.payload.activeSeason,
       };
 
-    case FETCH_USER_SEASONS_SUCCES:
+    case FETCH_USER_SEASONS_SUCCES: {
+      const activeSeasonID = state.activeSeason.id ? state.activeSeason.id : 0;
       return {
         ...state,
-        userSeasons: action.payload.userSeasons,
+        userSeasons: action.payload.userSeasons ?
+          action.payload.userSeasons.filter(userSeason => userSeason.team !== undefined && userSeason.season.id !== activeSeasonID) :
+          action.payload.userSeasons
       }
+    }
 
     case GET_CHALLENGE_DETAILS_SUCCESS:
       return {

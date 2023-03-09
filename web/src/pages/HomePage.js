@@ -7,7 +7,6 @@ import ShadowBox from "../components/ShadowBox";
 import iconPwn from "../images/icon-pwn-small.svg";
 
 import {
-  fetchAllSeasons,
   fetchChallenges,
   fetchTeamDetails as fetchTeamDetailsAction,
 } from "../actions/seasons";
@@ -15,7 +14,6 @@ import {
 import { isNil } from "ramda";
 import UserChallengesView from "../components/home/UserChallengesView";
 import getTeamRank from "../utils/getTeamRank";
-import SwitchSeasonInput from "../components/season/SwitchSeasonInput";
 import UserOrganizationBadges from "../components/organization/UserOrganizationBadges";
 
 const cardStyle = {
@@ -52,7 +50,6 @@ const HomePage = () => {
   const activeSeason = useSelector(state => state.seasons.activeSeason);
   const teamDetails = useSelector(state => state.seasons.teamInDetail);
   const userOrganizations = useSelector(state => state.organizations.userOrganizationsList);
-  const allSeasons = useSelector(state => state.seasons.allSeasons);
 
   const [rank, setRank] = useState();
 
@@ -78,12 +75,6 @@ const HomePage = () => {
   }, [activeTeam, dispatch, teamDetails]);
 
   useEffect(() => {
-    if (!allSeasons) {
-      dispatch(fetchAllSeasons());
-    }
-  }, [allSeasons, dispatch]);
-
-  useEffect(() => {
     if (isNil(activeChallenges) && activeSeason) {
       dispatch(fetchChallenges(activeSeason.id));
     }
@@ -92,8 +83,6 @@ const HomePage = () => {
   if (!activeUserSession) {
     return <Dimmer active loader />;
   }
-
-  const seasonsDropdown = allSeasons && allSeasons.map((season) => <Dropdown.Item>{season.season.slug}</Dropdown.Item>);
 
   return (
     <Page.Content title={pageTitleIntl}>
@@ -128,26 +117,6 @@ const HomePage = () => {
                 </h3>
                 <UserOrganizationBadges organizations={userOrganizations}/>
               </div>
-            </ShadowBox>
-            <ShadowBox>
-              <h2>
-                <FormattedMessage id="HomePage.switchSeason" />
-              </h2>
-              <>
-                <div
-                  css={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <SwitchSeasonInput seasons={allSeasons}/>
-                </div>
-              </>
-              <Dropdown
-                triggerContent={activeSeason ? activeSeason.name : 'Select a season'}
-                items={seasonsDropdown}
-              />
             </ShadowBox>
           </Grid.Col>
           <Grid.Col width={12} lg={8}>

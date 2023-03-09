@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { Link } from "gatsby";
 import { css } from "@emotion/core";
 import { FormattedMessage } from "react-intl";
@@ -11,7 +11,9 @@ import iconProfile from "../images/icon-profile.svg";
 // import iconNotifications from "../images/icon-notifications.svg";
 import iconPwn from "../images/icon-pwn-small.svg";
 import iconClose from "../images/icon-close-filled.svg";
-import { Avatar } from "tabler-react";
+import {Avatar, Table} from "tabler-react";
+import moment from "moment/moment";
+import {switchSeason} from "../actions/seasons";
 
 const wrapper = css`
   font-family: "Barlow", sans-serif;
@@ -124,6 +126,7 @@ const dropdown = css`
     min-width: 160px;
     box-shadow: -2px 16px 24px -12px rgba(0, 0, 0, 0.75);
     z-index: 1;
+    width: 100%;
 
     ul {
       list-style: none;
@@ -139,13 +142,22 @@ const dropdown = css`
         flex-direction: row;
 
         a {
-          padding: 12px 16px;
           text-decoration: none;
           display: block;
         }
+
       }
     }
   }
+`;
+
+const linkSpan = css`
+    color: #919aa3;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
 `;
 
 const langSwitcher = css`
@@ -189,9 +201,9 @@ const SiteWrapper = ({ children }) => {
   const userSession = useSelector(state => state.userSession);
   const activeTeam = useSelector(state => state.seasons.activeTeam);
   const activeSeason = useSelector(state => state.seasons.activeSeason);
+  const userSeasons = useSelector(state => state.seasons.userSeasons);
   const currentTheme = useTheme();
-  console.log(activeTeam)
-  console.log(activeSeason)
+  console.log(userSeasons)
 
   const {
     cash,
@@ -242,68 +254,13 @@ const SiteWrapper = ({ children }) => {
                   <Avatar icon="users" />
                 )}
               </span>
-              <span>{`${activeSeason.name ? activeSeason.name : 'Loading'}`}</span>
+              <span>{`${activeSeason && activeSeason.name ? activeSeason.name : 'Loading'}`}</span>
             </button>
             <div className="dropdown-content">
               <ul>
-                <li>
-              <span className="mr-2">
-                {activeTeam && activeTeam.organization && activeTeam.organization.gravatar_url ? (
-                  <Avatar size="sm" imageURL={`${activeTeam.organization.gravatar_url}?d=identicon`} />
-                ) : (
-                  <Avatar size="sm" icon="users" />
+                {userSeasons && (
+                  <UserSeasonsItems userSeasons={userSeasons} />
                 )}
-              </span>
-                  <span>{`${activeSeason.name ? activeSeason.name : 'Loading'}`}</span>
-                </li>
-                <li>
-                  <img src={iconClose} className="img-responsive" />
-                  <Link className="link" to="/logout">
-                    <FormattedMessage id="userNav.disconnect" />
-                  </Link>
-                </li>
-                <li>
-                  <img src={iconClose} className="img-responsive" />
-                  <Link className="link" to="/logout">
-                    <FormattedMessage id="userNav.disconnect" />
-                  </Link>
-                </li>
-                <li>
-                  <img src={iconClose} className="img-responsive" />
-                  <Link className="link" to="/logout">
-                    <FormattedMessage id="userNav.disconnect" />
-                  </Link>
-                </li>
-                <li>
-                  <img src={iconClose} className="img-responsive" />
-                  <Link className="link" to="/logout">
-                    <FormattedMessage id="userNav.disconnect" />
-                  </Link>
-                </li>
-                <li>
-                  <img src={iconClose} className="img-responsive" />
-                  <Link className="link" to="/logout">
-                    <FormattedMessage id="userNav.disconnect" />
-                  </Link>
-                </li>
-                <li>
-                  <img src={iconClose} className="img-responsive" />
-                  <Link className="link" to="/logout">
-                    <FormattedMessage id="userNav.disconnect" />
-                  </Link>
-                </li>
-                <li>
-                  <img src={iconClose} className="img-responsive" />
-                  <Link className="link" to="/logout">
-                    <FormattedMessage id="userNav.disconnect" />
-                  </Link>
-                </li>
-                <li>
-                  <img src={iconClose} className="img-responsive" />
-                  <Link className="link" to="/logout">
-                    <FormattedMessage id="userNav.disconnect" />
-                  </Link>
-                </li>
               </ul>
             </div>
           </div>
@@ -379,5 +336,30 @@ const SiteWrapper = ({ children }) => {
     </>
   );
 };
+
+const UserSeasonsItems = ({ userSeasons }) => {
+  const dispatch = useDispatch();
+  const setActiveSeasonDispatch = season => dispatch(switchSeason(season));
+  const SwitchSeason = async season => {
+    const id = season && season.slug ? season.slug : 0;
+    await setActiveSeasonDispatch(id);
+    window.location.reload();
+  };
+
+  return userSeasons.map((item, idx) => {
+    return (
+      <li css={{padding: "12px 16px"}}>
+        <span className="mr-2">
+          {item && item.team && item.team.organization && item.team.organization.gravatar_url ? (
+            <Avatar size="sm" imageURL={`${item.team.organization.gravatar_url}?d=identicon`} />
+          ) : (
+            <Avatar size="sm" icon="users" />
+          )}
+        </span>
+        <span css={linkSpan} onClick={() => SwitchSeason(item.season)}>{`${item && item.season && item.season.name ? item.season.name : 'Loading'}`}</span>
+      </li>
+    );
+  });
+}
 
 export default React.memo(SiteWrapper);
