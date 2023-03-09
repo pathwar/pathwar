@@ -203,7 +203,6 @@ const SiteWrapper = ({ children }) => {
   const activeSeason = useSelector(state => state.seasons.activeSeason);
   const userSeasons = useSelector(state => state.seasons.userSeasons);
   const currentTheme = useTheme();
-  console.log(userSeasons)
 
   const {
     cash,
