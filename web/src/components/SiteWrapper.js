@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { Link } from "gatsby";
 import { css } from "@emotion/core";
 import { FormattedMessage } from "react-intl";
@@ -11,7 +11,9 @@ import iconProfile from "../images/icon-profile.svg";
 // import iconNotifications from "../images/icon-notifications.svg";
 import iconPwn from "../images/icon-pwn-small.svg";
 import iconClose from "../images/icon-close-filled.svg";
-import { Avatar } from "tabler-react";
+import {Avatar, Table} from "tabler-react";
+import moment from "moment/moment";
+import {switchSeason} from "../actions/seasons";
 
 const wrapper = css`
   font-family: "Barlow", sans-serif;
@@ -86,7 +88,7 @@ const wrapper = css`
 const dropdown = css`
   position: relative;
   display: inline-block;
-  margin-left: auto;
+  margin-left: 1rem;
 
   &:hover {
     .dropdown-content {
@@ -124,6 +126,7 @@ const dropdown = css`
     min-width: 160px;
     box-shadow: -2px 16px 24px -12px rgba(0, 0, 0, 0.75);
     z-index: 1;
+    width: 100%;
 
     ul {
       list-style: none;
@@ -131,19 +134,30 @@ const dropdown = css`
       flex-direction: column;
       margin: 0;
       padding: 0 1rem;
+      max-height: 200px;
+      overflow-y: auto;
 
       li {
         display: flex;
         flex-direction: row;
 
         a {
-          padding: 12px 16px;
           text-decoration: none;
           display: block;
         }
+
       }
     }
   }
+`;
+
+const linkSpan = css`
+    color: #919aa3;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
 `;
 
 const langSwitcher = css`
@@ -171,6 +185,10 @@ const listItems = [
     link: `/statistics`,
     name: <FormattedMessage id="nav.statistics" />,
   },
+  {
+    link: `/organizations`,
+    name: <FormattedMessage id="nav.organizations" />,
+  },
   // { link: `${appPrefix}/events`, name: <FormattedMessage id="nav.events" /> },
   // {
   //   link: `${appPrefix}/community`,
@@ -181,6 +199,9 @@ const listItems = [
 
 const SiteWrapper = ({ children }) => {
   const userSession = useSelector(state => state.userSession);
+  const activeTeam = useSelector(state => state.seasons.activeTeam);
+  const activeSeason = useSelector(state => state.seasons.activeSeason);
+  const userSeasons = useSelector(state => state.seasons.userSeasons);
   const currentTheme = useTheme();
 
   const {
@@ -222,58 +243,80 @@ const SiteWrapper = ({ children }) => {
             </li>
           ))}
         </ul>
-        <div css={dropdown}>
-          <button className="dropbtn">
-            <span className="mr-2">
-              {user && user.gravatar_url ? (
-                <Avatar imageURL={`${user.gravatar_url}?d=identicon`} />
-              ) : (
-                <Avatar icon="users" />
-              )}
-            </span>
-            <span>{`${username}`}</span>
-          </button>
-          <div className="dropdown-content">
-            <ul>
-              <li>
-                <img src={iconProfile} className="img-responsive" />
-                <a
-                  href={
-                    activeKeycloakSession &&
-                    activeKeycloakSession.tokenParsed.iss + "/account"
-                  }
-                  className="link"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <FormattedMessage id="userNav.profile" />
-                </a>
-              </li>
-              {/* <li>
-                <img src={iconMail} className="img-responsive" />
-                <a href="#" className="link">
-                  <FormattedMessage id="userNav.messages" />
-                </a>
-              </li>
-              <li>
-                <img src={iconPwn} className="img-responsive" />
-                <a href="#" className="link">
-                  <FormattedMessage id="userNav.wallet" />
-                </a>
-              </li>
-              <li>
-                <img src={iconNotifications} className="img-responsive" />
-                <a href="#" className="link">
-                  <FormattedMessage id="userNav.notifications" />
-                </a>
-              </li> */}
-              <li>
-                <img src={iconClose} className="img-responsive" />
-                <Link className="link" to="/logout">
-                  <FormattedMessage id="userNav.disconnect" />
-                </Link>
-              </li>
-            </ul>
+        <div css={{marginLeft: "auto"}}>
+          <div css={dropdown}>
+            <button className="dropbtn">
+              <span className="mr-2">
+                {activeTeam && activeTeam.organization && activeTeam.organization.gravatar_url ? (
+                  <Avatar imageURL={`${activeTeam.organization.gravatar_url}?d=identicon`} />
+                ) : (
+                  <Avatar icon="users" />
+                )}
+              </span>
+              <span>{`${activeSeason && activeSeason.name ? activeSeason.name : 'Loading'}`}</span>
+            </button>
+            <div className="dropdown-content">
+              <ul>
+                {userSeasons && (
+                  <UserSeasonsItems userSeasons={userSeasons} />
+                )}
+              </ul>
+            </div>
+          </div>
+          <div css={dropdown}>
+            <button className="dropbtn">
+              <span className="mr-2">
+                {user && user.gravatar_url ? (
+                  <Avatar imageURL={`${user.gravatar_url}?d=identicon`} />
+                ) : (
+                  <Avatar icon="users" />
+                )}
+              </span>
+              <span>{`${username}`}</span>
+            </button>
+            <div className="dropdown-content">
+              <ul>
+                <li>
+                  <img src={iconProfile} className="img-responsive" />
+                  <a
+                    href={
+                      activeKeycloakSession &&
+                      activeKeycloakSession.tokenParsed.iss + "/account"
+                    }
+                    className="link"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FormattedMessage id="userNav.profile" />
+                  </a>
+                </li>
+                {/* <li>
+                  <img src={iconMail} className="img-responsive" />
+                  <a href="#" className="link">
+                    <FormattedMessage id="userNav.messages" />
+                  </a>
+                </li>
+                <li>
+                  <img src={iconPwn} className="img-responsive" />
+                  <a href="#" className="link">
+                    <FormattedMessage id="userNav.wallet" />
+                  </a>
+                </li>
+                <li>
+                  <img src={iconNotifications} className="img-responsive" />
+                  <a href="#" className="link">
+                    <FormattedMessage id="userNav.notifications" />
+                  </a>
+                </li> */}
+                <li>
+                  <img src={iconClose} className="img-responsive" />
+                  <Link className="link" to="/logout">
+                    <FormattedMessage id="userNav.disconnect" />
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
           </div>
         </div>
         <div css={langSwitcher}>
@@ -292,5 +335,30 @@ const SiteWrapper = ({ children }) => {
     </>
   );
 };
+
+const UserSeasonsItems = ({ userSeasons }) => {
+  const dispatch = useDispatch();
+  const setActiveSeasonDispatch = season => dispatch(switchSeason(season));
+  const SwitchSeason = async season => {
+    const id = season && season.slug ? season.slug : 0;
+    await setActiveSeasonDispatch(id);
+    window.location.reload();
+  };
+
+  return userSeasons.map((item, idx) => {
+    return (
+      <li css={{padding: "12px 16px"}}>
+        <span className="mr-2">
+          {item && item.team && item.team.organization && item.team.organization.gravatar_url ? (
+            <Avatar size="sm" imageURL={`${item.team.organization.gravatar_url}?d=identicon`} />
+          ) : (
+            <Avatar size="sm" icon="users" />
+          )}
+        </span>
+        <span css={linkSpan} onClick={() => SwitchSeason(item.season)}>{`${item && item.season && item.season.name ? item.season.name : 'Loading'}`}</span>
+      </li>
+    );
+  });
+}
 
 export default React.memo(SiteWrapper);

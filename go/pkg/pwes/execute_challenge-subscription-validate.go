@@ -34,6 +34,9 @@ func (e EventChallengeSubscriptionValidate) execute(ctx context.Context, apiClie
 			return errcode.TODO.Wrap(err)
 		}
 		for _, validation := range validations {
+			if validation.TeamID == e.Team.ID {
+				continue
+			}
 			validation.Team.Score -= diffScore
 			teams = append(teams, validation.Team)
 		}

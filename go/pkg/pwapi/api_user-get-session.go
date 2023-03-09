@@ -70,8 +70,88 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 		}
 	}
 	*/
-
+	output.Organizations, err = svc.loadUserOrganizations(ctx)
+	if err != nil {
+		return nil, errcode.ErrGetUserOrganizations.Wrap(err)
+	}
+	output.OrganizationInvites, err = svc.loadUserOrganizationsInvite(ctx)
+	if err != nil {
+		return nil, errcode.ErrGetUserOrganizationsInvitations.Wrap(err)
+	}
+	output.TeamInvites, err = svc.loadUserTeamsInvite(ctx)
+	if err != nil {
+		return nil, errcode.ErrGetUserTeamsInvitations.Wrap(err)
+	}
 	return output, nil
+}
+
+func (svc *service) loadUserOrganizationsInvite(ctx context.Context) ([]*pwdb.OrganizationInvite, error) {
+	var organizationInvites []*pwdb.OrganizationInvite
+
+	userID, err := userIDFromContext(ctx, svc.db)
+	if err != nil {
+		return nil, errcode.ErrUnauthenticated
+	}
+
+	err = svc.db.
+		Where(pwdb.OrganizationInvite{UserID: userID}).
+		Preload("Organization").
+		Preload("User").
+		Find(&organizationInvites).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, errcode.ErrGetUserOrganizationsInvitations
+	}
+
+	return organizationInvites, nil
+}
+
+func (svc *service) loadUserTeamsInvite(ctx context.Context) ([]*pwdb.TeamInvite, error) {
+	var teamInvites []*pwdb.TeamInvite
+
+	userID, err := userIDFromContext(ctx, svc.db)
+	if err != nil {
+		return nil, errcode.ErrUnauthenticated
+	}
+
+	err = svc.db.
+		Where(pwdb.TeamInvite{UserID: userID}).
+		Preload("Team").
+		Preload("User").
+		Preload("Team.Season").
+		Preload("Team.Organization").
+		Find(&teamInvites).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, errcode.ErrGetUserTeamsInvitations
+	}
+
+	return teamInvites, nil
+}
+
+func (svc *service) loadUserOrganizations(ctx context.Context) ([]*pwdb.Organization, error) {
+	var (
+		organizationsMemberships []int64
+		organizations            []*pwdb.Organization
+	)
+
+	userID, err := userIDFromContext(ctx, svc.db)
+	if err != nil {
+		return nil, errcode.ErrUnauthenticated
+	}
+
+	err = svc.db.Model(&pwdb.OrganizationMember{}).
+		Where(pwdb.OrganizationMember{UserID: userID}).
+		Pluck("organization_id", &organizationsMemberships).
+		Error
+	if err != nil {
+		return nil, errcode.ErrGetUserOrganizations.Wrap(err)
+	}
+
+	err = svc.db.Where(organizationsMemberships).Where(map[string]interface{}{"global_season": "false"}).Find(&organizations).Error
+	if err != nil {
+		return nil, errcode.ErrGetUserOrganizations.Wrap(err)
+	}
+
+	return organizations, nil
 }
 
 func (svc *service) loadUserSeasons(ctx context.Context) ([]*UserGetSession_Output_SeasonAndTeam, error) {

@@ -28,7 +28,7 @@ const StatisticsPage = () => {
   }, [activeSeason, allTeamsOnSeason, dispatch]);
 
   const { title, description } = siteMetaData;
-  const statisticsIntl = intl.formatMessage({ id: "nav.statistics" });
+  const statisticsIntl = intl.formatMessage({ id: "nav.statistics" }) + " - " + activeSeason?.name;
 
   return (
     <>
