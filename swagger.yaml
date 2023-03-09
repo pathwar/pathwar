@@ -20,6 +20,11 @@ definitions:
     - TeamCreation
     - TeamInviteSend
     - TeamInviteAccept
+    - TeamInviteDecline
+    - OrganizationCreation
+    - OrganizationInviteSend
+    - OrganizationInviteAccept
+    - OrganizationInviteDecline
     type: string
   ChallengeFlavorDriver:
     default: Unknown
@@ -543,12 +548,54 @@ definitions:
         format: boolean
         type: boolean
     type: object
+  apiOrganizationAcceptInviteInput:
+    properties:
+      accept:
+        format: boolean
+        type: boolean
+      organization_invite_id:
+        type: string
+    type: object
+  apiOrganizationAcceptInviteOutput:
+    properties:
+      organization_member:
+        $ref: '#/definitions/dbOrganizationMember'
+    type: object
+  apiOrganizationCreateInput:
+    properties:
+      gravatar_email:
+        type: string
+      name:
+        type: string
+    type: object
+  apiOrganizationCreateOutput:
+    properties:
+      organization:
+        $ref: '#/definitions/dbOrganization'
+    type: object
+  apiOrganizationGetOutput:
+    properties:
+      item:
+        $ref: '#/definitions/dbOrganization'
+    type: object
   apiOrganizationListOutput:
     properties:
       items:
         items:
           $ref: '#/definitions/dbOrganization'
         type: array
+    type: object
+  apiOrganizationSendInviteInput:
+    properties:
+      organization_id:
+        type: string
+      user_id:
+        type: string
+    type: object
+  apiOrganizationSendInviteOutput:
+    properties:
+      organization_invite:
+        $ref: '#/definitions/dbOrganizationInvite'
     type: object
   apiSeasonChallengeBuyInput:
     properties:
@@ -593,6 +640,9 @@ definitions:
     type: object
   apiTeamAcceptInviteInput:
     properties:
+      accept:
+        format: boolean
+        type: boolean
       team_invite_id:
         type: string
     type: object
@@ -656,9 +706,21 @@ definitions:
       notifications:
         format: int32
         type: integer
+      organization_invites:
+        items:
+          $ref: '#/definitions/dbOrganizationInvite'
+        type: array
+      organizations:
+        items:
+          $ref: '#/definitions/dbOrganization'
+        type: array
       seasons:
         items:
           $ref: '#/definitions/apiUserGetSessionOutputSeasonAndTeam'
+        type: array
+      team_invites:
+        items:
+          $ref: '#/definitions/dbTeamInvite'
         type: array
       user:
         $ref: '#/definitions/dbUser'
@@ -676,7 +738,6 @@ definitions:
   apiUserSetPreferencesInput:
     properties:
       active_season_id:
-        format: int64
         type: string
     type: object
   apiUserSetPreferencesOutput:
@@ -809,6 +870,16 @@ definitions:
       organization:
         $ref: '#/definitions/dbOrganization'
       organization_id:
+        format: int64
+        type: string
+      organization_invite:
+        $ref: '#/definitions/dbAgent'
+      organization_invite_id:
+        format: int64
+        type: string
+      organization_member:
+        $ref: '#/definitions/dbOrganizationMember'
+      organization_member_id:
         format: int64
         type: string
       season:
@@ -1393,6 +1464,33 @@ definitions:
         type: array
       updated_at:
         format: date-time
+        type: string
+    type: object
+  dbOrganizationInvite:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+      deleted_at:
+        format: date-time
+        type: string
+      id:
+        format: int64
+        type: string
+      organization:
+        $ref: '#/definitions/dbOrganization'
+      organization_id:
+        format: int64
+        type: string
+      slug:
+        type: string
+      updated_at:
+        format: date-time
+        type: string
+      user:
+        $ref: '#/definitions/dbUser'
+      user_id:
+        format: int64
         type: string
     type: object
   dbOrganizationMember:
@@ -2685,6 +2783,117 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiGetInfoOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /organization:
+    get:
+      operationId: Service_OrganizationGet
+      parameters:
+      - format: int64
+        in: query
+        name: organization_id
+        required: false
+        type: string
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiOrganizationGetOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+    post:
+      operationId: Service_OrganizationCreate
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiOrganizationCreateInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiOrganizationCreateOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /organization/invite:
+    post:
+      operationId: Service_OrganizationSendInvite
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiOrganizationSendInviteInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiOrganizationSendInviteOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /organization/invite/accept:
+    post:
+      operationId: Service_OrganizationAcceptInvite
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/apiOrganizationAcceptInviteInput'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiOrganizationAcceptInviteOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}

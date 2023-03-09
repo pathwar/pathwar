@@ -21,9 +21,24 @@ export function getAllSeasonTeams(seasonID) {
   return baseApi.get(`/teams?season_id=${urlIdParam}`);
 }
 
-export function postCreateTeam(seasonID, name) {
-  return baseApi.post(`/team`, { season_id: seasonID, name: name });
+export function postCreateTeam(seasonID, organizationID, name) {
+  return baseApi.post(`/team`, { season_id: seasonID, name: name, organization_id: organizationID });
 }
+
+export function postInviteUserToTeam(teamID, name) {
+  return baseApi.post(`/team/invite`, {
+    team_id: teamID,
+    user_id: name,
+  });
+}
+
+export function postAnswerTeamInvitation(teamInviteID, accept) {
+  return baseApi.post(`/team/invite/accept`, {
+    team_invite_id: teamInviteID,
+    accept: accept,
+  });
+}
+
 
 //Challenge calls
 export function getChallenges(seasonID) {

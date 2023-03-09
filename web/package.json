@@ -19,6 +19,8 @@
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@loadable/component": "^5.10.2",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/lab": "^4.0.0-alpha.61",
     "@sentry/browser": "^5.17.0",
     "axios": "^0.21.2",
     "emotion-theming": "^10.0.27",
