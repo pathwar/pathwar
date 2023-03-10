@@ -14,14 +14,6 @@ func (svc *service) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeG
 	}
 
 	userID, err := userIDFromContext(ctx, svc.db)
-	if in.UserID != 0 {
-		if isAdminContext(ctx) {
-			return nil, errcode.ErrRestrictedArea
-		} else {
-			userID = in.UserID
-		}
-	}
-
 	if err != nil {
 		return nil, errcode.ErrUnauthenticated.Wrap(err)
 	}
@@ -30,6 +22,7 @@ func (svc *service) SeasonChallengeGet(ctx context.Context, in *SeasonChallengeG
 	if err != nil {
 		return nil, errcode.ErrGetSeasonFromSeasonChallenge.Wrap(err)
 	}
+
 	team, err := userTeamForSeason(svc.db, userID, season.ID)
 	if err != nil {
 		return nil, errcode.ErrGetUserTeamFromSeason.Wrap(err)

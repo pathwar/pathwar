@@ -18,15 +18,10 @@ func (e *EventChallengeSubscriptionValidate) execute(ctx context.Context, apiCli
 		logger.Debug("missing apiClient in execute event method")
 		return errcode.ErrMissingInput
 	}
-	res, err := apiClient.SeasonChallengeGet(ctx, &pwapi.SeasonChallengeGet_Input{SeasonChallengeID: e.SeasonChallenge.ID})
-	challenge := res.GetItem()
-	if err != nil || challenge == nil {
-		return errcode.TODO.Wrap(err)
-	}
 
-	oldScore := computeScore(challenge.NbValidations)
-	challenge.NbValidations++
-	newScore := computeScore(challenge.NbValidations)
+	oldScore := computeScore(e.SeasonChallenge.NbValidations)
+	e.SeasonChallenge.NbValidations++
+	newScore := computeScore(e.SeasonChallenge.NbValidations)
 
 	teams := []*pwdb.Team{}
 	if oldScore != newScore {
@@ -47,7 +42,7 @@ func (e *EventChallengeSubscriptionValidate) execute(ctx context.Context, apiCli
 	e.Team.Score += newScore
 	teams = append(teams, e.Team)
 
-	_, err = apiClient.AdminUpdateSeasonChallengesMetadata(ctx, &pwapi.AdminUpdateSeasonChallengesMetadata_Input{SeasonChallenges: []*pwdb.SeasonChallenge{challenge}})
+	_, err := apiClient.AdminUpdateSeasonChallengesMetadata(ctx, &pwapi.AdminUpdateSeasonChallengesMetadata_Input{SeasonChallenges: []*pwdb.SeasonChallenge{e.SeasonChallenge}})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}

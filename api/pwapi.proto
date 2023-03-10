@@ -400,7 +400,6 @@ message SeasonChallengeList {
 message SeasonChallengeGet {
   message Input {
     int64 season_challenge_id = 1 [(gogoproto.customname) = "SeasonChallengeID", (gogoproto.moretags) = "url:\"season_challenge_id\""];
-    int64 user_id = 2 [(gogoproto.customname) = "UserID", (gogoproto.moretags) = "url:\"user_id\""];
   }
   message Output {
     pathwar.db.SeasonChallenge item = 1;
