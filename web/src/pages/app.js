@@ -16,7 +16,7 @@ import ChallengesPage from "./ChallengesPage";
 import ChallengeDetailsPage from "./ChallengeDetailsPage";
 import StatisticsPage from "./StatisticsPage";
 import SiteWrapper from "../components/SiteWrapper";
-import TeamDetailsPage from "./TeamDetailsPage";
+import TeamDetailsPage from "./team/TeamDetailsPage";
 import SettingsPage from "./SettingsPage";
 import NotAvailablePage from "./NotAvailablePage";
 import * as Sentry from "@sentry/browser";
@@ -27,6 +27,10 @@ const ProtectedRoute = loadable(() => import("../components/ProtectedRoute"));
 //Third part libs global styles
 import "tabler-react/dist/Tabler.css";
 import "react-responsive-modal/styles.css";
+import OrganizationsPage from "./organization/UserOrganizationsPage";
+import OrganizationDetailsPage from "./organization/OrganizationDetailsPage";
+import OrganizationMembersPage from "./organization/OrganizationMembersPage";
+import OrganizationTeamsAndSeasonsPage from "./organization/OrganizationTeamsAndSeasons";
 
 Sentry.init({
   dsn:
@@ -91,6 +95,23 @@ export const App = () => {
           <Router location={location}>
             <ProtectedRoute path={`/challenges`} component={ChallengesPage} />
             <ProtectedRoute path={`/statistics`} component={StatisticsPage} />
+            <ProtectedRoute path={`/organizations`} component={OrganizationsPage} />
+            <ProtectedRoute
+              path={`/team/:teamId`}
+              component={TeamDetailsPage}
+            />
+            <ProtectedRoute
+              path={`/organization/:organizationId`}
+              component={OrganizationDetailsPage}
+            />
+            <ProtectedRoute
+              path={`/organization/:organizationId/members`}
+              component={OrganizationMembersPage}
+            />
+            <ProtectedRoute
+              path={`/organization/:organizationId/teams`}
+              component={OrganizationTeamsAndSeasonsPage}
+            />
             <ProtectedRoute
               path={`/team/:teamId`}
               component={TeamDetailsPage}

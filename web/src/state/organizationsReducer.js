@@ -1,6 +1,13 @@
 import {
+  ACCEPT_ORGANIZATION_INVITATION_SUCCESS,
+  CLEAN_ORGANIZATION_DETAILS,
+  GET_ORGANIZATION_DETAILS_SUCCESS,
+  LIST_USER_ORGANIZATIONS_INVITATIONS_SUCCESS,
+  DECLINE_ORGANIZATION_INVITATION_SUCCESS,
   SET_ACTIVE_ORGANIZATION,
   SET_ORGANIZATIONS_LIST,
+  SET_USER_ORGANIZATIONS_LIST,
+  CREATE_ORGANIZATION_SUCCESS,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -9,10 +16,12 @@ const initialState = {
     userOrganizationsList: undefined,
     activeOrganization: undefined,
     allOrganizationsList: undefined,
+    organizationInDetail: undefined,
+    userOrganizationsInvitations: undefined,
   },
 };
 
-export default function teamsReducer(
+export default function organizationsReducer(
   state = initialState.organizations,
   action
 ) {
@@ -27,6 +36,55 @@ export default function teamsReducer(
       return {
         ...state,
         allOrganizationsList: action.payload.allOrganizationsList,
+      };
+
+    case SET_USER_ORGANIZATIONS_LIST:
+      return {
+        ...state,
+        userOrganizationsList: action.payload.userOrganizationsList,
+      }
+
+    case GET_ORGANIZATION_DETAILS_SUCCESS:
+      return {
+        ...state,
+        organizationInDetail: action.payload.organization,
+      }
+
+    case LIST_USER_ORGANIZATIONS_INVITATIONS_SUCCESS:
+      return {
+        ...state,
+        userOrganizationsInvitations: action.payload.userOrganizationsInvitations,
+      }
+
+    case ACCEPT_ORGANIZATION_INVITATION_SUCCESS:
+      return {
+        ...state,
+        userOrganizationsInvitations: state.userOrganizationsInvitations ?
+          state.userOrganizationsInvitations.filter(invitation => invitation.id !== action.payload.organizationInviteID) :
+          state.userOrganizationsInvitations
+      }
+
+    case DECLINE_ORGANIZATION_INVITATION_SUCCESS:
+      return {
+        ...state,
+        userOrganizationsInvitations: state.userOrganizationsInvitations ?
+          state.userOrganizationsInvitations.filter(invitation => invitation.id !== action.payload.organizationInviteID) :
+          state.userOrganizationsInvitations
+      }
+
+    case CREATE_ORGANIZATION_SUCCESS: {
+      const {organization} = action.payload.organization;
+      return {
+        ...state,
+        userOrganizationsList: state.userOrganizationsList ? [...state.userOrganizationsList, organization] : [organization],
+      }
+    }
+
+      //Don't want to reload the page when we change the organization subpage
+    case CLEAN_ORGANIZATION_DETAILS:
+      return {
+        ...state,
+        /*organizationInDetail: undefined,*/
       };
 
     default:

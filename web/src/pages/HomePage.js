@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Page, Grid, Avatar, Dimmer, ProgressCard } from "tabler-react";
+import { Page, Grid, Avatar, Dimmer, ProgressCard, Dropdown } from "tabler-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import moment from "moment";
@@ -8,14 +8,13 @@ import iconPwn from "../images/icon-pwn-small.svg";
 
 import {
   fetchChallenges,
-  fetchAllSeasons,
   fetchTeamDetails as fetchTeamDetailsAction,
 } from "../actions/seasons";
 
 import { isNil } from "ramda";
 import UserChallengesView from "../components/home/UserChallengesView";
 import getTeamRank from "../utils/getTeamRank";
-import SwitchSeasonInput from "../components/season/SwitchSeasonInput";
+import UserOrganizationBadges from "../components/organization/UserOrganizationBadges";
 
 const cardStyle = {
   margin: "1rem",
@@ -41,6 +40,7 @@ const HomePage = () => {
       username,
       email,
       created_at,
+      id,
     },
   } = activeUserSession || { user: {} };
 
@@ -49,6 +49,7 @@ const HomePage = () => {
   const activeChallenges = useSelector(state => state.seasons.activeChallenges);
   const activeSeason = useSelector(state => state.seasons.activeSeason);
   const teamDetails = useSelector(state => state.seasons.teamInDetail);
+  const userOrganizations = useSelector(state => state.organizations.userOrganizationsList);
 
   const [rank, setRank] = useState();
 
@@ -65,6 +66,7 @@ const HomePage = () => {
       fetchRank();
     }
   }, [activeSeason, activeTeam, rank]);
+
 
   useEffect(() => {
     if (activeTeam && !teamDetails) {
@@ -102,10 +104,18 @@ const HomePage = () => {
                 )}
                 <h2 className="mb-0 mt-2">{username}</h2>
                 <p>{email}</p>
-                <h3>
+                <h3 className="mb-0 mt-2">
                   <FormattedMessage id="HomePage.createdAt" />
                 </h3>
                 <p>{moment(created_at).format("ll")}</p>
+                <h3 className="mb-0 mt-2">
+                  <FormattedMessage id="HomePage.activeSeason" />
+                </h3>
+                <p>{activeSeason ? activeSeason.name : ''}</p>
+                <h3 className="mb-2 mt-2">
+                  <FormattedMessage id="HomePage.organizations" />
+                </h3>
+                <UserOrganizationBadges organizations={userOrganizations}/>
               </div>
             </ShadowBox>
           </Grid.Col>
@@ -144,22 +154,6 @@ const HomePage = () => {
               )}
             </ShadowBox>
             <UserChallengesView challenges={activeChallenges} />
-            <ShadowBox>
-              <h2>
-                <FormattedMessage id="HomePage.switchSeason" />
-              </h2>
-                <>
-                  <div
-                    css={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                  <SwitchSeasonInput />
-                  </div>
-                </>
-            </ShadowBox>
           </Grid.Col>
         </Grid.Row>
       </div>

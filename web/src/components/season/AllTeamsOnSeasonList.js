@@ -16,8 +16,8 @@ const TeamsRows = ({ teams }) => {
 
   const parsedTeams = teams.map(item => ({
     ...item,
-    score: item.score ? parseInt(item.score, 10) : undefined,
-    cash: item.cash ? parseInt(item.cash, 10) : undefined,
+    score: item.score ? parseInt(item.score, 10) : 0,
+    cash: item.cash ? parseInt(item.cash, 10) : 0,
   }));
 
   const sortedTeamsByScoreAndCash = useMemo(() => scoreCashSort(parsedTeams), [

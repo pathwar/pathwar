@@ -27,12 +27,21 @@ import {
   SET_ACTIVE_TEAM,
   CREATE_TEAM_SUCCESS,
   CREATE_TEAM_FAILED,
+  LIST_USER_TEAMS_INVITATIONS_SUCCESS,
+  LIST_USER_TEAMS_INVITATIONS_FAILED,
+  INVITE_USER_TO_TEAM_SUCCESS,
+  INVITE_USER_TO_TEAM_FAILED,
+  ACCEPT_TEAM_INVITATION_SUCCESS,
+  ACCEPT_TEAM_INVITATION_FAILED,
+  DECLINE_TEAM_INVITATION_SUCCESS,
+  DECLINE_TEAM_INVITATION_FAILED,
+  FETCH_USER_SEASONS_SUCCES,
+  FETCH_USER_SEASONS_FAILED,
 } from "../constants/actionTypes";
 
 import {
   getAllSeasons,
   getAllSeasonTeams,
-  postPreferences,
   getChallenges,
   getChallengeDetails,
   getTeamDetails,
@@ -40,6 +49,9 @@ import {
   postValidateChallenge,
   postCloseChallenge,
   postCreateTeam,
+  postPreferences,
+  postInviteUserToTeam,
+  postAnswerTeamInvitation,
 } from "../api/seasons";
 
 //Season main actions
@@ -58,9 +70,9 @@ export const fetchPreferences = seasonID => async dispatch => {
   }
 };
 
-export const switchSeason = seasonID => async dispatch => {
+export const switchSeason = seasonSlug => async dispatch => {
   try {
-    await postPreferences(seasonID);
+    await postPreferences(seasonSlug);
 
     dispatch({
       type: SWITCH_SEASON,
@@ -87,10 +99,22 @@ export const setActiveSeason = seasonData => async dispatch => {
   }
 };
 
+export const fetchUserSeasons = userSeasons => async dispatch => {
+  try {
+    dispatch({
+      type: FETCH_USER_SEASONS_SUCCES,
+      payload: { userSeasons: userSeasons },
+    });
+  } catch (error) {
+    dispatch({ type: FETCH_USER_SEASONS_FAILED, payload: { error } });
+    toast.error(`Fetch user seasons failed, please try again!`);
+  }
+}
+
 export const fetchAllSeasons = () => async dispatch => {
   try {
     const response = await getAllSeasons();
-    const allSeasons = response.data.items;
+    const allSeasons = response.data.seasons;
 
     dispatch({
       type: GET_ALL_SEASONS_SUCCESS,
@@ -144,9 +168,9 @@ export const setActiveTeam = teamData => async dispatch => {
   });
 };
 
-export const createTeam = (seasonID, name) => async dispatch => {
+export const createTeam = (seasonID, organizationID, name) => async dispatch => {
   try {
-    const response = await postCreateTeam(seasonID, name);
+    const response = await postCreateTeam(seasonID, organizationID, name);
 
     dispatch({
       type: CREATE_TEAM_SUCCESS,
@@ -163,6 +187,74 @@ export const createTeam = (seasonID, name) => async dispatch => {
     });
 
     toast.error(`Create team ERROR!`);
+  }
+};
+
+export const fetchUserTeamsInvitations = userTeamsInvitations => async dispatch => {
+  try {
+    dispatch({
+      type: LIST_USER_TEAMS_INVITATIONS_SUCCESS,
+      payload: { userTeamsInvitations: userTeamsInvitations },
+    });
+  } catch (error) {
+    dispatch({ type: LIST_USER_TEAMS_INVITATIONS_FAILED, payload: { error } });
+  }
+};
+
+export const inviteUserToTeam = (teamID, name, organizationName, seasonName) => async dispatch => {
+  try {
+    const response = await postInviteUserToTeam(teamID, name);
+    dispatch({
+      type: INVITE_USER_TO_TEAM_SUCCESS,
+      payload: {
+        team: response.data,
+      },
+    });
+    toast.success(`invite ${name} to the team ${organizationName} in ${seasonName} season success!`);
+  } catch (error) {
+    dispatch({
+      type: INVITE_USER_TO_TEAM_FAILED,
+      payload: { error },
+    });
+    toast.error(`invite ${name} to the team ${organizationName} in ${seasonName} season failed!`);
+  }
+};
+
+export const acceptTeamInvite = (teamInviteID, seasonName, organizationName) => async dispatch => {
+  try {
+    await postAnswerTeamInvitation(teamInviteID, true);
+    dispatch({
+      type: ACCEPT_TEAM_INVITATION_SUCCESS,
+      payload: {
+        teamInviteID: teamInviteID,
+      },
+    });
+    toast.success(`accept invite to the team ${organizationName} in ${seasonName} season success!`);
+  } catch (error) {
+    dispatch({
+      type: ACCEPT_TEAM_INVITATION_FAILED,
+      payload: { error },
+    });
+    toast.error(`accept invite to the team ${organizationName} in ${seasonName} season failed!`);
+  }
+};
+
+export const declineTeamInvite = (teamInviteID, seasonName, organizationName) => async dispatch => {
+  try {
+    await postAnswerTeamInvitation(teamInviteID, false);
+    dispatch({
+      type: DECLINE_TEAM_INVITATION_SUCCESS,
+      payload: {
+        teamInviteID: teamInviteID,
+      },
+    });
+    toast.success(`reject invite to the team ${organizationName} in ${seasonName} season success!`);
+  } catch (error) {
+    dispatch({
+      type: DECLINE_TEAM_INVITATION_FAILED,
+      payload: { error },
+    });
+    toast.error(`reject invite to the team ${organizationName} in ${seasonName} season failed!`);
   }
 };
 
@@ -248,3 +340,4 @@ export const closeChallenge = subscriptionID => async dispatch => {
     toast.error(`Close challenge ERROR!`);
   }
 };
+

@@ -13,6 +13,10 @@ import {
   CLOSE_CHALLENGE_SUCCESS,
   BUY_CHALLENGE_SUCCESS,
   VALIDATE_CHALLENGE_SUCCESS,
+  LIST_USER_TEAMS_INVITATIONS_SUCCESS,
+  ACCEPT_TEAM_INVITATION_SUCCESS,
+  DECLINE_TEAM_INVITATION_SUCCESS,
+  FETCH_USER_SEASONS_SUCCES,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -26,6 +30,8 @@ const initialState = {
     allTeamsOnSeason: undefined,
     activeChallenges: undefined,
     challengeInDetail: undefined,
+    userTeamsInvitations: undefined,
+    userSeasons: undefined,
   },
 };
 
@@ -60,6 +66,16 @@ export default function seasonReducer(state = initialState.seasons, action) {
         activeSeason: action.payload.activeSeason,
       };
 
+    case FETCH_USER_SEASONS_SUCCES: {
+      const activeSeasonID = state.activeSeason.id ? state.activeSeason.id : 0;
+      return {
+        ...state,
+        userSeasons: action.payload.userSeasons ?
+          action.payload.userSeasons.filter(userSeason => userSeason.team !== undefined && userSeason.season.id !== activeSeasonID) :
+          action.payload.userSeasons
+      }
+    }
+
     case GET_CHALLENGE_DETAILS_SUCCESS:
       return {
         ...state,
@@ -83,6 +99,28 @@ export default function seasonReducer(state = initialState.seasons, action) {
         ...state,
         teamInDetail: action.payload.team,
       };
+
+    case LIST_USER_TEAMS_INVITATIONS_SUCCESS:
+      return {
+        ...state,
+        userTeamsInvitations: action.payload.userTeamsInvitations,
+      }
+
+    case ACCEPT_TEAM_INVITATION_SUCCESS:
+      return {
+        ...state,
+        userTeamsInvitations: state.userTeamsInvitations ?
+          state.userTeamsInvitations.filter(invitation => invitation.id !== action.payload.teamInviteID) :
+          state.userTeamsInvitations
+      }
+
+    case DECLINE_TEAM_INVITATION_SUCCESS:
+      return {
+        ...state,
+        userTeamsInvitations: state.userTeamsInvitations ?
+          state.userTeamsInvitations.filter(invitation => invitation.id !== action.payload.teamInviteID) :
+          state.userTeamsInvitations
+      }
 
     case SET_ACTIVE_TEAM:
       const {

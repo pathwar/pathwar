@@ -36,6 +36,7 @@ import (
 const (
 	defaultDBURN       = "root:uns3cur3@tcp(127.0.0.1:3306)/pathwar?charset=utf8mb4&parseTime=true"
 	defaultHTTPApiAddr = "https://api.pathwar.land"
+	defaultSeasonSlug  = "global"
 )
 
 var (
@@ -58,6 +59,7 @@ var (
 	globalSentryDSN string
 	httpAPIAddr     string
 	zipkinEndpoint  string
+	seasonSlug      string
 )
 
 func ssoFromFlags() (pwsso.Client, error) {

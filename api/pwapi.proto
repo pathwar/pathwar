@@ -40,6 +40,10 @@ service Service {
   //
 
   rpc OrganizationList(OrganizationList.Input) returns (OrganizationList.Output) { option (google.api.http) = {get: "/organizations"}; };
+  rpc OrganizationGet(OrganizationGet.Input) returns (OrganizationGet.Output) { option (google.api.http) = {get: "/organization"}; };
+  rpc OrganizationCreate(OrganizationCreate.Input) returns (OrganizationCreate.Output) { option (google.api.http) = {post: "/organization"; body: "*"}; };
+  rpc OrganizationSendInvite(OrganizationSendInvite.Input) returns (OrganizationSendInvite.Output) { option (google.api.http) = {post: "/organization/invite"; body: "*"}; };
+  rpc OrganizationAcceptInvite(OrganizationAcceptInvite.Input) returns (OrganizationAcceptInvite.Output) { option (google.api.http) = {post: "/organization/invite/accept"; body: "*"}; };
 
   //
   // Team
@@ -168,8 +172,8 @@ message AdminListUsers {
 
 message AdminListChallengeSubscriptions {
   message Input {
-    string filtering_preset = 1;
-    string season_challenge_id = 2 [(gogoproto.customname) = "SeasonChallengeID"];
+    string filtering_preset = 1 [(gogoproto.customname) = "FilteringPreset", (gogoproto.moretags) = "url:\"filtering_preset\""];
+    string season_challenge_id = 2 [(gogoproto.customname) = "SeasonChallengeID", (gogoproto.moretags) = "url:\"season_challenge_id\""];
   }
   message Output {
     repeated pathwar.db.ChallengeSubscription subscriptions = 1;
@@ -465,6 +469,7 @@ message TeamSendInvite {
 message TeamAcceptInvite {
   message Input {
     string team_invite_id = 1 [(gogoproto.customname) = "TeamInviteID"];
+    bool accept = 2;
   }
   message Output {
     pathwar.db.TeamMember team_member = 1;
@@ -485,7 +490,7 @@ message SeasonList {
 
 message UserSetPreferences {
   message Input {
-    int64 active_season_id = 1 [(gogoproto.customname) = "ActiveSeasonID"];
+    string active_season_id = 1 [(gogoproto.customname) = "ActiveSeasonID"];
     // bool dark_mode
   }
   message Output {}
@@ -503,6 +508,45 @@ message OrganizationList {
   message Input {}
   message Output {
     repeated pathwar.db.Organization items = 1;
+  }
+}
+
+message OrganizationCreate {
+  message Input {
+    string name = 1;
+    string gravatar_email = 2;
+  }
+  message Output {
+    pathwar.db.Organization organization = 1;
+  }
+}
+
+message OrganizationGet {
+  message Input {
+    int64 organization_id = 1 [(gogoproto.customname) = "OrganizationID"];
+  }
+  message Output {
+    pathwar.db.Organization item = 1;
+  }
+}
+
+message OrganizationSendInvite {
+  message Input {
+    string organization_id = 1 [(gogoproto.customname) = "OrganizationID"];
+    string user_id = 2 [(gogoproto.customname) = "UserID"];
+  }
+  message Output {
+    pathwar.db.OrganizationInvite organization_invite = 1;
+  }
+}
+
+message OrganizationAcceptInvite {
+  message Input {
+    string organization_invite_id = 1 [(gogoproto.customname) = "OrganizationInviteID"];
+    bool accept = 2;
+  }
+  message Output {
+    pathwar.db.OrganizationMember organization_member = 1;
   }
 }
 
@@ -526,6 +570,9 @@ message UserGetSession {
       pathwar.db.Team team = 2;
       bool is_active = 3;
     }
+    repeated pathwar.db.Organization organizations = 6;
+    repeated pathwar.db.OrganizationInvite organization_invites = 7;
+    repeated pathwar.db.TeamInvite team_invites = 8;
   }
 }
 
