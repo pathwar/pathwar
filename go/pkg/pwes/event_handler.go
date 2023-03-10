@@ -39,7 +39,6 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 
 	// Use rebuild to process all events to be up-to-date in an efficient way
 	if timestamp.IsZero() {
-		logger.Info("Recompute all events from the beginning")
 		*timestamp = *activities[len(activities)-1].CreatedAt
 		err := Rebuild(ctx, apiClient, Opts{WithoutScore: false, From: "", To: timestamp.Format(TimeLayout), Logger: logger})
 		if err != nil && err != errcode.ErrNothingToRebuild {

@@ -16,7 +16,6 @@ func (svc *service) AdminListActivities(ctx context.Context, in *AdminListActivi
 		return nil, errcode.ErrMissingInput
 	}
 
-	fmt.Println(in)
 	var activities []*pwdb.Activity
 	req := svc.db.
 		Preload("Author").
