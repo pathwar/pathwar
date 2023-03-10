@@ -22,7 +22,8 @@ require (
 	github.com/gobuffalo/packr/v2 v2.8.0
 	github.com/gogo/gateway v1.1.0
 	github.com/gogo/protobuf v1.3.2
-	github.com/golang/protobuf v1.3.2
+	github.com/golang/protobuf v1.5.0
+	github.com/google/go-cmp v0.5.5 // indirect
 	github.com/google/go-querystring v1.0.0
 	github.com/gosimple/slug v1.9.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.0

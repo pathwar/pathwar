@@ -15,7 +15,7 @@ type challengeValidation struct {
 	score           int64
 }
 
-// Should use ID instead of timestamp to retrieve next events
+// Rebuild TODO: Rebuild current state from all past events
 func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error {
 	if apiClient == nil {
 		return errcode.ErrMissingInput

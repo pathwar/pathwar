@@ -6,3 +6,4 @@
 a65bb911c95219fcccdd43b5584dcadaad07a63c  Makefile
 c81cbf3ebdd9f27b3e0dfd62348e8c0114ef26a4  ../api/pwapi.proto
 cf270cb20c1fa16e9ec075631fb6237058a94e87  ../api/pwdb.proto
+f09956b0987f022c36c689d4418e8512bbfab219  ../api/pwes.proto
