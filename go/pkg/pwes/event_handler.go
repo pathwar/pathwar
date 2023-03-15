@@ -26,7 +26,7 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 	to := time.Now()
 	to = to.Add(-time.Second)
 	logger.Info("event handler started", zap.Time("timestamp", *timestamp))
-	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: timestamp, To: &to})
+	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: timestamp, To: &to, Limit: 1000})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
 	}
