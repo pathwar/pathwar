@@ -39,7 +39,6 @@ func devCommand() *ffcli.Command {
 		Subcommands: []*ffcli.Command{
 			serverCommand(),
 			challengeRunCommand(),
-			challengeDeployCommand(),
 		},
 	}
 }
@@ -156,12 +155,14 @@ func serverCommand() *ffcli.Command {
 }
 
 func challengeRunCommand() *ffcli.Command {
-	devChallengeFlags := flag.NewFlagSet("dev", flag.ExitOnError)
-	devChallengeFlags.StringVar(&seasonSlug, "season-slug", defaultSeasonSlug, "season slug")
-
 	var (
 		composePrepareOpts = pwcompose.NewPrepareOpts()
+		devChallengeFlags  = flag.NewFlagSet("dev", flag.ExitOnError)
 	)
+	devChallengeFlags.StringVar(&seasonSlug, "season-slug", defaultSeasonSlug, "season slug")
+	devChallengeFlags.StringVar(&httpAPIAddr, "http-api-addr", "http://localhost:8000", "HTTP API address")
+	devChallengeFlags.BoolVar(&composePrepareOpts.NoPush, "no-push", composePrepareOpts.NoPush, "don't push images")
+	devChallengeFlags.StringVar(&composePrepareOpts.Prefix, "prefix", composePrepareOpts.Prefix, "docker image prefix")
 
 	return &ffcli.Command{
 		Name:      "challenge-run",
@@ -177,7 +178,6 @@ func challengeRunCommand() *ffcli.Command {
 
 			composePrepareOpts.ChallengeDir = "."
 			composePrepareOpts.Logger = logger
-			composePrepareOpts.NoPush = true
 
 			preparedComposeData, err := pwcompose.Prepare(composePrepareOpts)
 			if err != nil {
@@ -235,24 +235,6 @@ func challengeRunCommand() *ffcli.Command {
 			if err != nil {
 				return errcode.TODO.Wrap(err)
 			}
-
-			return nil
-		},
-	}
-}
-
-func challengeDeployCommand() *ffcli.Command {
-	devChallengeFlags := flag.NewFlagSet("dev", flag.ExitOnError)
-
-	return &ffcli.Command{
-		Name:      "challenge-deploy",
-		ShortHelp: "deploy a challenge",
-		FlagSet:   devChallengeFlags,
-		Exec: func(ctx context.Context, args []string) error {
-			fmt.Println(motd.Default())
-			fmt.Println(banner.Inline("deploy challenge"))
-
-			//TODO: Deploying challenge from current folder
 
 			return nil
 		},
