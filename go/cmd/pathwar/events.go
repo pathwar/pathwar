@@ -34,6 +34,7 @@ func eventsCommand() *ffcli.Command {
 func eventsStart() *ffcli.Command {
 	eventsSourcingFlags := flag.NewFlagSet("start", flag.ExitOnError)
 	eventsSourcingFlags.IntVar(&esOpts.RefreshRate, "refresh-rate", esOpts.RefreshRate, "refresh rate in seconds")
+	eventsSourcingFlags.StringVar(&httpAPIAddr, "http-api-addr", "http://localhost:8000", "HTTP API address")
 
 	return &ffcli.Command{
 		Name:      "start",
