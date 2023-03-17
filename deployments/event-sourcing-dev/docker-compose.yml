@@ -12,6 +12,8 @@ services:
     environment:
       - PATHWAR_EVENTS_HTTP_API_ADDR
       - PATHWAR_EVENTS_REFRESH_RATE
+      - PATHWAR_EVENTS_SSO_PUBKEY
+      - PATHWAR_EVENTS_SSO_REALM
     labels:
       com.centurylinklabs.watchtower.enable: "true"
     working_dir: /data/
@@ -21,6 +23,9 @@ services:
       - start
       -   --refresh-rate=$PATHWAR_EVENTS_REFRESH_RATE
       -   --http-api-addr=$PATHWAR_EVENTS_HTTP_API_ADDR
+      -   --sso-realm=$PATHWAR_EVENTS_SSO_REALM
+      -   --sso-pubkey=$PATHWAR_EVENTS_SSO_PUBKEY
+      -   --sso-token-file=./agent-token.json
 
       #   -refresh-rate 5                                      frequency of event processing
       #   -http-api-addr http://localhost:8000                 base url of the API
