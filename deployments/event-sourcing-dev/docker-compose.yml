@@ -18,6 +18,7 @@ services:
     command:
       -   --debug
       - events
+      - start
       -   --refresh-rate=$PATHWAR_EVENTS_REFRESH_RATE
       -   --http-api-addr=$PATHWAR_EVENTS_HTTP_API_ADDR
 
