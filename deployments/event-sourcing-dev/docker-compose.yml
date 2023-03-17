@@ -29,3 +29,8 @@ services:
 
       #   -refresh-rate 5                                      frequency of event processing
       #   -http-api-addr http://localhost:8000                 base url of the API
+      #   -sso-clientid platform-cli                           SSO ClientID
+      #   -sso-clientsecret ...                                SSO ClientSecret
+      #   -sso-realm Pathwar-Dev                               SSO Realm
+      #   -sso-token-file pathwar_agent_oauth_token.json       Token file
+
