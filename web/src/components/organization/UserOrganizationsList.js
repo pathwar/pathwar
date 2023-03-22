@@ -40,31 +40,33 @@ const OrganizationsRows = ({ organizations }) => {
 
 const UserOrganizationsList = ({ userOrganizationsList }) => {
   return !userOrganizationsList ? (
-    <Dimmer active loader />
+    <h3>User don't have any organization for now</h3>
   ) : (
     <Card>
-      <Table
-        striped={true}
-        responsive={true}
-        verticalAlign="center"
-        className="mb-0"
-      >
-        <Table.Header>
-          <Table.Row>
-            <Table.ColHeader alignContent="center">
-              <FormattedMessage id="UserOrganizationsList.rank" />
-            </Table.ColHeader>
-            <Table.ColHeader alignContent="center">
-              <FormattedMessage id="UserOrganizationsList.organization" />
-            </Table.ColHeader>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {userOrganizationsList && (
-            <OrganizationsRows organizations={userOrganizationsList} />
-          )}
-        </Table.Body>
-      </Table>
+      <div css={{maxHeight: "435px", overflow: "auto"}}>
+        <Table
+          striped={true}
+          responsive={true}
+          verticalAlign="center"
+          className="mb-0"
+        >
+          <Table.Header>
+            <Table.Row>
+              <Table.ColHeader alignContent="center">
+                <FormattedMessage id="UserOrganizationsList.rank" />
+              </Table.ColHeader>
+              <Table.ColHeader alignContent="center">
+                <FormattedMessage id="UserOrganizationsList.organization" />
+              </Table.ColHeader>
+            </Table.Row>
+          </Table.Header>
+            <Table.Body>
+                {userOrganizationsList && (
+                  <OrganizationsRows organizations={userOrganizationsList} />
+                )}
+            </Table.Body>
+        </Table>
+      </div>
     </Card>
   );
 };
