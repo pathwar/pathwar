@@ -253,7 +253,9 @@ const SiteWrapper = ({ children }) => {
                   <Avatar icon="users" />
                 )}
               </span>
-              <span>{`Current season: ${activeSeason && activeSeason.name ? activeSeason.name : 'Loading'}`}</span>
+              <span>
+                <FormattedMessage id="userNav.activeSeason" />
+                {`: ${activeSeason && activeSeason.name ? activeSeason.name : 'Loading'}`}</span>
             </button>
             <div className="dropdown-content">
               <ul>
