@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import {Card, Table, Dimmer, Avatar, Button} from "tabler-react";
+import React from "react";
+import {Card, Table, Avatar, Button} from "tabler-react";
 import PropTypes from "prop-types";
-import { css } from "@emotion/core";
+import { navigate } from "gatsby"
 
 // import styles from "./style.module.css";
 import { FormattedMessage } from "react-intl";
@@ -35,7 +35,7 @@ const OrganizationsRows = ({ organizations }) => {
           </Table.Col>
           <Table.Col alignContent="center">
             <Button.List>
-              <Button color="primary" className="mx-lg-auto">See Details</Button>
+              <Button color="primary" className="mx-lg-auto" onClick={() => navigate("/organization/" + item.id)}>See Details</Button>
             </Button.List>
           </Table.Col>
         </Table.Row>
