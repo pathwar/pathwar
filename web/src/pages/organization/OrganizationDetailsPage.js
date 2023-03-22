@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Page, Grid, Avatar, Dimmer } from "tabler-react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  fetchOrganizationDetail as fetchOrganizationDetailAction, fetchOrganizationsList,
+  fetchOrganizationDetail as fetchOrganizationDetailAction,
 } from "../../actions/organizations";
 import {CLEAN_ORGANIZATION_DETAILS} from "../../constants/actionTypes";
 import ShadowBox from "../../components/ShadowBox";
@@ -49,7 +49,9 @@ const OrganizationDetailsPage = props => {
     const organizationIDFromURI = uri && uri.split("/")[2];
     const organizationID = organizationIDFromURI || organizationIDFromProps;
 
-    fetchOrganizationDetail(organizationID);
+    if (!organization || organization.id !== organizationID) {
+      fetchOrganizationDetail(organizationID);
+    }
 
     return () => dispatch({ type: CLEAN_ORGANIZATION_DETAILS });
    }, [organization]);
