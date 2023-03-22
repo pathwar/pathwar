@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  event-sourcing-dev:
+    image: pathwar/event-sourcing:latest
+    restart: on-failure
+    env_file: .env
+    volumes:
+      - ./data/:/data/
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/:/root/.docker/
+    environment:
+      - PATHWAR_EVENTS_HTTP_API_ADDR
+      - PATHWAR_EVENTS_REFRESH_RATE
+      - PATHWAR_EVENTS_SSO_PUBKEY
+      - PATHWAR_EVENTS_SSO_REALM
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    working_dir: /data/
+    command:
+      -   --debug
+      - events
+      - start
+      -   --refresh-rate=$PATHWAR_EVENTS_REFRESH_RATE
+      -   --http-api-addr=$PATHWAR_EVENTS_HTTP_API_ADDR
+      -   --sso-realm=$PATHWAR_EVENTS_SSO_REALM
+      -   --sso-pubkey=$PATHWAR_EVENTS_SSO_PUBKEY
+      -   --sso-token-file=./agent-token.json
+
+      #   -refresh-rate 5                                      frequency of event processing
+      #   -http-api-addr http://localhost:8000                 base url of the API
+      #   -sso-clientid platform-cli                           SSO ClientID
+      #   -sso-clientsecret ...                                SSO ClientSecret
+      #   -sso-realm Pathwar-Dev                               SSO Realm
+      #   -sso-token-file pathwar_agent_oauth_token.json       Token file
+

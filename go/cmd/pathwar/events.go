@@ -34,6 +34,12 @@ func eventsCommand() *ffcli.Command {
 func eventsStart() *ffcli.Command {
 	eventsSourcingFlags := flag.NewFlagSet("start", flag.ExitOnError)
 	eventsSourcingFlags.IntVar(&esOpts.RefreshRate, "refresh-rate", esOpts.RefreshRate, "refresh rate in seconds")
+	eventsSourcingFlags.StringVar(&httpAPIAddr, "http-api-addr", "http://localhost:8000", "HTTP API address")
+	eventsSourcingFlags.StringVar(&ssoOpts.ClientID, "sso-clientid", ssoOpts.ClientID, "SSO ClientID")
+	eventsSourcingFlags.StringVar(&ssoOpts.ClientSecret, "sso-clientsecret", ssoOpts.ClientSecret, "SSO ClientSecret")
+	eventsSourcingFlags.StringVar(&ssoOpts.Realm, "sso-realm", ssoOpts.Realm, "SSO Realm")
+	eventsSourcingFlags.StringVar(&ssoOpts.Pubkey, "sso-pubkey", ssoOpts.Pubkey, "SSO Public Key")
+	eventsSourcingFlags.StringVar(&ssoOpts.TokenFile, "sso-token-file", ssoOpts.TokenFile, "Token file")
 
 	return &ffcli.Command{
 		Name:      "start",
