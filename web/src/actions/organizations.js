@@ -19,10 +19,12 @@ import {
 import {
   getAllOrganizations,
   getOrganizationDetails,
-  postAnswerOrganizationInvitation, postCreateOrganization,
+  postAnswerOrganizationInvitation,
+  postCreateOrganization,
   postInviteUserToOrganization
 } from "../api/organizations";
 import {toast} from "react-toastify";
+import {apiErrorsCode} from "../constants/apiErrorsCode";
 
 export const setActiveOrganization = teamObjData => async dispatch => {
   dispatch({
@@ -92,7 +94,9 @@ export const inviteUserToOrganization = (organizationID, name, organizationName)
       type: INVITE_USER_TO_ORGANIZATION_FAILED,
       payload: { error },
     });
-    toast.error(`invite ${name} to ${organizationName} fail!`);
+    const errorText = apiErrorsCode.get(error.response.data.message.split(':')[0]) ?
+      apiErrorsCode.get(error.response.data.message.split(':')[0]) : 'An error occurred';
+    toast.error(`${errorText}`);
   }
 };
 
@@ -111,7 +115,9 @@ export const acceptOrganizationInvite = (organizationInviteID, organizationName)
       type: ACCEPT_ORGANIZATION_INVITATION_FAILED,
       payload: { error },
     });
-    toast.error(`accept invitation to organization ${organizationName} failed!`);
+    const errorText = apiErrorsCode.get(error.response.data.message.split(':')[0]) ?
+      apiErrorsCode.get(error.response.data.message.split(':')[0]) : 'An error occurred';
+    toast.error(`${errorText}`);
   }
 };
 
@@ -130,7 +136,9 @@ export const declineOrganizationInvite = (organizationInviteID, organizationName
       type: DECLINE_ORGANIZATION_INVITATION_FAILED,
       payload: { error },
     });
-    toast.error(`reject invitation to organization ${organizationName} failed!`);
+    const errorText = apiErrorsCode.get(error.response.data.message.split(':')[0]) ?
+      apiErrorsCode.get(error.response.data.message.split(':')[0]) : 'An error occurred';
+    toast.error(`${errorText}`);
   }
 };
 
@@ -145,13 +153,14 @@ export const createOrganization = (name, gravatarEmail) => async dispatch => {
       },
     });
 
-    toast.success(`Create organization ${name} success!`);
+    toast.success(`create organization ${name} success!`);
   } catch (error) {
     dispatch({
       type: CREATE_ORGANIZATION_FAILED,
       payload: { error },
     });
-
-    toast.error(`Create organization ${name} failed!`);
+    const errorText = apiErrorsCode.get(error.response.data.message.split(':')[0]) ?
+      apiErrorsCode.get(error.response.data.message.split(':')[0]) : 'An error occurred';
+    toast.error(`${errorText}`);
   }
 };
