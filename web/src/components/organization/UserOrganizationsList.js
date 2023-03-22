@@ -64,7 +64,7 @@ const UserOrganizationsList = ({ userOrganizationsList }) => {
                 <FormattedMessage id="UserOrganizationsList.organization" />
               </Table.ColHeader>
               <Table.ColHeader alignContent="center">
-                details
+                <FormattedMessage id="UserOrganizationsList.details" />
               </Table.ColHeader>
             </Table.Row>
           </Table.Header>
