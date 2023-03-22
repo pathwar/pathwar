@@ -63,6 +63,7 @@
   "UserOrganizationsList.organization": "Organization",
   "UserOrganizationsList.index": "Index",
   "UserOrganizationsList.details": "Details",
+  "UserOrganizationsList.empty": "User is not a member of any organization",
   "UserOrganizationsInvitationsList.rank": "Rank",
   "UserOrganizationsInvitationsList.organization": "Organization",
   "UserOrganizationsInvitationsList.invitedBy": "Invited by",

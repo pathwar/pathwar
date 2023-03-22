@@ -80,6 +80,7 @@
   "UserOrganizationsList.organization": "Organisatie",
   "UserOrganizationsList.index": "Index",
   "UserOrganizationsList.details": "Details",
+  "UserOrganizationsList.empty": "User is not a member of any organization",
   "UserOrganizationsInvitationsList.rank": "Rank",
   "UserOrganizationsInvitationsList.organization": "Organisatie",
   "UserOrganizationsInvitationsList.invitedBy": "Uitgenodigd door",

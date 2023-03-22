@@ -45,7 +45,9 @@ const OrganizationsRows = ({ organizations }) => {
 
 const UserOrganizationsList = ({ userOrganizationsList }) => {
   return !userOrganizationsList ? (
-    <h3>User don't have any organization for now</h3>
+    <h3>
+      <FormattedMessage id="UserOrganizationsList.empty" />
+    </h3>
   ) : (
     <Card>
       <div css={{maxHeight: "435px", overflow: "auto"}}>
