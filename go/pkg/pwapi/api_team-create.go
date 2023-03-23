@@ -2,6 +2,8 @@ package pwapi
 
 import (
 	"context"
+	"crypto/md5"
+	"fmt"
 	"strings"
 
 	"github.com/jinzhu/gorm"
@@ -81,6 +83,10 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 			return nil, errcode.ErrCheckOrganizationUniqueName.Wrap(err)
 		}
 
+		// check for gravatar image
+		gravatarEmail := in.Name + "@pathwar.net"
+		gravatarURL := fmt.Sprintf("https://s.gravatar.com/avatar/%x", md5.Sum([]byte(gravatarEmail)))
+
 		// create new organization
 		organization := pwdb.Organization{
 			Name: in.Name,
@@ -91,7 +97,7 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 				},
 			},
 			DeletionStatus: pwdb.DeletionStatus_Active,
-			// GravatarURL
+			GravatarURL:    gravatarURL,
 			// Locale
 		}
 		err = svc.db.Create(&organization).Error
