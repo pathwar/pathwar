@@ -53,6 +53,7 @@ import {
   postInviteUserToTeam,
   postAnswerTeamInvitation,
 } from "../api/seasons";
+import {apiErrorsCode} from "../constants/apiErrorsCode";
 
 //Season main actions
 export const fetchPreferences = seasonID => async dispatch => {
@@ -186,7 +187,9 @@ export const createTeam = (seasonID, organizationID, name) => async dispatch => 
       payload: { error },
     });
 
-    toast.error(`Create team ERROR!`);
+    const errorText = apiErrorsCode.get(error.response.data.message.split(':')[0]) ?
+      apiErrorsCode.get(error.response.data.message.split(':')[0]) : 'An error occurred';
+    toast.error(`${errorText}`);
   }
 };
 
@@ -216,7 +219,9 @@ export const inviteUserToTeam = (teamID, name, organizationName, seasonName) => 
       type: INVITE_USER_TO_TEAM_FAILED,
       payload: { error },
     });
-    toast.error(`invite ${name} to the team ${organizationName} in ${seasonName} season failed!`);
+    const errorText = apiErrorsCode.get(error.response.data.message.split(':')[0]) ?
+      apiErrorsCode.get(error.response.data.message.split(':')[0]) : 'An error occurred';
+    toast.error(`${errorText}`);
   }
 };
 
@@ -235,7 +240,9 @@ export const acceptTeamInvite = (teamInviteID, seasonName, organizationName) => 
       type: ACCEPT_TEAM_INVITATION_FAILED,
       payload: { error },
     });
-    toast.error(`accept invite to the team ${organizationName} in ${seasonName} season failed!`);
+    const errorText = apiErrorsCode.get(error.response.data.message.split(':')[0]) ?
+      apiErrorsCode.get(error.response.data.message.split(':')[0]) : 'An error occurred';
+    toast.error(`${errorText}`);
   }
 };
 
@@ -254,7 +261,9 @@ export const declineTeamInvite = (teamInviteID, seasonName, organizationName) =>
       type: DECLINE_TEAM_INVITATION_FAILED,
       payload: { error },
     });
-    toast.error(`reject invite to the team ${organizationName} in ${seasonName} season failed!`);
+    const errorText = apiErrorsCode.get(error.response.data.message.split(':')[0]) ?
+      apiErrorsCode.get(error.response.data.message.split(':')[0]) : 'An error occurred';
+    toast.error(`${errorText}`);
   }
 };
 

@@ -35,7 +35,6 @@ func (svc *service) OrganizationAcceptInvite(ctx context.Context, in *Organizati
 		return nil, pwdb.GormToErrcode(err)
 	}
 
-	//TODO: Create an activity "invitation refused"
 	if !in.Accept {
 		err = svc.db.Transaction(func(tx *gorm.DB) error {
 			err = tx.Delete(&organizationInvite).Error

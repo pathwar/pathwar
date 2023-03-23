@@ -45,7 +45,7 @@ const InviteOrganizationButton = ({organizationID, organizationName}) => {
   return (
     <div style={styles}>
       <Button
-        color="success"
+        color="primary"
         onClick={handleFormOpen}
         icon={"users"}
         size="sm"
@@ -66,7 +66,7 @@ const InviteOrganizationButton = ({organizationID, organizationName}) => {
               />
             </Form.Group>
             <Form.Group>
-              <Button type="submit" color="success" className="ml-auto">
+              <Button type="submit" color="primary" className="ml-auto">
                 <FormattedMessage id="CreateTeamButton.send" />
               </Button>
             </Form.Group>

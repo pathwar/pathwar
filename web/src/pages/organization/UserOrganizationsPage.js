@@ -5,12 +5,13 @@ import {Helmet} from "react-helmet";
 import siteMetaData from "../../constants/metadata";
 import {useDispatch, useSelector} from "react-redux";
 import CreateOrganizationButton from "../../components/organization/CreateOrganizationButton";
-import {fetchOrganizationsList, fetchUserOrganizationsInvitations} from "../../actions/organizations";
+import {fetchOrganizationsList} from "../../actions/organizations";
 import ShadowBox from "../../components/ShadowBox";
 import moment from "moment/moment";
 import UserOrganizationBadges from "../../components/organization/UserOrganizationBadges";
 import UserOrganizationsInvitationsList from "../../components/organization/UserOrganizationsInvitationsList";
 import UserTeamsInvitationsList from "../../components/team/UserTeamsInvitationsList";
+import UserOrganizationsList from "../../components/organization/UserOrganizationsList";
 
 //TODO: Lister les organisations de l'utilisateur dans un tableau
 //TODO: Créer un boutton permettant de créer une organisation pour l'utilisateur
@@ -53,6 +54,9 @@ const UserOrganizationsPage = () => {
     <Page.Content title={pageTitleIntl}>
       <Grid.Row>
         <Grid.Col width={12} lg={4}>
+          <h2 className="mb-4" css={{textAlign: "center"}}>
+            My profile
+          </h2>
           <ShadowBox>
             <div
               css={{
@@ -75,7 +79,7 @@ const UserOrganizationsPage = () => {
               <h3 className="mb-2 mt-2">
                 <FormattedMessage id="HomePage.organizations" />
               </h3>
-              <h3 className="mb-4 mt-0">
+              <h3 className="mb-5 mt-0">
               <UserOrganizationBadges organizations={userOrganizations}/>
               </h3>
               <CreateOrganizationButton/>
@@ -83,6 +87,16 @@ const UserOrganizationsPage = () => {
           </ShadowBox>
         </Grid.Col>
         <Grid.Col xs={12} sm={12} md={8}>
+          <h2 className="mb-4" css={{textAlign: "center"}}>
+            My organizations
+          </h2>
+          <UserOrganizationsList
+            userOrganizationsList={userOrganizations}
+          />
+        </Grid.Col>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Col xs={12} sm={12} md={12}>
           <h2 className="mb-4">
             <FormattedMessage id="OrganizationsPage.organizationsInvitations" />
           </h2>

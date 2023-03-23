@@ -14,7 +14,7 @@ const SwitchSeasonButton = ({seasonID}) => {
   }
 
   return (
-        <Button onClick={SwitchSeason} color="primary">
+        <Button onClick={SwitchSeason} color="warning">
           <FormattedMessage id="SwitchSeasonButton.title"/>
         </Button>
   );

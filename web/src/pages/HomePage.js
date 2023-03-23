@@ -7,6 +7,7 @@ import ShadowBox from "../components/ShadowBox";
 import iconPwn from "../images/icon-pwn-small.svg";
 
 import {
+  fetchAllSeasons,
   fetchChallenges,
   fetchTeamDetails as fetchTeamDetailsAction,
 } from "../actions/seasons";
@@ -15,6 +16,7 @@ import { isNil } from "ramda";
 import UserChallengesView from "../components/home/UserChallengesView";
 import getTeamRank from "../utils/getTeamRank";
 import UserOrganizationBadges from "../components/organization/UserOrganizationBadges";
+import JoinSeasonButton from "../components/season/JoinSeasonButton";
 
 const cardStyle = {
   margin: "1rem",
@@ -50,6 +52,7 @@ const HomePage = () => {
   const activeSeason = useSelector(state => state.seasons.activeSeason);
   const teamDetails = useSelector(state => state.seasons.teamInDetail);
   const userOrganizations = useSelector(state => state.organizations.userOrganizationsList);
+  const allSeasons = useSelector(state => state.seasons.allSeasons);
 
   const [rank, setRank] = useState();
 
@@ -67,6 +70,11 @@ const HomePage = () => {
     }
   }, [activeSeason, activeTeam, rank]);
 
+  useEffect(() => {
+    if (!allSeasons) {
+      dispatch(fetchAllSeasons());
+    }
+  }, [allSeasons, dispatch]);
 
   useEffect(() => {
     if (activeTeam && !teamDetails) {
@@ -115,7 +123,10 @@ const HomePage = () => {
                 <h3 className="mb-2 mt-2">
                   <FormattedMessage id="HomePage.organizations" />
                 </h3>
+                <h3 className="mb-5 mt-0">
                 <UserOrganizationBadges organizations={userOrganizations}/>
+                </h3>
+                <JoinSeasonButton seasons={allSeasons}/>
               </div>
             </ShadowBox>
           </Grid.Col>
