@@ -79,7 +79,7 @@ const UserOrganizationsPage = () => {
               <h3 className="mb-2 mt-2">
                 <FormattedMessage id="HomePage.organizations" />
               </h3>
-              <h3 className="mb-4 mt-0">
+              <h3 className="mb-5 mt-0">
               <UserOrganizationBadges organizations={userOrganizations}/>
               </h3>
               <CreateOrganizationButton/>

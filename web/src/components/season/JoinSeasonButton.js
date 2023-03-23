@@ -2,8 +2,10 @@ import React, {useEffect, useState} from "react";
 import {isEmpty} from "ramda";
 import {Button, Form} from "tabler-react";
 import {FormattedMessage} from "react-intl";
-import {createOrganization as createOrganizationAction} from "../../actions/organizations";
 import {useDispatch} from "react-redux";
+import {Autocomplete} from "@material-ui/lab";
+import {TextField} from "@material-ui/core";
+import {createTeam as createTeamAction} from "../../actions/seasons";
 
 const styles = {
   display: "flex",
@@ -12,14 +14,14 @@ const styles = {
   alignItems: "center",
 }
 
-const createOrganizationButton = () => {
+const joinSeasonButton = ({seasons}) => {
   const dispatch = useDispatch();
   const [isFormOpen, setFormOpen] = useState(false);
   const [name, setName] = useState("");
-  const [gravatarEmail, setGravatarEmail] = useState("");
+  const [season, setSeason] = useState("");
   const [error, setError] = useState(false);
-  const createOrganization = (name, gravatarEmail) =>
-    dispatch(createOrganizationAction(name, gravatarEmail));
+  const createTeam = (seasonID, organizationID, name) =>
+    dispatch(createTeamAction(seasonID, organizationID, name));
 
   useEffect(() => {
     if (!isEmpty(name)) {
@@ -28,35 +30,33 @@ const createOrganizationButton = () => {
   }, [name]);
 
   const handleNameChange = event => setName(event.target.value);
-  const handleGravatarEmailChange = event => setGravatarEmail(event.target.value);
+
   const handleFormOpen = event => {
     event.preventDefault();
     setFormOpen(!isFormOpen);
   };
 
-  const submitOrganizationCreate = async event => {
+  const submitCreateTeam = async event => {
     event.preventDefault();
-    if (isEmpty(name)) {
-      setError(true);
-    } else {
-      await createOrganization(name, gravatarEmail);
+    if (!isEmpty(season) && !isEmpty(name)) {
+      await createTeam(season, "", name);
       setFormOpen(false);
     }
-  };
+  }
 
   return (
     <div style={styles}>
       <Button
         color="primary"
         onClick={handleFormOpen}
-        icon={"users"}
+        icon={"plus"}
         size="sm"
         css={styles}
       >
-        {"Create Organization"}
+        {"Join a new season"}
       </Button>
       {isFormOpen && (
-        <form onSubmit={submitOrganizationCreate}>
+        <form onSubmit={submitCreateTeam}>
           <Form.FieldSet css={styles}>
             <Form.Group isRequired label="Organization Name" css={styles}>
               <Form.Input
@@ -67,12 +67,21 @@ const createOrganizationButton = () => {
                 feedback={error && "Please, insert an organization name"}
               />
             </Form.Group>
-            <Form.Group label="Gravatar email (optional)" css={styles}>
-              <Form.Input
-                name="mail"
-                onChange={handleGravatarEmailChange}
-                invalid={error}
-                cross={error}
+            <Form.Group isRequired label="Season" css={styles}>
+              <Autocomplete
+                freeSolo
+                autoComplete
+                autoHighlight
+                onInputChange={(event, newInputValue) => {setSeason(newInputValue)}}
+                options={seasons ? seasons.filter(season => !season.team).map(season => season.season.slug) : []}
+                css={{width: "213px", backgroundColor: "white", height: "38px"}}
+                renderInput={(params) => (
+                  <TextField {...params}
+                             size="small"
+                             variant="outlined"
+
+                  />
+                )}
               />
             </Form.Group>
             <Form.Group>
@@ -87,4 +96,4 @@ const createOrganizationButton = () => {
   );
 }
 
-export default createOrganizationButton;
+export default joinSeasonButton;

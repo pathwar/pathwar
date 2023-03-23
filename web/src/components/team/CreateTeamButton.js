@@ -37,7 +37,7 @@ const CreateTeamButton = ({organizationID, seasons}) => {
   return (
     <div style={styles}>
       <Button
-        color="success"
+        color="primary"
         onClick={handleFormOpen}
         icon={"users"}
         size="sm"
@@ -71,7 +71,7 @@ const CreateTeamButton = ({organizationID, seasons}) => {
               />
             </Form.Group>
             <Form.Group css={styles}>
-              <Button type="submit" color="success" className="ml-auto">
+              <Button type="primary" color="success" className="ml-auto">
                 <FormattedMessage id="CreateTeamButton.send" />
               </Button>
             </Form.Group>
