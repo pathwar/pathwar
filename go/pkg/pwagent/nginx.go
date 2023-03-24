@@ -49,6 +49,30 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 		fmt.Fprintln(os.Stderr, "config", godev.PrettyJSON(config))
 	}*/
 
+	// 503.html
+
+	var tar503ErrorBuf bytes.Buffer
+	tw := tar.NewWriter(&tar503ErrorBuf)
+	err = tw.WriteHeader(&tar.Header{
+		Name: "503.html",
+		Mode: 0o755,
+		Size: int64(len(Template_503)),
+	})
+	if err != nil {
+		return err
+	}
+
+	if _, err := tw.Write([]byte(Template_503)); err != nil {
+		return err
+	}
+
+	err = tw.Close()
+	if err != nil {
+		return err
+	}
+
+	// 503.html
+
 	// configure nginx binary
 	buf, err := buildNginxConfigTar(config, logger)
 	if err != nil {
@@ -57,6 +81,9 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 	nginxContainer := containersInfo.NginxContainer
 	logger.Debug("copy nginx config into the container", zap.String("container-id", nginxContainer.ID))
 	err = dockerClient.CopyToContainer(ctx, nginxContainer.ID, "/etc/nginx/", buf, types.CopyToContainerOptions{})
+	logger.Debug("copy 503.html into the container", zap.String("container-id", nginxContainer.ID))
+	err = dockerClient.CopyToContainer(ctx, nginxContainer.ID, "/usr/share/nginx/html/", &tar503ErrorBuf, types.CopyToContainerOptions{})
+
 	if err != nil {
 		return errcode.ErrCopyNginxConfigToContainer.Wrap(err)
 	}
@@ -440,7 +467,14 @@ http {
     server_name _;
     error_log   /proc/self/fd/2;
     access_log  /proc/self/fd/1;
-    return      503;
+	error_page 503 /503.html;
+	location = /503.html {
+			root /usr/share/nginx/html;
+			internal;
+	}
+	location / {
+			return 503;
+	}
   }
 
   {{range .Upstreams -}}
@@ -494,4 +528,17 @@ http {
   {{end}}
   {{end -}}
 }
+`
+
+const Template_503 = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Challenge is launching</title>
+</head>
+<body>
+<h1 style="font-size: 1.5rem; font-weight: 400; line-height: 2.5rem; color: rgb(0, 129, 255); font-family: Bungee, cursive;">Challenge is lauching</h1>
+<p style="font-size: 1.25rem; font-weight: bold; line-height: 1.1; color: #072A44; font-family: Barlow, sans-serif;">The challenge is launching, please try again in a few seconds.</p>
+</body>
+</html>
 `
