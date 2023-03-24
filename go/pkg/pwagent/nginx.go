@@ -51,7 +51,7 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 
 	nginxContainer := containersInfo.NginxContainer
 	// configure custom 503 page
-	custom, err := buildCustom503Tar(logger)
+	custom, err := buildCustom503Tar()
 	if err != nil {
 		return errcode.ErrBuildCustom503Page.Wrap(err)
 	}
@@ -270,7 +270,7 @@ func buildNginxConfigTar(config *nginxConfig, logger *zap.Logger) (*bytes.Buffer
 	return &buf, nil
 }
 
-func buildCustom503Tar(logger *zap.Logger) (*bytes.Buffer, error) {
+func buildCustom503Tar() (*bytes.Buffer, error) {
 	var buf bytes.Buffer
 	tw := tar.NewWriter(&buf)
 	err := tw.WriteHeader(&tar.Header{
