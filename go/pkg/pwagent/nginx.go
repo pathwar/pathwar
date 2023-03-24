@@ -53,11 +53,13 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 	// configure custom 503 page
 	custom, err := buildCustom503PageTar(config, logger)
 	if err != nil {
-		return errcode.ErrBuildNginxConfig.Wrap(err)
+		return errcode.ErrBuildCustom503Page.Wrap(err)
 	}
 	logger.Debug("copy 503.html into the container", zap.String("container-id", nginxContainer.ID))
 	err = dockerClient.CopyToContainer(ctx, nginxContainer.ID, "/usr/share/nginx/html/", custom, types.CopyToContainerOptions{})
-
+	if err != nil {
+		return errcode.ErrCopyNginxConfigToContainer.Wrap(err)
+	}
 	// configure nginx binary
 	buf, err := buildNginxConfigTar(config, logger)
 	if err != nil {
@@ -277,11 +279,11 @@ func buildCustom503PageTar(config *nginxConfig, logger *zap.Logger) (*bytes.Buff
 		Size: int64(len(Template_503)),
 	})
 	if err != nil {
-		return nil, errcode.ErrWriteConfigFileHeader.Wrap(err)
+		return nil, errcode.ErrWriteCustom404FileHeader.Wrap(err)
 	}
 
 	if _, err := tw.Write([]byte(Template_503)); err != nil {
-		return nil, errcode.ErrWriteConfigFile.Wrap(err)
+		return nil, errcode.ErrWriteCustom503File.Wrap(err)
 	}
 
 	err = tw.Close()
