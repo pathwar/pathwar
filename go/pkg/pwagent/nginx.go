@@ -49,41 +49,22 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 		fmt.Fprintln(os.Stderr, "config", godev.PrettyJSON(config))
 	}*/
 
-	// 503.html
-
-	var tar503ErrorBuf bytes.Buffer
-	tw := tar.NewWriter(&tar503ErrorBuf)
-	err = tw.WriteHeader(&tar.Header{
-		Name: "503.html",
-		Mode: 0o755,
-		Size: int64(len(Template_503)),
-	})
+	nginxContainer := containersInfo.NginxContainer
+	// configure custom 503 page
+	custom, err := buildCustom503PageTar(config, logger)
 	if err != nil {
-		return err
+		return errcode.ErrBuildNginxConfig.Wrap(err)
 	}
-
-	if _, err := tw.Write([]byte(Template_503)); err != nil {
-		return err
-	}
-
-	err = tw.Close()
-	if err != nil {
-		return err
-	}
-
-	// 503.html
+	logger.Debug("copy 503.html into the container", zap.String("container-id", nginxContainer.ID))
+	err = dockerClient.CopyToContainer(ctx, nginxContainer.ID, "/usr/share/nginx/html/", custom, types.CopyToContainerOptions{})
 
 	// configure nginx binary
 	buf, err := buildNginxConfigTar(config, logger)
 	if err != nil {
 		return errcode.ErrBuildNginxConfig.Wrap(err)
 	}
-	nginxContainer := containersInfo.NginxContainer
 	logger.Debug("copy nginx config into the container", zap.String("container-id", nginxContainer.ID))
 	err = dockerClient.CopyToContainer(ctx, nginxContainer.ID, "/etc/nginx/", buf, types.CopyToContainerOptions{})
-	logger.Debug("copy 503.html into the container", zap.String("container-id", nginxContainer.ID))
-	err = dockerClient.CopyToContainer(ctx, nginxContainer.ID, "/usr/share/nginx/html/", &tar503ErrorBuf, types.CopyToContainerOptions{})
-
 	if err != nil {
 		return errcode.ErrCopyNginxConfigToContainer.Wrap(err)
 	}
@@ -276,6 +257,30 @@ func buildNginxConfigTar(config *nginxConfig, logger *zap.Logger) (*bytes.Buffer
 	}
 
 	if _, err := tw.Write(configBytes); err != nil {
+		return nil, errcode.ErrWriteConfigFile.Wrap(err)
+	}
+
+	err = tw.Close()
+	if err != nil {
+		return nil, errcode.ErrCloseTarWriter.Wrap(err)
+	}
+
+	return &buf, nil
+}
+
+func buildCustom503PageTar(config *nginxConfig, logger *zap.Logger) (*bytes.Buffer, error) {
+	var buf bytes.Buffer
+	tw := tar.NewWriter(&buf)
+	err := tw.WriteHeader(&tar.Header{
+		Name: "503.html",
+		Mode: 0o755,
+		Size: int64(len(Template_503)),
+	})
+	if err != nil {
+		return nil, errcode.ErrWriteConfigFileHeader.Wrap(err)
+	}
+
+	if _, err := tw.Write([]byte(Template_503)); err != nil {
 		return nil, errcode.ErrWriteConfigFile.Wrap(err)
 	}
 
