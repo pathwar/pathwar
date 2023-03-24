@@ -51,12 +51,12 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 
 	nginxContainer := containersInfo.NginxContainer
 	// configure custom 503 page
-	custom, err := buildCustom503Tar()
+	custom503, err := buildCustom503Tar()
 	if err != nil {
 		return errcode.ErrBuildCustom503Page.Wrap(err)
 	}
 	logger.Debug("copy 503.html into the container", zap.String("container-id", nginxContainer.ID))
-	err = dockerClient.CopyToContainer(ctx, nginxContainer.ID, "/usr/share/nginx/html/", custom, types.CopyToContainerOptions{})
+	err = dockerClient.CopyToContainer(ctx, nginxContainer.ID, "/usr/share/nginx/html/", custom503, types.CopyToContainerOptions{})
 	if err != nil {
 		return errcode.ErrCopyCustom503ToContainer.Wrap(err)
 	}
@@ -276,13 +276,13 @@ func buildCustom503Tar() (*bytes.Buffer, error) {
 	err := tw.WriteHeader(&tar.Header{
 		Name: "503.html",
 		Mode: 0o755,
-		Size: int64(len(Template_503)),
+		Size: int64(len(custom503Content)),
 	})
 	if err != nil {
 		return nil, errcode.ErrWriteCustom503FileHeader.Wrap(err)
 	}
 
-	if _, err := tw.Write([]byte(Template_503)); err != nil {
+	if _, err := tw.Write([]byte(custom503Content)); err != nil {
 		return nil, errcode.ErrWriteCustom503File.Wrap(err)
 	}
 
@@ -537,7 +537,7 @@ http {
 }
 `
 
-const Template_503 = `<!DOCTYPE html>
+const custom503Content = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
