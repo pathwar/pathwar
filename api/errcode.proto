@@ -228,6 +228,9 @@ enum ErrCode {
   ErrUpPathwarInstance = 7026;
   ErrUpdateNginx = 7027;
   ErrAgentUpdateState = 7028;
+  ErrWriteCustom404FileHeader = 7029;
+  ErrWriteCustom503File = 7030;
+  ErrBuildCustom503Page = 7031;
 
   //// Docker API (starting at 8001)
 
