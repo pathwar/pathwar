@@ -49,12 +49,22 @@ func applyNginxConfig(ctx context.Context, apiInstances *pwapi.AgentListInstance
 		fmt.Fprintln(os.Stderr, "config", godev.PrettyJSON(config))
 	}*/
 
+	nginxContainer := containersInfo.NginxContainer
+	// configure custom 503 page
+	custom503, err := buildCustom503Tar()
+	if err != nil {
+		return errcode.ErrBuildCustom503Page.Wrap(err)
+	}
+	logger.Debug("copy 503.html into the container", zap.String("container-id", nginxContainer.ID))
+	err = dockerClient.CopyToContainer(ctx, nginxContainer.ID, "/usr/share/nginx/html/", custom503, types.CopyToContainerOptions{})
+	if err != nil {
+		return errcode.ErrCopyCustom503ToContainer.Wrap(err)
+	}
 	// configure nginx binary
 	buf, err := buildNginxConfigTar(config, logger)
 	if err != nil {
 		return errcode.ErrBuildNginxConfig.Wrap(err)
 	}
-	nginxContainer := containersInfo.NginxContainer
 	logger.Debug("copy nginx config into the container", zap.String("container-id", nginxContainer.ID))
 	err = dockerClient.CopyToContainer(ctx, nginxContainer.ID, "/etc/nginx/", buf, types.CopyToContainerOptions{})
 	if err != nil {
@@ -260,6 +270,30 @@ func buildNginxConfigTar(config *nginxConfig, logger *zap.Logger) (*bytes.Buffer
 	return &buf, nil
 }
 
+func buildCustom503Tar() (*bytes.Buffer, error) {
+	var buf bytes.Buffer
+	tw := tar.NewWriter(&buf)
+	err := tw.WriteHeader(&tar.Header{
+		Name: "503.html",
+		Mode: 0o755,
+		Size: int64(len(custom503Content)),
+	})
+	if err != nil {
+		return nil, errcode.ErrWriteCustom503FileHeader.Wrap(err)
+	}
+
+	if _, err := tw.Write([]byte(custom503Content)); err != nil {
+		return nil, errcode.ErrWriteCustom503File.Wrap(err)
+	}
+
+	err = tw.Close()
+	if err != nil {
+		return nil, errcode.ErrCloseTarWriter.Wrap(err)
+	}
+
+	return &buf, nil
+}
+
 func buildNginxContainer(ctx context.Context, cli *client.Client, opts Opts) (string, error) {
 	logger := opts.Logger
 
@@ -440,7 +474,14 @@ http {
     server_name _;
     error_log   /proc/self/fd/2;
     access_log  /proc/self/fd/1;
-    return      503;
+	error_page 503 /503.html;
+	location = /503.html {
+			root /usr/share/nginx/html;
+			internal;
+	}
+	location / {
+			return 503;
+	}
   }
 
   {{range .Upstreams -}}
@@ -494,4 +535,17 @@ http {
   {{end}}
   {{end -}}
 }
+`
+
+const custom503Content = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Challenge is launching</title>
+</head>
+<body>
+<h1 style="font-size: 1.5rem; font-weight: 400; line-height: 2.5rem; color: rgb(0, 129, 255); font-family: Bungee, cursive;">Challenge is lauching</h1>
+<p style="font-size: 1.25rem; font-weight: bold; line-height: 1.1; color: #072A44; font-family: Barlow, sans-serif;">The challenge is launching, please try again in a few seconds.</p>
+</body>
+</html>
 `
