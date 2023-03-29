@@ -173,6 +173,8 @@ enum ErrCode {
   ErrAlreadyInvitedInOrganization = 4096;
   ErrGetUserOrganizationsInvitations = 4097;
   ErrGetUserTeamsInvitations = 4098;
+  ErrReadSeasonRuleFile = 4099;
+  ErrParseSeasonRule = 4100;
 
   //// Pathwar Server (starting at 5001)
 

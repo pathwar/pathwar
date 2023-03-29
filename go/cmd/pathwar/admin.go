@@ -1126,11 +1126,11 @@ func adminSeasonAddCommand() *ffcli.Command {
 			if ruleFile != "" {
 				seasonRulesString, err := os.ReadFile(ruleFile)
 				if err != nil {
-					return errcode.TODO.Wrap(err)
+					return errcode.ErrReadSeasonRuleFile.Wrap(err)
 				}
 				err = seasonRules.ParseSeasonRulesString(seasonRulesString)
 				if err != nil {
-					return errcode.TODO.Wrap(err)
+					return errcode.ErrParseSeasonRule.Wrap(err)
 				}
 			}
 
