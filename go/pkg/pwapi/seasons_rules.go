@@ -1,6 +1,9 @@
 package pwapi
 
-import "time"
+import (
+	"gopkg.in/yaml.v3"
+	"time"
+)
 
 type SeasonsRules struct {
 	StartDatetime       int64  `yaml:"start_datetime"`
@@ -8,6 +11,14 @@ type SeasonsRules struct {
 	LimitPlayersPerTeam int32  `yaml:"limit_players_per_team"`
 	LimitTotalTeams     int32  `yaml:"limit_total_teams"`
 	EmailDomain         string `yaml:"email_domain"`
+}
+
+func parseSeasonsRules(seasonsRulesYAML string) (SeasonsRules, error) {
+	seasonsRules := NewSeasonsRules()
+	if err := yaml.Unmarshal([]byte(seasonsRulesYAML), &seasonsRules); err != nil {
+		return seasonsRules, err
+	}
+	return seasonsRules, nil
 }
 
 func (s SeasonsRules) IsOpen() bool {
