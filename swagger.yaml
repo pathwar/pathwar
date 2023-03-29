@@ -1546,6 +1546,8 @@ definitions:
         type: boolean
       name:
         type: string
+      rules_bundle:
+        type: string
       slug:
         type: string
       status:
