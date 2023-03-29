@@ -2,6 +2,7 @@ package pwapi
 
 import (
 	"gopkg.in/yaml.v3"
+	"os"
 	"time"
 )
 
@@ -11,6 +12,17 @@ type SeasonsRules struct {
 	LimitPlayersPerTeam int32  `yaml:"limit_players_per_team"`
 	LimitTotalTeams     int32  `yaml:"limit_total_teams"`
 	EmailDomain         string `yaml:"email_domain"`
+}
+
+func readSeasonsRulesFile(seasonsRulesFilePath string) (SeasonsRules, error) {
+	if seasonsRulesFilePath == "" {
+		return NewSeasonsRules(), nil
+	}
+	seasonsRulesYAML, err := os.ReadFile(seasonsRulesFilePath)
+	if err != nil {
+		return SeasonsRules{}, err
+	}
+	return parseSeasonsRules(string(seasonsRulesYAML))
 }
 
 func parseSeasonsRules(seasonsRulesYAML string) (SeasonsRules, error) {
