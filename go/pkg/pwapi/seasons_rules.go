@@ -10,6 +10,14 @@ type SeasonsRules struct {
 	EmailDomain         string `yaml:"email_domain"`
 }
 
+func (s SeasonsRules) IsStarted() bool {
+	return s.StartDatetime <= time.Now().Unix()
+}
+
+func (s SeasonsRules) IsEnded() bool {
+	return s.EndDatetime > 0 && s.EndDatetime <= time.Now().Unix()
+}
+
 func NewSeasonsRules() SeasonsRules {
 	return SeasonsRules{
 		StartDatetime:       time.Now().Unix(),
