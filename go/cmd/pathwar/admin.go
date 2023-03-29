@@ -1065,6 +1065,7 @@ func adminSeasonAddCommand() *ffcli.Command {
 	visibility := "private"
 	status := "stopped"
 	subscription := "close"
+	ruleFile := ""
 	flags := flag.NewFlagSet("admin season add", flag.ExitOnError)
 	flags.StringVar(&input.Season.Name, "name", input.Season.Name, "Name")
 	flags.BoolVar(&input.Season.IsGlobal, "global", input.Season.IsGlobal, "Global season ?")
@@ -1072,6 +1073,7 @@ func adminSeasonAddCommand() *ffcli.Command {
 	flags.StringVar(&visibility, "visibility", visibility, "Season visibility (private, unlisted or public)")
 	flags.StringVar(&status, "status", status, "Season status (started or stopped)")
 	flags.StringVar(&subscription, "subscription", subscription, "Susbscription status (open or close)")
+	flags.StringVar(&ruleFile, "rule-file", ruleFile, "Rule file path")
 
 	return &ffcli.Command{
 		Name:       "season-add",
