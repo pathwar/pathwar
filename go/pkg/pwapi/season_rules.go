@@ -15,7 +15,8 @@ type SeasonRules struct {
 }
 
 func (s *SeasonRules) ParseSeasonRulesString(seasonsRulesYAML []byte) error {
-	if err := yaml.Unmarshal(seasonsRulesYAML, s); err != nil {
+	err := yaml.Unmarshal(seasonsRulesYAML, s)
+	if err != nil {
 		return err
 	}
 	return nil
