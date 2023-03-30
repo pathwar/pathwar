@@ -77,8 +77,19 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 		DeletionStatus: pwdb.DeletionStatus_Active,
 	}).Count(&totalTeams).Error
 
-	if seasonRules.LimitTotalTeams <= totalTeams {
+	if seasonRules.IsLimitPlayersPerTeamReached(totalTeams) {
 		return nil, errcode.ErrSeasonLimitTotalTeamsReached
+	}
+
+	// check user email domain
+	var user pwdb.User
+	err = svc.db.Model(pwdb.User{}).Select("email").First(&user, userID).Error
+	if err != nil {
+		return nil, errcode.ErrGetUser.Wrap(err)
+	}
+
+	if !seasonRules.IsEmailDomainAllowed(user.Email) {
+		return nil, errcode.ErrSeasonEmailDomainNotAllowed
 	}
 
 	// check if user already has a team in this season

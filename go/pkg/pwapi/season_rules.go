@@ -42,11 +42,11 @@ func (s *SeasonRules) IsEnded() bool {
 	return s.EndDatetime.Unix() > 0 && s.EndDatetime.Unix() <= time.Now().Unix()
 }
 
-func (s *SeasonRules) LimitTotalTeamsReached(totalTeams int32) bool {
+func (s *SeasonRules) IsLimitTotalTeamsReached(totalTeams int32) bool {
 	return s.LimitTotalTeams > 0 && totalTeams >= s.LimitTotalTeams
 }
 
-func (s *SeasonRules) LimitPlayersPerTeamReached(totalPlayers int32) bool {
+func (s *SeasonRules) IsLimitPlayersPerTeamReached(totalPlayers int32) bool {
 	return s.LimitPlayersPerTeam > 0 && totalPlayers >= s.LimitPlayersPerTeam
 }
 

@@ -182,6 +182,7 @@ enum ErrCode {
   ErrSeasonIsNotStarted = 4105;
   ErrSeasonIsEnded = 4106;
   ErrSeasonLimitTotalTeamsReached = 4107;
+  ErrSeasonEmailDomainNotAllowed = 4108;
 
   //// Pathwar Server (starting at 5001)
 
