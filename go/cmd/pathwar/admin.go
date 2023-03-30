@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"gopkg.in/yaml.v2"
+
 	"github.com/dustin/go-humanize"
 	"github.com/olekukonko/tablewriter"
 	"github.com/peterbourgon/ff/v3"
@@ -1123,15 +1125,23 @@ func adminSeasonAddCommand() *ffcli.Command {
 
 			seasonRules := pwapi.NewSeasonsRules()
 			if ruleFile != "" {
-				seasonRulesString, err := os.ReadFile(ruleFile)
+				seasonRulesContent, err := os.ReadFile(ruleFile)
 				if err != nil {
 					return errcode.ErrReadSeasonRuleFile.Wrap(err)
 				}
-				err = seasonRules.ParseSeasonRulesString(seasonRulesString)
+				err = seasonRules.ParseSeasonRulesString(seasonRulesContent)
 				if err != nil {
 					return errcode.ErrParseSeasonRule.Wrap(err)
 				}
+				// Re-Marshal in a way to clear useless statements like comments
+				seasonRulesString, err := yaml.Marshal(seasonRules)
+				if err != nil {
+					return errcode.ErrMarshalSeasonRule.Wrap(err)
+				}
+				input.Season.RulesBundle = string(seasonRulesString)
 			}
+
+			fmt.Println(input.Season.RulesBundle)
 
 			ret, err := apiClient.AdminAddSeason(ctx, &input)
 			if err != nil {

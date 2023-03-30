@@ -178,6 +178,7 @@ enum ErrCode {
   ErrSeasonRuleStartDateGreaterThanEndDate = 4101;
   ErrSeasonRuleInvalidLimitPlayersPerTeam = 4102;
   ErrSeasonRuleInvalidLimitTotalTeams = 4103;
+  ErrMarshalSeasonRule = 4104;
 
   //// Pathwar Server (starting at 5001)
 
