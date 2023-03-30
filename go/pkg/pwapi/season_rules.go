@@ -1,6 +1,7 @@
 package pwapi
 
 import (
+	"strings"
 	"time"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
@@ -24,10 +25,10 @@ func (s *SeasonRules) ParseSeasonRulesString(seasonsRulesYAML []byte) error {
 	if s.StartDatetime.Unix() > 0 && s.EndDatetime.Unix() > 0 && s.StartDatetime.Unix() > s.EndDatetime.Unix() {
 		return errcode.ErrSeasonRuleStartDateGreaterThanEndDate
 	}
-	if s.LimitPlayersPerTeam <= 0 {
+	if s.LimitPlayersPerTeam < 0 {
 		return errcode.ErrSeasonRuleInvalidLimitPlayersPerTeam
 	}
-	if s.LimitTotalTeams <= 0 {
+	if s.LimitTotalTeams < 0 {
 		return errcode.ErrSeasonRuleInvalidLimitTotalTeams
 	}
 	return nil
@@ -39,6 +40,19 @@ func (s *SeasonRules) IsStarted() bool {
 
 func (s *SeasonRules) IsEnded() bool {
 	return s.EndDatetime.Unix() > 0 && s.EndDatetime.Unix() <= time.Now().Unix()
+}
+
+func (s *SeasonRules) LimitTotalTeamsReached(totalTeams int32) bool {
+	return s.LimitTotalTeams > 0 && totalTeams >= s.LimitTotalTeams
+}
+
+func (s *SeasonRules) LimitPlayersPerTeamReached(totalPlayers int32) bool {
+	return s.LimitPlayersPerTeam > 0 && totalPlayers >= s.LimitPlayersPerTeam
+}
+
+func (s *SeasonRules) IsEmailDomainAllowed(email string) bool {
+	domain := email[strings.LastIndex(email, "@")+1:]
+	return s.EmailDomain == "" || domain == s.EmailDomain
 }
 
 func NewSeasonRules() SeasonRules {
