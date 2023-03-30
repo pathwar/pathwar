@@ -181,6 +181,7 @@ enum ErrCode {
   ErrMarshalSeasonRule = 4104;
   ErrSeasonIsNotStarted = 4105;
   ErrSeasonIsEnded = 4106;
+  ErrSeasonLimitTotalTeamsReached = 4107;
 
   //// Pathwar Server (starting at 5001)
 

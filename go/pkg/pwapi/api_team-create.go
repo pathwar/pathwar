@@ -70,6 +70,17 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 		return nil, errcode.ErrSeasonIsEnded
 	}
 
+	// retrieve total number of teams for this season
+	var totalTeams int32
+	err = svc.db.Model(pwdb.Team{}).Where(&pwdb.Team{
+		SeasonID:       seasonID,
+		DeletionStatus: pwdb.DeletionStatus_Active,
+	}).Count(&totalTeams).Error
+
+	if seasonRules.LimitTotalTeams <= totalTeams {
+		return nil, errcode.ErrSeasonLimitTotalTeamsReached
+	}
+
 	// check if user already has a team in this season
 	var seasonMemberShipCount int
 	err = svc.db.
