@@ -95,6 +95,16 @@ func (svc *service) TeamSendInvite(ctx context.Context, in *TeamSendInvite_Input
 		return nil, errcode.ErrSeasonTeamLimitIsFull.Wrap(err)
 	}
 
+	var invitedUser pwdb.User
+	err = svc.db.Model(pwdb.User{}).Select("email").First(&invitedUser, invitedUserID).Error
+	if err != nil {
+		return nil, errcode.ErrGetUser.Wrap(err)
+	}
+
+	if !seasonRules.IsEmailDomainAllowed(invitedUser.Email) {
+		return nil, errcode.ErrSeasonEmailDomainNotAllowed
+	}
+
 	// don't create new invite if user was already invited
 	var teamInvite pwdb.TeamInvite
 	err = svc.db.
