@@ -1123,7 +1123,7 @@ func adminSeasonAddCommand() *ffcli.Command {
 				return fmt.Errorf("unsupported subscription: %q", subscription)
 			}
 
-			seasonRules := pwapi.NewSeasonsRules()
+			seasonRules := pwapi.NewSeasonRules()
 			if ruleFile != "" {
 				seasonRulesContent, err := os.ReadFile(ruleFile)
 				if err != nil {
@@ -1140,8 +1140,6 @@ func adminSeasonAddCommand() *ffcli.Command {
 				}
 				input.Season.RulesBundle = string(seasonRulesString)
 			}
-
-			fmt.Println(input.Season.RulesBundle)
 
 			ret, err := apiClient.AdminAddSeason(ctx, &input)
 			if err != nil {

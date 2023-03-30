@@ -19,7 +19,7 @@ type SeasonRules struct {
 func (s *SeasonRules) ParseSeasonRulesString(seasonsRulesYAML []byte) error {
 	err := yaml.Unmarshal(seasonsRulesYAML, s)
 	if err != nil {
-		return err
+		return errcode.ErrParseSeasonRule
 	}
 	if s.StartDatetime.Unix() > 0 && s.EndDatetime.Unix() > 0 && s.StartDatetime.Unix() > s.EndDatetime.Unix() {
 		return errcode.ErrSeasonRuleStartDateGreaterThanEndDate
@@ -33,10 +33,6 @@ func (s *SeasonRules) ParseSeasonRulesString(seasonsRulesYAML []byte) error {
 	return nil
 }
 
-func (s *SeasonRules) IsOpen() bool {
-	return s.IsStarted() && !s.IsEnded()
-}
-
 func (s *SeasonRules) IsStarted() bool {
 	return s.StartDatetime.Unix() > 0 && s.StartDatetime.Unix() <= time.Now().Unix()
 }
@@ -45,7 +41,7 @@ func (s *SeasonRules) IsEnded() bool {
 	return s.EndDatetime.Unix() > 0 && s.EndDatetime.Unix() <= time.Now().Unix()
 }
 
-func NewSeasonsRules() SeasonRules {
+func NewSeasonRules() SeasonRules {
 	return SeasonRules{
 		StartDatetime:       time.Now(),
 		EndDatetime:         time.Time{},

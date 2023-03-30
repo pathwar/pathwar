@@ -44,6 +44,7 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 	}
 
 	// check if season is available for this user
+	//TODO: Handle this with season rules instead of this
 	if season.Status != pwdb.Season_Started {
 		return nil, errcode.ErrSeasonDenied
 	}
@@ -52,6 +53,21 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 	}
 	if season.Subscription == pwdb.Season_Close {
 		return nil, errcode.ErrSeasonDenied
+	}
+
+	// check if season rules are respected
+	seasonRules := NewSeasonRules()
+	err = seasonRules.ParseSeasonRulesString([]byte(season.RulesBundle))
+	if err != nil {
+		return nil, err
+	}
+
+	if !seasonRules.IsStarted() {
+		return nil, errcode.ErrSeasonIsNotStarted
+	}
+
+	if seasonRules.IsEnded() {
+		return nil, errcode.ErrSeasonIsEnded
 	}
 
 	// check if user already has a team in this season
