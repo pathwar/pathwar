@@ -4,6 +4,6 @@
 8d4506ede727f03575246e0cddfbed4b3f432914  ../api/pwdb.proto
 938d0b10041d408da360734ce20ba0d65eb20521  ../api/pwagent.proto
 a65bb911c95219fcccdd43b5584dcadaad07a63c  Makefile
-a9173441625e73c537d0a47215f0941a5a7d3bf8  ../api/errcode.proto
 c81cbf3ebdd9f27b3e0dfd62348e8c0114ef26a4  ../api/pwapi.proto
 f09956b0987f022c36c689d4418e8512bbfab219  ../api/pwes.proto
+fd837fc9df1fe8e1c085dd5252039102ccb64fd0  ../api/errcode.proto
