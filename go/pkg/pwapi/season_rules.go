@@ -3,6 +3,8 @@ package pwapi
 import (
 	"time"
 
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
+
 	"gopkg.in/yaml.v3"
 )
 
@@ -18,6 +20,15 @@ func (s *SeasonRules) ParseSeasonRulesString(seasonsRulesYAML []byte) error {
 	err := yaml.Unmarshal(seasonsRulesYAML, s)
 	if err != nil {
 		return err
+	}
+	if s.StartDatetime.Unix() > 0 && s.EndDatetime.Unix() > 0 && s.StartDatetime.Unix() > s.EndDatetime.Unix() {
+		return errcode.ErrSeasonRuleStartDateGreaterThanEndDate
+	}
+	if s.LimitPlayersPerTeam <= 0 {
+		return errcode.ErrSeasonRuleInvalidLimitPlayersPerTeam
+	}
+	if s.LimitTotalTeams <= 0 {
+		return errcode.ErrSeasonRuleInvalidLimitTotalTeams
 	}
 	return nil
 }
