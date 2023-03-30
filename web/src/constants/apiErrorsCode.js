@@ -30,5 +30,6 @@ export const apiErrorsCode = new Map([
   ["ErrTeamDoesNotExist(#4086)", "this team does not exist"],
   ["ErrNotTeamOwner(#4087)", "you are not the owner of this team"],
   ["ErrAlreadyInvitedInTeam(#4088)", "this user is already invited in this team"],
+  ["ErrSeasonTeamLimitIsFull(#4109)", "the maximum number of members for this team has been reached"],
 
 ]);
