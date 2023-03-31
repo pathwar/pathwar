@@ -236,3 +236,44 @@ func TestSeasonRules_IsLimitPlayersPerTeamReached(t *testing.T) {
 		})
 	}
 }
+
+func TestSeasonRules_IsEmailDomainAllowed(t *testing.T) {
+	tests := []struct {
+		name        string
+		input       SeasonRules
+		email       string
+		expectedRes bool
+	}{
+		{
+			name: "allowed",
+			input: SeasonRules{
+				EmailDomain: "pathwar.net",
+			},
+			email:       "test@pathwar.net",
+			expectedRes: true,
+		},
+		{
+			name: "not allowed",
+			input: SeasonRules{
+				EmailDomain: "pathwar.net",
+			},
+			email:       "test@example.com",
+			expectedRes: false,
+		},
+		{
+			name: "no domain",
+			input: SeasonRules{
+				EmailDomain: "",
+			},
+			email:       "test@example.com",
+			expectedRes: true,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			res := test.input.IsEmailDomainAllowed(test.email)
+			assert.Equalf(t, test.expectedRes, res, "res")
+		})
+	}
+}
