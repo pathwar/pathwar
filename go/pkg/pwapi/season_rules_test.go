@@ -80,3 +80,40 @@ limit_total_teams: -1
 		})
 	}
 }
+
+func TestSeasonRules_IsStarted(t *testing.T) {
+	tests := []struct {
+		name        string
+		input       SeasonRules
+		expectedRes bool
+	}{
+		{
+			name: "started",
+			input: SeasonRules{
+				StartDatetime: time.Now().Add(-1 * time.Hour),
+			},
+			expectedRes: true,
+		},
+		{
+			name: "not started",
+			input: SeasonRules{
+				StartDatetime: time.Now().Add(1 * time.Hour),
+			},
+			expectedRes: false,
+		},
+		{
+			name: "no start datetime",
+			input: SeasonRules{
+				StartDatetime: time.Time{},
+			},
+			expectedRes: false,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			res := test.input.IsStarted()
+			assert.Equalf(t, test.expectedRes, res, "res")
+		})
+	}
+}
