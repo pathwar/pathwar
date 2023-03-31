@@ -1,10 +1,11 @@
 package pwapi
 
 import (
-	"github.com/stretchr/testify/assert"
-	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
+	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
 func TestSeasonRules_ParseSeasonRulesString(t *testing.T) {
