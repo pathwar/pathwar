@@ -33,6 +33,7 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 	{
 		err = svc.db.
 			Joins("JOIN team_member ON team_member.team_id = team.id AND team_member.user_id = ?", userID).
+			Preload("Season").
 			Preload("Members").
 			Where(pwdb.Team{SeasonID: seasonID}).
 			First(&team).

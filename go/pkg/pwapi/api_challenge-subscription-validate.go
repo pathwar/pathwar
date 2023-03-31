@@ -28,7 +28,7 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 	var subscription pwdb.ChallengeSubscription
 	err = svc.db.
 		Preload("Team", "team.deletion_status = ?", pwdb.DeletionStatus_Active).
-		Preload("Team.Season", "season.deletion_status = ?", pwdb.DeletionStatus_Active).
+		Preload("Team.Season").
 		Preload("SeasonChallenge").
 		Preload("SeasonChallenge.Flavor").
 		Preload("SeasonChallenge.Flavor.Instances").
