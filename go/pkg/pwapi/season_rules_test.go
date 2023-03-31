@@ -106,7 +106,7 @@ func TestSeasonRules_IsStarted(t *testing.T) {
 			input: SeasonRules{
 				StartDatetime: time.Time{},
 			},
-			expectedRes: false,
+			expectedRes: true,
 		},
 	}
 
@@ -150,6 +150,47 @@ func TestSeasonRules_IsEnded(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			res := test.input.IsEnded()
+			assert.Equalf(t, test.expectedRes, res, "res")
+		})
+	}
+}
+
+func TestSeasonRules_IsLimitTotalTeamsReached(t *testing.T) {
+	tests := []struct {
+		name        string
+		input       SeasonRules
+		teamsCount  int32
+		expectedRes bool
+	}{
+		{
+			name: "limit reached",
+			input: SeasonRules{
+				LimitTotalTeams: 1,
+			},
+			teamsCount:  1,
+			expectedRes: true,
+		},
+		{
+			name: "limit not reached",
+			input: SeasonRules{
+				LimitTotalTeams: 2,
+			},
+			teamsCount:  1,
+			expectedRes: false,
+		},
+		{
+			name: "no limit",
+			input: SeasonRules{
+				LimitTotalTeams: 0,
+			},
+			teamsCount:  1,
+			expectedRes: false,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			res := test.input.IsLimitTotalTeamsReached(test.teamsCount)
 			assert.Equalf(t, test.expectedRes, res, "res")
 		})
 	}

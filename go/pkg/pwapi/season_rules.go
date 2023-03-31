@@ -35,11 +35,11 @@ func (s *SeasonRules) ParseSeasonRulesString(seasonsRulesYAML []byte) error {
 }
 
 func (s *SeasonRules) IsStarted() bool {
-	return s.StartDatetime.Unix() > 0 && s.StartDatetime.Unix() <= time.Now().Unix()
+	return s.StartDatetime.IsZero() || s.StartDatetime.Unix() <= time.Now().Unix()
 }
 
 func (s *SeasonRules) IsEnded() bool {
-	return s.EndDatetime.Unix() > 0 && s.EndDatetime.Unix() <= time.Now().Unix()
+	return !s.EndDatetime.IsZero() && s.EndDatetime.Unix() <= time.Now().Unix()
 }
 
 func (s *SeasonRules) IsLimitTotalTeamsReached(totalTeams int32) bool {
