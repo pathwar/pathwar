@@ -117,3 +117,40 @@ func TestSeasonRules_IsStarted(t *testing.T) {
 		})
 	}
 }
+
+func TestSeasonRules_IsEnded(t *testing.T) {
+	tests := []struct {
+		name        string
+		input       SeasonRules
+		expectedRes bool
+	}{
+		{
+			name: "ended",
+			input: SeasonRules{
+				EndDatetime: time.Now().Add(-1 * time.Hour),
+			},
+			expectedRes: true,
+		},
+		{
+			name: "not ended",
+			input: SeasonRules{
+				EndDatetime: time.Now().Add(1 * time.Hour),
+			},
+			expectedRes: false,
+		},
+		{
+			name: "no end datetime",
+			input: SeasonRules{
+				EndDatetime: time.Time{},
+			},
+			expectedRes: false,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			res := test.input.IsEnded()
+			assert.Equalf(t, test.expectedRes, res, "res")
+		})
+	}
+}
