@@ -38,6 +38,9 @@ func (svc *service) CouponValidate(ctx context.Context, in *CouponValidate_Input
 	// check if season rules are respected
 	seasonRules := NewSeasonRules()
 	err = seasonRules.ParseSeasonRulesString([]byte(team.Season.RulesBundle))
+	if err != nil {
+		return nil, errcode.ErrParseSeasonRule.Wrap(err)
+	}
 
 	if !seasonRules.IsStarted() {
 		return nil, errcode.ErrSeasonIsNotStarted

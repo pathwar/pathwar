@@ -59,7 +59,7 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 	seasonRules := NewSeasonRules()
 	err = seasonRules.ParseSeasonRulesString([]byte(season.RulesBundle))
 	if err != nil {
-		return nil, err
+		return nil, errcode.ErrParseSeasonRule.Wrap(err)
 	}
 
 	if !seasonRules.IsStarted() {
