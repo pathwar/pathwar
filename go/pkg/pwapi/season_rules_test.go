@@ -195,3 +195,44 @@ func TestSeasonRules_IsLimitTotalTeamsReached(t *testing.T) {
 		})
 	}
 }
+
+func TestSeasonRules_IsLimitPlayersPerTeamReached(t *testing.T) {
+	tests := []struct {
+		name         string
+		input        SeasonRules
+		playersCount int32
+		expectedRes  bool
+	}{
+		{
+			name: "limit reached",
+			input: SeasonRules{
+				LimitPlayersPerTeam: 1,
+			},
+			playersCount: 1,
+			expectedRes:  true,
+		},
+		{
+			name: "limit not reached",
+			input: SeasonRules{
+				LimitPlayersPerTeam: 2,
+			},
+			playersCount: 1,
+			expectedRes:  false,
+		},
+		{
+			name: "no limit",
+			input: SeasonRules{
+				LimitPlayersPerTeam: 0,
+			},
+			playersCount: 1,
+			expectedRes:  false,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			res := test.input.IsLimitPlayersPerTeamReached(test.playersCount)
+			assert.Equalf(t, test.expectedRes, res, "res")
+		})
+	}
+}
