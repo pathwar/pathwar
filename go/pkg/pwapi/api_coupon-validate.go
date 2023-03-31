@@ -27,11 +27,24 @@ func (svc *service) CouponValidate(ctx context.Context, in *CouponValidate_Input
 	var team pwdb.Team
 	err = svc.db.
 		Joins("JOIN team_member ON team_member.team_id = team.id AND team_member.user_id = ?", userID).
+		Preload("Season").
 		Preload("Members").
 		First(&team, in.TeamID).
 		Error
 	if err != nil {
 		return nil, errcode.ErrUserDoesNotBelongToTeam.Wrap(err)
+	}
+
+	// check if season rules are respected
+	seasonRules := NewSeasonRules()
+	err = seasonRules.ParseSeasonRulesString([]byte(team.Season.RulesBundle))
+
+	if !seasonRules.IsStarted() {
+		return nil, errcode.ErrSeasonIsNotStarted
+	}
+
+	if seasonRules.IsEnded() {
+		return nil, errcode.ErrSeasonIsEnded
 	}
 
 	// fetch coupon

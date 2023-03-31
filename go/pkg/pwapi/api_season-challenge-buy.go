@@ -42,6 +42,18 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 		}
 	}
 
+	// check if season rules are respected
+	seasonRules := NewSeasonRules()
+	err = seasonRules.ParseSeasonRulesString([]byte(team.Season.RulesBundle))
+
+	if !seasonRules.IsStarted() {
+		return nil, errcode.ErrSeasonIsNotStarted
+	}
+
+	if seasonRules.IsEnded() {
+		return nil, errcode.ErrSeasonIsEnded
+	}
+
 	// check if season is valid
 	var seasonChallenge pwdb.SeasonChallenge
 	{
