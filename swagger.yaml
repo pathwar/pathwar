@@ -25,6 +25,8 @@ definitions:
     - OrganizationInviteSend
     - OrganizationInviteAccept
     - OrganizationInviteDecline
+    - SeasonOpen
+    - SeasonClose
     type: string
   ChallengeFlavorDriver:
     default: Unknown

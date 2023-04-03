@@ -597,6 +597,8 @@ message Activity {
     OrganizationInviteSend = 16;
     OrganizationInviteAccept = 17;
     OrganizationInviteDecline = 18;
+    SeasonOpen = 19;
+    SeasonClose = 20;
   }
 }
 
