@@ -81,3 +81,13 @@ message EventTeamInviteAccept {
   int64 id = 1 [(gogoproto.customname) = "ID"];
   google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
 }
+
+message EventSeasonOpen {
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+}
+
+message EventSeasonClose {
+  int64 id = 1 [(gogoproto.customname) = "ID"];
+  google.protobuf.Timestamp createdAt = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
+}
