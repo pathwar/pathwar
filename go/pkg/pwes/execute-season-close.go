@@ -2,6 +2,7 @@ package pwes
 
 import (
 	"context"
+
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 
 	"go.uber.org/zap"
@@ -26,6 +27,6 @@ func (e *EventSeasonClose) execute(ctx context.Context, apiClient *pwapi.HTTPCli
 	}
 
 	e.Season.Subscription = pwdb.Season_Close
-	
+
 	return nil
 }
