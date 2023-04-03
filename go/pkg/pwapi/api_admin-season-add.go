@@ -27,9 +27,47 @@ func (svc *service) AdminSeasonAdd(ctx context.Context, in *AdminSeasonAdd_Input
 		return nil, pwdb.GormToErrcode(err)
 	}
 
-	err = svc.db.Create(&in.Season).Error
+	// load seasonRules
+	seasonRules := NewSeasonRules()
+	err = seasonRules.ParseSeasonRulesString([]byte(in.Season.RulesBundle))
 	if err != nil {
-		return nil, errcode.ErrSeasonChallengeAdd.Wrap(err)
+		return nil, errcode.ErrParseSeasonRule.Wrap(err)
+	}
+
+	err = svc.db.Transaction(func(tx *gorm.DB) error {
+		err = tx.Create(&in.Season).Error
+		if err != nil {
+			return errcode.ErrSeasonChallengeAdd.Wrap(err)
+		}
+
+		if !seasonRules.IsStarted() {
+			activity := pwdb.Activity{
+				Kind:      pwdb.Activity_SeasonOpen,
+				CreatedAt: &seasonRules.StartDatetime,
+				SeasonID:  in.Season.ID,
+			}
+			err = tx.Create(&activity).Error
+			if err != nil {
+				return errcode.ErrSeasonChallengeAdd.Wrap(err)
+			}
+		}
+
+		if !seasonRules.EndDatetime.IsZero() {
+			activity := pwdb.Activity{
+				Kind:      pwdb.Activity_SeasonOpen,
+				CreatedAt: &seasonRules.EndDatetime,
+				SeasonID:  in.Season.ID,
+			}
+			err = tx.Create(&activity).Error
+			if err != nil {
+				return errcode.ErrSeasonChallengeAdd.Wrap(err)
+			}
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, err
 	}
 
 	out := AdminSeasonAdd_Output{
