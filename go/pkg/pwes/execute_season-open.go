@@ -27,5 +27,9 @@ func (e *EventSeasonOpen) execute(ctx context.Context, apiClient *pwapi.HTTPClie
 	}
 
 	e.Season.Subscription = pwdb.Season_Open
+	_, err := apiClient.AdminUpdateSeasonMetadata(ctx, &pwapi.AdminUpdateSeasonMetadata_Input{Season: e.Season})
+	if err != nil {
+		return err
+	}
 	return nil
 }
