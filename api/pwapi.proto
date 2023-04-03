@@ -305,7 +305,7 @@ message AdminSeasonAdd {
 
 message AdminUpdateSeasonMetadata {
   message Input {
-    pathwar.db.Season seasons = 1;
+    pathwar.db.Season season = 1;
   }
   message Output {
     pathwar.db.Season season = 1;

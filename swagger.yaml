@@ -428,7 +428,7 @@ definitions:
     type: object
   apiAdminUpdateSeasonMetadataInput:
     properties:
-      seasons:
+      season:
         $ref: '#/definitions/dbSeason'
     type: object
   apiAdminUpdateSeasonMetadataOutput:
