@@ -26,4 +26,6 @@ func (e *EventSeasonClose) execute(ctx context.Context, apiClient *pwapi.HTTPCli
 	}
 
 	e.Season.Subscription = pwdb.Season_Close
+	
+	return nil
 }
