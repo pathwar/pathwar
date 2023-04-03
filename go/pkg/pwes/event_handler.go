@@ -12,8 +12,6 @@ import (
 )
 
 type Event interface {
-	GetID() int64
-	GetCreatedAt() *time.Time
 	execute(ctx context.Context, apiClient *pwapi.HTTPClient, logger *zap.Logger) error
 }
 
@@ -82,7 +80,7 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 		case pwdb.Activity_SeasonClose:
 			e = &EventSeasonClose{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_Unknown:
-			logger.Debug("The event : " + strconv.Itoa(int(e.GetID())) + " is unknown kind.")
+			logger.Debug("The event : " + strconv.Itoa(int(activity.GetID())) + " is unknown kind.")
 			continue
 		default:
 			continue
@@ -90,9 +88,9 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 
 		err = e.execute(ctx, apiClient, logger)
 		if err != nil {
-			logger.Debug("The event : " + strconv.Itoa(int(e.GetID())) + " failed to execute.")
+			logger.Debug("The event : " + strconv.Itoa(int(activity.GetID())) + " failed to execute.")
 		}
-		*timestamp = *e.GetCreatedAt()
+		*timestamp = *activity.GetCreatedAt()
 	}
 
 	return nil
