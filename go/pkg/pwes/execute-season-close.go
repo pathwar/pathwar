@@ -2,6 +2,7 @@ package pwes
 
 import (
 	"context"
+	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 
 	"go.uber.org/zap"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
@@ -13,6 +14,16 @@ func (e *EventSeasonClose) execute(ctx context.Context, apiClient *pwapi.HTTPCli
 		logger.Debug("missing apiClient in execute event method")
 		return errcode.ErrMissingInput
 	}
-	logger.Debug("This kind event is not handled yet")
-	return nil
+
+	if e.Season == nil {
+		logger.Debug("missing season input in execute EventSeasonClose method")
+		return errcode.ErrMissingInput
+	}
+
+	if e.Season.Subscription == pwdb.Season_Close {
+		logger.Debug("season is already close")
+		return nil
+	}
+
+	e.Season.Subscription = pwdb.Season_Close
 }
