@@ -165,6 +165,13 @@ func (c HTTPClient) AdminAddSeason(ctx context.Context, input *AdminSeasonAdd_In
 	return result, err
 }
 
+func (c HTTPClient) AdminUpdateSeasonMetadata(ctx context.Context, input *AdminUpdateSeasonMetadata_Input) (AdminUpdateSeasonMetadata_Output, error) {
+	var _ *AdminUpdateSeasonMetadata_Input = input
+	var result AdminUpdateSeasonMetadata_Output
+	err := c.doPost(ctx, "/admin/update-season-metadata", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) AdminUpdateTeamsMetadata(ctx context.Context, input *AdminUpdateTeamsMetadata_Input) (AdminUpdateTeamsMetadata_Output, error) {
 	var _ *AdminUpdateTeamsMetadata_Input = input
 	var result AdminUpdateTeamsMetadata_Output

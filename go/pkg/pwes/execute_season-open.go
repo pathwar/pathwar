@@ -27,6 +27,5 @@ func (e *EventSeasonOpen) execute(ctx context.Context, apiClient *pwapi.HTTPClie
 	}
 
 	e.Season.Subscription = pwdb.Season_Open
-
 	return nil
 }
