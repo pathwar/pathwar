@@ -76,9 +76,9 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 		case pwdb.Activity_TeamInviteAccept:
 			e = &EventTeamInviteAccept{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_SeasonOpen:
-			e = &EventSeasonOpen{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventSeasonOpen{ID: activity.ID, CreatedAt: activity.CreatedAt, Season: activity.Season}
 		case pwdb.Activity_SeasonClose:
-			e = &EventSeasonClose{ID: activity.ID, CreatedAt: activity.CreatedAt}
+			e = &EventSeasonClose{ID: activity.ID, CreatedAt: activity.CreatedAt, Season: activity.Season}
 		case pwdb.Activity_Unknown:
 			logger.Debug("The event : " + strconv.Itoa(int(activity.GetID())) + " is unknown kind.")
 			continue
