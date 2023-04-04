@@ -6,11 +6,12 @@ import { logoutUser as logoutUserAction } from "../actions/userSession";
 class LogoutPage extends React.PureComponent {
   componentDidMount() {
     const { userSession, logoutUserAction } = this.props;
+    const logoutOptions = {redirectUri: window.location.origin + "/challenges"};
 
     if (!userSession.activeKeycloakSession) {
       navigate("/");
     } else {
-      userSession.activeKeycloakSession.logout();
+      userSession.activeKeycloakSession.logout(logoutOptions);
       logoutUserAction();
     }
   }
