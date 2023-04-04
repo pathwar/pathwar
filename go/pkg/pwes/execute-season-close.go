@@ -31,6 +31,5 @@ func (e *EventSeasonClose) execute(ctx context.Context, apiClient *pwapi.HTTPCli
 	if err != nil {
 		return err
 	}
-
 	return nil
 }

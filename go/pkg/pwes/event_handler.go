@@ -21,9 +21,9 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 	}
 
 	// Get all events from timestamp to now -1 seconds in order to avoid to miss an event
-	to := time.Now()
+	to := time.Now().UTC()
 	to = to.Add(-time.Second)
-	logger.Info("event handler started", zap.Time("timestamp", *timestamp))
+	logger.Info("event handler started", zap.Time("timestamp", *timestamp), zap.Time("to", to))
 	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: timestamp, To: &to, Limit: 1000})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
