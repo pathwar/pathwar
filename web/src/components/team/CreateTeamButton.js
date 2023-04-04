@@ -71,7 +71,7 @@ const CreateTeamButton = ({organizationID, seasons}) => {
               />
             </Form.Group>
             <Form.Group css={styles}>
-              <Button type="primary" color="success" className="ml-auto">
+              <Button type="primary" color="primary" className="ml-auto">
                 <FormattedMessage id="CreateTeamButton.send" />
               </Button>
             </Form.Group>
