@@ -1,0 +1,9 @@
+# Description: template for season rules
+# Version: 1.0.0
+# Tips: if a value is not mentioned, it will be set to the default value
+
+start_datetime: 2023-01-01T00:00:00Z # default: now
+end_datetime: 2024-12-31T23:59:59Z # default: never
+limit_players_per_team: 2 # default: unlimited
+limit_total_teams: 10 # default: unlimited
+email_domain: pathwar.net # default: none

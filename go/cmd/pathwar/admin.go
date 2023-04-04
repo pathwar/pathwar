@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"gopkg.in/yaml.v2"
+
 	"github.com/dustin/go-humanize"
 	"github.com/olekukonko/tablewriter"
 	"github.com/peterbourgon/ff/v3"
@@ -1065,6 +1067,7 @@ func adminSeasonAddCommand() *ffcli.Command {
 	visibility := "private"
 	status := "stopped"
 	subscription := "close"
+	ruleFile := ""
 	flags := flag.NewFlagSet("admin season add", flag.ExitOnError)
 	flags.StringVar(&input.Season.Name, "name", input.Season.Name, "Name")
 	flags.BoolVar(&input.Season.IsGlobal, "global", input.Season.IsGlobal, "Global season ?")
@@ -1072,6 +1075,7 @@ func adminSeasonAddCommand() *ffcli.Command {
 	flags.StringVar(&visibility, "visibility", visibility, "Season visibility (private, unlisted or public)")
 	flags.StringVar(&status, "status", status, "Season status (started or stopped)")
 	flags.StringVar(&subscription, "subscription", subscription, "Susbscription status (open or close)")
+	flags.StringVar(&ruleFile, "rule-file", ruleFile, "Rule file path")
 
 	return &ffcli.Command{
 		Name:       "season-add",
@@ -1117,6 +1121,24 @@ func adminSeasonAddCommand() *ffcli.Command {
 				input.Season.Subscription = pwdb.Season_Close
 			default:
 				return fmt.Errorf("unsupported subscription: %q", subscription)
+			}
+
+			seasonRules := pwapi.NewSeasonRules()
+			if ruleFile != "" {
+				seasonRulesContent, err := os.ReadFile(ruleFile)
+				if err != nil {
+					return errcode.ErrReadSeasonRuleFile.Wrap(err)
+				}
+				err = seasonRules.ParseSeasonRulesString(seasonRulesContent)
+				if err != nil {
+					return errcode.ErrParseSeasonRule.Wrap(err)
+				}
+				// Re-Marshal in a way to clear useless statements like comments
+				seasonRulesString, err := yaml.Marshal(seasonRules)
+				if err != nil {
+					return errcode.ErrMarshalSeasonRule.Wrap(err)
+				}
+				input.Season.RulesBundle = string(seasonRulesString)
 			}
 
 			ret, err := apiClient.AdminAddSeason(ctx, &input)

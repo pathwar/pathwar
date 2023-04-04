@@ -29,6 +29,7 @@ import {
   setActiveTeam as setActiveTeamAction, fetchUserTeamsInvitations, fetchUserSeasons,
 } from "./seasons";
 import dispatchFireworks from "../utils/fireworks-dispatcher";
+import {apiErrorsCode} from "../constants/apiErrorsCode";
 
 export const logoutUser = () => async dispatch => {
   dispatch({
@@ -143,6 +144,8 @@ export const fetchCouponValidation = (hash, teamID) => async dispatch => {
       type: VALIDATE_COUPON_FAILED,
       payload: { error: error.response },
     });
-    toast.error(`Coupon validation error!`);
+    const errorText = apiErrorsCode.get(error.response.data.message.split(':')[0]) ?
+      apiErrorsCode.get(error.response.data.message.split(':')[0]) : 'An error occurred';
+    toast.error(`${errorText}`);
   }
 };

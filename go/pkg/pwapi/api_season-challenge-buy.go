@@ -33,6 +33,7 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 	{
 		err = svc.db.
 			Joins("JOIN team_member ON team_member.team_id = team.id AND team_member.user_id = ?", userID).
+			Preload("Season").
 			Preload("Members").
 			Where(pwdb.Team{SeasonID: seasonID}).
 			First(&team).
@@ -40,6 +41,21 @@ func (svc *service) SeasonChallengeBuy(ctx context.Context, in *SeasonChallengeB
 		if err != nil {
 			return nil, errcode.ErrInvalidTeam.Wrap(err)
 		}
+	}
+
+	// check if season rules are respected
+	seasonRules := NewSeasonRules()
+	err = seasonRules.ParseSeasonRulesString([]byte(team.Season.RulesBundle))
+	if err != nil {
+		return nil, errcode.ErrParseSeasonRule.Wrap(err)
+	}
+
+	if !seasonRules.IsStarted() {
+		return nil, errcode.ErrSeasonIsNotStarted
+	}
+
+	if seasonRules.IsEnded() {
+		return nil, errcode.ErrSeasonIsEnded
 	}
 
 	// check if season is valid

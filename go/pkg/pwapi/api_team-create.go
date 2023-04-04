@@ -44,6 +44,7 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 	}
 
 	// check if season is available for this user
+	//TODO: Handle this with season rules instead of this
 	if season.Status != pwdb.Season_Started {
 		return nil, errcode.ErrSeasonDenied
 	}
@@ -52,6 +53,43 @@ func (svc *service) TeamCreate(ctx context.Context, in *TeamCreate_Input) (*Team
 	}
 	if season.Subscription == pwdb.Season_Close {
 		return nil, errcode.ErrSeasonDenied
+	}
+
+	// check if season rules are respected
+	seasonRules := NewSeasonRules()
+	err = seasonRules.ParseSeasonRulesString([]byte(season.RulesBundle))
+	if err != nil {
+		return nil, errcode.ErrParseSeasonRule.Wrap(err)
+	}
+
+	if !seasonRules.IsStarted() {
+		return nil, errcode.ErrSeasonIsNotStarted
+	}
+
+	if seasonRules.IsEnded() {
+		return nil, errcode.ErrSeasonIsEnded
+	}
+
+	// retrieve total number of teams for this season
+	var totalTeams int32
+	err = svc.db.Model(pwdb.Team{}).Where(&pwdb.Team{
+		SeasonID:       seasonID,
+		DeletionStatus: pwdb.DeletionStatus_Active,
+	}).Count(&totalTeams).Error
+
+	if seasonRules.IsLimitPlayersPerTeamReached(totalTeams) {
+		return nil, errcode.ErrSeasonLimitTotalTeamsReached
+	}
+
+	// check user email domain
+	var user pwdb.User
+	err = svc.db.Model(pwdb.User{}).Select("email").First(&user, userID).Error
+	if err != nil {
+		return nil, errcode.ErrGetUser.Wrap(err)
+	}
+
+	if !seasonRules.IsEmailDomainAllowed(user.Email) {
+		return nil, errcode.ErrSeasonEmailDomainNotAllowed
 	}
 
 	// check if user already has a team in this season

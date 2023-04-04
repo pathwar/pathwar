@@ -21,10 +21,15 @@ export const apiErrorsCode = new Map([
   ["ErrUserNotInOrganization(#4029)", "you are not a member of this organization"],
   ["ErrOrganizationAlreadyHasTeamForSeason(#4025)", "this organization already has a team in this season"],
   ["ErrCannotCreateTeamForGlobalOrganization(#4028)", "you cannot create a team for a personal global organization"],
+  ["ErrSeasonIsNotStarted(#4105)", "this season is not started yet"],
+  ["ErrSeasonIsEnded(#4106)", "this season is ended"],
+  ["ErrSeasonLimitTotalTeamsReached(#4107)", "the total number of teams for this season has been reached"],
+  ["ErrSeasonEmailDomainNotAllowed(#4108)", "the email domain is not allowed for this season"],
 
   // invite user to team
   ["ErrTeamDoesNotExist(#4086)", "this team does not exist"],
   ["ErrNotTeamOwner(#4087)", "you are not the owner of this team"],
   ["ErrAlreadyInvitedInTeam(#4088)", "this user is already invited in this team"],
+  ["ErrSeasonTeamLimitIsFull(#4109)", "the maximum number of members for this team has been reached"],
 
 ]);

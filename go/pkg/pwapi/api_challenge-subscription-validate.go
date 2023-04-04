@@ -28,6 +28,7 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 	var subscription pwdb.ChallengeSubscription
 	err = svc.db.
 		Preload("Team", "team.deletion_status = ?", pwdb.DeletionStatus_Active).
+		Preload("Team.Season").
 		Preload("SeasonChallenge").
 		Preload("SeasonChallenge.Flavor").
 		Preload("SeasonChallenge.Flavor.Instances").
@@ -38,6 +39,18 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		Error
 	if err != nil {
 		return nil, errcode.ErrGetChallengeSubscription.Wrap(err)
+	}
+
+	// check if season rules are respected
+	seasonRules := NewSeasonRules()
+	err = seasonRules.ParseSeasonRulesString([]byte(subscription.Team.Season.RulesBundle))
+
+	if !seasonRules.IsStarted() {
+		return nil, errcode.ErrSeasonIsNotStarted
+	}
+
+	if seasonRules.IsEnded() {
+		return nil, errcode.ErrSeasonIsEnded
 	}
 
 	// check if challengesubscription subscription is still open

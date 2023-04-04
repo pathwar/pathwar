@@ -2,7 +2,6 @@ package pwapi
 
 import (
 	"context"
-	"fmt"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -33,7 +32,6 @@ func (svc *service) AdminListActivities(ctx context.Context, in *AdminListActivi
 		Preload("ChallengeSubscription").
 		Order("created_at DESC")
 	if in.Limit > 0 {
-		fmt.Println("TEST, in.Limit")
 		req = req.Limit(in.Limit)
 	}
 	if in.Since != nil {

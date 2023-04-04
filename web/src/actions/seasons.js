@@ -312,7 +312,9 @@ export const buyChallenge = (flavorChallengeID, seasonID) => async dispatch => {
     toast.success(`Buy challenge ${challenge.name} success!`);
   } catch (error) {
     dispatch({ type: BUY_CHALLENGE_FAILED, payload: { error } });
-    toast.error(`Buy challenge ERROR!`);
+    const errorText = apiErrorsCode.get(error.response.data.message.split(':')[0]) ?
+      apiErrorsCode.get(error.response.data.message.split(':')[0]) : 'An error occurred';
+    toast.error(`${errorText}`);
   }
 };
 
@@ -330,8 +332,9 @@ export const validateChallenge = validateData => async dispatch => {
     toast.success(`Validate challenge success!`);
     dispatchFireworks();
   } catch (error) {
-    dispatch({ type: VALIDATE_CHALLENGE_FAILED, payload: { error } });
-    toast.error(`Validate challenge ERROR!`);
+    const errorText = apiErrorsCode.get(error.response.data.message.split(':')[0]) ?
+      apiErrorsCode.get(error.response.data.message.split(':')[0]) : 'An error occurred';
+    toast.error(`${errorText}`);
   }
 };
 

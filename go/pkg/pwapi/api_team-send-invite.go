@@ -35,6 +35,7 @@ func (svc *service) TeamSendInvite(ctx context.Context, in *TeamSendInvite_Input
 			ID:             teamID,
 			DeletionStatus: pwdb.DeletionStatus_Active,
 		}).
+		Preload("Season").
 		First(&team).
 		Error
 	if err != nil {
@@ -69,6 +70,42 @@ func (svc *service) TeamSendInvite(ctx context.Context, in *TeamSendInvite_Input
 		Error
 	if err != nil || seasonMemberShipCount != 0 {
 		return nil, errcode.ErrAlreadyHasTeamForSeason.Wrap(err)
+	}
+
+	// check if season rules are respected
+	seasonRules := NewSeasonRules()
+	err = seasonRules.ParseSeasonRulesString([]byte(team.Season.RulesBundle))
+	if err != nil {
+		return nil, errcode.ErrParseSeasonRule.Wrap(err)
+	}
+
+	if !seasonRules.IsStarted() {
+		return nil, errcode.ErrSeasonIsNotStarted
+	}
+
+	if seasonRules.IsEnded() {
+		return nil, errcode.ErrSeasonIsEnded
+	}
+
+	// retrieve total number of team members
+	var teamMemberCount int32
+	err = svc.db.
+		Model(pwdb.TeamMember{}).
+		Where(pwdb.TeamMember{TeamID: teamID}).
+		Count(&teamMemberCount).
+		Error
+	if err != nil || seasonRules.IsLimitPlayersPerTeamReached(teamMemberCount) {
+		return nil, errcode.ErrSeasonTeamLimitIsFull.Wrap(err)
+	}
+
+	var invitedUser pwdb.User
+	err = svc.db.Model(pwdb.User{}).Select("email").First(&invitedUser, invitedUserID).Error
+	if err != nil {
+		return nil, errcode.ErrGetUser.Wrap(err)
+	}
+
+	if !seasonRules.IsEmailDomainAllowed(invitedUser.Email) {
+		return nil, errcode.ErrSeasonEmailDomainNotAllowed
 	}
 
 	// don't create new invite if user was already invited

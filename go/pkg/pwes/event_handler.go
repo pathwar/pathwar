@@ -12,8 +12,6 @@ import (
 )
 
 type Event interface {
-	GetID() int64
-	GetCreatedAt() *time.Time
 	execute(ctx context.Context, apiClient *pwapi.HTTPClient, logger *zap.Logger) error
 }
 
@@ -23,9 +21,9 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 	}
 
 	// Get all events from timestamp to now -1 seconds in order to avoid to miss an event
-	to := time.Now()
+	to := time.Now().UTC()
 	to = to.Add(-time.Second)
-	logger.Info("event handler started", zap.Time("timestamp", *timestamp))
+	logger.Info("event handler started", zap.Time("timestamp", *timestamp), zap.Time("to", to))
 	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: timestamp, To: &to, Limit: 1000})
 	if err != nil {
 		return errcode.TODO.Wrap(err)
@@ -77,8 +75,12 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 			e = &EventTeamInviteSend{ID: activity.ID, CreatedAt: activity.CreatedAt}
 		case pwdb.Activity_TeamInviteAccept:
 			e = &EventTeamInviteAccept{ID: activity.ID, CreatedAt: activity.CreatedAt}
+		case pwdb.Activity_SeasonOpen:
+			e = &EventSeasonOpen{ID: activity.ID, CreatedAt: activity.CreatedAt, Season: activity.Season}
+		case pwdb.Activity_SeasonClose:
+			e = &EventSeasonClose{ID: activity.ID, CreatedAt: activity.CreatedAt, Season: activity.Season}
 		case pwdb.Activity_Unknown:
-			logger.Debug("The event : " + strconv.Itoa(int(e.GetID())) + " is unknown kind.")
+			logger.Debug("The event : " + strconv.Itoa(int(activity.GetID())) + " is unknown kind.")
 			continue
 		default:
 			continue
@@ -86,9 +88,9 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 
 		err = e.execute(ctx, apiClient, logger)
 		if err != nil {
-			logger.Debug("The event : " + strconv.Itoa(int(e.GetID())) + " failed to execute.")
+			logger.Debug("The event : " + strconv.Itoa(int(activity.GetID())) + " failed to execute.")
 		}
-		*timestamp = *e.GetCreatedAt()
+		*timestamp = *activity.GetCreatedAt()
 	}
 
 	return nil

@@ -289,6 +289,8 @@ message Season {
   string slug = 105;
   bool is_testing = 106;
 
+  string rules_bundle = 107 [(gogoproto.moretags) = "gorm:\"size:100000\""];
+
   repeated Team teams = 200 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
   repeated Coupon coupons = 201 [(gogoproto.moretags) = "gorm:\"PRELOAD:false\""];
 
@@ -595,6 +597,8 @@ message Activity {
     OrganizationInviteSend = 16;
     OrganizationInviteAccept = 17;
     OrganizationInviteDecline = 18;
+    SeasonOpen = 19;
+    SeasonClose = 20;
   }
 }
 
