@@ -306,7 +306,7 @@ message AdminSeasonAdd {
 
 message AdminSeasonStats {
   message Input {
-    string season_id = 1 [(gogoproto.customname) = "SeasonID"];
+    string season_id = 1 [(gogoproto.customname) = "SeasonID", (gogoproto.moretags) = "url:\"season_id\""];
   }
   message Output {
     message Stat {

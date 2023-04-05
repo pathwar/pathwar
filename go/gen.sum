@@ -5,5 +5,5 @@
 96e1b8315b1f63868bce8af579afaab8aebd29f1  ../api/pwdb.proto
 a65bb911c95219fcccdd43b5584dcadaad07a63c  Makefile
 c3ce10bb0b77df4e01344c32888d0e86d2a23274  ../api/pwes.proto
-eca5df9388945ae7bc0764d2f936691f525c3826  ../api/pwapi.proto
+fb420af257c5282fa8bde46086f67913b0229ac5  ../api/pwapi.proto
 fd837fc9df1fe8e1c085dd5252039102ccb64fd0  ../api/errcode.proto
