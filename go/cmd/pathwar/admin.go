@@ -816,9 +816,18 @@ func adminSeasonStats() *ffcli.Command {
 				return flag.ErrHelp
 			}
 
-			_, err := httpClientFromEnv(ctx)
+			apiClient, err := httpClientFromEnv(ctx)
 			if err != nil {
 				return errcode.TODO.Wrap(err)
+			}
+
+			if datetime == "" {
+				input := &pwapi.AdminSeasonStats_Input{SeasonID: season}
+				ret, err := apiClient.AdminSeasonStats(ctx, input)
+				if err != nil {
+					return err
+				}
+				fmt.Println(ret)
 			}
 
 			return flag.ErrHelp
