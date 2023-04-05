@@ -12,7 +12,7 @@ func (svc *service) AdminSeasonStats(ctx context.Context, in *AdminSeasonStats_I
 	if !isAdminContext(ctx) {
 		return nil, errcode.ErrRestrictedArea
 	}
-	if in == nil {
+	if in == nil || in.SeasonID == "" {
 		return nil, errcode.ErrMissingInput
 	}
 

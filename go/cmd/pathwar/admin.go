@@ -822,8 +822,8 @@ func adminSeasonStats() *ffcli.Command {
 			}
 
 			if datetime == "" {
-				input := &pwapi.AdminSeasonStats_Input{SeasonID: season}
-				ret, err := apiClient.AdminSeasonStats(ctx, input)
+				input := pwapi.AdminSeasonStats_Input{SeasonID: season}
+				ret, err := apiClient.AdminSeasonStats(ctx, &input)
 				if err != nil {
 					return err
 				}
