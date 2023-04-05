@@ -34,8 +34,8 @@ func (svc *service) AdminSeasonStats(ctx context.Context, in *AdminSeasonStats_I
 
 	// retrieve number of challenges solved by each team
 	out := AdminSeasonStats_Output{}
-	for _, team := range teams {
-		stat := AdminSeasonStats_Output_Stat{Team: &team, ChallengesSolved: 0}
+	for i, team := range teams {
+		stat := AdminSeasonStats_Output_Stat{Team: &teams[i], ChallengesSolved: 0}
 		err = svc.db.
 			Model(&pwdb.ChallengeValidation{}).
 			Where(&pwdb.ChallengeValidation{TeamID: team.ID}).
