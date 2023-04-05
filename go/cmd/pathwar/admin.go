@@ -49,6 +49,7 @@ func adminCommand() *ffcli.Command {
 			adminChallengeSubscriptionsCommand(),
 			adminListAllCommand(),
 			adminSearchCommand(),
+			adminSeasonStats(),
 
 			// actions
 			adminAddCouponCommand(),
@@ -782,6 +783,16 @@ func adminListAllCommand() *ffcli.Command {
 			table.Render()
 			fmt.Println("")
 			return nil
+		},
+	}
+}
+
+func adminSeasonStats() *ffcli.Command {
+	return &ffcli.Command{
+		Name:       "season-stats",
+		ShortUsage: "pathwar [global flags] admin [admin flags] season-stats [season-stats flags]",
+		Exec: func(ctx context.Context, args []string) error {
+			return flag.ErrHelp
 		},
 	}
 }
