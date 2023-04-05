@@ -788,9 +788,18 @@ func adminListAllCommand() *ffcli.Command {
 }
 
 func adminSeasonStats() *ffcli.Command {
+	season := "global"
+	datetime := ""
+	format := "csv"
+	flags := flag.NewFlagSet("admin season-stats", flag.ExitOnError)
+	flags.StringVar(&season, "season", season, "Season slug")
+	flags.StringVar(&datetime, "datetime", datetime, "Datetime (YYYY-MM-DD:HH:MM:SS)")
+	flags.StringVar(&format, "format", format, "Output format (csv, json)")
 	return &ffcli.Command{
 		Name:       "season-stats",
 		ShortUsage: "pathwar [global flags] admin [admin flags] season-stats [season-stats flags]",
+		ShortHelp:  "Display season stats",
+		FlagSet:    flags,
 		Exec: func(ctx context.Context, args []string) error {
 			return flag.ErrHelp
 		},
