@@ -47,6 +47,24 @@ definitions:
     enum:
     - Unknown
     type: string
+  OutputStat:
+    properties:
+      challenge_solved:
+        format: int64
+        type: string
+      mail:
+        type: string
+      rank:
+        format: int64
+        type: string
+      score:
+        format: int64
+        type: string
+      team_name:
+        type: string
+      username:
+        type: string
+    type: object
   SeasonSubscription:
     default: UnknownSubscription
     enum:
@@ -406,6 +424,13 @@ definitions:
     properties:
       season_challenge:
         $ref: '#/definitions/dbSeasonChallenge'
+    type: object
+  apiAdminSeasonStatsOutput:
+    properties:
+      stats:
+        items:
+          $ref: '#/definitions/OutputStat'
+        type: array
     type: object
   apiAdminTestingSeasonUserAddInput:
     properties:
@@ -2502,6 +2527,33 @@ paths:
           description: A successful response.
           schema:
             $ref: '#/definitions/apiAdminSeasonChallengeAddOutput'
+        "403":
+          description: Returned when the user does not have permission to access the resource.
+          schema: {}
+        "404":
+          description: Returned when the resource does not exist.
+          schema:
+            format: string
+            type: string
+        default:
+          description: An unexpected error response
+          schema:
+            $ref: '#/definitions/runtimeError'
+      tags:
+      - Service
+  /admin/season-stats:
+    get:
+      operationId: Service_AdminSeasonStats
+      parameters:
+      - in: query
+        name: season_id
+        required: false
+        type: string
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/apiAdminSeasonStatsOutput'
         "403":
           description: Returned when the user does not have permission to access the resource.
           schema: {}

@@ -790,11 +790,13 @@ func adminListAllCommand() *ffcli.Command {
 func adminSeasonStats() *ffcli.Command {
 	season := "global"
 	datetime := ""
+	scope := "user"
 	format := "csv"
 	flags := flag.NewFlagSet("admin season-stats", flag.ExitOnError)
 	flags.StringVar(&season, "season", season, "Season slug")
 	flags.StringVar(&datetime, "datetime", datetime, "Datetime (YYYY-MM-DD:HH:MM:SS)")
 	flags.StringVar(&format, "format", format, "Output format (csv, json)")
+	flags.StringVar(&scope, "scope", scope, "Scope (user, team)")
 	return &ffcli.Command{
 		Name:       "season-stats",
 		ShortUsage: "pathwar [global flags] admin [admin flags] season-stats [season-stats flags]",
@@ -803,6 +805,11 @@ func adminSeasonStats() *ffcli.Command {
 		Exec: func(ctx context.Context, args []string) error {
 			if err := globalPreRun(); err != nil {
 				return err
+			}
+
+			if scope != "user" {
+				logger.Warn("Only user scope is supported for now")
+				return flag.ErrHelp
 			}
 
 			if format != "csv" && format != "json" {
