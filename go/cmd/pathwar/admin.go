@@ -801,6 +801,10 @@ func adminSeasonStats() *ffcli.Command {
 		ShortHelp:  "Display season stats",
 		FlagSet:    flags,
 		Exec: func(ctx context.Context, args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
 			return flag.ErrHelp
 		},
 	}
