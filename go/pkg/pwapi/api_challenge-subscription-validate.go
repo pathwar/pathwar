@@ -142,6 +142,7 @@ func (svc *service) ChallengeSubscriptionValidate(ctx context.Context, in *Chall
 		AuthorID:                userID,
 		AuthorComment:           in.Comment,
 		Status:                  pwdb.ChallengeValidation_NeedReview,
+		TeamID:                  subscription.TeamID,
 	}
 
 	if subscription.SeasonChallenge.Season.IsGlobal {
