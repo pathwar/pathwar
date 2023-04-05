@@ -49,7 +49,7 @@ definitions:
     type: string
   OutputStat:
     properties:
-      challenge_solved:
+      challenges_solved:
         format: int64
         type: string
       team:

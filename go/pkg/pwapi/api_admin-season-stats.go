@@ -21,7 +21,6 @@ func (svc *service) AdminSeasonStats(ctx context.Context, in *AdminSeasonStats_I
 		return nil, err
 	}
 
-	// retrieve all teams for the given season and preload team_member and team_member.user
 	teams := []pwdb.Team{}
 	err = svc.db.
 		Preload("TeamMembers").
@@ -33,5 +32,20 @@ func (svc *service) AdminSeasonStats(ctx context.Context, in *AdminSeasonStats_I
 		return nil, errcode.TODO.Wrap(err)
 	}
 
-	return &AdminSeasonStats_Output{}, nil
+	// retrieve number of challenges solved by each team
+	out := AdminSeasonStats_Output{}
+	for _, team := range teams {
+		stat := AdminSeasonStats_Output_Stat{Team: &team, ChallengesSolved: 0}
+		err = svc.db.
+			Model(&pwdb.ChallengeValidation{}).
+			Where(&pwdb.ChallengeValidation{TeamID: team.ID}).
+			Count(&stat.ChallengesSolved).
+			Error
+		if err != nil {
+			return nil, errcode.TODO.Wrap(err)
+		}
+		out.Stats = append(out.Stats, &stat)
+	}
+
+	return &out, nil
 }

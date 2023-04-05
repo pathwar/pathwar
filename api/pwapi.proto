@@ -311,7 +311,7 @@ message AdminSeasonStats {
   message Output {
     message Stat {
       pathwar.db.Team team = 2;
-      int64 challenge_solved = 6;
+      int64 challenges_solved = 6;
     }
     repeated Stat stats = 1;
   }
