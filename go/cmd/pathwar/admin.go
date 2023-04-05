@@ -805,6 +805,15 @@ func adminSeasonStats() *ffcli.Command {
 				return err
 			}
 
+			if format != "csv" && format != "json" {
+				return flag.ErrHelp
+			}
+
+			_, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
 			return flag.ErrHelp
 		},
 	}
