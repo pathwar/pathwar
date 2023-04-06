@@ -213,7 +213,8 @@ func prettyCSV(data [][]string) error {
 	w := csv.NewWriter(&buf)
 	err := w.WriteAll(data)
 	if err != nil {
-		return
+		return err
 	}
 	fmt.Println(buf.String())
+	return nil
 }
