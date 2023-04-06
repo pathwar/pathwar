@@ -50,17 +50,14 @@ definitions:
   OutputStat:
     properties:
       challenges_solved:
-        format: int64
         type: string
       mail:
         type: string
       name:
         type: string
       rank:
-        format: int64
         type: string
       score:
-        format: int64
         type: string
       team_name:
         type: string

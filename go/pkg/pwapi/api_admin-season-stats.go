@@ -2,6 +2,7 @@ package pwapi
 
 import (
 	"context"
+	"strconv"
 	"strings"
 
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
@@ -50,12 +51,12 @@ func (svc *service) AdminSeasonStats(ctx context.Context, in *AdminSeasonStats_I
 		for _, member := range team.Members {
 			// teamName keep only part before @
 			stat := AdminSeasonStats_Output_Stat{
-				Rank:             int64(rank + 1),
+				Rank:             strconv.FormatInt(int64(rank+1), 10),
 				Mail:             member.User.Email,
 				Name:             member.User.Slug,
 				TeamName:         team.Slug[:strings.LastIndex(team.Slug, "@")],
-				Score:            team.Score,
-				ChallengesSolved: challengesSolved,
+				Score:            strconv.FormatInt(team.Score, 10),
+				ChallengesSolved: strconv.FormatInt(challengesSolved, 10),
 			}
 			out.Stats = append(out.Stats, &stat)
 		}

@@ -832,6 +832,8 @@ func adminSeasonStats() *ffcli.Command {
 
 			if format == "json" {
 				fmt.Println(godev.PrettyJSON(ret))
+			} else {
+
 			}
 
 			return nil
