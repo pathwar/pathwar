@@ -796,7 +796,7 @@ func adminSeasonStats() *ffcli.Command {
 	flags.StringVar(&season, "season", season, "Season slug")
 	flags.StringVar(&datetime, "datetime", datetime, "Datetime (YYYY-MM-DD:HH:MM:SS)")
 	flags.StringVar(&format, "format", format, "Output format (csv, json)")
-	flags.StringVar(&scope, "scope", scope, "Scope (user, team)")
+	flags.StringVar(&scope, "scope", scope, "Scope (user)")
 	return &ffcli.Command{
 		Name:       "season-stats",
 		ShortUsage: "pathwar [global flags] admin [admin flags] season-stats [season-stats flags]",
@@ -828,6 +828,9 @@ func adminSeasonStats() *ffcli.Command {
 				if err != nil {
 					return err
 				}
+			} else {
+				logger.Warn("Building stats from a specific datetime is coming soon!")
+				return flag.ErrHelp
 			}
 
 			if format == "json" {
