@@ -838,7 +838,10 @@ func adminSeasonStats() *ffcli.Command {
 				for _, stat := range ret.Stats {
 					buf = append(buf, []string{stat.Rank, stat.Mail, stat.Name, stat.TeamName, stat.Score, stat.ChallengesSolved})
 				}
-				prettyCSV(buf)
+				err := prettyCSV(buf)
+				if err != nil {
+					return err
+				}
 			}
 
 			return nil

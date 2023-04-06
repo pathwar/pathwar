@@ -208,9 +208,12 @@ func initSentryFromEnv(startMessage string) (func(), error) {
 	return cleanup, nil
 }
 
-func prettyCSV(data [][]string) {
+func prettyCSV(data [][]string) error {
 	var buf bytes.Buffer
 	w := csv.NewWriter(&buf)
-	w.WriteAll(data)
+	err := w.WriteAll(data)
+	if err != nil {
+		return
+	}
 	fmt.Println(buf.String())
 }
