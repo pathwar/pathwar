@@ -791,7 +791,7 @@ func adminSeasonStats() *ffcli.Command {
 	season := "global"
 	datetime := ""
 	scope := "user"
-	format := "csv"
+	format := "json"
 	flags := flag.NewFlagSet("admin season-stats", flag.ExitOnError)
 	flags.StringVar(&season, "season", season, "Season slug")
 	flags.StringVar(&datetime, "datetime", datetime, "Datetime (YYYY-MM-DD:HH:MM:SS)")
@@ -821,16 +821,20 @@ func adminSeasonStats() *ffcli.Command {
 				return errcode.TODO.Wrap(err)
 			}
 
+			ret := pwapi.AdminSeasonStats_Output{}
 			if datetime == "" {
 				input := pwapi.AdminSeasonStats_Input{SeasonID: season}
-				ret, err := apiClient.AdminSeasonStats(ctx, &input)
+				ret, err = apiClient.AdminSeasonStats(ctx, &input)
 				if err != nil {
 					return err
 				}
-				fmt.Println(ret)
 			}
 
-			return flag.ErrHelp
+			if format == "json" {
+				fmt.Println(godev.PrettyJSON(ret))
+			}
+
+			return nil
 		},
 	}
 }

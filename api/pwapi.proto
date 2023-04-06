@@ -310,7 +310,11 @@ message AdminSeasonStats {
   }
   message Output {
     message Stat {
-      pathwar.db.Team team = 2;
+      int64 rank = 1;
+      string mail = 2;
+      string name = 3;
+      string team_name = 4;
+      int64 score = 5;
       int64 challenges_solved = 6;
     }
     repeated Stat stats = 1;

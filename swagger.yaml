@@ -52,8 +52,18 @@ definitions:
       challenges_solved:
         format: int64
         type: string
-      team:
-        $ref: '#/definitions/dbTeam'
+      mail:
+        type: string
+      name:
+        type: string
+      rank:
+        format: int64
+        type: string
+      score:
+        format: int64
+        type: string
+      team_name:
+        type: string
     type: object
   SeasonSubscription:
     default: UnknownSubscription

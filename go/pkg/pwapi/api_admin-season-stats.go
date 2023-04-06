@@ -2,6 +2,7 @@ package pwapi
 
 import (
 	"context"
+	"strings"
 
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 
@@ -26,6 +27,8 @@ func (svc *service) AdminSeasonStats(ctx context.Context, in *AdminSeasonStats_I
 		Preload("Members").
 		Preload("Members.User").
 		Where(&pwdb.Team{SeasonID: seasonID}).
+		Where("score > 0").
+		Order("score DESC").
 		Find(&teams).
 		Error
 	if err != nil {
@@ -34,17 +37,28 @@ func (svc *service) AdminSeasonStats(ctx context.Context, in *AdminSeasonStats_I
 
 	// retrieve number of challenges solved by each team
 	out := AdminSeasonStats_Output{}
-	for i, team := range teams {
-		stat := AdminSeasonStats_Output_Stat{Team: &teams[i], ChallengesSolved: 0}
+	var challengesSolved int64
+	for rank, team := range teams {
 		err = svc.db.
 			Model(&pwdb.ChallengeValidation{}).
 			Where(&pwdb.ChallengeValidation{TeamID: team.ID}).
-			Count(&stat.ChallengesSolved).
+			Count(&challengesSolved).
 			Error
 		if err != nil {
 			return nil, errcode.TODO.Wrap(err)
 		}
-		out.Stats = append(out.Stats, &stat)
+		for _, member := range team.Members {
+			// teamName keep only part before @
+			stat := AdminSeasonStats_Output_Stat{
+				Rank:             int64(rank + 1),
+				Mail:             member.User.Email,
+				Name:             member.User.Slug,
+				TeamName:         team.Slug[:strings.LastIndex(team.Slug, "@")],
+				Score:            team.Score,
+				ChallengesSolved: challengesSolved,
+			}
+			out.Stats = append(out.Stats, &stat)
+		}
 	}
 
 	return &out, nil
