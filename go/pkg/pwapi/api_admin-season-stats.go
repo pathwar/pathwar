@@ -23,8 +23,8 @@ func (svc *service) AdminSeasonStats(ctx context.Context, in *AdminSeasonStats_I
 
 	teams := []pwdb.Team{}
 	err = svc.db.
-		Preload("TeamMembers").
-		Preload("TeamMembers.User").
+		Preload("Members").
+		Preload("Members.User").
 		Where(&pwdb.Team{SeasonID: seasonID}).
 		Find(&teams).
 		Error
