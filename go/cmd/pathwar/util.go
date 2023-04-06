@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"context"
+	"encoding/csv"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -204,4 +206,11 @@ func initSentryFromEnv(startMessage string) (func(), error) {
 		}
 	}
 	return cleanup, nil
+}
+
+func prettyCSV(data [][]string) string {
+	var buf bytes.Buffer
+	w := csv.NewWriter(&buf)
+	w.WriteAll(data)
+	return buf.String()
 }
