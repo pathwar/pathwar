@@ -409,7 +409,7 @@ message AgentUpdateState {
 
 message TeamGet {
   message Input {
-    int64 team_id = 1 [(gogoproto.customname) = "TeamID"];
+    int64 team_id = 1 [(gogoproto.customname) = "TeamID", (gogoproto.moretags) = "url:\"team_id\""];
   }
   message Output {
     pathwar.db.Team item = 1;

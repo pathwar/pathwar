@@ -107,7 +107,7 @@ func RebuildStats(ctx context.Context, apiClient *pwapi.HTTPClient, to *time.Tim
 
 	out := pwapi.AdminSeasonStats_Output{}
 	for rank, team := range teams {
-		if strconv.FormatInt(team.SeasonID, 10) != seasonID && team.Slug != seasonID {
+		if strconv.FormatInt(team.SeasonID, 10) != seasonID && team.Slug[strings.LastIndex(team.Slug, "@")+1:] != seasonID {
 			continue
 		}
 		teamPreload, err := apiClient.TeamGet(ctx, &pwapi.TeamGet_Input{TeamID: team.ID})
