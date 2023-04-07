@@ -37,16 +37,7 @@ func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error 
 		return errcode.ErrNothingToRebuild
 	}
 
-	challengesMap := make(map[int64]*challengeValidation)
-	var seasonChallengesID []int64
-	for _, activity := range activities {
-		if _, ok := challengesMap[activity.SeasonChallengeID]; ok {
-			challengesMap[activity.SeasonChallengeID].seasonChallenge.NbValidations++
-		} else {
-			challengesMap[activity.SeasonChallengeID] = &challengeValidation{&pwdb.SeasonChallenge{ID: activity.SeasonChallengeID, NbValidations: 1}, 0}
-			seasonChallengesID = append(seasonChallengesID, activity.SeasonChallengeID)
-		}
-	}
+	challengesMap := RebuildNbValidations(activities)
 
 	listSeasonChallenges, err := apiClient.AdminListSeasonChallenges(ctx, &pwapi.AdminListSeasonChallenges_Input{Id: seasonChallengesID})
 	if err != nil {
@@ -86,4 +77,36 @@ func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error 
 	}
 
 	return nil
+}
+
+func RebuildStats(ctx context.Context, apiClient *pwapi.HTTPClient, to *time.Time, seasonID int64) error {
+	if apiClient == nil {
+		return errcode.ErrMissingInput
+	}
+
+	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{FilteringPreset: "validations", To: to})
+	if err != nil {
+		return errcode.TODO.Wrap(err)
+	}
+
+	activities := res.GetActivities()
+	if len(activities) == 0 {
+		return errcode.ErrNothingToRebuild
+	}
+
+	return nil
+}
+
+func RebuildNbValidations(activities []*pwdb.Activity) map[int64]*challengeValidation {
+	challengesMap := make(map[int64]*challengeValidation)
+	var seasonChallengesID []int64
+	for _, activity := range activities {
+		if _, ok := challengesMap[activity.SeasonChallengeID]; ok {
+			challengesMap[activity.SeasonChallengeID].seasonChallenge.NbValidations++
+		} else {
+			challengesMap[activity.SeasonChallengeID] = &challengeValidation{&pwdb.SeasonChallenge{ID: activity.SeasonChallengeID, NbValidations: 1}, 0}
+			seasonChallengesID = append(seasonChallengesID, activity.SeasonChallengeID)
+		}
+	}
+	return challengesMap
 }
