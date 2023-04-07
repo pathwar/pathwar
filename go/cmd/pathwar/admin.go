@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"pathwar.land/pathwar/v2/go/pkg/pwes"
+
 	"gopkg.in/yaml.v2"
 
 	"github.com/dustin/go-humanize"
@@ -829,6 +831,14 @@ func adminSeasonStats() *ffcli.Command {
 					return err
 				}
 			} else {
+				to, err := time.Parse("2006-01-02:15:04:05", datetime)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+				err = pwes.RebuildStats(ctx, apiClient, &to, 0)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
 				logger.Warn("Building stats from a specific datetime is coming soon!")
 				return flag.ErrHelp
 			}

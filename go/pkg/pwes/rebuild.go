@@ -2,7 +2,10 @@ package pwes
 
 import (
 	"context"
+	"sort"
 	"time"
+
+	"moul.io/godev"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 
@@ -10,7 +13,7 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/pwdb"
 )
 
-type challengeValidation struct {
+type ChallengeValidation struct {
 	seasonChallenge *pwdb.SeasonChallenge
 	score           int64
 }
@@ -37,7 +40,7 @@ func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error 
 		return errcode.ErrNothingToRebuild
 	}
 
-	challengesMap := RebuildNbValidations(activities)
+	challengesMap, seasonChallengesID := RebuildNbValidations(activities)
 
 	listSeasonChallenges, err := apiClient.AdminListSeasonChallenges(ctx, &pwapi.AdminListSeasonChallenges_Input{Id: seasonChallengesID})
 	if err != nil {
@@ -53,14 +56,7 @@ func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error 
 		challenge.score = computeScore(challenge.seasonChallenge.NbValidations)
 	}
 
-	teamsMap := make(map[int64]*pwdb.Team)
-	for _, activity := range activities {
-		if _, ok := teamsMap[activity.TeamID]; !ok {
-			teamsMap[activity.TeamID] = activity.Team
-			teamsMap[activity.TeamID].Score = 0
-		}
-		teamsMap[activity.TeamID].Score += challengesMap[activity.SeasonChallengeID].score
-	}
+	teamsMap := RebuildScore(activities, challengesMap)
 
 	_, err = apiClient.AdminUpdateSeasonChallengesMetadata(ctx, &pwapi.AdminUpdateSeasonChallengesMetadata_Input{SeasonChallenges: seasonChallenges})
 	if err != nil {
@@ -94,19 +90,49 @@ func RebuildStats(ctx context.Context, apiClient *pwapi.HTTPClient, to *time.Tim
 		return errcode.ErrNothingToRebuild
 	}
 
+	challengesMap, _ := RebuildNbValidations(activities)
+	for _, challenge := range challengesMap {
+		challenge.score = computeScore(challenge.seasonChallenge.NbValidations)
+	}
+
+	teamsMap := RebuildScore(activities, challengesMap)
+	teams := []*pwdb.Team{}
+	for _, team := range teamsMap {
+		teams = append(teams, team)
+	}
+
+	sort.Slice(teams, func(i, j int) bool {
+		return teams[i].Score > teams[j].Score
+	})
+
+	for _, team := range teams {
+		godev.PrettyJSON(team)
+	}
 	return nil
 }
 
-func RebuildNbValidations(activities []*pwdb.Activity) map[int64]*challengeValidation {
-	challengesMap := make(map[int64]*challengeValidation)
+func RebuildNbValidations(activities []*pwdb.Activity) (map[int64]*ChallengeValidation, []int64) {
+	challengesMap := make(map[int64]*ChallengeValidation)
 	var seasonChallengesID []int64
 	for _, activity := range activities {
 		if _, ok := challengesMap[activity.SeasonChallengeID]; ok {
 			challengesMap[activity.SeasonChallengeID].seasonChallenge.NbValidations++
 		} else {
-			challengesMap[activity.SeasonChallengeID] = &challengeValidation{&pwdb.SeasonChallenge{ID: activity.SeasonChallengeID, NbValidations: 1}, 0}
+			challengesMap[activity.SeasonChallengeID] = &ChallengeValidation{&pwdb.SeasonChallenge{ID: activity.SeasonChallengeID, NbValidations: 1}, 0}
 			seasonChallengesID = append(seasonChallengesID, activity.SeasonChallengeID)
 		}
 	}
-	return challengesMap
+	return challengesMap, seasonChallengesID
+}
+
+func RebuildScore(activities []*pwdb.Activity, challengesMap map[int64]*ChallengeValidation) map[int64]*pwdb.Team {
+	teamsMap := make(map[int64]*pwdb.Team)
+	for _, activity := range activities {
+		if _, ok := teamsMap[activity.TeamID]; !ok {
+			teamsMap[activity.TeamID] = activity.Team
+			teamsMap[activity.TeamID].Score = 0
+		}
+		teamsMap[activity.TeamID].Score += challengesMap[activity.SeasonChallengeID].score
+	}
+	return teamsMap
 }
