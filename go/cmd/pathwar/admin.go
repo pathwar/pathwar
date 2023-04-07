@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"pathwar.land/pathwar/v2/go/pkg/pwes"
+
 	"gopkg.in/yaml.v2"
 
 	"github.com/dustin/go-humanize"
@@ -49,6 +51,7 @@ func adminCommand() *ffcli.Command {
 			adminChallengeSubscriptionsCommand(),
 			adminListAllCommand(),
 			adminSearchCommand(),
+			adminSeasonStats(),
 
 			// actions
 			adminAddCouponCommand(),
@@ -781,6 +784,77 @@ func adminListAllCommand() *ffcli.Command {
 
 			table.Render()
 			fmt.Println("")
+			return nil
+		},
+	}
+}
+
+func adminSeasonStats() *ffcli.Command {
+	season := "global"
+	datetime := ""
+	scope := "user"
+	format := "json"
+	flags := flag.NewFlagSet("admin season-stats", flag.ExitOnError)
+	flags.StringVar(&season, "season", season, "Season slug")
+	flags.StringVar(&datetime, "datetime", datetime, "Datetime (YYYY-MM-DD:HH:MM:SS)")
+	flags.StringVar(&format, "format", format, "Output format (csv, json)")
+	flags.StringVar(&scope, "scope", scope, "Scope (user)")
+	return &ffcli.Command{
+		Name:       "season-stats",
+		ShortUsage: "pathwar [global flags] admin [admin flags] season-stats [season-stats flags]",
+		ShortHelp:  "Display season stats",
+		FlagSet:    flags,
+		Exec: func(ctx context.Context, args []string) error {
+			if err := globalPreRun(); err != nil {
+				return err
+			}
+
+			if scope != "user" {
+				logger.Warn("Only user scope is supported for now")
+				return flag.ErrHelp
+			}
+
+			if format != "csv" && format != "json" {
+				return flag.ErrHelp
+			}
+
+			apiClient, err := httpClientFromEnv(ctx)
+			if err != nil {
+				return errcode.TODO.Wrap(err)
+			}
+
+			ret := pwapi.AdminSeasonStats_Output{}
+			if datetime == "" {
+				input := pwapi.AdminSeasonStats_Input{SeasonID: season}
+				ret, err = apiClient.AdminSeasonStats(ctx, &input)
+				if err != nil {
+					return err
+				}
+			} else {
+				to, err := time.Parse("2006-01-02:15:04:05", datetime)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+				ret, err = pwes.RebuildStats(ctx, apiClient, &to, season)
+				if err != nil {
+					return errcode.TODO.Wrap(err)
+				}
+			}
+
+			if format == "json" {
+				fmt.Println(godev.PrettyJSON(ret))
+			} else {
+				var buf [][]string
+				buf = append(buf, []string{"rank", "mail", "name", "team_name", "score", "challenges_solved"})
+				for _, stat := range ret.Stats {
+					buf = append(buf, []string{stat.Rank, stat.Mail, stat.Name, stat.TeamName, stat.Score, stat.ChallengesSolved})
+				}
+				err := prettyCSV(buf)
+				if err != nil {
+					return err
+				}
+			}
+
 			return nil
 		},
 	}

@@ -165,6 +165,13 @@ func (c HTTPClient) AdminAddSeason(ctx context.Context, input *AdminSeasonAdd_In
 	return result, err
 }
 
+func (c HTTPClient) AdminSeasonStats(ctx context.Context, input *AdminSeasonStats_Input) (AdminSeasonStats_Output, error) {
+	var _ *AdminSeasonStats_Input = input
+	var result AdminSeasonStats_Output
+	err := c.doGet(ctx, "/admin/season-stats", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) AdminUpdateSeasonMetadata(ctx context.Context, input *AdminUpdateSeasonMetadata_Input) (AdminUpdateSeasonMetadata_Output, error) {
 	var _ *AdminUpdateSeasonMetadata_Input = input
 	var result AdminUpdateSeasonMetadata_Output
@@ -204,6 +211,13 @@ func (c HTTPClient) SeasonChallengeGet(ctx context.Context, input *SeasonChallen
 	var _ *SeasonChallengeGet_Input = input
 	var result SeasonChallengeGet_Output
 	err := c.doGet(ctx, "/season-challenge", input, &result)
+	return result, err
+}
+
+func (c HTTPClient) TeamGet(ctx context.Context, input *TeamGet_Input) (TeamGet_Output, error) {
+	var _ *TeamGet_Input = input
+	var result TeamGet_Output
+	err := c.doGet(ctx, "/team", input, &result)
 	return result, err
 }
 
