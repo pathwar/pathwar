@@ -214,6 +214,13 @@ func (c HTTPClient) SeasonChallengeGet(ctx context.Context, input *SeasonChallen
 	return result, err
 }
 
+func (c HTTPClient) TeamGet(ctx context.Context, input *TeamGet_Input) (TeamGet_Output, error) {
+	var _ *TeamGet_Input = input
+	var result TeamGet_Output
+	err := c.doGet(ctx, "/team", input, &result)
+	return result, err
+}
+
 func (c HTTPClient) GetStatus(ctx context.Context, input *GetStatus_Input) (GetStatus_Output, error) {
 	var _ *GetStatus_Input = input
 	var result GetStatus_Output

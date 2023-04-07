@@ -835,12 +835,10 @@ func adminSeasonStats() *ffcli.Command {
 				if err != nil {
 					return errcode.TODO.Wrap(err)
 				}
-				err = pwes.RebuildStats(ctx, apiClient, &to, 0)
+				ret, err = pwes.RebuildStats(ctx, apiClient, &to, season)
 				if err != nil {
 					return errcode.TODO.Wrap(err)
 				}
-				logger.Warn("Building stats from a specific datetime is coming soon!")
-				return flag.ErrHelp
 			}
 
 			if format == "json" {

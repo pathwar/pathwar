@@ -3,9 +3,9 @@ package pwes
 import (
 	"context"
 	"sort"
+	"strconv"
+	"strings"
 	"time"
-
-	"moul.io/godev"
 
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 
@@ -56,7 +56,7 @@ func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error 
 		challenge.score = computeScore(challenge.seasonChallenge.NbValidations)
 	}
 
-	teamsMap := RebuildScore(activities, challengesMap)
+	teamsMap, _ := RebuildScore(activities, challengesMap)
 
 	_, err = apiClient.AdminUpdateSeasonChallengesMetadata(ctx, &pwapi.AdminUpdateSeasonChallengesMetadata_Input{SeasonChallenges: seasonChallenges})
 	if err != nil {
@@ -75,19 +75,19 @@ func Rebuild(ctx context.Context, apiClient *pwapi.HTTPClient, opts Opts) error 
 	return nil
 }
 
-func RebuildStats(ctx context.Context, apiClient *pwapi.HTTPClient, to *time.Time, seasonID int64) error {
+func RebuildStats(ctx context.Context, apiClient *pwapi.HTTPClient, to *time.Time, seasonID string) (pwapi.AdminSeasonStats_Output, error) {
 	if apiClient == nil {
-		return errcode.ErrMissingInput
+		return pwapi.AdminSeasonStats_Output{}, errcode.ErrMissingInput
 	}
 
 	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{FilteringPreset: "validations", To: to})
 	if err != nil {
-		return errcode.TODO.Wrap(err)
+		return pwapi.AdminSeasonStats_Output{}, errcode.TODO.Wrap(err)
 	}
 
 	activities := res.GetActivities()
 	if len(activities) == 0 {
-		return errcode.ErrNothingToRebuild
+		return pwapi.AdminSeasonStats_Output{}, errcode.ErrNothingToRebuild
 	}
 
 	challengesMap, _ := RebuildNbValidations(activities)
@@ -95,7 +95,7 @@ func RebuildStats(ctx context.Context, apiClient *pwapi.HTTPClient, to *time.Tim
 		challenge.score = computeScore(challenge.seasonChallenge.NbValidations)
 	}
 
-	teamsMap := RebuildScore(activities, challengesMap)
+	teamsMap, challengesSolvedPerTeam := RebuildScore(activities, challengesMap)
 	teams := []*pwdb.Team{}
 	for _, team := range teamsMap {
 		teams = append(teams, team)
@@ -105,10 +105,28 @@ func RebuildStats(ctx context.Context, apiClient *pwapi.HTTPClient, to *time.Tim
 		return teams[i].Score > teams[j].Score
 	})
 
-	for _, team := range teams {
-		godev.PrettyJSON(team)
+	out := pwapi.AdminSeasonStats_Output{}
+	for rank, team := range teams {
+		if strconv.FormatInt(team.SeasonID, 10) != seasonID && team.Slug != seasonID {
+			continue
+		}
+		teamPreload, err := apiClient.TeamGet(ctx, &pwapi.TeamGet_Input{TeamID: team.ID})
+		if err != nil {
+			continue
+		}
+		for _, member := range teamPreload.GetItem().GetMembers() {
+			stat := pwapi.AdminSeasonStats_Output_Stat{
+				Rank:             strconv.FormatInt(int64(rank+1), 10),
+				Mail:             member.User.Email,
+				Name:             member.User.Slug,
+				TeamName:         team.Slug[:strings.LastIndex(team.Slug, "@")],
+				Score:            strconv.FormatInt(team.Score, 10),
+				ChallengesSolved: strconv.FormatInt(challengesSolvedPerTeam[team.ID], 10),
+			}
+			out.Stats = append(out.Stats, &stat)
+		}
 	}
-	return nil
+	return out, nil
 }
 
 func RebuildNbValidations(activities []*pwdb.Activity) (map[int64]*ChallengeValidation, []int64) {
@@ -125,14 +143,17 @@ func RebuildNbValidations(activities []*pwdb.Activity) (map[int64]*ChallengeVali
 	return challengesMap, seasonChallengesID
 }
 
-func RebuildScore(activities []*pwdb.Activity, challengesMap map[int64]*ChallengeValidation) map[int64]*pwdb.Team {
+func RebuildScore(activities []*pwdb.Activity, challengesMap map[int64]*ChallengeValidation) (map[int64]*pwdb.Team, map[int64]int64) {
 	teamsMap := make(map[int64]*pwdb.Team)
+	challengesSolvedPerTeam := make(map[int64]int64)
 	for _, activity := range activities {
 		if _, ok := teamsMap[activity.TeamID]; !ok {
 			teamsMap[activity.TeamID] = activity.Team
 			teamsMap[activity.TeamID].Score = 0
+			challengesSolvedPerTeam[activity.TeamID] = 0
 		}
 		teamsMap[activity.TeamID].Score += challengesMap[activity.SeasonChallengeID].score
+		challengesSolvedPerTeam[activity.TeamID]++
 	}
-	return teamsMap
+	return teamsMap, challengesSolvedPerTeam
 }
