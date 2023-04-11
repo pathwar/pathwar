@@ -27,7 +27,7 @@ export default function organizationsReducer(
   action
 ) {
   switch (action.type) {
-    case CREATE_TEAM_SUCCESS:
+    case CREATE_TEAM_SUCCESS: {
       const {team} = action.payload.team;
       if (!state.organizationInDetail || state.organizationInDetail.id !== team.organization.id) {
         return {
@@ -42,6 +42,7 @@ export default function organizationsReducer(
           },
         };
       }
+    }
     case SET_ACTIVE_ORGANIZATION:
       return {
         ...state,
