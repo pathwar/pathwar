@@ -1,9 +1,9 @@
 import React from "react";
-import { Card, Table } from "tabler-react";
+import {Button, Card, Table} from "tabler-react";
 
 // import styles from "./style.module.css";
 import { FormattedMessage } from "react-intl";
-import {Link} from "gatsby";
+import {Link, navigate} from "gatsby";
 import {useTheme} from "emotion-theming";
 
 const TeamsOnOrganizationRow = ({ teams }) => {
@@ -30,7 +30,7 @@ const TeamsOnOrganizationRow = ({ teams }) => {
           {item.score}
         </Table.Col>
         <Table.Col alignContent="center">
-          ${item.cash}
+          <Button color="primary" className="mx-lg-auto" onClick={() => navigate("/team/" + item.id)}>See Details</Button>
         </Table.Col>
       </Table.Row>
     );
@@ -58,7 +58,7 @@ const TeamsOnOrganizationList = ({ teams, limit }) => {
               <FormattedMessage id="AllTeamsOnOrganization.score" />
             </Table.ColHeader>
             <Table.ColHeader alignContent="center">
-              <FormattedMessage id="AllTeamsOnOrganization.cash" />
+              <FormattedMessage id="UserOrganizationsList.details" />
             </Table.ColHeader>
           </Table.Row>
         </Table.Header>
