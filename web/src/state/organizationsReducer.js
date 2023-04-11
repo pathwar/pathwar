@@ -8,6 +8,7 @@ import {
   SET_ORGANIZATIONS_LIST,
   SET_USER_ORGANIZATIONS_LIST,
   CREATE_ORGANIZATION_SUCCESS,
+  CREATE_TEAM_SUCCESS,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -26,6 +27,21 @@ export default function organizationsReducer(
   action
 ) {
   switch (action.type) {
+    case CREATE_TEAM_SUCCESS:
+      const {team} = action.payload.team;
+      if (!state.organizationInDetail || state.organizationInDetail.id !== team.organization.id) {
+        return {
+          ...state,
+        };
+      } else {
+        return {
+          ...state,
+          organizationInDetail: {
+            ...state.organizationInDetail,
+            teams: state.organizationInDetail.teams ? [...state.organizationInDetail.teams, team] : [team],
+          },
+        };
+      }
     case SET_ACTIVE_ORGANIZATION:
       return {
         ...state,
