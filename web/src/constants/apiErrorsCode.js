@@ -32,4 +32,7 @@ export const apiErrorsCode = new Map([
   ["ErrAlreadyInvitedInTeam(#4088)", "this user is already invited in this team"],
   ["ErrSeasonTeamLimitIsFull(#4109)", "the maximum number of members for this team has been reached"],
 
+  // buy challenge
+  ["ErrNotEnoughCash(#4071)", "you don't have enough cash to buy this challenge"],
+
 ]);
