@@ -14,5 +14,9 @@ export const baseApi = axios.create({
   baseURL: process.env.GATSBY_API_URL,
 });
 
+export const baseAuthApi = axios.create({
+  baseURL: process.env.AUTH_SERVICE_URL,
+});
+
 // Authenticated routes
 baseApi.interceptors.request.use(withToken);

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { baseApi } from "./index";
+import {baseApi, baseAuthApi} from "./index";
 
 export function getUserSession() {
   return baseApi.get("/user/session");
@@ -13,4 +13,9 @@ export function deleteUserAccount(reason) {
 
 export function postCouponValidation(hash, teamID) {
   return baseApi.post(`/coupon-validation`, { hash: hash, team_id: teamID });
+}
+
+// authentication calls
+export function fetchAccessToken() {
+  return baseAuthApi.get("/token");
 }

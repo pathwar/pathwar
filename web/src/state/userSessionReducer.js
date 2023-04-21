@@ -6,6 +6,7 @@ import {
   VALIDATE_COUPON_SUCCESS,
   VALIDATE_CHALLENGE_SUCCESS,
   BUY_CHALLENGE_SUCCESS,
+  SET_AUTH_SESSION,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
     activeUserSession: undefined,
     activeKeycloakSession: undefined,
     cash: undefined,
+    accessToken: undefined,
   },
 };
 
@@ -33,6 +35,7 @@ export default function userSessionReducer(
         activeKeycloakSession: undefined,
         isAuthenticated: false,
         error: action.payload.error,
+        accessToken: undefined,
       };
 
     case LOGOUT:
@@ -43,6 +46,7 @@ export default function userSessionReducer(
         activeUserSession: undefined,
         isAuthenticated: false,
         error: undefined,
+        accessToken: undefined,
       };
 
     case SET_KEYCLOAK_SESSION:
@@ -52,6 +56,12 @@ export default function userSessionReducer(
         activeKeycloakSession: action.payload.keycloakInstance,
         isAuthenticated: action.payload.authenticated,
       };
+
+      case SET_AUTH_SESSION:
+      return {
+        ...state,
+        accessToken: action.payload.token,
+      }
 
     case SET_USER_SESSION:
       return {
