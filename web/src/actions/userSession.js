@@ -13,7 +13,7 @@ import {
   VALIDATE_COUPON_FAILED,
   SET_AUTH_SESSION,
 } from "../constants/actionTypes";
-import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
+import {USER_AUTH_SESSION_TOKEN, USER_SESSION_TOKEN_NAME} from "../constants/userSession";
 import {
   getUserSession,
   deleteUserAccount,
@@ -106,6 +106,7 @@ export const setAuthSession = () => async dispatch => {
       type: SET_AUTH_SESSION,
       payload: {token: response.data.token}
     })
+    Cookies.set(USER_AUTH_SESSION_TOKEN, response.data.token);
   } catch (error) {
     dispatch({ type: LOGIN_FAILED, payload: { error } });
   }

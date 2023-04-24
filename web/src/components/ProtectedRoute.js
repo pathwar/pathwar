@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Keycloak from "keycloak-js";
 import { Dimmer } from "tabler-react";
 import { toast } from "react-toastify";
-import { setKeycloakSession } from "../actions/userSession";
+import {setAuthSession, setKeycloakSession} from "../actions/userSession";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     const keycloak = new Keycloak("/keycloak.json");
     const token = activeKeycloakSession && activeKeycloakSession.token;
     if (!access_token) {
-
+      dispatch(setAuthSession());
     }
     const refreshToken =
       activeKeycloakSession && activeKeycloakSession.refreshToken;
