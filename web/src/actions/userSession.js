@@ -99,33 +99,18 @@ export const fetchUserSession = postPreferences => async dispatch => {
   }
 };
 
+//TODO: receive authenticated parameter from the provider
 export const setAuthSession = () => async dispatch => {
   try {
     const response = await fetchAccessToken();
     dispatch({
       type: SET_AUTH_SESSION,
-      payload: {token: response.data.token}
+      payload: {
+        token: response.data.token,
+        authenticated: true,
+      }
     })
     Cookies.set(USER_AUTH_SESSION_TOKEN, response.data.token);
-  } catch (error) {
-    dispatch({ type: LOGIN_FAILED, payload: { error } });
-  }
-}
-
-export const setKeycloakSession = (
-  keycloakInstance,
-  authenticated
-) => async dispatch => {
-  try {
-    dispatch({
-      type: SET_KEYCLOAK_SESSION,
-      payload: {
-        keycloakInstance: keycloakInstance,
-        authenticated: authenticated,
-      },
-    });
-
-    Cookies.set(USER_SESSION_TOKEN_NAME, keycloakInstance.token);
     dispatch(fetchUserSession(true));
   } catch (error) {
     dispatch({ type: LOGIN_FAILED, payload: { error } });

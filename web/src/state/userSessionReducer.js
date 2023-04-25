@@ -2,7 +2,6 @@ import {
   LOGOUT,
   LOGIN_FAILED,
   SET_USER_SESSION,
-  SET_KEYCLOAK_SESSION,
   VALIDATE_COUPON_SUCCESS,
   VALIDATE_CHALLENGE_SUCCESS,
   BUY_CHALLENGE_SUCCESS,
@@ -15,7 +14,6 @@ const initialState = {
     fetching: false,
     isAuthenticated: false,
     activeUserSession: undefined,
-    activeKeycloakSession: undefined,
     cash: undefined,
     accessToken: undefined,
   },
@@ -32,7 +30,6 @@ export default function userSessionReducer(
       return {
         ...state,
         fetching: false,
-        activeKeycloakSession: undefined,
         isAuthenticated: false,
         error: action.payload.error,
         accessToken: undefined,
@@ -42,25 +39,17 @@ export default function userSessionReducer(
       return {
         ...state,
         fetching: false,
-        activeKeycloakSession: undefined,
         activeUserSession: undefined,
         isAuthenticated: false,
         error: undefined,
         accessToken: undefined,
       };
 
-    case SET_KEYCLOAK_SESSION:
-      return {
-        ...state,
-        fetching: false,
-        activeKeycloakSession: action.payload.keycloakInstance,
-        isAuthenticated: action.payload.authenticated,
-      };
-
       case SET_AUTH_SESSION:
       return {
         ...state,
         accessToken: action.payload.token,
+        isAuthenticated: action.payload.authenticated,
       }
 
     case SET_USER_SESSION:
