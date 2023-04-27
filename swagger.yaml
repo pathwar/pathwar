@@ -2007,40 +2007,14 @@ definitions:
     type: object
   ssoActionToken:
     properties:
-      asid:
-        type: string
-      aud:
-        type: string
-      auth_time:
-        format: date-time
-        type: string
-      azp:
-        type: string
       exp:
         format: date-time
         type: string
       iat:
         format: date-time
         type: string
-      iss:
-        type: string
-      jti:
-        type: string
-      nbf:
-        format: float
-        type: number
-      nonce:
-        type: string
-      scope:
-        type: string
-      session_state:
-        title: additional keycloak internals
-        type: string
       sub:
         type: string
-      typ:
-        type: string
-    title: See https://www.keycloak.org/docs/latest/server_development/index.html#_action_token_anatomy
     type: object
   ssoClaims:
     properties:
