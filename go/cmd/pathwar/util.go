@@ -67,7 +67,7 @@ var (
 func ssoFromFlags() (pwsso.Client, error) {
 	ssoOpts.Logger = logger.Named("sso")
 	ssoOpts.ApplyDefaults()
-	sso, err := pwsso.New(ssoOpts.Pubkey, ssoOpts.Realm, ssoOpts)
+	sso, err := pwsso.New(ssoOpts.Pubkey, ssoOpts.Pubkey2, ssoOpts.Realm, ssoOpts)
 	if err != nil {
 		return nil, errcode.ErrInitSSOClient.Wrap(err)
 	}
