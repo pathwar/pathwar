@@ -54,10 +54,10 @@ func TokenWithClaims(bearer string, pubkey interface{}, pubkey2 interface{}, all
 				}
 				return token, claims, nil
 			}
-		}
-		e, ok := err.(*jwt.ValidationError)
-		if !ok || (ok && e.Errors&jwt.ValidationErrorIssuedAt == 0) { // don't report error that token used before issued.
-			return nil, nil, errcode.ErrSSOInvalidBearer.Wrap(err)
+			e, ok := err.(*jwt.ValidationError)
+			if !ok || (ok && e.Errors&jwt.ValidationErrorIssuedAt == 0) { // don't report error that token used before issued.
+				return nil, nil, errcode.ErrSSOInvalidBearer.Wrap(err)
+			}
 		}
 	}
 	return token, claims, nil

@@ -27,7 +27,7 @@ func TestingClaims(t *testing.T) *Claims {
 
 func TestingToken(t *testing.T) *jwt.Token {
 	t.Helper()
-	token, _, err := TokenWithClaims(testingToken, testingPubKey, true)
+	token, _, err := TokenWithClaims(testingToken, testingPubKey, testingPubKey2, true)
 	if err != nil {
 		t.Fatalf("parse token: %v", err)
 	}
@@ -36,7 +36,7 @@ func TestingToken(t *testing.T) *jwt.Token {
 
 func TestingToken2(t *testing.T) *jwt.Token {
 	t.Helper()
-	token, _, err := TokenWithClaims(testingToken2, testingPubKey, true)
+	token, _, err := TokenWithClaims(testingToken2, testingPubKey, testingPubKey2, true)
 	if err != nil {
 		t.Fatalf("parse token: %v", err)
 	}
