@@ -845,7 +845,7 @@ func adminSeasonStats() *ffcli.Command {
 				fmt.Println(godev.PrettyJSON(ret))
 			} else {
 				var buf [][]string
-				buf = append(buf, []string{"rank", "mail", "name", "team_name", "score", "challenges_solved"})
+				buf = append(buf, []string{"rank", "mail", "login", "team_name", "score", "challenges_solved"})
 				for _, stat := range ret.Stats {
 					buf = append(buf, []string{stat.Rank, stat.Mail, stat.Name, stat.TeamName, stat.Score, stat.ChallengesSolved})
 				}
