@@ -5,7 +5,7 @@ import {
   VALIDATE_COUPON_SUCCESS,
   VALIDATE_CHALLENGE_SUCCESS,
   BUY_CHALLENGE_SUCCESS,
-  SET_AUTH_SESSION,
+  SET_AUTH0_SESSION,
 } from "../constants/actionTypes";
 
 const initialState = {
@@ -45,7 +45,7 @@ export default function userSessionReducer(
         accessToken: undefined,
       };
 
-      case SET_AUTH_SESSION:
+      case SET_AUTH0_SESSION:
       return {
         ...state,
         accessToken: action.payload.token,

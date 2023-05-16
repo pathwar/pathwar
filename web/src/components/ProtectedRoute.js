@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dimmer } from "tabler-react";
 import { useAuth0 } from "@auth0/auth0-react";
+import {setAuthSession} from "../actions/userSession";
 
 
 //TODO: update redux state with isAuthenticated value
@@ -10,28 +11,32 @@ import { useAuth0 } from "@auth0/auth0-react";
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const dispatch = useDispatch();
   const userSession = useSelector(state => state.userSession);
-  const { isLoading, isAuthenticated, loginWithRedirect, getAccessTokenSilently } = useAuth0()
+  const {
+    isLoading,
+    isAuthenticated,
+    loginWithRedirect,
+    getAccessTokenSilently,
+  } = useAuth0()
 
   if (!isLoading && !isAuthenticated) {
-    loginWithRedirect();
-  } else if (!isLoading && isAuthenticated) {
-    getAccessTokenSilently().then((token) => {
-      console.log(token.__raw);
-    });
+    loginWithRedirect()
+      .then(() => {getAccessTokenSilently()
+        .then((token) => {
+          console.log(token);
+          dispatch(setAuthSession(token))
+        })
+      })
+  } else if (!isLoading && isAuthenticated && !userSession.accessToken) {
+     getAccessTokenSilently().then((token) => {
+        console.log(token);
+        dispatch(setAuthSession(token))
+     })
   }
-  // useEffect(() => {
-  //   const { access_token } = userSession;
-  //   if (!access_token) {
-  //     dispatch(setAuthSession());
-  //   }
-  // }, []);
 
-    // if (userSession.isAuthenticated) {
-    //   return (
-    //   <Component {...rest} />
-    //   );
-    // }
-  console.log(isLoading, isAuthenticated)
+  if (userSession.isAuthenticated && userSession.accessToken) {
+    return <Component {...rest} />;
+  }
+
   return <Dimmer active loader />;
 };
 

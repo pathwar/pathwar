@@ -16,6 +16,7 @@
     "start:local-api": "env-cmd --file ./.env.integration npm run develop"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.1.0",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@loadable/component": "^5.10.2",

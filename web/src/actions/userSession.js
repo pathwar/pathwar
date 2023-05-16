@@ -5,20 +5,18 @@ import {
   LOGIN_FAILED,
   SET_USER_SESSION,
   SET_USER_SESSION_FAILED,
-  SET_KEYCLOAK_SESSION,
   LOGOUT,
   DELETE_ACCOUNT_FAILED,
   DELETE_ACCOUNT_SUCCESS,
   VALIDATE_COUPON_SUCCESS,
   VALIDATE_COUPON_FAILED,
-  SET_AUTH_SESSION,
+  SET_AUTH0_SESSION,
 } from "../constants/actionTypes";
-import {USER_AUTH_SESSION_TOKEN, USER_SESSION_TOKEN_NAME} from "../constants/userSession";
+import {USER_AUTH_SESSION_TOKEN} from "../constants/userSession";
 import {
   getUserSession,
   deleteUserAccount,
   postCouponValidation,
-  fetchAccessToken,
 } from "../api/userSession";
 import {
   fetchUserOrganizationsInvitations,
@@ -100,17 +98,16 @@ export const fetchUserSession = postPreferences => async dispatch => {
 };
 
 //TODO: receive authenticated parameter from the provider
-export const setAuthSession = () => async dispatch => {
+export const setAuthSession = token => async dispatch => {
   try {
-    const response = await fetchAccessToken();
     dispatch({
-      type: SET_AUTH_SESSION,
+      type: SET_AUTH0_SESSION,
       payload: {
-        token: response.data.token,
+        token: token,
         authenticated: true,
       }
     })
-    Cookies.set(USER_AUTH_SESSION_TOKEN, response.data.token);
+    Cookies.set(USER_AUTH_SESSION_TOKEN, token);
     dispatch(fetchUserSession(true));
   } catch (error) {
     dispatch({ type: LOGIN_FAILED, payload: { error } });
