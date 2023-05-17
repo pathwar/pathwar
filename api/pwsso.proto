@@ -22,7 +22,7 @@ message ActionToken {
 }
 
 message Claims {
-  string nickname = 1;
+  string preferred_username = 1;
   string email = 2;
   bool email_verified = 3;
 

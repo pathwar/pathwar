@@ -115,8 +115,10 @@ func ClaimsFromToken(token *jwt.Token) *Claims {
 	}
 
 	// OIDC specific
-	if v := mc["nickname"]; v != nil {
-		claims.Nickname = v.(string)
+	if v := mc["preferred_username"]; v != nil {
+		claims.PreferredUsername = v.(string)
+	} else if v := mc["nickname"]; v != nil {
+		claims.PreferredUsername = v.(string)
 	}
 	if v := mc["email"]; v != nil {
 		claims.Email = v.(string)

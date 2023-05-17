@@ -2035,7 +2035,7 @@ definitions:
       email_verified:
         format: boolean
         type: boolean
-      nickname:
+      preferred_username:
         type: string
     type: object
 externalDocs:
