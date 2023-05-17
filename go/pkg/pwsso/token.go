@@ -9,7 +9,7 @@ import (
 )
 
 func (c *client) TokenWithClaims(bearer string) (*jwt.Token, jwt.MapClaims, error) {
-	token, claims, err := TokenWithClaims(bearer, c.publicKey, c.publicKey2, c.opts.AllowUnsafe)
+	token, claims, err := TokenWithClaims(bearer, c.publicKey, c.opts.AllowUnsafe)
 	if err != nil {
 		c.logger.Warn("token with claims",
 			zap.Error(err),
@@ -21,7 +21,7 @@ func (c *client) TokenWithClaims(bearer string) (*jwt.Token, jwt.MapClaims, erro
 	return token, claims, err
 }
 
-func TokenWithClaims(bearer string, pubkey interface{}, pubkey2 interface{}, allowUnsafe bool) (*jwt.Token, jwt.MapClaims, error) {
+func TokenWithClaims(bearer string, pubkey interface{}, allowUnsafe bool) (*jwt.Token, jwt.MapClaims, error) {
 	claims := jwt.MapClaims{}
 
 	// FIXME: add an option to automatically fetch the public key from
@@ -32,32 +32,24 @@ func TokenWithClaims(bearer string, pubkey interface{}, pubkey2 interface{}, all
 	kf := func(token *jwt.Token) (interface{}, error) {
 		return pubkey, nil
 	}
-
-	kf2 := func(token *jwt.Token) (interface{}, error) {
-		return pubkey2, nil
-	}
-
 	token, err := jwt.ParseWithClaims(bearer, claims, kf)
 	if err != nil {
-		token, err = jwt.ParseWithClaims(bearer, claims, kf2)
-		if err != nil {
-			if allowUnsafe {
-				zap.L().Warn(
-					"invalid token",
-					zap.Error(err),
-					zap.Bool("client-unsafe", true),
-				)
-				parser := new(jwt.Parser)
-				token, _, err := parser.ParseUnverified(bearer, claims)
-				if err != nil {
-					return nil, nil, errcode.ErrSSOInvalidBearer.Wrap(err)
-				}
-				return token, claims, nil
-			}
-			e, ok := err.(*jwt.ValidationError)
-			if !ok || (ok && e.Errors&jwt.ValidationErrorIssuedAt == 0) { // don't report error that token used before issued.
+		if allowUnsafe {
+			zap.L().Warn(
+				"invalid token",
+				zap.Error(err),
+				zap.Bool("client-unsafe", true),
+			)
+			parser := new(jwt.Parser)
+			token, _, err := parser.ParseUnverified(bearer, claims)
+			if err != nil {
 				return nil, nil, errcode.ErrSSOInvalidBearer.Wrap(err)
 			}
+			return token, claims, nil
+		}
+		e, ok := err.(*jwt.ValidationError)
+		if !ok || (ok && e.Errors&jwt.ValidationErrorIssuedAt == 0) { // don't report error that token used before issued.
+			return nil, nil, errcode.ErrSSOInvalidBearer.Wrap(err)
 		}
 	}
 	return token, claims, nil
@@ -122,21 +114,15 @@ func ClaimsFromToken(token *jwt.Token) *Claims {
 		claims.ActionToken.Exp = &t
 	}
 
-	// pathwar specific
-	if v := mc["preferred_username"]; v != nil {
-		claims.PreferredUsername = v.(string)
+	// OIDC specific
+	if v := mc["nickname"]; v != nil {
+		claims.Nickname = v.(string)
 	}
 	if v := mc["email"]; v != nil {
 		claims.Email = v.(string)
 	}
 	if v := mc["email_verified"]; v != nil {
 		claims.EmailVerified = v.(bool)
-	}
-	if v := mc["given_name"]; v != nil {
-		claims.GivenName = v.(string)
-	}
-	if v := mc["family_name"]; v != nil {
-		claims.FamilyName = v.(string)
 	}
 
 	//FIXME: add more claims
