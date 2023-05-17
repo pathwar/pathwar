@@ -2007,13 +2007,23 @@ definitions:
     type: object
   ssoActionToken:
     properties:
+      aud:
+        type: string
       exp:
         format: date-time
         type: string
       iat:
         format: date-time
         type: string
+      iss:
+        type: string
+      nonce:
+        type: string
+      sid:
+        type: string
       sub:
+        type: string
+      typ:
         type: string
     type: object
   ssoClaims:
@@ -2025,11 +2035,7 @@ definitions:
       email_verified:
         format: boolean
         type: boolean
-      family_name:
-        type: string
-      given_name:
-        type: string
-      preferred_username:
+      nickname:
         type: string
     type: object
 externalDocs:

@@ -15,16 +15,20 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   } = useAuth0()
 
   if (!isLoading && !isAuthenticated) {
-    loginWithRedirect()
+    loginWithRedirect({
+      scope: "openid profile email",
+    })
       .then(() => {getIdTokenClaims()
         .then((token) => {
           console.log(token.__raw);
+          console.log("email : ", token.email_verified);
           dispatch(setAuthSession(token.__raw))
         })
       })
   } else if (!isLoading && isAuthenticated && !userSession.accessToken) {
     getIdTokenClaims().then((token) => {
         console.log(token.__raw);
+        console.log("email : ", token.email_verified);
         dispatch(setAuthSession(token.__raw))
      })
   }

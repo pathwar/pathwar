@@ -11,17 +11,20 @@ option (gogoproto.marshaler_all) = true;
 option (gogoproto.unmarshaler_all) = true;
 
 message ActionToken {
+  string typ = 1;                                                                              // Type of token
   google.protobuf.Timestamp iat = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true]; // Times of token validity
   google.protobuf.Timestamp exp = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true]; // Times of token validity
   string sub = 4;                                                                              // ID of the user
+  string iss = 5;                                                                              // Issuer of the token
+  string aud = 6;                                                                              // Audience of the token
+  string sid = 7;                                                                              // Session ID
+  string nonce = 8;                                                                            // Nonce
 }
 
 message Claims {
-  string preferred_username = 1;
+  string nickname = 1;
   string email = 2;
   bool email_verified = 3;
-  string family_name = 4;
-  string given_name = 5;
 
   ActionToken action_token = 100;
 }

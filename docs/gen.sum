@@ -1,5 +1,5 @@
 04575c89be1815909d61a17a12ad23ae1cf8379d  ../api/pwcompose.proto
-23eadaac4f8ad92e164bb6151aad06ecc7dcad8f  ../api/pwsso.proto
+6d3d5740ca7fb313559f5677bee851d6e05f6813  ../api/pwsso.proto
 70d67f1cebb3b7f9e86fd0197d43db4c1f795f65  ../api/pwinit.proto
 938d0b10041d408da360734ce20ba0d65eb20521  ../api/pwagent.proto
 96e1b8315b1f63868bce8af579afaab8aebd29f1  ../api/pwdb.proto
