@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dimmer } from "tabler-react";
 import { useAuth0 } from "@auth0/auth0-react";
