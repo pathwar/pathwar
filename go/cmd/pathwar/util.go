@@ -118,6 +118,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		ClientID:     ssoOpts.ClientID,
 		ClientSecret: ssoOpts.ClientSecret,
 		Scopes:       []string{"email", "offline_access", "profile", "roles"},
+		RedirectURL:  "https://html-tests.netlify.app/qs/",
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/authorize",
 			TokenURL: "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/oauth/token",
@@ -138,7 +139,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		}
 
 		url := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
-		fmt.Printf("Visit the URL for the auth dialog: %v\n\nthen, write the code in the terminal.\n\n", url)
+		fmt.Printf("Visit the URL for the auth dialog: %v\n\nthen, write the code in the terminal.\n\n", url+"&audience=https://pathwar.net/")
 		var code string
 		if _, err := fmt.Scan(&code); err != nil {
 			return nil, err
@@ -153,7 +154,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		if err != nil {
 			return nil, err
 		}
-
+		fmt.Println("writing token: ", string(jsonText))
 		if err := ioutil.WriteFile(ssoOpts.TokenFile, jsonText, 0o777); err != nil {
 			return nil, err
 		}
