@@ -119,8 +119,8 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		ClientSecret: ssoOpts.ClientSecret,
 		Scopes:       []string{"email", "offline_access", "profile", "roles"},
 		Endpoint: oauth2.Endpoint{
-			AuthURL:  pwsso.KeycloakBaseURL + "/auth/realms/" + ssoOpts.Realm + "/protocol/openid-connect/auth",
-			TokenURL: pwsso.KeycloakBaseURL + "/auth/realms/" + ssoOpts.Realm + "/protocol/openid-connect/token",
+			AuthURL:  "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/authorize",
+			TokenURL: "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/oauth/token",
 		},
 	}
 
