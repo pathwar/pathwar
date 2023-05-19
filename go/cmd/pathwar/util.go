@@ -139,7 +139,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		}
 
 		url := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
-		fmt.Printf("Visit the URL for the auth dialog: %v\n\nthen, write the code in the terminal.\n\n", url+"&audience=https://pathwar.net/")
+		fmt.Printf("Visit the URL for the auth dialog: %v\n\nthen, write the code in the terminal.\n\n", url+"&audience="+pwsso.ProviderAudience)
 		var code string
 		if _, err := fmt.Scan(&code); err != nil {
 			return nil, err
@@ -154,7 +154,6 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		if err != nil {
 			return nil, err
 		}
-		fmt.Println("writing token: ", string(jsonText))
 		if err := ioutil.WriteFile(ssoOpts.TokenFile, jsonText, 0o777); err != nil {
 			return nil, err
 		}

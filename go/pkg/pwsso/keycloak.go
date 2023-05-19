@@ -14,8 +14,9 @@ const (
 	KeycloakBaseURL     = "https://auth.pathwar.land"
 	ProviderAuthURL     = "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/authorize"
 	ProviderTokenURL    = "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/oauth/token"
-	ProviderUserInfoURL = "https://auth.pathwar.land/auth/realms/Pathwar-Dev/protocol/openid-connect/userinfo"
+	ProviderUserInfoURL = "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/userinfo"
 	ProviderRedirectURL = "https://html-tests.netlify.app/qs/\""
+	ProviderAudience    = "https://pathwar.net/"
 )
 
 func (c *client) Whoami(token string) (map[string]interface{}, error) {

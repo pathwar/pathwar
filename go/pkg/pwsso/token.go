@@ -12,8 +12,6 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
-const ProviderBaseURL = "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com"
-
 func (c *client) TokenWithClaims(bearer string) (*jwt.Token, jwt.MapClaims, error) {
 	token, claims, err := TokenWithClaims(bearer, c.publicKey, c.opts.AllowUnsafe)
 	if err != nil {
@@ -129,7 +127,7 @@ func ClaimsFromToken(token *jwt.Token) *Claims {
 
 func getUserinfo(token *jwt.Token) (map[string]interface{}, error) {
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", ProviderBaseURL+"/userinfo", &bytes.Buffer{})
+	req, err := http.NewRequest("GET", ProviderUserInfoURL, &bytes.Buffer{})
 	if err != nil {
 		return nil, err
 	}
