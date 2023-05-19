@@ -13,7 +13,8 @@ const Index = () => {
     domain="dev-5ccwzy8qtcsjsnpf.us.auth0.com"
     clientId="bJpLWOLTRseEVfM9kvFhKfi9wUBmm8Gh"
     authorizationParams={{
-      redirect_uri: window.location.origin
+      redirect_uri: window.location.origin,
+      audience: "https://pathwar.net/"
     }}
   >
       <ThemeProvider theme={themeToUse}>
