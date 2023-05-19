@@ -1,12 +1,18 @@
 package pwsso
 
 import (
+	"bytes"
+	"encoding/json"
+	io "io"
+	"net/http"
 	time "time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"go.uber.org/zap"
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
+
+const ProviderBaseURL = "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com"
 
 func (c *client) TokenWithClaims(bearer string) (*jwt.Token, jwt.MapClaims, error) {
 	token, claims, err := TokenWithClaims(bearer, c.publicKey, c.opts.AllowUnsafe)
@@ -101,18 +107,54 @@ func ClaimsFromToken(token *jwt.Token) *Claims {
 	}
 
 	// OIDC specific
-	if v := mc["preferred_username"]; v != nil {
+	userinfo, err := getUserinfo(token)
+	if err != nil {
+		return nil
+	}
+	if v := userinfo["preferred_username"]; v != nil {
 		claims.PreferredUsername = v.(string)
-	} else if v := mc["nickname"]; v != nil {
+	} else if v := userinfo["nickname"]; v != nil {
 		claims.PreferredUsername = v.(string)
 	}
-	if v := mc["email"]; v != nil {
+	if v := userinfo["email"]; v != nil {
 		claims.Email = v.(string)
 	}
-	if v := mc["email_verified"]; v != nil {
+	if v := userinfo["email_verified"]; v != nil {
 		claims.EmailVerified = v.(bool)
 	}
 
 	//FIXME: add more claims
 	return claims
+}
+
+func getUserinfo(token *jwt.Token) (map[string]interface{}, error) {
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", ProviderBaseURL+"/userinfo", &bytes.Buffer{})
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Authorization", "Bearer "+token.Raw)
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+
+		}
+	}(resp.Body)
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var userinfo map[string]interface{}
+	err = json.Unmarshal(body, &userinfo)
+	if err != nil {
+		return nil, err
+	}
+	return userinfo, nil
 }
