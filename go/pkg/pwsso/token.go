@@ -136,13 +136,7 @@ func getUserinfo(token *jwt.Token) (map[string]interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-
-		}
-	}(resp.Body)
+	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
