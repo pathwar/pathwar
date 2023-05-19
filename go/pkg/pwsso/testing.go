@@ -69,9 +69,13 @@ func TestingSSO(t *testing.T, logger *zap.Logger) Client {
 }
 
 func TestingTransport(t *testing.T) http.RoundTripper {
+	accesToken, err := GetTestingTokenFromRefresh(testingToken)
+	if err != nil {
+		t.Fatalf("get token from refresh: %v", err)
+	}
 	return &roundtripper.Transport{
 		ExtraHeader: http.Header{
-			"Authorization": []string{"Bearer " + testingToken},
+			"Authorization": []string{"Bearer " + accesToken},
 		},
 	}
 }

@@ -1,11 +1,6 @@
 package pwsso
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	io "io"
-	"net/http"
 	time "time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -105,45 +100,19 @@ func ClaimsFromToken(token *jwt.Token) *Claims {
 		claims.ActionToken.Exp = &t
 	}
 
-	//FIXME: add more claims
-	return claims
-}
-
-func GetUserInfoFromToken(token *jwt.Token, claims *Claims) error {
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", ProviderUserInfoURL, &bytes.Buffer{})
-	if err != nil {
-		return err
-	}
-	req.Header.Add("Authorization", "Bearer "+token.Raw)
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
-
-	var userinfo map[string]interface{}
-	err = json.Unmarshal(body, &userinfo)
-	fmt.Println("body is", string(body))
-	if err != nil {
-		return err
-	}
-
-	if v := userinfo["preferred_username"]; v != nil {
+	// OIDC specific
+	if v := mc["preferred_username"]; v != nil {
 		claims.PreferredUsername = v.(string)
-	} else if v := userinfo["nickname"]; v != nil {
+	} else if v := mc["nickname"]; v != nil {
 		claims.PreferredUsername = v.(string)
 	}
-	if v := userinfo["email"]; v != nil {
+	if v := mc["email"]; v != nil {
 		claims.Email = v.(string)
 	}
-	if v := userinfo["email_verified"]; v != nil {
+	if v := mc["email_verified"]; v != nil {
 		claims.EmailVerified = v.(bool)
 	}
-	return nil
+
+	//FIXME: add more claims
+	return claims
 }
