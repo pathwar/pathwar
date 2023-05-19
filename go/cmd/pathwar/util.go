@@ -118,10 +118,10 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		ClientID:     ssoOpts.ClientID,
 		ClientSecret: ssoOpts.ClientSecret,
 		Scopes:       []string{"email", "offline_access", "profile", "roles"},
-		RedirectURL:  "https://html-tests.netlify.app/qs/",
+		RedirectURL:  pwsso.ProviderRedirectURL,
 		Endpoint: oauth2.Endpoint{
-			AuthURL:  "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/authorize",
-			TokenURL: "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/oauth/token",
+			AuthURL:  pwsso.ProviderAuthURL,
+			TokenURL: pwsso.ProviderTokenURL,
 		},
 	}
 

@@ -9,7 +9,14 @@ import (
 	"pathwar.land/pathwar/v2/go/pkg/errcode"
 )
 
-const KeycloakBaseURL = "https://id.pathwar.land"
+// TODO: fix this
+const (
+	KeycloakBaseURL     = "https://auth.pathwar.land"
+	ProviderAuthURL     = "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/authorize"
+	ProviderTokenURL    = "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/oauth/token"
+	ProviderUserInfoURL = "https://auth.pathwar.land/auth/realms/Pathwar-Dev/protocol/openid-connect/userinfo"
+	ProviderRedirectURL = "https://html-tests.netlify.app/qs/\""
+)
 
 func (c *client) Whoami(token string) (map[string]interface{}, error) {
 	oidc, err := c.oidc()
