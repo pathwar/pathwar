@@ -34,6 +34,10 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 
 	// new user
 	if pwdb.IsRecordNotFoundError(err) {
+		err := pwsso.GetUserInfoFromToken(token, output.Claims)
+		if err != nil {
+			return nil, errcode.ErrGetOAuthUser.Wrap(err)
+		}
 		output.IsNewUser = true
 		if _, err = svc.newUserFromClaims(output.Claims); err != nil {
 			return nil, errcode.ErrNewUserFromClaims.Wrap(err)
@@ -43,12 +47,13 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 		}
 	}
 
-	if output.User.Username != output.Claims.PreferredUsername {
+	//TODO: Find a fix to LIMIT userinfo API call
+	/*	if output.User.Username != output.Claims.PreferredUsername {
 		if err := svc.db.Model(output.User).Updates(pwdb.User{Username: output.Claims.PreferredUsername}).Error; err != nil {
 			return nil, pwdb.GormToErrcode(err)
 		}
 		// FIXME: also update the solo organization
-	}
+	}*/
 
 	// FIXME: output.Notifications = COUNT
 	output.Notifications = int32(rand.Intn(10))

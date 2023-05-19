@@ -16,7 +16,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
 
   if (!isLoading && !isAuthenticated) {
     loginWithRedirect({
-      scope: "openid profile email",
+      scope: "openid profile email roles",
     })
       .then(() => {getAccessTokenSilently()
         .then((token) => {

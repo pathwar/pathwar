@@ -15,7 +15,7 @@ const (
 	ProviderAuthURL     = "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/authorize"
 	ProviderTokenURL    = "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/oauth/token"
 	ProviderUserInfoURL = "https://dev-5ccwzy8qtcsjsnpf.us.auth0.com/userinfo"
-	ProviderRedirectURL = "https://html-tests.netlify.app/qs/\""
+	ProviderRedirectURL = "https://html-tests.netlify.app/qs/"
 	ProviderAudience    = "https://pathwar.net/"
 )
 

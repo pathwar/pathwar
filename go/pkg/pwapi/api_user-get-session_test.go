@@ -24,12 +24,12 @@ func TestService_UserGetSession(t *testing.T) {
 		require.NoError(t, err)
 
 		// fmt.Println(godev.PrettyJSON(session))
-		assert.Equal(t, session.User.Username, "moul")
+		assert.Equal(t, session.User.Username, "mikael")
 		assert.Len(t, session.Seasons, 3)
 		assert.Equal(t, session.Claims, pwsso.TestingClaims(t))
 		assert.True(t, session.IsNewUser)
 		assert.Equal(t, session.User.ActiveTeamMember.Team.Season.Name, "Global")
-		assert.Equal(t, session.User.ActiveTeamMember.Team.Organization.Name, "moul")
+		assert.Equal(t, session.User.ActiveTeamMember.Team.Organization.Name, "mikael")
 		assert.True(t, session.User.ActiveTeamMember.Team.Organization.GlobalSeason)
 		assert.Equal(t, session.User.ActiveTeamMember.Role, pwdb.TeamMember_Owner)
 		for _, season := range session.Seasons {
@@ -45,12 +45,12 @@ func TestService_UserGetSession(t *testing.T) {
 		require.NoError(t, err)
 
 		// fmt.Println(godev.PrettyJSON(session2))
-		assert.Equal(t, session2.User.Username, "moul")
+		assert.Equal(t, session2.User.Username, "mikael")
 		assert.Len(t, session2.Seasons, 3)
 		assert.Equal(t, session2.Claims, pwsso.TestingClaims(t))
 		assert.False(t, session2.IsNewUser)
 		assert.Equal(t, session2.User.ActiveTeamMember.Team.Season.Name, "Global")
-		assert.Equal(t, session2.User.ActiveTeamMember.Team.Organization.Name, "moul")
+		assert.Equal(t, session2.User.ActiveTeamMember.Team.Organization.Name, "mikael")
 		assert.True(t, session2.User.ActiveTeamMember.Team.Organization.GlobalSeason)
 		assert.Equal(t, session2.User.ActiveTeamMember.Role, pwdb.TeamMember_Owner)
 

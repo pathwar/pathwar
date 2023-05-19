@@ -3,6 +3,7 @@ package pwsso
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	io "io"
 	"net/http"
 	time "time"
@@ -104,11 +105,35 @@ func ClaimsFromToken(token *jwt.Token) *Claims {
 		claims.ActionToken.Exp = &t
 	}
 
-	// OIDC specific
-	userinfo, err := getUserinfo(token)
+	//FIXME: add more claims
+	return claims
+}
+
+func GetUserInfoFromToken(token *jwt.Token, claims *Claims) error {
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", ProviderUserInfoURL, &bytes.Buffer{})
 	if err != nil {
-		return nil
+		return err
 	}
+	req.Header.Add("Authorization", "Bearer "+token.Raw)
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	var userinfo map[string]interface{}
+	err = json.Unmarshal(body, &userinfo)
+	fmt.Println("body is", string(body))
+	if err != nil {
+		return err
+	}
+
 	if v := userinfo["preferred_username"]; v != nil {
 		claims.PreferredUsername = v.(string)
 	} else if v := userinfo["nickname"]; v != nil {
@@ -120,33 +145,5 @@ func ClaimsFromToken(token *jwt.Token) *Claims {
 	if v := userinfo["email_verified"]; v != nil {
 		claims.EmailVerified = v.(bool)
 	}
-
-	//FIXME: add more claims
-	return claims
-}
-
-func getUserinfo(token *jwt.Token) (map[string]interface{}, error) {
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", ProviderUserInfoURL, &bytes.Buffer{})
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Add("Authorization", "Bearer "+token.Raw)
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var userinfo map[string]interface{}
-	err = json.Unmarshal(body, &userinfo)
-	if err != nil {
-		return nil, err
-	}
-	return userinfo, nil
+	return nil
 }

@@ -117,7 +117,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 	conf := &oauth2.Config{
 		ClientID:     ssoOpts.ClientID,
 		ClientSecret: ssoOpts.ClientSecret,
-		Scopes:       []string{"email", "offline_access", "profile", "roles"},
+		Scopes:       []string{"email openid", "offline_access", "profile", "roles"},
 		RedirectURL:  pwsso.ProviderRedirectURL,
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  pwsso.ProviderAuthURL,
