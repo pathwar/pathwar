@@ -277,16 +277,21 @@ const SiteWrapper = ({ children }) => {
             </button>
             <div className="dropdown-content">
               <ul>
-                <li>
+{/*                <li>
                   <img src={iconProfile} className="img-responsive" />
                   <a
+                    href={
+                      userSession &&
+                      userSession.accessToken &&
+                      "https://" + process.env.GATSBY_AUTH0_REALM +  "/userinfo"
+                    }
                     className="link"
                     target="_blank"
                     rel="noreferrer"
                   >
                     <FormattedMessage id="userNav.profile" />
                   </a>
-                </li>
+                </li>*/}
                 {/* <li>
                   <img src={iconMail} className="img-responsive" />
                   <a href="#" className="link">

@@ -1,25 +1,25 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { navigate } from "gatsby";
 import { logoutUser as logoutUserAction } from "../actions/userSession";
+import { useAuth0 } from "@auth0/auth0-react";
 
-class LogoutPage extends React.PureComponent {
-  componentDidMount() {
-    const { userSession, logoutUserAction } = this.props;
-    const logoutOptions = {redirectUri: window.location.origin + "/challenges"};
+const LogoutPage = ({ userSession, logoutUserAction }) => {
+  const { logout } = useAuth0();
 
-    if (!userSession.activeKeycloakSession) {
+  useEffect(() => {
+    const logoutOptions = { logoutParams: { returnTo: window.location.origin + "/challenges"} };
+
+    if (!userSession.accessToken) {
       navigate("/");
     } else {
-      userSession.activeKeycloakSession.logout(logoutOptions);
+      logout(logoutOptions)
       logoutUserAction();
     }
-  }
+  }, [userSession.accessToken, logout, logoutUserAction]);
 
-  render() {
-    return null;
-  }
-}
+  return null;
+};
 
 const mapStateToProps = state => ({
   userSession: state.userSession,
