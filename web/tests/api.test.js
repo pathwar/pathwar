@@ -3,7 +3,7 @@ require("dotenv").config({ path: "../../.env" });
 
 //Axios Config
 const withToken = function(config) {
-  config.headers.Authorization = process.env.KEYCLOAK_TOKEN;
+  config.headers.Authorization = process.env.AUTH0_TOKEN;
   return config;
 };
 
