@@ -206,7 +206,6 @@ const SiteWrapper = ({ children }) => {
 
   const {
     cash,
-    activeKeycloakSession,
     activeUserSession: { claims, user } = {},
   } = userSession;
 

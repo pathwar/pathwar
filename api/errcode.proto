@@ -25,12 +25,12 @@ enum ErrCode {
 
   ErrSSOGetOIDC = 1001;
   ErrSSOInvalidPublicKey = 1002;
-  ErrSSOFailedKeycloakRequest = 1003;
-  ErrSSOInvalidKeycloakResponse = 1004;
+  ErrSSOFailedProviderRequest = 1003;
+  ErrSSOInvalidProviderResponse = 1004;
   ErrSSOLogout = 1005;
-  ErrSSOInitKeycloakClient = 1006;
+  ErrSSOInitProviderClient = 1006;
   ErrSSOInvalidBearer = 1007;
-  ErrSSOKeycloakError = 1008;
+  ErrSSOProviderError = 1008;
 
   //// Pathwar DB (starting at 2001)
 

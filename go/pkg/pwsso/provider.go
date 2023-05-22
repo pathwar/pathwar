@@ -39,7 +39,7 @@ func (c *client) Whoami(token string) (map[string]interface{}, error) {
 	var userinfo map[string]interface{}
 	err = json.Unmarshal(body, &userinfo)
 	if err != nil {
-		return nil, errcode.ErrSSOInvalidKeycloakResponse.Wrap(err)
+		return nil, errcode.ErrSSOInvalidProviderResponse.Wrap(err)
 	}
 
 	return userinfo, err
