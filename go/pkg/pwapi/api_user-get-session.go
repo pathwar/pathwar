@@ -234,11 +234,6 @@ func (svc *service) loadOAuthUser(subject string) (*pwdb.User, error) {
 }
 
 func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
-	//TODO: Find a solution for Github provider which doesn't provide email_verified claim
-	/*	if !claims.EmailVerified {
-		return nil, errcode.ErrEmailAddressNotVerified
-	}*/
-
 	gravatarURL := fmt.Sprintf("https://www.gravatar.com/avatar/%x", md5.Sum([]byte(claims.Email)))
 
 	var season pwdb.Season

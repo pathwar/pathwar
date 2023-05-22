@@ -18,6 +18,7 @@ func miscCommand() *ffcli.Command {
 	ssoFlags.BoolVar(&ssoOpts.AllowUnsafe, "unsafe", ssoOpts.AllowUnsafe, "Allow unsafe SSO")
 	ssoFlags.StringVar(&ssoOpts.ClientID, "clientid", ssoOpts.ClientID, "SSO ClientID")
 	ssoFlags.StringVar(&ssoOpts.Pubkey, "pubkey", ssoOpts.Pubkey, "SSO Public Key")
+	ssoFlags.StringVar(&ssoOpts.Realm, "realm", ssoOpts.Realm, "SSO Realm")
 
 	return &ffcli.Command{
 		Name:       "misc",
