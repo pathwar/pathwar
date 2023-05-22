@@ -20,13 +20,11 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     })
       .then(() => {getAccessTokenSilently()
         .then((token) => {
-          console.log(token);
           dispatch(setAuthSession(token))
         })
       })
   } else if (!isLoading && isAuthenticated && !userSession.accessToken) {
     getAccessTokenSilently().then((token) => {
-        console.log(token);
         dispatch(setAuthSession(token))
      })
   }

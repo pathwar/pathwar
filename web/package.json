@@ -40,7 +40,6 @@
     "gatsby-source-filesystem": "^2.1.5",
     "gatsby-transformer-sharp": "^2.2.4",
     "js-cookie": "^2.2.0",
-    "keycloak-js": "^9.0.0",
     "moment": "^2.29.4",
     "object-assign": "4.1.1",
     "path": "^0.12.7",
