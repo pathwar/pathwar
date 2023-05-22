@@ -86,8 +86,8 @@ func cliMeCommand() *ffcli.Command {
 			// JWT Token
 			{
 				// fmt.Println(godev.PrettyJSON(session.Claims))
-				issuedAgo := humanize.Time(*session.Claims.ActionToken.Iat)
-				expireIn := humanize.Time(*session.Claims.ActionToken.Exp)
+				issuedAgo := humanize.Time(*session.Claims.AccessToken.Iat)
+				expireIn := humanize.Time(*session.Claims.AccessToken.Exp)
 				fmt.Printf("Your OAuth token was (re)issued %s and will expire in %s.\n", issuedAgo, expireIn)
 			}
 

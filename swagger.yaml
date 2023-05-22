@@ -2005,7 +2005,7 @@ definitions:
       message:
         type: string
     type: object
-  ssoActionToken:
+  ssoAccessToken:
     properties:
       aud:
         type: string
@@ -2028,8 +2028,8 @@ definitions:
     type: object
   ssoClaims:
     properties:
-      action_token:
-        $ref: '#/definitions/ssoActionToken'
+      access_token:
+        $ref: '#/definitions/ssoAccessToken'
       email:
         type: string
       email_verified:

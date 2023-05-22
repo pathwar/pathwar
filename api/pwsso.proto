@@ -10,7 +10,7 @@ option (gogoproto.sizer_all) = true;
 option (gogoproto.marshaler_all) = true;
 option (gogoproto.unmarshaler_all) = true;
 
-message ActionToken {
+message AccessToken {
   string typ = 1;                                                                              // Type of token
   google.protobuf.Timestamp iat = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true]; // Times of token validity
   google.protobuf.Timestamp exp = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true]; // Times of token validity
@@ -26,5 +26,5 @@ message Claims {
   string email = 2;
   bool email_verified = 3;
 
-  ActionToken action_token = 100;
+  AccessToken access_token = 100;
 }

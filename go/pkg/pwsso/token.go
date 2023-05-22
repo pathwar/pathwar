@@ -84,20 +84,20 @@ func SubjectFromToken(token *jwt.Token) string {
 func ClaimsFromToken(token *jwt.Token) *Claims {
 	mc := token.Claims.(jwt.MapClaims)
 	claims := &Claims{
-		ActionToken: &ActionToken{},
+		AccessToken: &AccessToken{},
 	}
 
 	// Subject & Issue at & Expiration
 	if v := mc["sub"]; v != nil {
-		claims.ActionToken.Sub = v.(string)
+		claims.AccessToken.Sub = v.(string)
 	}
 	if v := mc["iat"]; v != nil {
 		t := time.Unix(int64(v.(float64)), 0)
-		claims.ActionToken.Iat = &t
+		claims.AccessToken.Iat = &t
 	}
 	if v := mc["exp"]; v != nil {
 		t := time.Unix(int64(v.(float64)), 0)
-		claims.ActionToken.Exp = &t
+		claims.AccessToken.Exp = &t
 	}
 
 	// OIDC specific

@@ -18,7 +18,6 @@ func miscCommand() *ffcli.Command {
 	ssoFlags.BoolVar(&ssoOpts.AllowUnsafe, "unsafe", ssoOpts.AllowUnsafe, "Allow unsafe SSO")
 	ssoFlags.StringVar(&ssoOpts.ClientID, "clientid", ssoOpts.ClientID, "SSO ClientID")
 	ssoFlags.StringVar(&ssoOpts.Pubkey, "pubkey", ssoOpts.Pubkey, "SSO Public Key")
-	ssoFlags.StringVar(&ssoOpts.Realm, "realm", ssoOpts.Realm, "SSO Realm")
 
 	return &ffcli.Command{
 		Name:       "misc",
@@ -69,29 +68,6 @@ func miscCommand() *ffcli.Command {
 							out, _ := json.MarshalIndent(token, "", "  ")
 							fmt.Println(string(out))
 
-							return nil
-						},
-					}, {
-						Name:       "logout",
-						ShortUsage: "pathwar [global flags] sso [sso flags] logout TOKEN",
-						Exec: func(ctx context.Context, args []string) error {
-							if len(args) < 1 {
-								return flag.ErrHelp
-							}
-							err := globalPreRun()
-							if err != nil {
-								return err
-							}
-
-							sso, err := ssoFromFlags()
-							if err != nil {
-								return errcode.ErrGetSSOClientFromFlags.Wrap(err)
-							}
-
-							// logout
-							if err := sso.Logout(args[0]); err != nil {
-								return errcode.ErrGetSSOLogout.Wrap(err)
-							}
 							return nil
 						},
 					}, {
