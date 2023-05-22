@@ -10,11 +10,11 @@ const Index = () => {
 
   return (
     <Auth0Provider
-    domain="dev-5ccwzy8qtcsjsnpf.us.auth0.com"
-    clientId="bJpLWOLTRseEVfM9kvFhKfi9wUBmm8Gh"
+    domain={process.env.GATSBY_AUTH0_REALM}
+    clientId={process.env.GATSBY_AUTH0_CLIENT_ID}
     authorizationParams={{
       redirect_uri: window.location.origin,
-      audience: "https://pathwar.net/"
+      audience: process.env.GATSBY_AUTH0_AUDIENCE
     }}
   >
       <ThemeProvider theme={themeToUse}>

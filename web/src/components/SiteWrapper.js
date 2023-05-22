@@ -280,10 +280,6 @@ const SiteWrapper = ({ children }) => {
                 <li>
                   <img src={iconProfile} className="img-responsive" />
                   <a
-                    href={
-                      activeKeycloakSession &&
-                      activeKeycloakSession.tokenParsed.iss + "/account"
-                    }
                     className="link"
                     target="_blank"
                     rel="noreferrer"
