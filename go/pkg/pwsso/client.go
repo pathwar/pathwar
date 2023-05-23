@@ -28,8 +28,8 @@ func NewOpts() Opts {
 	return Opts{
 		Pubkey:       "",
 		ClientID:     testingClientID,
+		Realm:        testingRealm,
 		ClientSecret: "",
-		Realm:        "dev-5ccwzy8qtcsjsnpf.us.auth0.com",
 		TokenFile:    "default",
 		AllowUnsafe:  false,
 		Logger:       zap.NewNop(),
