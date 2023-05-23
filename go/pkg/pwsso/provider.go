@@ -15,7 +15,7 @@ const (
 	ProviderTokenURL    = "https://%s/oauth/token"
 	ProviderUserInfoURL = "https://%s/userinfo"
 	ProviderRedirectURL = "https://html-tests.netlify.app/qs/"
-	ProviderAudience    = "https://pathwar.net/"
+	ProviderAudience    = "https://pathwar.land/"
 )
 
 func (c *client) Whoami(token string) (map[string]interface{}, error) {
