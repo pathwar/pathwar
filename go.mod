@@ -30,7 +30,6 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.14.5
 	github.com/jinzhu/gorm v1.9.12
 	github.com/karrick/godirwalk v1.15.6 // indirect
-	github.com/keycloak/kcinit v0.0.0-20181010192927-f85c3c5390ea
 	github.com/martinlindhe/base36 v1.0.0
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/moby/moby v1.13.1

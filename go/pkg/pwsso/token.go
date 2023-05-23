@@ -1,7 +1,6 @@
 package pwsso
 
 import (
-	"fmt"
 	time "time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -33,7 +32,6 @@ func TokenWithClaims(bearer string, pubkey interface{}, allowUnsafe bool) (*jwt.
 	kf := func(token *jwt.Token) (interface{}, error) {
 		return pubkey, nil
 	}
-
 	token, err := jwt.ParseWithClaims(bearer, claims, kf)
 	if err != nil {
 		if allowUnsafe {
@@ -49,7 +47,6 @@ func TokenWithClaims(bearer string, pubkey interface{}, allowUnsafe bool) (*jwt.
 			}
 			return token, claims, nil
 		}
-
 		e, ok := err.(*jwt.ValidationError)
 		if !ok || (ok && e.Errors&jwt.ValidationErrorIssuedAt == 0) { // don't report error that token used before issued.
 			return nil, nil, errcode.ErrSSOInvalidBearer.Wrap(err)
@@ -63,27 +60,13 @@ func TokenHasRole(token *jwt.Token, expectedRole string) error {
 	if !ok {
 		return errcode.TODO // Unable to get claims out of JWT token
 	}
-	resources, ok := claims["resource_access"]
+	permissions, ok := claims["permissions"].([]interface{})
 	if !ok {
 		return errcode.TODO // Unable to get resource_access of JWT token claims
 	}
-	clients, ok := resources.(map[string]interface{})
-	if !ok {
-		return errcode.TODO // Unable to get resources out of JWT token claims
-	}
-	for _, clientMap := range clients {
-		client, ok := clientMap.(map[string]interface{})
-		if !ok {
-			continue
-		}
-		roles, ok := client["roles"].([]interface{})
-		if !ok {
-			continue
-		}
-		for _, role := range roles {
-			if role == expectedRole {
-				return nil
-			}
+	for _, permission := range permissions {
+		if permission == expectedRole {
+			return nil
 		}
 	}
 
@@ -101,63 +84,26 @@ func SubjectFromToken(token *jwt.Token) string {
 func ClaimsFromToken(token *jwt.Token) *Claims {
 	mc := token.Claims.(jwt.MapClaims)
 	claims := &Claims{
-		ActionToken: &ActionToken{},
+		AccessToken: &AccessToken{},
 	}
 
-	// keycloak
-	if v := mc["typ"]; v != nil {
-		claims.ActionToken.Typ = v.(string)
-	}
+	// Subject & Issue at & Expiration
 	if v := mc["sub"]; v != nil {
-		claims.ActionToken.Sub = v.(string)
-	}
-	if v := mc["azp"]; v != nil {
-		claims.ActionToken.Azp = v.(string)
-	}
-	if v := mc["iss"]; v != nil {
-		claims.ActionToken.Iss = v.(string)
-	}
-	if v := mc["aud"]; v != nil {
-		switch typed := v.(type) {
-		case string:
-			claims.ActionToken.Aud = typed
-		default:
-			claims.ActionToken.Aud = fmt.Sprintf("%v", typed)
-		}
-	}
-	if v := mc["asid"]; v != nil {
-		claims.ActionToken.Asid = v.(string)
-	}
-	if v := mc["nonce"]; v != nil {
-		claims.ActionToken.Nonce = v.(string)
-	}
-	if v := mc["session_state"]; v != nil {
-		claims.ActionToken.SessionState = v.(string)
-	}
-	if v := mc["scope"]; v != nil {
-		claims.ActionToken.Scope = v.(string)
-	}
-	if v := mc["jti"]; v != nil {
-		claims.ActionToken.Jti = v.(string)
-	}
-	if v := mc["nbf"]; v != nil {
-		claims.ActionToken.Nbf = float32(v.(float64))
+		claims.AccessToken.Sub = v.(string)
 	}
 	if v := mc["iat"]; v != nil {
 		t := time.Unix(int64(v.(float64)), 0)
-		claims.ActionToken.Iat = &t
+		claims.AccessToken.Iat = &t
 	}
 	if v := mc["exp"]; v != nil {
 		t := time.Unix(int64(v.(float64)), 0)
-		claims.ActionToken.Exp = &t
-	}
-	if v := mc["auth_time"]; v != nil {
-		t := time.Unix(int64(v.(float64)), 0)
-		claims.ActionToken.AuthTime = &t
+		claims.AccessToken.Exp = &t
 	}
 
-	// pathwar specific
+	// OIDC specific
 	if v := mc["preferred_username"]; v != nil {
+		claims.PreferredUsername = v.(string)
+	} else if v := mc["nickname"]; v != nil {
 		claims.PreferredUsername = v.(string)
 	}
 	if v := mc["email"]; v != nil {
@@ -166,13 +112,7 @@ func ClaimsFromToken(token *jwt.Token) *Claims {
 	if v := mc["email_verified"]; v != nil {
 		claims.EmailVerified = v.(bool)
 	}
-	if v := mc["given_name"]; v != nil {
-		claims.GivenName = v.(string)
-	}
-	if v := mc["family_name"]; v != nil {
-		claims.FamilyName = v.(string)
-	}
 
-	// FIXME: add more infos
+	//FIXME: add more claims
 	return claims
 }

@@ -2005,16 +2005,9 @@ definitions:
       message:
         type: string
     type: object
-  ssoActionToken:
+  ssoAccessToken:
     properties:
-      asid:
-        type: string
       aud:
-        type: string
-      auth_time:
-        format: date-time
-        type: string
-      azp:
         type: string
       exp:
         format: date-time
@@ -2024,37 +2017,24 @@ definitions:
         type: string
       iss:
         type: string
-      jti:
-        type: string
-      nbf:
-        format: float
-        type: number
       nonce:
         type: string
-      scope:
-        type: string
-      session_state:
-        title: additional keycloak internals
+      sid:
         type: string
       sub:
         type: string
       typ:
         type: string
-    title: See https://www.keycloak.org/docs/latest/server_development/index.html#_action_token_anatomy
     type: object
   ssoClaims:
     properties:
-      action_token:
-        $ref: '#/definitions/ssoActionToken'
+      access_token:
+        $ref: '#/definitions/ssoAccessToken'
       email:
         type: string
       email_verified:
         format: boolean
         type: boolean
-      family_name:
-        type: string
-      given_name:
-        type: string
       preferred_username:
         type: string
     type: object

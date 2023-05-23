@@ -1,18 +1,18 @@
 /* eslint-disable no-unused-vars */
-import Cookies, { set } from "js-cookie";
+import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import {
   LOGIN_FAILED,
   SET_USER_SESSION,
   SET_USER_SESSION_FAILED,
-  SET_KEYCLOAK_SESSION,
   LOGOUT,
   DELETE_ACCOUNT_FAILED,
   DELETE_ACCOUNT_SUCCESS,
   VALIDATE_COUPON_SUCCESS,
   VALIDATE_COUPON_FAILED,
+  SET_AUTH0_SESSION,
 } from "../constants/actionTypes";
-import { USER_SESSION_TOKEN_NAME } from "../constants/userSession";
+import {USER_AUTH_SESSION_TOKEN} from "../constants/userSession";
 import {
   getUserSession,
   deleteUserAccount,
@@ -26,7 +26,9 @@ import {
 import {
   setActiveSeason as setActiveSeasonAction,
   fetchPreferences as fetchPreferencesAction,
-  setActiveTeam as setActiveTeamAction, fetchUserTeamsInvitations, fetchUserSeasons,
+  setActiveTeam as setActiveTeamAction,
+  fetchUserTeamsInvitations,
+  fetchUserSeasons,
 } from "./seasons";
 import dispatchFireworks from "../utils/fireworks-dispatcher";
 import {apiErrorsCode} from "../constants/apiErrorsCode";
@@ -95,20 +97,17 @@ export const fetchUserSession = postPreferences => async dispatch => {
   }
 };
 
-export const setKeycloakSession = (
-  keycloakInstance,
-  authenticated
-) => async dispatch => {
+//TODO: receive authenticated parameter from the provider
+export const setAuthSession = token => async dispatch => {
   try {
     dispatch({
-      type: SET_KEYCLOAK_SESSION,
+      type: SET_AUTH0_SESSION,
       payload: {
-        keycloakInstance: keycloakInstance,
-        authenticated: authenticated,
-      },
-    });
-
-    Cookies.set(USER_SESSION_TOKEN_NAME, keycloakInstance.token);
+        token: token,
+        authenticated: true,
+      }
+    })
+    Cookies.set(USER_AUTH_SESSION_TOKEN, token);
     dispatch(fetchUserSession(true));
   } catch (error) {
     dispatch({ type: LOGIN_FAILED, payload: { error } });

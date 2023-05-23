@@ -10,35 +10,21 @@ option (gogoproto.sizer_all) = true;
 option (gogoproto.marshaler_all) = true;
 option (gogoproto.unmarshaler_all) = true;
 
-// See https://www.keycloak.org/docs/latest/server_development/index.html#_action_token_anatomy
-message ActionToken {
-  string typ = 1;                                                                              // Identification of the action (e.g. verify-email)
+message AccessToken {
+  string typ = 1;                                                                              // Type of token
   google.protobuf.Timestamp iat = 2 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true]; // Times of token validity
   google.protobuf.Timestamp exp = 3 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true]; // Times of token validity
   string sub = 4;                                                                              // ID of the user
-  string azp = 5;                                                                              // Client name
-  string iss = 6;                                                                              // Issuer - URL of the issuing realm
-  string aud = 7;                                                                              // Audience - list containing URL of the issuing realm
-  string asid = 8;                                                                             // ID of the authentication session (optional)
-  string nonce = 9;                                                                            // Random nonce to guarantee uniqueness of use if the operation can only be executed once(optional)
-
-  // additional keycloak internals
-  string session_state = 100;
-  string scope = 101;
-  float nbf = 102;
-  string jti = 103;
-  google.protobuf.Timestamp auth_time = 104 [(gogoproto.stdtime) = true, (gogoproto.nullable) = true];
-  // resource_access
-  // realm_access
-  // allowed-origins
+  string iss = 5;                                                                              // Issuer of the token
+  string aud = 6;                                                                              // Audience of the token
+  string sid = 7;                                                                              // Session ID
+  string nonce = 8;                                                                            // Nonce
 }
 
 message Claims {
   string preferred_username = 1;
   string email = 2;
   bool email_verified = 3;
-  string family_name = 4;
-  string given_name = 5;
 
-  ActionToken action_token = 100;
+  AccessToken access_token = 100;
 }

@@ -117,10 +117,11 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 	conf := &oauth2.Config{
 		ClientID:     ssoOpts.ClientID,
 		ClientSecret: ssoOpts.ClientSecret,
-		Scopes:       []string{"email", "offline_access", "profile", "roles"},
+		Scopes:       []string{"email openid", "offline_access", "profile", "roles"},
+		RedirectURL:  pwsso.ProviderRedirectURL,
 		Endpoint: oauth2.Endpoint{
-			AuthURL:  pwsso.KeycloakBaseURL + "/auth/realms/" + ssoOpts.Realm + "/protocol/openid-connect/auth",
-			TokenURL: pwsso.KeycloakBaseURL + "/auth/realms/" + ssoOpts.Realm + "/protocol/openid-connect/token",
+			AuthURL:  fmt.Sprintf(pwsso.ProviderAuthURL, ssoOpts.Realm),
+			TokenURL: fmt.Sprintf(pwsso.ProviderTokenURL, ssoOpts.Realm),
 		},
 	}
 
@@ -138,7 +139,7 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		}
 
 		url := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
-		fmt.Printf("Visit the URL for the auth dialog: %v\n\nthen, write the code in the terminal.\n\n", url)
+		fmt.Printf("Visit the URL for the auth dialog: %v\n\nthen, write the code in the terminal.\n\n", url+"&audience="+pwsso.ProviderAudience)
 		var code string
 		if _, err := fmt.Scan(&code); err != nil {
 			return nil, err
@@ -153,7 +154,6 @@ func httpClientFromEnv(ctx context.Context) (*pwapi.HTTPClient, error) {
 		if err != nil {
 			return nil, err
 		}
-
 		if err := ioutil.WriteFile(ssoOpts.TokenFile, jsonText, 0o777); err != nil {
 			return nil, err
 		}

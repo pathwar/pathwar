@@ -72,29 +72,6 @@ func miscCommand() *ffcli.Command {
 							return nil
 						},
 					}, {
-						Name:       "logout",
-						ShortUsage: "pathwar [global flags] sso [sso flags] logout TOKEN",
-						Exec: func(ctx context.Context, args []string) error {
-							if len(args) < 1 {
-								return flag.ErrHelp
-							}
-							err := globalPreRun()
-							if err != nil {
-								return err
-							}
-
-							sso, err := ssoFromFlags()
-							if err != nil {
-								return errcode.ErrGetSSOClientFromFlags.Wrap(err)
-							}
-
-							// logout
-							if err := sso.Logout(args[0]); err != nil {
-								return errcode.ErrGetSSOLogout.Wrap(err)
-							}
-							return nil
-						},
-					}, {
 						Name:       "whoami",
 						ShortUsage: "pathwar [global flags] sso [sso flags] whoami TOKEN",
 						Exec: func(ctx context.Context, args []string) error {

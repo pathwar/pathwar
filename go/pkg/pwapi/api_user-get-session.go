@@ -27,7 +27,7 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 	output.Claims = pwsso.ClaimsFromToken(token)
 
 	// try loading it from database
-	output.User, err = svc.loadOAuthUser(output.Claims.ActionToken.Sub)
+	output.User, err = svc.loadOAuthUser(output.Claims.AccessToken.Sub)
 	if err != nil && !pwdb.IsRecordNotFoundError(err) {
 		return nil, errcode.ErrGetOAuthUser.Wrap(err)
 	}
@@ -38,7 +38,7 @@ func (svc *service) UserGetSession(ctx context.Context, _ *UserGetSession_Input)
 		if _, err = svc.newUserFromClaims(output.Claims); err != nil {
 			return nil, errcode.ErrNewUserFromClaims.Wrap(err)
 		}
-		if output.User, err = svc.loadOAuthUser(output.Claims.ActionToken.Sub); err != nil {
+		if output.User, err = svc.loadOAuthUser(output.Claims.AccessToken.Sub); err != nil {
 			return nil, errcode.ErrGetOAuthUser.Wrap(err)
 		}
 	}
@@ -234,10 +234,6 @@ func (svc *service) loadOAuthUser(subject string) (*pwdb.User, error) {
 }
 
 func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) {
-	if !claims.EmailVerified {
-		return nil, errcode.ErrEmailAddressNotVerified
-	}
-
 	gravatarURL := fmt.Sprintf("https://www.gravatar.com/avatar/%x", md5.Sum([]byte(claims.Email)))
 
 	var season pwdb.Season
@@ -258,7 +254,7 @@ func (svc *service) newUserFromClaims(claims *pwsso.Claims) (*pwdb.User, error) 
 		Username:     username,
 		Email:        claims.Email,
 		GravatarURL:  gravatarURL,
-		OAuthSubject: claims.ActionToken.Sub,
+		OAuthSubject: claims.AccessToken.Sub,
 		// WebsiteURL
 		// Locale
 

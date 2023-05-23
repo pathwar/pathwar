@@ -16,6 +16,7 @@
     "start:local-api": "env-cmd --file ./.env.integration npm run develop"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.1.0",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@loadable/component": "^5.10.2",
@@ -39,7 +40,6 @@
     "gatsby-source-filesystem": "^2.1.5",
     "gatsby-transformer-sharp": "^2.2.4",
     "js-cookie": "^2.2.0",
-    "keycloak-js": "^9.0.0",
     "moment": "^2.29.4",
     "object-assign": "4.1.1",
     "path": "^0.12.7",

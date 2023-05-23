@@ -27,8 +27,8 @@ type Opts struct {
 func NewOpts() Opts {
 	return Opts{
 		Pubkey:       "",
-		Realm:        testingRealm,
 		ClientID:     testingClientID,
+		Realm:        testingRealm,
 		ClientSecret: "",
 		TokenFile:    "default",
 		AllowUnsafe:  false,
@@ -45,14 +45,12 @@ func (opts *Opts) ApplyDefaults() {
 type Client interface {
 	TokenWithClaims(bearer string) (*jwt.Token, jwt.MapClaims, error)
 	Whoami(token string) (map[string]interface{}, error)
-	Logout(token string) error
 }
 
 type client struct {
 	publicKey interface{} // result of x509.ParsePKIXPublicKey
 	logger    *zap.Logger
 	realm     string
-	clientID  string
 	opts      Opts
 }
 

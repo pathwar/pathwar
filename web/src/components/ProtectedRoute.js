@@ -1,52 +1,36 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Keycloak from "keycloak-js";
 import { Dimmer } from "tabler-react";
-import { toast } from "react-toastify";
-import { setKeycloakSession } from "../actions/userSession";
+import { useAuth0 } from "@auth0/auth0-react";
+import {setAuthSession} from "../actions/userSession";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const dispatch = useDispatch();
   const userSession = useSelector(state => state.userSession);
+  const {
+    isLoading,
+    isAuthenticated,
+    loginWithRedirect,
+    getAccessTokenSilently,
+  } = useAuth0()
 
-  useEffect(() => {
-    const { activeKeycloakSession } = userSession;
-    const keycloak = new Keycloak("/keycloak.json");
-    const token = activeKeycloakSession && activeKeycloakSession.token;
-    const refreshToken =
-      activeKeycloakSession && activeKeycloakSession.refreshToken;
-
-    keycloak
-      .init({
-        onLoad: "login-required",
-        checkLoginIframe: false,
-        enableLogging: true,
-        token,
-        refreshToken,
-      })
-      .then(authenticated => {
-        dispatch(setKeycloakSession(keycloak, authenticated));
-      });
-
-    keycloak.onTokenExpired = () => {
-      keycloak
-        .updateToken(30)
-        .success(authenticated => {
-          dispatch(setKeycloakSession(keycloak, authenticated));
+  if (!isLoading && !isAuthenticated) {
+    loginWithRedirect({
+      scope: "openid profile email roles",
+    })
+      .then(() => {getAccessTokenSilently()
+        .then((token) => {
+          dispatch(setAuthSession(token))
         })
-        .error(() =>
-          toast.error(`SESSION EXPIRED! Please refresh the page.`, {
-            autoClose: false,
-            hideProgressBar: true,
-          })
-        );
-    };
-  }, []);
+      })
+  } else if (!isLoading && isAuthenticated && !userSession.accessToken) {
+    getAccessTokenSilently().then((token) => {
+        dispatch(setAuthSession(token))
+     })
+  }
 
-  if (userSession.activeKeycloakSession) {
-    if (userSession.isAuthenticated) {
-      return <Component {...rest} />;
-    } else return <h3>Auth error, please try again!</h3>;
+  if (userSession.isAuthenticated && userSession.accessToken) {
+    return <Component {...rest} />;
   }
 
   return <Dimmer active loader />;

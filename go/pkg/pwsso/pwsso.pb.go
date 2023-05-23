@@ -4,7 +4,6 @@
 package pwsso
 
 import (
-	encoding_binary "encoding/binary"
 	fmt "fmt"
 	io "io"
 	math "math"
@@ -29,37 +28,29 @@ var _ = time.Kitchen
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// See https://www.keycloak.org/docs/latest/server_development/index.html#_action_token_anatomy
-type ActionToken struct {
+type AccessToken struct {
 	Typ   string     `protobuf:"bytes,1,opt,name=typ,proto3" json:"typ,omitempty"`
 	Iat   *time.Time `protobuf:"bytes,2,opt,name=iat,proto3,stdtime" json:"iat,omitempty"`
 	Exp   *time.Time `protobuf:"bytes,3,opt,name=exp,proto3,stdtime" json:"exp,omitempty"`
 	Sub   string     `protobuf:"bytes,4,opt,name=sub,proto3" json:"sub,omitempty"`
-	Azp   string     `protobuf:"bytes,5,opt,name=azp,proto3" json:"azp,omitempty"`
-	Iss   string     `protobuf:"bytes,6,opt,name=iss,proto3" json:"iss,omitempty"`
-	Aud   string     `protobuf:"bytes,7,opt,name=aud,proto3" json:"aud,omitempty"`
-	Asid  string     `protobuf:"bytes,8,opt,name=asid,proto3" json:"asid,omitempty"`
-	Nonce string     `protobuf:"bytes,9,opt,name=nonce,proto3" json:"nonce,omitempty"`
-	// additional keycloak internals
-	SessionState string     `protobuf:"bytes,100,opt,name=session_state,json=sessionState,proto3" json:"session_state,omitempty"`
-	Scope        string     `protobuf:"bytes,101,opt,name=scope,proto3" json:"scope,omitempty"`
-	Nbf          float32    `protobuf:"fixed32,102,opt,name=nbf,proto3" json:"nbf,omitempty"`
-	Jti          string     `protobuf:"bytes,103,opt,name=jti,proto3" json:"jti,omitempty"`
-	AuthTime     *time.Time `protobuf:"bytes,104,opt,name=auth_time,json=authTime,proto3,stdtime" json:"auth_time,omitempty"`
+	Iss   string     `protobuf:"bytes,5,opt,name=iss,proto3" json:"iss,omitempty"`
+	Aud   string     `protobuf:"bytes,6,opt,name=aud,proto3" json:"aud,omitempty"`
+	Sid   string     `protobuf:"bytes,7,opt,name=sid,proto3" json:"sid,omitempty"`
+	Nonce string     `protobuf:"bytes,8,opt,name=nonce,proto3" json:"nonce,omitempty"`
 }
 
-func (m *ActionToken) Reset()         { *m = ActionToken{} }
-func (m *ActionToken) String() string { return proto.CompactTextString(m) }
-func (*ActionToken) ProtoMessage()    {}
-func (*ActionToken) Descriptor() ([]byte, []int) {
+func (m *AccessToken) Reset()         { *m = AccessToken{} }
+func (m *AccessToken) String() string { return proto.CompactTextString(m) }
+func (*AccessToken) ProtoMessage()    {}
+func (*AccessToken) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e2edcc2d73c5b661, []int{0}
 }
-func (m *ActionToken) XXX_Unmarshal(b []byte) error {
+func (m *AccessToken) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ActionToken) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *AccessToken) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ActionToken.Marshal(b, m, deterministic)
+		return xxx_messageInfo_AccessToken.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -69,123 +60,79 @@ func (m *ActionToken) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return b[:n], nil
 	}
 }
-func (m *ActionToken) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ActionToken.Merge(m, src)
+func (m *AccessToken) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AccessToken.Merge(m, src)
 }
-func (m *ActionToken) XXX_Size() int {
+func (m *AccessToken) XXX_Size() int {
 	return m.Size()
 }
-func (m *ActionToken) XXX_DiscardUnknown() {
-	xxx_messageInfo_ActionToken.DiscardUnknown(m)
+func (m *AccessToken) XXX_DiscardUnknown() {
+	xxx_messageInfo_AccessToken.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ActionToken proto.InternalMessageInfo
+var xxx_messageInfo_AccessToken proto.InternalMessageInfo
 
-func (m *ActionToken) GetTyp() string {
+func (m *AccessToken) GetTyp() string {
 	if m != nil {
 		return m.Typ
 	}
 	return ""
 }
 
-func (m *ActionToken) GetIat() *time.Time {
+func (m *AccessToken) GetIat() *time.Time {
 	if m != nil {
 		return m.Iat
 	}
 	return nil
 }
 
-func (m *ActionToken) GetExp() *time.Time {
+func (m *AccessToken) GetExp() *time.Time {
 	if m != nil {
 		return m.Exp
 	}
 	return nil
 }
 
-func (m *ActionToken) GetSub() string {
+func (m *AccessToken) GetSub() string {
 	if m != nil {
 		return m.Sub
 	}
 	return ""
 }
 
-func (m *ActionToken) GetAzp() string {
-	if m != nil {
-		return m.Azp
-	}
-	return ""
-}
-
-func (m *ActionToken) GetIss() string {
+func (m *AccessToken) GetIss() string {
 	if m != nil {
 		return m.Iss
 	}
 	return ""
 }
 
-func (m *ActionToken) GetAud() string {
+func (m *AccessToken) GetAud() string {
 	if m != nil {
 		return m.Aud
 	}
 	return ""
 }
 
-func (m *ActionToken) GetAsid() string {
+func (m *AccessToken) GetSid() string {
 	if m != nil {
-		return m.Asid
+		return m.Sid
 	}
 	return ""
 }
 
-func (m *ActionToken) GetNonce() string {
+func (m *AccessToken) GetNonce() string {
 	if m != nil {
 		return m.Nonce
 	}
 	return ""
 }
 
-func (m *ActionToken) GetSessionState() string {
-	if m != nil {
-		return m.SessionState
-	}
-	return ""
-}
-
-func (m *ActionToken) GetScope() string {
-	if m != nil {
-		return m.Scope
-	}
-	return ""
-}
-
-func (m *ActionToken) GetNbf() float32 {
-	if m != nil {
-		return m.Nbf
-	}
-	return 0
-}
-
-func (m *ActionToken) GetJti() string {
-	if m != nil {
-		return m.Jti
-	}
-	return ""
-}
-
-func (m *ActionToken) GetAuthTime() *time.Time {
-	if m != nil {
-		return m.AuthTime
-	}
-	return nil
-}
-
 type Claims struct {
 	PreferredUsername string       `protobuf:"bytes,1,opt,name=preferred_username,json=preferredUsername,proto3" json:"preferred_username,omitempty"`
 	Email             string       `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	EmailVerified     bool         `protobuf:"varint,3,opt,name=email_verified,json=emailVerified,proto3" json:"email_verified,omitempty"`
-	FamilyName        string       `protobuf:"bytes,4,opt,name=family_name,json=familyName,proto3" json:"family_name,omitempty"`
-	GivenName         string       `protobuf:"bytes,5,opt,name=given_name,json=givenName,proto3" json:"given_name,omitempty"`
-	ActionToken       *ActionToken `protobuf:"bytes,100,opt,name=action_token,json=actionToken,proto3" json:"action_token,omitempty"`
+	AccessToken       *AccessToken `protobuf:"bytes,100,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
 }
 
 func (m *Claims) Reset()         { *m = Claims{} }
@@ -242,70 +189,49 @@ func (m *Claims) GetEmailVerified() bool {
 	return false
 }
 
-func (m *Claims) GetFamilyName() string {
+func (m *Claims) GetAccessToken() *AccessToken {
 	if m != nil {
-		return m.FamilyName
-	}
-	return ""
-}
-
-func (m *Claims) GetGivenName() string {
-	if m != nil {
-		return m.GivenName
-	}
-	return ""
-}
-
-func (m *Claims) GetActionToken() *ActionToken {
-	if m != nil {
-		return m.ActionToken
+		return m.AccessToken
 	}
 	return nil
 }
 
 func init() {
-	proto.RegisterType((*ActionToken)(nil), "pathwar.sso.ActionToken")
+	proto.RegisterType((*AccessToken)(nil), "pathwar.sso.AccessToken")
 	proto.RegisterType((*Claims)(nil), "pathwar.sso.Claims")
 }
 
 func init() { proto.RegisterFile("pwsso.proto", fileDescriptor_e2edcc2d73c5b661) }
 
 var fileDescriptor_e2edcc2d73c5b661 = []byte{
-	// 494 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x93, 0xbd, 0x6e, 0xdb, 0x30,
-	0x10, 0xc7, 0xcd, 0x38, 0x71, 0x6d, 0x2a, 0x29, 0x5a, 0xa2, 0x03, 0x6b, 0xa0, 0xb2, 0x91, 0xa2,
-	0x80, 0x97, 0xc8, 0x40, 0x02, 0x74, 0xe9, 0x94, 0x74, 0xef, 0xa0, 0xa6, 0x1d, 0xba, 0x08, 0x94,
-	0x45, 0xc9, 0x4c, 0x24, 0x91, 0xd0, 0x51, 0xf9, 0x7a, 0x8a, 0xbc, 0x43, 0x5f, 0x26, 0x63, 0xc6,
-	0x4e, 0x6d, 0x61, 0x3f, 0x41, 0xdf, 0xa0, 0xe0, 0x51, 0x4e, 0xb2, 0x66, 0xbb, 0xfb, 0xdd, 0xfd,
-	0x8f, 0x87, 0xbb, 0x23, 0x0d, 0xcc, 0x25, 0x80, 0x8e, 0x4c, 0xa3, 0xad, 0x66, 0x81, 0x11, 0x76,
-	0x79, 0x29, 0x9a, 0x08, 0x40, 0x8f, 0x0f, 0x0a, 0x65, 0x97, 0x6d, 0x1a, 0x2d, 0x74, 0x35, 0x2f,
-	0x74, 0xa1, 0xe7, 0x98, 0x93, 0xb6, 0x39, 0x7a, 0xe8, 0xa0, 0xe5, 0xb5, 0xe3, 0x49, 0xa1, 0x75,
-	0x51, 0xca, 0xc7, 0x2c, 0xab, 0x2a, 0x09, 0x56, 0x54, 0xc6, 0x27, 0xec, 0xff, 0xec, 0xd3, 0xe0,
-	0x78, 0x61, 0x95, 0xae, 0x4f, 0xf5, 0xb9, 0xac, 0xd9, 0x2b, 0xda, 0xb7, 0xd7, 0x86, 0x93, 0x29,
-	0x99, 0x8d, 0x62, 0x67, 0xb2, 0x8f, 0xb4, 0xaf, 0x84, 0xe5, 0x5b, 0x53, 0x32, 0x0b, 0x0e, 0xc7,
-	0x91, 0x2f, 0x18, 0x6d, 0x0a, 0x46, 0xa7, 0x9b, 0x82, 0x27, 0xc3, 0xbb, 0xdf, 0x13, 0x72, 0xfb,
-	0x67, 0x42, 0x62, 0x27, 0x70, 0x3a, 0x79, 0x65, 0x78, 0xff, 0x39, 0x3a, 0x79, 0x65, 0x5c, 0x07,
-	0xd0, 0xa6, 0x7c, 0xdb, 0x77, 0x00, 0x6d, 0xea, 0x88, 0xb8, 0x31, 0x7c, 0xc7, 0x13, 0x71, 0x83,
-	0x39, 0x0a, 0x80, 0x0f, 0x3c, 0x51, 0x00, 0x98, 0xd3, 0x66, 0xfc, 0x45, 0x97, 0xd3, 0x66, 0x8c,
-	0xd1, 0x6d, 0x01, 0x2a, 0xe3, 0x43, 0x44, 0x68, 0xb3, 0x37, 0x74, 0xa7, 0xd6, 0xf5, 0x42, 0xf2,
-	0x11, 0x42, 0xef, 0xb0, 0xf7, 0x74, 0x0f, 0x24, 0x80, 0xd2, 0x75, 0x02, 0x56, 0x58, 0xc9, 0x33,
-	0x8c, 0xee, 0x76, 0xf0, 0xab, 0x63, 0x4e, 0x0a, 0x0b, 0x6d, 0x24, 0x97, 0x5e, 0x8a, 0x8e, 0x7b,
-	0xb6, 0x4e, 0x73, 0x9e, 0x4f, 0xc9, 0x6c, 0x2b, 0x76, 0xa6, 0x23, 0x67, 0x56, 0xf1, 0xc2, 0x37,
-	0x72, 0x66, 0x15, 0x3b, 0xa6, 0x23, 0xd1, 0xda, 0x65, 0xe2, 0x46, 0xcf, 0x97, 0xcf, 0x18, 0xc7,
-	0xd0, 0xc9, 0x5c, 0x60, 0xff, 0x1f, 0xa1, 0x83, 0xcf, 0xa5, 0x50, 0x15, 0xb0, 0x03, 0xca, 0x4c,
-	0x23, 0x73, 0xd9, 0x34, 0x32, 0x4b, 0x5a, 0x90, 0x4d, 0x2d, 0x2a, 0xd9, 0xed, 0xeb, 0xf5, 0x43,
-	0xe4, 0x5b, 0x17, 0x70, 0x6d, 0xcb, 0x4a, 0xa8, 0x12, 0xf7, 0x37, 0x8a, 0xbd, 0xc3, 0x3e, 0xd0,
-	0x97, 0x68, 0x24, 0x17, 0xb2, 0x51, 0xb9, 0x92, 0x19, 0xae, 0x69, 0x18, 0xef, 0x21, 0xfd, 0xde,
-	0x41, 0x36, 0xa1, 0x41, 0x2e, 0x2a, 0x55, 0x5e, 0x27, 0xf8, 0x88, 0x5f, 0x09, 0xf5, 0xe8, 0x8b,
-	0xab, 0xfe, 0x8e, 0xd2, 0x42, 0x5d, 0xc8, 0xda, 0xc7, 0xfd, 0x82, 0x46, 0x48, 0x30, 0xfc, 0x89,
-	0xee, 0x0a, 0xbc, 0xad, 0xc4, 0xba, 0xe3, 0xc2, 0xb9, 0x06, 0x87, 0x3c, 0x7a, 0x72, 0xd0, 0xd1,
-	0x93, 0xe3, 0x8b, 0x03, 0xf1, 0xe8, 0x9c, 0x1c, 0xdd, 0xad, 0x42, 0x72, 0xbf, 0x0a, 0xc9, 0xdf,
-	0x55, 0x48, 0x6e, 0xd7, 0x61, 0xef, 0x7e, 0x1d, 0xf6, 0x7e, 0xad, 0xc3, 0xde, 0x8f, 0xb7, 0x1b,
-	0x7d, 0x29, 0xea, 0x6c, 0xee, 0xfe, 0xc0, 0x79, 0x31, 0xc7, 0x1f, 0x93, 0x0e, 0x70, 0xa0, 0x47,
-	0xff, 0x03, 0x00, 0x00, 0xff, 0xff, 0x65, 0x97, 0xcd, 0x3d, 0x41, 0x03, 0x00, 0x00,
+	// 383 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x52, 0xb1, 0xae, 0xda, 0x30,
+	0x14, 0xc5, 0xa5, 0x50, 0x70, 0xda, 0xaa, 0xb5, 0x3a, 0xb8, 0x0c, 0x01, 0x21, 0x55, 0x62, 0xc1,
+	0x91, 0x8a, 0xd4, 0xa5, 0x53, 0xe9, 0x1f, 0x44, 0xb4, 0x43, 0x17, 0xe4, 0xc4, 0x26, 0x58, 0x24,
+	0xb1, 0x15, 0x3b, 0x85, 0xfe, 0x05, 0xbf, 0xd2, 0xbf, 0x60, 0x64, 0xec, 0xd4, 0xf7, 0x04, 0xf3,
+	0xfb, 0x87, 0x27, 0xdb, 0xe1, 0xc1, 0xfa, 0xb6, 0x7b, 0x8e, 0xef, 0x39, 0xf2, 0x3d, 0xf7, 0xc2,
+	0x40, 0x6d, 0xb5, 0x96, 0x44, 0x55, 0xd2, 0x48, 0x14, 0x28, 0x6a, 0xd6, 0x5b, 0x5a, 0x11, 0xad,
+	0xe5, 0x60, 0x9a, 0x09, 0xb3, 0xae, 0x13, 0x92, 0xca, 0x22, 0xca, 0x64, 0x26, 0x23, 0xd7, 0x93,
+	0xd4, 0x2b, 0x87, 0x1c, 0x70, 0x95, 0xd7, 0x0e, 0x86, 0x99, 0x94, 0x59, 0xce, 0xaf, 0x5d, 0x46,
+	0x14, 0x5c, 0x1b, 0x5a, 0x28, 0xdf, 0x30, 0x7e, 0x00, 0x30, 0xf8, 0x96, 0xa6, 0x5c, 0xeb, 0x85,
+	0xdc, 0xf0, 0x12, 0xbd, 0x83, 0x6d, 0xf3, 0x47, 0x61, 0x30, 0x02, 0x93, 0x7e, 0x6c, 0x4b, 0xf4,
+	0x05, 0xb6, 0x05, 0x35, 0xf8, 0xc5, 0x08, 0x4c, 0x82, 0xcf, 0x03, 0xe2, 0x0d, 0xc9, 0xc5, 0x90,
+	0x2c, 0x2e, 0x86, 0xf3, 0xde, 0xe1, 0xff, 0x10, 0xec, 0xef, 0x86, 0x20, 0xb6, 0x02, 0xab, 0xe3,
+	0x3b, 0x85, 0xdb, 0xcf, 0xd1, 0xf1, 0x9d, 0xb2, 0x3f, 0xd0, 0x75, 0x82, 0x5f, 0xfa, 0x1f, 0xe8,
+	0x3a, 0xb1, 0x8c, 0xd0, 0x1a, 0x77, 0x3c, 0x23, 0xb4, 0xb6, 0x0c, 0xad, 0x19, 0xee, 0x7a, 0x86,
+	0xd6, 0xcc, 0xa9, 0x04, 0xc3, 0xaf, 0x1a, 0x95, 0x60, 0xe8, 0x03, 0xec, 0x94, 0xb2, 0x4c, 0x39,
+	0xee, 0x39, 0xce, 0x83, 0xf1, 0x5f, 0x00, 0xbb, 0xdf, 0x73, 0x2a, 0x0a, 0x8d, 0xa6, 0x10, 0xa9,
+	0x8a, 0xaf, 0x78, 0x55, 0x71, 0xb6, 0xac, 0x35, 0xaf, 0x4a, 0x5a, 0xf0, 0x66, 0xf2, 0xf7, 0x4f,
+	0x2f, 0x3f, 0x9a, 0x07, 0xeb, 0xc7, 0x0b, 0x2a, 0x72, 0x97, 0x44, 0x3f, 0xf6, 0x00, 0x7d, 0x82,
+	0x6f, 0x5d, 0xb1, 0xfc, 0xcd, 0x2b, 0xb1, 0x12, 0x9c, 0xb9, 0x81, 0x7b, 0xf1, 0x1b, 0xc7, 0xfe,
+	0x6c, 0x48, 0xf4, 0x15, 0xbe, 0xa6, 0x2e, 0xe5, 0xa5, 0xb1, 0x31, 0x63, 0xe6, 0x52, 0xc1, 0xe4,
+	0x66, 0xb5, 0xe4, 0x66, 0x0d, 0x71, 0x40, 0xaf, 0x60, 0x3e, 0x3b, 0x9c, 0x42, 0x70, 0x3c, 0x85,
+	0xe0, 0xfe, 0x14, 0x82, 0xfd, 0x39, 0x6c, 0x1d, 0xcf, 0x61, 0xeb, 0xdf, 0x39, 0x6c, 0xfd, 0xfa,
+	0x78, 0xd1, 0xe7, 0xb4, 0x64, 0x91, 0xbd, 0x86, 0x4d, 0x16, 0xb9, 0xdb, 0x49, 0xba, 0x2e, 0xe9,
+	0xd9, 0x63, 0x00, 0x00, 0x00, 0xff, 0xff, 0x9d, 0x72, 0xf1, 0x6c, 0x4b, 0x02, 0x00, 0x00,
 }
 
-func (m *ActionToken) Marshal() (dAtA []byte, err error) {
+func (m *AccessToken) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -315,95 +241,41 @@ func (m *ActionToken) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ActionToken) MarshalTo(dAtA []byte) (int, error) {
+func (m *AccessToken) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ActionToken) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *AccessToken) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.AuthTime != nil {
-		n1, err1 := github_com_gogo_protobuf_types.StdTimeMarshalTo(*m.AuthTime, dAtA[i-github_com_gogo_protobuf_types.SizeOfStdTime(*m.AuthTime):])
-		if err1 != nil {
-			return 0, err1
-		}
-		i -= n1
-		i = encodeVarintPwsso(dAtA, i, uint64(n1))
-		i--
-		dAtA[i] = 0x6
-		i--
-		dAtA[i] = 0xc2
-	}
-	if len(m.Jti) > 0 {
-		i -= len(m.Jti)
-		copy(dAtA[i:], m.Jti)
-		i = encodeVarintPwsso(dAtA, i, uint64(len(m.Jti)))
-		i--
-		dAtA[i] = 0x6
-		i--
-		dAtA[i] = 0xba
-	}
-	if m.Nbf != 0 {
-		i -= 4
-		encoding_binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(m.Nbf))))
-		i--
-		dAtA[i] = 0x6
-		i--
-		dAtA[i] = 0xb5
-	}
-	if len(m.Scope) > 0 {
-		i -= len(m.Scope)
-		copy(dAtA[i:], m.Scope)
-		i = encodeVarintPwsso(dAtA, i, uint64(len(m.Scope)))
-		i--
-		dAtA[i] = 0x6
-		i--
-		dAtA[i] = 0xaa
-	}
-	if len(m.SessionState) > 0 {
-		i -= len(m.SessionState)
-		copy(dAtA[i:], m.SessionState)
-		i = encodeVarintPwsso(dAtA, i, uint64(len(m.SessionState)))
-		i--
-		dAtA[i] = 0x6
-		i--
-		dAtA[i] = 0xa2
-	}
 	if len(m.Nonce) > 0 {
 		i -= len(m.Nonce)
 		copy(dAtA[i:], m.Nonce)
 		i = encodeVarintPwsso(dAtA, i, uint64(len(m.Nonce)))
 		i--
-		dAtA[i] = 0x4a
-	}
-	if len(m.Asid) > 0 {
-		i -= len(m.Asid)
-		copy(dAtA[i:], m.Asid)
-		i = encodeVarintPwsso(dAtA, i, uint64(len(m.Asid)))
-		i--
 		dAtA[i] = 0x42
+	}
+	if len(m.Sid) > 0 {
+		i -= len(m.Sid)
+		copy(dAtA[i:], m.Sid)
+		i = encodeVarintPwsso(dAtA, i, uint64(len(m.Sid)))
+		i--
+		dAtA[i] = 0x3a
 	}
 	if len(m.Aud) > 0 {
 		i -= len(m.Aud)
 		copy(dAtA[i:], m.Aud)
 		i = encodeVarintPwsso(dAtA, i, uint64(len(m.Aud)))
 		i--
-		dAtA[i] = 0x3a
+		dAtA[i] = 0x32
 	}
 	if len(m.Iss) > 0 {
 		i -= len(m.Iss)
 		copy(dAtA[i:], m.Iss)
 		i = encodeVarintPwsso(dAtA, i, uint64(len(m.Iss)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.Azp) > 0 {
-		i -= len(m.Azp)
-		copy(dAtA[i:], m.Azp)
-		i = encodeVarintPwsso(dAtA, i, uint64(len(m.Azp)))
 		i--
 		dAtA[i] = 0x2a
 	}
@@ -415,22 +287,22 @@ func (m *ActionToken) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		dAtA[i] = 0x22
 	}
 	if m.Exp != nil {
-		n2, err2 := github_com_gogo_protobuf_types.StdTimeMarshalTo(*m.Exp, dAtA[i-github_com_gogo_protobuf_types.SizeOfStdTime(*m.Exp):])
+		n1, err1 := github_com_gogo_protobuf_types.StdTimeMarshalTo(*m.Exp, dAtA[i-github_com_gogo_protobuf_types.SizeOfStdTime(*m.Exp):])
+		if err1 != nil {
+			return 0, err1
+		}
+		i -= n1
+		i = encodeVarintPwsso(dAtA, i, uint64(n1))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.Iat != nil {
+		n2, err2 := github_com_gogo_protobuf_types.StdTimeMarshalTo(*m.Iat, dAtA[i-github_com_gogo_protobuf_types.SizeOfStdTime(*m.Iat):])
 		if err2 != nil {
 			return 0, err2
 		}
 		i -= n2
 		i = encodeVarintPwsso(dAtA, i, uint64(n2))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if m.Iat != nil {
-		n3, err3 := github_com_gogo_protobuf_types.StdTimeMarshalTo(*m.Iat, dAtA[i-github_com_gogo_protobuf_types.SizeOfStdTime(*m.Iat):])
-		if err3 != nil {
-			return 0, err3
-		}
-		i -= n3
-		i = encodeVarintPwsso(dAtA, i, uint64(n3))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -464,9 +336,9 @@ func (m *Claims) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.ActionToken != nil {
+	if m.AccessToken != nil {
 		{
-			size, err := m.ActionToken.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.AccessToken.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -477,20 +349,6 @@ func (m *Claims) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		dAtA[i] = 0x6
 		i--
 		dAtA[i] = 0xa2
-	}
-	if len(m.GivenName) > 0 {
-		i -= len(m.GivenName)
-		copy(dAtA[i:], m.GivenName)
-		i = encodeVarintPwsso(dAtA, i, uint64(len(m.GivenName)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.FamilyName) > 0 {
-		i -= len(m.FamilyName)
-		copy(dAtA[i:], m.FamilyName)
-		i = encodeVarintPwsso(dAtA, i, uint64(len(m.FamilyName)))
-		i--
-		dAtA[i] = 0x22
 	}
 	if m.EmailVerified {
 		i--
@@ -530,7 +388,7 @@ func encodeVarintPwsso(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *ActionToken) Size() (n int) {
+func (m *AccessToken) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -552,10 +410,6 @@ func (m *ActionToken) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovPwsso(uint64(l))
 	}
-	l = len(m.Azp)
-	if l > 0 {
-		n += 1 + l + sovPwsso(uint64(l))
-	}
 	l = len(m.Iss)
 	if l > 0 {
 		n += 1 + l + sovPwsso(uint64(l))
@@ -564,32 +418,13 @@ func (m *ActionToken) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovPwsso(uint64(l))
 	}
-	l = len(m.Asid)
+	l = len(m.Sid)
 	if l > 0 {
 		n += 1 + l + sovPwsso(uint64(l))
 	}
 	l = len(m.Nonce)
 	if l > 0 {
 		n += 1 + l + sovPwsso(uint64(l))
-	}
-	l = len(m.SessionState)
-	if l > 0 {
-		n += 2 + l + sovPwsso(uint64(l))
-	}
-	l = len(m.Scope)
-	if l > 0 {
-		n += 2 + l + sovPwsso(uint64(l))
-	}
-	if m.Nbf != 0 {
-		n += 6
-	}
-	l = len(m.Jti)
-	if l > 0 {
-		n += 2 + l + sovPwsso(uint64(l))
-	}
-	if m.AuthTime != nil {
-		l = github_com_gogo_protobuf_types.SizeOfStdTime(*m.AuthTime)
-		n += 2 + l + sovPwsso(uint64(l))
 	}
 	return n
 }
@@ -611,16 +446,8 @@ func (m *Claims) Size() (n int) {
 	if m.EmailVerified {
 		n += 2
 	}
-	l = len(m.FamilyName)
-	if l > 0 {
-		n += 1 + l + sovPwsso(uint64(l))
-	}
-	l = len(m.GivenName)
-	if l > 0 {
-		n += 1 + l + sovPwsso(uint64(l))
-	}
-	if m.ActionToken != nil {
-		l = m.ActionToken.Size()
+	if m.AccessToken != nil {
+		l = m.AccessToken.Size()
 		n += 2 + l + sovPwsso(uint64(l))
 	}
 	return n
@@ -632,7 +459,7 @@ func sovPwsso(x uint64) (n int) {
 func sozPwsso(x uint64) (n int) {
 	return sovPwsso(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *ActionToken) Unmarshal(dAtA []byte) error {
+func (m *AccessToken) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -655,10 +482,10 @@ func (m *ActionToken) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ActionToken: wiretype end group for non-group")
+			return fmt.Errorf("proto: AccessToken: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ActionToken: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: AccessToken: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -799,38 +626,6 @@ func (m *ActionToken) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Azp", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwsso
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Azp = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 6:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Iss", wireType)
 			}
 			var stringLen uint64
@@ -861,7 +656,7 @@ func (m *ActionToken) Unmarshal(dAtA []byte) error {
 			}
 			m.Iss = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 7:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Aud", wireType)
 			}
@@ -893,9 +688,9 @@ func (m *ActionToken) Unmarshal(dAtA []byte) error {
 			}
 			m.Aud = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 8:
+		case 7:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Asid", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Sid", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -923,9 +718,9 @@ func (m *ActionToken) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Asid = string(dAtA[iNdEx:postIndex])
+			m.Sid = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 9:
+		case 8:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Nonce", wireType)
 			}
@@ -956,149 +751,6 @@ func (m *ActionToken) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Nonce = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 100:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SessionState", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwsso
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.SessionState = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 101:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Scope", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwsso
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Scope = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 102:
-			if wireType != 5 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Nbf", wireType)
-			}
-			var v uint32
-			if (iNdEx + 4) > l {
-				return io.ErrUnexpectedEOF
-			}
-			v = uint32(encoding_binary.LittleEndian.Uint32(dAtA[iNdEx:]))
-			iNdEx += 4
-			m.Nbf = float32(math.Float32frombits(v))
-		case 103:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Jti", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwsso
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Jti = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 104:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AuthTime", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwsso
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.AuthTime == nil {
-				m.AuthTime = new(time.Time)
-			}
-			if err := github_com_gogo_protobuf_types.StdTimeUnmarshal(m.AuthTime, dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1237,73 +889,9 @@ func (m *Claims) Unmarshal(dAtA []byte) error {
 				}
 			}
 			m.EmailVerified = bool(v != 0)
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FamilyName", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwsso
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.FamilyName = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GivenName", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPwsso
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthPwsso
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.GivenName = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		case 100:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ActionToken", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field AccessToken", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -1330,10 +918,10 @@ func (m *Claims) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.ActionToken == nil {
-				m.ActionToken = &ActionToken{}
+			if m.AccessToken == nil {
+				m.AccessToken = &AccessToken{}
 			}
-			if err := m.ActionToken.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.AccessToken.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
