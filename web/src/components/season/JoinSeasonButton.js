@@ -53,7 +53,7 @@ const joinSeasonButton = ({seasons}) => {
         size="sm"
         css={styles}
       >
-        {"Join a new season"}
+        <FormattedMessage id="HomePage.joinSeason" />
       </Button>
       {isFormOpen && (
         <form onSubmit={submitCreateTeam}>
