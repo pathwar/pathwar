@@ -13,7 +13,7 @@ const Index = () => {
     domain={process.env.GATSBY_AUTH0_REALM}
     clientId={process.env.GATSBY_AUTH0_CLIENT_ID}
     authorizationParams={{
-      redirect_uri: window.location.origin,
+      redirect_uri: process.env.GATSBY_AUTH0_REDIRECT_URI,
       audience: process.env.GATSBY_AUTH0_AUDIENCE
     }}
   >
