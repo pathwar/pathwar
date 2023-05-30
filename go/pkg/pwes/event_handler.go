@@ -26,7 +26,8 @@ func EventHandler(ctx context.Context, apiClient *pwapi.HTTPClient, timestamp *t
 	logger.Info("event handler started", zap.Time("timestamp", *timestamp), zap.Time("to", to))
 	res, err := apiClient.AdminListActivities(ctx, &pwapi.AdminListActivities_Input{Since: timestamp, To: &to, Limit: 1000})
 	if err != nil {
-		return errcode.TODO.Wrap(err)
+		logger.Error("unable to get activities", zap.Error(err))
+		return nil
 	}
 
 	activities := res.GetActivities()
