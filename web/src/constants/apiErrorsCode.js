@@ -35,4 +35,7 @@ export const apiErrorsCode = new Map([
   // buy challenge
   ["ErrNotEnoughCash(#4071)", "you don't have enough cash to buy this challenge"],
 
+  // validate challenge
+  ["ErrChallengeIncompleteValidation(#4069)", "invalid passphrase(s)"]
+
 ]);
