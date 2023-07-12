@@ -17,3 +17,4 @@ Through the OpenID Connect protocol, Auth0 communicates to Pathwar a token that 
 - Also activate "Allow Skipping User Content" and "Allow Offline Access".
 - Now create "agent" and "admin" permissions for this API
 - This way you can give these permissions to the users you want, "admin" allows you to control everything and "agent" is given to the token used by the pathwar agent to authenticate itself.
+- Once you have done this you should fill the environments files in `~/web` and default data into ``go/pkg/pwsso/testing.go``
